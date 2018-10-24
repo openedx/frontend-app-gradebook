@@ -33,6 +33,10 @@ export default class Gradebook extends React.Component {
   };
 
   sortAlphaAsc = (gradeRowA, gradeRowB) => {
+    if (gradeRowA.username === '' ) {
+      return -1;
+    }
+
     const a = gradeRowA.username.toUpperCase();
     const b = gradeRowB.username.toUpperCase();
     if (a < b) {
@@ -44,20 +48,60 @@ export default class Gradebook extends React.Component {
     return 0;
   };
 
+  sortNumerically = (colKey, direction) => {
+    console.log(direction)
+    function sortNumAsc(gradeRowA, gradeRowB) {
+      if (gradeRowA[colKey] < gradeRowB[colKey]) {
+        return -1;
+      }
+      if (gradeRowA[colKey] > gradeRowB[colKey]) {
+        return 1;
+      }
+      return 0;
+    }
+  
+    function sortNumDesc(gradeRowA, gradeRowB) {
+      if (isNaN(gradeRowA[colKey]) || gradeRowA[colKey] === '') {
+        return -1;
+      }
+
+      if (gradeRowA[colKey] < gradeRowB[colKey]) {
+        return 1;
+      }
+      if (gradeRowA[colKey] > gradeRowB[colKey]) {
+        return -1;
+      }
+      return 0;
+    };
+
+    this.setState({grades: [...this.state.grades].sort(direction === 'desc' ? sortNumDesc : sortNumAsc)});
+  }
+
   mapHeadings = entry => {
-    const results = [{label: 'Username', key: 'username', columnSortable: true,
+    const results = [{
+      label: 'Username',
+      key: 'username',
+      columnSortable: true,
       onSort: direction => {
         this.setState({
           grades: [...this.state.grades].sort(direction === 'desc' ? this.sortAlphaDesc : this.sortAlphaAsc)
         })
-      }
+      },
      }];
-    const assignmentHeadings = entry.section_breakdown.filter(section => section.is_graded && section.label).map(s => ({
-      label: s.label, 
-      key: s.label,
-      columnSortable: false,
-    }));
-    const totals = [{label: 'Total', key: 'total', columnSortable: false}]
+    const assignmentHeadings = entry.section_breakdown
+      .filter(section => section.is_graded && section.label)
+      .map(s => ({
+        label: s.label, 
+        key: s.label,
+        columnSortable: true,
+        onSort: direction => {this.sortNumerically(s.label, direction)},
+      }));
+    const totals = [{
+      label: 'Total', 
+      key: 'total',
+      columnSortable: true,
+      onSort: direction => {this.sortNumerically('total', direction)},
+    }]
 
     return results.concat(assignmentHeadings).concat(totals);
   };
@@ -80,18 +124,32 @@ export default class Gradebook extends React.Component {
     return Object.assign(results, assignments, totals);
   }));
 
-
   render() {
     return (
       <div className="d-flex justify-content-center">
         <div className="card" style={{width: '50rem'}}>
           <div className="card-body">
-            <SearchField onSubmit={() => {this.setState({
-              grades: this.mapUserEnteries(this.props.results).filter(entry => entry.username == '' || entry.username.includes(this.state.filterValue))
-            })}}
-            onChange={filterValue => this.setState({filterValue})}
-            value={this.state.filterValue}
-            />
+            <h1>Gradebook</h1>
+            <hr/>
+            <div className="d-flex justify-content-between" >
+              <div>
+                Other stuff
+              </div>
+              <div>
+                <div style={{marginLeft: "10px" ,marginBottom: "10px"}}>
+                  <a href="https://www.google./com">Download Grade Report</a>
+                </div>
+                <SearchField 
+                  onSubmit={() => {this.setState({
+                    grades: this.mapUserEnteries(this.props.results).filter(entry => entry.username == '' || entry.username.includes(this.state.filterValue))
+                  })}}
+                  onChange={filterValue => this.setState({filterValue})}
+                  onClear={() => {this.setState({grades: this.mapUserEnteries(this.props.results).sort(this.sortAlphaDesc)})}}
+                  value={this.state.filterValue}
+                />
+              </div>
+            </div>
+            <br/>
             <Table
               columns={this.mapHeadings(this.props.results[0])}
               data={this.state.grades}
