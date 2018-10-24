@@ -150,13 +150,15 @@ export default class Gradebook extends React.Component {
               </div>
             </div>
             <br/>
-            <Table
-              columns={this.mapHeadings(this.props.results[0])}
-              data={this.state.grades}
-              tableSortable={true}
-              defaultSortDirection='desc'
-              defaultSortedColumn='username'
-             />
+            <div className="gbook">
+              <Table
+                columns={this.mapHeadings(this.props.results[0])}
+                data={this.state.grades}
+                tableSortable={true}
+                defaultSortDirection='desc'
+                defaultSortedColumn='username'
+              />
+             </div>
             <h5 className="card-title">Gradebook</h5>
             <p className="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
           </div>
