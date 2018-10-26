@@ -1,27 +1,27 @@
-.gbook { 
-    overflow-x: scroll;
-}
-.table {
-    padding-left: 244px;
-}
+// .gbook { 
+//     overflow-x: scroll;
+// }
+// .table {
+//     padding-left: 244px;
+// }
 
-.table tr th:first-child {
-    position: absolute;
-    width: 244px;
-    height:50px;    
-}
-.table tr td:first-child {
-    position: absolute;
-    width: 244px;
-    height:50px;    
-}
-.table tr td:not(:first-child) {
-    min-width: 500px;    
-}
-.table tr td:nth-child(2) {
-    box-sizing: content-box;
-    padding-left: 244px;
-}
-.table tr th:nth-child(2) {
-    padding-left: 244px;
-}
+// .table tr th:first-child {
+//     position: absolute;
+//     width: 244px;
+//     height:50px;    
+// }
+// .table tr td:first-child {
+//     position: absolute;
+//     width: 244px;
+//     height:50px;    
+// }
+// .table tr td:not(:first-child) {
+//     min-width: 500px;    
+// }
+// .table tr td:nth-child(2) {
+//     box-sizing: content-box;
+//     padding-left: 244px;
+// }
+// .table tr th:nth-child(2) {
+//     padding-left: 244px;
+// }
