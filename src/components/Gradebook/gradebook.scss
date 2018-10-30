@@ -11,7 +11,7 @@
         height:50px;
         display: block;
         background-color: #fff;
-        border-bottom: none;    
+        border-bottom: none;        
     }
     .table tr td:first-child {
         position: absolute;
@@ -25,10 +25,10 @@
     }
     .table tr td:nth-child(2) {
         box-sizing: content-box;
-        padding-left: 160px;
+        padding-left: 170px;
     }
     .table tr th:nth-child(2) {
-        padding-left: 160px;
+        padding-left: 170px;
     }
 
     .link-style {

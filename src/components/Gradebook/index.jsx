@@ -9,7 +9,8 @@ export default class Gradebook extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      grades: this.mapUserEnteries(this.props.results).sort(this.sortAlphaDesc),
+      grades: this.mapUserEnteriesPercent(this.props.results).sort(this.sortAlphaDesc),
+      headings: this.mapHeadings(this.props.results[0]),
       filterValue: '',
       modalContent: (<h1>Hello, World!</h1>),
       modalOpen: false,
@@ -90,24 +91,58 @@ export default class Gradebook extends React.Component {
       key: 'total',
       columnSortable: true,
       onSort: direction => {this.sortNumerically('total', direction)},
-    }]
+    }];
 
     return results.concat(assignmentHeadings).concat(totals);
   };
 
-  getGradesForAssignment = (assignmentLabel, entries) => entries.map(entry => {
-    const results = {username: entry.username};
-    const assignments = entry.section_breakdown
-      .filter(section => section.is_graded)
-      .reduce((acc,s) => {
-        acc[s.label]= s.percent;
-        return acc; 
-    }, {});
-    const totals = {total: entry.percent * 100}
-    return Object.assign(results, assignments, totals);
-  });
+  mapHeadingsHw = entry => {
+    const results = [{
+      label: 'Username',
+      key: 'username',
+      columnSortable: true,
+      onSort: direction => {
+        this.setState({
+          grades: [...this.state.grades].sort(direction === 'desc' ? this.sortAlphaDesc : this.sortAlphaAsc)
+        })
+      },
+     }];
+    const assignmentHeadings = entry.section_breakdown
+      .filter(section => section.is_graded && section.label && section.category == 'Homework' )
+      .map(s => ({
+        label: s.label, 
+        key: s.label,
+        columnSortable: true,
+        onSort: direction => {this.sortNumerically(s.label, direction)},
+      }));
 
-  mapUserEnteries = (entries) => entries.map(entry => {
+    return results.concat(assignmentHeadings);
+  };
+
+  mapHeadingsExam = entry => {
+    const results = [{
+      label: 'Username',
+      key: 'username',
+      columnSortable: true,
+      onSort: direction => {
+        this.setState({
+          grades: [...this.state.grades].sort(direction === 'desc' ? this.sortAlphaDesc : this.sortAlphaAsc)
+        })
+      },
+     }];
+    const assignmentHeadings = entry.section_breakdown
+      .filter(section => section.is_graded && section.label && section.category == 'Exam' )
+      .map(s => ({
+        label: s.label, 
+        key: s.label,
+        columnSortable: true,
+        onSort: direction => {this.sortNumerically(s.label, direction)},
+      }));
+
+    return results.concat(assignmentHeadings);
+  };
+
+  mapUserEnteriesPercent = (entries) => entries.map(entry => {
     const results = {username: entry.username};
     const assignments = entry.section_breakdown
       .filter(section => section.is_graded)
@@ -153,6 +188,9 @@ export default class Gradebook extends React.Component {
           >
             {s.score_earned}/{s.score_possible}
           </button>);
+          //TODO: This is a really hacky thing I'm doing just to get sorting to work. Should be able to clean this up drastically when I introduce the reducers
+          acc[`${s.label}Percent`] = s.percent
+
         return acc; 
     }, {});
     const totals = {total: entry.percent * 100}
@@ -168,32 +206,75 @@ export default class Gradebook extends React.Component {
             <hr/>
             <div className="d-flex justify-content-between" >
               <div>
-                Score View: 
-                <span>
-                  <input 
-                    id='score-view-percent' 
-                    class='ml-2' 
-                    type='radio' 
-                    name='score-view'
-                    value='percent' 
-                    onClick={()=>this.setState({
-                      grades: this.mapUserEnteries(this.props.results).sort(this.sortAlphaDesc),
-                    })}
-                  />
-                  <label class='ml-2 mr-2' for='score-view-percent'>Percent</label>
-                </span>
-                <span>
-                  <input 
-                    id='score-view-absolute'
-                    type='radio' 
-                    name='score-view' 
-                    value='absolute' 
-                    onClick={()=>this.setState({
-                      grades: this.mapUserEnteriesAbsolute(this.props.results).sort(this.sortAlphaDesc),
-                    })}
-                  />
-                  <label class='ml-2 mr-2' for='score-view-absolute'>Absolute</label>
-                </span>
+                <div>
+                  Score View: 
+                  <span>
+                    <input 
+                      id='score-view-percent' 
+                      className='ml-2' 
+                      type='radio' 
+                      name='score-view'
+                      value='percent' 
+                      onClick={()=> {this.setState({
+                        grades: this.mapUserEnteriesPercent(this.props.results).sort(this.sortAlphaDesc),
+                      })}}
+                    />
+                    <label className='ml-2 mr-2' htmlFor='score-view-percent'>Percent</label>
+                  </span>
+                  <span>
+                    <input 
+                      id='score-view-absolute'
+                      type='radio' 
+                      name='score-view' 
+                      value='absolute' 
+                      onClick={()=> {this.setState({
+                        grades: this.mapUserEnteriesAbsolute(this.props.results).sort(this.sortAlphaDesc),
+                      })}}
+                    />
+                    <label className='ml-2 mr-2' htmlFor='score-view-absolute'>Absolute</label>
+                  </span>
+                </div>
+                <div>
+                  Category: 
+                  <span>
+                    <input 
+                      id='category-all' 
+                      className='ml-2' 
+                      type='radio' 
+                      name='category'
+                      value='all' 
+                      onClick={()=> {this.setState({
+                        headings: this.mapHeadings(this.props.results[0]),
+                      })}}
+                    />
+                    <label className='ml-2 mr-2' htmlFor='category-all'>All</label>
+                  </span>
+                  <span>
+                    <input 
+                      id='category-homework' 
+                      className='ml-2' 
+                      type='radio' 
+                      name='category'
+                      value='homework' 
+                      onClick={()=> {this.setState({
+                        headings: this.mapHeadingsHw(this.props.results[0]),
+                      })}}
+                    />
+                    <label className='ml-2 mr-2' htmlFor='category-homework'>Homework</label>
+                  </span>
+                  <span>
+                    <input 
+                      id='category-exam'
+                      type='radio' 
+                      name='category' 
+                      value='exam' 
+                      onClick={()=> {this.setState({
+                        headings: this.mapHeadingsExam(this.props.results[0]),
+                      })}}
+                    />
+                    <label className='ml-2 mr-2' htmlFor='Exam'>Exam</label>
+                  </span>
+                </div>
               </div>
               <div>
                 <div style={{marginLeft: "10px" ,marginBottom: "10px"}}>
@@ -201,10 +282,10 @@ export default class Gradebook extends React.Component {
                 </div>
                 <SearchField 
                   onSubmit={() => {this.setState({
-                    grades: this.mapUserEnteries(this.props.results).filter(entry => entry.username == '' || entry.username.includes(this.state.filterValue))
+                    grades: this.mapUserEnteriesPercent(this.props.results).filter(entry => entry.username == '' || entry.username.includes(this.state.filterValue))
                   })}}
                   onChange={filterValue => this.setState({filterValue})}
-                  onClear={() => {this.setState({grades: this.mapUserEnteries(this.props.results).sort(this.sortAlphaDesc)})}}
+                  onClear={() => {this.setState({grades: this.mapUserEnteriesPercent(this.props.results).sort(this.sortAlphaDesc)})}}
                   value={this.state.filterValue}
                 />
               </div>
@@ -212,7 +293,7 @@ export default class Gradebook extends React.Component {
             <br/>
             <div className="gbook">
               <Table
-                columns={this.mapHeadings(this.props.results[0])}
+                columns={this.state.headings}
                 data={this.state.grades}
                 tableSortable={true}
                 defaultSortDirection='desc'
@@ -235,7 +316,7 @@ export default class Gradebook extends React.Component {
                     />
                   </div>
                 )}
-                onClose={() => console.log('hi')}
+                onClose={()=> this.setState({modalOpen: false,})}
             />
           </div>
         </div>
