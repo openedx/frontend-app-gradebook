@@ -5,12 +5,6 @@ import { SearchField, Table, Modal } from '@edx/paragon';
 
 
 export default class Gradebook extends React.Component {
-//   id,
-//   postId,
-//   name,
-//   email,
-//   body,
-// }) 
 
   constructor(props) {
     super(props);
@@ -20,6 +14,7 @@ export default class Gradebook extends React.Component {
       modalContent: (<h1>Hello, World!</h1>),
       modalOpen: false,
       modalModel: [{}],
+      updateVal: 0,
     };
   }
 
@@ -36,10 +31,6 @@ export default class Gradebook extends React.Component {
   };
 
   sortAlphaAsc = (gradeRowA, gradeRowB) => {
-    if (gradeRowA.username === '' ) {
-      return -1;
-    }
-
     const a = gradeRowA.username.toUpperCase();
     const b = gradeRowB.username.toUpperCase();
     if (a < b) {
@@ -52,7 +43,6 @@ export default class Gradebook extends React.Component {
   };
 
   sortNumerically = (colKey, direction) => {
-    console.log(direction)
     function sortNumAsc(gradeRowA, gradeRowB) {
       if (gradeRowA[colKey] < gradeRowB[colKey]) {
         return -1;
@@ -64,10 +54,6 @@ export default class Gradebook extends React.Component {
     }
   
     function sortNumDesc(gradeRowA, gradeRowB) {
-      if (isNaN(gradeRowA[colKey]) || gradeRowA[colKey] === '') {
-        return -1;
-      }
-
       if (gradeRowA[colKey] < gradeRowB[colKey]) {
         return 1;
       }
@@ -121,89 +107,57 @@ export default class Gradebook extends React.Component {
     return Object.assign(results, assignments, totals);
   });
 
-  makeEditBtns = entry => 
-    [entry.section_breakdown.filter(section => section.is_graded && section.label).reduce((acc, s) => {
-      acc[s.label] = (<button onClick={() => {this.setState({
-        modalOpen: true,
-        modalModel: this.getGradesForAssignment(s.label, this.props.results),
-        modalContent: (
-          <div>
-            <h3>The Assignment name is: {s.subsection_name}</h3>
-            <div className="d-flex justify-content-end" style={{marginBottom: "10px"}}>
-              <SearchField 
-                    onSubmit={() => {this.setState({
-                      grades: this.mapUserEnteries(this.props.results).filter(entry => entry.username == '' || entry.username.includes(this.state.filterValue))
-                    })}}
-                    onChange={filterValue => this.setState({filterValue})}
-                    onClear={() => {this.setState({grades: this.mapUserEnteries(this.props.results).sort(this.sortAlphaDesc)})}}
-                    value={this.state.filterValue}
-                />
-            </div>
-            <Table
-                columns={[{
-                  label: 'Username',
-                  key: 'username',
-                  columnSortable: true,
-                  onSort: direction => {
-                    this.setState({
-                      modalModel: [...this.state.modalModel].sort(direction === 'desc' ? this.sortAlphaDesc : this.sortAlphaAsc)
-                    })
-                  },
-                 },
-                 {
-                  label: 'Auto grade',
-                  key: 'autoGrade',
-                  // columnSortable: true,
-                  // onSort: direction => {
-                  //   this.setState({
-                  //     grades: [...this.state.grades].sort(direction === 'desc' ? this.sortAlphaDesc : this.sortAlphaAsc)
-                  //   })
-                  // },
-                 },
-                 {
-                  label: 'Adjusted grade',
-                  key: 'adjustedGrade',
-                  // columnSortable: true,
-                  // onSort: direction => {
-                  //   this.setState({
-                  //     grades: [...this.state.grades].sort(direction === 'desc' ? this.sortAlphaDesc : this.sortAlphaAsc)
-                  //   })
-                  // },
-                 },
-                 {
-                  label: 'Comment',
-                  key: 'comment',
-                  // columnSortable: true,
-                  // onSort: direction => {
-                  //   this.setState({
-                  //     grades: [...this.state.grades].sort(direction === 'desc' ? this.sortAlphaDesc : this.sortAlphaAsc)
-                  //   })
-                  // },
-                 },
-                ]}
-                data={this.state.modalModel}
-                tableSortable={true}
-                defaultSortDirection='desc'
-                defaultSortedColumn='username'
-              />
-          </div>
-        ),
-      });
-    }}>Edit</button>);
-      return acc;
-    }, {username: '', total: ''})];
-
-  mapUserEnteries = entries => this.makeEditBtns(entries[0]).concat(entries.map(entry => {
+  mapUserEnteries = (entries) => entries.map(entry => {
     const results = {username: entry.username};
     const assignments = entry.section_breakdown
       .filter(section => section.is_graded)
       .reduce((acc,s) => {
-        acc[s.label]= s.percent;
+        acc[s.label]= (
+          <button 
+            className="btn btn-header link-style"
+            onClick={()=> this.setState({
+              modalModel: [{
+                username: entry.username,
+                autoGrade: `${s.score_earned}/${s.score_possible}`,
+                adjustedGrade: (<span><input style={{width: '25px'}} type='text' value={this.updateVal}></input> / {s.score_possible}</span>),
+                assignmentName: `${s.subsection_name}`,
+              }],
+              modalOpen: true,
+            })}
+          >
+            {s.percent}
+          </button>);
         return acc; 
     }, {});
     const totals = {total: entry.percent * 100}
     return Object.assign(results, assignments, totals);
-  }));
+  });
+
+  mapUserEnteriesAbsolute = (entries) => entries.map(entry => {
+    const results = {username: entry.username};
+    const assignments = entry.section_breakdown
+      .filter(section => section.is_graded)
+      .reduce((acc,s) => {
+        acc[s.label]= (
+          <button 
+            className="btn btn-header link-style"
+            onClick={()=> this.setState({
+              modalModel: [{
+                username: entry.username,
+                autoGrade: `${s.score_earned}/${s.score_possible}`,
+                adjustedGrade: (<span><input style={{width: '25px'}} type='text' value={this.updateVal}></input> / {s.score_possible}</span>),
+                assignmentName: `${s.subsection_name}`,
+              }],
+              modalOpen: true,
+            })}
+          >
+            {s.score_earned}/{s.score_possible}
+          </button>);
+        return acc; 
+    }, {});
+    const totals = {total: entry.percent * 100}
+    return Object.assign(results, assignments, totals);
+  });
 
   render() {
     return (
@@ -214,7 +168,32 @@ export default class Gradebook extends React.Component {
             <hr/>
             <div className="d-flex justify-content-between" >
               <div>
-                Other stuff
+                Score View: 
+                <span>
+                  <input 
+                    id='score-view-percent' 
+                    class='ml-2' 
+                    type='radio' 
+                    name='score-view'
+                    value='percent' 
+                    onClick={()=>this.setState({
+                      grades: this.mapUserEnteries(this.props.results).sort(this.sortAlphaDesc),
+                    })}
+                  />
+                  <label class='ml-2 mr-2' for='score-view-percent'>Percent</label>
+                </span>
+                <span>
+                  <input 
+                    id='score-view-absolute'
+                    type='radio' 
+                    name='score-view' 
+                    value='absolute' 
+                    onClick={()=>this.setState({
+                      grades: this.mapUserEnteriesAbsolute(this.props.results).sort(this.sortAlphaDesc),
+                    })}
+                  />
+                  <label class='ml-2 mr-2' for='score-view-absolute'>Absolute</label>
+                </span>
               </div>
               <div>
                 <div style={{marginLeft: "10px" ,marginBottom: "10px"}}>
@@ -239,14 +218,25 @@ export default class Gradebook extends React.Component {
                 defaultSortDirection='desc'
                 defaultSortedColumn='username'
               />
-              <Modal
+            </div>
+
+            <Modal
                 open={this.state.modalOpen}
                 title="Edit Grades"
-                body={this.state.modalContent}
+                body={(
+                  <div>
+                    <h3>{this.state.modalModel[0].assignmentName}</h3>
+                    <Table
+                      columns={[{label: 'Username', key: 'username',},{label: 'Auto grade',key: 'autoGrade',},{label: 'Adjusted grade',key: 'adjustedGrade',}]}
+                      data={this.state.modalModel}
+                      tableSortable={true}
+                      defaultSortDirection='desc'
+                      defaultSortedColumn='username'
+                    />
+                  </div>
+                )}
                 onClose={() => console.log('hi')}
-              />
-            </div>
-          
+            />
           </div>
         </div>
       </div>
