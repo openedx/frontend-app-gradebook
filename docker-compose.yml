@@ -6,7 +6,7 @@ services:
       dockerfile: Dockerfile
       args:
         - NODE_ENV=development
-    container_name: edx.fecc
+    container_name: edx.gradebook
     image: edxops/front-end-cookie-cutter:latest
     volumes:
       - .:/edx/app:delegated
