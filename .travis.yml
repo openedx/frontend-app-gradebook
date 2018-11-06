@@ -1,18 +1,17 @@
 language: node_js
 node_js:
-  - "lts/*"
+  - lts/*
 cache:
   directories:
     - "~/.npm"
 notifications:
   email:
     recipients:
-      - jbradley@edx.org
+      - adusenbery@edx.org
+      - rreilly@edx.org
+      - schen@edx.org
     on_success: never
     on_failure: always
-  hipchat:
-    rooms:
-      secure: g5fu70/Dv5qaE7UztS2FWEwhTpEOwDo9CMA/J6jcdKrpT/vRqAkAD5x3WHrHdN2BMOJh2VeFO7xAeAuTwf072kc6Q+ND8Zi495Wc1FItKApzYiipYPBouYdgRbP0oqplII1TaGAbs7YB/7xPApkhNwG+KV2p+ih8aaRUPRqmEYgTkiXWGsrgs4E0L070TPR75Fc9GsxaTnCcZ4tCSdvlOmlMJaF9jNiF6+6zkANWsrHW70zU+7YA8muT7NLFKB1l0tcJOpxr3svWFl4SFdoiqVm2SPO6VjJE6HaxPt82lin0Hvovm5ABxc5Y953SC/9c8TteT5XNAO9PrcO7AKIivjkR2XYGkTIk0DUTex5rVPXvN4AxjA3kXGmg947fAI8MmlTXD/BgkryVfOyuh2jO7RKvnjtosVshmGjsDO8VC1cZCQQLMYrMBQHcfiBcHU0hYKCtSgH5NsIA8S4WQk0w50uR9QiZgAHEuQME1tiFQt8DozQX5nH5Im+jZgrbt/2Nzy2l7eG1QExx+X8bHhRezZuRbQOgFCnbCnr5iUtE9sQJVhdsyyo8cTS36HsYOL8868HKgWdY8UPtwoe3ZfKUo8hlORAr2B3XUv9vBz0W9GwvrNcYrJrpt+xVIqKwCdx/dxDscCAgrN7JGlw2rQQU+bqOpTp4v8Ut+fDUCZZWEUM=
   webhooks: https://www.travisbuddy.com/
   on_success: never
 before_install:
@@ -24,19 +23,12 @@ before_script: greenkeeper-lockfile-update
 after_script: greenkeeper-lockfile-upload
 script:
   - make validate-no-uncommitted-package-lock-changes
-  - npm run lint
   - npm run test
   - npm run build
-  - npm run is-es5
 after_success:
-  - npm run build:gh-pages
-deploy:
-  local-dir: "./dist"
-  provider: pages
-  skip-cleanup: true
-  github-token: "$GITHUB_TOKEN"
-  keep-history: true
-  name: edx-semantic-release
-  email: edx-semantic-release@edx.org
-  on:
-    branch: master
+  - npm run travis-deploy-once "npm run semantic-release"
+  - npm run coveralls
+env:
+  global:
+    - secure: bBLQZVw1aVUxB7GFNXGrdKeztyFrCCJusVgFcSuej9S4qmj9/jrVsEc9dEcH+BMS+b49+SvILoxzd6ZYLaRygQLzevnO1/dX596DeCKVK48PTTZRsNyafaSMCkxNKqEmRcA9hYL52xJJ5GpKo7ViWsFy8VFgUfZEJxQi8/lYbfQ1vlXRpo2LJfJh09v85roSXdQmajyGJ1Dz6elcwUX5B+BgXmIHizJXUMfFci61xTEZmgKtfeCiwFQA5pCvVMHBQhgySqT2N3eRESzRt2jAfAdcRKBYXS0rwKymdlL1ZF349Jm8xwtqm19Fwsut21181Lnn6FmccMWhQ7man3WH1xfT0ahmHNs1KJMyZcwRJd/gDfbd6iD3LB9Pt9hEQ00Qh/m7MYeahMxTEL9bp2TyILi8cTP91jeBUHCExCdv2jRrUQEnUS5vZUYRdM8CR2DLoLmNh3APndKzwgr5U8rh6RdhbQBJp97Hb/YYVrBiP2atLJAaYPY/xEQHK/YoXelQgiZ6wHBMV+tF/L0ZRn7KyVWdkbBKWfbEjRKbEJD9WD+V7HayMR81tm5CSqlrG8mTvSy2boIGiX14GV11ZEfMj5bjb6W41BW+QGqQerZvmwk/4ywe304X85PD0OBhIYPRzeLIi0Gt6lD1aOpVxgm4M03tdgYQzCPWRPq32CB+1IA=
+    - secure: w1d/E+cc4+Bf017Jpp9YsKBzLSZw9sqKZGeM2tNrO6eJZbMJqfKTmfUrRw8BoLh1Z8YRkHF7RADDy3ln7XEdeAX3j9OoC3Cz0zN6iDX6TPcI461NuOIscJYb4tyFcuWm6FhgVlBAlo/BI3q+zqKwjfWuDaORpk6+haacCmvTe5V0vWhY+MYT7M+LfnKeKVzhI4magGt8jPTE21oziIFwCqCCjJc4+AmsWoWTzU0Q7Db0DZiJnLXFfXybLbkedAgJmcSgEGZCSpaZIOkX0/Lbazsz1Ky4KASfkrYT1Z5iKQ8TE3skmx1IIu+1egN8iBbdrY+NhvV24RkT+rpUvD7TBIHTrjQ5JYLe0kGjN70vG7YlKgjNSyTjkrEd7fCKpuIol3DVjBRz3tV5aCl0t/A8mIPqKyNI94MamWsExpqsxgcb9vBVno5caZvD8ZXNrGNqanB3MSoLGxZTLKif9u+AZfLnB3xtjaiJg3/BNoWaOBPlp/M6BvGIGHElwvLrAhUvl8wzrwJcQQWpmRMh0b6enr6Y7ox/mGGs7NBCT+CNKEsWeCfY4thZzgi6/GocXyqdTpXMkNSI1PDoPmi+vKafBd+7aAYbcUlJBTU6TAxyncln0tF2JF+ghTZ0v8nNzEQ9VmV4ddyoOHx6YnHvEcenWZGMROQnMCVifyDbaHpPbPI=

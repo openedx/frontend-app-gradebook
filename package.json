@@ -1,20 +1,25 @@
 {
-  "name": "edx-cookie-cutter",
+  "name": "@edx/gradebook",
   "version": "0.1.0",
-  "description": "Starter app from the ground up",
-  "repository": "https://github.com/jaebradley/edx-cookie-cutter",
+  "description": "edx editable gradebook-ui to manipulate grade overrides on subsections",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/edx/gradebook.git"
+  },
   "scripts": {
     "build": "NODE_ENV=production BABEL_ENV=production webpack --config=config/webpack.prod.config.js",
-    "deploy:gh-pages": "npm run build && gh-pages -d dist",
+    "coveralls": "cat ./coverage/lcov.info | coveralls",
     "is-es5": "es-check es5 ./dist/*.js",
     "lint": "eslint --ext .js --ext .jsx .",
     "precommit": "npm run lint",
-    "prepublishOnly": "npm run build",
+    "semantic-release": "semantic-release",
     "start": "NODE_ENV=development BABEL_ENV=development node_modules/.bin/webpack-dev-server --config=config/webpack.dev.config.js --progress",
-    "debug-test": "node --inspect-brk node_modules/.bin/jest --runInBand --coverage",
-    "test": "jest --coverage --passWithNoTests"
+    "test": "jest --coverage --passWithNoTests",
+    "travis-deploy-once": "travis-deploy-once"
   },
+  "author": "edX",
   "license": "AGPL-3.0",
+  "homepage": "https://github.com/edx/gradebook#readme",
   "dependencies": {
     "@edx/edx-bootstrap": "^0.4.3",
     "@edx/frontend-auth": "^1.0.3",
@@ -55,7 +60,6 @@
     "extract-text-webpack-plugin": "^4.0.0-beta.0",
     "fetch-mock": "^6.3.0",
     "file-loader": "^1.1.9",
-    "gh-pages": "^1.1.0",
     "html-webpack-harddisk-plugin": "^0.2.0",
     "html-webpack-plugin": "^3.0.3",
     "husky": "^0.14.3",
@@ -66,7 +70,9 @@
     "react-test-renderer": "^16.2.0",
     "redux-mock-store": "^1.5.1",
     "sass-loader": "^6.0.6",
+    "semantic-release": "^15.10.7",
     "style-loader": "^0.20.2",
+    "travis-deploy-once": "^5.0.9",
     "webpack": "^4.1.0",
     "webpack-cli": "^2.0.10",
     "webpack-dev-server": "^3.1.0",
@@ -84,13 +90,13 @@
       "src/**/*.{js,jsx}"
     ],
     "coveragePathIgnorePatterns": [
-      "/node_modules/"
+      "/node_modules/",
+      "src/setupTest.js",
+      "src/index.js",
+      "/tests/"
     ],
     "transformIgnorePatterns": [
       "/node_modules/(?!(@edx/paragon)/).*/"
-    ],
-    "globals": {
-      "courseContext": {}
-    }
+    ]
   }
 }
