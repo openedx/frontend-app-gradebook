@@ -19,7 +19,7 @@ To install gradebook into your project:
 npm i --save @edx/gradebook
 ```
 
-## Running Standalone
+## Running the UI Standalone
 
 After cloning the repository, run `make up-detached` in the `gradebook` directory - this will build and start the `gradebook` web application in a docker container.
 
