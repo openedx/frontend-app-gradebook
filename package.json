@@ -20,6 +20,9 @@
   "author": "edX",
   "license": "AGPL-3.0",
   "homepage": "https://github.com/edx/gradebook#readme",
+  "publishConfig": {
+    "access": "public"
+  },
   "dependencies": {
     "@edx/edx-bootstrap": "^0.4.3",
     "@edx/frontend-auth": "^1.0.3",
