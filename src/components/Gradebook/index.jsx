@@ -285,12 +285,9 @@ export default class Gradebook extends React.Component {
                   <a href="https://www.google./com">Download Grade Report</a>
                 </div>
                 <SearchField
-                  onSubmit={() => this.setState({ grades: this.mapUserEnteriesPercent(this.props.results).filter(entry => entry.username === '' || entry.username.includes(this.state.filterValue)) }) }
+                  onSubmit={value => this.props.searchForUser(this.props.match.params.courseId, value)}
                   onChange={filterValue => this.setState({ filterValue })}
-                  onClear={() => this.setState({
-                    grades: this.mapUserEnteriesPercent(this.props.results)
-                      .sort(this.sortAlphaDesc),
-                  })}
+                  onClear={() => this.props.getUserGrades(this.props.match.params.courseId)}
                   value={this.state.filterValue}
                 />
               </div>

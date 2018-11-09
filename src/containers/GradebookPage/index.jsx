@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 
 import Gradebook from '../../components/Gradebook';
-import { fetchGrades } from '../../data/actions/grades';
+import { fetchGrades, fetchMatchingUserGrades } from '../../data/actions/grades';
 
 const mapStateToProps = state => (
   {
@@ -13,6 +13,9 @@ const mapDispatchToProps = dispatch => (
   {
     getUserGrades: (courseId) => {
       dispatch(fetchGrades(courseId));
+    },
+    searchForUser: (courseId, searchText) => {
+      dispatch(fetchMatchingUserGrades(courseId, searchText));
     },
   }
 );
