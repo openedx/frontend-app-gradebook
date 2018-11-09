@@ -21,6 +21,7 @@
         background-color: #fff;
     }
     .table tr td:not(:first-child) {
+        //not real sylz. plz kill before prod
         min-width: 250px;    
     }
     .table tr td:nth-child(2) {
