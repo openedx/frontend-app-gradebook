@@ -4,10 +4,19 @@ import { configuration } from '../../config';
 class LmsApiService {
   static baseUrl = configuration.LMS_BASE_URL;
 
-  static fetchGradebookData(courseId, searchText) {
+  static fetchGradebookData(courseId, searchText, cohort, track) {
     let gradebookUrl = `${LmsApiService.baseUrl}/api/grades/v1/gradebook/${courseId}/`;
+    if (searchText || track || cohort) {
+      gradebookUrl += '?';
+    }
     if (searchText) {
-      gradebookUrl += `?username_contains=${searchText}`;
+      gradebookUrl += `username_contains=${searchText}&`;
+    }
+    if (cohort) {
+      gradebookUrl += `cohort_id=${cohort}&`;
+    }
+    if (track) {
+      gradebookUrl += `enrollment_mode=${track}`;
     }
     return apiClient.get(gradebookUrl);
   }
@@ -34,6 +43,16 @@ class LmsApiService {
     */
     const gradebookUrl = `${LmsApiService.baseUrl}/api/grades/v1/gradebook/${courseId}/bulk-update`;
     return apiClient.post(gradebookUrl, updateData);
+  }
+  
+  static fetchTracks(courseId) {
+    const trackUrl = `${LmsApiService.baseUrl}/api/enrollment/v1/course/${courseId}`;
+    return apiClient.get(trackUrl);
+  }
+
+  static fetchCohorts(courseId) {
+    const cohortsUrl = `${LmsApiService.baseUrl}/courses/${courseId}/cohorts/`;
+    return apiClient.get(cohortsUrl);
   }
 }
 

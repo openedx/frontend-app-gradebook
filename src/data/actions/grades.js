@@ -12,7 +12,12 @@ import LmsApiService from '../services/LmsApiService';
 const startedFetchingGrades = () => ({ type: STARTED_FETCHING_GRADES });
 const finishedFetchingGrades = () => ({ type: FINISHED_FETCHING_GRADES });
 const errorFetchingGrades = () => ({ type: ERROR_FETCHING_GRADES });
-const gotGrades = grades => ({ type: GOT_GRADES, grades });
+const gotGrades = (grades, cohort, track) => ({
+  type: GOT_GRADES,
+  grades,
+  cohort,
+  track,
+});
 
 const gradeUpdateRequest = () => ({ type: GRADE_UPDATE_REQUEST });
 const gradeUpdateSuccess = responseData => ({
@@ -24,13 +29,13 @@ const gradeUpdateFailure = error => ({
   payload: { error },
 });
 
-const fetchGrades = courseId => (
+const fetchGrades = (courseId, cohort, track) => (
   (dispatch) => {
     dispatch(startedFetchingGrades());
-    return LmsApiService.fetchGradebookData(courseId)
+    return LmsApiService.fetchGradebookData(courseId, null, cohort, track)
       .then(response => response.data)
       .then((data) => {
-        dispatch(gotGrades(data.results));
+        dispatch(gotGrades(data.results, cohort, track));
         dispatch(finishedFetchingGrades());
       })
       .catch((error) => {
@@ -39,13 +44,13 @@ const fetchGrades = courseId => (
   }
 );
 
-const fetchMatchingUserGrades = (courseId, searchText) => (
+const fetchMatchingUserGrades = (courseId, searchText, cohort, track) => (
   (dispatch) => {
     dispatch(startedFetchingGrades());
-    return LmsApiService.fetchGradebookData(courseId, searchText)
+    return LmsApiService.fetchGradebookData(courseId, searchText, cohort, track)
       .then(response => response.data)
       .then((data) => {
-        dispatch(gotGrades(data.results));
+        dispatch(gotGrades(data.results, cohort, track));
         dispatch(finishedFetchingGrades());
       })
       .catch((error) => {
