@@ -21,7 +21,22 @@ const fetchGrades = courseId => (
         dispatch(finishedFetchingGrades());
       })
       .catch((error) => {
-        dispatch(errorFetchingGrades())
+        dispatch(errorFetchingGrades());
+      });
+  }
+);
+
+const fetchMatchingUserGrades = (courseId, searchText) => (
+  (dispatch) => {
+    dispatch(startedFetchingGrades());
+    return LmsApiService.fetchGradebookData(courseId, searchText)
+      .then(response => response.data)
+      .then((data) => {
+        dispatch(gotGrades(data.results));
+        dispatch(finishedFetchingGrades());
+      })
+      .catch((error) => {
+        dispatch(errorFetchingGrades());
       });
   }
 );
@@ -32,4 +47,5 @@ export {
   errorFetchingGrades,
   gotGrades,
   fetchGrades,
+  fetchMatchingUserGrades,
 };
