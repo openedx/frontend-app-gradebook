@@ -73,6 +73,21 @@ module.exports = Merge.smart(commonConfig, {
       inject: true, // Appends script tags linking to the webpack bundles at the end of the body
       template: path.resolve(__dirname, '../public/index.html'),
     }),
+    new webpack.EnvironmentPlugin({
+      NODE_ENV: 'development',
+      BASE_URL: 'localhost:1991',
+      LMS_BASE_URL: 'http://localhost:18000',
+      LOGIN_URL: 'http://localhost:18000/login',
+      LOGOUT_URL: 'http://localhost:18000/login',
+      REFRESH_ACCESS_TOKEN_ENDPOINT: 'http://localhost:18000/login',
+      DATA_API_BASE_URL: 'http://localhost:8000',
+      // LMS_CLIENT_ID should match the lms DOT client application id your LMS container
+      LMS_CLIENT_ID: 'login-service-client-id',
+      SEGMENT_KEY: null,
+      FEATURE_FLAGS: {},
+      ACCESS_TOKEN_COOKIE_NAME: 'edx-jwt-cookie-header-payload',
+      CSRF_COOKIE_NAME: 'csrftoken',
+    }),
     // when the --hot option is not passed in as part of the command
     // the HotModuleReplacementPlugin has to be specified in the Webpack configuration
     // https://webpack.js.org/configuration/dev-server/#devserver-hot

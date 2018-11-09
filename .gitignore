@@ -6,4 +6,8 @@ coverage
 
 dist/
 
+### pyenv ###
 .python-version
+
+### Emacs ###
+*~
