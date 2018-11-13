@@ -1,20 +1,22 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import emailPropType from 'email-prop-type';
-import { SearchField, Table, Modal } from '@edx/paragon';
+import { Button, Modal, SearchField, Table } from '@edx/paragon';
 
 
 export default class Gradebook extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      grades: [], // this.mapUserEnteriesPercent(this.props.grades).sort(this.sortAlphaDesc),
+      grades: [], // this.mapUserEntriesPercent(this.props.grades).sort(this.sortAlphaDesc),
       headings: [], // this.mapHeadings(this.props.grades[0]),
       filterValue: '',
       modalContent: (<h1>Hello, World!</h1>),
       modalOpen: false,
       modalModel: [{}],
       updateVal: 0,
+      updateModuleId: null,
+      updateUserId: null,
     };
   }
 
@@ -150,25 +152,40 @@ export default class Gradebook extends React.Component {
     return results.concat(assignmentHeadings);
   };
 
-  mapUserEnteriesPercent = entries => entries.map((entry) => {
+  setNewModalState = (userEntry, subsection) => {
+    this.setState({
+      modalModel: [{
+        username: userEntry.username,
+        currentGrade: `${subsection.score_earned}/${subsection.score_possible}`,
+        adjustedGrade: (
+          <span>
+            <input
+              style={{ width: '25px' }}
+              type="text"
+              onChange={(event) => this.setState({updateVal: event.target.value})}
+            /> / {subsection.score_possible}
+          </span>
+        ),
+        assignmentName: `${subsection.subsection_name}`,
+      }],
+      modalOpen: true,
+      updateModuleId: subsection.module_id,
+      updateUserId: userEntry.user_id,
+
+    })
+  }
+
+  mapUserEntriesPercent = entries => entries.map((entry) => {
     const results = { username: entry.username };
     const assignments = entry.section_breakdown
       .filter(section => section.is_graded)
-      .reduce((acc, s) => {
-        acc[s.label] = (
+      .reduce((acc, subsection) => {
+        acc[subsection.label] = (
           <button
             className="btn btn-header link-style"
-            onClick={() => this.setState({
-              modalModel: [{
-                username: entry.username,
-                autoGrade: `${s.score_earned}/${s.score_possible}`,
-                adjustedGrade: (<span><input style={{ width: '25px' }} type="text" value={this.updateVal} /> / {s.score_possible}</span>),
-                assignmentName: `${s.subsection_name}`,
-              }],
-              modalOpen: true,
-            })}
+            onClick={() => this.setNewModalState(entry, subsection)}
           >
-            {s.percent}
+            {subsection.percent}
           </button>);
         return acc;
       }, {});
@@ -176,25 +193,17 @@ export default class Gradebook extends React.Component {
     return Object.assign(results, assignments, totals);
   });
 
-  mapUserEnteriesAbsolute = entries => entries.map((entry) => {
+  mapUserEntriesAbsolute = entries => entries.map((entry) => {
     const results = { username: entry.username };
     const assignments = entry.section_breakdown
       .filter(section => section.is_graded)
-      .reduce((acc, s) => {
-        acc[s.label] = (
+      .reduce((acc, subsection) => {
+        acc[subsection.label] = (
           <button
             className="btn btn-header link-style"
-            onClick={() => this.setState({
-              modalModel: [{
-                username: entry.username,
-                autoGrade: `${s.score_earned}/${s.score_possible}`,
-                adjustedGrade: (<span><input style={{ width: '25px' }} type="text" value={this.updateVal} /> / {s.score_possible}</span>),
-                assignmentName: `${s.subsection_name}`,
-              }],
-              modalOpen: true,
-            })}
+            onClick={() => this.setNewModalState(entry, subsection)}
           >
-            {s.score_earned}/{s.score_possible}
+            {subsection.score_earned}/{subsection.score_possible}
           </button>);
         return acc;
       }, {});
@@ -202,6 +211,18 @@ export default class Gradebook extends React.Component {
     const totals = { total: entry.percent * 100 };
     return Object.assign(results, assignments, totals);
   });
+
+  handleAdjustedGradeClick = () => {
+    this.props.updateGrades(this.props.match.params.courseId, [
+      {
+        'user_id': this.state.updateUserId,
+        'usage_id': this.state.updateModuleId,
+        'grade': {
+          'earned_graded_override': this.state.updateVal,
+        },
+      },
+    ]);
+  }
 
   render() {
     return (
@@ -221,7 +242,7 @@ export default class Gradebook extends React.Component {
                       type="radio"
                       name="score-view"
                       value="percent"
-                      onClick={() => this.setState({ grades: this.mapUserEnteriesPercent(this.props.results).sort(this.sortAlphaDesc) })}
+                      onClick={() => this.setState({ grades: this.mapUserEntriesPercent(this.props.results).sort(this.sortAlphaDesc) })}
                     />
                     <label className="ml-2 mr-2" htmlFor="score-view-percent">Percent</label>
                   </span>
@@ -231,7 +252,7 @@ export default class Gradebook extends React.Component {
                       type="radio"
                       name="score-view"
                       value="absolute"
-                      onClick={() => this.setState({ grades: this.mapUserEnteriesAbsolute(this.props.results).sort(this.sortAlphaDesc) })}
+                      onClick={() => this.setState({ grades: this.mapUserEntriesAbsolute(this.props.results).sort(this.sortAlphaDesc) })}
                     />
                     <label className="ml-2 mr-2" htmlFor="score-view-absolute">Absolute</label>
                   </span>
@@ -296,7 +317,7 @@ export default class Gradebook extends React.Component {
             <div className="gbook">
               <Table
                 columns={this.mapHeadings(this.props.grades[0])}
-                data={this.mapUserEnteriesPercent(this.props.grades)}
+                data={this.mapUserEntriesPercent(this.props.grades)}
                 tableSortable
                 defaultSortDirection="desc"
                 defaultSortedColumn="username"
@@ -309,15 +330,28 @@ export default class Gradebook extends React.Component {
                 <div>
                   <h3>{this.state.modalModel[0].assignmentName}</h3>
                   <Table
-                      columns={[{ label: 'Username', key: 'username' }, { label: 'Auto grade', key: 'autoGrade' }, { label: 'Adjusted grade', key: 'adjustedGrade' }]}
+                      columns={[{ label: 'Username', key: 'username' }, { label: 'Current grade', key: 'currentGrade' }, { label: 'Adjusted grade', key: 'adjustedGrade' }]}
                       data={this.state.modalModel}
                       tableSortable
                       defaultSortDirection="desc"
                       defaultSortedColumn="username"
                     />
                 </div>
-                )}
-              onClose={() => this.setState({ modalOpen: false })}
+              )}
+              buttons={[
+                <Button
+                  label="Edit Grade"
+                  buttonType="primary"
+                  onClick={this.handleAdjustedGradeClick}
+                />
+              ]}
+              onClose={() => this.setState({
+                modalOpen: false,
+                modalModel: [{}],
+                updateVal: 0,
+                updateModuleId: null,
+                updateUserId: null,
+              })}
             />
           </div>
         </div>
