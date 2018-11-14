@@ -1,7 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import emailPropType from 'email-prop-type';
-import { Button, Modal, SearchField, Table } from '@edx/paragon';
+import { Button, Modal, SearchField, Table, InputSelect } from '@edx/paragon';
+import queryString from 'query-string';
 
 
 export default class Gradebook extends React.Component {
@@ -21,7 +22,14 @@ export default class Gradebook extends React.Component {
   }
 
   componentDidMount() {
-    this.props.getUserGrades(this.props.match.params.courseId);
+    const urlQuery = queryString.parse(this.props.location.search);
+    this.props.getUserGrades(
+      this.props.match.params.courseId,
+      urlQuery.cohort,
+      urlQuery.track,
+    );
+    this.props.getTracks(this.props.match.params.courseId);
+    this.props.getCohorts(this.props.match.params.courseId);
   }
 
   sortAlphaDesc = (gradeRowA, gradeRowB) => {
@@ -223,6 +231,75 @@ export default class Gradebook extends React.Component {
       },
     ]);
   }
+  updateQueryParams = (queryKey, queryValue) => {
+    const parsed = queryString.parse(this.props.location.search);
+    parsed[queryKey] = queryValue;
+    return `?${queryString.stringify(parsed)}`;
+  };
+
+  mapCohortsEntries = (entries) => {
+    let mapped = entries.map(entry => ({
+      id: entry.id,
+      label: entry.name,
+    }));
+    mapped.unshift({id:0, label:'Cohorts'});
+    return mapped;
+  };
+
+  mapTracksEntries = (entries) => {
+    let mapped = entries.map(entry => ({
+      id: entry.slug,
+      label: entry.name,
+    }));
+    mapped.unshift({ label:'Tracks' });
+    return mapped;
+  };
+
+  updateTracks = (event) => {
+    const selectedTrackItem = this.props.tracks.find(x=>x.name===event);
+    let selectedTrackSlug = null;
+    if(selectedTrackItem) {
+      selectedTrackSlug = selectedTrackItem.slug;
+    }
+    this.props.getUserGrades(
+      this.props.match.params.courseId,
+      this.props.selectedCohort,
+      selectedTrackSlug,
+    );
+    const updatedQueryStrings = this.updateQueryParams('track', selectedTrackSlug)
+    this.props.history.push(updatedQueryStrings);
+  };
+
+  updateCohorts = (event) => {
+    const selectedCohortItem = this.props.cohorts.find(x=>x.name===event);
+    let selectedCohortId = null;
+    if(selectedCohortItem) {
+      selectedCohortId = selectedCohortItem.id;
+    }
+    this.props.getUserGrades(
+      this.props.match.params.courseId,
+      selectedCohortId,
+      this.props.selectedTrack,
+    );
+    const updatedQueryStrings = this.updateQueryParams('cohort', selectedCohortId)
+    this.props.history.push(updatedQueryStrings);
+  };
+
+  mapSelectedCohortEntry = (entry) => {
+    const selectedCohortEntry = this.props.cohorts.find(x => x.id === parseInt(entry, 10));
+    if (selectedCohortEntry) {
+      return selectedCohortEntry.name;
+    }
+    return 'Cohorts';
+  };
+
+  mapSelectedTrackEntry = (entry) => {
+    const selectedTrackEntry = this.props.tracks.find(x => x.slug === entry);
+    if (selectedTrackEntry) {
+      return selectedTrackEntry.name;
+    }
+    return 'Tracks';
+  };
 
   render() {
     return (
@@ -294,21 +371,44 @@ export default class Gradebook extends React.Component {
                         type="radio"
                         name="category"
                         value="exam"
-                        onClick={() => this.setState({ headings: this.mapHeadingsExam(this.props.results[0])  })}
+                        onClick={() => this.setState({ headings: this.mapHeadingsExam(this.props.results[0]) })}
                       />
                       Exam
                     </label>
                   </span>
                 </div>
+                {(this.props.tracks.length > 0 || this.props.cohorts.length > 0) &&
+                  <div className="student-filters">
+                    <span className="label">
+                      Student Groups:
+                    </span>
+                    {this.props.tracks.length > 0 &&
+                      <InputSelect
+                        name='Tracks'
+                        value={this.mapSelectedTrackEntry(this.props.selectedTrack)}
+                        options={this.mapTracksEntries(this.props.tracks)}
+                        onChange={this.updateTracks}
+                      />
+                    }
+                    {this.props.cohorts.length > 0 &&
+                      <InputSelect
+                        name='Cohorts'
+                        value={this.mapSelectedCohortEntry(this.props.selectedCohort)}
+                        options={this.mapCohortsEntries(this.props.cohorts)}
+                        onChange={this.updateCohorts}
+                      />
+                    }
+                  </div>
+                }
               </div>
               <div>
                 <div style={{ marginLeft: '10px', marginBottom: '10px' }}>
                   <a href="https://www.google./com">Download Grade Report</a>
                 </div>
                 <SearchField
-                  onSubmit={value => this.props.searchForUser(this.props.match.params.courseId, value)}
+                  onSubmit={value => this.props.searchForUser(this.props.match.params.courseId, value, this.props.selectedCohort, this.props.selectedTrack)}
                   onChange={filterValue => this.setState({ filterValue })}
-                  onClear={() => this.props.getUserGrades(this.props.match.params.courseId)}
+                  onClear={() => this.props.getUserGrades(this.props.match.params.courseId, this.props.selectedCohort, this.props.selectedTrack)}
                   value={this.state.filterValue}
                 />
               </div>
@@ -359,20 +459,4 @@ export default class Gradebook extends React.Component {
     );
   }
 }
-
-// CommentDetails.defaultProps = {
-//   id: null,
-//   postId: null,
-//   name: '',
-//   email: 'example@example.com',
-//   body: '',
-// };
-
-// CommentDetails.propTypes = {
-//   id: PropTypes.number,
-//   postId: PropTypes.number,
-//   name: PropTypes.string,
-//   email: emailPropType,
-//   body: PropTypes.string,
-// };
 

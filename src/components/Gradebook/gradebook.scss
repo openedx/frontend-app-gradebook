@@ -1,3 +1,12 @@
+.student-filters{
+    display: flex;
+    .label{
+        padding-top: 30px;
+    }
+    .form-group{
+        margin-left: 10px;
+    }
+}
 .gbook { 
     overflow-x: scroll;
 

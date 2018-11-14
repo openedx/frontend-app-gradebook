@@ -19,6 +19,8 @@ const grades = (state = initialState, action) => {
         results: action.grades,
         finishedFetching: true,
         errorFetching: false,
+        selectedTrack: action.track,
+        selectedCohort: action.cohort,
       };
     case STARTED_FETCHING_GRADES:
       return {
