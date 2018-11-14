@@ -7,17 +7,21 @@ import {
   GRADE_UPDATE_SUCCESS,
   GRADE_UPDATE_FAILURE,
   TOGGLE_GRADE_FORMAT,
+  SORT_GRADES,
+  FILTER_COLUMNS,
 } from '../constants/actionTypes/grades';
 import LmsApiService from '../services/LmsApiService';
+import { headingMapper } from './utils';
 
 const startedFetchingGrades = () => ({ type: STARTED_FETCHING_GRADES });
 const finishedFetchingGrades = () => ({ type: FINISHED_FETCHING_GRADES });
 const errorFetchingGrades = () => ({ type: ERROR_FETCHING_GRADES });
-const gotGrades = (grades, cohort, track) => ({
+const gotGrades = (grades, cohort, track, headings) => ({
   type: GOT_GRADES,
   grades,
   cohort,
   track,
+  headings,
 });
 
 const gradeUpdateRequest = () => ({ type: GRADE_UPDATE_REQUEST });
@@ -32,7 +36,12 @@ const gradeUpdateFailure = error => ({
 
 
 const toggleGradeFormat = formatType => ({ type: TOGGLE_GRADE_FORMAT, formatType });
+const sortGrades = (columnName, direction) => ({ type: SORT_GRADES, columnName, direction });
 
+const filterColumns = (filterType, exampleUser) => ({ 
+  type: FILTER_COLUMNS,
+  headings: headingMapper[filterType](exampleUser) 
+});
 
 const fetchGrades = (courseId, cohort, track) => (
   (dispatch) => {
@@ -40,7 +49,7 @@ const fetchGrades = (courseId, cohort, track) => (
     return LmsApiService.fetchGradebookData(courseId, null, cohort, track)
       .then(response => response.data)
       .then((data) => {
-        dispatch(gotGrades(data.results, cohort, track));
+        dispatch(gotGrades(data.results, cohort, track, headingMapper.all(data.results[0])));
         dispatch(finishedFetchingGrades());
       })
       .catch(() => {
@@ -70,7 +79,7 @@ const updateGrades = (courseId, updateData) => (
     return LmsApiService.updateGradebookData(courseId, updateData)
       .then(response => response.data)
       .then((data) => {
-        dispatch(gradeUpdateSuccess(data))
+        dispatch(gradeUpdateSuccess(data));
       })
       .catch((error) => {
         dispatch(gradeUpdateFailure(error));
@@ -90,4 +99,6 @@ export {
   gradeUpdateFailure,
   updateGrades,
   toggleGradeFormat,
+  sortGrades,
+  filterColumns,
 };
