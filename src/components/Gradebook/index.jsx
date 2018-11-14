@@ -133,8 +133,6 @@ export default class Gradebook extends React.Component {
     return 'Tracks';
   };
 
-  getDataDownloadUrl = courseId => `${configuration.LMS_BASE_URL}/courses/${courseId}/instructor#view-data_download`;
-
   formatter = {
     percent: entries => entries.map((entry) => {
       const results = { username: entry.username };
@@ -174,12 +172,21 @@ export default class Gradebook extends React.Component {
     }),
   };
 
+  lmsInstructorDashboardUrl = courseId => `${configuration.LMS_BASE_URL}/courses/${courseId}/instructor`;
+
   render() {
     return (
       <div className="d-flex justify-content-center">
         <div className="card" style={{ width: '50rem' }}>
           <div className="card-body">
+            <a
+              href={this.lmsInstructorDashboardUrl(this.props.match.params.courseId)}
+              className="back-link"
+            >
+              Back to Dashboard
+            </a>
             <h1>Gradebook</h1>
+            <h3> {this.props.match.params.courseId}</h3>
             <hr />
             <div className="d-flex justify-content-between" >
               <div>
@@ -188,13 +195,13 @@ export default class Gradebook extends React.Component {
                   <span>
                     <input
                       id="score-view-percent"
-                      className="ml-2"
+                      className="ml-2 mr-1"
                       type="radio"
                       name="score-view"
                       value="percent"
                       onClick={() => this.props.toggleFormat('percent')}
                     />
-                    <label className="ml-2 mr-2" htmlFor="score-view-percent">Percent</label>
+                    <label className="mr-2" htmlFor="score-view-percent">Percent</label>
                   </span>
                   <span>
                     <input
@@ -202,46 +209,48 @@ export default class Gradebook extends React.Component {
                       type="radio"
                       name="score-view"
                       value="absolute"
+                      className="mr-1"
                       onClick={() => this.props.toggleFormat('absolute')}
                     />
-                    <label className="ml-2 mr-2" htmlFor="score-view-absolute">Absolute</label>
+                    <label htmlFor="score-view-absolute">Absolute</label>
                   </span>
                 </div>
                 <div>
                   Category:
                   <span>
-                    <label className="ml-2 mr-2" htmlFor="category-all">
-                      <input
-                        id="category-all"
-                        className="ml-2"
-                        type="radio"
-                        name="category"
-                        value="all"
-                        onClick={() => this.props.filterColumns('all', this.props.grades[0])}
-                      />
+                    <input
+                      id="category-all"
+                      className="ml-2 mr-1"
+                      type="radio"
+                      name="category"
+                      value="all"
+                      onClick={() => this.props.filterColumns('all', this.props.grades[0])}
+                    />
+                    <label className="mr-2" htmlFor="category-all">
                       All
                     </label>
                   </span>
                   <span>
                     <input
                       id="category-homework"
-                      className="ml-2"
+                      className="mr-1"
                       type="radio"
                       name="category"
                       value="homework"
                       onClick={() => this.props.filterColumns('hw', this.props.grades[0])}
                     />
-                    <label className="ml-2 mr-2" htmlFor="category-homework">Homework</label>
+                    <label className="mr-2" htmlFor="category-homework">Homework</label>
                   </span>
                   <span>
-                    <label className="ml-2 mr-2" htmlFor="Exam">
-                      <input
-                        id="category-exam"
-                        type="radio"
-                        name="category"
-                        value="exam"
-                        onClick={() => this.props.filterColumns('exam', this.props.grades[0])}
-                      />
+                    <input
+                      id="category-exam"
+                      type="radio"
+                      name="category"
+                      value="exam"
+                      className="ml-2 mr-1"
+                      onClick={() => this.props.filterColumns('exam', this.props.grades[0])}
+                    />
+                    <label htmlFor="Exam">
                       Exam
                     </label>
                   </span>
@@ -272,7 +281,7 @@ export default class Gradebook extends React.Component {
               </div>
               <div>
                 <div style={{ marginLeft: '10px', marginBottom: '10px' }}>
-                  <a href={this.getDataDownloadUrl(this.props.match.params.courseId)}>Download Grade Report</a>
+                  <a href={`${this.lmsInstructorDashboardUrl(this.props.match.params.courseId)}#view-data_download`}>Download Grade Report</a>
                 </div>
                 <SearchField
                   onSubmit={value => this.props.searchForUser(this.props.match.params.courseId, value, this.props.selectedCohort, this.props.selectedTrack)}
