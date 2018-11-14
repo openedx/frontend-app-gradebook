@@ -1,7 +1,12 @@
 import { connect } from 'react-redux';
 
 import Gradebook from '../../components/Gradebook';
-import { fetchGrades, fetchMatchingUserGrades, updateGrades } from '../../data/actions/grades';
+import {
+  fetchGrades,
+  fetchMatchingUserGrades,
+  updateGrades,
+  toggleGradeFormat,
+} from '../../data/actions/grades';
 import { fetchCohorts } from '../../data/actions/cohorts';
 import { fetchTracks } from '../../data/actions/tracks';
 
@@ -12,6 +17,7 @@ const mapStateToProps = state => (
     cohorts: state.cohorts.results,
     selectedTrack: state.grades.selectedTrack,
     selectedCohort: state.grades.selectedCohort,
+    format: state.grades.gradeFormat,
   }
 );
 
@@ -31,6 +37,9 @@ const mapDispatchToProps = dispatch => (
     },
     updateGrades: (courseId, updateData) => {
       dispatch(updateGrades(courseId, updateData));
+    },
+    toggleFormat: (formatType) => {
+      dispatch(toggleGradeFormat(formatType));
     },
   }
 );

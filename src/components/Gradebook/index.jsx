@@ -30,6 +30,28 @@ export default class Gradebook extends React.Component {
     this.props.getCohorts(this.props.match.params.courseId);
   }
 
+  setNewModalState = (userEntry, subsection) => {
+    this.setState({
+      modalModel: [{
+        username: userEntry.username,
+        currentGrade: `${subsection.score_earned}/${subsection.score_possible}`,
+        adjustedGrade: (
+          <span>
+            <input
+              style={{ width: '25px' }}
+              type="text"
+              onChange={event => this.setState({ updateVal: event.target.value })}
+            /> / {subsection.score_possible}
+          </span>
+        ),
+        assignmentName: `${subsection.subsection_name}`,
+      }],
+      modalOpen: true,
+      updateModuleId: subsection.module_id,
+      updateUserId: userEntry.user_id,
+    });
+  }
+
   sortAlphaDesc = (gradeRowA, gradeRowB) => {
     const a = gradeRowA.username.toUpperCase();
     const b = gradeRowB.username.toUpperCase();
@@ -158,66 +180,6 @@ export default class Gradebook extends React.Component {
     return results.concat(assignmentHeadings);
   };
 
-  setNewModalState = (userEntry, subsection) => {
-    this.setState({
-      modalModel: [{
-        username: userEntry.username,
-        currentGrade: `${subsection.score_earned}/${subsection.score_possible}`,
-        adjustedGrade: (
-          <span>
-            <input
-              style={{ width: '25px' }}
-              type="text"
-              onChange={event => this.setState({ updateVal: event.target.value })}
-            /> / {subsection.score_possible}
-          </span>
-        ),
-        assignmentName: `${subsection.subsection_name}`,
-      }],
-      modalOpen: true,
-      updateModuleId: subsection.module_id,
-      updateUserId: userEntry.user_id,
-
-    });
-  }
-
-  mapUserEntriesPercent = entries => entries.map((entry) => {
-    const results = { username: entry.username };
-    const assignments = entry.section_breakdown
-      .filter(section => section.is_graded)
-      .reduce((acc, subsection) => {
-        acc[subsection.label] = (
-          <button
-            className="btn btn-header link-style"
-            onClick={() => this.setNewModalState(entry, subsection)}
-          >
-            {subsection.percent}
-          </button>);
-        return acc;
-      }, {});
-    const totals = { total: entry.percent * 100 };
-    return Object.assign(results, assignments, totals);
-  });
-
-  mapUserEntriesAbsolute = entries => entries.map((entry) => {
-    const results = { username: entry.username };
-    const assignments = entry.section_breakdown
-      .filter(section => section.is_graded)
-      .reduce((acc, subsection) => {
-        acc[subsection.label] = (
-          <button
-            className="btn btn-header link-style"
-            onClick={() => this.setNewModalState(entry, subsection)}
-          >
-            {subsection.score_earned}/{subsection.score_possible}
-          </button>);
-        return acc;
-      }, {});
-
-    const totals = { total: entry.percent * 100 };
-    return Object.assign(results, assignments, totals);
-  });
-
   handleAdjustedGradeClick = () => {
     this.props.updateGrades(this.props.match.params.courseId, [
       {
@@ -301,6 +263,44 @@ export default class Gradebook extends React.Component {
 
   getDataDownloadUrl = courseId => `${configuration.LMS_BASE_URL}/courses/${courseId}/instructor#view-data_download`;
 
+  formatter = {
+    percent: entries => entries.map((entry) => {
+      const results = { username: entry.username };
+      const assignments = entry.section_breakdown
+        .filter(section => section.is_graded)
+        .reduce((acc, subsection) => {
+          acc[subsection.label] = (
+            <button
+              className="btn btn-header link-style"
+              onClick={() => this.setNewModalState(entry, subsection)}
+            >
+              {subsection.percent}
+            </button>);
+          return acc;
+        }, {});
+      const totals = { total: entry.percent * 100 };
+      return Object.assign(results, assignments, totals);
+    }),
+
+    absolute: entries => entries.map((entry) => {
+      const results = { username: entry.username };
+      const assignments = entry.section_breakdown
+        .filter(section => section.is_graded)
+        .reduce((acc, subsection) => {
+          acc[subsection.label] = (
+            <button
+              className="btn btn-header link-style"
+              onClick={() => this.setNewModalState(entry, subsection)}
+            >
+              {subsection.score_earned}/{subsection.score_possible}
+            </button>);
+          return acc;
+        }, {});
+
+      const totals = { total: entry.percent * 100 };
+      return Object.assign(results, assignments, totals);
+    }),
+  };
 
   render() {
     return (
@@ -320,7 +320,7 @@ export default class Gradebook extends React.Component {
                       type="radio"
                       name="score-view"
                       value="percent"
-                      onClick={() => this.setState({ grades: this.mapUserEntriesPercent(this.props.results).sort(this.sortAlphaDesc) })}
+                      onClick={() => this.props.toggleFormat('percent')}
                     />
                     <label className="ml-2 mr-2" htmlFor="score-view-percent">Percent</label>
                   </span>
@@ -330,7 +330,7 @@ export default class Gradebook extends React.Component {
                       type="radio"
                       name="score-view"
                       value="absolute"
-                      onClick={() => this.setState({ grades: this.mapUserEntriesAbsolute(this.props.results).sort(this.sortAlphaDesc) })}
+                      onClick={() => this.props.toggleFormat('absolute')}
                     />
                     <label className="ml-2 mr-2" htmlFor="score-view-absolute">Absolute</label>
                   </span>
@@ -418,7 +418,7 @@ export default class Gradebook extends React.Component {
             <div className="gbook">
               <Table
                 columns={this.mapHeadings(this.props.grades[0])}
-                data={this.mapUserEntriesPercent(this.props.grades)}
+                data={this.formatter[this.props.format](this.props.grades)}
                 tableSortable
                 defaultSortDirection="desc"
                 defaultSortedColumn="username"
