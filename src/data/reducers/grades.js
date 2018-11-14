@@ -2,6 +2,7 @@ import {
   STARTED_FETCHING_GRADES,
   ERROR_FETCHING_GRADES,
   GOT_GRADES,
+  TOGGLE_GRADE_FORMAT,
 } from '../constants/actionTypes/grades';
 
 const initialState = {
@@ -9,6 +10,7 @@ const initialState = {
   startedFetching: false,
   finishedFetching: false,
   errorFetching: false,
+  gradeFormat: 'percent',
 };
 
 const grades = (state = initialState, action) => {
@@ -33,6 +35,11 @@ const grades = (state = initialState, action) => {
         ...state,
         finishedFetching: true,
         errorFetching: true,
+      };
+    case TOGGLE_GRADE_FORMAT:
+      return {
+        ...state,
+        gradeFormat: action.formatType,
       };
     default:
       return state;

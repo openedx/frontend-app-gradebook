@@ -6,6 +6,7 @@ import {
   GRADE_UPDATE_REQUEST,
   GRADE_UPDATE_SUCCESS,
   GRADE_UPDATE_FAILURE,
+  TOGGLE_GRADE_FORMAT,
 } from '../constants/actionTypes/grades';
 import LmsApiService from '../services/LmsApiService';
 
@@ -23,11 +24,15 @@ const gradeUpdateRequest = () => ({ type: GRADE_UPDATE_REQUEST });
 const gradeUpdateSuccess = responseData => ({
   type: GRADE_UPDATE_SUCCESS,
   payload: { responseData },
-})
+});
 const gradeUpdateFailure = error => ({
   type: GRADE_UPDATE_FAILURE,
   payload: { error },
 });
+
+
+const toggleGradeFormat = formatType => ({ type: TOGGLE_GRADE_FORMAT, formatType });
+
 
 const fetchGrades = (courseId, cohort, track) => (
   (dispatch) => {
@@ -38,7 +43,7 @@ const fetchGrades = (courseId, cohort, track) => (
         dispatch(gotGrades(data.results, cohort, track));
         dispatch(finishedFetchingGrades());
       })
-      .catch((error) => {
+      .catch(() => {
         dispatch(errorFetchingGrades());
       });
   }
@@ -53,7 +58,7 @@ const fetchMatchingUserGrades = (courseId, searchText, cohort, track) => (
         dispatch(gotGrades(data.results, cohort, track));
         dispatch(finishedFetchingGrades());
       })
-      .catch((error) => {
+      .catch(() => {
         dispatch(errorFetchingGrades());
       });
   }
@@ -84,4 +89,5 @@ export {
   gradeUpdateSuccess,
   gradeUpdateFailure,
   updateGrades,
+  toggleGradeFormat,
 };

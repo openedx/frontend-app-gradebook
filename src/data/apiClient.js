@@ -1,5 +1,6 @@
-import { configuration } from '../config';
 import { getAuthenticatedAPIClient } from '@edx/frontend-auth';
+
+import { configuration } from '../config';
 
 const apiClient = getAuthenticatedAPIClient({
   appBaseUrl: configuration.BASE_URL,
