@@ -52,134 +52,6 @@ export default class Gradebook extends React.Component {
     });
   }
 
-  sortAlphaDesc = (gradeRowA, gradeRowB) => {
-    const a = gradeRowA.username.toUpperCase();
-    const b = gradeRowB.username.toUpperCase();
-    if (a < b) {
-      return -1;
-    }
-    if (a > b) {
-      return 1;
-    }
-    return 0;
-  };
-
-  sortAlphaAsc = (gradeRowA, gradeRowB) => {
-    const a = gradeRowA.username.toUpperCase();
-    const b = gradeRowB.username.toUpperCase();
-    if (a < b) {
-      return 1;
-    }
-    if (a > b) {
-      return -1;
-    }
-    return 0;
-  };
-
-  sortNumerically = (colKey, direction) => {
-    function sortNumAsc(gradeRowA, gradeRowB) {
-      if (gradeRowA[colKey] < gradeRowB[colKey]) {
-        return -1;
-      }
-      if (gradeRowA[colKey] > gradeRowB[colKey]) {
-        return 1;
-      }
-      return 0;
-    }
-
-    function sortNumDesc(gradeRowA, gradeRowB) {
-      if (gradeRowA[colKey] < gradeRowB[colKey]) {
-        return 1;
-      }
-      if (gradeRowA[colKey] > gradeRowB[colKey]) {
-        return -1;
-      }
-      return 0;
-    }
-
-    this.setState({ grades: [...this.state.grades].sort(direction === 'desc' ? sortNumDesc : sortNumAsc) });
-  }
-
-  mapHeadings = (entry) => {
-    if (entry) {
-      const results = [{
-        label: 'Username',
-        key: 'username',
-        columnSortable: true,
-        onSort: (direction) => {
-          this.setState({
-            grades: [...this.state.grades].sort(direction === 'desc' ? this.sortAlphaDesc : this.sortAlphaAsc),
-          });
-        },
-      }];
-
-      const assignmentHeadings = entry.section_breakdown
-        .filter(section => section.is_graded && section.label)
-        .map(s => ({
-          label: s.label,
-          key: s.label,
-          columnSortable: true,
-          onSort: (direction) => { this.sortNumerically(s.label, direction); },
-        }));
-
-      const totals = [{
-        label: 'Total',
-        key: 'total',
-        columnSortable: true,
-        onSort: (direction) => { this.sortNumerically('total', direction); },
-      }];
-
-      return results.concat(assignmentHeadings).concat(totals);
-    }
-    return [];
-  };
-
-  mapHeadingsHw = (entry) => {
-    const results = [{
-      label: 'Username',
-      key: 'username',
-      columnSortable: true,
-      onSort: (direction) => {
-        this.setState({
-          grades: [...this.state.grades].sort(direction === 'desc' ? this.sortAlphaDesc : this.sortAlphaAsc),
-        });
-      },
-    }];
-    const assignmentHeadings = entry.section_breakdown
-      .filter(section => section.is_graded && section.label && section.category == 'Homework')
-      .map(s => ({
-        label: s.label,
-        key: s.label,
-        columnSortable: true,
-        onSort: (direction) => { this.sortNumerically(s.label, direction); },
-      }));
-
-    return results.concat(assignmentHeadings);
-  };
-
-  mapHeadingsExam = (entry) => {
-    const results = [{
-      label: 'Username',
-      key: 'username',
-      columnSortable: true,
-      onSort: (direction) => {
-        this.setState({
-          grades: [...this.state.grades].sort(direction === 'desc' ? this.sortAlphaDesc : this.sortAlphaAsc),
-        });
-      },
-    }];
-    const assignmentHeadings = entry.section_breakdown
-      .filter(section => section.is_graded && section.label && section.category == 'Exam')
-      .map(s => ({
-        label: s.label,
-        key: s.label,
-        columnSortable: true,
-        onSort: (direction) => { this.sortNumerically(s.label, direction); },
-      }));
-
-    return results.concat(assignmentHeadings);
-  };
-
   handleAdjustedGradeClick = () => {
     this.props.updateGrades(this.props.match.params.courseId, [
       {
@@ -345,8 +217,7 @@ export default class Gradebook extends React.Component {
                         type="radio"
                         name="category"
                         value="all"
-                        onClick={() =>
-                          this.setState({ headings: this.mapHeadings(this.props.results[0]) })}
+                        onClick={() => this.props.filterColumns('all', this.props.grades[0])}
                       />
                       All
                     </label>
@@ -358,10 +229,7 @@ export default class Gradebook extends React.Component {
                       type="radio"
                       name="category"
                       value="homework"
-                      onClick={() =>
-                      this.setState({
-                        headings: this.mapHeadingsHw(this.props.results[0]),
-                      })}
+                      onClick={() => this.props.filterColumns('hw', this.props.grades[0])}
                     />
                     <label className="ml-2 mr-2" htmlFor="category-homework">Homework</label>
                   </span>
@@ -372,7 +240,7 @@ export default class Gradebook extends React.Component {
                         type="radio"
                         name="category"
                         value="exam"
-                        onClick={() => this.setState({ headings: this.mapHeadingsExam(this.props.results[0]) })}
+                        onClick={() => this.props.filterColumns('exam', this.props.grades[0])}
                       />
                       Exam
                     </label>
@@ -417,9 +285,8 @@ export default class Gradebook extends React.Component {
             <br />
             <div className="gbook">
               <Table
-                columns={this.mapHeadings(this.props.grades[0])}
+                columns={this.props.headings}
                 data={this.formatter[this.props.format](this.props.grades)}
-                tableSortable
                 defaultSortDirection="desc"
                 defaultSortedColumn="username"
               />

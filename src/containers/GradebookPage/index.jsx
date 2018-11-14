@@ -6,6 +6,7 @@ import {
   fetchMatchingUserGrades,
   updateGrades,
   toggleGradeFormat,
+  filterColumns,
 } from '../../data/actions/grades';
 import { fetchCohorts } from '../../data/actions/cohorts';
 import { fetchTracks } from '../../data/actions/tracks';
@@ -13,6 +14,7 @@ import { fetchTracks } from '../../data/actions/tracks';
 const mapStateToProps = state => (
   {
     grades: state.grades.results,
+    headings: state.grades.headings,
     tracks: state.tracks.results,
     cohorts: state.cohorts.results,
     selectedTrack: state.grades.selectedTrack,
@@ -40,6 +42,9 @@ const mapDispatchToProps = dispatch => (
     },
     toggleFormat: (formatType) => {
       dispatch(toggleGradeFormat(formatType));
+    },
+    filterColumns: (filterType, exampleUser) => {
+      dispatch(filterColumns(filterType, exampleUser));
     },
   }
 );

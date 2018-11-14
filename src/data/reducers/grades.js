@@ -3,10 +3,12 @@ import {
   ERROR_FETCHING_GRADES,
   GOT_GRADES,
   TOGGLE_GRADE_FORMAT,
+  FILTER_COLUMNS,
 } from '../constants/actionTypes/grades';
 
 const initialState = {
   results: [],
+  headings: [],
   startedFetching: false,
   finishedFetching: false,
   errorFetching: false,
@@ -19,6 +21,7 @@ const grades = (state = initialState, action) => {
       return {
         ...state,
         results: action.grades,
+        headings: action.headings,
         finishedFetching: true,
         errorFetching: false,
         selectedTrack: action.track,
@@ -40,6 +43,11 @@ const grades = (state = initialState, action) => {
       return {
         ...state,
         gradeFormat: action.formatType,
+      };
+    case FILTER_COLUMNS:
+      return {
+        ...state,
+        headings: action.headings,
       };
     default:
       return state;
