@@ -9,6 +9,7 @@ import {
   TOGGLE_GRADE_FORMAT,
   SORT_GRADES,
   FILTER_COLUMNS,
+  UPDATE_BANNER,
 } from '../constants/actionTypes/grades';
 import LmsApiService from '../services/LmsApiService';
 import { headingMapper } from './utils';
@@ -25,7 +26,7 @@ const gotGrades = (grades, cohort, track, headings) => ({
 });
 
 const gradeUpdateRequest = () => ({ type: GRADE_UPDATE_REQUEST });
-const gradeUpdateSuccess = responseData => ({
+const gradeUpdateSuccess = (responseData) => ({
   type: GRADE_UPDATE_SUCCESS,
   payload: { responseData },
 });
@@ -43,7 +44,9 @@ const filterColumns = (filterType, exampleUser) => ({
   headings: headingMapper[filterType](exampleUser) 
 });
 
-const fetchGrades = (courseId, cohort, track) => (
+const updateBanner = (showSuccess) => ({ type: UPDATE_BANNER, showSuccess });
+
+const fetchGrades = (courseId, cohort, track, showSuccess) => (
   (dispatch) => {
     dispatch(startedFetchingGrades());
     return LmsApiService.fetchGradebookData(courseId, null, cohort, track)
@@ -51,6 +54,7 @@ const fetchGrades = (courseId, cohort, track) => (
       .then((data) => {
         dispatch(gotGrades(data.results, cohort, track, headingMapper.all(data.results[0])));
         dispatch(finishedFetchingGrades());
+        dispatch(updateBanner(!!showSuccess));
       })
       .catch(() => {
         dispatch(errorFetchingGrades());
@@ -79,7 +83,8 @@ const updateGrades = (courseId, updateData) => (
     return LmsApiService.updateGradebookData(courseId, updateData)
       .then(response => response.data)
       .then((data) => {
-        dispatch(gradeUpdateSuccess(data));
+        dispatch(gradeUpdateSuccess(data))
+        dispatch(fetchGrades(courseId, null, null, true))
       })
       .catch((error) => {
         dispatch(gradeUpdateFailure(error));
@@ -101,4 +106,5 @@ export {
   toggleGradeFormat,
   sortGrades,
   filterColumns,
+  updateBanner,
 };

@@ -4,6 +4,8 @@ import {
   GOT_GRADES,
   TOGGLE_GRADE_FORMAT,
   FILTER_COLUMNS,
+  GRADE_UPDATE_SUCCESS,
+  UPDATE_BANNER,
 } from '../constants/actionTypes/grades';
 
 const initialState = {
@@ -13,6 +15,7 @@ const initialState = {
   finishedFetching: false,
   errorFetching: false,
   gradeFormat: 'percent',
+  showSuccess: false,
 };
 
 const grades = (state = initialState, action) => {
@@ -48,6 +51,11 @@ const grades = (state = initialState, action) => {
       return {
         ...state,
         headings: action.headings,
+      };
+    case UPDATE_BANNER:
+      return {
+        ...state,
+        showSuccess: action.showSuccess,
       };
     default:
       return state;

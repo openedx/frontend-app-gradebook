@@ -7,6 +7,7 @@ import {
   updateGrades,
   toggleGradeFormat,
   filterColumns,
+  updateBanner,
 } from '../../data/actions/grades';
 import { fetchCohorts } from '../../data/actions/cohorts';
 import { fetchTracks } from '../../data/actions/tracks';
@@ -20,6 +21,7 @@ const mapStateToProps = state => (
     selectedTrack: state.grades.selectedTrack,
     selectedCohort: state.grades.selectedCohort,
     format: state.grades.gradeFormat,
+    showSuccess: state.grades.showSuccess,
   }
 );
 
@@ -45,6 +47,9 @@ const mapDispatchToProps = dispatch => (
     },
     filterColumns: (filterType, exampleUser) => {
       dispatch(filterColumns(filterType, exampleUser));
+    },
+    updateBanner: (showSuccess) => {
+      dispatch(updateBanner(showSuccess));
     },
   }
 );
