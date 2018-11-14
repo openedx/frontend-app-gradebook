@@ -202,7 +202,7 @@ export default class Gradebook extends React.Component {
       id: entry.id,
       label: entry.name,
     }));
-    mapped.unshift({ id: 0, label: 'Cohorts' });
+    mapped.unshift({ id: 0, label: 'Cohort-All' });
     return mapped;
   };
 
@@ -211,7 +211,7 @@ export default class Gradebook extends React.Component {
       id: entry.slug,
       label: entry.name,
     }));
-    mapped.unshift({ label: 'Tracks' });
+    mapped.unshift({ label: 'Track-All' });
     return mapped;
   };
 
