@@ -1,9 +1,7 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import emailPropType from 'email-prop-type';
 import { Button, Modal, SearchField, Table, InputSelect } from '@edx/paragon';
 import queryString from 'query-string';
-
+import { configuration } from '../../config';
 
 export default class Gradebook extends React.Component {
   constructor(props) {
@@ -170,7 +168,7 @@ export default class Gradebook extends React.Component {
             <input
               style={{ width: '25px' }}
               type="text"
-              onChange={(event) => this.setState({updateVal: event.target.value})}
+              onChange={event => this.setState({ updateVal: event.target.value })}
             /> / {subsection.score_possible}
           </span>
         ),
@@ -180,7 +178,7 @@ export default class Gradebook extends React.Component {
       updateModuleId: subsection.module_id,
       updateUserId: userEntry.user_id,
 
-    })
+    });
   }
 
   mapUserEntriesPercent = entries => entries.map((entry) => {
@@ -223,10 +221,10 @@ export default class Gradebook extends React.Component {
   handleAdjustedGradeClick = () => {
     this.props.updateGrades(this.props.match.params.courseId, [
       {
-        'user_id': this.state.updateUserId,
-        'usage_id': this.state.updateModuleId,
-        'grade': {
-          'earned_graded_override': this.state.updateVal,
+        user_id: this.state.updateUserId,
+        usage_id: this.state.updateModuleId,
+        grade: {
+          earned_graded_override: this.state.updateVal,
         },
       },
     ]);
@@ -238,27 +236,27 @@ export default class Gradebook extends React.Component {
   };
 
   mapCohortsEntries = (entries) => {
-    let mapped = entries.map(entry => ({
+    const mapped = entries.map(entry => ({
       id: entry.id,
       label: entry.name,
     }));
-    mapped.unshift({id:0, label:'Cohorts'});
+    mapped.unshift({ id: 0, label: 'Cohorts' });
     return mapped;
   };
 
   mapTracksEntries = (entries) => {
-    let mapped = entries.map(entry => ({
+    const mapped = entries.map(entry => ({
       id: entry.slug,
       label: entry.name,
     }));
-    mapped.unshift({ label:'Tracks' });
+    mapped.unshift({ label: 'Tracks' });
     return mapped;
   };
 
   updateTracks = (event) => {
-    const selectedTrackItem = this.props.tracks.find(x=>x.name===event);
+    const selectedTrackItem = this.props.tracks.find(x => x.name === event);
     let selectedTrackSlug = null;
-    if(selectedTrackItem) {
+    if (selectedTrackItem) {
       selectedTrackSlug = selectedTrackItem.slug;
     }
     this.props.getUserGrades(
@@ -266,14 +264,14 @@ export default class Gradebook extends React.Component {
       this.props.selectedCohort,
       selectedTrackSlug,
     );
-    const updatedQueryStrings = this.updateQueryParams('track', selectedTrackSlug)
+    const updatedQueryStrings = this.updateQueryParams('track', selectedTrackSlug);
     this.props.history.push(updatedQueryStrings);
   };
 
   updateCohorts = (event) => {
-    const selectedCohortItem = this.props.cohorts.find(x=>x.name===event);
+    const selectedCohortItem = this.props.cohorts.find(x => x.name === event);
     let selectedCohortId = null;
-    if(selectedCohortItem) {
+    if (selectedCohortItem) {
       selectedCohortId = selectedCohortItem.id;
     }
     this.props.getUserGrades(
@@ -281,7 +279,7 @@ export default class Gradebook extends React.Component {
       selectedCohortId,
       this.props.selectedTrack,
     );
-    const updatedQueryStrings = this.updateQueryParams('cohort', selectedCohortId)
+    const updatedQueryStrings = this.updateQueryParams('cohort', selectedCohortId);
     this.props.history.push(updatedQueryStrings);
   };
 
@@ -300,6 +298,9 @@ export default class Gradebook extends React.Component {
     }
     return 'Tracks';
   };
+
+  getDataDownloadUrl = courseId => `${configuration.LMS_BASE_URL}/courses/${courseId}/instructor#view-data_download`;
+
 
   render() {
     return (
@@ -384,7 +385,7 @@ export default class Gradebook extends React.Component {
                     </span>
                     {this.props.tracks.length > 0 &&
                       <InputSelect
-                        name='Tracks'
+                        name="Tracks"
                         value={this.mapSelectedTrackEntry(this.props.selectedTrack)}
                         options={this.mapTracksEntries(this.props.tracks)}
                         onChange={this.updateTracks}
@@ -392,7 +393,7 @@ export default class Gradebook extends React.Component {
                     }
                     {this.props.cohorts.length > 0 &&
                       <InputSelect
-                        name='Cohorts'
+                        name="Cohorts"
                         value={this.mapSelectedCohortEntry(this.props.selectedCohort)}
                         options={this.mapCohortsEntries(this.props.cohorts)}
                         onChange={this.updateCohorts}
@@ -403,7 +404,7 @@ export default class Gradebook extends React.Component {
               </div>
               <div>
                 <div style={{ marginLeft: '10px', marginBottom: '10px' }}>
-                  <a href="https://www.google./com">Download Grade Report</a>
+                  <a href={this.getDataDownloadUrl(this.props.match.params.courseId)}>Download Grade Report</a>
                 </div>
                 <SearchField
                   onSubmit={value => this.props.searchForUser(this.props.match.params.courseId, value, this.props.selectedCohort, this.props.selectedTrack)}
@@ -430,12 +431,12 @@ export default class Gradebook extends React.Component {
                 <div>
                   <h3>{this.state.modalModel[0].assignmentName}</h3>
                   <Table
-                      columns={[{ label: 'Username', key: 'username' }, { label: 'Current grade', key: 'currentGrade' }, { label: 'Adjusted grade', key: 'adjustedGrade' }]}
-                      data={this.state.modalModel}
-                      tableSortable
-                      defaultSortDirection="desc"
-                      defaultSortedColumn="username"
-                    />
+                    columns={[{ label: 'Username', key: 'username' }, { label: 'Current grade', key: 'currentGrade' }, { label: 'Adjusted grade', key: 'adjustedGrade' }]}
+                    data={this.state.modalModel}
+                    tableSortable
+                    defaultSortDirection="desc"
+                    defaultSortedColumn="username"
+                  />
                 </div>
               )}
               buttons={[
@@ -443,7 +444,7 @@ export default class Gradebook extends React.Component {
                   label="Edit Grade"
                   buttonType="primary"
                   onClick={this.handleAdjustedGradeClick}
-                />
+                />,
               ]}
               onClose={() => this.setState({
                 modalOpen: false,
