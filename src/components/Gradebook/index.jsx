@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Modal, SearchField, Table, InputSelect } from '@edx/paragon';
+import { Button, InputSelect, Modal, SearchField, StatusAlert, Table } from '@edx/paragon';
 import queryString from 'query-string';
 import { configuration } from '../../config';
 
@@ -62,7 +62,15 @@ export default class Gradebook extends React.Component {
         },
       },
     ]);
+
+    this.setState({
+      modalModel: [{}],
+      modalOpen: false,
+      updateModuleId: null,
+      updateUserId: null,
+    });
   }
+
   updateQueryParams = (queryKey, queryValue) => {
     const parsed = queryString.parse(this.props.location.search);
     parsed[queryKey] = queryValue;
@@ -292,6 +300,12 @@ export default class Gradebook extends React.Component {
               </div>
             </div>
             <br />
+            <StatusAlert
+              alertType="success"
+              dialog="The grade has been successfully edited."
+              onClose={() => this.props.updateBanner(false)}
+              open={this.props.showSuccess}
+            />
             <div className="gbook">
               <Table
                 columns={this.props.headings}
