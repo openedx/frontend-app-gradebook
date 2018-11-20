@@ -1,5 +1,6 @@
+import { sortGrades } from './grades';
 
-const sortAlphaDesc = (gradeRowA, gradeRowB) => {
+const sortAlphaAsc = (gradeRowA, gradeRowB) => {
   const a = gradeRowA.username.toUpperCase();
   const b = gradeRowB.username.toUpperCase();
   if (a < b) {
@@ -11,7 +12,7 @@ const sortAlphaDesc = (gradeRowA, gradeRowB) => {
   return 0;
 };
 
-const sortAlphaAsc = (gradeRowA, gradeRowB) => {
+const sortAlphaDesc = (gradeRowA, gradeRowB) => {
   const a = gradeRowA.username.toUpperCase();
   const b = gradeRowB.username.toUpperCase();
   if (a < b) {
@@ -24,40 +25,49 @@ const sortAlphaAsc = (gradeRowA, gradeRowB) => {
 };
 
 const sortNumerically = (colKey, direction) => {
+  function getPercents(gradeRowA, gradeRowB) {
+    if (colKey !== 'total') {
+      return {
+        a: gradeRowA.section_breakdown.find(x => x.label === colKey).percent,
+        b: gradeRowB.section_breakdown.find(x => x.label === colKey).percent,
+      };
+    }
+    return {
+      a: gradeRowA.percent,
+      b: gradeRowB.percent,
+    };
+  }
+
   function sortNumAsc(gradeRowA, gradeRowB) {
-    if (gradeRowA[colKey] < gradeRowB[colKey]) {
-      return -1;
-    }
-    if (gradeRowA[colKey] > gradeRowB[colKey]) {
-      return 1;
-    }
-    return 0;
+    const { a, b } = getPercents(gradeRowA, gradeRowB);
+    return a - b;
   }
 
   function sortNumDesc(gradeRowA, gradeRowB) {
-    if (gradeRowA[colKey] < gradeRowB[colKey]) {
-      return 1;
-    }
-    if (gradeRowA[colKey] > gradeRowB[colKey]) {
-      return -1;
-    }
-    return 0;
+    const { a, b } = getPercents(gradeRowA, gradeRowB);
+    return b - a;
   }
 
-  this.setState({ grades: [...this.state.grades].sort(direction === 'desc' ? sortNumDesc : sortNumAsc) });
+  return direction === 'desc' ? sortNumDesc : sortNumAsc;
 };
+
+function gradeSortMap(columnName, direction) {
+  if (columnName === 'username' && direction === 'desc') {
+    return sortAlphaDesc;
+  } else if (columnName === 'username') {
+    return sortAlphaAsc;
+  }
+  return sortNumerically(columnName, direction);
+}
+
 const headingMapper = {
-  all: (entry) => {
+  all: (dispatch, entry) => {
     if (entry) {
       const results = [{
         label: 'Username',
         key: 'username',
         columnSortable: true,
-        onSort: (direction) => {
-          this.setState({
-            grades: [...this.state.grades].sort(direction === 'desc' ? this.sortAlphaDesc : this.sortAlphaAsc),
-          });
-        },
+        onSort: (direction) => { dispatch(sortGrades('username', direction)); },
       }];
 
       const assignmentHeadings = entry.section_breakdown
@@ -66,21 +76,21 @@ const headingMapper = {
           label: s.label,
           key: s.label,
           columnSortable: true,
-          onSort: (direction) => { this.sortNumerically(s.label, direction); },
+          onSort: direction => dispatch(sortGrades(s.label, direction)),
         }));
 
       const totals = [{
         label: 'Total',
         key: 'total',
         columnSortable: true,
-        onSort: (direction) => { this.sortNumerically('total', direction); },
+        onSort: direction => dispatch(sortGrades('total', direction)),
       }];
 
       return results.concat(assignmentHeadings).concat(totals);
     }
     return [];
   },
-  hw: (entry) => {
+  hw: (dispatch, entry) => {
     const results = [{
       label: 'Username',
       key: 'username',
@@ -103,7 +113,7 @@ const headingMapper = {
 
     return results.concat(assignmentHeadings);
   },
-  exam: (entry) => {
+  exam: (dispatch, entry) => {
     const results = [{
       label: 'Username',
       key: 'username',
@@ -128,4 +138,5 @@ const headingMapper = {
   },
 };
 
-export { headingMapper };
+export { headingMapper, gradeSortMap, sortAlphaAsc };
+

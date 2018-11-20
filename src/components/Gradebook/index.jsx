@@ -7,10 +7,7 @@ export default class Gradebook extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      grades: [], // this.mapUserEntriesPercent(this.props.grades).sort(this.sortAlphaDesc),
-      headings: [], // this.mapHeadings(this.props.grades[0]),
       filterValue: '',
-      modalContent: (<h1>Hello, World!</h1>),
       modalOpen: false,
       modalModel: [{}],
       updateVal: 0,
@@ -258,7 +255,7 @@ export default class Gradebook extends React.Component {
                       className="ml-2 mr-1"
                       onClick={() => this.props.filterColumns('exam', this.props.grades[0])}
                     />
-                    <label htmlFor="Exam">
+                    <label htmlFor="category-exam">
                       Exam
                     </label>
                   </span>
@@ -310,7 +307,8 @@ export default class Gradebook extends React.Component {
               <Table
                 columns={this.props.headings}
                 data={this.formatter[this.props.format](this.props.grades)}
-                defaultSortDirection="desc"
+                tableSortable
+                defaultSortDirection="asc"
                 defaultSortedColumn="username"
               />
             </div>
@@ -323,9 +321,6 @@ export default class Gradebook extends React.Component {
                   <Table
                     columns={[{ label: 'Username', key: 'username' }, { label: 'Current grade', key: 'currentGrade' }, { label: 'Adjusted grade', key: 'adjustedGrade' }]}
                     data={this.state.modalModel}
-                    tableSortable
-                    defaultSortDirection="desc"
-                    defaultSortedColumn="username"
                   />
                 </div>
               )}
