@@ -6,6 +6,7 @@ import {
   FILTER_COLUMNS,
   GRADE_UPDATE_SUCCESS,
   UPDATE_BANNER,
+  SORT_GRADES,
 } from '../constants/actionTypes/grades';
 
 const initialState = {
@@ -56,6 +57,11 @@ const grades = (state = initialState, action) => {
       return {
         ...state,
         showSuccess: action.showSuccess,
+      };
+    case SORT_GRADES:
+      return {
+        ...state,
+        results: action.results,
       };
     default:
       return state;

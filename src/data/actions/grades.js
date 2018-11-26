@@ -12,7 +12,20 @@ import {
   UPDATE_BANNER,
 } from '../constants/actionTypes/grades';
 import LmsApiService from '../services/LmsApiService';
-import { headingMapper } from './utils';
+import store from '../store';
+import { headingMapper, gradeSortMap, sortAlphaAsc } from './utils';
+
+
+const sortGrades = (columnName, direction) => {
+  const sortFn = gradeSortMap(columnName, direction);
+  const { results } = store.getState().grades;
+  results.sort(sortFn);
+
+  /* have to make a copy of results or React wont know there was
+   * a change and wont trigger a re-render
+   */
+  return ({ type: SORT_GRADES, results: [...results] });
+};
 
 const startedFetchingGrades = () => ({ type: STARTED_FETCHING_GRADES });
 const finishedFetchingGrades = () => ({ type: FINISHED_FETCHING_GRADES });
@@ -26,7 +39,7 @@ const gotGrades = (grades, cohort, track, headings) => ({
 });
 
 const gradeUpdateRequest = () => ({ type: GRADE_UPDATE_REQUEST });
-const gradeUpdateSuccess = (responseData) => ({
+const gradeUpdateSuccess = responseData => ({
   type: GRADE_UPDATE_SUCCESS,
   payload: { responseData },
 });
@@ -37,14 +50,14 @@ const gradeUpdateFailure = error => ({
 
 
 const toggleGradeFormat = formatType => ({ type: TOGGLE_GRADE_FORMAT, formatType });
-const sortGrades = (columnName, direction) => ({ type: SORT_GRADES, columnName, direction });
 
-const filterColumns = (filterType, exampleUser) => ({ 
-  type: FILTER_COLUMNS,
-  headings: headingMapper[filterType](exampleUser) 
-});
+const filterColumns = (filterType, exampleUser) => (
+  dispatch => ({
+    type: FILTER_COLUMNS,
+    headings: headingMapper[filterType](dispatch, exampleUser),
+  }));
 
-const updateBanner = (showSuccess) => ({ type: UPDATE_BANNER, showSuccess });
+const updateBanner = showSuccess => ({ type: UPDATE_BANNER, showSuccess });
 
 const fetchGrades = (courseId, cohort, track, showSuccess) => (
   (dispatch) => {
@@ -52,7 +65,12 @@ const fetchGrades = (courseId, cohort, track, showSuccess) => (
     return LmsApiService.fetchGradebookData(courseId, null, cohort, track)
       .then(response => response.data)
       .then((data) => {
-        dispatch(gotGrades(data.results, cohort, track, headingMapper.all(data.results[0])));
+        dispatch(gotGrades(
+          data.results.sort(sortAlphaAsc),
+          cohort,
+          track,
+          headingMapper.all(dispatch, data.results[0]),
+        ));
         dispatch(finishedFetchingGrades());
         dispatch(updateBanner(!!showSuccess));
       })
@@ -68,7 +86,7 @@ const fetchMatchingUserGrades = (courseId, searchText, cohort, track) => (
     return LmsApiService.fetchGradebookData(courseId, searchText, cohort, track)
       .then(response => response.data)
       .then((data) => {
-        dispatch(gotGrades(data.results, cohort, track));
+        dispatch(gotGrades(data.results.sort(sortAlphaAsc), cohort, track));
         dispatch(finishedFetchingGrades());
       })
       .catch(() => {
@@ -83,8 +101,8 @@ const updateGrades = (courseId, updateData) => (
     return LmsApiService.updateGradebookData(courseId, updateData)
       .then(response => response.data)
       .then((data) => {
-        dispatch(gradeUpdateSuccess(data))
-        dispatch(fetchGrades(courseId, null, null, true))
+        dispatch(gradeUpdateSuccess(data));
+        dispatch(fetchGrades(courseId, null, null, true));
       })
       .catch((error) => {
         dispatch(gradeUpdateFailure(error));
