@@ -86,7 +86,12 @@ const fetchMatchingUserGrades = (courseId, searchText, cohort, track) => (
     return LmsApiService.fetchGradebookData(courseId, searchText, cohort, track)
       .then(response => response.data)
       .then((data) => {
-        dispatch(gotGrades(data.results.sort(sortAlphaAsc), cohort, track));
+        dispatch(gotGrades(
+          data.results.sort(sortAlphaAsc),
+          cohort,
+          track,
+          headingMapper.all(dispatch, data.results[0]),
+        ));
         dispatch(finishedFetchingGrades());
       })
       .catch(() => {
