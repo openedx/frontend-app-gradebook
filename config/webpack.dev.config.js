@@ -79,6 +79,7 @@ module.exports = Merge.smart(commonConfig, {
       LMS_BASE_URL: 'http://localhost:18000',
       LOGIN_URL: 'http://localhost:18000/login',
       LOGOUT_URL: 'http://localhost:18000/login',
+      CSRF_TOKEN_API_PATH: '/csrf/api/v1/token',
       REFRESH_ACCESS_TOKEN_ENDPOINT: 'http://localhost:18000/login',
       DATA_API_BASE_URL: 'http://localhost:8000',
       // LMS_CLIENT_ID should match the lms DOT client application id your LMS container
