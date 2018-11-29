@@ -294,6 +294,23 @@ export default class Gradebook extends React.Component {
                   onClear={() => this.props.getUserGrades(this.props.match.params.courseId, this.props.selectedCohort, this.props.selectedTrack)}
                   value={this.state.filterValue}
                 />
+                <div className="d-flex justify-content-end" style={{ marginTop : '20px'}}>
+                  <button
+                    className="btn btn-secondary"
+                    disabled={!this.props.prevPage}
+                    onClick={() => this.props.getPrevNextGrades(this.props.prevPage, this.props.selectedCohort, this.props.selectedTrack)}
+                  >
+                    Previous
+                  </button>
+                  <div style={{width: '10px'}} />
+                  <button
+                    className="btn btn-secondary"
+                    disabled={!this.props.nextPage}
+                    onClick={() => this.props.getPrevNextGrades(this.props.nextPage, this.props.selectedCohort, this.props.selectedTrack)}
+                  >
+                    Next
+                  </button>
+                </div>
               </div>
             </div>
             <br />
