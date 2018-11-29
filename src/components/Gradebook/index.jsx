@@ -295,21 +295,19 @@ export default class Gradebook extends React.Component {
                   value={this.state.filterValue}
                 />
                 <div className="d-flex justify-content-end" style={{ marginTop : '20px'}}>
-                  <button
-                    className="btn btn-secondary"
-                    disabled={!this.props.prevPage}
+                  <Button
+                    label="Previous"
+                    buttonType="primary"
+                    style={{ visibility: (!this.props.prevPage ? 'hidden' : 'visible') }}
                     onClick={() => this.props.getPrevNextGrades(this.props.prevPage, this.props.selectedCohort, this.props.selectedTrack)}
-                  >
-                    Previous
-                  </button>
+                  />
                   <div style={{width: '10px'}} />
-                  <button
-                    className="btn btn-secondary"
-                    disabled={!this.props.nextPage}
+                  <Button
+                    label="Next"
+                    buttonType="primary"
+                    style={{ visibility: (!this.props.nextPage ? 'hidden' : 'visible') }}
                     onClick={() => this.props.getPrevNextGrades(this.props.nextPage, this.props.selectedCohort, this.props.selectedTrack)}
-                  >
-                    Next
-                  </button>
+                  />
                 </div>
               </div>
             </div>
