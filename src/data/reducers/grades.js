@@ -17,6 +17,8 @@ const initialState = {
   errorFetching: false,
   gradeFormat: 'percent',
   showSuccess: false,
+  prevPage: null,
+  nextPage: null,
 };
 
 const grades = (state = initialState, action) => {
@@ -30,6 +32,8 @@ const grades = (state = initialState, action) => {
         errorFetching: false,
         selectedTrack: action.track,
         selectedCohort: action.cohort,
+        prevPage: action.prev,
+        nextPage: action.next,
       };
     case STARTED_FETCHING_GRADES:
       return {

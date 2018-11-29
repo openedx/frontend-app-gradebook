@@ -14,6 +14,7 @@ import {
 import LmsApiService from '../services/LmsApiService';
 import store from '../store';
 import { headingMapper, gradeSortMap, sortAlphaAsc } from './utils';
+import apiClient from "../apiClient";
 
 
 const sortGrades = (columnName, direction) => {
@@ -30,12 +31,14 @@ const sortGrades = (columnName, direction) => {
 const startedFetchingGrades = () => ({ type: STARTED_FETCHING_GRADES });
 const finishedFetchingGrades = () => ({ type: FINISHED_FETCHING_GRADES });
 const errorFetchingGrades = () => ({ type: ERROR_FETCHING_GRADES });
-const gotGrades = (grades, cohort, track, headings) => ({
+const gotGrades = (grades, cohort, track, headings, prev, next) => ({
   type: GOT_GRADES,
   grades,
   cohort,
   track,
   headings,
+  prev,
+  next,
 });
 
 const gradeUpdateRequest = () => ({ type: GRADE_UPDATE_REQUEST });
@@ -70,6 +73,8 @@ const fetchGrades = (courseId, cohort, track, showSuccess) => (
           cohort,
           track,
           headingMapper.all(dispatch, data.results[0]),
+          data.previous,
+          data.next,
         ));
         dispatch(finishedFetchingGrades());
         dispatch(updateBanner(!!showSuccess));
@@ -91,6 +96,8 @@ const fetchMatchingUserGrades = (courseId, searchText, cohort, track) => (
           cohort,
           track,
           headingMapper.all(dispatch, data.results[0]),
+          data.previous,
+          data.next,
         ));
         dispatch(finishedFetchingGrades());
       })
@@ -99,6 +106,29 @@ const fetchMatchingUserGrades = (courseId, searchText, cohort, track) => (
       });
   }
 );
+
+const fetchPrevNextGrades = (endpoint, cohort, track) => (
+  (dispatch) => {
+    dispatch(startedFetchingGrades());
+    return apiClient.get(endpoint)
+      .then(response => response.data)
+      .then((data) => {
+        dispatch(gotGrades(
+          data.results.sort(sortAlphaAsc),
+          cohort,
+          track,
+          headingMapper.all(dispatch, data.results[0]),
+          data.previous,
+          data.next,
+        ));
+        dispatch(finishedFetchingGrades());
+      })
+      .catch(() => {
+        dispatch(errorFetchingGrades());
+      });
+  }
+);
+
 
 const updateGrades = (courseId, updateData) => (
   (dispatch) => {
@@ -122,6 +152,7 @@ export {
   gotGrades,
   fetchGrades,
   fetchMatchingUserGrades,
+  fetchPrevNextGrades,
   gradeUpdateRequest,
   gradeUpdateSuccess,
   gradeUpdateFailure,

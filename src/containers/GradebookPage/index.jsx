@@ -4,6 +4,7 @@ import Gradebook from '../../components/Gradebook';
 import {
   fetchGrades,
   fetchMatchingUserGrades,
+  fetchPrevNextGrades,
   updateGrades,
   toggleGradeFormat,
   filterColumns,
@@ -22,6 +23,8 @@ const mapStateToProps = state => (
     selectedCohort: state.grades.selectedCohort,
     format: state.grades.gradeFormat,
     showSuccess: state.grades.showSuccess,
+    prevPage: state.grades.prevPage,
+    nextPage: state.grades.nextPage,
   }
 );
 
@@ -32,6 +35,9 @@ const mapDispatchToProps = dispatch => (
     },
     searchForUser: (courseId, searchText, cohort, track) => {
       dispatch(fetchMatchingUserGrades(courseId, searchText, cohort, track));
+    },
+    getPrevNextGrades : (endpoint, cohort, track) => {
+      dispatch(fetchPrevNextGrades(endpoint, cohort, track));
     },
     getCohorts: (courseId) => {
       dispatch(fetchCohorts(courseId));
