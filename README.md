@@ -37,6 +37,18 @@ to point to your local gradebook from the instructor dashboard by putting this s
 WRITABLE_GRADEBOOK_URL = 'http://localhost:1991'
 ```
 
+There are also several edx-platform waffle and feature flags you'll have to enable from the Django admin:
+
+1. Grades > Persistent grades enabled flag.  Add this flag if it doesn't exist,
+check the ``enabled`` and ``enabled for all courses`` boxes.
+
+2. Waffle > Switches.  Add the ``grades.assume_zero_grade_if_absent`` switch and make it active.
+
+3. Waffle_utils > Waffle flag course overrides.  You want to activate this flag for any course
+in which you'd like to enable the gradebook.  Add a course override flag using a course id and the flag name
+``grades.writable_gradebook``.  Make sure to check the ``enabled`` box.  Alternatively, you could add this as a
+regular waffle flag to enable the gradebook for all courses.
+
 ## Directory Structure
 
 * `config`
