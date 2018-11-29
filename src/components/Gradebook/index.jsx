@@ -25,6 +25,7 @@ export default class Gradebook extends React.Component {
     );
     this.props.getTracks(this.props.match.params.courseId);
     this.props.getCohorts(this.props.match.params.courseId);
+    this.props.getAssignmentTypes(this.props.match.params.courseId);
   }
 
   setNewModalState = (userEntry, subsection) => {
@@ -74,6 +75,15 @@ export default class Gradebook extends React.Component {
     return `?${queryString.stringify(parsed)}`;
   };
 
+  mapAssignmentTypeEntries = (entries) => {
+    const mapped = entries.map(entry => ({
+      id: entry,
+      label: entry,
+    }));
+    mapped.unshift({ id: 0, label: 'All' });
+    return mapped;
+  };
+
   mapCohortsEntries = (entries) => {
     const mapped = entries.map(entry => ({
       id: entry.id,
@@ -91,6 +101,10 @@ export default class Gradebook extends React.Component {
     mapped.unshift({ label: 'Track-All' });
     return mapped;
   };
+
+  updateAssignmentTypes = (event) => {
+    this.props.filterColumns(event, this.props.grades[0]);
+  }
 
   updateTracks = (event) => {
     const selectedTrackItem = this.props.tracks.find(x => x.name === event);
@@ -120,6 +134,15 @@ export default class Gradebook extends React.Component {
     );
     const updatedQueryStrings = this.updateQueryParams('cohort', selectedCohortId);
     this.props.history.push(updatedQueryStrings);
+  };
+
+  mapSelectedAssignmentTypeEntry = (entry) => {
+    const selectedAssignmentTypeEntry = this.props.assignmentTypes
+      .find(x => x.id === parseInt(entry, 10));
+    if (selectedAssignmentTypeEntry) {
+      return selectedAssignmentTypeEntry.name;
+    }
+    return 'All';
   };
 
   mapSelectedCohortEntry = (entry) => {
@@ -220,46 +243,19 @@ export default class Gradebook extends React.Component {
                     <label htmlFor="score-view-absolute">Absolute</label>
                   </span>
                 </div>
-                <div>
-                  Category:
-                  <span>
-                    <input
-                      id="category-all"
-                      className="ml-2 mr-1"
-                      type="radio"
-                      name="category"
-                      value="all"
-                      onClick={() => this.props.filterColumns('all', this.props.grades[0])}
+                { this.props.assignmnetTypes.length > 0 &&
+                  <div className="student-filters">
+                    <span className="label">
+                      Assignment Types:
+                    </span>
+                    <InputSelect
+                      name="assignment-types"
+                      value={this.mapSelectedTrackEntry(this.props.selectedAssignmentType)}
+                      options={this.mapAssignmentTypeEntries(this.props.assignmnetTypes)}
+                      onChange={this.updateAssignmentTypes}
                     />
-                    <label className="mr-2" htmlFor="category-all">
-                      All
-                    </label>
-                  </span>
-                  <span>
-                    <input
-                      id="category-homework"
-                      className="mr-1"
-                      type="radio"
-                      name="category"
-                      value="homework"
-                      onClick={() => this.props.filterColumns('hw', this.props.grades[0])}
-                    />
-                    <label className="mr-2" htmlFor="category-homework">Homework</label>
-                  </span>
-                  <span>
-                    <input
-                      id="category-exam"
-                      type="radio"
-                      name="category"
-                      value="exam"
-                      className="ml-2 mr-1"
-                      onClick={() => this.props.filterColumns('exam', this.props.grades[0])}
-                    />
-                    <label htmlFor="category-exam">
-                      Exam
-                    </label>
-                  </span>
-                </div>
+                  </div>
+                }
                 {(this.props.tracks.length > 0 || this.props.cohorts.length > 0) &&
                   <div className="student-filters">
                     <span className="label">
@@ -294,14 +290,14 @@ export default class Gradebook extends React.Component {
                   onClear={() => this.props.getUserGrades(this.props.match.params.courseId, this.props.selectedCohort, this.props.selectedTrack)}
                   value={this.state.filterValue}
                 />
-                <div className="d-flex justify-content-end" style={{ marginTop : '20px'}}>
+                <div className="d-flex justify-content-end" style={{ marginTop: '20px' }}>
                   <Button
                     label="Previous"
                     buttonType="primary"
                     style={{ visibility: (!this.props.prevPage ? 'hidden' : 'visible') }}
                     onClick={() => this.props.getPrevNextGrades(this.props.prevPage, this.props.selectedCohort, this.props.selectedTrack)}
                   />
-                  <div style={{width: '10px'}} />
+                  <div style={{ width: '10px' }} />
                   <Button
                     label="Next"
                     buttonType="primary"

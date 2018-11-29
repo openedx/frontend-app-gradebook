@@ -12,6 +12,7 @@ import {
 } from '../../data/actions/grades';
 import { fetchCohorts } from '../../data/actions/cohorts';
 import { fetchTracks } from '../../data/actions/tracks';
+import { fetchAssignmentTypes } from '../../data/actions/assignmentTypes';
 
 const mapStateToProps = state => (
   {
@@ -25,6 +26,7 @@ const mapStateToProps = state => (
     showSuccess: state.grades.showSuccess,
     prevPage: state.grades.prevPage,
     nextPage: state.grades.nextPage,
+    assignmnetTypes: state.assignmentTypes.results || [],
   }
 );
 
@@ -36,7 +38,7 @@ const mapDispatchToProps = dispatch => (
     searchForUser: (courseId, searchText, cohort, track) => {
       dispatch(fetchMatchingUserGrades(courseId, searchText, cohort, track));
     },
-    getPrevNextGrades : (endpoint, cohort, track) => {
+    getPrevNextGrades: (endpoint, cohort, track) => {
       dispatch(fetchPrevNextGrades(endpoint, cohort, track));
     },
     getCohorts: (courseId) => {
@@ -44,6 +46,9 @@ const mapDispatchToProps = dispatch => (
     },
     getTracks: (courseId) => {
       dispatch(fetchTracks(courseId));
+    },
+    getAssignmentTypes: (courseId) => {
+      dispatch(fetchAssignmentTypes(courseId));
     },
     updateGrades: (courseId, updateData) => {
       dispatch(updateGrades(courseId, updateData));

@@ -60,8 +60,8 @@ function gradeSortMap(columnName, direction) {
   return sortNumerically(columnName, direction);
 }
 
-const headingMapper = {
-  all: (dispatch, entry) => {
+const headingMapper = (filterKey) => {
+  function all(dispatch, entry) {
     if (entry) {
       const results = [{
         label: 'Username',
@@ -89,21 +89,18 @@ const headingMapper = {
       return results.concat(assignmentHeadings).concat(totals);
     }
     return [];
-  },
-  hw: (dispatch, entry) => {
+  }
+
+  function some(dispatch, entry) {
     const results = [{
       label: 'Username',
       key: 'username',
       columnSortable: true,
-      onSort: (direction) => {
-        this.setState({
-          grades: [...this.state.grades].sort(direction === 'desc' ? this.sortAlphaDesc : this.sortAlphaAsc),
-        });
-      },
+      onSort: (direction) => { dispatch(sortGrades('username', direction)); },
     }];
 
     const assignmentHeadings = entry.section_breakdown
-      .filter(section => section.is_graded && section.label && section.category == 'Homework')
+      .filter(section => section.is_graded && section.label && section.category === filterKey)
       .map(s => ({
         label: s.label,
         key: s.label,
@@ -111,31 +108,17 @@ const headingMapper = {
         onSort: (direction) => { this.sortNumerically(s.label, direction); },
       }));
 
-    return results.concat(assignmentHeadings);
-  },
-  exam: (dispatch, entry) => {
-    const results = [{
-      label: 'Username',
-      key: 'username',
-      columnSortable: false,
-      onSort: (direction) => {
-        this.setState({
-          grades: [...this.state.grades].sort(direction === 'desc' ? this.sortAlphaDesc : this.sortAlphaAsc),
-        });
-      },
+    const totals = [{
+      label: 'Total',
+      key: 'total',
+      columnSortable: true,
+      onSort: direction => dispatch(sortGrades('total', direction)),
     }];
 
-    const assignmentHeadings = entry.section_breakdown
-      .filter(section => section.is_graded && section.label && section.category == 'Exam')
-      .map(s => ({
-        label: s.label,
-        key: s.label,
-        columnSortable: false,
-        onSort: (direction) => { this.sortNumerically(s.label, direction); },
-      }));
+    return results.concat(assignmentHeadings).concat(totals);
+  }
 
-    return results.concat(assignmentHeadings);
-  },
+  return filterKey === 'All' ? all : some;
 };
 
 export { headingMapper, gradeSortMap, sortAlphaAsc };
