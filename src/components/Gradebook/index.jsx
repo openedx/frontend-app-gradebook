@@ -182,7 +182,7 @@ export default class Gradebook extends React.Component {
   render() {
     return (
       <div className="d-flex justify-content-center">
-        <div className="card" style={{ width: '50rem' }}>
+        <div className="card gradebook-container">
           <div className="card-body">
             <a
               href={this.lmsInstructorDashboardUrl(this.props.match.params.courseId)}
