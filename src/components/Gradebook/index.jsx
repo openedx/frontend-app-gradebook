@@ -172,11 +172,11 @@ export default class Gradebook extends React.Component {
               className="btn btn-header link-style"
               onClick={() => this.setNewModalState(entry, subsection)}
             >
-              {subsection.percent}
+              {subsection.percent * 100}%
             </button>);
           return acc;
         }, {});
-      const totals = { total: entry.percent * 100 };
+      const totals = { total: `${entry.percent * 100}%` };
       return Object.assign(results, assignments, totals);
     }),
 
@@ -195,7 +195,7 @@ export default class Gradebook extends React.Component {
           return acc;
         }, {});
 
-      const totals = { total: entry.percent * 100 };
+      const totals = { total: `${entry.percent * 100}/100` };
       return Object.assign(results, assignments, totals);
     }),
   };
