@@ -59,7 +59,11 @@ export default class Gradebook extends React.Component {
           earned_graded_override: this.state.updateVal,
         },
       },
-    ]);
+    ],
+    this.state.filterValue,
+    this.props.selectedCohort,
+    this.props.selectedTrack,
+    );
 
     this.setState({
       modalModel: [{}],

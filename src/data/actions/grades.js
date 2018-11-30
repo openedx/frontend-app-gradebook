@@ -132,14 +132,14 @@ const fetchPrevNextGrades = (endpoint, cohort, track) => (
 );
 
 
-const updateGrades = (courseId, updateData) => (
+const updateGrades = (courseId, updateData, searchText, cohort, track) => (
   (dispatch) => {
     dispatch(gradeUpdateRequest());
     return LmsApiService.updateGradebookData(courseId, updateData)
       .then(response => response.data)
       .then((data) => {
         dispatch(gradeUpdateSuccess(data));
-        dispatch(fetchGrades(courseId, null, null, true));
+        dispatch(fetchMatchingUserGrades(courseId, searchText, cohort, track));
       })
       .catch((error) => {
         dispatch(gradeUpdateFailure(error));
