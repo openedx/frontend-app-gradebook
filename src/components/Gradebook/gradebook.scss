@@ -1,3 +1,15 @@
+.gradebook-container{
+    width: 500px;
+    @media only screen and (min-width: 640px) {
+        width: 630px;
+    }
+    @media only screen and (min-width: 992px) {
+        width: 900px;
+    }
+    @media only screen and (min-width: 1200px) {
+        width: 1024px;
+    }
+}
 .back-link{
     float:right;
 }
@@ -31,10 +43,6 @@
         height:50px; 
         display: block;
         background-color: #fff;
-    }
-    .table tr td:not(:first-child) {
-        //not real sylz. plz kill before prod
-        min-width: 250px;    
     }
     .table tr td:nth-child(2) {
         box-sizing: content-box;
