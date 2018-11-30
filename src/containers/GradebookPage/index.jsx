@@ -50,8 +50,8 @@ const mapDispatchToProps = dispatch => (
     getAssignmentTypes: (courseId) => {
       dispatch(fetchAssignmentTypes(courseId));
     },
-    updateGrades: (courseId, updateData) => {
-      dispatch(updateGrades(courseId, updateData));
+    updateGrades: (courseId, updateData, searchText, cohort, track) => {
+      dispatch(updateGrades(courseId, updateData, searchText, cohort, track));
     },
     toggleFormat: (formatType) => {
       dispatch(toggleGradeFormat(formatType));
