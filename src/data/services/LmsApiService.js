@@ -44,7 +44,7 @@ class LmsApiService {
     const gradebookUrl = `${LmsApiService.baseUrl}/api/grades/v1/gradebook/${courseId}/bulk-update`;
     return apiClient.post(gradebookUrl, updateData);
   }
-  
+
   static fetchTracks(courseId) {
     const trackUrl = `${LmsApiService.baseUrl}/api/enrollment/v1/course/${courseId}`;
     return apiClient.get(trackUrl);
@@ -53,6 +53,11 @@ class LmsApiService {
   static fetchCohorts(courseId) {
     const cohortsUrl = `${LmsApiService.baseUrl}/courses/${courseId}/cohorts/`;
     return apiClient.get(cohortsUrl);
+  }
+
+  static fetchAssignmentTypes(courseId) {
+    const assignmentTypesUrl = `${LmsApiService.baseUrl}/api/grades/v1/gradebook/${courseId}/grading-info?graded_only=true`;
+    return apiClient.get(assignmentTypesUrl);
   }
 }
 

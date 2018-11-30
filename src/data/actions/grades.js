@@ -14,8 +14,9 @@ import {
 import LmsApiService from '../services/LmsApiService';
 import store from '../store';
 import { headingMapper, gradeSortMap, sortAlphaAsc } from './utils';
-import apiClient from "../apiClient";
+import apiClient from '../apiClient';
 
+const defaultAssignmentFilter = 'All';
 
 const sortGrades = (columnName, direction) => {
   const sortFn = gradeSortMap(columnName, direction);
@@ -55,10 +56,11 @@ const gradeUpdateFailure = error => ({
 const toggleGradeFormat = formatType => ({ type: TOGGLE_GRADE_FORMAT, formatType });
 
 const filterColumns = (filterType, exampleUser) => (
-  dispatch => ({
+  dispatch => dispatch({
     type: FILTER_COLUMNS,
-    headings: headingMapper[filterType](dispatch, exampleUser),
-  }));
+    headings: headingMapper(filterType)(dispatch, exampleUser),
+  })
+);
 
 const updateBanner = showSuccess => ({ type: UPDATE_BANNER, showSuccess });
 
@@ -72,7 +74,7 @@ const fetchGrades = (courseId, cohort, track, showSuccess) => (
           data.results.sort(sortAlphaAsc),
           cohort,
           track,
-          headingMapper.all(dispatch, data.results[0]),
+          headingMapper(defaultAssignmentFilter)(dispatch, data.results[0]),
           data.previous,
           data.next,
         ));
@@ -95,7 +97,7 @@ const fetchMatchingUserGrades = (courseId, searchText, cohort, track) => (
           data.results.sort(sortAlphaAsc),
           cohort,
           track,
-          headingMapper.all(dispatch, data.results[0]),
+          headingMapper(defaultAssignmentFilter)(dispatch, data.results[0]),
           data.previous,
           data.next,
         ));
@@ -117,7 +119,7 @@ const fetchPrevNextGrades = (endpoint, cohort, track) => (
           data.results.sort(sortAlphaAsc),
           cohort,
           track,
-          headingMapper.all(dispatch, data.results[0]),
+          headingMapper(defaultAssignmentFilter)(dispatch, data.results[0]),
           data.previous,
           data.next,
         ));
