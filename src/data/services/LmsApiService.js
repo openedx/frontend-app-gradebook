@@ -3,12 +3,12 @@ import { configuration } from '../../config';
 
 class LmsApiService {
   static baseUrl = configuration.LMS_BASE_URL;
+  static pageSize = 10
 
   static fetchGradebookData(courseId, searchText, cohort, track) {
     let gradebookUrl = `${LmsApiService.baseUrl}/api/grades/v1/gradebook/${courseId}/`;
-    if (searchText || track || cohort) {
-      gradebookUrl += '?';
-    }
+
+    gradebookUrl += `?page_size=${LmsApiService.pageSize}&`;
     if (searchText) {
       gradebookUrl += `username_contains=${searchText}&`;
     }
