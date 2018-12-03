@@ -37,7 +37,7 @@ const mapDispatchToProps = dispatch => (
       dispatch(fetchGrades(courseId, cohort, track));
     },
     searchForUser: (courseId, searchText, cohort, track) => {
-      dispatch(fetchMatchingUserGrades(courseId, searchText, cohort, track));
+      dispatch(fetchMatchingUserGrades(courseId, searchText, cohort, track, false));
     },
     getPrevNextGrades: (endpoint, cohort, track) => {
       dispatch(fetchPrevNextGrades(endpoint, cohort, track));

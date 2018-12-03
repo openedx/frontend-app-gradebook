@@ -87,7 +87,7 @@ const fetchGrades = (courseId, cohort, track, showSuccess) => (
   }
 );
 
-const fetchMatchingUserGrades = (courseId, searchText, cohort, track) => (
+const fetchMatchingUserGrades = (courseId, searchText, cohort, track, showSuccess) => (
   (dispatch) => {
     dispatch(startedFetchingGrades());
     return LmsApiService.fetchGradebookData(courseId, searchText, cohort, track)
@@ -102,6 +102,7 @@ const fetchMatchingUserGrades = (courseId, searchText, cohort, track) => (
           data.next,
         ));
         dispatch(finishedFetchingGrades());
+        dispatch(updateBanner(showSuccess));
       })
       .catch(() => {
         dispatch(errorFetchingGrades());
@@ -139,7 +140,7 @@ const updateGrades = (courseId, updateData, searchText, cohort, track) => (
       .then(response => response.data)
       .then((data) => {
         dispatch(gradeUpdateSuccess(data));
-        dispatch(fetchMatchingUserGrades(courseId, searchText, cohort, track));
+        dispatch(fetchMatchingUserGrades(courseId, searchText, cohort, track, true));
       })
       .catch((error) => {
         dispatch(gradeUpdateFailure(error));
