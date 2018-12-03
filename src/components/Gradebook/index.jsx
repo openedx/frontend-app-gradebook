@@ -1,5 +1,13 @@
 import React from 'react';
-import { Button, InputSelect, Modal, SearchField, StatusAlert, Table } from '@edx/paragon';
+import {
+  Button,
+  InputSelect,
+  Modal,
+  SearchField,
+  StatusAlert,
+  Table,
+  Icon,
+} from '@edx/paragon';
 import queryString from 'query-string';
 import { configuration } from '../../config';
 
@@ -51,18 +59,19 @@ export default class Gradebook extends React.Component {
   }
 
   handleAdjustedGradeClick = () => {
-    this.props.updateGrades(this.props.match.params.courseId, [
-      {
-        user_id: this.state.updateUserId,
-        usage_id: this.state.updateModuleId,
-        grade: {
-          earned_graded_override: this.state.updateVal,
+    this.props.updateGrades(
+      this.props.match.params.courseId, [
+        {
+          user_id: this.state.updateUserId,
+          usage_id: this.state.updateModuleId,
+          grade: {
+            earned_graded_override: this.state.updateVal,
+          },
         },
-      },
-    ],
-    this.state.filterValue,
-    this.props.selectedCohort,
-    this.props.selectedTrack,
+      ],
+      this.state.filterValue,
+      this.props.selectedCohort,
+      this.props.selectedTrack,
     );
 
     this.setState({
@@ -209,6 +218,7 @@ export default class Gradebook extends React.Component {
   render() {
     return (
       <div className="d-flex justify-content-center">
+        { this.props.showSpinner && <div className="spinner-overlay"><Icon className={['fa', 'fa-spinner', 'fa-spin', 'fa-5x', 'color-black']} /></div>}
         <div className="card gradebook-container">
           <div className="card-body">
             <a

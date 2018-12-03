@@ -19,6 +19,7 @@ const initialState = {
   showSuccess: false,
   prevPage: null,
   nextPage: null,
+  showSpinner: true,
 };
 
 const grades = (state = initialState, action) => {
@@ -34,12 +35,14 @@ const grades = (state = initialState, action) => {
         selectedCohort: action.cohort,
         prevPage: action.prev,
         nextPage: action.next,
+        showSpinner: false,
       };
     case STARTED_FETCHING_GRADES:
       return {
         ...state,
         startedFetching: true,
         finishedFetching: false,
+        showSpinner: true,
       };
     case ERROR_FETCHING_GRADES:
       return {

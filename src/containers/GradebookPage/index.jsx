@@ -26,7 +26,8 @@ const mapStateToProps = state => (
     showSuccess: state.grades.showSuccess,
     prevPage: state.grades.prevPage,
     nextPage: state.grades.nextPage,
-    assignmnetTypes: state.assignmentTypes.results || [],
+    assignmnetTypes: state.assignmentTypes.results,
+    showSpinner: state.grades.showSpinner,
   }
 );
 
