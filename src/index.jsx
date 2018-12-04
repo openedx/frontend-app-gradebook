@@ -5,6 +5,7 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { Provider } from 'react-redux';
 
 import apiClient from './data/apiClient';
+import Footer from './components/Gradebook/footer';
 import GradebookPage from './containers/GradebookPage';
 import Header from './components/Header';
 import store from './data/store';
@@ -20,6 +21,7 @@ const App = () => (
             <Route exact path="/:courseId" component={GradebookPage} />
           </Switch>
         </main>
+        <Footer />
       </div>
     </Router>
   </Provider>

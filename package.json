@@ -33,7 +33,7 @@
     "font-awesome": "^4.7.0",
     "history": "^4.7.2",
     "prop-types": "^15.5.10",
-    "query-string": "^6.2.0",
+    "query-string": "^5.1.1",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
     "react-redux": "^5.0.7",
@@ -47,6 +47,7 @@
     "whatwg-fetch": "^2.0.3"
   },
   "devDependencies": {
+    "autoprefixer": "^9.4.2",
     "axios-mock-adapter": "^1.15.0",
     "babel-cli": "^6.26.0",
     "babel-eslint": "^8.2.2",
@@ -72,6 +73,7 @@
     "jest": "^22.4.0",
     "mini-css-extract-plugin": "^0.4.0",
     "node-sass": "^4.7.2",
+    "postcss-loader": "^3.0.0",
     "react-dev-utils": "^5.0.0",
     "react-test-renderer": "^16.2.0",
     "redux-mock-store": "^1.5.1",

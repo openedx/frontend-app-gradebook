@@ -47,6 +47,7 @@ module.exports = Merge.smart(commonConfig, {
               minimize: true,
             },
           },
+          'postcss-loader',
           {
             loader: 'sass-loader', // compiles Sass to CSS
             options: {
