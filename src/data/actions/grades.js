@@ -102,7 +102,7 @@ const fetchMatchingUserGrades = (courseId, searchText, cohort, track, showSucces
           data.next,
         ));
         dispatch(finishedFetchingGrades());
-        dispatch(updateBanner(!!showSuccess));
+        dispatch(updateBanner(showSuccess));
       })
       .catch(() => {
         dispatch(errorFetchingGrades());
