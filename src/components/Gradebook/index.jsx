@@ -11,6 +11,8 @@ import {
 import queryString from 'query-string';
 import { configuration } from '../../config';
 
+const DECIMAL_PRECISION = 2;
+
 export default class Gradebook extends React.Component {
   constructor(props) {
     super(props);
@@ -174,6 +176,8 @@ export default class Gradebook extends React.Component {
     return 'Tracks';
   };
 
+  roundPercentageGrade = percent => parseFloat(percent.toFixed(DECIMAL_PRECISION));
+
   formatter = {
     percent: entries => entries.map((entry) => {
       const results = { username: entry.username };
@@ -185,11 +189,11 @@ export default class Gradebook extends React.Component {
               className="btn btn-header link-style"
               onClick={() => this.setNewModalState(entry, subsection)}
             >
-              {subsection.percent * 100}%
+              {this.roundPercentageGrade(subsection.percent * 100)}%
             </button>);
           return acc;
         }, {});
-      const totals = { total: `${entry.percent * 100}%` };
+      const totals = { total: `${this.roundPercentageGrade(entry.percent * 100)}%` };
       return Object.assign(results, assignments, totals);
     }),
 
