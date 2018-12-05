@@ -30,3 +30,6 @@ restart-detached:
 
 validate-no-uncommitted-package-lock-changes:
 	git diff --exit-code package-lock.json
+
+test:
+	docker exec -it edx.gradebook jest 
