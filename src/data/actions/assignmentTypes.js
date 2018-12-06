@@ -17,7 +17,7 @@ const fetchAssignmentTypes = courseId => (
       .then((data) => {
         dispatch(gotAssignmentTypes(Object.keys(data.assignment_types)));
       })
-      .catch((error) => {
+      .catch(() => {
         dispatch(errorFetchingAssignmentTypes());
       });
   }

@@ -17,7 +17,7 @@ const fetchCohorts = courseId => (
       .then((data) => {
         dispatch(gotCohorts(data.cohorts));
       })
-      .catch((error) => {
+      .catch(() => {
         dispatch(errorFetchingCohorts());
       });
   }
