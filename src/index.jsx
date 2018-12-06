@@ -3,7 +3,6 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { Provider } from 'react-redux';
-import { Icon } from '@edx/paragon';
 
 import apiClient from './data/apiClient';
 import Footer from './components/Gradebook/footer';
