@@ -18,6 +18,7 @@ const tracks = (state = initialState, action) => {
         ...state,
         results: action.tracks,
         errorFetching: false,
+        finishedFetching: true,
       };
     case STARTED_FETCHING_TRACKS:
       return {

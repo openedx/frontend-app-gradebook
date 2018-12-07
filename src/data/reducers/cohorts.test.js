@@ -29,7 +29,7 @@ const cohortsData = [
     user_partition_id: null,
   }];
 
-describe('dashboardAnalytics reducer', () => {
+describe('cohorts reducer', () => {
   it('has initial state', () => {
     expect(cohorts(undefined, {})).toEqual(initialState);
   });

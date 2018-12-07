@@ -18,6 +18,7 @@ const assignmentTypes = (state = initialState, action) => {
         ...state,
         results: action.assignmentTypes,
         errorFetching: false,
+        finishedFetching: true,
       };
     case STARTED_FETCHING_ASSIGNMENT_TYPES:
       return {
