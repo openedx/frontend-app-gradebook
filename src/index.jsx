@@ -6,17 +6,21 @@ import { Provider } from 'react-redux';
 
 import apiClient from './data/apiClient';
 import GradebookPage from './containers/GradebookPage';
+import Header from './components/Header';
 import store from './data/store';
 import './App.scss';
 
 const App = () => (
   <Provider store={store}>
     <Router>
-      <main>
-        <Switch>
-          <Route exact path="/:courseId" component={GradebookPage} />
-        </Switch>
-      </main>
+      <div>
+        <Header />
+        <main>
+          <Switch>
+            <Route exact path="/:courseId" component={GradebookPage} />
+          </Switch>
+        </main>
+      </div>
     </Router>
   </Provider>
 );

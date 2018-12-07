@@ -223,13 +223,13 @@ export default class Gradebook extends React.Component {
     return (
       <div className="d-flex justify-content-center">
         { this.props.showSpinner && <div className="spinner-overlay"><Icon className={['fa', 'fa-spinner', 'fa-spin', 'fa-5x', 'color-black']} /></div>}
-        <div className="card gradebook-container">
-          <div className="card-body">
+        <div className="gradebook-container">
+          <div>
             <a
               href={this.lmsInstructorDashboardUrl(this.props.match.params.courseId)}
-              className="back-link"
+              className="mb-3"
             >
-              Back to Dashboard
+              {'<< Back to Dashboard'}
             </a>
             <h1>Gradebook</h1>
             <h3> {this.props.match.params.courseId}</h3>
