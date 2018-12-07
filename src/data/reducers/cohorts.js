@@ -17,6 +17,7 @@ const cohorts = (state = initialState, action) => {
       return {
         ...state,
         results: action.cohorts,
+        finishedFetching: true,
         errorFetching: false,
       };
     case STARTED_FETCHING_COHORTS:

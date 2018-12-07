@@ -3,6 +3,7 @@ import MockAdapter from 'axios-mock-adapter';
 import thunk from 'redux-thunk';
 
 import apiClient from '../apiClient';
+import { configuration } from '../../config';
 import { fetchCohorts } from './cohorts';
 import {
   STARTED_FETCHING_COHORTS,
@@ -47,7 +48,7 @@ describe('actions', () => {
       ];
       const store = mockStore();
 
-      axiosMock.onGet(`http://localhost:18000/courses/${courseId}/cohorts/`)
+      axiosMock.onGet(`${configuration.LMS_BASE_URL}/courses/${courseId}/cohorts/`)
         .replyOnce(200, JSON.stringify(responseData));
 
       return store.dispatch(fetchCohorts(courseId)).then(() => {
@@ -62,7 +63,7 @@ describe('actions', () => {
       ];
       const store = mockStore();
 
-      axiosMock.onGet(`http://localhost:18000/courses/${courseId}/cohorts/`)
+      axiosMock.onGet(`${configuration.LMS_BASE_URL}/courses/${courseId}/cohorts/`)
         .replyOnce(500, JSON.stringify({}));
 
       return store.dispatch(fetchCohorts(courseId)).then(() => {

@@ -17,7 +17,7 @@ const fetchTracks = courseId => (
       .then((data) => {
         dispatch(gotTracks(data.course_modes));
       })
-      .catch((error) => {
+      .catch(() => {
         dispatch(errorFetchingTracks());
       });
   }
