@@ -7,9 +7,8 @@ export default class Footer extends React.Component {
     return (
       <footer className="d-flex justify-content-center border-top py-3 px-4">
         <div className="max-width-1180 d-grid">
-          {/* TODO: Naming and specificity for classes (e.g. thing-1) */}
-          <div className="thing-1"><img src="assets/logo-footer.png" /></div>
-          <div className="thing-2">
+          <div className="area-1"><img src="assets/logo-footer.png" /></div>
+          <div className="area-2">
             <h2>edx</h2>
             <ul className="list-unstyled">
               <li><a href="https://www.edx.org/about-us">About</a></li>
@@ -20,7 +19,7 @@ export default class Footer extends React.Component {
               <li><a href="https://www.edx.org/news-announcements">News</a></li>
             </ul>
           </div>
-          <div className="thing-3">
+          <div className="area-3">
             <h2>Legal</h2>
             <ul className="list-unstyled">
               <li><a href="https://www.edx.org/edx-terms-service">Terms of Service &amp; Honor Code</a></li>
@@ -30,7 +29,7 @@ export default class Footer extends React.Component {
               <li><a href="https://www.edx.org/sitemap">Sitemap</a></li>
             </ul>
           </div>
-          <div className="thing-4">
+          <div className="area-4">
             <h2>Connect</h2>
             <ul className="list-unstyled">
               <li><a href="https://www.edx.org/blog">Blog</a></li>
@@ -40,9 +39,9 @@ export default class Footer extends React.Component {
               <li><a href="https://www.edx.org/donate">Donate</a></li>
             </ul>
           </div>
-          <div className="thing-5">
+          <div className="area-5">
             <ul className="d-flex flex-row justify-content-between list-unstyled max-width-222 mb-4">
-              {/* TODO: Use Paragon HyperLink with Icon */}
+              {/* TODO: Use Paragon HyperLink with Icon. Would need to add rel to paragon if we still need it. */}
               <li><a href="http://www.facebook.com/EdxOnline" title="Facebook" rel="noreferrer" target="_blank">
                 <Icon className={['fa', 'fa-facebook-square', 'fa-2x']} screenReaderText="Like edX on Facebook" />
               </a></li>
@@ -59,8 +58,7 @@ export default class Footer extends React.Component {
                 <Icon className={['fa', 'fa-google-plus-square', 'fa-2x']} screenReaderText="Follow edX on Google+" />
               </a></li>
               <li><a href="https://www.reddit.com/r/edx" title="Reddit" rel="noreferrer" target="_blank">
-                {/*<Icon className={['fa', 'fa-reddit-square', 'fa-2x']} screenReaderText="Subscribe to the edX subreddit" />*/}
-                <Icon className="fa fa-reddit-square fa-2x" screenReaderText="Subscribe to the edX subreddit" />
+                <Icon className={['fa', 'fa-reddit-square', 'fa-2x']} screenReaderText="Subscribe to the edX subreddit" />
               </a></li>
             </ul>
             <ul className="d-flex flex-row justify-content-between list-unstyled max-width-264 mb-5">
