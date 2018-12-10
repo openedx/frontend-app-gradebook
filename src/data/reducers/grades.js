@@ -4,7 +4,6 @@ import {
   GOT_GRADES,
   TOGGLE_GRADE_FORMAT,
   FILTER_COLUMNS,
-  GRADE_UPDATE_SUCCESS,
   UPDATE_BANNER,
   SORT_GRADES,
 } from '../constants/actionTypes/grades';
