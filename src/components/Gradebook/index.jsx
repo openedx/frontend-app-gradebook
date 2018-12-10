@@ -300,7 +300,7 @@ export default class Gradebook extends React.Component {
               </div>
               <div>
                 <div style={{ marginLeft: '10px', marginBottom: '10px' }}>
-                  <a href={`${this.lmsInstructorDashboardUrl(this.props.match.params.courseId)}#view-data_download`}>Download Grade Report</a>
+                  <a href={`${this.lmsInstructorDashboardUrl(this.props.match.params.courseId)}#view-data_download`}>Generate Grade Report</a>
                 </div>
                 <SearchField
                   onSubmit={value => this.props.searchForUser(this.props.match.params.courseId, value, this.props.selectedCohort, this.props.selectedTrack)}
