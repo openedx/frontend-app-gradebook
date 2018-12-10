@@ -5,7 +5,8 @@ export default class Footer extends React.Component {
 
   render() {
     return (
-      <footer className="d-flex justify-content-center border-top py-3 px-4">
+      <footer role="contentinfo" aria-label="Page Footer"
+              className="d-flex justify-content-center border-top py-3 px-4">
         <div className="max-width-1180 d-grid">
           <div className="area-1"><img src="assets/logo-footer.png" /></div>
           <div className="area-2">

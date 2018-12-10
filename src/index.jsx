@@ -11,7 +11,6 @@ import Header from './components/Header';
 import store from './data/store';
 import './App.scss';
 
-
 const App = () => (
   <Provider store={store}>
     <Router>
@@ -22,7 +21,6 @@ const App = () => (
             <Route exact path="/:courseId" component={GradebookPage} />
           </Switch>
         </main>
-        <p>Double-R<sup>2</sup>, paging it up.</p>
         <Footer />
       </div>
     </Router>
