@@ -5,10 +5,11 @@ export default class Footer extends React.Component {
 
   render() {
     return (
-      <footer>
-        <div><img src="assets/logo-footer.png" /></div>
-        <div>
-          edx
+      <footer className="border-top py-3 px-4">
+        {/* TODO: Naming and specificity for classes (e.g. thing-1) */}
+        <div className="thing-1"><img src="assets/logo-footer.png" /></div>
+        <div className="thing-2">
+          <h2>edx</h2>
           <ul className="list-unstyled">
             <li><a href="https://www.edx.org/about-us">About</a></li>
             <li><a href="https://www.edx.org/enterprise">edX for Business</a></li>
@@ -18,8 +19,8 @@ export default class Footer extends React.Component {
             <li><a href="https://www.edx.org/news-announcements">News</a></li>
           </ul>
         </div>
-        <div>
-          Legal
+        <div className="thing-3">
+          <h2>Legal</h2>
           <ul className="list-unstyled">
             <li><a href="https://www.edx.org/edx-terms-service">Terms of Service &amp; Honor Code</a></li>
             <li><a href="https://www.edx.org/edx-privacy-policy">Privacy Policy</a></li>
@@ -28,8 +29,8 @@ export default class Footer extends React.Component {
             <li><a href="https://www.edx.org/sitemap">Sitemap</a></li>
           </ul>
         </div>
-        <div>
-          Connect
+        <div className="thing-4">
+          <h2>Connect</h2>
           <ul className="list-unstyled">
             <li><a href="https://www.edx.org/blog">Blog</a></li>
             <li><a href="https://courses.edx.org/support/contact_us">Contact Us</a></li>
@@ -38,8 +39,8 @@ export default class Footer extends React.Component {
             <li><a href="https://www.edx.org/donate">Donate</a></li>
           </ul>
         </div>
-        <div>
-          <ul className="d-flex flex-row justify-content-between list-unstyled">
+        <div className="thing-5">
+          <ul className="d-flex flex-row justify-content-between list-unstyled max-width-222 mb-4">
             {/* TODO: Use Paragon HyperLink with Icon */}
             <li><a href="http://www.facebook.com/EdxOnline" title="Facebook" rel="noreferrer" target="_blank">
               <Icon className={['fa', 'fa-facebook-square', 'fa-2x']} screenReaderText="Like edX on Facebook" />
@@ -57,16 +58,19 @@ export default class Footer extends React.Component {
               <Icon className={['fa', 'fa-google-plus-square', 'fa-2x']} screenReaderText="Follow edX on Google+" />
             </a></li>
             <li><a href="https://www.reddit.com/r/edx" title="Reddit" rel="noreferrer" target="_blank">
-              <Icon className={['fa', 'fa-reddit-square', 'fa-2x']} screenReaderText="Subscribe to the edX subreddit" />
+              {/*<Icon className={['fa', 'fa-reddit-square', 'fa-2x']} screenReaderText="Subscribe to the edX subreddit" />*/}
+              <Icon className="fa fa-reddit-square fa-2x" screenReaderText="Subscribe to the edX subreddit" />
             </a></li>
           </ul>
-          <ul className="d-flex flex-row list-unstyled">
+          <ul className="d-flex flex-row justify-content-between list-unstyled max-width-264 mb-5">
             <li><a href="https://itunes.apple.com/us/app/edx/id945480667?mt=8" target="_blank">
-              <img alt="Download the edX mobile app from the Apple App Store"
+              <img className="max-height-39"
+                   alt="Download the edX mobile app from the Apple App Store"
                    src="https://prod-edxapp.edx-cdn.org/static/images/app/app_store_badge_135x40.d0558d910630.svg" />
             </a></li>
             <li><a href="https://play.google.com/store/apps/details?id=org.edx.mobile" target="_blank">
-              <img alt="Download the edX mobile app from Google Play"
+              <img className="max-height-39"
+                   alt="Download the edX mobile app from Google Play"
                    src="https://prod-edxapp.edx-cdn.org/static/images/app/google_play_badge_45.6ea466e328da.png" />
             </a></li>
           </ul>

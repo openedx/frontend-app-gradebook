@@ -6,163 +6,147 @@
   max-width: 264px;
 }
 
-.max-width-1180 {
-  max-width: 1180px;
-}
-
 .max-height-39 {
   max-height: 39px;
 }
 
-.d-grid {
-  display: grid;
-}
-
-$border-1: 1px solid #e7e7e7;
-
 footer {
-  background-color: #fcfcfc;
+  display: grid;
 
   ul {
     padding: 0px;
     margin: 0px;
   }
+}
 
-  .area-1 {
-    grid-column: 1;
+$border-1: 1px solid #e7e7e7;
+
+.thing-1 {
+  grid-column: 1;
+  grid-row: 1;
+  border-bottom: $border-1;
+  padding-bottom: 1rem;
+}
+
+.thing-2 {
+  grid-column: 1;
+  grid-row: 2;
+  border-bottom: $border-1;
+  padding: 1rem 0;
+}
+
+.thing-3 {
+  grid-column: 1;
+  grid-row: 3;
+  border-bottom: $border-1;
+  padding: 1rem 0;
+}
+
+.thing-4 {
+  grid-column: 1;
+  grid-row: 4;
+  border-bottom: $border-1;
+  padding: 1rem 0;
+}
+
+.thing-5 {
+  grid-column: 1;
+  grid-row: 5;
+  padding: 1rem 0;
+}
+
+@media only screen and (min-width: 717px) {
+  .thing-1 {
+    grid-column: 1 / span 2;
     grid-row: 1;
-    border-bottom: $border-1;
-    padding-bottom: 1rem;
+    border-bottom: none;
   }
 
-  .area-2 {
+  .thing-2 {
     grid-column: 1;
     grid-row: 2;
-    border-bottom: $border-1;
-    padding: 1rem 0;
   }
 
-  .area-3 {
+  .thing-3 {
     grid-column: 1;
     grid-row: 3;
-    border-bottom: $border-1;
-    padding: 1rem 0;
   }
 
-  .area-4 {
+  .thing-4 {
     grid-column: 1;
     grid-row: 4;
-    border-bottom: $border-1;
-    padding: 1rem 0;
+    border-bottom: none;
   }
 
-  .area-5 {
+  .thing-5 {
+    grid-column: 2;
+    grid-row: 2 / span 3;
+    border-left: $border-1;
+    padding-left: 1rem;
+    margin-left: 1rem;
+  }
+}
+
+//TODO: WIP borders for this media query
+// Questions:
+// - Is it ok to set border on TOP of social, or should there be a container around the navigation?
+// - Are we ok with border on right of logo if we generally want to push off?
+@media only screen and (min-width: 870px) {
+  .thing-1 {
     grid-column: 1;
-    grid-row: 5;
-    padding: 1rem 0;
+    grid-row: 1 / span 3;
+    border-right: $border-1;
+    padding-right: 1rem;
+    margin-right: 1rem;
   }
 
-  @media only screen and (min-width: 717px) {
-    .area-1 {
-      grid-column: 1 / span 2;
-      grid-row: 1;
-      border-bottom: none;
-    }
-
-    .area-2 {
-      grid-column: 1;
-      grid-row: 2;
-    }
-
-    .area-3 {
-      grid-column: 1;
-      grid-row: 3;
-    }
-
-    .area-4 {
-      grid-column: 1;
-      grid-row: 4;
-      border-bottom: none;
-    }
-
-    .area-5 {
-      grid-column: 2;
-      grid-row: 2 / span 3;
-      border-left: $border-1;
-      padding-left: 1rem;
-      margin-left: 1rem;
-    }
+  .thing-2 {
+    grid-column: 2;
+    grid-row: 1;
   }
 
-  @media only screen and (min-width: 870px) {
-    .area-1 {
-      grid-column: 1;
-      grid-row: 1 / span 3;
-      border-right: $border-1;
-      padding-right: 1rem;
-      margin-right: 1rem;
-    }
-
-    .area-2 {
-      grid-column: 2;
-      grid-row: 1;
-      border-bottom: none;
-      border-right: $border-1;
-      padding-right: 1rem;
-      margin-right: 1rem;
-    }
-
-    .area-3 {
-      grid-column: 3;
-      grid-row: 1;
-      border-bottom: none;
-      border-right: $border-1;
-      padding-right: 1rem;
-      margin-right: 1rem;
-    }
-
-    .area-4 {
-      grid-column: 4;
-      grid-row: 1;
-    }
-
-    .area-5 {
-      grid-column: 2 / span 3;
-      grid-row: 2;
-      border: none;
-      margin-left: 0;
-      padding-left: 0;
-    }
+  .thing-3 {
+    grid-column: 3;
+    grid-row: 1;
   }
 
-  @media only screen and (min-width: 1188px) {
-    .area-1 {
-      grid-column: 1;
-      grid-row: 1;
-    }
+  .thing-4 {
+    grid-column: 4;
+    grid-row: 1;
+  }
 
-    .area-2 {
-      grid-column: 2;
-      grid-row: 1;
-    }
+  .thing-5 {
+    grid-column: 2 / span 3;
+    grid-row: 2;
+    border-top: $border-1;
+    padding-top: 1rem;
+    margin-top: 1rem;
+  }
+}
 
-    .area-3 {
-      grid-column: 3;
-      grid-row: 1;
-    }
+@media only screen and (min-width: 1188px) {
+  .thing-1 {
+    grid-column: 1;
+    grid-row: 1;
+  }
 
-    .area-4 {
-      grid-column: 4;
-      grid-row: 1;
-      border-right: $border-1;
-      padding-right: 1rem;
-      margin-right: 1rem;
-    }
+  .thing-2 {
+    grid-column: 2;
+    grid-row: 1;
+  }
 
-    .area-5 {
-      grid-column: 5;
-      grid-row: 1;
-      max-width: 372px;
-    }
+  .thing-3 {
+    grid-column: 3;
+    grid-row: 1;
+  }
+
+  .thing-4 {
+    grid-column: 4;
+    grid-row: 1;
+  }
+
+  .thing-5 {
+    grid-column: 5;
+    grid-row: 1;
   }
 }
