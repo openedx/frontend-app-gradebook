@@ -176,7 +176,7 @@ export default class Gradebook extends React.Component {
     return 'Tracks';
   };
 
-  roundPercentageGrade = percent => parseFloat(percent.toFixed(DECIMAL_PRECISION));
+  roundGrade = percent => parseFloat(percent.toFixed(DECIMAL_PRECISION));
 
   formatter = {
     percent: entries => entries.map((entry) => {
@@ -189,11 +189,11 @@ export default class Gradebook extends React.Component {
               className="btn btn-header link-style"
               onClick={() => this.setNewModalState(entry, subsection)}
             >
-              {this.roundPercentageGrade(subsection.percent * 100)}%
+              {this.roundGrade(subsection.percent * 100)}%
             </button>);
           return acc;
         }, {});
-      const totals = { total: `${this.roundPercentageGrade(entry.percent * 100)}%` };
+      const totals = { total: `${this.roundGrade(entry.percent * 100)}%` };
       return Object.assign(results, assignments, totals);
     }),
 
@@ -207,12 +207,12 @@ export default class Gradebook extends React.Component {
               className="btn btn-header link-style"
               onClick={() => this.setNewModalState(entry, subsection)}
             >
-              {subsection.score_earned}/{subsection.score_possible}
+              {this.roundGrade(subsection.score_earned)}/{this.roundGrade(subsection.score_possible)}
             </button>);
           return acc;
         }, {});
 
-      const totals = { total: `${entry.percent * 100}/100` };
+      const totals = { total: `${this.roundGrade(entry.percent * 100)}/100` };
       return Object.assign(results, assignments, totals);
     }),
   };
