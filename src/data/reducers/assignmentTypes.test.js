@@ -3,6 +3,7 @@ import {
   STARTED_FETCHING_ASSIGNMENT_TYPES,
   ERROR_FETCHING_ASSIGNMENT_TYPES,
   GOT_ASSIGNMENT_TYPES,
+  GOT_ARE_GRADES_FROZEN,
 } from '../constants/actionTypes/assignmentTypes';
 
 const initialState = {
@@ -49,6 +50,19 @@ describe('assignmentTypes reducer', () => {
     };
     expect(assignmentTypes(undefined, {
       type: ERROR_FETCHING_ASSIGNMENT_TYPES,
+    })).toEqual(expected);
+  });
+
+  it('updates areGradesFrozen success state', () => {
+    const expected = {
+      ...initialState,
+      errorFetching: false,
+      finishedFetching: true,
+      areGradesFrozen: true,
+    };
+    expect(assignmentTypes(undefined, {
+      type: GOT_ARE_GRADES_FROZEN,
+      areGradesFrozen: true,
     })).toEqual(expected);
   });
 });

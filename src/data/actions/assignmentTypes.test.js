@@ -9,6 +9,7 @@ import {
   STARTED_FETCHING_ASSIGNMENT_TYPES,
   GOT_ASSIGNMENT_TYPES,
   ERROR_FETCHING_ASSIGNMENT_TYPES,
+  GOT_ARE_GRADES_FROZEN,
 } from '../constants/actionTypes/assignmentTypes';
 
 const mockStore = configureMockStore([thunk]);
@@ -21,29 +22,30 @@ describe('actions', () => {
 
   describe('fetchAssignmentTypes', () => {
     const courseId = 'course-v1:edX+DemoX+Demo_Course';
-
-    it('dispatches success action after fetching fetchAssignmentTypes', () => {
-      const responseData = {
-        assignment_types: {
-          Exam: {
-            drop_count: 0,
-            min_count: 1,
-            short_label: 'Exam',
-            type: 'Exam',
-            weight: 0.25,
-          },
-          Homework: {
-            drop_count: 1,
-            min_count: 3,
-            short_label: 'Ex',
-            type: 'Homework',
-            weight: 0.75,
-          },
+    const responseData = {
+      assignment_types: {
+        Exam: {
+          drop_count: 0,
+          min_count: 1,
+          short_label: 'Exam',
+          type: 'Exam',
+          weight: 0.25,
         },
-      };
+        Homework: {
+          drop_count: 1,
+          min_count: 3,
+          short_label: 'Ex',
+          type: 'Homework',
+          weight: 0.75,
+        },
+      },
+      grades_frozen: false,
+    };
+    it('dispatches success action after fetching fetchAssignmentTypes', () => {
       const expectedActions = [
         { type: STARTED_FETCHING_ASSIGNMENT_TYPES },
         { type: GOT_ASSIGNMENT_TYPES, assignmentTypes: Object.keys(responseData.assignment_types) },
+        { type: GOT_ARE_GRADES_FROZEN, areGradesFrozen: responseData.grades_frozen },
       ];
       const store = mockStore();
 
@@ -64,6 +66,22 @@ describe('actions', () => {
 
       axiosMock.onGet(`${configuration.LMS_BASE_URL}/api/grades/v1/gradebook/${courseId}/grading-info?graded_only=true`)
         .replyOnce(500, JSON.stringify({}));
+
+      return store.dispatch(fetchAssignmentTypes(courseId)).then(() => {
+        expect(store.getActions()).toEqual(expectedActions);
+      });
+    });
+
+    it('dispatches frozen grade action with True value after fetching', () => {
+      const expectedActions = [
+        { type: STARTED_FETCHING_ASSIGNMENT_TYPES },
+        { type: GOT_ASSIGNMENT_TYPES, assignmentTypes: Object.keys(responseData.assignment_types) },
+        { type: GOT_ARE_GRADES_FROZEN, areGradesFrozen: true },
+      ];
+      const store = mockStore();
+      responseData.grades_frozen = true;
+      axiosMock.onGet(`${configuration.LMS_BASE_URL}/api/grades/v1/gradebook/${courseId}/grading-info?graded_only=true`)
+        .replyOnce(200, JSON.stringify(responseData));
 
       return store.dispatch(fetchAssignmentTypes(courseId)).then(() => {
         expect(store.getActions()).toEqual(expectedActions);

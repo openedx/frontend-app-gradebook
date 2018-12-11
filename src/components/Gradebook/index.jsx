@@ -179,36 +179,44 @@ export default class Gradebook extends React.Component {
   roundGrade = percent => parseFloat(percent.toFixed(DECIMAL_PRECISION));
 
   formatter = {
-    percent: entries => entries.map((entry) => {
+    percent: (entries, areGradesFrozen) => entries.map((entry) => {
       const results = { username: entry.username };
       const assignments = entry.section_breakdown
         .filter(section => section.is_graded)
         .reduce((acc, subsection) => {
-          acc[subsection.label] = (
-            <button
-              className="btn btn-header link-style"
-              onClick={() => this.setNewModalState(entry, subsection)}
-            >
-              {this.roundGrade(subsection.percent * 100)}%
-            </button>);
+          if (areGradesFrozen) {
+            acc[subsection.label] = `${this.roundGrade(subsection.percent * 100)} %`;
+          } else {
+            acc[subsection.label] = (
+              <button
+                className="btn btn-header link-style"
+                onClick={() => this.setNewModalState(entry, subsection)}
+              >
+                {this.roundGrade(subsection.percent * 100)}%
+              </button>);
+          }
           return acc;
         }, {});
       const totals = { total: `${this.roundGrade(entry.percent * 100)}%` };
       return Object.assign(results, assignments, totals);
     }),
 
-    absolute: entries => entries.map((entry) => {
+    absolute: (entries, areGradesFrozen) => entries.map((entry) => {
       const results = { username: entry.username };
       const assignments = entry.section_breakdown
         .filter(section => section.is_graded)
         .reduce((acc, subsection) => {
-          acc[subsection.label] = (
-            <button
-              className="btn btn-header link-style"
-              onClick={() => this.setNewModalState(entry, subsection)}
-            >
-              {this.roundGrade(subsection.score_earned)}/{this.roundGrade(subsection.score_possible)}
-            </button>);
+          if (areGradesFrozen) {
+            acc[subsection.label] = `${this.roundGrade(subsection.score_earned)}/${this.roundGrade(subsection.score_possible)}`;
+          } else {
+            acc[subsection.label] = (
+              <button
+                className="btn btn-header link-style"
+                onClick={() => this.setNewModalState(entry, subsection)}
+              >
+                {this.roundGrade(subsection.score_earned)}/{this.roundGrade(subsection.score_possible)}
+              </button>);
+          }
           return acc;
         }, {});
 
@@ -233,6 +241,11 @@ export default class Gradebook extends React.Component {
             </a>
             <h1>Gradebook</h1>
             <h3> {this.props.match.params.courseId}</h3>
+            { this.props.areGradesFrozen &&
+              <div className="alert alert-danger" role="alert" >
+                The grades for this course are now frozen. Editing of grades is no longer allowed.
+              </div>
+            }
             <hr />
             <div className="d-flex justify-content-between" >
               <div>
@@ -335,7 +348,7 @@ export default class Gradebook extends React.Component {
             <div className="gbook">
               <Table
                 columns={this.props.headings}
-                data={this.formatter[this.props.format](this.props.grades)}
+                data={this.formatter[this.props.format](this.props.grades, this.props.areGradesFrozen)}
                 tableSortable
                 defaultSortDirection="asc"
                 defaultSortedColumn="username"
