@@ -2,6 +2,7 @@ import {
   STARTED_FETCHING_ASSIGNMENT_TYPES,
   ERROR_FETCHING_ASSIGNMENT_TYPES,
   GOT_ASSIGNMENT_TYPES,
+  GOT_ARE_GRADES_FROZEN,
 } from '../constants/actionTypes/assignmentTypes';
 
 const initialState = {
@@ -30,6 +31,13 @@ const assignmentTypes = (state = initialState, action) => {
         ...state,
         finishedFetching: true,
         errorFetching: true,
+      };
+    case GOT_ARE_GRADES_FROZEN:
+      return {
+        ...state,
+        areGradesFrozen: action.areGradesFrozen,
+        errorFetching: false,
+        finishedFetching: true,
       };
     default:
       return state;
