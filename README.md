@@ -23,7 +23,7 @@ npm i --save @edx/gradebook
 
 After cloning the repository, run `make up-detached` in the `gradebook` directory - this will build and start the `gradebook` web application in a docker container.
 
-The web application runs on port **1991**, so when you go to `http://localhost:1991` you should see the UI.
+The web application runs on port **1991**, so when you go to `http://localhost:1991/course-v1:edX+DemoX+Demo_Course` you should see the UI (assuming you have such a Demo Course in your devstack).  Note that you always have to provide a course id to actually see a gradebook.
 
 If you don't, you can see the log messages for the docker container by executing `make logs` in the `gradebook` directory.
 
