@@ -1,0 +1,24 @@
+.color-gray-dark {
+    color: #767676;
+}
+
+.weight-bold {
+    font-weight: 600;
+}
+
+.size-16 {
+    font-size: 16px;
+}
+
+.border-bottom-blue {
+    border-bottom: 1px solid #0075b4;
+}
+
+.border-bottom-gray {
+    border-bottom: 1px solid #e7e7e7;
+}
+
+.nav-link::after {
+    content: '\00BB';
+    padding-left: 4px;
+}
