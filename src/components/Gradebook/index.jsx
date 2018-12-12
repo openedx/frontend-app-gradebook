@@ -39,17 +39,23 @@ export default class Gradebook extends React.Component {
   }
 
   setNewModalState = (userEntry, subsection) => {
+    let adjustedGradePossible = '';
+    let currentGradePossible = '';
+    if (subsection.attempted) {
+      adjustedGradePossible = ` / ${subsection.score_possible}`;
+      currentGradePossible = `/${subsection.score_possible}`;
+    }
     this.setState({
       modalModel: [{
         username: userEntry.username,
-        currentGrade: `${subsection.score_earned}/${subsection.score_possible}`,
+        currentGrade: `${subsection.score_earned}${currentGradePossible}`,
         adjustedGrade: (
           <span>
             <input
               style={{ width: '25px' }}
               type="text"
               onChange={event => this.setState({ updateVal: event.target.value })}
-            /> / {subsection.score_possible}
+            />{adjustedGradePossible}
           </span>
         ),
         assignmentName: `${subsection.subsection_name}`,
@@ -206,16 +212,23 @@ export default class Gradebook extends React.Component {
       const assignments = entry.section_breakdown
         .filter(section => section.is_graded)
         .reduce((acc, subsection) => {
+          const scoreEarned = this.roundGrade(subsection.score_earned);
+          const scorePossible = this.roundGrade(subsection.score_possible);
+          let label = `${scoreEarned}`;
+          if (subsection.attempted) {
+            label = `${scoreEarned}/${scorePossible}`;
+          }
           if (areGradesFrozen) {
-            acc[subsection.label] = `${this.roundGrade(subsection.score_earned)}/${this.roundGrade(subsection.score_possible)}`;
+            acc[subsection.label] = label;
           } else {
             acc[subsection.label] = (
               <button
                 className="btn btn-header link-style"
                 onClick={() => this.setNewModalState(entry, subsection)}
               >
-                {this.roundGrade(subsection.score_earned)}/{this.roundGrade(subsection.score_possible)}
-              </button>);
+                {label}
+              </button>
+            );
           }
           return acc;
         }, {});
