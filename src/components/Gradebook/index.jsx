@@ -255,7 +255,7 @@ export default class Gradebook extends React.Component {
             <h1>Gradebook</h1>
             <h3> {this.props.match.params.courseId}</h3>
             { this.props.areGradesFrozen &&
-              <div className="alert alert-danger" role="alert" >
+              <div className="alert alert-warning" role="alert" >
                 The grades for this course are now frozen. Editing of grades is no longer allowed.
               </div>
             }
