@@ -11,6 +11,8 @@ import Header from './components/Header';
 import store from './data/store';
 import './App.scss';
 
+var courseId = window.location.pathname.substring(1);
+
 const App = () => (
   <Provider store={store}>
     <Router>

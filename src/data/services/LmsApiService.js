@@ -59,6 +59,11 @@ class LmsApiService {
     const assignmentTypesUrl = `${LmsApiService.baseUrl}/api/grades/v1/gradebook/${courseId}/grading-info?graded_only=true`;
     return apiClient.get(assignmentTypesUrl);
   }
+
+  static fetchUserRoles(){
+    var rolesUrl = `${LmsApiService.baseUrl}/api/enrollment/v1/roles/`;
+    return apiClient.get(rolesUrl)
+  }
 }
 
 export default LmsApiService;
