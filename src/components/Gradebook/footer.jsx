@@ -23,7 +23,7 @@ export default function Footer() {
         <div className="area-2">
           <h2>edx</h2>
           <ul className="list-unstyled p-0 m-0">
-            <li><a href="https://www.edx.org/about-us">About Cats</a></li>
+            <li><a href="https://www.edx.org/about-us">About</a></li>
             <li><a href="https://www.edx.org/enterprise">edX for Business</a></li>
             <li><a href="https://www.edx.org/affiliate-program">Affiliates</a></li>
             <li><a href="http://open.edx.org">Open edX</a></li>
