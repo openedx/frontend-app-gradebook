@@ -109,7 +109,7 @@ export default function Footer() {
             </li>
           </ul>
           <p>
-            © 2012–2018 edX Inc.
+            © 2012–{(new Date().getFullYear())} edX Inc.
             <br />
             EdX, Open edX, and MicroMasters are registered trademarks of edX Inc.
             | 粤ICP备17044299号-2
