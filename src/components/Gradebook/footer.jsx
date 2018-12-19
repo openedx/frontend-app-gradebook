@@ -18,7 +18,7 @@ export default function Footer() {
     >
       <div className="max-width-1180 d-grid">
         <div className="area-1">
-          <Hyperlink destination="https://www.edx.org/" content={renderLogo()} />
+          <Hyperlink destination="https://www.edx.org/" content={renderLogo()} aria-label="edX Home" />
         </div>
         <div className="area-2">
           <h2>edx</h2>
