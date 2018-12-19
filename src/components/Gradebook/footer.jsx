@@ -1,12 +1,12 @@
 import React from 'react';
 import { Hyperlink, Icon } from '@edx/paragon';
 
-import EdXLogo from '../../../assets/edx-sm.png';
+import EdXFooterLogo from '../../../assets/edx-footer.png';
 
 export default function Footer() {
   function renderLogo() {
     return (
-      <img src={EdXLogo} alt="edX logo" height="30" width="60" />
+      <img src={EdXFooterLogo} alt="edX logo" />
     );
   }
 
