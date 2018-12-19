@@ -21,7 +21,7 @@ export default function Footer() {
           <Hyperlink destination="https://www.edx.org/" content={renderLogo()} aria-label="edX Home" />
         </div>
         <div className="area-2">
-          <h2>edx</h2>
+          <h2>edX</h2>
           <ul className="list-unstyled p-0 m-0">
             <li><a href="https://www.edx.org/about-us">About</a></li>
             <li><a href="https://www.edx.org/enterprise">edX for Business</a></li>
