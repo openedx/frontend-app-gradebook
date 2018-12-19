@@ -28,14 +28,7 @@ export default class Gradebook extends React.Component {
 
   componentDidMount() {
     const urlQuery = queryString.parse(this.props.location.search);
-    this.props.getUserGrades(
-      this.props.match.params.courseId,
-      urlQuery.cohort,
-      urlQuery.track,
-    );
-    this.props.getTracks(this.props.match.params.courseId);
-    this.props.getCohorts(this.props.match.params.courseId);
-    this.props.getAssignmentTypes(this.props.match.params.courseId);
+    this.props.getRoles(this.props.match.params.courseId, urlQuery);
   }
 
   setNewModalState = (userEntry, subsection) => {
@@ -257,6 +250,11 @@ export default class Gradebook extends React.Component {
             { this.props.areGradesFrozen &&
               <div className="alert alert-warning" role="alert" >
                 The grades for this course are now frozen. Editing of grades is no longer allowed.
+              </div>
+            }
+            { !this.props.canUserViewGradebook &&
+              <div className="alert alert-warning" role="alert" >
+                You are not authorized to view the gradebook for this course. If you have a global role, please enroll in this course and try again.
               </div>
             }
             <hr />

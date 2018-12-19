@@ -13,6 +13,7 @@ import {
 import { fetchCohorts } from '../../data/actions/cohorts';
 import { fetchTracks } from '../../data/actions/tracks';
 import { fetchAssignmentTypes } from '../../data/actions/assignmentTypes';
+import { getRoles } from '../../data/actions/roles';
 
 const mapStateToProps = state => (
   {
@@ -28,9 +29,20 @@ const mapStateToProps = state => (
     nextPage: state.grades.nextPage,
     assignmnetTypes: state.assignmentTypes.results,
     areGradesFrozen: state.assignmentTypes.areGradesFrozen,
-    showSpinner: state.grades.showSpinner,
+    showSpinner: shouldShowSpinner(state),
+    canUserViewGradebook: state.roles.canUserViewGradebook
   }
 );
+
+function shouldShowSpinner (state) {
+  if (state.roles.canUserViewGradebook === true){
+    return state.grades.showSpinner;
+  } else if (state.roles.canUserViewGradebook === false){
+    return false;
+  } else { // canUserViewGradebook === null
+    return true;
+  }
+}
 
 const mapDispatchToProps = dispatch => (
   {
@@ -63,6 +75,9 @@ const mapDispatchToProps = dispatch => (
     },
     updateBanner: (showSuccess) => {
       dispatch(updateBanner(showSuccess));
+    },
+    getRoles: (matchParams, urlQuery) => {
+      dispatch(getRoles(matchParams, urlQuery));
     },
   }
 );
