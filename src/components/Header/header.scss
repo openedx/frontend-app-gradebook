@@ -1,0 +1,8 @@
+.nav-item {
+  .submenu {
+    display: none;
+    &.open {
+      display: block;
+    }
+  }
+}

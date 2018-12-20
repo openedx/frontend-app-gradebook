@@ -1,5 +1,8 @@
 import React from 'react';
+import classNames from 'classnames';
 import { Hyperlink } from '@edx/paragon';
+import Nav from './Nav';
+import NavItem from './NavItem';
 
 import EdxLogo from '../../../assets/edx-sm.png';
 
@@ -19,12 +22,39 @@ export default class Header extends React.Component {
 
   render() {
     return (
-      <div className="mb-3">
-        <header className="d-flex justify-content-center align-items-center p-3 border-bottom-blue">
-          <Hyperlink content={this.renderLogo()} destination="https://www.edx.org" />
-          <div />
-        </header>
-      </div>
+      <header className="site-header">
+        <Nav>
+          <NavItem
+            submenu={[
+              <NavItem />,
+              <NavItem />,
+              <NavItem />,
+              <NavItem />,
+              <NavItem />,
+              <NavItem />
+            ]}
+          />
+          <NavItem
+            submenu={[
+              <NavItem />,
+              <NavItem />,
+              <NavItem />,
+              <NavItem />,
+              <NavItem />,
+              <NavItem />
+            ]}
+          />
+          <NavItem />
+          <NavItem />
+        </Nav>
+        
+        <Hyperlink content={this.renderLogo()} destination="https://www.edx.org" />
+        
+        {/* <SearchBar /> */}
+
+        {/* <Nav><AccountMenu /></Nav> */}
+
+      </header>
     );
   }
 }
