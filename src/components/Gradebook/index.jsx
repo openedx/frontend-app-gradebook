@@ -269,6 +269,7 @@ export default class Gradebook extends React.Component {
                       type="radio"
                       name="score-view"
                       value="percent"
+                      defaultChecked
                       onClick={() => this.props.toggleFormat('percent')}
                     />
                     <label className="mr-2" htmlFor="score-view-percent">Percent</label>
