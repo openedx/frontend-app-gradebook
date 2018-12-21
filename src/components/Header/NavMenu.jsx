@@ -30,8 +30,8 @@ export default class NavMenu extends React.Component {
       <div 
         className={classNames("nav-menu", {"open": this.props.isActive})}
         aria-expanded={this.props.isActive}
-        onMouseLeave={this.props.closeMenu}
-        onMouseEnter={this.props.openMenu}
+        onMouseLeave={/*this.props.closeMenu*/ null}
+        onMouseEnter={/*this.props.openMenu*/ null}
         onKeyUp={this.onKeyUp}
       >
         <button 

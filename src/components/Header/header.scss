@@ -1,79 +1,60 @@
 .site-header {
+  display: flex;
+  border-bottom: solid 1px rgba(0,0,0,.1);
 
-}
-
-@media(min-width: 500px) {
-  .mobile-only {
-    display: none !important;
-  }
-}
-.edx-nav {
-  ul {
-    margin: 0;
-    padding: 0;
-    list-style: none;
-  }
-}
-
-.edx-nav-children {
+  justify-content: space-between;
+  align-items:center;
   position: relative;
-  transition: all .3s ease;
-  .menu-is-open & {
+  & > div {
+    flex-grow: 1;
+    flex-basis:34%;
+  }
+
+  .right-menu {
+    display: flex;
+    justify-content: flex-end;
+  }
+  .site-header-logo {
+    flex-grow:1;
+    text-align: center;
+    a {
+      display: inline-block;
+    }
+  }
+  button.menu-button {
+    padding:1em;
+  }
+  .menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+  }
+}
+
+.edx-nav {
+  max-width: 100%;
+
+  button, a {
+    display: block;
+    width:100%;
+    text-align: left;
+    border:none;
+    border-bottom: solid 1px #aaa;
+    padding:.5em 1em;
+  }
+  .submenu {
+    position: absolute;
+    top: 0;
+    left: 100%;
+    width: 100%;
+  }
+
+  .edx-nav-children {
+    position:relative;
+    transition: all .3s ease;
+  }
+  &.menu-is-open .edx-nav-children {
     transform: translateX(-100%);
   }
-
-  @media(min-width: 500px) {
-    display: flex;
-    .menu-is-open & {
-      transform: none;
-    }
-  }
 }
-
-.nav-menu {
-  .submenu {
-    z-index: 2;
-    background: #ddd;
-    position:absolute;
-    width: 100%;
-    left: 100%;
-    top: 0;
-  }
-
-  // .submenu-enter {
-  //   opacity: 0.01;
-  // }
-  // .submenu-enter-active {
-  //   opacity: 1;
-  // }
-  // .submenu-exit {
-  //   opacity: 1;
-  // }
-  // .submenu-exit-active {
-  //   opacity: 0.01;
-  //   transition: all 300ms ease;
-  // }
-  @media(min-width: 500px) {
-    .submenu {
-      top:100%;
-      left: 0;
-      right: 0;
-      width: auto;
-    }
-    &.open .submenu {
-    }
-  }
-}
-.nav-menu button,
-.nav-item a {
-  display: block;
-  width: 100%;
-  box-sizing: border-box;
-  text-align: left;
-  padding: .5em;
-  border:0;
-  @media(min-width: 500px) {
-    width: auto;  
-  }
-}
-

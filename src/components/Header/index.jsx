@@ -12,18 +12,46 @@ export default class Header extends React.Component {
     super(props);
     this.state = {
       mobileNavOpen: false,
+      openMenu: null
     };
   }
 
-  renderLogo() {
-    return (
-      <img src={EdxLogo} alt="edX logo" height="30" width="60" />
-    );
+  onMenuTriggerClick(targetName, e) {
+    console.log(targetName, this.state.openMenu)
+    if (targetName == this.state.openMenu) {
+      this.setState({openMenu: null});
+    } else {
+      this.setState({openMenu: targetName});
+    }
   }
 
   render() {
     return (
       <header className="site-header">
+
+        <div className="left-menu">
+          <button className="menu-button" onClick={this.onMenuTriggerClick.bind(this, "MAIN_NAV")}>Hamburger</button>
+          {this.state.openMenu == "MAIN_NAV" ? this.renderMainMenu() : null}
+        </div>
+
+        <div className="site-header-logo">
+          <Hyperlink content={<img src={EdxLogo} alt="edX logo" height="30" width="60" />} destination="https://www.edx.org" />
+        </div>
+
+        <div className="right-menu">
+          <button className="menu-button" onClick={this.onMenuTriggerClick.bind(this, "SEARCH")}>Search</button>
+          {this.state.openMenu == "SEARCH" ? this.renderSearchMenu() : null}
+
+          <button className="menu-button" onClick={this.onMenuTriggerClick.bind(this, "ACCOUNT")}>Search</button>
+          {this.state.openMenu == "ACCOUNT" ? this.renderAccountMenu() : null}
+        </div>
+      </header>
+    );
+  }
+
+  renderMainMenu() {
+    return (
+      <div className="menu">
         <Nav>
           <NavMenu title="Courses">
             <h4>Courses by Subject</h4>
@@ -48,14 +76,23 @@ export default class Header extends React.Component {
           <NavItem title="Schools & Partners" />
           <NavItem title="edX for Business" />
         </Nav>
-        
-        <Hyperlink content={this.renderLogo()} destination="https://www.edx.org" />
-        
-        {/* <SearchBar /> */}
+      </div>
+    )
+  }
 
-        {/* <Nav><AccountMenu /></Nav> */}
+  renderSearchMenu() {
+    return (
+      <div className="menu">
+        Search Menu
+      </div>
+    )
+  }
 
-      </header>
-    );
+  renderAccountMenu() {
+    return (
+      <div className="menu">
+        Account Menu
+      </div>
+    )
   }
 }

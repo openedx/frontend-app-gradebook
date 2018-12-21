@@ -11,14 +11,8 @@ export default class NavItem extends React.Component {
 
   render() {
     return (
-      <div className={classNames('nav-item', {
-        'has-submenu': this.props.submenu
-      })}
-        onMouseLeave={this.props.closeMenu}
-      >
-        
-      <Hyperlink content={this.props.title} destination={this.props.destination} />
-      
+      <div className={classNames('nav-item')}>
+        <Hyperlink content={this.props.title} destination={this.props.destination} />
       </div>
     );
   }
