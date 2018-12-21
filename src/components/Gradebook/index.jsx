@@ -299,29 +299,25 @@ export default class Gradebook extends React.Component {
                     />
                   </div>
                 }
-                {(this.props.tracks.length > 0 || this.props.cohorts.length > 0) &&
-                  <div className="student-filters">
-                    <span className="label">
-                      Student Groups:
-                    </span>
-                    {this.props.tracks.length > 0 &&
-                      <InputSelect
-                        name="Tracks"
-                        value={this.mapSelectedTrackEntry(this.props.selectedTrack)}
-                        options={this.mapTracksEntries(this.props.tracks)}
-                        onChange={this.updateTracks}
-                      />
-                    }
-                    {this.props.cohorts.length > 0 &&
-                      <InputSelect
-                        name="Cohorts"
-                        value={this.mapSelectedCohortEntry(this.props.selectedCohort)}
-                        options={this.mapCohortsEntries(this.props.cohorts)}
-                        onChange={this.updateCohorts}
-                      />
-                    }
-                  </div>
-                }
+                <div className="student-filters">
+                  <span className="label">
+                    Student Groups:
+                  </span>
+                  <InputSelect
+                    name="Tracks"
+                    disabled={this.props.tracks.length === 0}
+                    value={this.mapSelectedTrackEntry(this.props.selectedTrack)}
+                    options={this.mapTracksEntries(this.props.tracks)}
+                    onChange={this.updateTracks}
+                  />
+                  <InputSelect
+                    name="Cohorts"
+                    disabled={this.props.cohorts.length === 0}
+                    value={this.mapSelectedCohortEntry(this.props.selectedCohort)}
+                    options={this.mapCohortsEntries(this.props.cohorts)}
+                    onChange={this.updateCohorts}
+                  />
+                </div>
               </div>
               <div>
                 <div style={{ marginLeft: '10px', marginBottom: '10px' }}>
