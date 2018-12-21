@@ -10,6 +10,7 @@ import {
 } from '@edx/paragon';
 import queryString from 'query-string';
 import { configuration } from '../../config';
+import PageButtons from '../PageButtons';
 
 const DECIMAL_PRECISION = 2;
 
@@ -329,21 +330,6 @@ export default class Gradebook extends React.Component {
                   onClear={() => this.props.getUserGrades(this.props.match.params.courseId, this.props.selectedCohort, this.props.selectedTrack)}
                   value={this.state.filterValue}
                 />
-                <div className="d-flex justify-content-end" style={{ marginTop: '20px' }}>
-                  <Button
-                    label="Previous"
-                    buttonType="primary"
-                    style={{ visibility: (!this.props.prevPage ? 'hidden' : 'visible') }}
-                    onClick={() => this.props.getPrevNextGrades(this.props.prevPage, this.props.selectedCohort, this.props.selectedTrack)}
-                  />
-                  <div style={{ width: '10px' }} />
-                  <Button
-                    label="Next"
-                    buttonType="primary"
-                    style={{ visibility: (!this.props.nextPage ? 'hidden' : 'visible') }}
-                    onClick={() => this.props.getPrevNextGrades(this.props.nextPage, this.props.selectedCohort, this.props.selectedTrack)}
-                  />
-                </div>
               </div>
             </div>
             <br />
@@ -353,6 +339,7 @@ export default class Gradebook extends React.Component {
               onClose={() => this.props.updateBanner(false)}
               open={this.props.showSuccess}
             />
+            {PageButtons(this.props)}
             <div className="gbook">
               <Table
                 columns={this.props.headings}
@@ -362,6 +349,7 @@ export default class Gradebook extends React.Component {
                 defaultSortedColumn="username"
               />
             </div>
+            {PageButtons(this.props)}
             <Modal
               open={this.state.modalOpen}
               title="Edit Grades"
