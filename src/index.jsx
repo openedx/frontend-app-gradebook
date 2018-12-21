@@ -16,12 +16,7 @@ const App = () => (
     <Router>
       <div>
         <Header />
-        <main>
-          <Switch>
-            <Route exact path="/:courseId" component={GradebookPage} />
-          </Switch>
-        </main>
-        <Footer />
+        
       </div>
     </Router>
   </Provider>
