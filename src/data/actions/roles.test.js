@@ -23,6 +23,12 @@ const rolesUrl = `${configuration.LMS_BASE_URL}/api/enrollment/v1/roles/`;
 const course1Id = 'course-v1:edX+DemoX+Demo_Course';
 const course2Id = 'course-v1:edX+DemoX+Demo_Course_2';
 
+function makeRoleListObj(roles, isGlobalStaff){
+  return {
+    roles: roles,
+    is_staff: isGlobalStaff,
+  }
+}
 function makeRoleObj(courseId, role) {
   return {
     course_id: courseId,
@@ -52,7 +58,25 @@ describe('actions', () => {
       ];
       const store = mockStore();
       axiosMock.onGet(rolesUrl)
-      .replyOnce(200, JSON.stringify([course1StaffRole, course2DummyRole]));
+      .replyOnce(200, JSON.stringify(makeRoleListObj([course1StaffRole, course2DummyRole], false)));
+
+      return store.dispatch(getRoles(course1Id, urlParams)).then(() => {
+        expect(store.getActions()).toEqual(expectedActions);
+      });
+    });
+
+    it('dispatches got_roles action and other actions after fetching irrelevent roles but user is global staff', () => {
+      const expectedActions = [
+        { type: GOT_ROLES, canUserViewGradebook: true },
+        { type: STARTED_FETCHING_GRADES },
+        { type: STARTED_FETCHING_TRACKS },
+        { type: STARTED_FETCHING_COHORTS },
+        { type: STARTED_FETCHING_ASSIGNMENT_TYPES },
+      ];
+      const store = mockStore();
+
+      axiosMock.onGet(rolesUrl)
+      .replyOnce(200, JSON.stringify(makeRoleListObj([course1DummyRole, course2DummyRole], true)));
 
       return store.dispatch(getRoles(course1Id, urlParams)).then(() => {
         expect(store.getActions()).toEqual(expectedActions);
@@ -66,7 +90,7 @@ describe('actions', () => {
       const store = mockStore();
 
       axiosMock.onGet(rolesUrl)
-      .replyOnce(200, JSON.stringify([course1DummyRole, course2StaffRole]));
+      .replyOnce(200, JSON.stringify(makeRoleListObj([course1DummyRole, course2StaffRole], false)));
 
       return store.dispatch(getRoles(course1Id, urlParams)).then(() => {
         expect(store.getActions()).toEqual(expectedActions);
@@ -80,7 +104,25 @@ describe('actions', () => {
       const store = mockStore();
 
       axiosMock.onGet(rolesUrl)
-      .replyOnce(200, JSON.stringify([]));
+      .replyOnce(200, JSON.stringify(makeRoleListObj([], false)));
+
+      return store.dispatch(getRoles(course1Id, urlParams)).then(() => {
+        expect(store.getActions()).toEqual(expectedActions);
+      });
+    });
+
+    it('dispatches got_roles action and other actions after fetching empty roles but user is global staff', () => {
+      const expectedActions = [
+        { type: GOT_ROLES, canUserViewGradebook: true },
+        { type: STARTED_FETCHING_GRADES },
+        { type: STARTED_FETCHING_TRACKS },
+        { type: STARTED_FETCHING_COHORTS },
+        { type: STARTED_FETCHING_ASSIGNMENT_TYPES },
+      ];
+      const store = mockStore();
+
+      axiosMock.onGet(rolesUrl)
+      .replyOnce(200, JSON.stringify(makeRoleListObj([], true)));
 
       return store.dispatch(getRoles(course1Id, urlParams)).then(() => {
         expect(store.getActions()).toEqual(expectedActions);
