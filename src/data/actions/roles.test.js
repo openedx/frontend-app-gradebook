@@ -18,10 +18,9 @@ import { STARTED_FETCHING_ASSIGNMENT_TYPES } from '../constants/actionTypes/assi
 const mockStore = configureMockStore([thunk]);
 const axiosMock = new MockAdapter(apiClient);
 
-const rolesUrl = `${configuration.LMS_BASE_URL}/api/enrollment/v1/roles/`;
-
 const course1Id = 'course-v1:edX+DemoX+Demo_Course';
 const course2Id = 'course-v1:edX+DemoX+Demo_Course_2';
+const rolesUrl = `${configuration.LMS_BASE_URL}/api/enrollment/v1/roles/?course_id=${encodeURIComponent(course1Id)}`;
 
 function makeRoleListObj(roles, isGlobalStaff){
   return {

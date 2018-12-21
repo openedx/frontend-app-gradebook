@@ -60,9 +60,9 @@ class LmsApiService {
     return apiClient.get(assignmentTypesUrl);
   }
 
-  static fetchUserRoles(){
-    var rolesUrl = `${LmsApiService.baseUrl}/api/enrollment/v1/roles/`;
-    return apiClient.get(rolesUrl)
+  static fetchUserRoles(courseId) {
+    const rolesUrl = `${LmsApiService.baseUrl}/api/enrollment/v1/roles/?course_id=${encodeURIComponent(courseId)}`;
+    return apiClient.get(rolesUrl);
   }
 }
 
