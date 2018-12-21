@@ -370,6 +370,7 @@ export default class Gradebook extends React.Component {
             <Modal
               open={this.state.modalOpen}
               title="Edit Grades"
+              closeText="Cancel"
               body={(
                 <div>
                   <h3>{this.state.modalModel[0].assignmentName}</h3>
@@ -377,11 +378,12 @@ export default class Gradebook extends React.Component {
                     columns={[{ label: 'Username', key: 'username' }, { label: 'Current grade', key: 'currentGrade' }, { label: 'Adjusted grade', key: 'adjustedGrade' }]}
                     data={this.state.modalModel}
                   />
+                  <div>Note: Once you save, your changes will be visible to students.</div>
                 </div>
               )}
               buttons={[
                 <Button
-                  label="Edit Grade"
+                  label="Save Grade"
                   buttonType="primary"
                   onClick={this.handleAdjustedGradeClick}
                 />,
