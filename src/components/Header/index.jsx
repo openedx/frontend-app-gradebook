@@ -70,6 +70,7 @@ export default class Header extends React.Component {
               expanded={this.state.openNavMenu === "Courses"}
               open={this.openNavMenu.bind(null, "Courses")}
               close={this.closeNavMenu.bind(null, "Courses")}
+              usePointerEvents={false}
             >
               <h4>Courses by Subject</h4>
               <Hyperlink content="Computer Science" destination="#" />
@@ -86,6 +87,7 @@ export default class Header extends React.Component {
               expanded={this.state.openNavMenu === "Programs & Degrees"}
               open={this.openNavMenu.bind(null, "Programs & Degrees")}
               close={this.closeNavMenu.bind(null, "Programs & Degrees")}
+              usePointerEvents={false}
             >
               <h4>Programs & Degrees</h4>
               <Hyperlink content="MicroMasters Program" destination="#" />

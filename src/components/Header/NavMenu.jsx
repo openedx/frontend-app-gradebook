@@ -14,26 +14,17 @@ export default class NavMenu extends React.Component {
     this.focusTrigger = this.focusTrigger.bind(this);
 
     this.onTriggerClick = this.onTriggerClick.bind(this);
-
-    this.onMouseEnter = this.onMouseEnter.bind(this);
-    this.onMouseLeave = this.onMouseLeave.bind(this);
   }
 
-
-  toggle() {
+  onTriggerClick(e) {
+    e.preventDefault();
+    
     if (this.props.expanded) {
       this.props.close();
     } else {
       this.props.open();
     }
   }
-
-  onTriggerClick(e) {
-    e.preventDefault();
-    this.toggle();
-  }
-
-
 
   onKeyDown(event) {
     switch(event.key) {
@@ -72,26 +63,15 @@ export default class NavMenu extends React.Component {
     this.refs.menu.querySelectorAll('a, button')[0].focus();
   }
 
-  onMouseEnter(e) {
-    // return;
-    this.props.open();
-  }
-
-  onMouseLeave(e) {
-    // return;
-    this.props.close();
-  }
-
   render() {
     return (
       <div 
         className={classNames("nav-menu", {"expanded": this.props.expanded})}
-        onMouseLeave={this.onMouseLeave}
-        onMouseEnter={this.onMouseEnter}
+        onMouseLeave={this.props.usePointerEvents ? this.props.close : null}
+        onMouseEnter={this.props.usePointerEvents ? this.props.open : null}
         ref="menu"
         onKeyDown={this.onKeyDown}
       >
-        {/* ref="trigger"  cant use because of way hyperlink is made */}
         <Hyperlink
           content={this.props.title} 
           destination={this.props.destination}
