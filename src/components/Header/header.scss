@@ -32,9 +32,8 @@
   }
 }
 
-.edx-nav {
-  max-width: 100%;
 
+.main-nav {
   button, a {
     display: block;
     width:100%;
@@ -43,18 +42,20 @@
     border-bottom: solid 1px #aaa;
     padding:.5em 1em;
   }
-  .submenu {
-    position: absolute;
-    top: 0;
+  h4 {
+    padding: .5em 1em;
+    font-size: 15px;
+    font-weight: 400;
+  }
+}
+.nav-wrap {
+  width: 75%;
+  position:relative;
+
+  .nav-menu-content {
+    position:absolute;
     left: 100%;
     width: 100%;
-  }
-
-  .edx-nav-children {
-    position:relative;
-    transition: all .3s ease;
-  }
-  &.menu-is-open .edx-nav-children {
-    transform: translateX(-100%);
+    top: 0;
   }
 }

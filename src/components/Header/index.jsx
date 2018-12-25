@@ -1,9 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import { Hyperlink } from '@edx/paragon';
-import Nav from './Nav';
 import NavMenu from './NavMenu';
-import NavItem from './NavItem';
 
 import EdxLogo from '../../../assets/edx-sm.png';
 
@@ -12,8 +10,12 @@ export default class Header extends React.Component {
     super(props);
     this.state = {
       mobileNavOpen: false,
-      openMenu: null
+      openMenu: "MAIN_NAV",
+      openNavMenu: null
     };
+
+    this.openNavMenu = this.openNavMenu.bind(this);
+    this.closeNavMenu = this.closeNavMenu.bind(this);
   }
 
   onMenuTriggerClick(targetName, e) {
@@ -22,6 +24,15 @@ export default class Header extends React.Component {
       this.setState({openMenu: null});
     } else {
       this.setState({openMenu: targetName});
+    }
+  }
+
+  openNavMenu(name) {
+    this.setState({openNavMenu: name});
+  }
+  closeNavMenu(name) {
+    if (this.state.openNavMenu === name) {
+      this.setState({openNavMenu: null});
     }
   }
 
@@ -52,30 +63,42 @@ export default class Header extends React.Component {
   renderMainMenu() {
     return (
       <div className="menu">
-        <Nav>
-          <NavMenu title="Courses">
-            <h4>Courses by Subject</h4>
-            <NavItem title="Computer Science" />
-            <NavItem title="Language" />
-            <NavItem title="Data & Statistics" />
-            <NavItem title="Business & Management" />
-            <NavItem title="Engineering" />
-            <NavItem title="Humanities" />
-            <NavItem title="View all courses by subjects" />
-          </NavMenu>
+        <nav className="main-nav">
+          <div className="nav-wrap">
+            <NavMenu
+              title="Courses"
+              expanded={this.state.openNavMenu === "Courses"}
+              open={this.openNavMenu.bind(null, "Courses")}
+              close={this.closeNavMenu.bind(null, "Courses")}
+            >
+              <h4>Courses by Subject</h4>
+              <Hyperlink content="Computer Science" destination="#" />
+              <Hyperlink content="Language" destination="#" />
+              <Hyperlink content="Data & Statistics" destination="#" />
+              <Hyperlink content="Business & Management" destination="#" />
+              <Hyperlink content="Engineering" destination="#" />
+              <Hyperlink content="Humanities" destination="#" />
+              <Hyperlink content="View all courses by subjects" destination="#" />
+            </NavMenu>
 
-          <NavMenu title="Programs & Degrees">
-            <h4>Programs & Degrees</h4>
-            <NavItem title="MicroMasters Program" />
-            <NavItem title="Professional Certificate" />
-            <NavItem title="Online Master's Degree" />
-            <NavItem title="Global Freshman Academy" />
-            <NavItem title="XSeries" />
-          </NavMenu>
-
-          <NavItem title="Schools & Partners" />
-          <NavItem title="edX for Business" />
-        </Nav>
+            <NavMenu 
+              title="Programs & Degrees"
+              expanded={this.state.openNavMenu === "Programs & Degrees"}
+              open={this.openNavMenu.bind(null, "Programs & Degrees")}
+              close={this.closeNavMenu.bind(null, "Programs & Degrees")}
+            >
+              <h4>Programs & Degrees</h4>
+              <Hyperlink content="MicroMasters Program" destination="#" />
+              <Hyperlink content="Professional Certificate" destination="#" />
+              <Hyperlink content="Online Master's Degree" destination="#" />
+              <Hyperlink content="Global Freshman Academy" destination="#" />
+              <Hyperlink content="XSeries" destination="#" />
+            </NavMenu>
+            
+            <Hyperlink className="nav-item" content="Schools & Partners" destination="#" />
+            <Hyperlink className="nav-item" content="edX for Business" destination="#" />
+          </div>
+        </nav>
       </div>
     )
   }

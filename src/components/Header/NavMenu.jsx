@@ -8,63 +8,111 @@ export default class NavMenu extends React.Component {
   constructor(props) {
     super(props);
 
-    this.onKeyUp = this.onKeyUp.bind(this);
+
+    this.onKeyDown = this.onKeyDown.bind(this);
+    
     this.focusTrigger = this.focusTrigger.bind(this);
+
+    this.onTriggerClick = this.onTriggerClick.bind(this);
+
+    this.onMouseEnter = this.onMouseEnter.bind(this);
+    this.onMouseLeave = this.onMouseLeave.bind(this);
   }
 
-  onKeyUp(event) {
-    switch(event.keyCode) {
-      case 27: // ESC
+
+  toggle() {
+    if (this.props.expanded) {
+      this.props.close();
+    } else {
+      this.props.open();
+    }
+  }
+
+  onTriggerClick(e) {
+    e.preventDefault();
+    this.toggle();
+  }
+
+
+
+  onKeyDown(event) {
+    switch(event.key) {
+      case 'Escape': // ESC
+        this.props.close();
         this.focusTrigger();
-        this.props.closeMenu();
+      case 'Enter':
         break;
+      case 'Tab':
+
+        // Trap focus when expanded
+        if (this.props.expanded) {
+
+          let focusableElements = this.refs.menuContent.querySelectorAll('a, button');
+
+          // Cycle from last to first
+          if (document.activeElement === focusableElements[focusableElements.length - 1] && !event.shiftKey) {
+            event.preventDefault();
+            this.focusTrigger();
+          }
+
+
+          // Cycle from first to last
+          if (document.activeElement === this.refs.menu.querySelectorAll('a, button')[0] && event.shiftKey) {
+            event.preventDefault();
+            focusableElements[focusableElements.length - 1].focus();
+          }
+        } 
+        
+        break;
+
     }
   }
 
   focusTrigger() {
-    this.refs.triggerButton.focus();
+    this.refs.menu.querySelectorAll('a, button')[0].focus();
+  }
+
+  onMouseEnter(e) {
+    // return;
+    this.props.open();
+  }
+
+  onMouseLeave(e) {
+    // return;
+    this.props.close();
   }
 
   render() {
     return (
       <div 
-        className={classNames("nav-menu", {"open": this.props.isActive})}
-        aria-expanded={this.props.isActive}
-        onMouseLeave={/*this.props.closeMenu*/ null}
-        onMouseEnter={/*this.props.openMenu*/ null}
-        onKeyUp={this.onKeyUp}
+        className={classNames("nav-menu", {"expanded": this.props.expanded})}
+        onMouseLeave={this.onMouseLeave}
+        onMouseEnter={this.onMouseEnter}
+        ref="menu"
+        onKeyDown={this.onKeyDown}
       >
-        <button 
-          onClick={this.props.openMenu}
-          ref="triggerButton"
+        {/* ref="trigger"  cant use because of way hyperlink is made */}
+        <Hyperlink
+          content={this.props.title} 
+          destination={this.props.destination}
+          onClick={this.onTriggerClick}
+        />
+
+        <CSSTransition
+          in={this.props.expanded}
+          timeout={50}
+          classNames="menu"
+          unmountOnExit
+          onExited={null}
         >
-          {this.props.title}
-        </button>
-
-          {this.props.isActive ? (
-            <div className="submenu">
-              <button 
-                className="mobile-only"
-                ref="closeButton"
-                onKeyUp={(e) => {
-                  if (e.keyCode == 13) { //ENTER
-                    this.focusTrigger();
-                    this.props.closeMenu();
-                  }
-                }}
-                onClick={(e) => {
-                  this.props.closeMenu();
-                }}
-                /*
-                  Note when triggered with ENTER closing the menu this way will not refocus the trigger button.
-                  Should fix.
-                */
-              >Go back</button>
-              {this.props.children}
-            </div>
-
-          ):null}
-          
+          <div 
+            className="nav-menu-content"
+            ref="menuContent"
+          >
+            {this.props.children}
+          </div>
+        </CSSTransition>    
+        
 
       </div>
     );
