@@ -28,6 +28,7 @@ export default class MenuTrigger extends React.Component {
     switch(e.key) {
       case 'Escape':
         e.preventDefault();
+        e.stopPropagation();
         this.focus();
         this.triggerClose();
         break;

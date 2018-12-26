@@ -18,7 +18,7 @@ export default class Menu extends React.Component {
   focus(index) {
     let focusableElements = this.refs.menu.querySelectorAll('a, button');
     if (focusableElements.length == 0) return;
-    
+
     if (index === 0) {
       focusableElements[0].focus();
     } else {
@@ -40,8 +40,16 @@ export default class Menu extends React.Component {
     switch(event.key) {
       case 'Escape':
         event.preventDefault();
+        event.stopPropagation();
         this.props.focusMenuTrigger();
         this.close();
+        break;
+      case 'Enter':
+        if (event.target == this.refs.closeButton) {
+          event.preventDefault();
+          this.props.focusMenuTrigger();
+          this.close();
+        }
         break;
       case 'Tab':
 
@@ -92,7 +100,10 @@ export default class Menu extends React.Component {
         onMouseLeave={this.props.triggerOnHover ? this.onMouseLeave : null}
       >
         {this.props.hasCloseButton ? (
-          <button onClick={this.close}>{this.props.closeButtonText}</button>
+          <button 
+            onClick={this.close}
+            ref="closeButton"
+          >{this.props.closeButtonText}</button>
         ) : null}
         {this.props.children}
         
