@@ -13,10 +13,12 @@ export default class Menu extends React.Component {
     this.open = this.open.bind(this);
   }
 
+  // Expose this method for parent components as recommended by Facebook
+  // https://github.com/facebook/draft-js/blob/master/docs/Advanced-Topics-Managing-Focus.md
   focus(index) {
-    let focusableElements =this.refs.menu.querySelectorAll('a, button');
-    // Expose this for parent components as recommended by Facebook
-    // https://github.com/facebook/draft-js/blob/master/docs/Advanced-Topics-Managing-Focus.md
+    let focusableElements = this.refs.menu.querySelectorAll('a, button');
+    if (focusableElements.length == 0) return;
+    
     if (index === 0) {
       focusableElements[0].focus();
     } else {
@@ -24,8 +26,8 @@ export default class Menu extends React.Component {
     }
   }
 
-  open(triggerElement) {
-    this.props.open(this.props.name, triggerElement);
+  open() {
+    this.props.open(this.props.name);
   }
 
   close() {
@@ -36,12 +38,10 @@ export default class Menu extends React.Component {
     if (!this.props.expanded) return;
 
     switch(event.key) {
-      case 'Escape': // ESC
-      console.log("Escape")
+      case 'Escape':
         event.preventDefault();
         this.props.focusMenuTrigger();
         this.close();
-      case 'Enter':
         break;
       case 'Tab':
 
@@ -73,13 +73,10 @@ export default class Menu extends React.Component {
   }
 
   onMouseEnter(e) {
-    if (!this.props.triggerOnHover) return;
-
     this.open();
   }
-  onMouseLeave(e) {
-    if (!this.props.triggerOnHover) return;
 
+  onMouseLeave(e) {
     this.close();
   }
 
@@ -88,13 +85,17 @@ export default class Menu extends React.Component {
 
     return (
       <div 
-        className="menu"
+        className={this.props.className}
         ref="menu"
         onKeyDown={this.onKeyDown}
-        onMouseEnter={this.onMouseEnter}
-        onMouseLeave={this.onMouseLeave}
+        onMouseEnter={this.props.triggerOnHover ? this.onMouseEnter : null}
+        onMouseLeave={this.props.triggerOnHover ? this.onMouseLeave : null}
       >
+        {this.props.hasCloseButton ? (
+          <button onClick={this.close}>{this.props.closeButtonText}</button>
+        ) : null}
         {this.props.children}
+        
       </div>
     );
   }

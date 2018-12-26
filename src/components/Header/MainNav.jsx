@@ -2,11 +2,8 @@ import React from 'react';
 import classNames from 'classnames';
 import { CSSTransition } from 'react-transition-group';
 import { TransitionGroup } from 'react-transition-group';
-
-import MenuTrigger from './MenuTrigger';
 import Menu from './Menu';
-
-
+import MenuTrigger from './MenuTrigger';
 import { Hyperlink } from '@edx/paragon';
 
 export default class MainNav extends React.Component {
@@ -14,74 +11,58 @@ export default class MainNav extends React.Component {
     super(props);
     this.state = {
       expandedMenu: null,
-      freezeMenu: false
+      submenuTrayIsOpen: false
     }
 
     this.openMenu = this.openMenu.bind(this);
     this.closeMenu = this.closeMenu.bind(this);
-
     this.focusMenuTrigger = this.focusMenuTrigger.bind(this);
     this.focusMenuItem = this.focusMenuItem.bind(this);
   }
-
-  componentWillUnmount() {
-    clearTimeout(this.freezeTimeout);
-  }
-
-  // Provides control over leaving
-  freezeMenu(timeMS) {
-    clearTimeout(this.freezeTimeout);
-    this.setState({
-      freezeMenu: true
-    });
-
-    this.freezeTimeout = setTimeout(this.unfreezeMenu.bind(this), timeMS);
-  }
-  unfreezeMenu() {
-    this.setState({
-      freezeMenu: false
-    });    
-  }
-
 
   openMenu(name) {
     clearTimeout(this.closeMenuTimeout);
 
     this.setState({
-      expandedMenu: name
+      expandedMenu: name,
+      submenuTrayIsOpen: true
     });
   }
 
   closeMenu(name) {
     const close = () => {
       this.setState({
-        expandedMenu: null
+        expandedMenu: null,
+        submenuTrayIsOpen: false
       });
     };
 
     if (this.state.expandedMenu === name) {
       if (this.props.menuType === "touch") {
-        close();
-        // this.freezeMenu(500);
+        // Starts the closing of the tray while leaving the menu active (until animation completes)
+        this.setState({
+          submenuTrayIsOpen: false
+        });
+        this.closeMenuTimeout = setTimeout(close, 500);
       } else {
-        this.closeMenuTimeout = setTimeout(close, 5); // work on this later. 
-        // this.freezeMenu(0);
+        close();
       }
     }
   }
 
   focusMenuTrigger() {
-    this.refs.expandedMenuTrigger.focus();
+    this.refs.expandedMenuTrigger && this.refs.expandedMenuTrigger.focus();
   }
 
   focusMenuItem(itemIndex) {
-    this.refs.expandedMenu.focus(itemIndex);
+    this.refs.expandedMenu && this.refs.expandedMenu.focus(itemIndex);
   }
 
   render() {
     return (
       <nav className={classNames("main-nav", {
         "has-expanded-menu": this.state.expandedMenu !== null,
+        "open-submenu-tray": this.state.submenuTrayIsOpen,
         "touch-nav": this.props.menuType === "touch",
         "pointer-nav": this.props.menuType === "pointer"
       })}>
@@ -90,24 +71,15 @@ export default class MainNav extends React.Component {
             {this.renderTopLevelItems()}
           </div>
 
-          <div className="submenu">
-            {this.props.menuItems.map((item, index) => {
-              if (!item.submenu) return; // Submenus only
-              return (
-                <Menu 
-                  name={item.submenu.name}
-                  key={"menu-" + item.submenu.name}
-                  expanded={this.state.expandedMenu == item.submenu.name} // Handled by transition
-                  open={this.openMenu}
-                  close={this.closeMenu}
-                  ref={this.state.expandedMenu == item.submenu.name ? "expandedMenu" : null}
-                  focusMenuTrigger={this.focusMenuTrigger}
-                  triggerElement={this.state.menuTrigger}
-                  triggerOnHover={this.props.menuType === "pointer"}
-                >{item.submenu.content}</Menu>
-              )
-            })}
-          </div>
+          <CSSTransition
+            in={Boolean(this.state.expandedMenu)}
+            timeout={500}
+            classNames="fade"
+          >
+            <div className="submenu">
+              {this.renderMenus()}
+            </div>
+          </CSSTransition>
         </div>
       </nav>
     );
@@ -125,7 +97,7 @@ export default class MainNav extends React.Component {
             destination={item.destination}
             menuName={item.submenu.name}
             expanded={this.state.expandedMenu === item.submenu.name}
-            focusMenuItem={this.refs.expandedMenu ? this.focusMenuItem : null}
+            focusMenuItem={this.focusMenuItem}
             triggerOpen={this.openMenu}
             triggerClose={this.closeMenu}
             triggerOnHover={this.props.menuType === "pointer"}
@@ -143,27 +115,25 @@ export default class MainNav extends React.Component {
       }
     })
   }
+
+  renderMenus() {
+    return this.props.menuItems.map((item, index) => {
+      if (!item.submenu) return; // Submenus only
+      return (
+        <Menu 
+          name={item.submenu.name}
+          className="menu"
+          key={"menu-" + item.submenu.name}
+          expanded={this.state.expandedMenu == item.submenu.name}
+          open={this.openMenu}
+          close={this.closeMenu}
+          ref={this.state.expandedMenu == item.submenu.name ? "expandedMenu" : null}
+          focusMenuTrigger={this.focusMenuTrigger}
+          triggerOnHover={this.props.menuType === "pointer"}
+          hasCloseButton={this.props.menuType === "touch"}
+          closeButtonText={item.submenu.closeButtonText}
+        >{item.submenu.content}</Menu>
+      )
+    })
+  }
 }
-
-
-class ComponentFreezer extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
-  shouldComponentUpdate(nextProps, nextState) {
-    if (nextProps.freeze) {
-      return false;
-    } else {
-      return true;
-    }
-  }
-
-  render() {
-    return this.props.children;
-  }
-}
-
-
-
-

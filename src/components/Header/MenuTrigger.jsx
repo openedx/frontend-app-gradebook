@@ -6,31 +6,27 @@ export default class MenuTrigger extends React.Component {
   constructor(props) {
     super(props);
 
-    this.triggerOpen = this.triggerOpen.bind(this);
-    this.triggerClose = this.triggerClose.bind(this);
+    this.triggerOpen = this.props.triggerOpen && this.props.triggerOpen.bind(null, this.props.menuName);
+    this.triggerClose = this.props.triggerClose && this.props.triggerClose.bind(null, this.props.menuName);
     this.onKeyDown = this.onKeyDown.bind(this);
     this.onClick = this.onClick.bind(this);
   }
 
-  // Expose this for parent components as recommended by Facebook
+  // Expose this method for parent components as recommended by Facebook
   // https://github.com/facebook/draft-js/blob/master/docs/Advanced-Topics-Managing-Focus.md
   focus() {
-    this.refs.trigger.querySelectorAll('a, button')[0].focus();
-  }
-
-  triggerOpen(triggerElement) {
-    this.props.triggerOpen(this.props.menuName, triggerElement);
-  }
-
-  triggerClose() {
-    
-    this.props.triggerClose(this.props.menuName);
+    if (this.refs.trigger.querySelectorAll('a').length) {
+      this.refs.trigger.querySelectorAll('a')[0].focus();
+    } else {
+      this.refs.trigger.focus();
+    }
   }
 
   onKeyDown(e) {
     if (!this.props.expanded) return;
+    
     switch(e.key) {
-      case 'Escape': // ESC
+      case 'Escape':
         e.preventDefault();
         this.focus();
         this.triggerClose();

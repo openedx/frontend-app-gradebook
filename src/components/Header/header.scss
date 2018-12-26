@@ -56,9 +56,9 @@ a {
     }
   }
 
-  &.has-expanded-menu {
+  &.open-submenu-tray {
     .main-nav-wrap {
-      transform: translateX(-80%);
+      transform: translateX(-100%);
     }
   }
   .top-level {
@@ -113,7 +113,7 @@ a {
       }
     }
 
-    &.has-expanded-menu {
+    &.open-submenu-tray {
       .main-nav-wrap {
         transform:none;
       }
