@@ -1,7 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import { Hyperlink } from '@edx/paragon';
-import NavMenu from './NavMenu';
+import MainNav from './MainNav';
 
 import EdxLogo from '../../../assets/edx-sm.png';
 
@@ -10,12 +10,8 @@ export default class Header extends React.Component {
     super(props);
     this.state = {
       mobileNavOpen: false,
-      openMenu: "MAIN_NAV",
-      openNavMenu: null
+      openMenu: "MAIN_NAV"
     };
-
-    this.openNavMenu = this.openNavMenu.bind(this);
-    this.closeNavMenu = this.closeNavMenu.bind(this);
   }
 
   onMenuTriggerClick(targetName, e) {
@@ -27,14 +23,6 @@ export default class Header extends React.Component {
     }
   }
 
-  openNavMenu(name) {
-    this.setState({openNavMenu: name});
-  }
-  closeNavMenu(name) {
-    if (this.state.openNavMenu === name) {
-      this.setState({openNavMenu: null});
-    }
-  }
 
   render() {
     return (
@@ -63,44 +51,7 @@ export default class Header extends React.Component {
   renderMainMenu() {
     return (
       <div className="menu">
-        <nav className="main-nav">
-          <div className="nav-wrap">
-            <NavMenu
-              title="Courses"
-              expanded={this.state.openNavMenu === "Courses"}
-              open={this.openNavMenu.bind(null, "Courses")}
-              close={this.closeNavMenu.bind(null, "Courses")}
-              usePointerEvents={false}
-            >
-              <h4>Courses by Subject</h4>
-              <Hyperlink content="Computer Science" destination="#" />
-              <Hyperlink content="Language" destination="#" />
-              <Hyperlink content="Data & Statistics" destination="#" />
-              <Hyperlink content="Business & Management" destination="#" />
-              <Hyperlink content="Engineering" destination="#" />
-              <Hyperlink content="Humanities" destination="#" />
-              <Hyperlink content="View all courses by subjects" destination="#" />
-            </NavMenu>
-
-            <NavMenu 
-              title="Programs & Degrees"
-              expanded={this.state.openNavMenu === "Programs & Degrees"}
-              open={this.openNavMenu.bind(null, "Programs & Degrees")}
-              close={this.closeNavMenu.bind(null, "Programs & Degrees")}
-              usePointerEvents={false}
-            >
-              <h4>Programs & Degrees</h4>
-              <Hyperlink content="MicroMasters Program" destination="#" />
-              <Hyperlink content="Professional Certificate" destination="#" />
-              <Hyperlink content="Online Master's Degree" destination="#" />
-              <Hyperlink content="Global Freshman Academy" destination="#" />
-              <Hyperlink content="XSeries" destination="#" />
-            </NavMenu>
-            
-            <Hyperlink className="nav-item" content="Schools & Partners" destination="#" />
-            <Hyperlink className="nav-item" content="edX for Business" destination="#" />
-          </div>
-        </nav>
+        <MainNav />
       </div>
     )
   }

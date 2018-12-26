@@ -80,7 +80,7 @@ export default class NavMenu extends React.Component {
 
         <CSSTransition
           in={this.props.expanded}
-          timeout={50}
+          timeout={500}
           classNames="menu"
           unmountOnExit
           onExited={null}

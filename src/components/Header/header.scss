@@ -33,7 +33,11 @@
 }
 
 
+
+
 .main-nav {
+  max-width: 100%;
+  position:relative;
   button, a {
     display: block;
     width:100%;
@@ -47,15 +51,23 @@
     font-size: 15px;
     font-weight: 400;
   }
-}
-.nav-wrap {
-  width: 75%;
-  position:relative;
 
+  .nav-wrap {
+    transition: transform .5s ease;
+  }
+
+  &.has-expanded-menu {
+    .nav-wrap {
+      transform: translateX(-100%);
+    }
+  }
+}
+.nav-menu {
   .nav-menu-content {
     position:absolute;
-    left: 100%;
+    left: 0;
     width: 100%;
     top: 0;
+    transform: translateX(100%);
   }
 }
