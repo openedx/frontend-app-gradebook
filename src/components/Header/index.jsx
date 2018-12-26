@@ -50,15 +50,63 @@ export default class Header extends React.Component {
 
   renderMainMenu() {
     return (
-      <div className="menu">
-        <MainNav />
+      <div className="header-menu">
+        <MainNav 
+          menuType="pointer" // "pointer", "touch"
+          menuItems={[
+            {
+              content: "Courses",
+              destination: "#",
+              submenu: {
+                name: "Courses",
+                content: (
+                  <div>
+                    <h4>Courses by Subject</h4>
+                    <Hyperlink content="Computer Science" destination="#" />
+                    <Hyperlink content="Language" destination="#" />
+                    <Hyperlink content="Data & Statistics" destination="#" />
+                    <Hyperlink content="Business & Management" destination="#" />
+                    <Hyperlink content="Engineering" destination="#" />
+                    <Hyperlink content="Humanities" destination="#" />
+                    <Hyperlink content="View all courses by subjects" destination="#" />
+                  </div>
+                )
+              }
+            },
+            {
+              content: "Programs",
+              destination: "#",
+              submenu: {
+                name: "Programs",
+                content: (
+                  <div>
+                    <h4>Programs & Degrees</h4>
+                    <Hyperlink content="MicroMasters Program" destination="#" />
+                    <Hyperlink content="Professional Certificate" destination="#" />
+                    <Hyperlink content="Online Master's Degree" destination="#" />
+                    <Hyperlink content="Global Freshman Academy" destination="#" />
+                    <Hyperlink content="XSeries" destination="#" />
+                  </div>
+                )
+              }
+            },
+            {
+              content: "Schools & Partners",
+              destination: "#"
+            },
+            {
+              content: "edX for Business",
+              destination: "#"
+            }
+          ]}
+        />
       </div>
     )
   }
 
   renderSearchMenu() {
     return (
-      <div className="menu">
+      <div className="header-menu">
         Search Menu
       </div>
     )
@@ -66,7 +114,7 @@ export default class Header extends React.Component {
 
   renderAccountMenu() {
     return (
-      <div className="menu">
+      <div className="header-menu">
         Account Menu
       </div>
     )
