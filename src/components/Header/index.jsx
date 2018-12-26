@@ -8,14 +8,20 @@ import MenuTrigger from './MenuTrigger';
 
 import EdxLogo from '../../../assets/edx-sm.png';
 
+
+import { library } from '@fortawesome/fontawesome-svg-core'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faBars, faTimes } from '@fortawesome/free-solid-svg-icons'
+
+library.add(faBars, faTimes)
+
+
 export default class Header extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      mobileNavOpen: false,
-      openMenu: "MAIN_NAV",
-      expandedMenu: 'main',
-      submenuTrayIsOpen: true
+      expandedMenu: null,
+      submenuTrayIsOpen: false
     };
 
 
@@ -23,15 +29,6 @@ export default class Header extends React.Component {
     this.closeMenu = this.closeMenu.bind(this);
     this.focusMenuTrigger = this.focusMenuTrigger.bind(this);
     this.focusMenuItem = this.focusMenuItem.bind(this);
-  }
-
-  onMenuTriggerClick(targetName, e) {
-    console.log(targetName, this.state.openMenu)
-    if (targetName == this.state.openMenu) {
-      this.setState({openMenu: null});
-    } else {
-      this.setState({openMenu: targetName});
-    }
   }
 
   openMenu(name) {
@@ -69,7 +66,7 @@ export default class Header extends React.Component {
           <MenuTrigger
             className="menu-button"
             ref={this.state.expandedMenu === "main" ? "expandedMenuTrigger" : null}
-            content={"Hamburger"}
+            content={<FontAwesomeIcon icon={this.state.expandedMenu === "main" ? "times" : "bars"} />}
             menuName={"main"}
             expanded={this.state.expandedMenu === "main"}
             focusMenuItem={this.focusMenuItem}
@@ -77,8 +74,22 @@ export default class Header extends React.Component {
             triggerClose={this.closeMenu}
             triggerOnHover={false}
           />
-          {this.renderMainMenu()}
-
+          <Menu 
+            name="main"
+            className="menu header-menu"
+            key={"main-menu"}
+            expanded={this.state.expandedMenu == "main"}
+            open={this.openMenu}
+            close={this.closeMenu}
+            ref={this.state.expandedMenu == "main" ? "expandedMenu" : null}
+            focusMenuTrigger={this.focusMenuTrigger}
+            triggerOnHover={false}
+          >
+            <MainNav 
+              menuType="touch" // "pointer", "touch"
+              menuItems={MENU_ITEMS}
+            />
+          </Menu>
         </div>
 
         <div className="site-header-logo">
@@ -110,6 +121,7 @@ export default class Header extends React.Component {
             triggerOnHover={false}
           >
             SEARCH
+
           </Menu>
 
 
@@ -144,43 +156,6 @@ export default class Header extends React.Component {
     );
   }
 
-  renderMainMenu() {
-    return (
-      <Menu 
-        name="main"
-        className="menu header-menu"
-        key={"main-menu"}
-        expanded={this.state.expandedMenu == "main"}
-        open={this.openMenu}
-        close={this.closeMenu}
-        ref={this.state.expandedMenu == "main" ? "expandedMenu" : null}
-        focusMenuTrigger={this.focusMenuTrigger}
-        triggerOnHover={false}
-      >
-        <MainNav 
-          menuType="touch" // "pointer", "touch"
-          menuItems={MENU_ITEMS}
-        />
-      </Menu>
-        
-    )
-  }
-
-  renderSearchMenu() {
-    return (
-      <div className="header-menu">
-        Search Menu
-      </div>
-    )
-  }
-
-  renderAccountMenu() {
-    return (
-      <div className="header-menu">
-        Account Menu
-      </div>
-    )
-  }
 }
 
 
