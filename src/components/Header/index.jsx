@@ -59,37 +59,31 @@ export default class Header extends React.Component {
 
 
   render() {
+    const commonTriggerProps = {
+      triggerOpen: this.openMenu,
+      triggerClose: this.closeMenu,
+      triggerOnHover: false,
+      focusMenuItem: this.focusMenuItem
+    }
+
+    const commonMenuProps = {
+      open: this.openMenu,
+      close: this.closeMenu,
+      triggerOnHover: false,
+      focusMenuTrigger: this.focusMenuTrigger
+    }
+
     return (
       <header className="site-header">
 
         <div className="left-menu">
-          <MenuTrigger
-            className="menu-button"
-            ref={this.state.expandedMenu === "main" ? "expandedMenuTrigger" : null}
-            content={<FontAwesomeIcon icon={this.state.expandedMenu === "main" ? "times" : "bars"} />}
-            menuName={"main"}
-            expanded={this.state.expandedMenu === "main"}
-            focusMenuItem={this.focusMenuItem}
-            triggerOpen={this.openMenu}
-            triggerClose={this.closeMenu}
-            triggerOnHover={false}
-          />
-          <Menu 
-            name="main"
-            className="menu header-menu"
-            key={"main-menu"}
-            expanded={this.state.expandedMenu == "main"}
-            open={this.openMenu}
-            close={this.closeMenu}
-            ref={this.state.expandedMenu == "main" ? "expandedMenu" : null}
-            focusMenuTrigger={this.focusMenuTrigger}
-            triggerOnHover={false}
-          >
+          {this.renderTrigger("main", <FontAwesomeIcon icon={this.state.expandedMenu === "main" ? "times" : "bars"} />, commonTriggerProps)}
+          {this.renderMenu("main", (
             <MainNav 
               menuType="touch" // "pointer", "touch"
               menuItems={MENU_ITEMS}
             />
-          </Menu>
+          ), commonMenuProps)}
         </div>
 
         <div className="site-header-logo">
@@ -97,62 +91,47 @@ export default class Header extends React.Component {
         </div>
 
         <div className="right-menu">
-          <MenuTrigger
-            className="menu-button"
-            ref={this.state.expandedMenu === "search" ? "expandedMenuTrigger" : null}
-            content={"Search"}
-            menuName={"search"}
-            expanded={this.state.expandedMenu === "search"}
-            focusMenuItem={this.focusMenuItem}
-            triggerOpen={this.openMenu}
-            triggerClose={this.closeMenu}
-            triggerOnHover={false}
-          />
+          {this.renderTrigger("search", "Search", commonTriggerProps)}
+          {this.renderMenu("search", (
+            <div>
+              Search
+            </div>
+          ), commonMenuProps)}
 
-          <Menu 
-            name="search"
-            className="menu header-menu"
-            key={"search-menu"}
-            expanded={this.state.expandedMenu == "search"}
-            open={this.openMenu}
-            close={this.closeMenu}
-            ref={this.state.expandedMenu == "search" ? "expandedMenu" : null}
-            focusMenuTrigger={this.focusMenuTrigger}
-            triggerOnHover={false}
-          >
-            SEARCH
-
-          </Menu>
-
-
-          <MenuTrigger
-            className="menu-button"
-            ref={this.state.expandedMenu === "account" ? "expandedMenuTrigger" : null}
-            content={"account"}
-            menuName={"account"}
-            expanded={this.state.expandedMenu === "account"}
-            focusMenuItem={this.focusMenuItem}
-            triggerOpen={this.openMenu}
-            triggerClose={this.closeMenu}
-            triggerOnHover={false}
-          />
-
-          <Menu 
-            name="account"
-            className="menu header-menu"
-            key={"account-menu"}
-            expanded={this.state.expandedMenu == "account"}
-            open={this.openMenu}
-            close={this.closeMenu}
-            ref={this.state.expandedMenu == "account" ? "expandedMenu" : null}
-            focusMenuTrigger={this.focusMenuTrigger}
-            triggerOnHover={false}
-          >
-            ACCOUNT
-          </Menu>
-
+          {this.renderTrigger("account", "Account", commonTriggerProps)}
+          {this.renderMenu("account", (
+            <div>
+              ACCOUNT
+            </div>
+          ), commonMenuProps)}
         </div>
       </header>
+    );
+  }
+
+  renderTrigger(menuName, content, commonTriggerProps) {
+    return (
+      <MenuTrigger
+        className="menu-button"
+        ref={this.state.expandedMenu === menuName ? "expandedMenuTrigger" : null}
+        content={content}
+        menuName={menuName}
+        expanded={this.state.expandedMenu === menuName}
+        {...commonTriggerProps}
+      />
+    );
+  }
+  renderMenu(menuName, content, commonMenuProps) {
+    return (
+      <Menu 
+        name={menuName}
+        className="menu header-menu"
+        expanded={this.state.expandedMenu == menuName}
+        ref={this.state.expandedMenu == menuName ? "expandedMenu" : null}
+        {...commonMenuProps}
+      >
+        {content}
+      </Menu>
     );
   }
 
