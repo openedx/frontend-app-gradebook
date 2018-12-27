@@ -9,14 +9,26 @@ export default class Menu extends React.Component {
     this.focus = this.focus.bind(this);
     this.onMouseEnter = this.onMouseEnter.bind(this);
     this.onMouseLeave = this.onMouseLeave.bind(this);
+    this.onDocumentClick = this.onDocumentClick.bind(this);
     this.close = this.close.bind(this);
     this.open = this.open.bind(this);
   }
 
+  componentDidMount() {
+    document.addEventListener('click', this.onDocumentClick, true);
+  }
+
+  componentWillUnmount() {
+    document.removeEventListener('click', this.onDocumentClick, true);
+  }
+
+  getFocusableElements() {
+    return this.refs.menu.querySelectorAll('button:not([disabled]), [href]:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"]):not([disabled])');
+  }
   // Expose this method for parent components as recommended by Facebook
   // https://github.com/facebook/draft-js/blob/master/docs/Advanced-Topics-Managing-Focus.md
   focus(index) {
-    let focusableElements = this.refs.menu.querySelectorAll('a, button');
+    let focusableElements = this.getFocusableElements();
     if (focusableElements.length == 0) return;
 
     if (index === 0) {
@@ -46,7 +58,7 @@ export default class Menu extends React.Component {
         break;
       case 'Enter':
         if (event.target == this.refs.closeButton) {
-          event.preventDefault();
+
           this.props.focusMenuTrigger();
           this.close();
         }
@@ -56,22 +68,17 @@ export default class Menu extends React.Component {
         // Trap focus when expanded
         if (this.props.expanded) {
 
-          let focusableElements = this.refs.menu.querySelectorAll('a, button');
+          const focusableElements = Array.from(this.getFocusableElements());          
+          const indexOfActiveElement = focusableElements.indexOf(document.activeElement);
 
-          // Cycle from last to first
-          if (document.activeElement === focusableElements[focusableElements.length - 1] && !event.shiftKey) {
+          if (indexOfActiveElement === focusableElements.length - 1 && !event.shiftKey) { // last. cycle forward
             event.preventDefault();
-            // this.props.triggerElement ? this.props.triggerElement.focus() : focusableElements[0].focus();
             this.props.focusMenuTrigger();
           }
 
-
-          // Cycle from first to trigger or last item
-          if (document.activeElement === focusableElements[0] && event.shiftKey) {
+          if (indexOfActiveElement === 0 && event.shiftKey) { // first. cycle backward
             event.preventDefault();
-            // this.props.triggerElement ? this.props.triggerElement.focus() : focusableElements[focusableElements.length - 1].focus();
-            this.props.focusMenuTrigger();
-            
+            this.props.focusMenuTrigger();            
           }
         } 
         
@@ -88,16 +95,22 @@ export default class Menu extends React.Component {
     this.close();
   }
 
+  onDocumentClick(e) {
+    if (this.refs.menu && (e.target === this.refs.menu || this.refs.menu.contains(e.target))) return;
+
+    // this.close(); // right now this causes a bug when you click close on the trigger (does a double click essentially)
+  }
+
   render() {
-    if (!this.props.expanded) return false;
+    if (!this.props.expanded) return null;
 
     return (
       <div 
         className={this.props.className}
         ref="menu"
         onKeyDown={this.onKeyDown}
-        onMouseEnter={this.props.triggerOnHover ? this.onMouseEnter : null}
-        onMouseLeave={this.props.triggerOnHover ? this.onMouseLeave : null}
+        onMouseEnter={this.props.usePointerEvents ? this.onMouseEnter : null}
+        onMouseLeave={this.props.usePointerEvents ? this.onMouseLeave : null}
       >
         {this.props.hasCloseButton ? (
           <button 

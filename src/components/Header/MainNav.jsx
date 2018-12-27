@@ -100,7 +100,7 @@ export default class MainNav extends React.Component {
             focusMenuItem={this.focusMenuItem}
             triggerOpen={this.openMenu}
             triggerClose={this.closeMenu}
-            triggerOnHover={this.props.menuType === "pointer"}
+            usePointerEvents={this.props.menuType === "pointer"}
           />
         )
       } else {
@@ -129,7 +129,7 @@ export default class MainNav extends React.Component {
           close={this.closeMenu}
           ref={this.state.expandedMenu == item.submenu.name ? "expandedMenu" : null}
           focusMenuTrigger={this.focusMenuTrigger}
-          triggerOnHover={this.props.menuType === "pointer"}
+          usePointerEvents={this.props.menuType === "pointer"}
           hasCloseButton={this.props.menuType === "touch"}
           closeButtonText={item.submenu.closeButtonText}
         >{item.submenu.content}</Menu>

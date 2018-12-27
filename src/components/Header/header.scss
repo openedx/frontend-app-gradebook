@@ -1,4 +1,7 @@
 
+body {
+  background: #ccc;
+}
 
 a {
   text-transform: none;
@@ -10,37 +13,60 @@ a {
 }
 
 .site-header {
-  display: flex;
   border-bottom: solid 1px rgba(0,0,0,.1);
+  background: #fff;
 
+  display: flex;
   justify-content: space-between;
   align-items:center;
   position: relative;
-  & > div {
+
+  button.menu-button {
+    padding:1em;
+    background:none;
+    border:none;
+  }
+  
+  .primary-menu,
+  .header-logo-container,
+  .secondary-menu {
     flex-grow: 1;
     flex-basis:34%;
   }
 
-  .right-menu {
-    display: flex;
-    justify-content: flex-end;
-  }
-  .site-header-logo {
-    flex-grow:1;
+  .header-logo-container {
     text-align: center;
     a {
       display: inline-block;
     }
   }
-  button.menu-button {
-    padding:1em;
+
+  .secondary-menu {
+    display: flex;
+    justify-content: flex-end;
   }
+
   .header-menu {
     position: absolute;
     top: 100%;
     left: 0;
     right: 0;
+    background: #fff;
+    border-bottom: solid 1px rgba(0,0,0,.1);
+    border-top: solid 1px rgba(0,0,0,.1);
+    padding: .5em 0;
+    .menu-text {
+      padding:0 1em;
+    }
+    a.nav-item, button {
+      display: block;
+      padding: .5em 1em;
+      width: 100%;
+      text-align: left;
+    }
   }
+
+  
 }
 
 
@@ -68,16 +94,11 @@ a {
   }
 
   .submenu {
-    a {
-      display: block;
-    }
+
   }
 
   &.touch-nav {
-    .nav-item {
-      padding: .5em;
-      border-bottom: solid 1px rgba(0,0,0,.1);
-    }
+
   }
 
 

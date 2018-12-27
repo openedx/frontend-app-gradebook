@@ -73,8 +73,8 @@ export default class MenuTrigger extends React.Component {
       destination: this.props.destination,
       onClick: this.onClick,
       onKeyDown: this.onKeyDown,
-      onMouseEnter: this.props.triggerOnHover ? this.triggerOpen : null,
-      onMouseLeave: this.props.triggerOnHover ? this.triggerClose : null
+      onMouseEnter: this.props.usePointerEvents ? this.triggerOpen : null,
+      onMouseLeave: this.props.usePointerEvents ? this.triggerClose : null
     }
 
     // If there's a destination use a Hyperlink.
