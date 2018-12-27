@@ -97,12 +97,16 @@ export default class Header extends React.Component {
             content: (<FontAwesomeIcon icon={this.state.expandedMenu === "main" ? "times" : "bars"} />),
             className: "menu-button primary-menu-button"
           }, commonTriggerProps)}
-          {this.renderMenu("main", (
-            <MainNav 
-              usePointerEvents={commonMenuProps.usePointerEvents}
-              menuItems={MENU_ITEMS}
-            />
-          ), commonMenuProps)}
+          {this.renderMenu({
+            name: "main",
+            className: "menu header-menu main-menu",
+            content: (
+              <MainNav 
+                usePointerEvents={commonMenuProps.usePointerEvents}
+                menuItems={MENU_ITEMS}
+              />
+            ),
+          }, commonMenuProps)}
         </div>
 
         <div className="header-logo-container">
@@ -116,22 +120,29 @@ export default class Header extends React.Component {
             className: "menu-button"
           }, commonTriggerProps)}
 
-          {this.renderMenu("search", (
-            <div>
-              <div className="menu-text">
-                  <SearchField onSubmit={(value) => { console.log(value); }} />
-              </div>
+          {this.renderMenu({
+            name: "search",
+            className: "menu header-menu search-menu",
+            content: (
+              <div>
+                <div className="menu-text">
+                    <SearchField onSubmit={(value) => { console.log(value); }} />
+                </div>
 
-            </div>
-          ), commonMenuProps)}
+              </div>
+            ),
+          }, commonMenuProps)}
 
           {this.renderTrigger({
             menuName: "account", 
             content: "Account",
             className: "menu-button"
           }, commonTriggerProps)}
-          {this.renderMenu("account", (
-            <div>
+          {this.renderMenu({
+            name: "account",
+            className: "menu header-menu account-menu",
+            content: (
+              <div>
                 <div className="menu-text">
                   <p>[IMG] %username%</p>
                 </div>
@@ -145,10 +156,9 @@ export default class Header extends React.Component {
                 <Hyperlink content="My Profile" destination="#" />
                 <Hyperlink content="Account Settings" destination="#" />
                 <Hyperlink content="Sign Out" destination="#" />
-              
-
-            </div>
-          ), commonMenuProps)}
+              </div>
+            ),
+          }, commonMenuProps)}
         </div>
       </header>
     );
@@ -189,24 +199,25 @@ export default class Header extends React.Component {
         <div className="secondary-menu">
           <SearchField onSubmit={(value) => { console.log(value); }} />
           
-          {
-              this.renderTrigger({
-                  menuName: "account", 
-                  content: "My Account",
-                  className: "nav-item"
-                }, 
-                commonTriggerProps
-              )
-          }
+          {this.renderTrigger({
+              menuName: "account", 
+              content: "Account",
+              className: "nav-item"
+            }, 
+            commonTriggerProps
+          )}
 
-          {this.renderMenu("account", (
-            <div>
+          {this.renderMenu({
+            name: "account",
+            className: "menu header-menu account-menu",
+            content: (
+              <div>
                 <div className="menu-text">
                   <p>[IMG] %username%</p>
                 </div>
 
                 <button>Resume My Last Course (button)</button>
-              
+                
                 <Hyperlink content="My Dashboard" destination="#" />
                 <Hyperlink content="My Courses" destination="#" />
                 <Hyperlink content="My Programs" destination="#" />
@@ -214,10 +225,9 @@ export default class Header extends React.Component {
                 <Hyperlink content="My Profile" destination="#" />
                 <Hyperlink content="Account Settings" destination="#" />
                 <Hyperlink content="Sign Out" destination="#" />
-              
-
-            </div>
-          ), commonMenuProps)}
+              </div>
+            ),
+          }, commonMenuProps)}
         </div>
       </header>
     );
@@ -233,16 +243,15 @@ export default class Header extends React.Component {
       />
     );
   }
-  renderMenu(menuName, content, commonMenuProps, forceExpand) {
+  renderMenu(props, commonMenuProps, forceExpand) {
     return (
       <Menu 
-        name={menuName}
-        className={classNames("menu", "header-menu", menuName + "-menu")}
-        expanded={forceExpand || this.state.expandedMenu == menuName}
-        ref={this.state.expandedMenu == menuName ? "expandedMenu" : null}
+        ref={this.state.expandedMenu == props.name ? "expandedMenu" : null}
+        expanded={forceExpand || this.state.expandedMenu == props.name}
+        {...props}
         {...commonMenuProps}
       >
-        {content}
+        {props.content}
       </Menu>
     );
   }
