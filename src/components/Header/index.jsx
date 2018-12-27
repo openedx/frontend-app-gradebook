@@ -73,7 +73,6 @@ export default class Header extends React.Component {
     );
   }
 
-
   renderMobileNav() {
     const commonTriggerProps = {
       triggerOpen: this.openMenu,
@@ -88,9 +87,6 @@ export default class Header extends React.Component {
       usePointerEvents: false,
       focusMenuTrigger: this.focusMenuTrigger
     }
-
-    // Responsive stuff is finicky right now, will change this toggle later.
-    const navType = "mobile";
 
     return (
       <header className="site-header mobile">
@@ -146,7 +142,69 @@ export default class Header extends React.Component {
   }
 
   renderDesktopNav() {
+    const commonTriggerProps = {
+      triggerOpen: this.openMenu,
+      triggerClose: this.closeMenu,
+      usePointerEvents: true,
+      focusMenuItem: this.focusMenuItem
+    }
 
+    const commonMenuProps = {
+      open: this.openMenu,
+      close: this.closeMenu,
+      usePointerEvents: true,
+      focusMenuTrigger: this.focusMenuTrigger
+    }
+
+    return (
+      <header className="site-header desktop">
+
+        
+          <Hyperlink className="header-logo" content={<img src={EdxLogo} alt="edX logo" height="30" width="60" />} destination="https://www.edx.org" />
+        
+
+        <div className="primary-menu">
+          <MainNav 
+            usePointerEvents={commonMenuProps.usePointerEvents}
+            menuItems={MENU_ITEMS}
+          />
+        </div>
+
+
+        <div className="secondary-menu">
+          {this.renderTrigger("search", <FontAwesomeIcon icon={"search"} />, commonTriggerProps)}
+          {this.renderMenu("search", (
+            <div>
+              <div className="menu-text">
+                  <SearchField onSubmit={(value) => { console.log(value); }} />
+              </div>
+
+            </div>
+          ), commonMenuProps)}
+
+          {this.renderTrigger("account", "Acct", commonTriggerProps)}
+          {this.renderMenu("account", (
+            <div>
+                <div className="menu-text">
+                  <p>[IMG] %username%</p>
+                </div>
+
+                <button>Resume My Last Course (button)</button>
+              
+                <Hyperlink content="My Dashboard" destination="#" />
+                <Hyperlink content="My Courses" destination="#" />
+                <Hyperlink content="My Programs" destination="#" />
+                <Hyperlink content="Help" destination="#" />
+                <Hyperlink content="My Profile" destination="#" />
+                <Hyperlink content="Account Settings" destination="#" />
+                <Hyperlink content="Sign Out" destination="#" />
+              
+
+            </div>
+          ), commonMenuProps)}
+        </div>
+      </header>
+    );
   }
 
   renderTrigger(menuName, content, commonTriggerProps) {
