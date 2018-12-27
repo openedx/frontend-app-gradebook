@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 import classNames from 'classnames';
 import { Hyperlink } from '@edx/paragon';
 
@@ -15,11 +16,8 @@ export default class MenuTrigger extends React.Component {
   // Expose this method for parent components as recommended by Facebook
   // https://github.com/facebook/draft-js/blob/master/docs/Advanced-Topics-Managing-Focus.md
   focus() {
-    if (this.refs.trigger.querySelectorAll('a').length) {
-      this.refs.trigger.querySelectorAll('a')[0].focus();
-    } else {
-      this.refs.trigger.focus();
-    }
+    const thisElement = ReactDOM.findDOMNode(this);
+    thisElement.focus();
   }
 
   onKeyDown(e) {
@@ -85,13 +83,11 @@ export default class MenuTrigger extends React.Component {
         so no ref can be set on it.
       */
       return (
-        <span ref="trigger">
-          <Hyperlink {...props} />
-        </span>
+        <Hyperlink {...props} />
       );
     } else {
       return (
-        <button ref="trigger" {...props}>{this.props.content}</button>
+        <button {...props}>{this.props.content}</button>
       );
     }
   }

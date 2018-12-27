@@ -15,9 +15,9 @@ import EdxLogo from '../../../assets/edx-sm.png';
 
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faBars, faTimes, faSearch } from '@fortawesome/free-solid-svg-icons'
+import { faBars, faTimes, faSearch, faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons'
 
-library.add(faBars, faTimes, faSearch);
+library.add(faBars, faTimes, faSearch, faChevronLeft, faChevronRight);
 
 
 export default class Header extends React.Component {
@@ -92,7 +92,11 @@ export default class Header extends React.Component {
       <header className="site-header mobile">
 
         <div className="primary-menu">
-          {this.renderTrigger("main", <FontAwesomeIcon icon={this.state.expandedMenu === "main" ? "times" : "bars"} />, commonTriggerProps)}
+          {this.renderTrigger({
+            menuName: "main", 
+            content: (<FontAwesomeIcon icon={this.state.expandedMenu === "main" ? "times" : "bars"} />),
+            className: "menu-button primary-menu-button"
+          }, commonTriggerProps)}
           {this.renderMenu("main", (
             <MainNav 
               usePointerEvents={commonMenuProps.usePointerEvents}
@@ -106,7 +110,12 @@ export default class Header extends React.Component {
         </div>
 
         <div className="secondary-menu">
-          {this.renderTrigger("search", <FontAwesomeIcon icon={"search"} />, commonTriggerProps)}
+          {this.renderTrigger({
+            menuName: "search", 
+            content: (<FontAwesomeIcon icon={"search"} />),
+            className: "menu-button"
+          }, commonTriggerProps)}
+
           {this.renderMenu("search", (
             <div>
               <div className="menu-text">
@@ -116,7 +125,11 @@ export default class Header extends React.Component {
             </div>
           ), commonMenuProps)}
 
-          {this.renderTrigger("account", "Acct", commonTriggerProps)}
+          {this.renderTrigger({
+            menuName: "account", 
+            content: "Account",
+            className: "menu-button"
+          }, commonTriggerProps)}
           {this.renderMenu("account", (
             <div>
                 <div className="menu-text">
@@ -159,10 +172,12 @@ export default class Header extends React.Component {
     return (
       <header className="site-header desktop">
 
+        <Hyperlink 
+          className="header-logo" 
+          content={<img src={EdxLogo} alt="edX logo" height="30" width="60" />} 
+          destination="https://www.edx.org" 
+        />
         
-          <Hyperlink className="header-logo" content={<img src={EdxLogo} alt="edX logo" height="30" width="60" />} destination="https://www.edx.org" />
-        
-
         <div className="primary-menu">
           <MainNav 
             usePointerEvents={commonMenuProps.usePointerEvents}
@@ -172,17 +187,18 @@ export default class Header extends React.Component {
 
 
         <div className="secondary-menu">
-          {this.renderTrigger("search", <FontAwesomeIcon icon={"search"} />, commonTriggerProps)}
-          {this.renderMenu("search", (
-            <div>
-              <div className="menu-text">
-                  <SearchField onSubmit={(value) => { console.log(value); }} />
-              </div>
+          <SearchField onSubmit={(value) => { console.log(value); }} />
+          
+          {
+              this.renderTrigger({
+                  menuName: "account", 
+                  content: "My Account",
+                  className: "nav-item"
+                }, 
+                commonTriggerProps
+              )
+          }
 
-            </div>
-          ), commonMenuProps)}
-
-          {this.renderTrigger("account", "Acct", commonTriggerProps)}
           {this.renderMenu("account", (
             <div>
                 <div className="menu-text">
@@ -207,14 +223,12 @@ export default class Header extends React.Component {
     );
   }
 
-  renderTrigger(menuName, content, commonTriggerProps) {
+  renderTrigger(props, commonTriggerProps) {
     return (
       <MenuTrigger
-        className="menu-button"
-        ref={this.state.expandedMenu === menuName ? "expandedMenuTrigger" : null}
-        content={content}
-        menuName={menuName}
-        expanded={this.state.expandedMenu === menuName}
+        ref={this.state.expandedMenu === props.menuName ? "expandedMenuTrigger" : null}
+        expanded={this.state.expandedMenu === props.menuName}
+        {...props}
         {...commonTriggerProps}
       />
     );
@@ -248,13 +262,15 @@ const MENU_ITEMS = [
           <div className="menu-text">
             <h4>Courses by subject</h4>
           </div>
-          <Hyperlink className="nav-item" content="Computer Science" destination="#" />
-          <Hyperlink className="nav-item" content="Language" destination="#" />
-          <Hyperlink className="nav-item" content="Data & Statistics" destination="#" />
-          <Hyperlink className="nav-item" content="Business & Management" destination="#" />
-          <Hyperlink className="nav-item" content="Engineering" destination="#" />
-          <Hyperlink className="nav-item" content="Humanities" destination="#" />
-          <Hyperlink className="nav-item" content="View all courses by subject" destination="#" />
+          <ul>
+            <li><Hyperlink content="Computer Science" destination="#" /></li>
+            <li><Hyperlink content="Language" destination="#" /></li>
+            <li><Hyperlink content="Data & Statistics" destination="#" /></li>
+            <li><Hyperlink content="Business & Management" destination="#" /></li>
+            <li><Hyperlink content="Engineering" destination="#" /></li>
+            <li><Hyperlink content="Humanities" destination="#" /></li>
+            <li><Hyperlink content="View all courses by subject" destination="#" /></li>
+          </ul>
         </div>
       )
     }
@@ -269,20 +285,32 @@ const MENU_ITEMS = [
         <div>
           <div className="menu-text">
             <h4>Programs & degrees</h4>
-            <p style={{marginBottom:0}}><Hyperlink content="MicroMasters Program" destination="#" /></p>
-            <p>Graduate-level, for career advancement or a degree path</p>
+          <ul>
+            <li>
+              <Hyperlink content="MicroMasters Program" destination="#" />
+              <p>Graduate-level, for career advancement or a degree path</p>
+            </li>
 
-            <p style={{marginBottom:0}}><Hyperlink content="Professional Certificate" destination="#" /></p>
-            <p>From employers or universities to build today's in-demand skills</p>
+            <li>
+              <Hyperlink content="Professional Certificate" destination="#" />
+              <p>From employers or universities to build today's in-demand skills</p>
+            </li>
 
-            <p style={{marginBottom:0}}><Hyperlink content="Online Master's Degree" destination="#" /></p>
-            <p>Top-ranked programs, affordable, and fully online</p>
+            <li>
+              <Hyperlink content="Online Master's Degree" destination="#" />
+              <p>Top-ranked programs, affordable, and fully online</p>
+            </li>
 
-            <p style={{marginBottom:0}}><Hyperlink content="Global Freshman Academy" destination="#" /></p>
-            <p>Freshman year courses for university credit from ASU</p>
+            <li>
+              <Hyperlink content="Global Freshman Academy" destination="#" />
+              <p>Freshman year courses for university credit from ASU</p>
+            </li>
 
-            <p style={{marginBottom:0}}><Hyperlink content="XSeries" destination="#" /></p>
-            <p>Series of courses for a deep understanding of a topic</p>
+            <li>
+              <Hyperlink content="XSeries" destination="#" />
+              <p>Series of courses for a deep understanding of a topic</p>
+            </li>
+          </ul>
           </div>
         </div>
       )

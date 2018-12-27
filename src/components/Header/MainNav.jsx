@@ -66,21 +66,18 @@ export default class MainNav extends React.Component {
         "touch-nav": !this.props.usePointerEvents,
         "pointer-nav": this.props.usePointerEvents
       })}>
-        <div className="main-nav-wrap">
-          <div className="top-level">
-            {this.renderTopLevelItems()}
-          </div>
+      
+        {this.renderTopLevelItems()}
 
-          <CSSTransition
-            in={Boolean(this.state.expandedMenu)}
-            timeout={500}
-            classNames="fade"
-          >
-            <div className="submenu">
-              {this.renderMenus()}
-            </div>
-          </CSSTransition>
-        </div>
+        <CSSTransition
+          in={Boolean(this.state.expandedMenu)}
+          timeout={500}
+          classNames="fade"
+        >
+          <div className="submenu">
+            {this.renderMenus()}
+          </div>
+        </CSSTransition>
       </nav>
     );
   }
