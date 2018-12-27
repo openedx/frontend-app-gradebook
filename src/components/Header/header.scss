@@ -1,176 +1,323 @@
 $blue: #007db8;
 $white: #fff;
 
-
-
-// Atom Component Styles
-a.menu-button,
-button.menu-button {
-  display: inline-block;
-  border: none;
-  background: none;
-}
-
-.menu {
-  position: absolute;
-  background: #fff;
-}
-
-
-// Molecule/Organism Style
-
 .site-header {
   box-shadow: 0 1px 0 0 rgba(0,0,0,.1);
   background: #fff;
-  display: flex;
-  align-items:center;
-  position: relative;
-
-  .secondary-menu {
-    display: flex;
-    justify-content: flex-end;
-  }
 }
 
-.site-header.mobile {
-  justify-content: space-between;
-
-  .primary-menu,
-  .header-logo-container,
-  .secondary-menu {
-    flex-grow: 1;
-    flex-basis:34%;
-  }
-
-  .header-logo-container {
-    display: flex;
-    justify-content: center;
-  }
-
-  .menu-button {
-    padding: 1rem;
-    line-height: 1;
-  }
-
-  .primary-menu-button {
-    height: 3rem;
-    width: 3rem;
-    padding: 0;
-    text-align:center;
-    svg {
-      height: 1.25rem;
-      width: 1.25rem;
-    }
-  }
-
-  .menu {
-    position: absolute;
-    left: 0;
-    right: 0;
-    top: 100%;
-    box-shadow: 0 1px 0 0 rgba(0,0,0,.1), inset 0 1px 0 0 rgba(0,0,0,.1);
-
-    padding: 1rem;
-  }
-
-  .main-menu {
-    padding: 0;
-  }
-
-  .main-nav {
-    .nav-item {
-      display: block;
-      padding: .5rem 1rem;
-    } 
-  }
-}
 
 .site-header.desktop {
-  padding:0 1rem;
-
-  a.header-logo {
+  .site-header-wrap {
     display: flex;
-    align-items:center;
-    padding-right: .5rem;
+    padding:0 1rem;
+    max-width: 1280px;
+    margin: 0 auto;
   }
 
-  .nav-item {
-    padding: 1.25rem .75rem;
+  .header-logo {
+    display: flex;
+    align-items: center;
+    padding-right: 1rem;
+  }
+
+  a.top-level-link,
+  button.top-level-link {
+    border:none;
+    background:none;
+    padding: 1.5rem .5rem;
     line-height: 1;
-    display: inline-block;
-    border: none;
-    &:hover, &.expanded {
-      text-decoration: none;
+    display: block;
+    color: $blue;
+    &.expanded,
+    &:hover {
       background: $blue;
       color: $white;
+      text-decoration: none;
     }
   }
 
-  .menu {
+  .menu-content {
     position: absolute;
     top: 100%;
+    padding: 1rem;
+    background: #fff;
     border-top: solid 4px $blue;
     box-shadow: 0 1px 0 0 rgba(0,0,0,.1), 1px 0 0 0 rgba(0,0,0,.1), -1px 0 0 0 rgba(0,0,0,.1);
-    padding: 1rem;
   }
 
-  .primary-menu {
-    flex-grow: 1;
+  .primary-menu-container {
+    display: flex;
+    flex-grow:1;
     flex-shrink: 0;
     position: relative;
-    .menu {
+    z-index: 100;
+
+    .menu-content {
       left: 0;
-      width: 80vw;
-      max-width: 1200px;
+      width: 60vw;
     }
   }
 
-  .secondary-menu {
+  .secondary-menu-container {
+    display: flex;
+    justify-content: flex-end;
     position: relative;
-    .menu {
+
+    .search-field {
+      margin:0 1rem;
+      align-self: center;
+    }
+    .menu-content {
       right: 0;
       width: 20rem;
     }
   }
-
-  .search-field {
-    align-self: center;
-    margin-right: 1rem;
-  }
 }
 
-
-
-.main-nav.touch-nav {
-  overflow: hidden;
-
-  .main-nav-wrap {
+.site-header.mobile {
+  position: relative;
+  .site-header-wrap {
     display: flex;
-    transition: transform .5s ease;
-    .top-level, .submenu {
-      flex-basis: 100%;
+  }
+
+  .primary-menu-container,
+  .center-logo,
+  .secondary-menu-container {
+    flex-basis: 34%;
+    flex-grow: 1;
+  }
+
+  .center-logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .secondary-menu-container { 
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  .menu-content {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: #fff;
+    box-shadow: 0 1px 0 0 rgba(0,0,0,.1), inset 0 1px 0 0 rgba(0,0,0,.1);
+  }
+
+  .slide-panel {
+    width: 100%;
+    overflow: hidden;
+    .panels {
+      width: 100%;
+      display: flex;
+      transition: transform .5s ease;
+    }
+    .panel {
+      width: 100%;
       flex-shrink: 0;
     }
-  }
-
-  &.open-submenu-tray {
-    .main-nav-wrap {
-      transform: translateX(-100%);
+    &.panel-open {
+      .panels {
+        transform: translateX(-100%);
+      }
     }
   }
 
-  .submenu {
-    .menu {
-      background: none;
-      position: static;
-      box-shadow: none;
-    }
+  .top-level-link {
+    border:none;
+    background: none;
+    line-height: 1;
+    padding: 1rem;
   }
 
-  
-  .top-level {
-    .nav-item {
-      display: block;
-    }
+  .primary-menu-link {
+    border:none;
+    background: none;
+    padding: .5rem 1rem;
+    display: block;
+    width: 100%;
+    text-align: left;
+  }
+
+  .menu-content {
+    padding: 1rem;
+  }
+  .primary-menu .menu-content {
+    padding: 0;
   }
 }
+// // Atom Component Styles
+// a.menu-button,
+// button.menu-button {
+//   display: inline-block;
+//   border: none;
+//   background: none;
+// }
+
+// .menu {
+//   position: absolute;
+//   background: #fff;
+// }
+
+
+// // Molecule/Organism Style
+
+// .site-header {
+//   box-shadow: 0 1px 0 0 rgba(0,0,0,.1);
+//   background: #fff;
+//   display: flex;
+//   align-items:center;
+//   position: relative;
+
+//   .secondary-menu {
+//     display: flex;
+//     justify-content: flex-end;
+//   }
+// }
+
+// .site-header.mobile {
+//   justify-content: space-between;
+
+//   .primary-menu,
+//   .header-logo-container,
+//   .secondary-menu {
+//     flex-grow: 1;
+//     flex-basis:34%;
+//   }
+
+//   .header-logo-container {
+//     display: flex;
+//     justify-content: center;
+//   }
+
+//   .menu-button {
+//     padding: 1rem;
+//     line-height: 1;
+//   }
+
+//   .primary-menu-button {
+//     height: 3rem;
+//     width: 3rem;
+//     padding: 0;
+//     text-align:center;
+//     svg {
+//       height: 1.25rem;
+//       width: 1.25rem;
+//     }
+//   }
+
+//   .menu {
+//     position: absolute;
+//     left: 0;
+//     right: 0;
+//     top: 100%;
+//     box-shadow: 0 1px 0 0 rgba(0,0,0,.1), inset 0 1px 0 0 rgba(0,0,0,.1);
+
+//     padding: 1rem;
+//   }
+
+//   .main-menu {
+//     padding: 0;
+//   }
+
+//   .main-nav {
+//     .nav-item {
+//       display: block;
+//       padding: .5rem 1rem;
+//     } 
+//   }
+// }
+
+// .site-header.desktop {
+//   padding:0 1rem;
+
+//   a.header-logo {
+//     display: flex;
+//     align-items:center;
+//     padding-right: .5rem;
+//   }
+
+//   .nav-item {
+//     padding: 1.25rem .75rem;
+//     line-height: 1;
+//     display: inline-block;
+//     border: none;
+//     &:hover, &.expanded {
+//       text-decoration: none;
+//       background: $blue;
+//       color: $white;
+//     }
+//   }
+
+//   .menu {
+//     position: absolute;
+//     top: 100%;
+//     border-top: solid 4px $blue;
+//     box-shadow: 0 1px 0 0 rgba(0,0,0,.1), 1px 0 0 0 rgba(0,0,0,.1), -1px 0 0 0 rgba(0,0,0,.1);
+//     padding: 1rem;
+//   }
+
+//   .primary-menu {
+//     flex-grow: 1;
+//     flex-shrink: 0;
+//     position: relative;
+//     .menu {
+//       left: 0;
+//       width: 80vw;
+//       max-width: 1200px;
+//     }
+//   }
+
+//   .secondary-menu {
+//     position: relative;
+//     .menu {
+//       right: 0;
+//       width: 20rem;
+//     }
+//   }
+
+//   .search-field {
+//     align-self: center;
+//     margin-right: 1rem;
+//   }
+// }
+
+
+
+// .main-nav.touch-nav {
+//   overflow: hidden;
+
+//   .main-nav-wrap {
+//     display: flex;
+//     transition: transform .5s ease;
+//     .top-level, .submenu {
+//       flex-basis: 100%;
+//       flex-shrink: 0;
+//     }
+//   }
+
+//   &.open-submenu-tray {
+//     .main-nav-wrap {
+//       transform: translateX(-100%);
+//     }
+//   }
+
+//   .submenu {
+//     .menu {
+//       background: none;
+//       position: static;
+//       box-shadow: none;
+//     }
+//   }
+
+  
+//   .top-level {
+//     .nav-item {
+//       display: block;
+//     }
+//   }
+// }

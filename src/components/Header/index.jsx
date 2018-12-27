@@ -2,16 +2,14 @@ import React from 'react';
 import classNames from 'classnames';
 import { 
   Hyperlink, 
+  Button,
   SearchField,
   breakpoints, ExtraSmall, Small, Medium, Large, ExtraLarge, LargerThanExtraSmall
 } from '@edx/paragon';
-import MainNav from './MainNav';
 
 import Menu from './Menu';
-import MenuTrigger from './MenuTrigger';
 
 import EdxLogo from '../../../assets/edx-sm.png';
-
 
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -23,42 +21,24 @@ library.add(faBars, faTimes, faSearch, faChevronLeft, faChevronRight);
 export default class Header extends React.Component {
   constructor(props) {
     super(props);
+
     this.state = {
-      expandedMenu: null,
-      submenuTrayIsOpen: false
+      panelOpen: false,
+      openSubmenuIndex: null
     };
-
-
-    this.openMenu = this.openMenu.bind(this);
-    this.closeMenu = this.closeMenu.bind(this);
-    this.focusMenuTrigger = this.focusMenuTrigger.bind(this);
-    this.focusMenuItem = this.focusMenuItem.bind(this);
   }
 
-  openMenu(name) {
-    clearTimeout(this.closeMenuTimeout);
-
+  onClickMenuLink(index, e) {
     this.setState({
-      expandedMenu: name,
-      submenuTrayIsOpen: true
+      panelOpen: true,
+      openSubmenuIndex: index
     });
   }
 
-  closeMenu(name) {
-    if (this.state.expandedMenu === name) {
-      this.setState({
-        expandedMenu: null,
-        submenuTrayIsOpen: false
-      });
-    }
-  }
-
-  focusMenuTrigger() {
-    this.refs.expandedMenuTrigger && this.refs.expandedMenuTrigger.focus();
-  }
-
-  focusMenuItem(itemIndex) {
-    this.refs.expandedMenu && this.refs.expandedMenu.focus(itemIndex);
+  onClickSubmenuClose(e) {
+    this.setState({
+      panelOpen: false
+    });
   }
 
   render() {
@@ -74,188 +54,162 @@ export default class Header extends React.Component {
   }
 
   renderMobileNav() {
-    const commonTriggerProps = {
-      triggerOpen: this.openMenu,
-      triggerClose: this.closeMenu,
-      usePointerEvents: false,
-      focusMenuItem: this.focusMenuItem
-    }
-
-    const commonMenuProps = {
-      open: this.openMenu,
-      close: this.closeMenu,
-      usePointerEvents: false,
-      focusMenuTrigger: this.focusMenuTrigger
-    }
-
     return (
       <header className="site-header mobile">
-
-        <div className="primary-menu">
-          {this.renderTrigger({
-            menuName: "main", 
-            content: (<FontAwesomeIcon icon={this.state.expandedMenu === "main" ? "times" : "bars"} />),
-            className: "menu-button primary-menu-button"
-          }, commonTriggerProps)}
-          {this.renderMenu({
-            name: "main",
-            className: "menu header-menu main-menu",
-            content: (
-              <MainNav 
-                usePointerEvents={commonMenuProps.usePointerEvents}
-                menuItems={MENU_ITEMS}
-              />
-            ),
-          }, commonMenuProps)}
-        </div>
-
-        <div className="header-logo-container">
-          <Hyperlink content={<img src={EdxLogo} alt="edX logo" height="30" width="60" />} destination="https://www.edx.org" />
-        </div>
-
-        <div className="secondary-menu">
-          {this.renderTrigger({
-            menuName: "search", 
-            content: (<FontAwesomeIcon icon={"search"} />),
-            className: "menu-button"
-          }, commonTriggerProps)}
-
-          {this.renderMenu({
-            name: "search",
-            className: "menu header-menu search-menu",
-            content: (
-              <div>
-                <div className="menu-text">
-                    <SearchField onSubmit={(value) => { console.log(value); }} />
-                </div>
-
-              </div>
-            ),
-          }, commonMenuProps)}
-
-          {this.renderTrigger({
-            menuName: "account", 
-            content: "Account",
-            className: "menu-button"
-          }, commonTriggerProps)}
-          {this.renderMenu({
-            name: "account",
-            className: "menu header-menu account-menu",
-            content: (
-              <div>
-                <div className="menu-text">
-                  <p>[IMG] %username%</p>
-                </div>
-
-                <button>Resume My Last Course (button)</button>
+        <div className="site-header-wrap">
+          
+          <div className="primary-menu-container">
+            <Menu 
+              className="primary-menu"
+              triggerClassName="top-level-link"
+              triggerContent={<FontAwesomeIcon icon="bars" />}
+              triggerExpandedContent={<FontAwesomeIcon icon="times" />}
+              respondToPointerEvents={false}
+              expanded={false}
+            >
               
-                <Hyperlink content="My Dashboard" destination="#" />
-                <Hyperlink content="My Courses" destination="#" />
-                <Hyperlink content="My Programs" destination="#" />
-                <Hyperlink content="Help" destination="#" />
-                <Hyperlink content="My Profile" destination="#" />
-                <Hyperlink content="Account Settings" destination="#" />
-                <Hyperlink content="Sign Out" destination="#" />
+              <div className={classNames("slide-panel", {
+                "panel-open": this.state.panelOpen
+              })}>
+                <div className="panels">
+                <div className="panel">
+                  {MENU_ITEMS.map(function(item, index) {
+                  if (item.submenu) {
+                    return (
+                      <button 
+                        type="button"
+                        className="primary-menu-link"
+                        key={'link-' + index}
+                        onClick={this.onClickMenuLink.bind(this, index)}
+                      >{item.content}</button>
+                    );
+                  } else {
+                    return (
+                      <Hyperlink 
+                        className="primary-menu-link"
+                        key={'link-' + index}
+                        {...item} 
+                      />
+                    )
+                  }
+                }, this)}
+                </div>
+
+                <div className="panel">
+                    <button 
+                      type="button"
+                      className="primary-menu-link"
+                      onClick={this.onClickSubmenuClose.bind(this)}
+                    >Go Back</button>
+
+                    {this.state.openSubmenuIndex !== null ? MENU_ITEMS[this.state.openSubmenuIndex].submenu.content : 'null'}
+                </div>
+                </div>
               </div>
-            ),
-          }, commonMenuProps)}
+
+            </Menu>
+          </div>
+
+          <div className="center-logo">
+            {this.renderLogo()}
+          </div>
+
+          <div className="secondary-menu-container">
+            <Menu 
+              className="search-menu"
+              triggerClassName="top-level-link"
+              triggerContent={<FontAwesomeIcon icon="search" />}
+              respondToPointerEvents={false}
+              expanded={null}
+            >
+              <SearchField onSubmit={(value) => { console.log(value); }} />
+            </Menu>
+            
+            <Menu 
+              className="account-menu"
+              triggerClassName="top-level-link account-trigger"
+              triggerContent="Account"
+              respondToPointerEvents={false}
+              expanded={null}
+            >
+              {this.renderAccountMenuContent()}
+            </Menu>
+          </div>
         </div>
       </header>
     );
   }
+
 
   renderDesktopNav() {
-    const commonTriggerProps = {
-      triggerOpen: this.openMenu,
-      triggerClose: this.closeMenu,
-      usePointerEvents: true,
-      focusMenuItem: this.focusMenuItem
-    }
-
-    const commonMenuProps = {
-      open: this.openMenu,
-      close: this.closeMenu,
-      usePointerEvents: true,
-      focusMenuTrigger: this.focusMenuTrigger
-    }
-
     return (
       <header className="site-header desktop">
-
-        <Hyperlink 
-          className="header-logo" 
-          content={<img src={EdxLogo} alt="edX logo" height="30" width="60" />} 
-          destination="https://www.edx.org" 
-        />
-        
-        <div className="primary-menu">
-          <MainNav 
-            usePointerEvents={commonMenuProps.usePointerEvents}
-            menuItems={MENU_ITEMS}
-          />
-        </div>
-
-
-        <div className="secondary-menu">
-          <SearchField onSubmit={(value) => { console.log(value); }} />
+        <div className="site-header-wrap">
+          {this.renderLogo()}
           
-          {this.renderTrigger({
-              menuName: "account", 
-              content: "Account",
-              className: "nav-item"
-            }, 
-            commonTriggerProps
-          )}
+          <div className="primary-menu-container">
 
-          {this.renderMenu({
-            name: "account",
-            className: "menu header-menu account-menu",
-            content: (
-              <div>
-                <div className="menu-text">
-                  <p>[IMG] %username%</p>
-                </div>
+            {MENU_ITEMS.map(function(item, index) {
+              if (item.submenu) {
+                return (
+                  <Menu 
+                    key={item.submenu.name}
+                    className="top-level-menu"
+                    triggerClassName="top-level-link"
+                    triggerContent={item.content}
+                    triggerDestination={item.destination}
+                    respondToPointerEvents
+                    expanded={null}
+                  >
+                    {item.submenu.content}
+                  </Menu>
+                );
+              } else {
+                return (
+                  <Hyperlink 
+                    className="top-level-link"
+                    key={'link-' + index}
+                    {...item} 
+                  />
+                )
+              }
+            })}
+          </div>
 
-                <button>Resume My Last Course (button)</button>
-                
-                <Hyperlink content="My Dashboard" destination="#" />
-                <Hyperlink content="My Courses" destination="#" />
-                <Hyperlink content="My Programs" destination="#" />
-                <Hyperlink content="Help" destination="#" />
-                <Hyperlink content="My Profile" destination="#" />
-                <Hyperlink content="Account Settings" destination="#" />
-                <Hyperlink content="Sign Out" destination="#" />
-              </div>
-            ),
-          }, commonMenuProps)}
+          <div className="secondary-menu-container">
+            <SearchField onSubmit={(value) => { console.log(value); }} />
+            
+            <Menu 
+              className="account-menu"
+              triggerClassName="top-level-link account-trigger"
+              triggerContent="Account"
+              triggerDestination="#account"
+              respondToPointerEvents
+              expanded={null}
+            >
+              {this.renderAccountMenuContent()}
+            </Menu>
+          </div>
         </div>
       </header>
     );
   }
 
-  renderTrigger(props, commonTriggerProps) {
+  renderLogo() {
     return (
-      <MenuTrigger
-        ref={this.state.expandedMenu === props.menuName ? "expandedMenuTrigger" : null}
-        expanded={this.state.expandedMenu === props.menuName}
-        {...props}
-        {...commonTriggerProps}
+      <Hyperlink 
+        className="header-logo" 
+        content={<img src={EdxLogo} alt="edX logo" height="30" width="60" />} 
+        destination="https://www.edx.org" 
       />
-    );
-  }
-  renderMenu(props, commonMenuProps, forceExpand) {
-    return (
-      <Menu 
-        ref={this.state.expandedMenu == props.name ? "expandedMenu" : null}
-        expanded={forceExpand || this.state.expandedMenu == props.name}
-        {...props}
-        {...commonMenuProps}
-      >
-        {props.content}
-      </Menu>
-    );
+    )
   }
 
+  renderAccountMenuContent() {
+    return (
+      <div>Account Stuff</div>
+    )
+  }
 }
 
 
