@@ -18,14 +18,14 @@ $white: #fff;
   .header-logo {
     display: flex;
     align-items: center;
-    padding-right: 1rem;
+    padding: 0 1rem;
   }
 
   a.top-level-link,
   button.top-level-link {
     border:none;
     background:none;
-    padding: 1.5rem .5rem;
+    padding: 1.5rem 1rem;
     line-height: 1;
     display: block;
     color: $blue;
@@ -34,6 +34,11 @@ $white: #fff;
       background: $blue;
       color: $white;
       text-decoration: none;
+    }
+
+    svg {
+      height: .75em;
+      margin-bottom: .05em;
     }
   }
 
@@ -49,13 +54,29 @@ $white: #fff;
   .primary-menu-container {
     display: flex;
     flex-grow:1;
-    flex-shrink: 0;
+    flex-shrink: 1;
     position: relative;
     z-index: 100;
 
+    .top-level-menu,
+    .top-level-link {
+      flex-shrink: 0;
+    }
+
     .menu-content {
       left: 0;
-      width: 60vw;
+      width: 80vw;
+      padding: 1.5rem;
+      ul {
+        list-style: none;
+        padding:0;
+        margin: 0;
+      }
+    }
+    .main-menu-courses {
+      ul {
+        column-count: 4;
+      }
     }
   }
 
@@ -63,6 +84,7 @@ $white: #fff;
     display: flex;
     justify-content: flex-end;
     position: relative;
+    min-width: 330px;
 
     .search-field {
       margin:0 1rem;
@@ -73,6 +95,7 @@ $white: #fff;
       width: 20rem;
     }
   }
+
 }
 
 .site-header.mobile {
@@ -141,6 +164,10 @@ $white: #fff;
     display: block;
     width: 100%;
     text-align: left;
+    svg {
+      height: .75em;
+      margin: 0 .15em .075em;
+    }
   }
 
   .menu-content {
@@ -148,6 +175,15 @@ $white: #fff;
   }
   .primary-menu .menu-content {
     padding: 0;
+  }
+
+  .main-menu-courses,
+  .main-menu-programs {
+    padding: 1rem;
+    ul {
+      list-style: none;
+      padding: 0;
+    }
   }
 }
 // // Atom Component Styles

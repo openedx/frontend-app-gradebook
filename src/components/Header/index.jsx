@@ -13,9 +13,10 @@ import EdxLogo from '../../../assets/edx-sm.png';
 
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faBars, faTimes, faSearch, faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons'
+import { faBars, faTimes, faSearch, faChevronLeft, faChevronRight,
+          faChevronDown } from '@fortawesome/free-solid-svg-icons'
 
-library.add(faBars, faTimes, faSearch, faChevronLeft, faChevronRight);
+library.add(faBars, faTimes, faSearch, faChevronLeft, faChevronRight, faChevronDown);
 
 
 export default class Header extends React.Component {
@@ -81,7 +82,7 @@ export default class Header extends React.Component {
                         className="primary-menu-link"
                         key={'link-' + index}
                         onClick={this.onClickMenuLink.bind(this, index)}
-                      >{item.content}</button>
+                      >{item.content} <FontAwesomeIcon icon="chevron-right" /></button>
                     );
                   } else {
                     return (
@@ -100,7 +101,7 @@ export default class Header extends React.Component {
                       type="button"
                       className="primary-menu-link"
                       onClick={this.onClickSubmenuClose.bind(this)}
-                    >Go Back</button>
+                    ><FontAwesomeIcon icon="chevron-left" /> Go Back</button>
 
                     {this.state.openSubmenuIndex !== null ? MENU_ITEMS[this.state.openSubmenuIndex].submenu.content : 'null'}
                 </div>
@@ -149,17 +150,17 @@ export default class Header extends React.Component {
           
           <div className="primary-menu-container">
 
-            {MENU_ITEMS.map(function(item, index) {
+            {DESKTOP_MENU_ITEMS.map(function(item, index) {
               if (item.submenu) {
                 return (
                   <Menu 
                     key={item.submenu.name}
                     className="top-level-menu"
                     triggerClassName="top-level-link"
-                    triggerContent={item.content}
+                    triggerContent={<span>{item.content} <FontAwesomeIcon icon="chevron-down" /></span>}
                     triggerDestination={item.destination}
                     respondToPointerEvents
-                    expanded={null}
+                    expanded={false}
                   >
                     {item.submenu.content}
                   </Menu>
@@ -212,18 +213,15 @@ export default class Header extends React.Component {
   }
 }
 
-
 const MENU_ITEMS = [
   {
-    content: "Courses by subject",
+    content: "Courses",
     destination: "#",
     submenu: {
-      name: "Courses",
-      closeButtonText: "Back to main navigation",
       content: (
-        <div>
-          <div className="menu-text">
-            <h4>Courses by subject</h4>
+        <div className="main-menu-courses">
+          <div>
+            <h3>Courses by subject</h3>
           </div>
           <ul>
             <li><Hyperlink content="Computer Science" destination="#" /></li>
@@ -239,15 +237,14 @@ const MENU_ITEMS = [
     }
   },
   {
-    content: "Programs & degrees",
+    content: "Programs",
     destination: "#",
     submenu: {
-      name: "Programs",
-      closeButtonText: "Back to main navigation",
       content: (
-        <div>
-          <div className="menu-text">
-            <h4>Programs & degrees</h4>
+        <div className="main-menu-programs">
+          <div>
+            <h3>Programs & degrees</h3>
+            <p>Pathways for your advancement</p>
           <ul>
             <li>
               <Hyperlink content="MicroMasters Program" destination="#" />
@@ -280,11 +277,111 @@ const MENU_ITEMS = [
     }
   },
   {
-    content: "Schools & partners",
+    content: "Schools",
     destination: "#"
   },
   {
-    content: "edX for Business",
+    content: "Enterprise",
+    destination: "#"
+  }
+]
+
+const DESKTOP_MENU_ITEMS = [
+  {
+    content: "Courses",
+    destination: "#",
+    submenu: {
+      content: (
+        <div className="main-menu-courses">
+          <div>
+            <h3>Courses by subject</h3>
+          </div>
+          <ul>
+            <li><Hyperlink content="Architecture" destination="#" /></li>
+            <li><Hyperlink content="Art & Culture" destination="#" /></li>
+            <li><Hyperlink content="Biology & Life Sciences" destination="#" /></li>
+            <li><Hyperlink content="Business & Management" destination="#" /></li>
+            <li><Hyperlink content="Chemistry" destination="#" /></li>
+            <li><Hyperlink content="Communication" destination="#" /></li>
+            <li><Hyperlink content="Computer Science" destination="#" /></li>
+            <li><Hyperlink content="Data Analysis & Statistics" destination="#" /></li>
+            <li><Hyperlink content="Design" destination="#" /></li>
+            <li><Hyperlink content="Economics & Finance" destination="#" /></li>
+            <li><Hyperlink content="Education & Teacher Training" destination="#" /></li>
+            <li><Hyperlink content="Electronics" destination="#" /></li>
+            <li><Hyperlink content="Energy & Earth Sciences" destination="#" /></li>
+            <li><Hyperlink content="Engineering" destination="#" /></li>
+            <li><Hyperlink content="Environmental Studies" destination="#" /></li>
+            <li><Hyperlink content="Ethics" destination="#" /></li>
+            <li><Hyperlink content="Food & Nutrition" destination="#" /></li>
+            <li><Hyperlink content="Health & Safety" destination="#" /></li>
+            <li><Hyperlink content="History" destination="#" /></li>
+            <li><Hyperlink content="Humanities" destination="#" /></li>
+            <li><Hyperlink content="Language" destination="#" /></li>
+            <li><Hyperlink content="Law" destination="#" /></li>
+            <li><Hyperlink content="Literature" destination="#" /></li>
+            <li><Hyperlink content="Math" destination="#" /></li>
+            <li><Hyperlink content="Medicine" destination="#" /></li>
+            <li><Hyperlink content="Music" destination="#" /></li>
+            <li><Hyperlink content="Philanthropy" destination="#" /></li>
+            <li><Hyperlink content="Philosophy & Ethics" destination="#" /></li>
+            <li><Hyperlink content="Physics" destination="#" /></li>
+            <li><Hyperlink content="Science" destination="#" /></li>
+            <li><Hyperlink content="Social Sciences" destination="#" /></li>
+            <li><Hyperlink content="All Subjects »" destination="#" /></li>
+
+
+          </ul>
+        </div>
+      )
+    }
+  },
+  {
+    content: "Programs",
+    destination: "#",
+    submenu: {
+      content: (
+        <div className="main-menu-programs">
+          <div>
+            <h3>Programs & degrees</h3>
+            <p>Pathways for your advancement</p>
+          <ul>
+            <li>
+              <Hyperlink content="MicroMasters Program" destination="#" />
+              <p>Graduate-level, for career advancement or a degree path</p>
+            </li>
+
+            <li>
+              <Hyperlink content="Professional Certificate" destination="#" />
+              <p>From employers or universities to build today's in-demand skills</p>
+            </li>
+
+            <li>
+              <Hyperlink content="Online Master's Degree" destination="#" />
+              <p>Top-ranked programs, affordable, and fully online</p>
+            </li>
+
+            <li>
+              <Hyperlink content="Global Freshman Academy" destination="#" />
+              <p>Freshman year courses for university credit from ASU</p>
+            </li>
+
+            <li>
+              <Hyperlink content="XSeries" destination="#" />
+              <p>Series of courses for a deep understanding of a topic</p>
+            </li>
+          </ul>
+          </div>
+        </div>
+      )
+    }
+  },
+  {
+    content: "Schools",
+    destination: "#"
+  },
+  {
+    content: "Enterprise",
     destination: "#"
   }
 ]
