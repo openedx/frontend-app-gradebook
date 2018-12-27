@@ -1,6 +1,10 @@
 import React from 'react';
 import classNames from 'classnames';
-import { Hyperlink, SearchField } from '@edx/paragon';
+import { 
+  Hyperlink, 
+  SearchField,
+  breakpoints, ExtraSmall, Small, Medium, Large, ExtraLarge, LargerThanExtraSmall
+} from '@edx/paragon';
 import MainNav from './MainNav';
 
 import Menu from './Menu';
@@ -57,8 +61,20 @@ export default class Header extends React.Component {
     this.refs.expandedMenu && this.refs.expandedMenu.focus(itemIndex);
   }
 
-
   render() {
+    return (
+      <div>
+        <ExtraSmall>{this.renderMobileNav()}</ExtraSmall>
+        <Small>{this.renderMobileNav()}</Small>
+        <Medium>{this.renderDesktopNav()}</Medium>
+        <Large>{this.renderDesktopNav()}</Large>
+        <ExtraLarge>{this.renderDesktopNav()}</ExtraLarge>
+      </div>
+    );
+  }
+
+
+  renderMobileNav() {
     const commonTriggerProps = {
       triggerOpen: this.openMenu,
       triggerClose: this.closeMenu,
@@ -83,7 +99,7 @@ export default class Header extends React.Component {
           {this.renderTrigger("main", <FontAwesomeIcon icon={this.state.expandedMenu === "main" ? "times" : "bars"} />, commonTriggerProps)}
           {this.renderMenu("main", (
             <MainNav 
-              menuType="touch" // "pointer", "touch"
+              usePointerEvents={commonMenuProps.usePointerEvents}
               menuItems={MENU_ITEMS}
             />
           ), commonMenuProps)}
@@ -127,10 +143,6 @@ export default class Header extends React.Component {
         </div>
       </header>
     );
-  }
-
-  renderMobileNav() {
-
   }
 
   renderDesktopNav() {

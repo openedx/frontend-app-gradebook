@@ -38,7 +38,7 @@ export default class MainNav extends React.Component {
     };
 
     if (this.state.expandedMenu === name) {
-      if (this.props.menuType === "touch") {
+      if (!this.props.usePointerEvents) {
         // Starts the closing of the tray while leaving the menu active (until animation completes)
         this.setState({
           submenuTrayIsOpen: false
@@ -63,8 +63,8 @@ export default class MainNav extends React.Component {
       <nav className={classNames("main-nav", {
         "has-expanded-menu": this.state.expandedMenu !== null,
         "open-submenu-tray": this.state.submenuTrayIsOpen,
-        "touch-nav": this.props.menuType === "touch",
-        "pointer-nav": this.props.menuType === "pointer"
+        "touch-nav": !this.props.usePointerEvents,
+        "pointer-nav": this.props.usePointerEvents
       })}>
         <div className="main-nav-wrap">
           <div className="top-level">
@@ -100,7 +100,7 @@ export default class MainNav extends React.Component {
             focusMenuItem={this.focusMenuItem}
             triggerOpen={this.openMenu}
             triggerClose={this.closeMenu}
-            usePointerEvents={this.props.menuType === "pointer"}
+            usePointerEvents={this.props.usePointerEvents}
           />
         )
       } else {
@@ -129,8 +129,8 @@ export default class MainNav extends React.Component {
           close={this.closeMenu}
           ref={this.state.expandedMenu == item.submenu.name ? "expandedMenu" : null}
           focusMenuTrigger={this.focusMenuTrigger}
-          usePointerEvents={this.props.menuType === "pointer"}
-          hasCloseButton={this.props.menuType === "touch"}
+          usePointerEvents={this.props.usePointerEvents}
+          hasCloseButton={!this.props.usePointerEvents}
           closeButtonText={item.submenu.closeButtonText}
         >{item.submenu.content}</Menu>
       )
