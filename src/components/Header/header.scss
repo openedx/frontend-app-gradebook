@@ -23,6 +23,7 @@ $white: #fff;
 
   a.top-level-link,
   button.top-level-link {
+    letter-spacing: .2px;
     border:none;
     background:none;
     padding: 1.5rem 1rem;
@@ -66,6 +67,7 @@ $white: #fff;
     .menu-content {
       left: 0;
       width: 80vw;
+      max-width: 960px;
       padding: 1.5rem;
       ul {
         list-style: none;
