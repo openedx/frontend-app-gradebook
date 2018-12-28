@@ -154,7 +154,7 @@ export default class Header extends React.Component {
               if (item.submenu) {
                 return (
                   <Menu 
-                    key={item.submenu.name}
+                    key={"menu-" + index}
                     className="top-level-menu"
                     triggerClassName="top-level-link"
                     triggerContent={<span>{item.content} <FontAwesomeIcon icon="chevron-down" /></span>}
