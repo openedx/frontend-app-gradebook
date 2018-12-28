@@ -59,7 +59,76 @@ export default class SiteHeader extends React.Component {
     return (
       <header className="site-header mobile">
         <div className="site-header-wrap">
-          
+
+          <button
+            className="top-level-link"
+            onClick={() => {
+              this.setState({
+                openOverlay: true
+              })
+            }}
+          ><FontAwesomeIcon icon="bars" /></button>
+          <OverlayMenu
+            expanded={this.state.openOverlay}
+            close={() => {
+              this.setState({
+                openOverlay: false,
+                panelOpen: false
+              })
+            }}
+          >
+            <div className={classNames("slide-panel", {
+                "panel-open": this.state.panelOpen
+              })}>
+                <div className="panels">
+                  <div className="panel">
+                    {this.props.menuItems.map(function(item, index) {
+                    if (item.submenu) {
+                      return (
+                        <button 
+                          type="button"
+                          className={classNames(
+                            "primary-menu-link", 
+                            item.name + "-primary-menu-link"
+                          )}
+                          key={'link-' + index}
+                          onClick={this.onClickMenuLink.bind(this, index)}
+                        >{item.content} <FontAwesomeIcon icon="chevron-right" /></button>
+                      );
+                    } else {
+                      return (
+                        <Hyperlink 
+                          className={classNames(
+                            "primary-menu-link", 
+                            item.name + "-primary-menu-link"
+                          )}
+                          key={'link-' + index}
+                          {...item} 
+                        />
+                      )
+                    }
+                  }, this)}
+                  </div>
+
+                  {openSubmenu ? (
+                    <div className={classNames(
+                      "panel", 
+                      openSubmenu.name + "-panel"
+                    )}>
+                      <button 
+                          type="button"
+                          className="primary-menu-link"
+                          onClick={this.onClickSubmenuClose.bind(this)}
+                        ><FontAwesomeIcon icon="chevron-left" /> Go Back</button>
+                        <div className="panel-content">
+                          {this.props.desktopMenuItems[this.state.openSubmenuIndex].submenu}
+                        </div>
+                    </div>
+                  ): null}
+                </div>
+              </div>
+          </OverlayMenu>
+
           <div className="primary-menu-container">
             <Menu 
               className="primary-menu"
@@ -227,3 +296,25 @@ export default class SiteHeader extends React.Component {
   }
 }
 
+
+
+class OverlayMenu extends React.Component {
+  constructor(props) {
+    super(props);
+  }
+
+  render() {
+    return (
+      <div className={classNames("site-overlay-menu", {
+        open: this.props.expanded
+      })}>
+        <div className="site-overlay-menu-content">
+          {this.props.children}
+        </div>
+        <div className="overlay-bg"
+          onClick={this.props.close}
+        />
+      </div>
+    );
+  }
+}

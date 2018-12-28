@@ -1,13 +1,29 @@
 import React from 'react';
+import classNames from 'classnames';
 import SiteHeader from './SiteHeader';
-import { Hyperlink } from '@edx/paragon';
+import { Hyperlink, Dropdown, SearchField } from '@edx/paragon';
+import Menu from './Menu';
+import EdxLogo from '../../../assets/edx-sm.png';
+
+
+import { library } from '@fortawesome/fontawesome-svg-core'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { 
+  faBars, faTimes, faSearch, 
+  faChevronLeft, faChevronRight, faChevronDown 
+} from '@fortawesome/free-solid-svg-icons'
+library.add(faBars, faTimes, faSearch, faChevronLeft, faChevronRight, faChevronDown);
+
 
 const Header = () => {
   return (
-    <SiteHeader 
+     <SiteHeader 
       menuItems={MENU_ITEMS}
       desktopMenuItems={DESKTOP_MENU_ITEMS}
     />
+
+
+   
   );
 }
 
