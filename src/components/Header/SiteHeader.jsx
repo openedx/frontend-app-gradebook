@@ -197,7 +197,7 @@ export default class SiteHeader extends React.Component {
             <Menu 
               className="account-menu"
               triggerClassName="top-level-link account-trigger"
-              triggerContent="Account"
+              triggerContent={<span>My Account <FontAwesomeIcon icon="chevron-down" /></span>}
               triggerDestination="#account"
               respondToPointerEvents
               expanded={null}
