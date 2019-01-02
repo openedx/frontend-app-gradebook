@@ -1,0 +1,16 @@
+.border-bottom-blue {
+    border-bottom: 1px solid #0075b4; 
+}
+
+.border-bottom-gray {
+    border-bottom: 1px solid #e7e7e7; 
+}
+
+.nav-link {
+    font-weight: 600;
+    
+    &:after {
+        content: "\00BB";
+        margin-left: 4px;
+    }
+}
