@@ -24,22 +24,8 @@ export default class SiteHeader extends React.Component {
     super(props);
 
     this.state = {
-      panelOpen: false,
-      openSubmenuIndex: null
+      panelSubmenuOpen: false
     };
-  }
-
-  onClickMenuLink(index, e) {
-    this.setState({
-      panelOpen: true,
-      openSubmenuIndex: index
-    });
-  }
-
-  onClickSubmenuClose(e) {
-    this.setState({
-      panelOpen: false
-    });
   }
 
   render() {
@@ -68,7 +54,7 @@ export default class SiteHeader extends React.Component {
               expanded={null}
               transitionTimeout={400}
               transitionClassName="overlay-panel"
-              closeButton={<button className="overlay-close" ><FontAwesomeIcon icon="times" /></button>}
+              closeButton={<button className="overlay-close" ><span><FontAwesomeIcon icon="times" /></span></button>}
             >
               {this.renderSlidingPanelMenu()}
             </Menu>
@@ -107,7 +93,7 @@ export default class SiteHeader extends React.Component {
   renderSlidingPanelMenu() {
     return (
       <div className={classNames("slide-panel", {
-        "panel-open": this.state.panelOpen
+        "panel-submenu-open": this.state.panelSubmenuOpen
       })}>
         <div className="panels">
           <div className="primary-menu-container">{
@@ -118,15 +104,15 @@ export default class SiteHeader extends React.Component {
                 return (
                   <Menu 
                     key={"menu-" + index}
-                    className={classNames("top-level-menu", item.name + "-top-level-menu")} 
-                    triggerClassName="top-level-link"
+                    className={classNames("sliding-menu", item.name + "-sliding-menu")} 
+                    triggerClassName="nav-link"
                     triggerContent={<span>{item.content} <FontAwesomeIcon icon="chevron-right" /></span>}
                     triggerDestination={item.destination}
                     respondToPointerEvents={false}
                     expanded={false}
-                    onOpen={() => { this.setState({panelOpen:true}) }}
-                    onClose={() => { this.setState({panelOpen:false}) }}
-                    closeButton={<button>Close</button>}
+                    onOpen={() => { this.setState({panelSubmenuOpen:true}) }}
+                    onClose={() => { this.setState({panelSubmenuOpen:false}) }}
+                    closeButton={<button className="nav-link" type="button"><FontAwesomeIcon icon="chevron-left" /><span>Close</span></button>}
                     transitionTimeout={400}
                     ignoreDocumentClicks
                   >
@@ -138,7 +124,7 @@ export default class SiteHeader extends React.Component {
 
                 return (
                   <Hyperlink 
-                    className={classNames("top-level-link", item.name + "-top-level-link")}
+                    className={classNames("nav-link", item.name + "-nav-link")}
                     key={'link-' + index}
                     {...item} 
                   />
@@ -219,7 +205,10 @@ export default class SiteHeader extends React.Component {
 
   renderAccountMenuContent() {
     return (
-      <div>Account Stuff</div>
+      <div>
+        <Hyperlink content="Sign In" destination="#" />
+        <Hyperlink content="Register" destination="#" />
+      </div>
     )
   }
 }

@@ -169,13 +169,15 @@ $white: #fff;
     }
   }
   .slide-panel {
-
+    .menu-content {
+      padding: 0;
+    }
   }
-  .panels {
+  .primary-menu-container {
     width: 100%;
     transition: transform .4s ease;
   }
-  .panel-open .panels {
+  .panel-submenu-open .primary-menu-container {
     transform: translateX(-100%);
   }
 }
@@ -184,7 +186,6 @@ $white: #fff;
 
 
 .overlay-panel-menu {
-
   & > .menu-content {
     position: fixed;
     top: 0;
@@ -197,6 +198,7 @@ $white: #fff;
     box-shadow: none;
 
     & > .menu-content-container {
+      padding: 0;
       position: fixed;
       top: 0;
       left: 0;
@@ -217,10 +219,23 @@ $white: #fff;
       left: 0;
       right: 0;
       bottom: 0;
-      background: rgba(0,0,0,.5);
+      background: rgba(0,0,0,.75);
       border: none;
       // opacity: 0;
       transition: all .5s ease;
+      span {
+        position: fixed;
+        top: 0;
+        right: 0;
+        width: 50px;
+        bottom: 0;
+        padding-top: 12px;
+        color: $white;
+        svg {
+          height: 24px;
+          width: 24px;
+        }
+      }
     }
 
     &.overlay-panel-enter {
@@ -261,119 +276,39 @@ $white: #fff;
       }
     }
   }
-
-
 }
 
 
 
 
-// EXPERIMENT
-.site-overlay-menu {
-  position: fixed;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  right: 0;
-  z-index: 1000;
-  overflow: hidden;
 
-  .site-overlay-menu-content {
-    position: fixed;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    z-index: 1;
-    background:#fff;
-    bottom: 0;
-    width: calc(100vw - 50px);
-    overflow: auto;
-    box-shadow: none;
-    transform: translateX(-100%);
-    transition: all .5s ease;
-  }
 
-  .overlay-bg {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0,0,0,.5);
-    opacity: 0;
-    transition: all .5s ease;
-  }
+.desktop {
 
-  pointer-events: none;
-  
-  &.open {
-    pointer-events: auto;
-    
-    .site-overlay-menu-content {
-      box-shadow: 2px 0 10px 0 rgba(0,0,0,.3);
-      transform: translateX(0%);
-    }
-
-    .overlay-bg {
-      opacity: 1;
+  .courses-top-level-menu {
+    ul {
+      column-count: 4;
+      padding: 0;
+      list-style: none;
     }
   }
 
-}
 
-.site-overlay-menu {
-  ul {
-    list-style: none;
-    padding:0;
-  }
-  .site-overlay-menu-content {
-    // padding: 1rem;
-  }
 }
 
 
+.mobile {
 
-
-// // COMMON
-// .slide-panel {
-//   width: 100%;
-//   overflow: hidden;
-//   .panels {
-//     width: 100%;
-//     display: flex;
-//     transition: transform .5s ease;
-//   }
-//   .panel {
-//     width: 100%;
-//     flex-shrink: 0;
-//   }
-//   &.panel-open {
-//     .panels {
-//       transform: translateX(-100%);
-//     }
-//   }
-//   .panel-content {
-//     padding: 1rem;
-//   }
-// }
-
-
-
-
-
-.courses-top-level-menu {
-  ul {
-    column-count: 4;
-    padding: 0;
-    list-style: none;
+  .courses-sliding-menu,
+  .programs-sliding-menu {
+    ul {
+      padding: 0;
+      list-style: none;
+    }
   }
+
+
 }
-
-
-
-
-
-
 
 // // BOOTSTRAP VERSION
 // .navbar {
@@ -412,22 +347,22 @@ $white: #fff;
 //     }
 //   }
 // }
-// .nav-link {
-//   padding: 1rem 1rem;
-//   background: none;
-//   border: none;
+.nav-link {
+  padding: 1rem 1rem;
+  background: none;
+  border: none;
 
-//   &:hover,
-//   &:focus,
-//   &.expanded {
-//     text-decoration: none;
-//     background: $blue;
-//     color: $white;
-//   }
-//   svg {
-//     height: .75em;
-//     margin-bottom: .05em;
-//   }
-// }
+  &:hover,
+  &:focus,
+  &.expanded {
+    text-decoration: none;
+    background: $blue;
+    color: $white;
+  }
+  svg {
+    height: .75em;
+    margin-bottom: .05em;
+  }
+}
 
 
