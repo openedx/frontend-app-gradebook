@@ -6,16 +6,17 @@ import {
   SearchField,
   breakpoints, ExtraSmall, Small, Medium, Large, ExtraLarge, LargerThanExtraSmall
 } from '@edx/paragon';
-import Menu from './Menu';
+import Menu from './Components/Menu';
 import EdxLogo from '../../../assets/edx-sm.png';
 
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { 
   faBars, faTimes, faSearch, 
-  faChevronLeft, faChevronRight, faChevronDown 
+  faChevronLeft, faChevronRight, faChevronDown,
+  faUserCircle
 } from '@fortawesome/free-solid-svg-icons'
-library.add(faBars, faTimes, faSearch, faChevronLeft, faChevronRight, faChevronDown);
+library.add(faBars, faTimes, faSearch, faChevronLeft, faChevronRight, faChevronDown, faUserCircle);
 
 
 export default class SiteHeader extends React.Component {
@@ -60,146 +61,87 @@ export default class SiteHeader extends React.Component {
       <header className="site-header mobile">
         <div className="site-header-wrap">
 
-          <button
-            className="top-level-link"
-            onClick={() => {
-              this.setState({
-                openOverlay: true
-              })
-            }}
-          ><FontAwesomeIcon icon="bars" /></button>
-          <OverlayMenu
-            expanded={this.state.openOverlay}
-            close={() => {
-              this.setState({
-                openOverlay: false,
-                panelOpen: false
-              })
-            }}
-          >
-            <div className={classNames("slide-panel", {
-                "panel-open": this.state.panelOpen
-              })}>
-                <div className="panels">
-                  <div className="panel">
-                    {this.props.menuItems.map(function(item, index) {
-                    if (item.submenu) {
-                      return (
-                        <button 
-                          type="button"
-                          className={classNames(
-                            "primary-menu-link", 
-                            item.name + "-primary-menu-link"
-                          )}
-                          key={'link-' + index}
-                          onClick={this.onClickMenuLink.bind(this, index)}
-                        >{item.content} <FontAwesomeIcon icon="chevron-right" /></button>
-                      );
-                    } else {
-                      return (
-                        <Hyperlink 
-                          className={classNames(
-                            "primary-menu-link", 
-                            item.name + "-primary-menu-link"
-                          )}
-                          key={'link-' + index}
-                          {...item} 
-                        />
-                      )
-                    }
-                  }, this)}
-                  </div>
 
-                  {openSubmenu ? (
-                    <div className={classNames(
-                      "panel", 
-                      openSubmenu.name + "-panel"
-                    )}>
-                      <button 
-                          type="button"
-                          className="primary-menu-link"
-                          onClick={this.onClickSubmenuClose.bind(this)}
-                        ><FontAwesomeIcon icon="chevron-left" /> Go Back</button>
-                        <div className="panel-content">
-                          {this.props.desktopMenuItems[this.state.openSubmenuIndex].submenu}
-                        </div>
-                    </div>
-                  ): null}
-                </div>
-              </div>
-          </OverlayMenu>
-
-          <div className="primary-menu-container">
-            <Menu 
-              className="primary-menu"
-              triggerClassName="top-level-link"
-              triggerContent={<FontAwesomeIcon icon="bars" />}
-              triggerExpandedContent={<FontAwesomeIcon icon="times" />}
-              respondToPointerEvents={false}
-              expanded={false}
+          <div className="nav-row primary-nav">
+            
+            <button
+              className="btn icon-button"
+              onClick={() => {
+                this.setState({
+                  openOverlay: true
+                })
+              }}
+            ><FontAwesomeIcon icon="bars" /></button>
+            <OverlayMenu
+              expanded={this.state.openOverlay}
+              close={() => {
+                this.setState({
+                  openOverlay: false,
+                  panelOpen: false
+                })
+              }}
             >
-              
               <div className={classNames("slide-panel", {
-                "panel-open": this.state.panelOpen
-              })}>
-                <div className="panels">
-                  <div className="panel">
-                    {this.props.menuItems.map(function(item, index) {
-                    if (item.submenu) {
-                      return (
-                        <button 
-                          type="button"
-                          className={classNames(
-                            "primary-menu-link", 
-                            item.name + "-primary-menu-link"
-                          )}
-                          key={'link-' + index}
-                          onClick={this.onClickMenuLink.bind(this, index)}
-                        >{item.content} <FontAwesomeIcon icon="chevron-right" /></button>
-                      );
-                    } else {
-                      return (
-                        <Hyperlink 
-                          className={classNames(
-                            "primary-menu-link", 
-                            item.name + "-primary-menu-link"
-                          )}
-                          key={'link-' + index}
-                          {...item} 
-                        />
-                      )
-                    }
-                  }, this)}
-                  </div>
-
-                  {openSubmenu ? (
-                    <div className={classNames(
-                      "panel", 
-                      openSubmenu.name + "-panel"
-                    )}>
-                      <button 
-                          type="button"
-                          className="primary-menu-link"
-                          onClick={this.onClickSubmenuClose.bind(this)}
-                        ><FontAwesomeIcon icon="chevron-left" /> Go Back</button>
-                        <div className="panel-content">
-                          {openSubmenu.submenu}
-                        </div>
+                  "panel-open": this.state.panelOpen
+                })}>
+                  <div className="panels">
+                    <div className="panel">
+                      {this.props.menuItems.map(function(item, index) {
+                      if (item.submenu) {
+                        return (
+                          <button 
+                            type="button"
+                            className={classNames(
+                              "primary-menu-link", 
+                              item.name + "-primary-menu-link"
+                            )}
+                            key={'link-' + index}
+                            onClick={this.onClickMenuLink.bind(this, index)}
+                          >{item.content} <FontAwesomeIcon icon="chevron-right" /></button>
+                        );
+                      } else {
+                        return (
+                          <Hyperlink 
+                            className={classNames(
+                              "primary-menu-link", 
+                              item.name + "-primary-menu-link"
+                            )}
+                            key={'link-' + index}
+                            {...item} 
+                          />
+                        )
+                      }
+                    }, this)}
                     </div>
-                  ): null}
+
+                    {openSubmenu ? (
+                      <div className={classNames(
+                        "panel", 
+                        openSubmenu.name + "-panel"
+                      )}>
+                        <button 
+                            type="button"
+                            className="primary-menu-link"
+                            onClick={this.onClickSubmenuClose.bind(this)}
+                          ><FontAwesomeIcon icon="chevron-left" /> Go Back</button>
+                          <div className="panel-content">
+                            {this.props.desktopMenuItems[this.state.openSubmenuIndex].submenu}
+                          </div>
+                      </div>
+                    ): null}
+                  </div>
                 </div>
-              </div>
-            </Menu>
+            </OverlayMenu>
           </div>
 
-          <div className="center-logo">
+          <div className="nav-row brand">
             {this.renderLogo()}
           </div>
 
-          <div className="secondary-menu-container">
+          <div className="nav-row secondary-menu-container">
             <Menu 
               className="search-menu"
-              triggerClassName="top-level-link"
+              triggerClassName="btn icon-button"
               triggerContent={<FontAwesomeIcon icon="search" />}
               respondToPointerEvents={false}
               expanded={null}
@@ -209,8 +151,8 @@ export default class SiteHeader extends React.Component {
 
             <Menu 
               className="account-menu"
-              triggerClassName="top-level-link account-trigger"
-              triggerContent="Account"
+              triggerClassName="btn icon-button account-trigger"
+              triggerContent={<FontAwesomeIcon icon="user-circle" />}
               respondToPointerEvents={false}
               expanded={null}
             >

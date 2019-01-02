@@ -1,3 +1,5 @@
+@import './Components/menu.scss';
+
 $blue: #007db8;
 $white: #fff;
 
@@ -101,82 +103,64 @@ $white: #fff;
 
 }
 
+.nav-row {
+  display: flex;
+}
+
+.btn.icon-button {
+  border: 0;
+  padding: 12px;
+  line-height: 1;
+  background: none;
+  color: #808080;
+  border-radius: 0;
+  &.expanded {
+    color: $white;
+    background: $blue;
+  }
+  svg {
+    margin:0;
+    height: 24px;
+    width: 24px;
+  }
+}
+
 .site-header.mobile {
-  position: relative;
+
   .site-header-wrap {
     display: flex;
+    position: relative;
   }
 
-  .primary-menu-container,
-  .center-logo,
-  .secondary-menu-container {
-    flex-basis: 34%;
-    flex-grow: 1;
-  }
-
-  .center-logo {
+  .nav-row {
     display: flex;
-    align-items: center;
+    flex-basis: 50%;
+  }
+
+  .brand {
     justify-content: center;
+    align-items: center;
   }
-
-  .secondary-menu-container { 
-    display: flex;
+  .secondary-menu-container {
     justify-content: flex-end;
   }
 
+
+  // Override menu so it's position is relative to the whole nav
   .menu {
     position: static;
   }
-
   .menu-content {
-    position: absolute;
-    top: 100%;
-    left: 0;
     width: 100%;
-    right: 0;
-    background: #fff;
-    box-shadow: 0 1px 0 0 rgba(0,0,0,.1), inset 0 1px 0 0 rgba(0,0,0,.1);
-  }
-
-
-  .top-level-link {
-    border:none;
-    background: none;
-    line-height: 1;
-    padding: 1rem;
   }
 
   .primary-menu-link {
-    border:none;
-    background: none;
-    padding: .5rem 1rem;
     display: block;
     width: 100%;
     text-align: left;
-    svg {
-      height: .75em;
-      margin: 0 .15em .075em;
-    }
+    padding: .5*$spacer $spacer;
   }
 
-  .menu-content {
-    padding: 1rem;
-  }
-  .primary-menu .menu-content {
-    padding: 0;
-  }
-
-  .courses-panel,
-  .programs-panel {
-    .panel-content {
-      padding: 1rem;
-    }
-    ul {
-      list-style: none;
-      padding: 0;
-    }
-  }
 }
 
 
@@ -277,19 +261,7 @@ $white: #fff;
 }
 
 
-.menu {
-  position: relative;
-}
-.menu-content {
-  top: 100%;
-  left: 0;
-  position: absolute;
-  background: #fff;
-  // border-top: solid 4px $blue;
-  box-shadow: 0 1px 0 0 rgba(0,0,0,.1), 1px 0 0 0 rgba(0,0,0,.1), -1px 0 0 0 rgba(0,0,0,.1), inset 0 1px 0 0 rgba(0,0,0,.1);
-  width: 600px;
-  padding: 1rem;
-}
+
 
 
 .courses-top-level-menu {
@@ -306,59 +278,59 @@ $white: #fff;
 
 
 
-// BOOTSTRAP VERSION
-.navbar {
-  padding: 0 1rem;
-  background: $white;
-  box-shadow: 0 1px 0 0 rgba(0,0,0,.1);
-  &.navbar-desktop {
-    .navbar-nav {
-      position: relative;
-      .menu {
-        position:static;
-      }
-      .menu-content {
-        width: 80vw;
-        max-width: 960px;
-      }
-    }
-  }
-  &.navbar-mobile {
-    padding:0;
-    .menu {
-      position: static;
-    }
-    .menu-content {
-      left: 0;
-      right: 0;
-      width: auto;
-    }
+// // BOOTSTRAP VERSION
+// .navbar {
+//   padding: 0 1rem;
+//   background: $white;
+//   box-shadow: 0 1px 0 0 rgba(0,0,0,.1);
+//   &.navbar-desktop {
+//     .navbar-nav {
+//       position: relative;
+//       .menu {
+//         position:static;
+//       }
+//       .menu-content {
+//         width: 80vw;
+//         max-width: 960px;
+//       }
+//     }
+//   }
+//   &.navbar-mobile {
+//     padding:0;
+//     .menu {
+//       position: static;
+//     }
+//     .menu-content {
+//       left: 0;
+//       right: 0;
+//       width: auto;
+//     }
 
-    .hamburger-menu .menu-content {
-      padding:0;
-      .nav-link {
-        width: 100%;
-        text-align: left;
-      }
-    }
-  }
-}
-.nav-link {
-  padding: 1rem 1rem;
-  background: none;
-  border: none;
+//     .hamburger-menu .menu-content {
+//       padding:0;
+//       .nav-link {
+//         width: 100%;
+//         text-align: left;
+//       }
+//     }
+//   }
+// }
+// .nav-link {
+//   padding: 1rem 1rem;
+//   background: none;
+//   border: none;
 
-  &:hover,
-  &:focus,
-  &.expanded {
-    text-decoration: none;
-    background: $blue;
-    color: $white;
-  }
-  svg {
-    height: .75em;
-    margin-bottom: .05em;
-  }
-}
+//   &:hover,
+//   &:focus,
+//   &.expanded {
+//     text-decoration: none;
+//     background: $blue;
+//     color: $white;
+//   }
+//   svg {
+//     height: .75em;
+//     margin-bottom: .05em;
+//   }
+// }
 
 
