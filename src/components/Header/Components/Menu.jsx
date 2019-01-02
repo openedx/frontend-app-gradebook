@@ -1,7 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import { Hyperlink, Button } from '@edx/paragon';
-
+import { CSSTransition } from 'react-transition-group';
 
 export default class Menu extends React.Component {
   constructor(props) {
@@ -12,6 +12,7 @@ export default class Menu extends React.Component {
     }
 
     this.onTriggerClick = this.onTriggerClick.bind(this);
+    this.onCloseClick = this.onCloseClick.bind(this);
     this.onKeyDown = this.onKeyDown.bind(this);
     this.onDocumentClick = this.onDocumentClick.bind(this);
     this.onMouseEnter = this.onMouseEnter.bind(this);
@@ -22,32 +23,43 @@ export default class Menu extends React.Component {
   // Lifecycle Events
 
   componentDidMount() {
-    document.addEventListener('click', this.onDocumentClick, true);
+    // document.addEventListener('click', this.onDocumentClick, true);
   }
 
   componentWillUnmount() {
     document.removeEventListener('click', this.onDocumentClick, true);
+
+    // Call onClose callback when unmounting and open
+    if (this.state.expanded) {
+      this.props.onClose && this.props.onClose();
+    }
   }
 
 
   // Internal functions
 
   open() {
+    this.props.onOpen && this.props.onOpen();
+
     this.setState({
       expanded: true
     });
+
+    document.addEventListener('click', this.onDocumentClick, true);
   }
 
   close() {
+    this.props.onClose && this.props.onClose();
+
     this.setState({
       expanded: false
     });
+
+    document.addEventListener('click', this.onDocumentClick, true);
   }
 
   toggle() {
-    this.setState({
-      expanded: !this.state.expanded
-    });
+    this.state.expanded ? this.close() : this.open();
   }
 
   getFocusableElements() {
@@ -58,8 +70,9 @@ export default class Menu extends React.Component {
   // Event handlers
 
   onDocumentClick(e) {
+    if (this.props.ignoreDocumentClicks) return;
     if (this.refs.menu && (e.target === this.refs.menu || this.refs.menu.contains(e.target))) return;
-    
+
     this.close();
   }
 
@@ -71,6 +84,11 @@ export default class Menu extends React.Component {
     e.preventDefault();
 
     this.toggle();
+  }
+
+  onCloseClick(e) {
+    this.getFocusableElements()[0].focus();
+    this.close();
   }
 
   onKeyDown(e) {
@@ -157,13 +175,26 @@ export default class Menu extends React.Component {
           <button type="button" {...triggerProps}>{triggerContent}</button>
         }
 
-        {
-          this.state.expanded ? (
-            <div className="menu-content">
+        <CSSTransition
+          in={this.state.expanded}
+          timeout={this.props.transitionTimeout || 0}
+          classNames={this.props.transitionClassName || "menu-content"}
+          unmountOnExit
+          onExited={() => {
+            this.setState({
+              showValidationButton: true,
+            });
+          }}
+        >
+          <div className="menu-content">
+            {this.props.closeButton ? React.cloneElement(this.props.closeButton, {
+              onClick: this.onCloseClick
+            }): null}
+            <div className="menu-content-container">
               {this.props.children}
             </div>
-          ) : null
-        }
+          </div>
+        </CSSTransition>
       </div>
     )
   }
