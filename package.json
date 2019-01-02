@@ -36,6 +36,7 @@
     "query-string": "^5.1.1",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
+    "react-media": "^1.9.2",
     "react-redux": "^5.0.7",
     "react-router": "^4.2.0",
     "react-router-dom": "^4.2.2",
