@@ -253,9 +253,9 @@ export default class Gradebook extends React.Component {
                 The grades for this course are now frozen. Editing of grades is no longer allowed.
               </div>
             }
-            { !this.props.canUserViewGradebook &&
+            { (this.props.canUserViewGradebook === false) &&
               <div className="alert alert-warning" role="alert" >
-                You are not authorized to view the gradebook for this course. If you have a global role, please enroll in this course and try again.
+                You are not authorized to view the gradebook for this course.
               </div>
             }
             <hr />
