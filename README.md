@@ -21,20 +21,20 @@ npm i --save @edx/gradebook
 
 ## Running the UI Standalone
 
-After cloning the repository, run `make up-detached` in the `gradebook` directory - this will build and start the `gradebook` web application in a docker container.
+To install the project please refer to the [`edX Developer Stack`](https://github.com/edx/devstack) instructions.
 
-The web application runs on port **1991**, so when you go to `http://localhost:1991/course-v1:edX+DemoX+Demo_Course` you should see the UI (assuming you have such a Demo Course in your devstack).  Note that you always have to provide a course id to actually see a gradebook.
+The web application runs on port **1994**, so when you go to `http://localhost:1994/course-v1:edX+DemoX+Demo_Course` you should see the UI (assuming you have such a Demo Course in your devstack).  Note that you always have to provide a course id to actually see a gradebook.
 
-If you don't, you can see the log messages for the docker container by executing `make logs` in the `gradebook` directory.
+If you don't, you can see the log messages for the docker container by executing `make gradebook-logs` in the `devstack` directory.
 
-Note that `make up-detached` executes the `npm run start` script which will hot-reload JavaScript and Sass files changes, so you should (:crossed_fingers:) not need to do anything (other than wait) when making changes.
+Note that starting the container executes the `npm run start` script which will hot-reload JavaScript and Sass files changes, so you should (:crossed_fingers:) not need to do anything (other than wait) when making changes.
 
 ## Configuring for local use in edx-platform
 
-Assuming you've got the UI running at `http://localhost:1991`, you can configure the LMS in edx-platform
+Assuming you've got the UI running at `http://localhost:1994`, you can configure the LMS in edx-platform
 to point to your local gradebook from the instructor dashboard by putting this settings in `lms/env/private.py`:
 ```
-WRITABLE_GRADEBOOK_URL = 'http://localhost:1991'
+WRITABLE_GRADEBOOK_URL = 'http://localhost:1994'
 ```
 
 There are also several edx-platform waffle and feature flags you'll have to enable from the Django admin:
