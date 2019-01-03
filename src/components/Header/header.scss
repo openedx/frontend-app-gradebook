@@ -19,6 +19,7 @@
     color: #767676;
 }
 
-.justify-self-start {
-    justify-self: start !important;
+.header-logo {
+    position: absolute;
+    left: calc(50% - 30px);
 }
