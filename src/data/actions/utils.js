@@ -66,8 +66,6 @@ const headingMapper = (filterKey) => {
       const results = [{
         label: 'Username',
         key: 'username',
-        columnSortable: true,
-        onSort: (direction) => { dispatch(sortGrades('username', direction)); },
       }];
 
       const assignmentHeadings = entry.section_breakdown
@@ -75,15 +73,11 @@ const headingMapper = (filterKey) => {
         .map(s => ({
           label: s.label,
           key: s.label,
-          columnSortable: true,
-          onSort: direction => dispatch(sortGrades(s.label, direction)),
         }));
 
       const totals = [{
         label: 'Total',
         key: 'total',
-        columnSortable: true,
-        onSort: direction => dispatch(sortGrades('total', direction)),
       }];
 
       return results.concat(assignmentHeadings).concat(totals);
@@ -95,8 +89,6 @@ const headingMapper = (filterKey) => {
     const results = [{
       label: 'Username',
       key: 'username',
-      columnSortable: true,
-      onSort: (direction) => { dispatch(sortGrades('username', direction)); },
     }];
 
     const assignmentHeadings = entry.section_breakdown
@@ -104,15 +96,11 @@ const headingMapper = (filterKey) => {
       .map(s => ({
         label: s.label,
         key: s.label,
-        columnSortable: false,
-        onSort: (direction) => { this.sortNumerically(s.label, direction); },
       }));
 
     const totals = [{
       label: 'Total',
       key: 'total',
-      columnSortable: true,
-      onSort: direction => dispatch(sortGrades('total', direction)),
     }];
 
     return results.concat(assignmentHeadings).concat(totals);

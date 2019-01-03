@@ -344,9 +344,6 @@ export default class Gradebook extends React.Component {
               <Table
                 columns={this.props.headings}
                 data={this.formatter[this.props.format](this.props.grades, this.props.areGradesFrozen)}
-                tableSortable
-                defaultSortDirection="asc"
-                defaultSortedColumn="username"
               />
             </div>
             {PageButtons(this.props)}
