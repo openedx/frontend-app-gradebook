@@ -97,7 +97,7 @@ module.exports = Merge.smart(commonConfig, {
     }),
     new webpack.EnvironmentPlugin({
       NODE_ENV: 'development',
-      BASE_URL: 'localhost:1991',
+      BASE_URL: 'localhost:1994',
       LMS_BASE_URL: 'http://localhost:18000',
       LOGIN_URL: 'http://localhost:18000/login',
       LOGOUT_URL: 'http://localhost:18000/login',
@@ -120,7 +120,7 @@ module.exports = Merge.smart(commonConfig, {
   // reloading.
   devServer: {
     host: '0.0.0.0',
-    port: 1991,
+    port: 1994,
     historyApiFallback: true,
     hot: true,
     inline: true,
