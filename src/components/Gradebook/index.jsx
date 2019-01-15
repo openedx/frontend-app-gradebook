@@ -244,7 +244,7 @@ export default class Gradebook extends React.Component {
               href={this.lmsInstructorDashboardUrl(this.props.match.params.courseId)}
               className="mb-3"
             >
-              {'<< Back to Dashboard'}
+              <span aria-hidden="true">{'<< '}</span> {'Back to Dashboard'}
             </a>
             <h1>Gradebook</h1>
             <h3> {this.props.match.params.courseId}</h3>
@@ -261,8 +261,8 @@ export default class Gradebook extends React.Component {
             <hr />
             <div className="d-flex justify-content-between" >
               <div>
-                <div>
-                  Score View:
+                <div role="radiogroup" aria-labelledby="score-view-group-label">
+                  <span id="score-view-group-label">Score View:</span>
                   <span>
                     <input
                       id="score-view-percent"
@@ -294,6 +294,7 @@ export default class Gradebook extends React.Component {
                     </span>
                     <InputSelect
                       name="assignment-types"
+                      ariaLabel="Assignment Types"
                       value={this.mapSelectedTrackEntry(this.props.selectedAssignmentType)}
                       options={this.mapAssignmentTypeEntries(this.props.assignmnetTypes)}
                       onChange={this.updateAssignmentTypes}
@@ -306,6 +307,7 @@ export default class Gradebook extends React.Component {
                   </span>
                   <InputSelect
                     name="Tracks"
+                    ariaLabel="Tracks"
                     disabled={this.props.tracks.length === 0}
                     value={this.mapSelectedTrackEntry(this.props.selectedTrack)}
                     options={this.mapTracksEntries(this.props.tracks)}
@@ -313,6 +315,7 @@ export default class Gradebook extends React.Component {
                   />
                   <InputSelect
                     name="Cohorts"
+                    ariaLabel="Cohorts"
                     disabled={this.props.cohorts.length === 0}
                     value={this.mapSelectedCohortEntry(this.props.selectedCohort)}
                     options={this.mapCohortsEntries(this.props.cohorts)}
@@ -347,6 +350,7 @@ export default class Gradebook extends React.Component {
                 tableSortable
                 defaultSortDirection="asc"
                 defaultSortedColumn="username"
+                rowHeaderColumnKey="username"
               />
             </div>
             {PageButtons(this.props)}
