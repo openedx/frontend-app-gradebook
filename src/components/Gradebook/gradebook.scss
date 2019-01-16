@@ -68,6 +68,10 @@
         padding-left: 170px;
     }
 
+    .table tbody th {
+        font-weight: normal;
+    }
+
     .link-style {
         color: #0075b4;
         &:hover, &:focus {
