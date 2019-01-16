@@ -10,7 +10,11 @@ import LmsApiService from '../services/LmsApiService';
 
 const allowedRoles = ['staff', 'instructor', 'support'];
 
-const gotRoles = canUserViewGradebook => ({ type: GOT_ROLES, canUserViewGradebook });
+const gotRoles = (canUserViewGradebook, courseId) => ({
+  type: GOT_ROLES,
+  canUserViewGradebook,
+  courseId,
+});
 const errorFetchingRoles = () => ({ type: ERROR_FETCHING_ROLES });
 
 const getRoles = (courseId, urlQuery) => (
@@ -20,7 +24,7 @@ const getRoles = (courseId, urlQuery) => (
       const canUserViewGradebook = response.is_staff
                                   || (response.roles.some(role => (role.course_id === courseId)
                                       && allowedRoles.includes(role.role)));
-      dispatch(gotRoles(canUserViewGradebook));
+      dispatch(gotRoles(canUserViewGradebook, courseId));
       if (canUserViewGradebook) {
         dispatch(fetchGrades(courseId, urlQuery.cohort, urlQuery.track));
         dispatch(fetchTracks(courseId));
