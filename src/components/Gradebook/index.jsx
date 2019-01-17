@@ -176,7 +176,7 @@ export default class Gradebook extends React.Component {
     return 'Tracks';
   };
 
-  roundGrade = percent => parseFloat(percent.toFixed(DECIMAL_PRECISION));
+  roundGrade = percent => parseFloat((percent || 0).toFixed(DECIMAL_PRECISION));
 
   formatter = {
     percent: (entries, areGradesFrozen) => entries.map((entry) => {
