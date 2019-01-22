@@ -10,14 +10,18 @@ import { GOT_GRADES, GRADE_UPDATE_SUCCESS, GRADE_UPDATE_FAILURE } from './consta
 import reducers from './reducers';
 
 const loggerMiddleware = createLogger();
+const trackingCategory = 'gradebook';
 
 const eventsMap = {
   [GOT_ROLES]: trackPageView(action => ({
+    category: trackingCategory,
     page: action.courseId,
   })),
   [GOT_GRADES]: trackEvent(action => ({
     name: 'Grades displayed or paginated',
     properties: {
+      category: trackingCategory,
+      courseId: action.courseId,
       track: action.track,
       cohort: action.cohort,
       prev: action.prev,
@@ -27,12 +31,16 @@ const eventsMap = {
   [GRADE_UPDATE_SUCCESS]: trackEvent(action => ({
     name: 'Grades Updated',
     properties: {
+      category: trackingCategory,
+      courseId: action.courseId,
       updatedGrades: action.payload.responseData,
     },
   })),
   [GRADE_UPDATE_FAILURE]: trackEvent(action => ({
     name: 'Grades Fail to Update',
     properties: {
+      category: trackingCategory,
+      courseId: action.courseId,
       error: action.payload.error,
     },
   })),

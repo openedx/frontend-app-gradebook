@@ -110,6 +110,7 @@ describe('actions', () => {
           ],
           prev: responseData.previous,
           next: responseData.next,
+          courseId,
         },
         { type: FINISHED_FETCHING_GRADES },
         { type: UPDATE_BANNER, showSuccess: false },
