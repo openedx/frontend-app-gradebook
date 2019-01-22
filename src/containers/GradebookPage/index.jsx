@@ -30,18 +30,17 @@ const mapStateToProps = state => (
     assignmnetTypes: state.assignmentTypes.results,
     areGradesFrozen: state.assignmentTypes.areGradesFrozen,
     showSpinner: shouldShowSpinner(state),
-    canUserViewGradebook: state.roles.canUserViewGradebook
+    canUserViewGradebook: state.roles.canUserViewGradebook,
   }
 );
 
-function shouldShowSpinner (state) {
-  if (state.roles.canUserViewGradebook === true){
+function shouldShowSpinner(state) {
+  if (state.roles.canUserViewGradebook === true) {
     return state.grades.showSpinner;
-  } else if (state.roles.canUserViewGradebook === false){
+  } else if (state.roles.canUserViewGradebook === false) {
     return false;
-  } else { // canUserViewGradebook === null
-    return true;
-  }
+  } // canUserViewGradebook === null
+  return true;
 }
 
 const mapDispatchToProps = dispatch => (
@@ -52,8 +51,8 @@ const mapDispatchToProps = dispatch => (
     searchForUser: (courseId, searchText, cohort, track) => {
       dispatch(fetchMatchingUserGrades(courseId, searchText, cohort, track, false));
     },
-    getPrevNextGrades: (endpoint, cohort, track) => {
-      dispatch(fetchPrevNextGrades(endpoint, cohort, track));
+    getPrevNextGrades: (endpoint, cohort, track, courseId) => {
+      dispatch(fetchPrevNextGrades(endpoint, cohort, track, courseId));
     },
     getCohorts: (courseId) => {
       dispatch(fetchCohorts(courseId));

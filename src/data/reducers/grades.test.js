@@ -113,6 +113,7 @@ describe('grades reducer', () => {
       prevPage: expectedPrev,
       nextPage: expectedNext,
       showSpinner: false,
+      courseId,
     };
     expect(grades(undefined, {
       type: GOT_GRADES,
@@ -123,6 +124,7 @@ describe('grades reducer', () => {
       track: expectedTrack,
       cohort: expectedCohortId,
       showSpinner: true,
+      courseId,
     })).toEqual(expected);
   });
 

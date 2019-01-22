@@ -35,6 +35,7 @@ const grades = (state = initialState, action) => {
         prevPage: action.prev,
         nextPage: action.next,
         showSpinner: false,
+        courseId: action.courseId,
       };
     case STARTED_FETCHING_GRADES:
       return {
