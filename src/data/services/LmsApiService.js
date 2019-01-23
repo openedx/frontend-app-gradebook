@@ -46,7 +46,7 @@ class LmsApiService {
   }
 
   static fetchTracks(courseId) {
-    const trackUrl = `${LmsApiService.baseUrl}/api/enrollment/v1/course/${courseId}`;
+    const trackUrl = `${LmsApiService.baseUrl}/api/enrollment/v1/course/${courseId}?include_expired=1`;
     return apiClient.get(trackUrl);
   }
 
