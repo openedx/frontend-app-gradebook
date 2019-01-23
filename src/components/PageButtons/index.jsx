@@ -4,7 +4,8 @@ import { Button } from '@edx/paragon';
 
 
 export default function PageButtons({
-  prevPage, nextPage, selectedTrack, selectedCohort, getPrevNextGrades, match,
+  prevPage, nextPage, selectedTrack, selectedCohort, selectedAssignmentType,
+  getPrevNextGrades, match,
 }) {
   return (
     <div
@@ -19,9 +20,10 @@ export default function PageButtons({
         onClick={() =>
           getPrevNextGrades(
             prevPage,
+            match.params.courseId,
             selectedCohort,
             selectedTrack,
-            match.params.courseId,
+            selectedAssignmentType,
           )}
       />
       <Button
@@ -32,9 +34,10 @@ export default function PageButtons({
         onClick={() =>
           getPrevNextGrades(
             nextPage,
+            match.params.courseId,
             selectedCohort,
             selectedTrack,
-            match.params.courseId,
+            selectedAssignmentType,
           )}
       />
     </div>
@@ -51,6 +54,7 @@ PageButtons.defaultProps = {
   prevPage: '',
   selectedCohort: null,
   selectedTrack: null,
+  selectedAssignmentType: null,
 };
 
 PageButtons.propTypes = {
@@ -62,6 +66,7 @@ PageButtons.propTypes = {
   }),
   nextPage: PropTypes.string,
   prevPage: PropTypes.string,
+  selectedAssignmentType: PropTypes.string,
   selectedCohort: PropTypes.shape({
     name: PropTypes.string,
   }),

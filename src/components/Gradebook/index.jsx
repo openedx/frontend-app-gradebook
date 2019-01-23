@@ -120,6 +120,8 @@ export default class Gradebook extends React.Component {
 
   updateAssignmentTypes = (event) => {
     this.props.filterColumns(event, this.props.grades[0]);
+    const updatedQueryStrings = this.updateQueryParams('assignmentType', event);
+    this.props.history.push(updatedQueryStrings);
   }
 
   updateTracks = (event) => {
@@ -132,8 +134,10 @@ export default class Gradebook extends React.Component {
       this.props.match.params.courseId,
       this.props.selectedCohort,
       selectedTrackSlug,
+      this.props.selectedAssignmentType,
     );
-    this.updateQueryParams('track', selectedTrackSlug);
+    const updatedQueryStrings = this.updateQueryParams('track', selectedTrackSlug);
+    this.props.history.push(updatedQueryStrings);
   };
 
   updateCohorts = (event) => {
@@ -146,17 +150,9 @@ export default class Gradebook extends React.Component {
       this.props.match.params.courseId,
       selectedCohortId,
       this.props.selectedTrack,
+      this.props.selectedAssignmentType,
     );
     this.updateQueryParams('cohort', selectedCohortId);
-  };
-
-  mapSelectedAssignmentTypeEntry = (entry) => {
-    const selectedAssignmentTypeEntry = this.props.assignmentTypes
-      .find(x => x.id === parseInt(entry, 10));
-    if (selectedAssignmentTypeEntry) {
-      return selectedAssignmentTypeEntry.name;
-    }
-    return 'All';
   };
 
   mapSelectedCohortEntry = (entry) => {
@@ -296,7 +292,7 @@ export default class Gradebook extends React.Component {
                     <InputSelect
                       name="assignment-types"
                       ariaLabel="Assignment Types"
-                      value="All"
+                      value={this.props.selectedAssignmentType}
                       options={this.mapAssignmentTypeEntries(this.props.assignmentTypes)}
                       onChange={this.updateAssignmentTypes}
                     />
@@ -335,6 +331,7 @@ export default class Gradebook extends React.Component {
                       value,
                       this.props.selectedCohort,
                       this.props.selectedTrack,
+                      this.props.selectedAssignmentType,
                     )
                   }
                   onChange={filterValue => this.setState({ filterValue })}
@@ -343,6 +340,7 @@ export default class Gradebook extends React.Component {
                       this.props.match.params.courseId,
                       this.props.selectedCohort,
                       this.props.selectedTrack,
+                      this.props.selectedAssignmentType,
                     )
                   }
                   value={this.state.filterValue}
@@ -457,6 +455,9 @@ Gradebook.propTypes = {
     columnSortable: PropTypes.bool,
     onSort: PropTypes.func,
   })).isRequired,
+  history: PropTypes.shape({
+    push: PropTypes.func,
+  }).isRequired,
   location: PropTypes.shape({
     search: PropTypes.string,
   }),
@@ -466,6 +467,7 @@ Gradebook.propTypes = {
     }),
   }),
   searchForUser: PropTypes.func.isRequired,
+  selectedAssignmentType: PropTypes.string.isRequired,
   selectedCohort: PropTypes.shape({
     name: PropTypes.string,
   }),

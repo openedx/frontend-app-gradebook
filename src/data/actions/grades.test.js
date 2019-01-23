@@ -27,6 +27,7 @@ describe('actions', () => {
     const courseId = 'course-v1:edX+DemoX+Demo_Course';
     const expectedCohort = 1;
     const expectedTrack = 'verified';
+    const expectedAssignmentType = 'Exam';
     const fetchGradesURL = `${configuration.LMS_BASE_URL}/api/grades/v1/gradebook/${courseId}/?page_size=10&cohort_id=${expectedCohort}&enrollment_mode=${expectedTrack}`;
     const responseData = {
       next: `${fetchGradesURL}&cursor=2344fda`,
@@ -94,6 +95,7 @@ describe('actions', () => {
           grades: responseData.results.sort(sortAlphaAsc),
           cohort: expectedCohort,
           track: expectedTrack,
+          assignmentType: expectedAssignmentType,
           headings: [
             {
               columnSortable: true,
@@ -120,10 +122,15 @@ describe('actions', () => {
       axiosMock.onGet(fetchGradesURL)
         .replyOnce(200, JSON.stringify(responseData));
 
-      return store.dispatch(fetchGrades(courseId, expectedCohort, expectedTrack, false))
-        .then(() => {
-          expect(store.getActions()).toEqual(expectedActions);
-        });
+      return store.dispatch(fetchGrades(
+        courseId,
+        expectedCohort,
+        expectedTrack,
+        expectedAssignmentType,
+        false,
+      )).then(() => {
+        expect(store.getActions()).toEqual(expectedActions);
+      });
     });
 
     it('dispatches failure action after fetching grades', () => {
@@ -136,10 +143,53 @@ describe('actions', () => {
       axiosMock.onGet(fetchGradesURL)
         .replyOnce(500, JSON.stringify({}));
 
-      return store.dispatch(fetchGrades(courseId, expectedCohort, expectedTrack, false))
-        .then(() => {
-          expect(store.getActions()).toEqual(expectedActions);
-        });
+      return store.dispatch(fetchGrades(
+        courseId,
+        expectedCohort,
+        expectedTrack,
+        expectedAssignmentType,
+        false,
+      )).then(() => {
+        expect(store.getActions()).toEqual(expectedActions);
+      });
+    });
+
+    it('dispatches success action on empty response after fetching grades', () => {
+      const emptyResponseData = {
+        next: responseData.next,
+        previous: responseData.previous,
+        results: [],
+      };
+      const expectedActions = [
+        { type: STARTED_FETCHING_GRADES },
+        {
+          type: GOT_GRADES,
+          grades: [],
+          cohort: expectedCohort,
+          track: expectedTrack,
+          assignmentType: expectedAssignmentType,
+          headings: [],
+          prev: responseData.previous,
+          next: responseData.next,
+          courseId,
+        },
+        { type: FINISHED_FETCHING_GRADES },
+        { type: UPDATE_BANNER, showSuccess: false },
+      ];
+      const store = mockStore();
+
+      axiosMock.onGet(fetchGradesURL)
+        .replyOnce(200, JSON.stringify(emptyResponseData));
+
+      return store.dispatch(fetchGrades(
+        courseId,
+        expectedCohort,
+        expectedTrack,
+        expectedAssignmentType,
+        false,
+      )).then(() => {
+        expect(store.getActions()).toEqual(expectedActions);
+      });
     });
   });
 });

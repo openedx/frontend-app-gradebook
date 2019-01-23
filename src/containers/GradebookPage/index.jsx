@@ -32,6 +32,7 @@ const mapStateToProps = state => (
     cohorts: state.cohorts.results,
     selectedTrack: state.grades.selectedTrack,
     selectedCohort: state.grades.selectedCohort,
+    selectedAssignmentType: state.grades.selectedAssignmentType,
     format: state.grades.gradeFormat,
     showSuccess: state.grades.showSuccess,
     prevPage: state.grades.prevPage,
@@ -45,14 +46,14 @@ const mapStateToProps = state => (
 
 const mapDispatchToProps = dispatch => (
   {
-    getUserGrades: (courseId, cohort, track) => {
-      dispatch(fetchGrades(courseId, cohort, track));
+    getUserGrades: (courseId, cohort, track, assignmentType) => {
+      dispatch(fetchGrades(courseId, cohort, track, assignmentType));
     },
-    searchForUser: (courseId, searchText, cohort, track) => {
-      dispatch(fetchMatchingUserGrades(courseId, searchText, cohort, track, false));
+    searchForUser: (courseId, searchText, cohort, track, assignmentType) => {
+      dispatch(fetchMatchingUserGrades(courseId, searchText, cohort, track, assignmentType, false));
     },
-    getPrevNextGrades: (endpoint, cohort, track, courseId) => {
-      dispatch(fetchPrevNextGrades(endpoint, cohort, track, courseId));
+    getPrevNextGrades: (endpoint, courseId, cohort, track, assignmentType) => {
+      dispatch(fetchPrevNextGrades(endpoint, courseId, cohort, track, assignmentType));
     },
     getCohorts: (courseId) => {
       dispatch(fetchCohorts(courseId));
