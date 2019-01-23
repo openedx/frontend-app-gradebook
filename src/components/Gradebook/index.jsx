@@ -181,7 +181,6 @@ export default class Gradebook extends React.Component {
     percent: (entries, areGradesFrozen) => entries.map((entry) => {
       const results = { username: entry.username };
       const assignments = entry.section_breakdown
-        .filter(section => section.is_graded)
         .reduce((acc, subsection) => {
           if (areGradesFrozen) {
             acc[subsection.label] = `${this.roundGrade(subsection.percent * 100)} %`;
@@ -203,7 +202,6 @@ export default class Gradebook extends React.Component {
     absolute: (entries, areGradesFrozen) => entries.map((entry) => {
       const results = { username: entry.username };
       const assignments = entry.section_breakdown
-        .filter(section => section.is_graded)
         .reduce((acc, subsection) => {
           const scoreEarned = this.roundGrade(subsection.score_earned);
           const scorePossible = this.roundGrade(subsection.score_possible);
@@ -443,7 +441,6 @@ Gradebook.propTypes = {
     section_breakdown: PropTypes.arrayOf(PropTypes.shape({
       attempted: PropTypes.bool,
       category: PropTypes.string,
-      is_graded: PropTypes.bool,
       label: PropTypes.string,
       module_id: PropTypes.string,
       percent: PropTypes.number,
