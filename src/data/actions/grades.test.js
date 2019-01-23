@@ -120,9 +120,10 @@ describe('actions', () => {
       axiosMock.onGet(fetchGradesURL)
         .replyOnce(200, JSON.stringify(responseData));
 
-      return store.dispatch(fetchGrades(courseId, expectedCohort, expectedTrack, false)).then(() => {
-        expect(store.getActions()).toEqual(expectedActions);
-      });
+      return store.dispatch(fetchGrades(courseId, expectedCohort, expectedTrack, false))
+        .then(() => {
+          expect(store.getActions()).toEqual(expectedActions);
+        });
     });
 
     it('dispatches failure action after fetching grades', () => {
@@ -135,9 +136,10 @@ describe('actions', () => {
       axiosMock.onGet(fetchGradesURL)
         .replyOnce(500, JSON.stringify({}));
 
-      return store.dispatch(fetchGrades(courseId, expectedCohort, expectedTrack, false)).then(() => {
-        expect(store.getActions()).toEqual(expectedActions);
-      });
+      return store.dispatch(fetchGrades(courseId, expectedCohort, expectedTrack, false))
+        .then(() => {
+          expect(store.getActions()).toEqual(expectedActions);
+        });
     });
   });
 });

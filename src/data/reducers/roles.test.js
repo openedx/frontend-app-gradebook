@@ -16,7 +16,7 @@ describe('tracks reducer', () => {
   it('updates canUserViewGradebook to true', () => {
     const expected = {
       ...initialState,
-      canUserViewGradebook: true
+      canUserViewGradebook: true,
     };
     expect(roles(undefined, {
       type: GOT_ROLES,
@@ -27,7 +27,7 @@ describe('tracks reducer', () => {
   it('updates canUserViewGradebook to false', () => {
     const expected = {
       ...initialState,
-      canUserViewGradebook: false
+      canUserViewGradebook: false,
     };
     expect(roles(undefined, {
       type: GOT_ROLES,

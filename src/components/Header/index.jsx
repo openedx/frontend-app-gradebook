@@ -4,13 +4,6 @@ import { Hyperlink } from '@edx/paragon';
 import EdxLogo from '../../../assets/edx-sm.png';
 
 export default class Header extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      mobileNavOpen: false,
-    };
-  }
-
   renderLogo() {
     return (
       <img src={EdxLogo} alt="edX logo" height="30" width="60" />

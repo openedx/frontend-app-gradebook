@@ -15,6 +15,15 @@ import { fetchTracks } from '../../data/actions/tracks';
 import { fetchAssignmentTypes } from '../../data/actions/assignmentTypes';
 import { getRoles } from '../../data/actions/roles';
 
+function shouldShowSpinner(state) {
+  if (state.roles.canUserViewGradebook === true) {
+    return state.grades.showSpinner;
+  } else if (state.roles.canUserViewGradebook === false) {
+    return false;
+  } // canUserViewGradebook === null
+  return true;
+}
+
 const mapStateToProps = state => (
   {
     grades: state.grades.results,
@@ -27,21 +36,12 @@ const mapStateToProps = state => (
     showSuccess: state.grades.showSuccess,
     prevPage: state.grades.prevPage,
     nextPage: state.grades.nextPage,
-    assignmnetTypes: state.assignmentTypes.results,
+    assignmentTypes: state.assignmentTypes.results,
     areGradesFrozen: state.assignmentTypes.areGradesFrozen,
     showSpinner: shouldShowSpinner(state),
     canUserViewGradebook: state.roles.canUserViewGradebook,
   }
 );
-
-function shouldShowSpinner(state) {
-  if (state.roles.canUserViewGradebook === true) {
-    return state.grades.showSpinner;
-  } else if (state.roles.canUserViewGradebook === false) {
-    return false;
-  } // canUserViewGradebook === null
-  return true;
-}
 
 const mapDispatchToProps = dispatch => (
   {

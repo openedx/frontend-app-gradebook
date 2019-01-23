@@ -25,7 +25,10 @@ class LmsApiService {
     /*
        updateData is expected to be a list of objects with the keys 'user_id' (an integer),
        'usage_id' (a string) and 'grade', which is an object with the keys:
-       'earned_all_override', 'possible_all_override', 'earned_graded_override', and 'possible_graded_override',
+       'earned_all_override',
+       'possible_all_override',
+       'earned_graded_override',
+       and 'possible_graded_override',
        each of which should be an integer.
        Example:
        [
