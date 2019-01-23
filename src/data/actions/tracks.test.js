@@ -21,6 +21,7 @@ describe('actions', () => {
 
   describe('fetchTracks', () => {
     const courseId = 'course-v1:edX+DemoX+Demo_Course';
+    const trackUrl = `${configuration.LMS_BASE_URL}/api/enrollment/v1/course/${courseId}?include_expired=1`;
 
     it('dispatches success action after fetching tracks', () => {
       const responseData = {
@@ -54,7 +55,7 @@ describe('actions', () => {
       ];
       const store = mockStore();
 
-      axiosMock.onGet(`${configuration.LMS_BASE_URL}/api/enrollment/v1/course/${courseId}`)
+      axiosMock.onGet(trackUrl)
         .replyOnce(200, JSON.stringify(responseData));
 
       return store.dispatch(fetchTracks(courseId)).then(() => {
@@ -69,7 +70,7 @@ describe('actions', () => {
       ];
       const store = mockStore();
 
-      axiosMock.onGet(`${configuration.LMS_BASE_URL}/api/enrollment/v1/course/${courseId}`)
+      axiosMock.onGet(trackUrl)
         .replyOnce(500, JSON.stringify({}));
 
       return store.dispatch(fetchTracks(courseId)).then(() => {

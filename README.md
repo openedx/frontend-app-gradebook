@@ -49,6 +49,13 @@ in which you'd like to enable the gradebook.  Add a course override flag using a
 ``grades.writable_gradebook``.  Make sure to check the ``enabled`` box.  Alternatively, you could add this as a
 regular waffle flag to enable the gradebook for all courses.
 
+## Running tests
+
+1. Assuming that you're operating in the context of the edX devstack,
+run `gradebook-shell` from your devstack directory.  This will start a bash shell inside your
+running gradebook container.
+2. Run `make test` (which executes `npm run test`).  This will run all of the gradebook tests.
+
 ## Directory Structure
 
 * `config`
