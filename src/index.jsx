@@ -12,8 +12,6 @@ import store from './data/store';
 import FooterLogo from '../assets/edx-footer.png';
 import './App.scss';
 
-var courseId = window.location.pathname.substring(1);
-
 const App = () => (
   <Provider store={store}>
     <Router>

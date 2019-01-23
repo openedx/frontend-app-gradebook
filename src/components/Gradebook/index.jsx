@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import {
   Button,
   InputSelect,
@@ -132,8 +133,7 @@ export default class Gradebook extends React.Component {
       this.props.selectedCohort,
       selectedTrackSlug,
     );
-    const updatedQueryStrings = this.updateQueryParams('track', selectedTrackSlug);
-    this.props.history.push(updatedQueryStrings);
+    this.updateQueryParams('track', selectedTrackSlug);
   };
 
   updateCohorts = (event) => {
@@ -147,8 +147,7 @@ export default class Gradebook extends React.Component {
       selectedCohortId,
       this.props.selectedTrack,
     );
-    const updatedQueryStrings = this.updateQueryParams('cohort', selectedCohortId);
-    this.props.history.push(updatedQueryStrings);
+    this.updateQueryParams('cohort', selectedCohortId);
   };
 
   mapSelectedAssignmentTypeEntry = (entry) => {
@@ -264,30 +263,34 @@ export default class Gradebook extends React.Component {
                 <div role="radiogroup" aria-labelledby="score-view-group-label">
                   <span id="score-view-group-label">Score View:</span>
                   <span>
-                    <input
-                      id="score-view-percent"
-                      className="ml-2 mr-1"
-                      type="radio"
-                      name="score-view"
-                      value="percent"
-                      defaultChecked
-                      onClick={() => this.props.toggleFormat('percent')}
-                    />
-                    <label className="mr-2" htmlFor="score-view-percent">Percent</label>
+                    <label className="mr-2" htmlFor="score-view-percent">
+                      <input
+                        id="score-view-percent"
+                        className="ml-2 mr-1"
+                        type="radio"
+                        name="score-view"
+                        value="percent"
+                        defaultChecked
+                        onClick={() => this.props.toggleFormat('percent')}
+                      />
+                      Percent
+                    </label>
                   </span>
                   <span>
-                    <input
-                      id="score-view-absolute"
-                      type="radio"
-                      name="score-view"
-                      value="absolute"
-                      className="mr-1"
-                      onClick={() => this.props.toggleFormat('absolute')}
-                    />
-                    <label htmlFor="score-view-absolute">Absolute</label>
+                    <label htmlFor="score-view-absolute">
+                      <input
+                        id="score-view-absolute"
+                        type="radio"
+                        name="score-view"
+                        value="absolute"
+                        className="mr-1"
+                        onClick={() => this.props.toggleFormat('absolute')}
+                      />
+                    Absolute
+                    </label>
                   </span>
                 </div>
-                { this.props.assignmnetTypes.length > 0 &&
+                { this.props.assignmentTypes.length > 0 &&
                   <div className="student-filters">
                     <span className="label">
                       Assignment Types:
@@ -295,8 +298,8 @@ export default class Gradebook extends React.Component {
                     <InputSelect
                       name="assignment-types"
                       ariaLabel="Assignment Types"
-                      value={this.mapSelectedTrackEntry(this.props.selectedAssignmentType)}
-                      options={this.mapAssignmentTypeEntries(this.props.assignmnetTypes)}
+                      value="All"
+                      options={this.mapAssignmentTypeEntries(this.props.assignmentTypes)}
                       onChange={this.updateAssignmentTypes}
                     />
                   </div>
@@ -328,9 +331,22 @@ export default class Gradebook extends React.Component {
                   <a href={`${this.lmsInstructorDashboardUrl(this.props.match.params.courseId)}#view-data_download`}>Generate Grade Report</a>
                 </div>
                 <SearchField
-                  onSubmit={value => this.props.searchForUser(this.props.match.params.courseId, value, this.props.selectedCohort, this.props.selectedTrack)}
+                  onSubmit={value =>
+                    this.props.searchForUser(
+                      this.props.match.params.courseId,
+                      value,
+                      this.props.selectedCohort,
+                      this.props.selectedTrack,
+                    )
+                  }
                   onChange={filterValue => this.setState({ filterValue })}
-                  onClear={() => this.props.getUserGrades(this.props.match.params.courseId, this.props.selectedCohort, this.props.selectedTrack)}
+                  onClear={() =>
+                      this.props.getUserGrades(
+                      this.props.match.params.courseId,
+                      this.props.selectedCohort,
+                      this.props.selectedTrack,
+                    )
+                  }
                   value={this.state.filterValue}
                 />
               </div>
@@ -346,7 +362,10 @@ export default class Gradebook extends React.Component {
             <div className="gbook">
               <Table
                 columns={this.props.headings}
-                data={this.formatter[this.props.format](this.props.grades, this.props.areGradesFrozen)}
+                data={this.formatter[this.props.format](
+                  this.props.grades,
+                  this.props.areGradesFrozen,
+                )}
                 tableSortable
                 defaultSortDirection="asc"
                 defaultSortedColumn="username"
@@ -390,3 +409,76 @@ export default class Gradebook extends React.Component {
   }
 }
 
+Gradebook.defaultProps = {
+  areGradesFrozen: false,
+  assignmentTypes: [],
+  canUserViewGradebook: false,
+  cohorts: [],
+  grades: [],
+  location: {
+    search: '',
+  },
+  match: {
+    params: {
+      courseId: '',
+    },
+  },
+  selectedCohort: null,
+  selectedTrack: null,
+  showSpinner: false,
+  tracks: [],
+};
+
+Gradebook.propTypes = {
+  areGradesFrozen: PropTypes.bool,
+  assignmentTypes: PropTypes.arrayOf(PropTypes.string),
+  canUserViewGradebook: PropTypes.bool,
+  cohorts: PropTypes.arrayOf(PropTypes.string),
+  filterColumns: PropTypes.func.isRequired,
+  format: PropTypes.string.isRequired,
+  getRoles: PropTypes.func.isRequired,
+  getUserGrades: PropTypes.func.isRequired,
+  grades: PropTypes.arrayOf(PropTypes.shape({
+    percent: PropTypes.number,
+    section_breakdown: PropTypes.arrayOf(PropTypes.shape({
+      attempted: PropTypes.bool,
+      category: PropTypes.string,
+      is_graded: PropTypes.bool,
+      label: PropTypes.string,
+      module_id: PropTypes.string,
+      percent: PropTypes.number,
+      scoreEarned: PropTypes.number,
+      scorePossible: PropTypes.number,
+      subsection_name: PropTypes.string,
+    })),
+    user_id: PropTypes.number,
+    user_name: PropTypes.string,
+  })),
+  headings: PropTypes.arrayOf(PropTypes.shape({
+    label: PropTypes.string,
+    key: PropTypes.string,
+    columnSortable: PropTypes.bool,
+    onSort: PropTypes.func,
+  })).isRequired,
+  location: PropTypes.shape({
+    search: PropTypes.string,
+  }),
+  match: PropTypes.shape({
+    params: PropTypes.shape({
+      courseId: PropTypes.string,
+    }),
+  }),
+  searchForUser: PropTypes.func.isRequired,
+  selectedCohort: PropTypes.shape({
+    name: PropTypes.string,
+  }),
+  selectedTrack: PropTypes.string,
+  showSpinner: PropTypes.bool,
+  showSuccess: PropTypes.bool.isRequired,
+  toggleFormat: PropTypes.func.isRequired,
+  tracks: PropTypes.arrayOf(PropTypes.shape({
+    name: PropTypes.string,
+  })),
+  updateBanner: PropTypes.func.isRequired,
+  updateGrades: PropTypes.func.isRequired,
+};

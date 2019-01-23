@@ -57,7 +57,10 @@ describe('actions', () => {
       ];
       const store = mockStore();
       axiosMock.onGet(rolesUrl)
-        .replyOnce(200, JSON.stringify(makeRoleListObj([course1StaffRole, course2DummyRole], false)));
+        .replyOnce(
+          200,
+          JSON.stringify(makeRoleListObj([course1StaffRole, course2DummyRole], false)),
+        );
 
       return store.dispatch(getRoles(course1Id, urlParams)).then(() => {
         expect(store.getActions()).toEqual(expectedActions);
@@ -75,7 +78,10 @@ describe('actions', () => {
       const store = mockStore();
 
       axiosMock.onGet(rolesUrl)
-        .replyOnce(200, JSON.stringify(makeRoleListObj([course1DummyRole, course2DummyRole], true)));
+        .replyOnce(
+          200,
+          JSON.stringify(makeRoleListObj([course1DummyRole, course2DummyRole], true)),
+        );
 
       return store.dispatch(getRoles(course1Id, urlParams)).then(() => {
         expect(store.getActions()).toEqual(expectedActions);
@@ -91,7 +97,10 @@ describe('actions', () => {
       const store = mockStore();
 
       axiosMock.onGet(rolesUrl)
-        .replyOnce(200, JSON.stringify(makeRoleListObj([course1DummyRole, course2StaffRole], false)));
+        .replyOnce(
+          200,
+          JSON.stringify(makeRoleListObj([course1DummyRole, course2StaffRole], false)),
+        );
 
       return store.dispatch(getRoles(course1Id, urlParams)).then(() => {
         expect(store.getActions()).toEqual(expectedActions);
@@ -105,7 +114,10 @@ describe('actions', () => {
       const store = mockStore();
 
       axiosMock.onGet(rolesUrl)
-        .replyOnce(200, JSON.stringify(makeRoleListObj([], false)));
+        .replyOnce(
+          200,
+          JSON.stringify(makeRoleListObj([], false)),
+        );
 
       return store.dispatch(getRoles(course1Id, urlParams)).then(() => {
         expect(store.getActions()).toEqual(expectedActions);
@@ -123,7 +135,10 @@ describe('actions', () => {
       const store = mockStore();
 
       axiosMock.onGet(rolesUrl)
-        .replyOnce(200, JSON.stringify(makeRoleListObj([], true)));
+        .replyOnce(
+          200,
+          JSON.stringify(makeRoleListObj([], true)),
+        );
 
       return store.dispatch(getRoles(course1Id, urlParams)).then(() => {
         expect(store.getActions()).toEqual(expectedActions);
