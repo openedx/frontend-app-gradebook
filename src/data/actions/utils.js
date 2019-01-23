@@ -71,7 +71,7 @@ const headingMapper = (filterKey) => {
       }];
 
       const assignmentHeadings = entry.section_breakdown
-        .filter(section => section.is_graded && section.label)
+        .filter(section => section.label)
         .map(s => ({
           label: s.label,
           key: s.label,
@@ -100,7 +100,7 @@ const headingMapper = (filterKey) => {
     }];
 
     const assignmentHeadings = entry.section_breakdown
-      .filter(section => section.is_graded && section.label && section.category === filterKey)
+      .filter(section => section.label && section.category === filterKey)
       .map(s => ({
         label: s.label,
         key: s.label,
