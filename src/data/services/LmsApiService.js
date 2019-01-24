@@ -3,7 +3,7 @@ import { configuration } from '../../config';
 
 class LmsApiService {
   static baseUrl = configuration.LMS_BASE_URL;
-  static pageSize = 10
+  static pageSize = 25
 
   static fetchGradebookData(courseId, searchText, cohort, track) {
     let gradebookUrl = `${LmsApiService.baseUrl}/api/grades/v1/gradebook/${courseId}/`;
