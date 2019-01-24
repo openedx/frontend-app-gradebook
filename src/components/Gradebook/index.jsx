@@ -326,7 +326,7 @@ export default class Gradebook extends React.Component {
               </div>
               <div>
                 <div style={{ marginLeft: '10px', marginBottom: '10px' }}>
-                  <a href={`${this.lmsInstructorDashboardUrl(this.props.match.params.courseId)}#view-data_download`}>Generate Grade Report</a>
+                  <a className="btn btn-outline-primary mb-85" href={`${this.lmsInstructorDashboardUrl(this.props.match.params.courseId)}#view-data_download`}>Generate Grade Report</a>
                 </div>
                 <SearchField
                   onSubmit={value =>
@@ -337,6 +337,7 @@ export default class Gradebook extends React.Component {
                       this.props.selectedTrack,
                     )
                   }
+                  inputLabel="Search Username:"
                   onChange={filterValue => this.setState({ filterValue })}
                   onClear={() =>
                       this.props.getUserGrades(
