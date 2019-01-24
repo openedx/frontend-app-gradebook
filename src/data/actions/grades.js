@@ -32,11 +32,12 @@ const sortGrades = (columnName, direction) => {
 const startedFetchingGrades = () => ({ type: STARTED_FETCHING_GRADES });
 const finishedFetchingGrades = () => ({ type: FINISHED_FETCHING_GRADES });
 const errorFetchingGrades = () => ({ type: ERROR_FETCHING_GRADES });
-const gotGrades = (grades, cohort, track, headings, prev, next, courseId) => ({
+const gotGrades = (grades, cohort, track, assignmentType, headings, prev, next, courseId) => ({
   type: GOT_GRADES,
   grades,
   cohort,
   track,
+  assignmentType,
   headings,
   prev,
   next,
@@ -67,7 +68,7 @@ const filterColumns = (filterType, exampleUser) => (
 
 const updateBanner = showSuccess => ({ type: UPDATE_BANNER, showSuccess });
 
-const fetchGrades = (courseId, cohort, track, showSuccess) => (
+const fetchGrades = (courseId, cohort, track, assignmentType, showSuccess) => (
   (dispatch) => {
     dispatch(startedFetchingGrades());
     return LmsApiService.fetchGradebookData(courseId, null, cohort, track)
@@ -77,7 +78,8 @@ const fetchGrades = (courseId, cohort, track, showSuccess) => (
           data.results.sort(sortAlphaAsc),
           cohort,
           track,
-          headingMapper(defaultAssignmentFilter)(dispatch, data.results[0]),
+          assignmentType,
+          headingMapper(assignmentType || defaultAssignmentFilter)(dispatch, data.results[0]),
           data.previous,
           data.next,
           courseId,
@@ -91,7 +93,14 @@ const fetchGrades = (courseId, cohort, track, showSuccess) => (
   }
 );
 
-const fetchMatchingUserGrades = (courseId, searchText, cohort, track, showSuccess) => (
+const fetchMatchingUserGrades = (
+  courseId,
+  searchText,
+  cohort,
+  track,
+  assignmentType,
+  showSuccess,
+) => (
   (dispatch) => {
     dispatch(startedFetchingGrades());
     return LmsApiService.fetchGradebookData(courseId, searchText, cohort, track)
@@ -101,7 +110,8 @@ const fetchMatchingUserGrades = (courseId, searchText, cohort, track, showSucces
           data.results.sort(sortAlphaAsc),
           cohort,
           track,
-          headingMapper(defaultAssignmentFilter)(dispatch, data.results[0]),
+          assignmentType,
+          headingMapper(assignmentType || defaultAssignmentFilter)(dispatch, data.results[0]),
           data.previous,
           data.next,
           courseId,
@@ -115,7 +125,7 @@ const fetchMatchingUserGrades = (courseId, searchText, cohort, track, showSucces
   }
 );
 
-const fetchPrevNextGrades = (endpoint, cohort, track, courseId) => (
+const fetchPrevNextGrades = (endpoint, courseId, cohort, track, assignmentType) => (
   (dispatch) => {
     dispatch(startedFetchingGrades());
     return apiClient.get(endpoint)
@@ -125,7 +135,8 @@ const fetchPrevNextGrades = (endpoint, cohort, track, courseId) => (
           data.results.sort(sortAlphaAsc),
           cohort,
           track,
-          headingMapper(defaultAssignmentFilter)(dispatch, data.results[0]),
+          assignmentType,
+          headingMapper(assignmentType || defaultAssignmentFilter)(dispatch, data.results[0]),
           data.previous,
           data.next,
           courseId,
@@ -138,7 +149,6 @@ const fetchPrevNextGrades = (endpoint, cohort, track, courseId) => (
   }
 );
 
-
 const updateGrades = (courseId, updateData, searchText, cohort, track) => (
   (dispatch) => {
     dispatch(gradeUpdateRequest());
@@ -146,7 +156,14 @@ const updateGrades = (courseId, updateData, searchText, cohort, track) => (
       .then(response => response.data)
       .then((data) => {
         dispatch(gradeUpdateSuccess(courseId, data));
-        dispatch(fetchMatchingUserGrades(courseId, searchText, cohort, track, true));
+        dispatch(fetchMatchingUserGrades(
+          courseId,
+          searchText,
+          cohort,
+          track,
+          defaultAssignmentFilter,
+          true,
+        ));
       })
       .catch((error) => {
         dispatch(gradeUpdateFailure(courseId, error));

@@ -24,6 +24,7 @@ const eventsMap = {
       courseId: action.courseId,
       track: action.track,
       cohort: action.cohort,
+      assignmentType: action.assignmentType,
       prev: action.prev,
       next: action.next,
     },

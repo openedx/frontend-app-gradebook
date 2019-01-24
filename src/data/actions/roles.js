@@ -26,7 +26,7 @@ const getRoles = (courseId, urlQuery) => (
                                       && allowedRoles.includes(role.role)));
       dispatch(gotRoles(canUserViewGradebook, courseId));
       if (canUserViewGradebook) {
-        dispatch(fetchGrades(courseId, urlQuery.cohort, urlQuery.track));
+        dispatch(fetchGrades(courseId, urlQuery.cohort, urlQuery.track, urlQuery.assignmentType));
         dispatch(fetchTracks(courseId));
         dispatch(fetchCohorts(courseId));
         dispatch(fetchAssignmentTypes(courseId));

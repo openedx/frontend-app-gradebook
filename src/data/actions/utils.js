@@ -92,6 +92,8 @@ const headingMapper = (filterKey) => {
   }
 
   function some(dispatch, entry) {
+    if (!entry) return [];
+
     const results = [{
       label: 'Username',
       key: 'username',

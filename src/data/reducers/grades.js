@@ -32,6 +32,7 @@ const grades = (state = initialState, action) => {
         errorFetching: false,
         selectedTrack: action.track,
         selectedCohort: action.cohort,
+        selectedAssignmentType: action.assignmentType,
         prevPage: action.prev,
         nextPage: action.next,
         showSpinner: false,
