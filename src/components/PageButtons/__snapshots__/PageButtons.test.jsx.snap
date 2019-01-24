@@ -10,7 +10,7 @@ exports[`PageButtons prev not null, next not null 1`] = `
   }
 >
   <button
-    className="btn btn-primary"
+    className="btn btn-outline-primary"
     disabled={false}
     onBlur={[Function]}
     onClick={[Function]}
@@ -25,7 +25,7 @@ exports[`PageButtons prev not null, next not null 1`] = `
     Previous Page
   </button>
   <button
-    className="btn btn-primary"
+    className="btn btn-outline-primary"
     disabled={false}
     onBlur={[Function]}
     onClick={[Function]}
@@ -52,7 +52,7 @@ exports[`PageButtons prev not null, next null 1`] = `
   }
 >
   <button
-    className="btn btn-primary"
+    className="btn btn-outline-primary"
     disabled={false}
     onBlur={[Function]}
     onClick={[Function]}
@@ -67,7 +67,7 @@ exports[`PageButtons prev not null, next null 1`] = `
     Previous Page
   </button>
   <button
-    className="btn btn-primary"
+    className="btn btn-outline-primary"
     disabled={true}
     onBlur={[Function]}
     onClick={[Function]}
@@ -94,7 +94,7 @@ exports[`PageButtons prev null, next not null 1`] = `
   }
 >
   <button
-    className="btn btn-primary"
+    className="btn btn-outline-primary"
     disabled={true}
     onBlur={[Function]}
     onClick={[Function]}
@@ -109,7 +109,7 @@ exports[`PageButtons prev null, next not null 1`] = `
     Previous Page
   </button>
   <button
-    className="btn btn-primary"
+    className="btn btn-outline-primary"
     disabled={false}
     onBlur={[Function]}
     onClick={[Function]}
@@ -136,7 +136,7 @@ exports[`PageButtons prev null, next null 1`] = `
   }
 >
   <button
-    className="btn btn-primary"
+    className="btn btn-outline-primary"
     disabled={true}
     onBlur={[Function]}
     onClick={[Function]}
@@ -151,7 +151,7 @@ exports[`PageButtons prev null, next null 1`] = `
     Previous Page
   </button>
   <button
-    className="btn btn-primary"
+    className="btn btn-outline-primary"
     disabled={true}
     onBlur={[Function]}
     onClick={[Function]}
