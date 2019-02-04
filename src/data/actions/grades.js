@@ -7,27 +7,14 @@ import {
   GRADE_UPDATE_SUCCESS,
   GRADE_UPDATE_FAILURE,
   TOGGLE_GRADE_FORMAT,
-  SORT_GRADES,
   FILTER_COLUMNS,
   UPDATE_BANNER,
 } from '../constants/actionTypes/grades';
 import LmsApiService from '../services/LmsApiService';
-import store from '../store';
-import { headingMapper, gradeSortMap, sortAlphaAsc } from './utils';
+import { headingMapper, sortAlphaAsc } from './utils';
 import apiClient from '../apiClient';
 
 const defaultAssignmentFilter = 'All';
-
-const sortGrades = (columnName, direction) => {
-  const sortFn = gradeSortMap(columnName, direction);
-  const { results } = store.getState().grades;
-  results.sort(sortFn);
-
-  /* have to make a copy of results or React wont know there was
-   * a change and wont trigger a re-render
-   */
-  return ({ type: SORT_GRADES, results: [...results] });
-};
 
 const startedFetchingGrades = () => ({ type: STARTED_FETCHING_GRADES });
 const finishedFetchingGrades = () => ({ type: FINISHED_FETCHING_GRADES });
@@ -62,7 +49,7 @@ const toggleGradeFormat = formatType => ({ type: TOGGLE_GRADE_FORMAT, formatType
 const filterColumns = (filterType, exampleUser) => (
   dispatch => dispatch({
     type: FILTER_COLUMNS,
-    headings: headingMapper(filterType)(dispatch, exampleUser),
+    headings: headingMapper(filterType)(exampleUser),
   })
 );
 
@@ -79,7 +66,7 @@ const fetchGrades = (courseId, cohort, track, assignmentType, showSuccess) => (
           cohort,
           track,
           assignmentType,
-          headingMapper(assignmentType || defaultAssignmentFilter)(dispatch, data.results[0]),
+          headingMapper(assignmentType || defaultAssignmentFilter)(data.results[0]),
           data.previous,
           data.next,
           courseId,
@@ -111,7 +98,7 @@ const fetchMatchingUserGrades = (
           cohort,
           track,
           assignmentType,
-          headingMapper(assignmentType || defaultAssignmentFilter)(dispatch, data.results[0]),
+          headingMapper(assignmentType || defaultAssignmentFilter)(data.results[0]),
           data.previous,
           data.next,
           courseId,
@@ -136,7 +123,7 @@ const fetchPrevNextGrades = (endpoint, courseId, cohort, track, assignmentType) 
           cohort,
           track,
           assignmentType,
-          headingMapper(assignmentType || defaultAssignmentFilter)(dispatch, data.results[0]),
+          headingMapper(assignmentType || defaultAssignmentFilter)(data.results[0]),
           data.previous,
           data.next,
           courseId,
@@ -184,7 +171,6 @@ export {
   gradeUpdateFailure,
   updateGrades,
   toggleGradeFormat,
-  sortGrades,
   filterColumns,
   updateBanner,
 };

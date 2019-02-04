@@ -98,16 +98,12 @@ describe('actions', () => {
           assignmentType: expectedAssignmentType,
           headings: [
             {
-              columnSortable: true,
               key: 'username',
               label: 'Username',
-              onSort: expect.anything(),
             },
             {
-              columnSortable: true,
               key: 'total',
               label: 'Total',
-              onSort: expect.anything(),
             },
           ],
           prev: responseData.previous,

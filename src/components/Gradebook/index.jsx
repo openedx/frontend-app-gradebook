@@ -363,9 +363,6 @@ export default class Gradebook extends React.Component {
                   this.props.grades,
                   this.props.areGradesFrozen,
                 )}
-                tableSortable
-                defaultSortDirection="asc"
-                defaultSortedColumn="username"
                 rowHeaderColumnKey="username"
               />
             </div>
@@ -422,6 +419,7 @@ Gradebook.defaultProps = {
   },
   selectedCohort: null,
   selectedTrack: null,
+  selectedAssignmentType: 'All',
   showSpinner: false,
   tracks: [],
 };
@@ -453,8 +451,6 @@ Gradebook.propTypes = {
   headings: PropTypes.arrayOf(PropTypes.shape({
     label: PropTypes.string,
     key: PropTypes.string,
-    columnSortable: PropTypes.bool,
-    onSort: PropTypes.func,
   })).isRequired,
   history: PropTypes.shape({
     push: PropTypes.func,
@@ -468,7 +464,7 @@ Gradebook.propTypes = {
     }),
   }),
   searchForUser: PropTypes.func.isRequired,
-  selectedAssignmentType: PropTypes.string.isRequired,
+  selectedAssignmentType: PropTypes.string,
   selectedCohort: PropTypes.shape({
     name: PropTypes.string,
   }),
