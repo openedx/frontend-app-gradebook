@@ -6,7 +6,6 @@ import {
   TOGGLE_GRADE_FORMAT,
   FILTER_COLUMNS,
   UPDATE_BANNER,
-  SORT_GRADES,
 } from '../constants/actionTypes/grades';
 
 const initialState = {
@@ -161,17 +160,6 @@ describe('grades reducer', () => {
     expect(grades(undefined, {
       type: UPDATE_BANNER,
       showSuccess: expectedShowSuccess,
-    })).toEqual(expected);
-  });
-
-  it('updates sort grades state success', () => {
-    const expected = {
-      ...initialState,
-      results: gradesData,
-    };
-    expect(grades(undefined, {
-      type: SORT_GRADES,
-      results: gradesData,
     })).toEqual(expected);
   });
 
