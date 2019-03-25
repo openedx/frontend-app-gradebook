@@ -143,14 +143,14 @@ const updateGrades = (courseId, updateData, searchText, cohort, track) => (
       .then(response => response.data)
       .then((data) => {
         dispatch(gradeUpdateSuccess(courseId, data));
-        dispatch(fetchMatchingUserGrades(
-          courseId,
-          searchText,
-          cohort,
-          track,
-          defaultAssignmentFilter,
-          true,
-        ));
+        // dispatch(fetchMatchingUserGrades(
+        //   courseId,
+        //   searchText,
+        //   cohort,
+        //   track,
+        //   defaultAssignmentFilter,
+        //   true,
+        // ));
       })
       .catch((error) => {
         dispatch(gradeUpdateFailure(courseId, error));

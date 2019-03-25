@@ -5,6 +5,7 @@ import {
   fetchGrades,
   fetchMatchingUserGrades,
   fetchPrevNextGrades,
+  gradeUpdateSuccess,
   updateGrades,
   toggleGradeFormat,
   filterColumns,
@@ -78,6 +79,9 @@ const mapDispatchToProps = dispatch => (
     },
     getRoles: (matchParams, urlQuery) => {
       dispatch(getRoles(matchParams, urlQuery));
+    },
+    gradeUpdateSuccess: (courseId, data) => {
+      dispatch(gradeUpdateSuccess(courseId, data));
     },
   }
 );

@@ -25,12 +25,41 @@ export default class Gradebook extends React.Component {
       updateVal: 0,
       updateModuleId: null,
       updateUserId: null,
+      socket: null,
+      websocketMsg: {
+        visible: false,
+      },
     };
   }
 
   componentDidMount() {
     const urlQuery = queryString.parse(this.props.location.search);
     this.props.getRoles(this.props.match.params.courseId, urlQuery);
+    const socket = new WebSocket('ws://localhost:8765/ws/gradebook/course-v1:edX+DemoX+Demo_Course/');
+    socket.onmessage = this.socketMessageFunction;
+  }
+
+  socketMessageFunction = (event) => {
+      var data = JSON.parse(event.data);
+      console.log(data);
+
+      const userIndex = this.props.grades.findIndex((entry) => entry.user_id == data.user_id);
+      const username = this.props.grades[userIndex].username;
+      const subsectionIndex = this.props.grades[userIndex].section_breakdown.findIndex((entry) => entry.module_id = data.subsection_id);
+      const subsectionName = this.props.grades[userIndex].section_breakdown[subsectionIndex].label;
+
+      let subsectionGrade = this.props.grades[userIndex].section_breakdown[subsectionIndex];
+      subsectionGrade.score_earned = data.override.earned_graded_override;
+      subsectionGrade.score_possible = data.override.possible_graded_override;
+
+      const updatedMsg = {
+        visible: true,
+        username: username,
+        subsectionName: subsectionName,
+      };
+
+      this.setState({ websocketMsg: updatedMsg });
+      this.props.gradeUpdateSuccess(this.props.match.params.courseId, this.props.grades);
   }
 
   setNewModalState = (userEntry, subsection) => {
@@ -354,6 +383,12 @@ export default class Gradebook extends React.Component {
               dialog="The grade has been successfully edited."
               onClose={() => this.props.updateBanner(false)}
               open={this.props.showSuccess}
+            />
+            <StatusAlert
+              alertType="success"
+              dialog={`Grade for user ${this.state.websocketMsg.username} in ${this.state.websocketMsg.subsectionName} was updated.`}
+              onClose={() => this.setState({ websocketMsg : false })}
+              open={this.state.websocketMsg.visible}
             />
             {PageButtons(this.props)}
             <div className="gbook">
