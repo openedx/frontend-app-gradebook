@@ -17,6 +17,8 @@ import { STARTED_FETCHING_ASSIGNMENT_TYPES } from '../constants/actionTypes/assi
 
 const mockStore = configureMockStore([thunk]);
 const axiosMock = new MockAdapter(apiClient);
+apiClient.isAccessTokenExpired = jest.fn();
+apiClient.isAccessTokenExpired.mockReturnValue(false);
 
 const course1Id = 'course-v1:edX+DemoX+Demo_Course';
 const course2Id = 'course-v1:edX+DemoX+Demo_Course_2';

@@ -17,6 +17,8 @@ import { sortAlphaAsc } from './utils';
 
 const mockStore = configureMockStore([thunk]);
 const axiosMock = new MockAdapter(apiClient);
+apiClient.isAccessTokenExpired = jest.fn();
+apiClient.isAccessTokenExpired.mockReturnValue(false);
 
 describe('actions', () => {
   afterEach(() => {
