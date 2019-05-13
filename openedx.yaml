@@ -3,6 +3,5 @@
 
 nick: grbk
 oeps: {}
-owner: edx/educator-neem
+owner: schenedx
 openedx-release: {ref: master}
-track-pulls: true
