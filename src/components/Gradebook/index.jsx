@@ -352,7 +352,7 @@ export default class Gradebook extends React.Component {
             <StatusAlert
               alertType="success"
               dialog="The grade has been successfully edited."
-              onClose={() => this.props.updateBanner(false)}
+              onClose={() => this.props.closeBanner()}
               open={this.props.showSuccess}
             />
             {PageButtons(this.props)}
@@ -475,6 +475,6 @@ Gradebook.propTypes = {
   tracks: PropTypes.arrayOf(PropTypes.shape({
     name: PropTypes.string,
   })),
-  updateBanner: PropTypes.func.isRequired,
+  closeBanner: PropTypes.func.isRequired,
   updateGrades: PropTypes.func.isRequired,
 };

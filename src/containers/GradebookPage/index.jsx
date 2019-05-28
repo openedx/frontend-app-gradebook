@@ -8,7 +8,7 @@ import {
   updateGrades,
   toggleGradeFormat,
   filterColumns,
-  updateBanner,
+  closeBanner,
 } from '../../data/actions/grades';
 import { fetchCohorts } from '../../data/actions/cohorts';
 import { fetchTracks } from '../../data/actions/tracks';
@@ -44,43 +44,19 @@ const mapStateToProps = state => (
   }
 );
 
-const mapDispatchToProps = dispatch => (
-  {
-    getUserGrades: (courseId, cohort, track, assignmentType) => {
-      dispatch(fetchGrades(courseId, cohort, track, assignmentType));
-    },
-    searchForUser: (courseId, searchText, cohort, track, assignmentType) => {
-      dispatch(fetchMatchingUserGrades(courseId, searchText, cohort, track, assignmentType, false));
-    },
-    getPrevNextGrades: (endpoint, courseId, cohort, track, assignmentType) => {
-      dispatch(fetchPrevNextGrades(endpoint, courseId, cohort, track, assignmentType));
-    },
-    getCohorts: (courseId) => {
-      dispatch(fetchCohorts(courseId));
-    },
-    getTracks: (courseId) => {
-      dispatch(fetchTracks(courseId));
-    },
-    getAssignmentTypes: (courseId) => {
-      dispatch(fetchAssignmentTypes(courseId));
-    },
-    updateGrades: (courseId, updateData, searchText, cohort, track) => {
-      dispatch(updateGrades(courseId, updateData, searchText, cohort, track));
-    },
-    toggleFormat: (formatType) => {
-      dispatch(toggleGradeFormat(formatType));
-    },
-    filterColumns: (filterType, exampleUser) => {
-      dispatch(filterColumns(filterType, exampleUser));
-    },
-    updateBanner: (showSuccess) => {
-      dispatch(updateBanner(showSuccess));
-    },
-    getRoles: (matchParams, urlQuery) => {
-      dispatch(getRoles(matchParams, urlQuery));
-    },
-  }
-);
+const mapDispatchToProps = {
+  getUserGrades: fetchGrades,
+  searchForUser: fetchMatchingUserGrades,
+  getPrevNextGrades: fetchPrevNextGrades,
+  getCohorts: fetchCohorts,
+  getTracks: fetchTracks,
+  getAssignmentTypes: fetchAssignmentTypes,
+  updateGrades,
+  toggleFormat: toggleGradeFormat,
+  filterColumns,
+  closeBanner,
+  getRoles,
+};
 
 const GradebookPage = connect(
   mapStateToProps,
