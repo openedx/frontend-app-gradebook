@@ -67,6 +67,26 @@ class LmsApiService {
     const rolesUrl = `${LmsApiService.baseUrl}/api/enrollment/v1/roles/?course_id=${encodeURIComponent(courseId)}`;
     return apiClient.get(rolesUrl);
   }
+
+  static getGradeExportCsvUrl(courseId, options = {}) {
+    const trackQueryParam = options.track ? [`track=${options.track}`] : [];
+    const cohortQueryParam = options.cohort ? [`cohort=${options.cohort}`] : [];
+    const queryParams = [...trackQueryParam, ...cohortQueryParam].join('&');
+    const downloadUrl = `${LmsApiService.baseUrl}/api/bulk_grades/course/${courseId}?${queryParams}`;
+    return downloadUrl;
+  }
+
+  static getGradeImportCsvUrl = LmsApiService.getGradeExportCsvUrl;
+
+  static uploadGradeCsv(courseId, formData) {
+    const fileUploadUrl = LmsApiService.getGradeImportCsvUrl(courseId);
+    return apiClient.post(fileUploadUrl, formData).then((result) => {
+      if (result.status === 200 && !result.data.error_messages.length) {
+        return result.data;
+      }
+      return Promise.reject(result);
+    });
+  }
 }
 
 export default LmsApiService;

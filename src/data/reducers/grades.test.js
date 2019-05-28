@@ -5,7 +5,7 @@ import {
   GOT_GRADES,
   TOGGLE_GRADE_FORMAT,
   FILTER_COLUMNS,
-  UPDATE_BANNER,
+  OPEN_BANNER,
 } from '../constants/actionTypes/grades';
 
 const initialState = {
@@ -158,8 +158,7 @@ describe('grades reducer', () => {
       showSuccess: expectedShowSuccess,
     };
     expect(grades(undefined, {
-      type: UPDATE_BANNER,
-      showSuccess: expectedShowSuccess,
+      type: OPEN_BANNER,
     })).toEqual(expected);
   });
 

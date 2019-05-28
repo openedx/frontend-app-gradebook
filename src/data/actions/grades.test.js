@@ -10,7 +10,6 @@ import {
   FINISHED_FETCHING_GRADES,
   ERROR_FETCHING_GRADES,
   GOT_GRADES,
-  UPDATE_BANNER,
 } from '../constants/actionTypes/grades';
 import { sortAlphaAsc } from './utils';
 
@@ -108,7 +107,6 @@ describe('actions', () => {
           courseId,
         },
         { type: FINISHED_FETCHING_GRADES },
-        { type: UPDATE_BANNER, showSuccess: false },
       ];
       const store = mockStore();
 
@@ -167,7 +165,6 @@ describe('actions', () => {
           courseId,
         },
         { type: FINISHED_FETCHING_GRADES },
-        { type: UPDATE_BANNER, showSuccess: false },
       ];
       const store = mockStore();
 
