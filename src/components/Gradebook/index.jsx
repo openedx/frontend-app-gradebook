@@ -61,6 +61,13 @@ export default class Gradebook extends React.Component {
     });
   }
 
+  getLearnerInformation = entry => (
+    <div>
+      <div>{entry.username}</div>
+      {entry.external_user_key && <div className="student-key">{entry.external_user_key}</div>}
+    </div>
+  )
+
   handleAdjustedGradeClick = () => {
     this.props.updateGrades(
       this.props.match.params.courseId, [
@@ -175,7 +182,9 @@ export default class Gradebook extends React.Component {
 
   formatter = {
     percent: (entries, areGradesFrozen) => entries.map((entry) => {
-      const results = { username: entry.username };
+      const learnerInformation = this.getLearnerInformation(entry);
+      const results = { Username: learnerInformation, Email: entry.email };
+
       const assignments = entry.section_breakdown
         .reduce((acc, subsection) => {
           if (areGradesFrozen) {
@@ -183,7 +192,7 @@ export default class Gradebook extends React.Component {
           } else {
             acc[subsection.label] = (
               <button
-                className="btn btn-header link-style"
+                className="btn btn-header link-style grade-button"
                 onClick={() => this.setNewModalState(entry, subsection)}
               >
                 {this.roundGrade(subsection.percent * 100)}%
@@ -191,12 +200,14 @@ export default class Gradebook extends React.Component {
           }
           return acc;
         }, {});
-      const totals = { total: `${this.roundGrade(entry.percent * 100)}%` };
+      const totals = { Total: `${this.roundGrade(entry.percent * 100)}%` };
       return Object.assign(results, assignments, totals);
     }),
 
     absolute: (entries, areGradesFrozen) => entries.map((entry) => {
-      const results = { username: entry.username };
+      const learnerInformation = this.getLearnerInformation(entry);
+      const results = { Username: learnerInformation, Email: entry.email };
+
       const assignments = entry.section_breakdown
         .reduce((acc, subsection) => {
           const scoreEarned = this.roundGrade(subsection.score_earned);
@@ -220,12 +231,32 @@ export default class Gradebook extends React.Component {
           return acc;
         }, {});
 
-      const totals = { total: `${this.roundGrade(entry.percent * 100)}/100` };
+      const totals = { Total: `${this.roundGrade(entry.percent * 100)}/100` };
       return Object.assign(results, assignments, totals);
     }),
   };
 
   lmsInstructorDashboardUrl = courseId => `${configuration.LMS_BASE_URL}/courses/${courseId}/instructor`;
+
+  formatHeadings = () => {
+    let headings = [...this.props.headings];
+
+    if (headings.length > 0) {
+      const userInformationHeadingLabel = (
+        <div>
+          <div>Username</div>
+          <div className="font-weight-normal student-key">Student Key</div>
+        </div>
+      );
+
+      headings = headings.map(heading => ({ label: heading, key: heading }));
+
+      // replace username heading label to include additional user data
+      headings[0].label = userInformationHeadingLabel;
+    }
+
+    return headings;
+  }
 
   render() {
     return (
@@ -334,7 +365,7 @@ export default class Gradebook extends React.Component {
                       this.props.selectedAssignmentType,
                     )
                   }
-                  inputLabel="Search Username:"
+                  inputLabel="Search for a learner"
                   onChange={filterValue => this.setState({ filterValue })}
                   onClear={() =>
                       this.props.getUserGrades(
@@ -346,6 +377,7 @@ export default class Gradebook extends React.Component {
                   }
                   value={this.state.filterValue}
                 />
+                <small className="form-text text-muted search-help-text">Search by username, email, or student key</small>
               </div>
             </div>
             <br />
@@ -358,7 +390,8 @@ export default class Gradebook extends React.Component {
             {PageButtons(this.props)}
             <div className="gbook">
               <Table
-                columns={this.props.headings}
+                className={['table-striped']}
+                columns={this.formatHeadings()}
                 data={this.formatter[this.props.format](
                   this.props.grades,
                   this.props.areGradesFrozen,
@@ -448,10 +481,7 @@ Gradebook.propTypes = {
     user_id: PropTypes.number,
     user_name: PropTypes.string,
   })),
-  headings: PropTypes.arrayOf(PropTypes.shape({
-    label: PropTypes.string,
-    key: PropTypes.string,
-  })).isRequired,
+  headings: PropTypes.arrayOf(PropTypes.string).isRequired,
   history: PropTypes.shape({
     push: PropTypes.func,
   }).isRequired,
