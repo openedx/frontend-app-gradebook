@@ -4,7 +4,11 @@ import {
   GOT_GRADES,
   TOGGLE_GRADE_FORMAT,
   FILTER_COLUMNS,
-  UPDATE_BANNER,
+  OPEN_BANNER,
+  CLOSE_BANNER,
+  START_UPLOAD,
+  UPLOAD_COMPLETE,
+  UPLOAD_ERR,
 } from '../constants/actionTypes/grades';
 
 const initialState = {
@@ -60,10 +64,35 @@ const grades = (state = initialState, action) => {
         ...state,
         headings: action.headings,
       };
-    case UPDATE_BANNER:
+    case OPEN_BANNER:
       return {
         ...state,
-        showSuccess: action.showSuccess,
+        showSuccess: true,
+      };
+    case CLOSE_BANNER:
+      return {
+        ...state,
+        showSuccess: false,
+      };
+    case START_UPLOAD:
+      return {
+        ...state,
+        showSpinner: true,
+      };
+    case UPLOAD_COMPLETE:
+      return {
+        ...state,
+        showSpinner: false,
+        bulkManagement: {},
+      };
+    case UPLOAD_ERR:
+      return {
+        ...state,
+        showSpinner: false,
+        bulkManagement: {
+          ...(state.bulkManagement || {}),
+          ...action.data,
+        },
       };
     default:
       return state;

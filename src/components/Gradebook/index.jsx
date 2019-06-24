@@ -8,6 +8,7 @@ import {
   StatusAlert,
   Table,
   Icon,
+  Tabs,
 } from '@edx/paragon';
 import queryString from 'query-string';
 import { configuration } from '../../config';
@@ -26,11 +27,13 @@ export default class Gradebook extends React.Component {
       updateModuleId: null,
       updateUserId: null,
     };
+    this.fileFormRef = React.createRef();
+    this.fileInputRef = React.createRef();
   }
 
   componentDidMount() {
     const urlQuery = queryString.parse(this.props.location.search);
-    this.props.getRoles(this.props.match.params.courseId, urlQuery);
+    this.props.getRoles(this.props.courseId, urlQuery);
   }
 
   setNewModalState = (userEntry, subsection) => {
@@ -68,9 +71,16 @@ export default class Gradebook extends React.Component {
     </div>
   )
 
+  getActiveTabs = () => {
+    if (this.props.showBulkManagement) {
+      return ['Grades', 'Bulk Management'];
+    }
+    return ['Grades'];
+  };
+
   handleAdjustedGradeClick = () => {
     this.props.updateGrades(
-      this.props.match.params.courseId, [
+      this.props.courseId, [
         {
           user_id: this.state.updateUserId,
           usage_id: this.state.updateModuleId,
@@ -138,7 +148,7 @@ export default class Gradebook extends React.Component {
       selectedTrackSlug = selectedTrackItem.slug;
     }
     this.props.getUserGrades(
-      this.props.match.params.courseId,
+      this.props.courseId,
       this.props.selectedCohort,
       selectedTrackSlug,
       this.props.selectedAssignmentType,
@@ -154,12 +164,35 @@ export default class Gradebook extends React.Component {
       selectedCohortId = selectedCohortItem.id;
     }
     this.props.getUserGrades(
-      this.props.match.params.courseId,
+      this.props.courseId,
       selectedCohortId,
       this.props.selectedTrack,
       this.props.selectedAssignmentType,
     );
     this.updateQueryParams('cohort', selectedCohortId);
+  };
+
+  handleClickExportGrades = () => {
+    window.location = this.props.gradeExportUrl;
+  };
+
+  handleClickImportGrades = () => {
+    const fileInput = this.fileInputRef.current;
+    if (fileInput) {
+      fileInput.click();
+    }
+  };
+
+  handleFileInputChange = (event) => {
+    const fileInput = event.target;
+    const file = fileInput.files[0];
+    const form = this.fileFormRef.current;
+    if (file && form) {
+      const formData = new FormData(form);
+      this.props.submitFileUploadFormData(this.props.courseId, formData).then(() => {
+        fileInput.value = null;
+      });
+    }
   };
 
   mapSelectedCohortEntry = (entry) => {
@@ -265,13 +298,13 @@ export default class Gradebook extends React.Component {
         <div className="gradebook-container">
           <div>
             <a
-              href={this.lmsInstructorDashboardUrl(this.props.match.params.courseId)}
+              href={this.lmsInstructorDashboardUrl(this.props.courseId)}
               className="mb-3"
             >
               <span aria-hidden="true">{'<< '}</span> {'Back to Dashboard'}
             </a>
             <h1>Gradebook</h1>
-            <h3> {this.props.match.params.courseId}</h3>
+            <h3> {this.props.courseId}</h3>
             { this.props.areGradesFrozen &&
               <div className="alert alert-warning" role="alert" >
                 The grades for this course are now frozen. Editing of grades is no longer allowed.
@@ -352,13 +385,10 @@ export default class Gradebook extends React.Component {
                 </div>
               </div>
               <div>
-                <div style={{ marginLeft: '10px', marginBottom: '10px' }}>
-                  <a className="btn btn-outline-primary mb-85" href={`${this.lmsInstructorDashboardUrl(this.props.match.params.courseId)}#view-data_download`}>Generate Grade Report</a>
-                </div>
                 <SearchField
                   onSubmit={value =>
                     this.props.searchForUser(
-                      this.props.match.params.courseId,
+                      this.props.courseId,
                       value,
                       this.props.selectedCohort,
                       this.props.selectedTrack,
@@ -369,7 +399,7 @@ export default class Gradebook extends React.Component {
                   onChange={filterValue => this.setState({ filterValue })}
                   onClear={() =>
                       this.props.getUserGrades(
-                      this.props.match.params.courseId,
+                      this.props.courseId,
                       this.props.selectedCohort,
                       this.props.selectedTrack,
                       this.props.selectedAssignmentType,
@@ -380,55 +410,85 @@ export default class Gradebook extends React.Component {
                 <small className="form-text text-muted search-help-text">Search by username, email, or student key</small>
               </div>
             </div>
-            <br />
-            <StatusAlert
-              alertType="success"
-              dialog="The grade has been successfully edited."
-              onClose={() => this.props.updateBanner(false)}
-              open={this.props.showSuccess}
-            />
-            {PageButtons(this.props)}
-            <div className="gbook">
-              <Table
-                className={['table-striped']}
-                columns={this.formatHeadings()}
-                data={this.formatter[this.props.format](
-                  this.props.grades,
-                  this.props.areGradesFrozen,
-                )}
-                rowHeaderColumnKey="username"
-              />
-            </div>
-            {PageButtons(this.props)}
-            <Modal
-              open={this.state.modalOpen}
-              title="Edit Grades"
-              closeText="Cancel"
-              body={(
-                <div>
-                  <h3>{this.state.modalModel[0].assignmentName}</h3>
+            <Tabs labels={this.getActiveTabs()}>
+              <div>
+                <StatusAlert
+                  alertType="success"
+                  dialog="The grade has been successfully edited."
+                  onClose={() => this.props.closeBanner()}
+                  open={this.props.showSuccess}
+                />
+                <div className="gbook">
                   <Table
-                    columns={[{ label: 'Username', key: 'username' }, { label: 'Current grade', key: 'currentGrade' }, { label: 'Adjusted grade', key: 'adjustedGrade' }]}
-                    data={this.state.modalModel}
+                    columns={this.formatHeadings()}
+                    data={this.formatter[this.props.format](
+                      this.props.grades,
+                      this.props.areGradesFrozen,
+                    )}
+                    rowHeaderColumnKey="username"
                   />
-                  <div>Note: Once you save, your changes will be visible to students.</div>
                 </div>
-              )}
-              buttons={[
-                <Button
-                  label="Save Grade"
-                  buttonType="primary"
-                  onClick={this.handleAdjustedGradeClick}
-                />,
-              ]}
-              onClose={() => this.setState({
-                modalOpen: false,
-                modalModel: [{}],
-                updateVal: 0,
-                updateModuleId: null,
-                updateUserId: null,
-              })}
-            />
+                {PageButtons(this.props)}
+                <Modal
+                  open={this.state.modalOpen}
+                  title="Edit Grades"
+                  closeText="Cancel"
+                  body={(
+                    <div>
+                      <h3>{this.state.modalModel[0].assignmentName}</h3>
+                      <Table
+                        columns={[{ label: 'Username', key: 'username' }, { label: 'Current grade', key: 'currentGrade' }, { label: 'Adjusted grade', key: 'adjustedGrade' }]}
+                        data={this.state.modalModel}
+                      />
+                      <div>Note: Once you save, your changes will be visible to students.</div>
+                    </div>
+                  )}
+                  buttons={[
+                    <Button
+                      label="Save Grade"
+                      buttonType="primary"
+                      onClick={this.handleAdjustedGradeClick}
+                    />,
+                  ]}
+                  onClose={() => this.setState({
+                    modalOpen: false,
+                    modalModel: [{}],
+                    updateVal: 0,
+                    updateModuleId: null,
+                    updateUserId: null,
+                  })}
+                />
+              </div>
+              {this.props.showBulkManagement && (
+                <div>
+                  <form ref={this.fileFormRef} action={this.props.gradeExportUrl} method="post">
+                    <StatusAlert
+                      alertType="danger"
+                      dialog={this.props.bulkImportError}
+                      open={this.props.bulkImportError}
+                      dismissible={false}
+                    />
+                    <input
+                      className="d-none"
+                      type="file"
+                      name="csv"
+                      label="Upload Grade CSV"
+                      onChange={this.handleFileInputChange}
+                      ref={this.fileInputRef}
+                    />
+                  </form>
+                  <Button
+                    label="Export Grades"
+                    buttonType="primary"
+                    onClick={this.handleClickExportGrades}
+                  />
+                  <Button
+                    label="Import Grades"
+                    buttonType="primary"
+                    onClick={this.handleClickImportGrades}
+                  />
+                </div>)}
+            </Tabs>
           </div>
         </div>
       </div>
@@ -445,16 +505,14 @@ Gradebook.defaultProps = {
   location: {
     search: '',
   },
-  match: {
-    params: {
-      courseId: '',
-    },
-  },
+  courseId: '',
   selectedCohort: null,
   selectedTrack: null,
   selectedAssignmentType: 'All',
   showSpinner: false,
   tracks: [],
+  bulkImportError: '',
+  showBulkManagement: false,
 };
 
 Gradebook.propTypes = {
@@ -488,11 +546,7 @@ Gradebook.propTypes = {
   location: PropTypes.shape({
     search: PropTypes.string,
   }),
-  match: PropTypes.shape({
-    params: PropTypes.shape({
-      courseId: PropTypes.string,
-    }),
-  }),
+  courseId: PropTypes.string,
   searchForUser: PropTypes.func.isRequired,
   selectedAssignmentType: PropTypes.string,
   selectedCohort: PropTypes.shape({
@@ -505,6 +559,10 @@ Gradebook.propTypes = {
   tracks: PropTypes.arrayOf(PropTypes.shape({
     name: PropTypes.string,
   })),
-  updateBanner: PropTypes.func.isRequired,
+  closeBanner: PropTypes.func.isRequired,
   updateGrades: PropTypes.func.isRequired,
+  gradeExportUrl: PropTypes.string.isRequired,
+  submitFileUploadFormData: PropTypes.func.isRequired,
+  bulkImportError: PropTypes.string,
+  showBulkManagement: PropTypes.bool,
 };

@@ -8,13 +8,21 @@ import {
   GRADE_UPDATE_FAILURE,
   TOGGLE_GRADE_FORMAT,
   FILTER_COLUMNS,
-  UPDATE_BANNER,
+  OPEN_BANNER,
+  CLOSE_BANNER,
+  START_UPLOAD,
+  UPLOAD_COMPLETE,
+  UPLOAD_ERR,
 } from '../constants/actionTypes/grades';
 import LmsApiService from '../services/LmsApiService';
 import { headingMapper, sortAlphaAsc } from './utils';
 import apiClient from '../apiClient';
 
 const defaultAssignmentFilter = 'All';
+
+const startedCsvUpload = () => ({ type: START_UPLOAD });
+const finishedCsvUpload = () => ({ type: UPLOAD_COMPLETE });
+const csvUploadError = data => ({ type: UPLOAD_ERR, data });
 
 const startedFetchingGrades = () => ({ type: STARTED_FETCHING_GRADES });
 const finishedFetchingGrades = () => ({ type: FINISHED_FETCHING_GRADES });
@@ -53,12 +61,19 @@ const filterColumns = (filterType, exampleUser) => (
   })
 );
 
-const updateBanner = showSuccess => ({ type: UPDATE_BANNER, showSuccess });
+const openBanner = () => ({ type: OPEN_BANNER });
+const closeBanner = () => ({ type: CLOSE_BANNER });
 
-const fetchGrades = (courseId, cohort, track, assignmentType, showSuccess) => (
+const fetchGrades = (
+  courseId,
+  cohort,
+  track,
+  assignmentType,
+  options = {},
+) => (
   (dispatch) => {
     dispatch(startedFetchingGrades());
-    return LmsApiService.fetchGradebookData(courseId, null, cohort, track)
+    return LmsApiService.fetchGradebookData(courseId, options.searchText || null, cohort, track)
       .then(response => response.data)
       .then((data) => {
         dispatch(gotGrades(
@@ -72,7 +87,9 @@ const fetchGrades = (courseId, cohort, track, assignmentType, showSuccess) => (
           courseId,
         ));
         dispatch(finishedFetchingGrades());
-        dispatch(updateBanner(!!showSuccess));
+        if (options.showSuccess) {
+          dispatch(openBanner());
+        }
       })
       .catch(() => {
         dispatch(errorFetchingGrades());
@@ -87,30 +104,11 @@ const fetchMatchingUserGrades = (
   track,
   assignmentType,
   showSuccess,
-) => (
-  (dispatch) => {
-    dispatch(startedFetchingGrades());
-    return LmsApiService.fetchGradebookData(courseId, searchText, cohort, track)
-      .then(response => response.data)
-      .then((data) => {
-        dispatch(gotGrades(
-          data.results.sort(sortAlphaAsc),
-          cohort,
-          track,
-          assignmentType,
-          headingMapper(assignmentType || defaultAssignmentFilter)(data.results[0]),
-          data.previous,
-          data.next,
-          courseId,
-        ));
-        dispatch(finishedFetchingGrades());
-        dispatch(updateBanner(showSuccess));
-      })
-      .catch(() => {
-        dispatch(errorFetchingGrades());
-      });
-  }
-);
+  options = {},
+) => {
+  const newOptions = { ...options, searchText, showSuccess };
+  return fetchGrades(courseId, cohort, track, assignmentType, newOptions);
+};
 
 const fetchPrevNextGrades = (endpoint, courseId, cohort, track, assignmentType) => (
   (dispatch) => {
@@ -150,11 +148,27 @@ const updateGrades = (courseId, updateData, searchText, cohort, track) => (
           track,
           defaultAssignmentFilter,
           true,
+          { searchText },
         ));
       })
       .catch((error) => {
         dispatch(gradeUpdateFailure(courseId, error));
       });
+  }
+);
+
+const submitFileUploadFormData = (courseId, formData) => (
+  (dispatch) => {
+    dispatch(startedCsvUpload());
+    return LmsApiService.uploadGradeCsv(courseId, formData).then(() => (
+      dispatch(finishedCsvUpload())
+    )).catch((err) => {
+      if (err.status === 200 && err.data.error_messages.length) {
+        const { error_messages: errorMessages, saved, total } = err.data;
+        return dispatch(csvUploadError({ errorMessages, saved, total }));
+      }
+      return dispatch(csvUploadError({ errorMessages: ['Unknown error.'] }));
+    });
   }
 );
 
@@ -172,5 +186,6 @@ export {
   updateGrades,
   toggleGradeFormat,
   filterColumns,
-  updateBanner,
+  closeBanner,
+  submitFileUploadFormData,
 };

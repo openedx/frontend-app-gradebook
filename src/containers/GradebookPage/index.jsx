@@ -8,12 +8,15 @@ import {
   updateGrades,
   toggleGradeFormat,
   filterColumns,
-  updateBanner,
+  closeBanner,
+  submitFileUploadFormData,
 } from '../../data/actions/grades';
 import { fetchCohorts } from '../../data/actions/cohorts';
 import { fetchTracks } from '../../data/actions/tracks';
+import hasMastersTrack from '../../data/selectors/tracks';
 import { fetchAssignmentTypes } from '../../data/actions/assignmentTypes';
 import { getRoles } from '../../data/actions/roles';
+import LmsApiService from '../../data/services/LmsApiService';
 
 function shouldShowSpinner(state) {
   if (state.roles.canUserViewGradebook === true) {
@@ -24,8 +27,9 @@ function shouldShowSpinner(state) {
   return true;
 }
 
-const mapStateToProps = state => (
+const mapStateToProps = (state, ownProps) => (
   {
+    courseId: ownProps.match.params.courseId,
     grades: state.grades.results,
     headings: state.grades.headings,
     tracks: state.tracks.results,
@@ -41,46 +45,32 @@ const mapStateToProps = state => (
     areGradesFrozen: state.assignmentTypes.areGradesFrozen,
     showSpinner: shouldShowSpinner(state),
     canUserViewGradebook: state.roles.canUserViewGradebook,
+    gradeExportUrl: LmsApiService.getGradeExportCsvUrl(ownProps.match.params.courseId, {
+      cohort: state.grades.selectedCohort,
+      track: state.grades.selectedTrack,
+    }),
+    bulkImportError: state.grades.bulkManagement &&
+      state.grades.bulkManagement.errorMessages ?
+      `Errors while processing: ${state.grades.bulkManagement.errorMessages.join(', ')}` :
+      '',
+    showBulkManagement: hasMastersTrack(state),
   }
 );
 
-const mapDispatchToProps = dispatch => (
-  {
-    getUserGrades: (courseId, cohort, track, assignmentType) => {
-      dispatch(fetchGrades(courseId, cohort, track, assignmentType));
-    },
-    searchForUser: (courseId, searchText, cohort, track, assignmentType) => {
-      dispatch(fetchMatchingUserGrades(courseId, searchText, cohort, track, assignmentType, false));
-    },
-    getPrevNextGrades: (endpoint, courseId, cohort, track, assignmentType) => {
-      dispatch(fetchPrevNextGrades(endpoint, courseId, cohort, track, assignmentType));
-    },
-    getCohorts: (courseId) => {
-      dispatch(fetchCohorts(courseId));
-    },
-    getTracks: (courseId) => {
-      dispatch(fetchTracks(courseId));
-    },
-    getAssignmentTypes: (courseId) => {
-      dispatch(fetchAssignmentTypes(courseId));
-    },
-    updateGrades: (courseId, updateData, searchText, cohort, track) => {
-      dispatch(updateGrades(courseId, updateData, searchText, cohort, track));
-    },
-    toggleFormat: (formatType) => {
-      dispatch(toggleGradeFormat(formatType));
-    },
-    filterColumns: (filterType, exampleUser) => {
-      dispatch(filterColumns(filterType, exampleUser));
-    },
-    updateBanner: (showSuccess) => {
-      dispatch(updateBanner(showSuccess));
-    },
-    getRoles: (matchParams, urlQuery) => {
-      dispatch(getRoles(matchParams, urlQuery));
-    },
-  }
-);
+const mapDispatchToProps = {
+  getUserGrades: fetchGrades,
+  searchForUser: fetchMatchingUserGrades,
+  getPrevNextGrades: fetchPrevNextGrades,
+  getCohorts: fetchCohorts,
+  getTracks: fetchTracks,
+  getAssignmentTypes: fetchAssignmentTypes,
+  updateGrades,
+  toggleFormat: toggleGradeFormat,
+  filterColumns,
+  closeBanner,
+  getRoles,
+  submitFileUploadFormData,
+};
 
 const GradebookPage = connect(
   mapStateToProps,
