@@ -10,7 +10,7 @@ class LmsApiService {
 
     gradebookUrl += `?page_size=${LmsApiService.pageSize}&`;
     if (searchText) {
-      gradebookUrl += `username_contains=${searchText}&`;
+      gradebookUrl += `user_contains=${searchText}&`;
     }
     if (cohort) {
       gradebookUrl += `cohort_id=${cohort}&`;

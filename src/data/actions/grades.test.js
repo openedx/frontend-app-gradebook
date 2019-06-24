@@ -99,14 +99,9 @@ describe('actions', () => {
           track: expectedTrack,
           assignmentType: expectedAssignmentType,
           headings: [
-            {
-              key: 'username',
-              label: 'Username',
-            },
-            {
-              key: 'total',
-              label: 'Total',
-            },
+            'Username',
+            'Email',
+            'Total',
           ],
           prev: responseData.previous,
           next: responseData.next,

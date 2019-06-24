@@ -11,54 +11,27 @@ const sortAlphaAsc = (gradeRowA, gradeRowB) => {
 };
 
 const headingMapper = (filterKey) => {
-  function all(entry) {
+  const filters = {
+    all: section => section.label,
+    some: section => section.label && section.category === filterKey,
+  };
+
+  const filter = filterKey === 'All' ? 'all' : 'some';
+
+  return (entry) => {
     if (entry) {
-      const results = [{
-        label: 'Username',
-        key: 'username',
-      }];
+      const results = ['Username', 'Email'];
 
       const assignmentHeadings = entry.section_breakdown
-        .filter(section => section.label)
-        .map(s => ({
-          label: s.label,
-          key: s.label,
-        }));
+        .filter(filters[filter])
+        .map(s => s.label);
 
-      const totals = [{
-        label: 'Total',
-        key: 'total',
-      }];
+      const totals = ['Total'];
 
       return results.concat(assignmentHeadings).concat(totals);
     }
     return [];
-  }
-
-  function some(entry) {
-    if (!entry) return [];
-
-    const results = [{
-      label: 'Username',
-      key: 'username',
-    }];
-
-    const assignmentHeadings = entry.section_breakdown
-      .filter(section => section.label && section.category === filterKey)
-      .map(s => ({
-        label: s.label,
-        key: s.label,
-      }));
-
-    const totals = [{
-      label: 'Total',
-      key: 'total',
-    }];
-
-    return results.concat(assignmentHeadings).concat(totals);
-  }
-
-  return filterKey === 'All' ? all : some;
+  };
 };
 
 export { headingMapper, sortAlphaAsc };

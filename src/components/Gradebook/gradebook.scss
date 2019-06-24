@@ -27,6 +27,10 @@
     @media only screen and (min-width: 1200px) {
         width: 1024px;
     }
+
+    .search-help-text {
+        margin-left: 20px;
+    }
 }
 
 .student-filters{
@@ -41,8 +45,21 @@
 .gbook { 
     overflow-x: scroll;
 
+    .grade-button {
+        text-decoration: underline;
+    }
+
+    .student-key {
+        font-size: 14px;
+    }
+
     .table {
         padding-left: 244px;
+
+        th {
+            vertical-align: top;
+            font-size: 14px;
+        }
     }
 
     .table tr th:first-child {
@@ -50,15 +67,13 @@
         width: 160px;
         height:50px;
         display: block;
-        background-color: #fff;
-        border-bottom: none;        
+        border-bottom: none;
     }
     .table tr td:first-child {
         position: absolute;
         width: 160px;
         height:50px; 
         display: block;
-        background-color: #fff;
     }
     .table tr td:nth-child(2) {
         box-sizing: content-box;
