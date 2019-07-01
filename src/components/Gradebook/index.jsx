@@ -487,6 +487,16 @@ export default class Gradebook extends React.Component {
                     buttonType="primary"
                     onClick={this.handleClickImportGrades}
                   />
+                  <Table
+                    data={this.props.bulkManagementHistory}
+                    columns={[
+                      // TODO: we almost certainly want to make this a username,
+                      // which will require a server-side change
+                      { key: 'user', label: 'Uploaded By', columnSortable: false },
+                      { key: 'operation', label: 'Operation', columnSortable: false },
+                      { key: 'modified', label: 'Uploaded Date', columnSortable: false },
+                    ]}
+                  />
                 </div>)}
             </Tabs>
           </div>
@@ -513,6 +523,7 @@ Gradebook.defaultProps = {
   tracks: [],
   bulkImportError: '',
   showBulkManagement: false,
+  bulkManagementHistory: [],
 };
 
 Gradebook.propTypes = {
@@ -565,4 +576,9 @@ Gradebook.propTypes = {
   submitFileUploadFormData: PropTypes.func.isRequired,
   bulkImportError: PropTypes.string,
   showBulkManagement: PropTypes.bool,
+  bulkManagementHistory: PropTypes.arrayOf(PropTypes.shape({
+    operation: PropTypes.oneOf(['commit', 'error']),
+    user: PropTypes.number,
+    modified: PropTypes.string,
+  })),
 };

@@ -13,6 +13,7 @@ import {
   START_UPLOAD,
   UPLOAD_COMPLETE,
   UPLOAD_ERR,
+  GOT_BULK_HISTORY,
 } from '../constants/actionTypes/grades';
 import LmsApiService from '../services/LmsApiService';
 import { headingMapper, sortAlphaAsc } from './utils';
@@ -23,6 +24,7 @@ const defaultAssignmentFilter = 'All';
 const startedCsvUpload = () => ({ type: START_UPLOAD });
 const finishedCsvUpload = () => ({ type: UPLOAD_COMPLETE });
 const csvUploadError = data => ({ type: UPLOAD_ERR, data });
+const gotBulkHistory = data => ({ type: GOT_BULK_HISTORY, data });
 
 const startedFetchingGrades = () => ({ type: STARTED_FETCHING_GRADES });
 const finishedFetchingGrades = () => ({ type: FINISHED_FETCHING_GRADES });
@@ -163,13 +165,22 @@ const submitFileUploadFormData = (courseId, formData) => (
     return LmsApiService.uploadGradeCsv(courseId, formData).then(() => (
       dispatch(finishedCsvUpload())
     )).catch((err) => {
-      if (err.status === 200 && err.data.error_messages.length) {
+      if (err.response.status === 200 && err.response.error_messages.length) {
         const { error_messages: errorMessages, saved, total } = err.data;
         return dispatch(csvUploadError({ errorMessages, saved, total }));
       }
       return dispatch(csvUploadError({ errorMessages: ['Unknown error.'] }));
     });
   }
+);
+
+const fetchBulkUpgradeHistory = courseId => (
+  dispatch =>
+    // todo add loading effect
+    LmsApiService.fetchGradeBulkOperationHistory(courseId).then((response) => {
+      dispatch(gotBulkHistory(response));
+      // todo: thread action through action
+    }).catch(() => dispatch({ type: 'BULK_HISTORY_ERR' }))
 );
 
 export {
@@ -188,4 +199,5 @@ export {
   filterColumns,
   closeBanner,
   submitFileUploadFormData,
+  fetchBulkUpgradeHistory,
 };

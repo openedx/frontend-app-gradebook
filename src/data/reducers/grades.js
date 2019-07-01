@@ -9,6 +9,7 @@ import {
   START_UPLOAD,
   UPLOAD_COMPLETE,
   UPLOAD_ERR,
+  GOT_BULK_HISTORY,
 } from '../constants/actionTypes/grades';
 
 const initialState = {
@@ -22,6 +23,7 @@ const initialState = {
   prevPage: null,
   nextPage: null,
   showSpinner: true,
+  bulkManagement: {},
 };
 
 const grades = (state = initialState, action) => {
@@ -90,8 +92,18 @@ const grades = (state = initialState, action) => {
         ...state,
         showSpinner: false,
         bulkManagement: {
-          ...(state.bulkManagement || {}),
+          ...state.bulkManagement,
           ...action.data,
+        },
+      };
+    case GOT_BULK_HISTORY:
+      return {
+        ...state,
+        // TODO: this will be cleared if we successfully upload a new one;
+        // probably want to trigger a reload of this info instead
+        bulkManagement: {
+          ...state.bulkManagement,
+          history: action.data,
         },
       };
     default:
