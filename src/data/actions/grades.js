@@ -14,6 +14,7 @@ import {
   UPLOAD_COMPLETE,
   UPLOAD_ERR,
   GOT_BULK_HISTORY,
+  BULK_HISTORY_ERR,
 } from '../constants/actionTypes/grades';
 import LmsApiService from '../services/LmsApiService';
 import { headingMapper, sortAlphaAsc } from './utils';
@@ -25,6 +26,7 @@ const startedCsvUpload = () => ({ type: START_UPLOAD });
 const finishedCsvUpload = () => ({ type: UPLOAD_COMPLETE });
 const csvUploadError = data => ({ type: UPLOAD_ERR, data });
 const gotBulkHistory = data => ({ type: GOT_BULK_HISTORY, data });
+const bulkHistoryError = () => ({ type: BULK_HISTORY_ERR });
 
 const startedFetchingGrades = () => ({ type: STARTED_FETCHING_GRADES });
 const finishedFetchingGrades = () => ({ type: FINISHED_FETCHING_GRADES });
@@ -179,8 +181,7 @@ const fetchBulkUpgradeHistory = courseId => (
     // todo add loading effect
     LmsApiService.fetchGradeBulkOperationHistory(courseId).then((response) => {
       dispatch(gotBulkHistory(response));
-      // todo: thread action through action
-    }).catch(() => dispatch({ type: 'BULK_HISTORY_ERR' }))
+    }).catch(() => dispatch(bulkHistoryError()))
 );
 
 export {
