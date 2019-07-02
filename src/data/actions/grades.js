@@ -15,9 +15,11 @@ import {
   UPLOAD_ERR,
   GOT_BULK_HISTORY,
   BULK_HISTORY_ERR,
+  GOT_GRADE_OVERRIDE_HISTORY,
+  ERROR_FETCHING_GRADE_OVERRIDE_HISTORY,
 } from '../constants/actionTypes/grades';
 import LmsApiService from '../services/LmsApiService';
-import { headingMapper, sortAlphaAsc } from './utils';
+import { headingMapper, sortAlphaAsc, formatDateForDisplay } from './utils';
 import apiClient from '../apiClient';
 
 const defaultAssignmentFilter = 'All';
@@ -31,6 +33,7 @@ const bulkHistoryError = () => ({ type: BULK_HISTORY_ERR });
 const startedFetchingGrades = () => ({ type: STARTED_FETCHING_GRADES });
 const finishedFetchingGrades = () => ({ type: FINISHED_FETCHING_GRADES });
 const errorFetchingGrades = () => ({ type: ERROR_FETCHING_GRADES });
+const errorFetchingGradeOverrideHistory = () => ({ type: ERROR_FETCHING_GRADE_OVERRIDE_HISTORY });
 const gotGrades = (grades, cohort, track, assignmentType, headings, prev, next, courseId) => ({
   type: GOT_GRADES,
   grades,
@@ -41,6 +44,18 @@ const gotGrades = (grades, cohort, track, assignmentType, headings, prev, next, 
   prev,
   next,
   courseId,
+});
+
+const gotGradeOverrideHistory = ({
+  overrideHistory, currentEarnedAllOverride, currentPossibleAllOverride,
+  currentEarnedGradedOverride, currentPossibleGradedOverride,
+}) => ({
+  type: GOT_GRADE_OVERRIDE_HISTORY,
+  overrideHistory,
+  currentEarnedAllOverride,
+  currentPossibleAllOverride,
+  currentEarnedGradedOverride,
+  currentPossibleGradedOverride,
 });
 
 const gradeUpdateRequest = () => ({ type: GRADE_UPDATE_REQUEST });
@@ -99,6 +114,31 @@ const fetchGrades = (
         dispatch(errorFetchingGrades());
       });
   }
+);
+
+const formatGradeOverrideForDisplay = historyArray => historyArray.map(item => ({
+  date: formatDateForDisplay(new Date(item.history_date)),
+  grader: item.history_user,
+  reason: item.override_reason,
+  adjustedGrade: item.earned_graded_override,
+}));
+
+const fetchGradeOverrideHistory = (subsectionId, userId) => (
+  dispatch =>
+    LmsApiService.fetchGradeOverrideHistory(subsectionId, userId)
+      .then(response => response.data)
+      .then((data) => {
+        dispatch(gotGradeOverrideHistory({
+          overrideHistory: formatGradeOverrideForDisplay(data.history),
+          currentEarnedAllOverride: data.override.earned_all_override,
+          currentPossibleAllOverride: data.override.possible_all_override,
+          currentEarnedGradedOverride: data.override.earned_graded_override,
+          currentPossibleGradedOverride: data.override.possible_graded_override,
+        }));
+      })
+      .catch(() => {
+        dispatch(errorFetchingGradeOverrideHistory());
+      })
 );
 
 const fetchMatchingUserGrades = (
@@ -201,4 +241,5 @@ export {
   closeBanner,
   submitFileUploadFormData,
   fetchBulkUpgradeHistory,
+  fetchGradeOverrideHistory,
 };

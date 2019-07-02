@@ -42,6 +42,25 @@
         margin-left: 10px;
     }
 }
+.grade-history-header{
+    float: left;
+}
+
+.grade-history-assignment{
+    padding-right: 49px;
+}
+.grade-history-student{
+    padding-right: 75px;
+}
+
+.grade-history-original-grade{
+    padding-right: 25px;
+}
+
+.grade-history-current-grade{
+    padding-right: 25px;
+}
+
 .gbook { 
     overflow-x: scroll;
 
@@ -98,4 +117,8 @@
 
 .mb-85 {
     margin-bottom: 85px;
+}
+
+.modal-dialog {
+    max-width: 1000px;
 }

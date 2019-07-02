@@ -1,3 +1,9 @@
+const formatDateForDisplay = (inputDate) => {
+  const options = { year: 'numeric', month: 'long', day: 'numeric' };
+  const timeOptions = { hour: '2-digit', minute: '2-digit' };
+  return `${inputDate.toLocaleDateString('en-US', options)} at ${inputDate.toLocaleTimeString('en-US', timeOptions)}`;
+};
+
 const sortAlphaAsc = (gradeRowA, gradeRowB) => {
   const a = gradeRowA.username.toUpperCase();
   const b = gradeRowB.username.toUpperCase();
@@ -34,5 +40,5 @@ const headingMapper = (filterKey) => {
   };
 };
 
-export { headingMapper, sortAlphaAsc };
+export { headingMapper, sortAlphaAsc, formatDateForDisplay };
 

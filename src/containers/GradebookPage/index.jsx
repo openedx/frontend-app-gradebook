@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import Gradebook from '../../components/Gradebook';
 import {
   fetchGrades,
+  fetchGradeOverrideHistory,
   fetchMatchingUserGrades,
   fetchPrevNextGrades,
   updateGrades,
@@ -32,6 +33,12 @@ const mapStateToProps = (state, ownProps) => (
   {
     courseId: ownProps.match.params.courseId,
     grades: state.grades.results,
+    gradeOverrides: state.grades.gradeOverrideHistoryResults,
+    gradeOverrideCurrentEarnedAllOverride: state.grades.gradeOverrideCurrentEarnedAllOverride,
+    gradeOverrideCurrentPossibleAllOverride: state.grades.gradeOverrideCurrentPossibleAllOverride,
+    gradeOverrideCurrentEarnedGradedOverride: state.grades.gradeOverrideCurrentEarnedGradedOverride,
+    gradeOverrideCurrentPossibleGradedOverride:
+      state.grades.gradeOverrideCurrentPossibleGradedOverride,
     headings: state.grades.headings,
     tracks: state.tracks.results,
     cohorts: state.cohorts.results,
@@ -40,6 +47,7 @@ const mapStateToProps = (state, ownProps) => (
     selectedAssignmentType: state.grades.selectedAssignmentType,
     format: state.grades.gradeFormat,
     showSuccess: state.grades.showSuccess,
+    errorFetchingGradeOverrideHistory: state.grades.errorFetchingOverrideHistory,
     prevPage: state.grades.prevPage,
     nextPage: state.grades.nextPage,
     assignmentTypes: state.assignmentTypes.results,
@@ -61,6 +69,7 @@ const mapStateToProps = (state, ownProps) => (
 
 const mapDispatchToProps = {
   getUserGrades: fetchGrades,
+  fetchGradeOverrideHistory,
   searchForUser: fetchMatchingUserGrades,
   getPrevNextGrades: fetchPrevNextGrades,
   getCohorts: fetchCohorts,
