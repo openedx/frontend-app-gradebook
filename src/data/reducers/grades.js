@@ -81,12 +81,14 @@ const grades = (state = initialState, action) => {
         ...state,
         showSpinner: true,
       };
-    case UPLOAD_COMPLETE:
+    case UPLOAD_COMPLETE: {
+      const { errorMessages, ...rest } = state.bulkManagement;
       return {
         ...state,
         showSpinner: false,
-        bulkManagement: {},
+        bulkManagement: { ...rest },
       };
+    }
     case UPLOAD_ERR:
       return {
         ...state,
@@ -99,8 +101,6 @@ const grades = (state = initialState, action) => {
     case GOT_BULK_HISTORY:
       return {
         ...state,
-        // TODO: this will be cleared if we successfully upload a new one;
-        // probably want to trigger a reload of this info instead
         bulkManagement: {
           ...state.bulkManagement,
           history: action.data,
@@ -111,4 +111,5 @@ const grades = (state = initialState, action) => {
   }
 };
 
+export { initialState as initialGradesState };
 export default grades;

@@ -490,8 +490,6 @@ export default class Gradebook extends React.Component {
                   <Table
                     data={this.props.bulkManagementHistory}
                     columns={[
-                      // TODO: we almost certainly want to make this a username,
-                      // which will require a server-side change
                       { key: 'user', label: 'Uploaded By', columnSortable: false },
                       { key: 'operation', label: 'Operation', columnSortable: false },
                       { key: 'modified', label: 'Uploaded Date', columnSortable: false },
@@ -578,7 +576,7 @@ Gradebook.propTypes = {
   showBulkManagement: PropTypes.bool,
   bulkManagementHistory: PropTypes.arrayOf(PropTypes.shape({
     operation: PropTypes.oneOf(['commit', 'error']),
-    user: PropTypes.number,
+    user: PropTypes.string,
     modified: PropTypes.string,
   })),
 };
