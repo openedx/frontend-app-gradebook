@@ -13,7 +13,8 @@ import {
 } from '../../data/actions/grades';
 import { fetchCohorts } from '../../data/actions/cohorts';
 import { fetchTracks } from '../../data/actions/tracks';
-import hasMastersTrack from '../../data/selectors/tracks';
+import stateHasMastersTrack from '../../data/selectors/tracks';
+import getBulkManagementHistory from '../../data/selectors/grades';
 import { fetchAssignmentTypes } from '../../data/actions/assignmentTypes';
 import { getRoles } from '../../data/actions/roles';
 import LmsApiService from '../../data/services/LmsApiService';
@@ -53,7 +54,8 @@ const mapStateToProps = (state, ownProps) => (
       state.grades.bulkManagement.errorMessages ?
       `Errors while processing: ${state.grades.bulkManagement.errorMessages.join(', ')}` :
       '',
-    showBulkManagement: hasMastersTrack(state),
+    showBulkManagement: stateHasMastersTrack(state),
+    bulkManagementHistory: getBulkManagementHistory(state),
   }
 );
 

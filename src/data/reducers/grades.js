@@ -9,6 +9,7 @@ import {
   START_UPLOAD,
   UPLOAD_COMPLETE,
   UPLOAD_ERR,
+  GOT_BULK_HISTORY,
 } from '../constants/actionTypes/grades';
 
 const initialState = {
@@ -22,6 +23,7 @@ const initialState = {
   prevPage: null,
   nextPage: null,
   showSpinner: true,
+  bulkManagement: {},
 };
 
 const grades = (state = initialState, action) => {
@@ -79,19 +81,29 @@ const grades = (state = initialState, action) => {
         ...state,
         showSpinner: true,
       };
-    case UPLOAD_COMPLETE:
+    case UPLOAD_COMPLETE: {
+      const { errorMessages, ...rest } = state.bulkManagement;
       return {
         ...state,
         showSpinner: false,
-        bulkManagement: {},
+        bulkManagement: { ...rest },
       };
+    }
     case UPLOAD_ERR:
       return {
         ...state,
         showSpinner: false,
         bulkManagement: {
-          ...(state.bulkManagement || {}),
+          ...state.bulkManagement,
           ...action.data,
+        },
+      };
+    case GOT_BULK_HISTORY:
+      return {
+        ...state,
+        bulkManagement: {
+          ...state.bulkManagement,
+          history: action.data,
         },
       };
     default:
@@ -99,4 +111,5 @@ const grades = (state = initialState, action) => {
   }
 };
 
+export { initialState as initialGradesState };
 export default grades;

@@ -1,4 +1,4 @@
-import grades from './grades';
+import grades, { initialGradesState as initialState } from './grades';
 import {
   STARTED_FETCHING_GRADES,
   ERROR_FETCHING_GRADES,
@@ -7,19 +7,6 @@ import {
   FILTER_COLUMNS,
   OPEN_BANNER,
 } from '../constants/actionTypes/grades';
-
-const initialState = {
-  results: [],
-  headings: [],
-  startedFetching: false,
-  finishedFetching: false,
-  errorFetching: false,
-  gradeFormat: 'percent',
-  showSuccess: false,
-  prevPage: null,
-  nextPage: null,
-  showSpinner: true,
-};
 
 const courseId = 'course-v1:edX+DemoX+Demo_Course';
 const headingsData = [

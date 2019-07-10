@@ -72,7 +72,7 @@ class LmsApiService {
     const trackQueryParam = options.track ? [`track=${options.track}`] : [];
     const cohortQueryParam = options.cohort ? [`cohort=${options.cohort}`] : [];
     const queryParams = [...trackQueryParam, ...cohortQueryParam].join('&');
-    const downloadUrl = `${LmsApiService.baseUrl}/api/bulk_grades/course/${courseId}?${queryParams}`;
+    const downloadUrl = `${LmsApiService.baseUrl}/api/bulk_grades/course/${courseId}/?${queryParams}`;
     return downloadUrl;
   }
 
@@ -86,6 +86,11 @@ class LmsApiService {
       }
       return Promise.reject(result);
     });
+  }
+
+  static fetchGradeBulkOperationHistory(courseId) {
+    const url = `${LmsApiService.baseUrl}/api/bulk_grades/course/${courseId}/history/`;
+    return apiClient.get(url).then(response => response.data).catch(() => Promise.reject(Error('unhandled response error')));
   }
 }
 
