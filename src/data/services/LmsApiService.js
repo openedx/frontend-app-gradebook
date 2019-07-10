@@ -39,7 +39,8 @@ class LmsApiService {
               "earned_all_override": 11,
               "possible_all_override": 11,
               "earned_graded_override": 11,
-              "possible_graded_override": 11
+              "possible_graded_override": 11,
+              "comment": "reason for override"
             }
           }
         ]
@@ -91,6 +92,11 @@ class LmsApiService {
   static fetchGradeBulkOperationHistory(courseId) {
     const url = `${LmsApiService.baseUrl}/api/bulk_grades/course/${courseId}/history/`;
     return apiClient.get(url).then(response => response.data).catch(() => Promise.reject(Error('unhandled response error')));
+  }
+
+  static fetchGradeOverrideHistory(subsectionId, userId) {
+    const historyUrl = `${LmsApiService.baseUrl}/api/grades/v1/subsection/${subsectionId}/?user_id=${userId}&history_record_limit=5`;
+    return apiClient.get(historyUrl);
   }
 }
 

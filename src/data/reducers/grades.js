@@ -10,10 +10,17 @@ import {
   UPLOAD_COMPLETE,
   UPLOAD_ERR,
   GOT_BULK_HISTORY,
+  GOT_GRADE_OVERRIDE_HISTORY,
+  ERROR_FETCHING_GRADE_OVERRIDE_HISTORY,
 } from '../constants/actionTypes/grades';
 
 const initialState = {
   results: [],
+  gradeOverrideHistoryResults: [],
+  gradeOverrideCurrentEarnedAllOverride: null,
+  gradeOverrideCurrentPossibleAllOverride: null,
+  gradeOverrideCurrentEarnedGradedOverride: null,
+  gradeOverrideCurrentPossibleGradedOverride: null,
   headings: [],
   startedFetching: false,
   finishedFetching: false,
@@ -43,6 +50,23 @@ const grades = (state = initialState, action) => {
         showSpinner: false,
         courseId: action.courseId,
       };
+    case GOT_GRADE_OVERRIDE_HISTORY:
+      return {
+        ...state,
+        gradeOverrideHistoryResults: action.overrideHistory,
+        gradeOverrideCurrentEarnedAllOverride: action.currentEarnedAllOverride,
+        gradeOverrideCurrentPossibleAllOverride: action.currentPossibleAllOverride,
+        gradeOverrideCurrentEarnedGradedOverride: action.currentEarnedGradedOverride,
+        gradeOverrideCurrentPossibleGradedOverride: action.currentPossibleGradedOverride,
+      };
+
+    case ERROR_FETCHING_GRADE_OVERRIDE_HISTORY:
+      return {
+        ...state,
+        finishedFetchingOverrideHistory: true,
+        errorFetchingOverrideHistory: true,
+      };
+
     case STARTED_FETCHING_GRADES:
       return {
         ...state,

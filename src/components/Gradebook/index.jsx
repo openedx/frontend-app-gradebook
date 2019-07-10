@@ -13,8 +13,12 @@ import {
 import queryString from 'query-string';
 import { configuration } from '../../config';
 import PageButtons from '../PageButtons';
+import { formatDateForDisplay } from '../../data/actions/utils';
 
 const DECIMAL_PRECISION = 2;
+const GRADE_OVERRIDE_HISTORY_COLUMNS = [{ label: 'Date', key: 'date' }, { label: 'Grader', key: 'grader' },
+  { label: 'Reason', key: 'reason' },
+  { label: 'Adjusted grade', key: 'adjustedGrade' }];
 
 export default class Gradebook extends React.Component {
   constructor(props) {
@@ -22,47 +26,50 @@ export default class Gradebook extends React.Component {
     this.state = {
       filterValue: '',
       modalOpen: false,
-      modalModel: [{}],
-      updateVal: 0,
+      adjustedGradeValue: 0,
       updateModuleId: null,
       updateUserId: null,
+      reasonForChange: '',
     };
     this.fileFormRef = React.createRef();
     this.fileInputRef = React.createRef();
+    this.myRef = React.createRef();
   }
 
   componentDidMount() {
     const urlQuery = queryString.parse(this.props.location.search);
     this.props.getRoles(this.props.courseId, urlQuery);
+    this.overrideReasonInput.focus();
   }
 
-  setNewModalState = (userEntry, subsection) => {
-    let adjustedGradePossible = '';
-    let currentGradePossible = '';
-    if (subsection.attempted) {
-      adjustedGradePossible = ` / ${subsection.score_possible}`;
-      currentGradePossible = `/${subsection.score_possible}`;
-    }
-    this.setState({
-      modalModel: [{
-        username: userEntry.username,
-        currentGrade: `${subsection.score_earned}${currentGradePossible}`,
-        adjustedGrade: (
-          <span>
-            <input
-              style={{ width: '25px' }}
-              type="text"
-              onChange={event => this.setState({ updateVal: event.target.value })}
-            />{adjustedGradePossible}
-          </span>
-        ),
-        assignmentName: `${subsection.subsection_name}`,
-      }],
-      modalOpen: true,
-      updateModuleId: subsection.module_id,
-      updateUserId: userEntry.user_id,
-    });
+  onChange(e) {
+    this.setState({ [e.target.name]: e.target.value });
   }
+
+   setNewModalState = (userEntry, subsection) => {
+     this.props.fetchGradeOverrideHistory(
+       subsection.module_id,
+       userEntry.user_id,
+     );
+
+     let adjustedGradePossible = '100';
+     if (subsection.attempted) {
+       adjustedGradePossible = ` / ${subsection.score_possible}`;
+     }
+     this.setState({
+       modalAssignmentName: `${subsection.subsection_name}`,
+       modalOpen: true,
+       updateModuleId: subsection.module_id,
+       updateUserId: userEntry.user_id,
+       updateUserName: userEntry.username,
+       todaysDate: formatDateForDisplay(new Date()),
+       originalGrade: subsection.score_earned,
+       adjustedGradePossible,
+       reasonForChange: '',
+       adjustedGradeValue: '',
+
+     });
+   }
 
   getLearnerInformation = entry => (
     <div>
@@ -85,7 +92,8 @@ export default class Gradebook extends React.Component {
           user_id: this.state.updateUserId,
           usage_id: this.state.updateModuleId,
           grade: {
-            earned_graded_override: this.state.updateVal,
+            earned_graded_override: this.state.adjustedGradeValue,
+            comment: this.state.reasonForChange,
           },
         },
       ],
@@ -95,10 +103,11 @@ export default class Gradebook extends React.Component {
     );
 
     this.setState({
-      modalModel: [{}],
       modalOpen: false,
       updateModuleId: null,
       updateUserId: null,
+      reasonForChange: '',
+      adjustedGradeValue: '',
     });
   }
 
@@ -435,11 +444,46 @@ export default class Gradebook extends React.Component {
                   closeText="Cancel"
                   body={(
                     <div>
-                      <h3>{this.state.modalModel[0].assignmentName}</h3>
-                      <Table
-                        columns={[{ label: 'Username', key: 'username' }, { label: 'Current grade', key: 'currentGrade' }, { label: 'Adjusted grade', key: 'adjustedGrade' }]}
-                        data={this.state.modalModel}
+                      <div>
+                        <div className="grade-history-header grade-history-assignment">Assignment: </div> <div>{this.state.modalAssignmentName}</div>
+                        <div className="grade-history-header grade-history-student">Student: </div> <div>{this.state.updateUserName}</div>
+                        <div className="grade-history-header grade-history-original-grade">Original Grade: </div> <div>{this.state.originalGrade}</div>
+                        <div className="grade-history-header grade-history-current-grade">Current Grade: </div> <div>{this.props.gradeOverrideCurrentPossibleGradedOverride}</div>
+                      </div>
+                      <StatusAlert
+                        alertType="danger"
+                        dialog="Error retrieving grade override history."
+                        open={this.props.errorFetchingGradeOverrideHistory}
+                        dismissible={false}
                       />
+                      { !this.props.errorFetchingGradeOverrideHistory && (
+                      <Table
+                        columns={GRADE_OVERRIDE_HISTORY_COLUMNS}
+                        data={[...this.props.gradeOverrides, {
+                          date: this.state.todaysDate,
+                          grader: this.state.updateUserName,
+                          reason: (<input
+                            type="text"
+                            name="reasonForChange"
+                            value={this.state.reasonForChange}
+                            onChange={value => this.onChange(value)}
+                            ref={(input) => { this.overrideReasonInput = input; }}
+                          />),
+                          adjustedGrade: (
+                            <span>
+                              <input
+                                type="text"
+                                name="adjustedGradeValue"
+                                value={this.state.adjustedGradeValue}
+                                onChange={value => this.onChange(value)}
+                              /> {this.state.adjustedGradePossible}
+                            </span>),
+                        }]}
+                      />)}
+
+                      <div>Showing most recent actions(max 5). To see more, please contact
+                      support.
+                      </div>
                       <div>Note: Once you save, your changes will be visible to students.</div>
                     </div>
                   )}
@@ -452,10 +496,10 @@ export default class Gradebook extends React.Component {
                   ]}
                   onClose={() => this.setState({
                     modalOpen: false,
-                    modalModel: [{}],
-                    updateVal: 0,
+                    adjustedGradeValue: 0,
                     updateModuleId: null,
                     updateUserId: null,
+                    reasonForChange: '',
                   })}
                 />
               </div>
@@ -510,6 +554,8 @@ Gradebook.defaultProps = {
   canUserViewGradebook: false,
   cohorts: [],
   grades: [],
+  gradeOverrides: [],
+  gradeOverrideCurrentPossibleGradedOverride: null,
   location: {
     search: '',
   },
@@ -522,6 +568,7 @@ Gradebook.defaultProps = {
   bulkImportError: '',
   showBulkManagement: false,
   bulkManagementHistory: [],
+  errorFetchingGradeOverrideHistory: '',
 };
 
 Gradebook.propTypes = {
@@ -533,6 +580,7 @@ Gradebook.propTypes = {
   format: PropTypes.string.isRequired,
   getRoles: PropTypes.func.isRequired,
   getUserGrades: PropTypes.func.isRequired,
+  fetchGradeOverrideHistory: PropTypes.func.isRequired,
   grades: PropTypes.arrayOf(PropTypes.shape({
     percent: PropTypes.number,
     section_breakdown: PropTypes.arrayOf(PropTypes.shape({
@@ -548,6 +596,13 @@ Gradebook.propTypes = {
     user_id: PropTypes.number,
     user_name: PropTypes.string,
   })),
+  gradeOverrides: PropTypes.arrayOf(PropTypes.shape({
+    date: PropTypes.string,
+    grader: PropTypes.string,
+    reason: PropTypes.string,
+    adjustedGrade: PropTypes.number,
+  })),
+  gradeOverrideCurrentPossibleGradedOverride: PropTypes.number,
   headings: PropTypes.arrayOf(PropTypes.string).isRequired,
   history: PropTypes.shape({
     push: PropTypes.func,
@@ -573,6 +628,7 @@ Gradebook.propTypes = {
   gradeExportUrl: PropTypes.string.isRequired,
   submitFileUploadFormData: PropTypes.func.isRequired,
   bulkImportError: PropTypes.string,
+  errorFetchingGradeOverrideHistory: PropTypes.string,
   showBulkManagement: PropTypes.bool,
   bulkManagementHistory: PropTypes.arrayOf(PropTypes.shape({
     operation: PropTypes.oneOf(['commit', 'error']),
