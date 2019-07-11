@@ -130,10 +130,11 @@ const fetchGradeOverrideHistory = (subsectionId, userId) => (
       .then((data) => {
         dispatch(gotGradeOverrideHistory({
           overrideHistory: formatGradeOverrideForDisplay(data.history),
-          currentEarnedAllOverride: data.override.earned_all_override,
-          currentPossibleAllOverride: data.override.possible_all_override,
-          currentEarnedGradedOverride: data.override.earned_graded_override,
-          currentPossibleGradedOverride: data.override.possible_graded_override,
+          currentEarnedAllOverride: data.override ? data.override.earned_all_override : null,
+          currentPossibleAllOverride: data.override ? data.override.possible_all_override : null,
+          currentEarnedGradedOverride: data.override ? data.override.earned_graded_override : null,
+          currentPossibleGradedOverride: data.override ?
+            data.override.possible_graded_override : null,
         }));
       })
       .catch(() => {
