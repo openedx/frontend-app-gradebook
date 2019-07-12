@@ -568,7 +568,7 @@ Gradebook.defaultProps = {
   bulkImportError: '',
   showBulkManagement: false,
   bulkManagementHistory: [],
-  errorFetchingGradeOverrideHistory: '',
+  errorFetchingGradeOverrideHistory: false,
 };
 
 Gradebook.propTypes = {
@@ -628,7 +628,7 @@ Gradebook.propTypes = {
   gradeExportUrl: PropTypes.string.isRequired,
   submitFileUploadFormData: PropTypes.func.isRequired,
   bulkImportError: PropTypes.string,
-  errorFetchingGradeOverrideHistory: PropTypes.string,
+  errorFetchingGradeOverrideHistory: PropTypes.bool,
   showBulkManagement: PropTypes.bool,
   bulkManagementHistory: PropTypes.arrayOf(PropTypes.shape({
     operation: PropTypes.oneOf(['commit', 'error']),

@@ -58,6 +58,7 @@ const grades = (state = initialState, action) => {
         gradeOverrideCurrentPossibleAllOverride: action.currentPossibleAllOverride,
         gradeOverrideCurrentEarnedGradedOverride: action.currentEarnedGradedOverride,
         gradeOverrideCurrentPossibleGradedOverride: action.currentPossibleGradedOverride,
+        errorFetchingOverrideHistory: false,
       };
 
     case ERROR_FETCHING_GRADE_OVERRIDE_HISTORY:
