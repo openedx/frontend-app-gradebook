@@ -46,30 +46,29 @@ export default class Gradebook extends React.Component {
     this.setState({ [e.target.name]: e.target.value });
   }
 
-   setNewModalState = (userEntry, subsection) => {
-     this.props.fetchGradeOverrideHistory(
-       subsection.module_id,
-       userEntry.user_id,
-     );
+  setNewModalState = (userEntry, subsection) => {
+    this.props.fetchGradeOverrideHistory(
+      subsection.module_id,
+      userEntry.user_id,
+    );
 
-     let adjustedGradePossible = '100';
-     if (subsection.attempted) {
-       adjustedGradePossible = ` / ${subsection.score_possible}`;
-     }
-     this.setState({
-       modalAssignmentName: `${subsection.subsection_name}`,
-       modalOpen: true,
-       updateModuleId: subsection.module_id,
-       updateUserId: userEntry.user_id,
-       updateUserName: userEntry.username,
-       todaysDate: formatDateForDisplay(new Date()),
-       originalGrade: subsection.score_earned,
-       adjustedGradePossible,
-       reasonForChange: '',
-       adjustedGradeValue: '',
-
-     });
-   }
+    let adjustedGradePossible = '100';
+    if (subsection.attempted) {
+      adjustedGradePossible = ` / ${subsection.score_possible}`;
+    }
+    this.setState({
+      modalAssignmentName: `${subsection.subsection_name}`,
+      modalOpen: true,
+      updateModuleId: subsection.module_id,
+      updateUserId: userEntry.user_id,
+      updateUserName: userEntry.username,
+      todaysDate: formatDateForDisplay(new Date()),
+      originalGrade: subsection.score_earned,
+      adjustedGradePossible,
+      reasonForChange: '',
+      adjustedGradeValue: '',
+    });
+  }
 
   getLearnerInformation = entry => (
     <div>
@@ -303,7 +302,7 @@ export default class Gradebook extends React.Component {
   render() {
     return (
       <div className="d-flex justify-content-center">
-        { this.props.showSpinner && <div className="spinner-overlay"><Icon className={['fa', 'fa-spinner', 'fa-spin', 'fa-5x', 'color-black']} /></div>}
+        {this.props.showSpinner && <div className="spinner-overlay"><Icon className={['fa', 'fa-spinner', 'fa-spin', 'fa-5x', 'color-black']} /></div>}
         <div className="gradebook-container">
           <div>
             <a
@@ -314,12 +313,12 @@ export default class Gradebook extends React.Component {
             </a>
             <h1>Gradebook</h1>
             <h3> {this.props.courseId}</h3>
-            { this.props.areGradesFrozen &&
+            {this.props.areGradesFrozen &&
               <div className="alert alert-warning" role="alert" >
                 The grades for this course are now frozen. Editing of grades is no longer allowed.
               </div>
             }
-            { (this.props.canUserViewGradebook === false) &&
+            {(this.props.canUserViewGradebook === false) &&
               <div className="alert alert-warning" role="alert" >
                 You are not authorized to view the gradebook for this course.
               </div>
@@ -353,11 +352,11 @@ export default class Gradebook extends React.Component {
                         className="mr-1"
                         onClick={() => this.props.toggleFormat('absolute')}
                       />
-                    Absolute
+                      Absolute
                     </label>
                   </span>
                 </div>
-                { this.props.assignmentTypes.length > 0 &&
+                {this.props.assignmentTypes.length > 0 &&
                   <div className="student-filters">
                     <span className="label">
                       Assignment Types:
@@ -407,7 +406,7 @@ export default class Gradebook extends React.Component {
                   inputLabel="Search for a learner"
                   onChange={filterValue => this.setState({ filterValue })}
                   onClear={() =>
-                      this.props.getUserGrades(
+                    this.props.getUserGrades(
                       this.props.courseId,
                       this.props.selectedCohort,
                       this.props.selectedTrack,
@@ -448,7 +447,7 @@ export default class Gradebook extends React.Component {
                         <div className="grade-history-header grade-history-assignment">Assignment: </div> <div>{this.state.modalAssignmentName}</div>
                         <div className="grade-history-header grade-history-student">Student: </div> <div>{this.state.updateUserName}</div>
                         <div className="grade-history-header grade-history-original-grade">Original Grade: </div> <div>{this.state.originalGrade}</div>
-                        <div className="grade-history-header grade-history-current-grade">Current Grade: </div> <div>{this.props.gradeOverrideCurrentPossibleGradedOverride}</div>
+                        <div className="grade-history-header grade-history-current-grade">Current Grade: </div> <div>{this.props.gradeOverrideCurrentEarnedGradedOverride}</div>
                       </div>
                       <StatusAlert
                         alertType="danger"
@@ -456,30 +455,30 @@ export default class Gradebook extends React.Component {
                         open={this.props.errorFetchingGradeOverrideHistory}
                         dismissible={false}
                       />
-                      { !this.props.errorFetchingGradeOverrideHistory && (
-                      <Table
-                        columns={GRADE_OVERRIDE_HISTORY_COLUMNS}
-                        data={[...this.props.gradeOverrides, {
-                          date: this.state.todaysDate,
-                          grader: this.state.updateUserName,
-                          reason: (<input
-                            type="text"
-                            name="reasonForChange"
-                            value={this.state.reasonForChange}
-                            onChange={value => this.onChange(value)}
-                            ref={(input) => { this.overrideReasonInput = input; }}
-                          />),
-                          adjustedGrade: (
-                            <span>
-                              <input
-                                type="text"
-                                name="adjustedGradeValue"
-                                value={this.state.adjustedGradeValue}
-                                onChange={value => this.onChange(value)}
-                              /> {this.state.adjustedGradePossible}
-                            </span>),
-                        }]}
-                      />)}
+                      {!this.props.errorFetchingGradeOverrideHistory && (
+                        <Table
+                          columns={GRADE_OVERRIDE_HISTORY_COLUMNS}
+                          data={[...this.props.gradeOverrides, {
+                            date: this.state.todaysDate,
+                            grader: this.state.updateUserName,
+                            reason: (<input
+                              type="text"
+                              name="reasonForChange"
+                              value={this.state.reasonForChange}
+                              onChange={value => this.onChange(value)}
+                              ref={(input) => { this.overrideReasonInput = input; }}
+                            />),
+                            adjustedGrade: (
+                              <span>
+                                <input
+                                  type="text"
+                                  name="adjustedGradeValue"
+                                  value={this.state.adjustedGradeValue}
+                                  onChange={value => this.onChange(value)}
+                                /> {this.state.adjustedGradePossible}
+                              </span>),
+                          }]}
+                        />)}
 
                       <div>Showing most recent actions(max 5). To see more, please contact
                       support.
@@ -555,7 +554,7 @@ Gradebook.defaultProps = {
   cohorts: [],
   grades: [],
   gradeOverrides: [],
-  gradeOverrideCurrentPossibleGradedOverride: null,
+  gradeOverrideCurrentEarnedGradedOverride: null,
   location: {
     search: '',
   },
@@ -602,7 +601,7 @@ Gradebook.propTypes = {
     reason: PropTypes.string,
     adjustedGrade: PropTypes.number,
   })),
-  gradeOverrideCurrentPossibleGradedOverride: PropTypes.number,
+  gradeOverrideCurrentEarnedGradedOverride: PropTypes.number,
   headings: PropTypes.arrayOf(PropTypes.string).isRequired,
   history: PropTypes.shape({
     push: PropTypes.func,
