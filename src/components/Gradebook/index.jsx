@@ -52,7 +52,8 @@ export default class Gradebook extends React.Component {
       userEntry.user_id,
     );
 
-    let adjustedGradePossible = '100';
+    let adjustedGradePossible = '';
+
     if (subsection.attempted) {
       adjustedGradePossible = ` / ${subsection.score_possible}`;
     }
@@ -460,7 +461,6 @@ export default class Gradebook extends React.Component {
                           columns={GRADE_OVERRIDE_HISTORY_COLUMNS}
                           data={[...this.props.gradeOverrides, {
                             date: this.state.todaysDate,
-                            grader: this.state.updateUserName,
                             reason: (<input
                               type="text"
                               name="reasonForChange"
@@ -480,7 +480,7 @@ export default class Gradebook extends React.Component {
                           }]}
                         />)}
 
-                      <div>Showing most recent actions(max 5). To see more, please contact
+                      <div>Showing most recent actions (max 5). To see more, please contact
                       support.
                       </div>
                       <div>Note: Once you save, your changes will be visible to students.</div>
