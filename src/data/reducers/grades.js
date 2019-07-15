@@ -21,6 +21,10 @@ const initialState = {
   gradeOverrideCurrentPossibleAllOverride: null,
   gradeOverrideCurrentEarnedGradedOverride: null,
   gradeOverrideCurrentPossibleGradedOverride: null,
+  gradeOriginalEarnedAll: null,
+  gradeOriginalPossibleAll: null,
+  gradeOriginalEarnedGraded: null,
+  gradeOriginalPossibleGraded: null,
   headings: [],
   startedFetching: false,
   finishedFetching: false,
@@ -58,6 +62,10 @@ const grades = (state = initialState, action) => {
         gradeOverrideCurrentPossibleAllOverride: action.currentPossibleAllOverride,
         gradeOverrideCurrentEarnedGradedOverride: action.currentEarnedGradedOverride,
         gradeOverrideCurrentPossibleGradedOverride: action.currentPossibleGradedOverride,
+        gradeOriginalEarnedAll: action.originalGradeEarnedAll,
+        gradeOriginalPossibleAll: action.originalGradePossibleAll,
+        gradeOriginalEarnedGraded: action.originalGradeEarnedGraded,
+        gradeOriginalPossibleGraded: action.originalGradePossibleGraded,
         errorFetchingOverrideHistory: false,
       };
 
