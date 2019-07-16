@@ -49,6 +49,8 @@ const gotGrades = (grades, cohort, track, assignmentType, headings, prev, next, 
 const gotGradeOverrideHistory = ({
   overrideHistory, currentEarnedAllOverride, currentPossibleAllOverride,
   currentEarnedGradedOverride, currentPossibleGradedOverride,
+  originalGradeEarnedAll, originalGradePossibleAll, originalGradeEarnedGraded,
+  originalGradePossibleGraded,
 }) => ({
   type: GOT_GRADE_OVERRIDE_HISTORY,
   overrideHistory,
@@ -56,6 +58,10 @@ const gotGradeOverrideHistory = ({
   currentPossibleAllOverride,
   currentEarnedGradedOverride,
   currentPossibleGradedOverride,
+  originalGradeEarnedAll,
+  originalGradePossibleAll,
+  originalGradeEarnedGraded,
+  originalGradePossibleGraded,
 });
 
 const gradeUpdateRequest = () => ({ type: GRADE_UPDATE_REQUEST });
@@ -135,6 +141,11 @@ const fetchGradeOverrideHistory = (subsectionId, userId) => (
           currentEarnedGradedOverride: data.override ? data.override.earned_graded_override : null,
           currentPossibleGradedOverride: data.override ?
             data.override.possible_graded_override : null,
+          originalGradeEarnedAll: data.original_grade ? data.original_grade.earned_all : null,
+          originalGradePossibleAll: data.original_grade ? data.original_grade.possible_all : null,
+          originalGradeEarnedGraded: data.original_grade ? data.original_grade.earned_graded : null,
+          originalGradePossibleGraded: data.original_grade ?
+            data.original_grade.possible_graded : null,
         }));
       })
       .catch(() => {

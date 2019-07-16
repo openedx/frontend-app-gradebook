@@ -64,7 +64,6 @@ export default class Gradebook extends React.Component {
       updateUserId: userEntry.user_id,
       updateUserName: userEntry.username,
       todaysDate: formatDateForDisplay(new Date()),
-      originalGrade: subsection.score_earned,
       adjustedGradePossible,
       reasonForChange: '',
       adjustedGradeValue: '',
@@ -447,7 +446,7 @@ export default class Gradebook extends React.Component {
                       <div>
                         <div className="grade-history-header grade-history-assignment">Assignment: </div> <div>{this.state.modalAssignmentName}</div>
                         <div className="grade-history-header grade-history-student">Student: </div> <div>{this.state.updateUserName}</div>
-                        <div className="grade-history-header grade-history-original-grade">Original Grade: </div> <div>{this.state.originalGrade}</div>
+                        <div className="grade-history-header grade-history-original-grade">Original Grade: </div> <div>{this.props.gradeOriginalEarnedGraded}</div>
                         <div className="grade-history-header grade-history-current-grade">Current Grade: </div> <div>{this.props.gradeOverrideCurrentEarnedGradedOverride}</div>
                       </div>
                       <StatusAlert
@@ -555,6 +554,7 @@ Gradebook.defaultProps = {
   grades: [],
   gradeOverrides: [],
   gradeOverrideCurrentEarnedGradedOverride: null,
+  gradeOriginalEarnedGraded: null,
   location: {
     search: '',
   },
@@ -602,6 +602,7 @@ Gradebook.propTypes = {
     adjustedGrade: PropTypes.number,
   })),
   gradeOverrideCurrentEarnedGradedOverride: PropTypes.number,
+  gradeOriginalEarnedGraded: PropTypes.number,
   headings: PropTypes.arrayOf(PropTypes.string).isRequired,
   history: PropTypes.shape({
     push: PropTypes.func,
