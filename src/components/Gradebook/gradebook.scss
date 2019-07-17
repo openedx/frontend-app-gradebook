@@ -81,17 +81,21 @@
         }
     }
 
+    .table thead tr {
+        height: 60px;
+    }
+
     .table tr th:first-child {
         position: absolute;
         width: 160px;
-        height:50px;
+        height: 50px;
         display: block;
         border-bottom: none;
     }
     .table tr td:first-child {
         position: absolute;
         width: 160px;
-        height:50px; 
+        height: 50px;
         display: block;
     }
     .table tr td:nth-child(2) {
