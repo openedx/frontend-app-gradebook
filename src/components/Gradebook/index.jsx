@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {
   Button,
+  StatefulButton,
   InputSelect,
   Modal,
   SearchField,
@@ -11,6 +12,8 @@ import {
   Tabs,
 } from '@edx/paragon';
 import queryString from 'query-string';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faDownload, faSpinner } from '@fortawesome/free-solid-svg-icons';
 import { configuration } from '../../config';
 import PageButtons from '../PageButtons';
 import { formatDateForDisplay } from '../../data/actions/utils';
@@ -141,6 +144,42 @@ export default class Gradebook extends React.Component {
     }));
     mapped.unshift({ label: 'Track-All' });
     return mapped;
+  };
+
+  formatHistoryRow = (row) => {
+    const {
+      summaryOfRowsProcessed: {
+        total,
+        successfullyProcessed,
+        failed,
+        skipped,
+      },
+      unique_id: courseId,
+      originalFilename,
+      id,
+      ...rest
+    } = row;
+    const resultsText = [
+      `${total} Students: ${successfullyProcessed} processed`,
+      ...(skipped > 0 ? [`${skipped} skipped`] : []),
+      ...(failed > 0 ? [`${failed} failed`] : []),
+    ].join(', ');
+    const resultsSummary = (
+      <a
+        href={`${configuration.LMS_BASE_URL}/api/bulk_grades/course/${courseId}/?error_id=${id}`}
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <FontAwesomeIcon icon={faDownload} />
+        {resultsText}
+      </a>
+    );
+    const filename = (
+      <span className="original-filename">
+        {originalFilename}
+      </span>
+    );
+    return { resultsSummary, filename, ...rest };
   };
 
   updateAssignmentTypes = (event) => {
@@ -302,7 +341,6 @@ export default class Gradebook extends React.Component {
   render() {
     return (
       <div className="d-flex justify-content-center">
-        {this.props.showSpinner && <div className="spinner-overlay"><Icon className={['fa', 'fa-spinner', 'fa-spin', 'fa-5x', 'color-black']} /></div>}
         <div className="gradebook-container">
           <div>
             <a
@@ -314,112 +352,114 @@ export default class Gradebook extends React.Component {
             <h1>Gradebook</h1>
             <h3> {this.props.courseId}</h3>
             {this.props.areGradesFrozen &&
-              <div className="alert alert-warning" role="alert" >
-                The grades for this course are now frozen. Editing of grades is no longer allowed.
-              </div>
+            <div className="alert alert-warning" role="alert" >
+              The grades for this course are now frozen. Editing of grades is no longer allowed.
+            </div>
             }
             {(this.props.canUserViewGradebook === false) &&
-              <div className="alert alert-warning" role="alert" >
-                You are not authorized to view the gradebook for this course.
-              </div>
-            }
-            <hr />
-            <div className="d-flex justify-content-between" >
-              <div>
-                <div role="radiogroup" aria-labelledby="score-view-group-label">
-                  <span id="score-view-group-label">Score View:</span>
-                  <span>
-                    <label className="mr-2" htmlFor="score-view-percent">
-                      <input
-                        id="score-view-percent"
-                        className="ml-2 mr-1"
-                        type="radio"
-                        name="score-view"
-                        value="percent"
-                        defaultChecked
-                        onClick={() => this.props.toggleFormat('percent')}
-                      />
-                      Percent
-                    </label>
-                  </span>
-                  <span>
-                    <label htmlFor="score-view-absolute">
-                      <input
-                        id="score-view-absolute"
-                        type="radio"
-                        name="score-view"
-                        value="absolute"
-                        className="mr-1"
-                        onClick={() => this.props.toggleFormat('absolute')}
-                      />
-                      Absolute
-                    </label>
-                  </span>
-                </div>
-                {this.props.assignmentTypes.length > 0 &&
-                  <div className="student-filters">
-                    <span className="label">
-                      Assignment Types:
-                    </span>
-                    <InputSelect
-                      name="assignment-types"
-                      ariaLabel="Assignment Types"
-                      value={this.props.selectedAssignmentType}
-                      options={this.mapAssignmentTypeEntries(this.props.assignmentTypes)}
-                      onChange={this.updateAssignmentTypes}
-                    />
-                  </div>
-                }
-                <div className="student-filters">
-                  <span className="label">
-                    Student Groups:
-                  </span>
-                  <InputSelect
-                    name="Tracks"
-                    ariaLabel="Tracks"
-                    disabled={this.props.tracks.length === 0}
-                    value={this.mapSelectedTrackEntry(this.props.selectedTrack)}
-                    options={this.mapTracksEntries(this.props.tracks)}
-                    onChange={this.updateTracks}
-                  />
-                  <InputSelect
-                    name="Cohorts"
-                    ariaLabel="Cohorts"
-                    disabled={this.props.cohorts.length === 0}
-                    value={this.mapSelectedCohortEntry(this.props.selectedCohort)}
-                    options={this.mapCohortsEntries(this.props.cohorts)}
-                    onChange={this.updateCohorts}
-                  />
-                </div>
-              </div>
-              <div>
-                <SearchField
-                  onSubmit={value =>
-                    this.props.searchForUser(
-                      this.props.courseId,
-                      value,
-                      this.props.selectedCohort,
-                      this.props.selectedTrack,
-                      this.props.selectedAssignmentType,
-                    )
-                  }
-                  inputLabel="Search for a learner"
-                  onChange={filterValue => this.setState({ filterValue })}
-                  onClear={() =>
-                    this.props.getUserGrades(
-                      this.props.courseId,
-                      this.props.selectedCohort,
-                      this.props.selectedTrack,
-                      this.props.selectedAssignmentType,
-                    )
-                  }
-                  value={this.state.filterValue}
-                />
-                <small className="form-text text-muted search-help-text">Search by username, email, or student key</small>
-              </div>
+            <div className="alert alert-warning" role="alert" >
+              You are not authorized to view the gradebook for this course.
             </div>
+            }
             <Tabs labels={this.getActiveTabs()}>
               <div>
+                <div className="d-flex justify-content-between" >
+                  {this.props.showSpinner && <div className="spinner-overlay"><Icon className={['fa', 'fa-spinner', 'fa-spin', 'fa-5x', 'color-black']} /></div>}
+
+                  <div>
+                    <div role="radiogroup" aria-labelledby="score-view-group-label">
+                      <span id="score-view-group-label">Score View:</span>
+                      <span>
+                        <label className="mr-2" htmlFor="score-view-percent">
+                          <input
+                            id="score-view-percent"
+                            className="ml-2 mr-1"
+                            type="radio"
+                            name="score-view"
+                            value="percent"
+                            defaultChecked
+                            onClick={() => this.props.toggleFormat('percent')}
+                          />
+                          Percent
+                        </label>
+                      </span>
+                      <span>
+                        <label htmlFor="score-view-absolute">
+                          <input
+                            id="score-view-absolute"
+                            type="radio"
+                            name="score-view"
+                            value="absolute"
+                            className="mr-1"
+                            onClick={() => this.props.toggleFormat('absolute')}
+                          />
+                          Absolute
+                        </label>
+                      </span>
+                    </div>
+                    {this.props.assignmentTypes.length > 0 &&
+                    <div className="student-filters">
+                      <span className="label">
+                        Assignment Types:
+                      </span>
+                      <InputSelect
+                        name="assignment-types"
+                        ariaLabel="Assignment Types"
+                        value={this.props.selectedAssignmentType}
+                        options={this.mapAssignmentTypeEntries(this.props.assignmentTypes)}
+                        onChange={this.updateAssignmentTypes}
+                      />
+                    </div>
+                    }
+                    <div className="student-filters">
+                      <span className="label">
+                        Student Groups:
+                      </span>
+                      <InputSelect
+                        name="Tracks"
+                        ariaLabel="Tracks"
+                        disabled={this.props.tracks.length === 0}
+                        value={this.mapSelectedTrackEntry(this.props.selectedTrack)}
+                        options={this.mapTracksEntries(this.props.tracks)}
+                        onChange={this.updateTracks}
+                      />
+                      <InputSelect
+                        name="Cohorts"
+                        ariaLabel="Cohorts"
+                        disabled={this.props.cohorts.length === 0}
+                        value={this.mapSelectedCohortEntry(this.props.selectedCohort)}
+                        options={this.mapCohortsEntries(this.props.cohorts)}
+                        onChange={this.updateCohorts}
+                      />
+                    </div>
+                  </div>
+                  <div>
+                    <SearchField
+                      onSubmit={value =>
+                        this.props.searchForUser(
+                          this.props.courseId,
+                          value,
+                          this.props.selectedCohort,
+                          this.props.selectedTrack,
+                          this.props.selectedAssignmentType,
+                        )
+                      }
+                      inputLabel="Search for a learner"
+                      onChange={filterValue => this.setState({ filterValue })}
+                      onClear={() =>
+                        this.props.getUserGrades(
+                          this.props.courseId,
+                          this.props.selectedCohort,
+                          this.props.selectedTrack,
+                          this.props.selectedAssignmentType,
+                        )
+                      }
+                      value={this.state.filterValue}
+                    />
+                    <small className="form-text text-muted search-help-text">Search by username, email, or student key</small>
+                  </div>
+                </div>
+
                 <StatusAlert
                   alertType="success"
                   dialog="The grade has been successfully edited."
@@ -503,6 +543,43 @@ export default class Gradebook extends React.Component {
               </div>
               {this.props.showBulkManagement && (
                 <div>
+                  <h4>Step 1: Filter the Grade Report</h4>
+                  {this.props.assignmentTypes.length > 0 &&
+                  <div className="student-filters">
+                    <span className="label">
+                      Assignment Types:
+                    </span>
+                    <InputSelect
+                      name="assignment-types"
+                      ariaLabel="Assignment Types"
+                      value={this.props.selectedAssignmentType}
+                      options={this.mapAssignmentTypeEntries(this.props.assignmentTypes)}
+                      onChange={this.updateAssignmentTypes}
+                    />
+                  </div>
+                  }
+                  <div className="student-filters">
+                    <span className="label">
+                      Student Groups:
+                    </span>
+                    <InputSelect
+                      name="Tracks"
+                      ariaLabel="Tracks"
+                      disabled={this.props.tracks.length === 0}
+                      value={this.mapSelectedTrackEntry(this.props.selectedTrack)}
+                      options={this.mapTracksEntries(this.props.tracks)}
+                      onChange={this.updateTracks}
+                    />
+                    <InputSelect
+                      name="Cohorts"
+                      ariaLabel="Cohorts"
+                      disabled={this.props.cohorts.length === 0}
+                      value={this.mapSelectedCohortEntry(this.props.selectedCohort)}
+                      options={this.mapCohortsEntries(this.props.cohorts)}
+                      onChange={this.updateCohorts}
+                    />
+                  </div>
+                  <h4>Step 2: Download the gradebook to edit grades locally</h4>
                   <form ref={this.fileFormRef} action={this.props.gradeExportUrl} method="post">
                     <StatusAlert
                       alertType="danger"
@@ -510,6 +587,13 @@ export default class Gradebook extends React.Component {
                       open={this.props.bulkImportError}
                       dismissible={false}
                     />
+                    <StatusAlert
+                      alertType="success"
+                      dialog="CSV successfully uploaded. Refresh the page to review results."
+                      open={this.props.uploadSuccess}
+                      dismissible={false}
+                    />
+
                     <input
                       className="d-none"
                       type="file"
@@ -519,23 +603,60 @@ export default class Gradebook extends React.Component {
                       ref={this.fileInputRef}
                     />
                   </form>
-                  <Button
-                    label="Export Grades"
+                  <StatefulButton
                     buttonType="primary"
                     onClick={this.handleClickExportGrades}
+                    state={this.props.showSpinner ? 'pending' : 'default'}
+                    labels={{
+                      default: 'Download Gradebook',
+                      pending: 'Download Gradebook',
+                    }}
+                    icons={{
+                      default: <FontAwesomeIcon icon={faDownload} />,
+                      pending: <FontAwesomeIcon className="fa-spin" icon={faSpinner} />,
+                    }}
+                    disabledStates={['pending']}
                   />
+                  <h4>Step 3: Upload CSV to Process Grades in Bulk</h4>
                   <Button
                     label="Import Grades"
                     buttonType="primary"
                     onClick={this.handleClickImportGrades}
                   />
+                  <p>
+                    Results appear in the table below.<br />
+                    Grade processing may take a few seconds.
+                  </p>
                   <Table
-                    data={this.props.bulkManagementHistory}
+                    data={this.props.bulkManagementHistory.map(this.formatHistoryRow)}
+                    hasFixedColumnWidths
                     columns={[
-                      { key: 'user', label: 'Uploaded By', columnSortable: false },
-                      { key: 'operation', label: 'Operation', columnSortable: false },
-                      { key: 'modified', label: 'Uploaded Date', columnSortable: false },
+                      {
+                        key: 'filename',
+                        label: 'Gradebook',
+                        columnSortable: false,
+                        width: 'col-5',
+                      },
+                      {
+                        key: 'resultsSummary',
+                        label: 'Download Summary',
+                        columnSortable: false,
+                        width: 'col',
+                      },
+                      {
+                        key: 'user',
+                        label: 'Who',
+                        columnSortable: false,
+                        width: 'col-1',
+                      },
+                      {
+                        key: 'timeUploaded',
+                        label: 'When',
+                        columnSortable: false,
+                        width: 'col',
+                      },
                     ]}
+                    className="table-striped"
                   />
                 </div>)}
             </Tabs>
@@ -565,6 +686,7 @@ Gradebook.defaultProps = {
   showSpinner: false,
   tracks: [],
   bulkImportError: '',
+  uploadSuccess: false,
   showBulkManagement: false,
   bulkManagementHistory: [],
   errorFetchingGradeOverrideHistory: false,
@@ -628,11 +750,18 @@ Gradebook.propTypes = {
   gradeExportUrl: PropTypes.string.isRequired,
   submitFileUploadFormData: PropTypes.func.isRequired,
   bulkImportError: PropTypes.string,
+  uploadSuccess: PropTypes.bool,
   errorFetchingGradeOverrideHistory: PropTypes.bool,
   showBulkManagement: PropTypes.bool,
   bulkManagementHistory: PropTypes.arrayOf(PropTypes.shape({
-    operation: PropTypes.oneOf(['commit', 'error']),
-    user: PropTypes.string,
-    modified: PropTypes.string,
+    originalFilename: PropTypes.string.isRequired,
+    user: PropTypes.string.isRequired,
+    timeUploaded: PropTypes.string.isRequired,
+    summaryOfRowsProcessed: PropTypes.shape({
+      total: PropTypes.number.isRequired,
+      successfullyProcessed: PropTypes.number.isRequired,
+      failed: PropTypes.number.isRequired,
+      skipped: PropTypes.number.isRequired,
+    }).isRequired,
   })),
 };
