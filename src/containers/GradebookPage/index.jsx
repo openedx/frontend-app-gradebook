@@ -67,6 +67,8 @@ const mapStateToProps = (state, ownProps) => (
                       state.grades.bulkManagement.uploadSuccess),
     showBulkManagement: stateHasMastersTrack(state),
     bulkManagementHistory: getBulkManagementHistory(state),
+    totalUsersCount: state.grades.totalUsersCount,
+    filteredUsersCount: state.grades.filteredUsersCount,
   }
 );
 

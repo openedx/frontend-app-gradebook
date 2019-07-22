@@ -100,6 +100,8 @@ describe('grades reducer', () => {
       nextPage: expectedNext,
       showSpinner: false,
       courseId,
+      totalUsersCount: 4,
+      filteredUsersCount: 2,
     };
     expect(grades(undefined, {
       type: GOT_GRADES,
@@ -111,6 +113,8 @@ describe('grades reducer', () => {
       cohort: expectedCohortId,
       showSpinner: true,
       courseId,
+      totalUsersCount: 4,
+      filteredUsersCount: 2,
     })).toEqual(expected);
   });
 
