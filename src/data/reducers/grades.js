@@ -109,19 +109,20 @@ const grades = (state = initialState, action) => {
         ...state,
         showSuccess: false,
       };
-    case START_UPLOAD:
+    case START_UPLOAD: {
+      const { errorMessages, uploadSuccess, ...rest } = state.bulkManagement;
       return {
         ...state,
         showSpinner: true,
+        bulkManagement: rest,
       };
-    case UPLOAD_COMPLETE: {
-      const { errorMessages, ...rest } = state.bulkManagement;
+    }
+    case UPLOAD_COMPLETE:
       return {
         ...state,
         showSpinner: false,
-        bulkManagement: { ...rest },
+        bulkManagement: { uploadSuccess: true, ...state.bulkManagement },
       };
-    }
     case UPLOAD_ERR:
       return {
         ...state,

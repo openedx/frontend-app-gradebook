@@ -63,6 +63,8 @@ const mapStateToProps = (state, ownProps) => (
       state.grades.bulkManagement.errorMessages ?
       `Errors while processing: ${state.grades.bulkManagement.errorMessages.join(', ')}` :
       '',
+    uploadSuccess: !!(state.grades.bulkManagement &&
+                      state.grades.bulkManagement.uploadSuccess),
     showBulkManagement: stateHasMastersTrack(state),
     bulkManagementHistory: getBulkManagementHistory(state),
   }

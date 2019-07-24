@@ -1,6 +1,16 @@
 const formatDateForDisplay = (inputDate) => {
-  const options = { year: 'numeric', month: 'long', day: 'numeric' };
-  const timeOptions = { hour: '2-digit', minute: '2-digit' };
+  const options = {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+    timeZone: 'UTC',
+  };
+  const timeOptions = {
+    hour: '2-digit',
+    minute: '2-digit',
+    timeZone: 'UTC',
+    timeZoneName: 'short',
+  };
   return `${inputDate.toLocaleDateString('en-US', options)} at ${inputDate.toLocaleTimeString('en-US', timeOptions)}`;
 };
 

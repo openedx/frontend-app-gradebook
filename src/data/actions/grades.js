@@ -219,7 +219,7 @@ const submitFileUploadFormData = (courseId, formData) => (
     return LmsApiService.uploadGradeCsv(courseId, formData).then(() => (
       dispatch(finishedCsvUpload())
     )).catch((err) => {
-      if (err.response.status === 200 && err.response.error_messages.length) {
+      if (err.status === 200 && err.data.error_messages.length) {
         const { error_messages: errorMessages, saved, total } = err.data;
         return dispatch(csvUploadError({ errorMessages, saved, total }));
       }
