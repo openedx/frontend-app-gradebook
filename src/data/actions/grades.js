@@ -34,7 +34,11 @@ const startedFetchingGrades = () => ({ type: STARTED_FETCHING_GRADES });
 const finishedFetchingGrades = () => ({ type: FINISHED_FETCHING_GRADES });
 const errorFetchingGrades = () => ({ type: ERROR_FETCHING_GRADES });
 const errorFetchingGradeOverrideHistory = () => ({ type: ERROR_FETCHING_GRADE_OVERRIDE_HISTORY });
-const gotGrades = (grades, cohort, track, assignmentType, headings, prev, next, courseId) => ({
+
+const gotGrades = ({
+  grades, cohort, track, assignmentType, headings, prev,
+  next, courseId, totalUsersCount, filteredUsersCount,
+}) => ({
   type: GOT_GRADES,
   grades,
   cohort,
@@ -44,6 +48,8 @@ const gotGrades = (grades, cohort, track, assignmentType, headings, prev, next, 
   prev,
   next,
   courseId,
+  totalUsersCount,
+  filteredUsersCount,
 });
 
 const gotGradeOverrideHistory = ({
@@ -101,16 +107,18 @@ const fetchGrades = (
     return LmsApiService.fetchGradebookData(courseId, options.searchText || null, cohort, track)
       .then(response => response.data)
       .then((data) => {
-        dispatch(gotGrades(
-          data.results.sort(sortAlphaAsc),
+        dispatch(gotGrades({
+          grades: data.results.sort(sortAlphaAsc),
           cohort,
           track,
           assignmentType,
-          headingMapper(assignmentType || defaultAssignmentFilter)(data.results[0]),
-          data.previous,
-          data.next,
+          headings: headingMapper(assignmentType || defaultAssignmentFilter)(data.results[0]),
+          prev: data.previous,
+          next: data.next,
           courseId,
-        ));
+          totalUsersCount: data.total_users_count,
+          filteredUsersCount: data.filtered_users_count,
+        }));
         dispatch(finishedFetchingGrades());
         if (options.showSuccess) {
           dispatch(openBanner());
@@ -172,16 +180,18 @@ const fetchPrevNextGrades = (endpoint, courseId, cohort, track, assignmentType) 
     return apiClient.get(endpoint)
       .then(response => response.data)
       .then((data) => {
-        dispatch(gotGrades(
-          data.results.sort(sortAlphaAsc),
+        dispatch(gotGrades({
+          grades: data.results.sort(sortAlphaAsc),
           cohort,
           track,
           assignmentType,
-          headingMapper(assignmentType || defaultAssignmentFilter)(data.results[0]),
-          data.previous,
-          data.next,
+          headings: headingMapper(assignmentType || defaultAssignmentFilter)(data.results[0]),
+          prev: data.previous,
+          next: data.next,
           courseId,
-        ));
+          totalUsersCount: data.total_users_count,
+          filteredUsersCount: data.filtered_users_count,
+        }));
         dispatch(finishedFetchingGrades());
       })
       .catch(() => {

@@ -466,6 +466,13 @@ export default class Gradebook extends React.Component {
                   onClose={() => this.props.closeBanner()}
                   open={this.props.showSuccess}
                 />
+                <div>
+                  Showing
+                  <span className="font-weight-bold"> {this.props.filteredUsersCount} </span>
+                  of
+                  <span className="font-weight-bold"> {this.props.totalUsersCount} </span>
+                  total learners
+                </div>
                 <div className="gbook">
                   <Table
                     columns={this.formatHeadings()}
@@ -627,6 +634,13 @@ export default class Gradebook extends React.Component {
                     Results appear in the table below.<br />
                     Grade processing may take a few seconds.
                   </p>
+                  <div>
+                    Showing
+                    <span className="font-weight-bold"> {this.props.filteredUsersCount} </span>
+                    of
+                    <span className="font-weight-bold"> {this.props.totalUsersCount} </span>
+                    total learners
+                  </div>
                   <Table
                     data={this.props.bulkManagementHistory.map(this.formatHistoryRow)}
                     hasFixedColumnWidths
@@ -690,6 +704,8 @@ Gradebook.defaultProps = {
   showBulkManagement: false,
   bulkManagementHistory: [],
   errorFetchingGradeOverrideHistory: false,
+  totalUsersCount: null,
+  filteredUsersCount: null,
 };
 
 Gradebook.propTypes = {
@@ -764,4 +780,6 @@ Gradebook.propTypes = {
       skipped: PropTypes.number.isRequired,
     }).isRequired,
   })),
+  totalUsersCount: PropTypes.number,
+  filteredUsersCount: PropTypes.number,
 };

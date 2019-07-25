@@ -35,6 +35,8 @@ const initialState = {
   nextPage: null,
   showSpinner: true,
   bulkManagement: {},
+  totalUsersCount: null,
+  filteredUsersCount: null,
 };
 
 const grades = (state = initialState, action) => {
@@ -53,6 +55,8 @@ const grades = (state = initialState, action) => {
         nextPage: action.next,
         showSpinner: false,
         courseId: action.courseId,
+        totalUsersCount: action.totalUsersCount,
+        filteredUsersCount: action.filteredUsersCount,
       };
     case GOT_GRADE_OVERRIDE_HISTORY:
       return {
