@@ -223,12 +223,17 @@ export default class Gradebook extends React.Component {
     window.location = this.props.gradeExportUrl;
   };
 
+  handleClickDownloadInterventions = () => {
+    window.location = this.props.interventionExportUrl;
+  };
+
   handleClickImportGrades = () => {
     const fileInput = this.fileInputRef.current;
     if (fileInput) {
       fileInput.click();
     }
   };
+
 
   handleFileInputChange = (event) => {
     const fileInput = event.target;
@@ -630,6 +635,13 @@ export default class Gradebook extends React.Component {
                     buttonType="primary"
                     onClick={this.handleClickImportGrades}
                   />
+                  <h4>Interventions Report</h4>
+                  <Button
+                    label="Download Interventions report"
+                    buttonType="primary"
+                    onClick={this.handleClickDownloadInterventions}
+                  />
+                  <br />
                   <p>
                     Results appear in the table below.<br />
                     Grade processing may take a few seconds.
@@ -764,6 +776,7 @@ Gradebook.propTypes = {
   closeBanner: PropTypes.func.isRequired,
   updateGrades: PropTypes.func.isRequired,
   gradeExportUrl: PropTypes.string.isRequired,
+  interventionExportUrl: PropTypes.string.isRequired,
   submitFileUploadFormData: PropTypes.func.isRequired,
   bulkImportError: PropTypes.string,
   uploadSuccess: PropTypes.bool,

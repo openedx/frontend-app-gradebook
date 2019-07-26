@@ -59,6 +59,8 @@ const mapStateToProps = (state, ownProps) => (
       cohort: state.grades.selectedCohort,
       track: state.grades.selectedTrack,
     }),
+    interventionExportUrl:
+      LmsApiService.getInterventionExportCsvUrl(ownProps.match.params.courseId),
     bulkImportError: state.grades.bulkManagement &&
       state.grades.bulkManagement.errorMessages ?
       `Errors while processing: ${state.grades.bulkManagement.errorMessages.join(', ')}` :

@@ -77,6 +77,11 @@ class LmsApiService {
     return downloadUrl;
   }
 
+  static getInterventionExportCsvUrl(courseId) {
+    const downloadUrl = `${LmsApiService.baseUrl}/api/bulk_grades/course/${courseId}/intervention`;
+    return downloadUrl;
+  }
+
   static getGradeImportCsvUrl = LmsApiService.getGradeExportCsvUrl;
 
   static uploadGradeCsv(courseId, formData) {
