@@ -35,8 +35,8 @@ const initialState = {
   nextPage: null,
   showSpinner: true,
   bulkManagement: {},
-  totalUsersCount: null,
-  filteredUsersCount: null,
+  totalUsersCount: 0,
+  filteredUsersCount: 0,
 };
 
 const grades = (state = initialState, action) => {
