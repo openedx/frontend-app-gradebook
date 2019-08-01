@@ -357,64 +357,41 @@ export default class Gradebook extends React.Component {
             <h1>Gradebook</h1>
             <h3> {this.props.courseId}</h3>
             {this.props.areGradesFrozen &&
-            <div className="alert alert-warning" role="alert" >
-              The grades for this course are now frozen. Editing of grades is no longer allowed.
-            </div>
+              <div className="alert alert-warning" role="alert" >
+                The grades for this course are now frozen. Editing of grades is no longer allowed.
+              </div>
             }
             {(this.props.canUserViewGradebook === false) &&
-            <div className="alert alert-warning" role="alert" >
-              You are not authorized to view the gradebook for this course.
-            </div>
+              <div className="alert alert-warning" role="alert" >
+                You are not authorized to view the gradebook for this course.
+              </div>
             }
             <Tabs labels={this.getActiveTabs()}>
               <div>
+                <h4>Step 1: Filter the Grade Report</h4>
                 <div className="d-flex justify-content-between" >
                   {this.props.showSpinner && <div className="spinner-overlay"><Icon className={['fa', 'fa-spinner', 'fa-spin', 'fa-5x', 'color-black']} /></div>}
-
                   <div>
-                    <div role="radiogroup" aria-labelledby="score-view-group-label">
-                      <span id="score-view-group-label">Score View:</span>
-                      <span>
-                        <label className="mr-2" htmlFor="score-view-percent">
-                          <input
-                            id="score-view-percent"
-                            className="ml-2 mr-1"
-                            type="radio"
-                            name="score-view"
-                            value="percent"
-                            defaultChecked
-                            onClick={() => this.props.toggleFormat('percent')}
-                          />
-                          Percent
-                        </label>
-                      </span>
-                      <span>
-                        <label htmlFor="score-view-absolute">
-                          <input
-                            id="score-view-absolute"
-                            type="radio"
-                            name="score-view"
-                            value="absolute"
-                            className="mr-1"
-                            onClick={() => this.props.toggleFormat('absolute')}
-                          />
-                          Absolute
-                        </label>
-                      </span>
-                    </div>
+                    <InputSelect
+                      label="Score View:"
+                      name="ScoreView"
+                      value="percent"
+                      options={[{ label: 'Percent', value: 'percent' }, { label: 'Absolute', value: 'absolute' }]}
+                      onChange={this.props.toggleFormat}
+                    />
                     {this.props.assignmentTypes.length > 0 &&
-                    <div className="student-filters">
-                      <span className="label">
-                        Assignment Types:
-                      </span>
-                      <InputSelect
-                        name="assignment-types"
-                        ariaLabel="Assignment Types"
-                        value={this.props.selectedAssignmentType}
-                        options={this.mapAssignmentTypeEntries(this.props.assignmentTypes)}
-                        onChange={this.updateAssignmentTypes}
-                      />
-                    </div>
+                      <div className="student-filters">
+                        <span className="label">
+                          Assignment Types:
+                        </span>
+                        <InputSelect
+                          name="assignment-types"
+                          ariaLabel="Assignment Types"
+                          value={this.props.selectedAssignmentType}
+                          options={this.mapAssignmentTypeEntries(this.props.assignmentTypes)}
+                          onChange={this.updateAssignmentTypes}
+                        />
+                      </div>
                     }
                     <div className="student-filters">
                       <span className="label">
@@ -471,12 +448,32 @@ export default class Gradebook extends React.Component {
                   onClose={() => this.props.closeBanner()}
                   open={this.props.showSuccess}
                 />
-                <div>
-                  Showing
-                  <span className="font-weight-bold"> {this.props.filteredUsersCount} </span>
-                  of
-                  <span className="font-weight-bold"> {this.props.totalUsersCount} </span>
-                  total learners
+                <h4>Step 2: View or Modify Individual Grades</h4>
+                <div className="d-flex justify-content-between align-items-center mb-2">
+                  {this.props.totalUsersCount ?
+                    <div>
+                      Showing
+                      <span className="font-weight-bold"> {this.props.filteredUsersCount} </span>
+                      of
+                      <span className="font-weight-bold"> {this.props.totalUsersCount} </span>
+                      total learners
+                    </div> :
+                    null
+                  }
+                  {this.props.showDownloadButtons && <StatefulButton
+                    buttonType="primary"
+                    onClick={this.handleClickExportGrades}
+                    state={this.props.showSpinner ? 'pending' : 'default'}
+                    labels={{
+                      default: 'Download Gradebook',
+                      pending: 'Download Gradebook',
+                    }}
+                    icons={{
+                      default: <FontAwesomeIcon icon={faDownload} />,
+                      pending: <FontAwesomeIcon className="fa-spin" icon={faSpinner} />,
+                    }}
+                    disabledStates={['pending']}
+                  />}
                 </div>
                 <div className="gbook">
                   <Table
@@ -555,43 +552,9 @@ export default class Gradebook extends React.Component {
               </div>
               {this.props.showBulkManagement && (
                 <div>
-                  <h4>Step 1: Filter the Grade Report</h4>
-                  {this.props.assignmentTypes.length > 0 &&
-                  <div className="student-filters">
-                    <span className="label">
-                      Assignment Types:
-                    </span>
-                    <InputSelect
-                      name="assignment-types"
-                      ariaLabel="Assignment Types"
-                      value={this.props.selectedAssignmentType}
-                      options={this.mapAssignmentTypeEntries(this.props.assignmentTypes)}
-                      onChange={this.updateAssignmentTypes}
-                    />
-                  </div>
-                  }
-                  <div className="student-filters">
-                    <span className="label">
-                      Student Groups:
-                    </span>
-                    <InputSelect
-                      name="Tracks"
-                      ariaLabel="Tracks"
-                      disabled={this.props.tracks.length === 0}
-                      value={this.mapSelectedTrackEntry(this.props.selectedTrack)}
-                      options={this.mapTracksEntries(this.props.tracks)}
-                      onChange={this.updateTracks}
-                    />
-                    <InputSelect
-                      name="Cohorts"
-                      ariaLabel="Cohorts"
-                      disabled={this.props.cohorts.length === 0}
-                      value={this.mapSelectedCohortEntry(this.props.selectedCohort)}
-                      options={this.mapCohortsEntries(this.props.cohorts)}
-                      onChange={this.updateCohorts}
-                    />
-                  </div>
-                  <h4>Step 2: Download the gradebook to edit grades locally</h4>
+                  <h4>Use this feature by downloading a CSV for bulk management,
+                    overriding grades locally, and coming back here to upload.
+                  </h4>
                   <form ref={this.fileFormRef} action={this.props.gradeExportUrl} method="post">
                     <StatusAlert
                       alertType="danger"
@@ -605,7 +568,6 @@ export default class Gradebook extends React.Component {
                       open={this.props.uploadSuccess}
                       dismissible={false}
                     />
-
                     <input
                       className="d-none"
                       type="file"
@@ -615,21 +577,6 @@ export default class Gradebook extends React.Component {
                       ref={this.fileInputRef}
                     />
                   </form>
-                  <StatefulButton
-                    buttonType="primary"
-                    onClick={this.handleClickExportGrades}
-                    state={this.props.showSpinner ? 'pending' : 'default'}
-                    labels={{
-                      default: 'Download Gradebook',
-                      pending: 'Download Gradebook',
-                    }}
-                    icons={{
-                      default: <FontAwesomeIcon icon={faDownload} />,
-                      pending: <FontAwesomeIcon className="fa-spin" icon={faSpinner} />,
-                    }}
-                    disabledStates={['pending']}
-                  />
-                  <h4>Step 3: Upload CSV to Process Grades in Bulk</h4>
                   <Button
                     label="Import Grades"
                     buttonType="primary"
@@ -718,6 +665,7 @@ Gradebook.defaultProps = {
   errorFetchingGradeOverrideHistory: false,
   totalUsersCount: null,
   filteredUsersCount: null,
+  showDownloadButtons: false,
 };
 
 Gradebook.propTypes = {
@@ -795,4 +743,5 @@ Gradebook.propTypes = {
   })),
   totalUsersCount: PropTypes.number,
   filteredUsersCount: PropTypes.number,
+  showDownloadButtons: PropTypes.bool,
 };
