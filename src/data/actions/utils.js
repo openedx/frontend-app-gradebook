@@ -26,29 +26,5 @@ const sortAlphaAsc = (gradeRowA, gradeRowB) => {
   return 0;
 };
 
-const headingMapper = (filterKey) => {
-  const filters = {
-    all: section => section.label,
-    some: section => section.label && section.category === filterKey,
-  };
-
-  const filter = filterKey === 'All' ? 'all' : 'some';
-
-  return (entry) => {
-    if (entry) {
-      const results = ['Username', 'Email'];
-
-      const assignmentHeadings = entry.section_breakdown
-        .filter(filters[filter])
-        .map(s => s.label);
-
-      const totals = ['Total'];
-
-      return results.concat(assignmentHeadings).concat(totals);
-    }
-    return [];
-  };
-};
-
-export { headingMapper, sortAlphaAsc, formatDateForDisplay };
+export { sortAlphaAsc, formatDateForDisplay };
 

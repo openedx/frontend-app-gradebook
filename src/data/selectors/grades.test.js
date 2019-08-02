@@ -1,4 +1,4 @@
-import getBulkManagementHistory from './grades';
+import { getBulkManagementHistory } from './grades';
 
 const genericHistoryRow = {
   id: 5,

@@ -4,7 +4,7 @@ import {
   ERROR_FETCHING_GRADES,
   GOT_GRADES,
   TOGGLE_GRADE_FORMAT,
-  FILTER_COLUMNS,
+  FILTER_BY_ASSIGNMENT_TYPE,
   OPEN_BANNER,
 } from '../constants/actionTypes/grades';
 
@@ -94,8 +94,6 @@ describe('grades reducer', () => {
       headings: headingsData,
       errorFetching: false,
       finishedFetching: true,
-      selectedTrack: expectedTrack,
-      selectedCohort: expectedCohortId,
       prevPage: expectedPrev,
       nextPage: expectedNext,
       showSpinner: false,
@@ -137,7 +135,7 @@ describe('grades reducer', () => {
       headings: expectedHeadings,
     };
     expect(grades(undefined, {
-      type: FILTER_COLUMNS,
+      type: FILTER_BY_ASSIGNMENT_TYPE,
       headings: expectedHeadings,
     })).toEqual(expected);
   });

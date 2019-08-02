@@ -70,11 +70,12 @@ class LmsApiService {
   }
 
   static getGradeExportCsvUrl(courseId, options = {}) {
-    const trackQueryParam = options.track ? [`track=${options.track}`] : [];
-    const cohortQueryParam = options.cohort ? [`cohort=${options.cohort}`] : [];
-    const queryParams = [...trackQueryParam, ...cohortQueryParam].join('&');
-    const downloadUrl = `${LmsApiService.baseUrl}/api/bulk_grades/course/${courseId}/?${queryParams}`;
-    return downloadUrl;
+    const queryParams = ['track', 'cohort', 'assignment', 'assignmentType']
+      .filter(opt => options[opt] &&
+                   options[opt] !== 'All')
+      .map(opt => `${opt}=${encodeURIComponent(options[opt])}`)
+      .join('&');
+    return `${LmsApiService.baseUrl}/api/bulk_grades/course/${courseId}/?${queryParams}`;
   }
 
   static getInterventionExportCsvUrl(courseId) {
