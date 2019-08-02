@@ -7,7 +7,7 @@ import {
   GRADE_UPDATE_SUCCESS,
   GRADE_UPDATE_FAILURE,
   TOGGLE_GRADE_FORMAT,
-  FILTER_COLUMNS,
+  FILTER_BY_ASSIGNMENT_TYPE,
   OPEN_BANNER,
   CLOSE_BANNER,
   START_UPLOAD,
@@ -19,7 +19,7 @@ import {
   ERROR_FETCHING_GRADE_OVERRIDE_HISTORY,
 } from '../constants/actionTypes/grades';
 import LmsApiService from '../services/LmsApiService';
-import { headingMapper, sortAlphaAsc, formatDateForDisplay } from './utils';
+import { sortAlphaAsc, formatDateForDisplay } from './utils';
 import apiClient from '../apiClient';
 
 const defaultAssignmentFilter = 'All';
@@ -85,10 +85,10 @@ const gradeUpdateFailure = (courseId, error) => ({
 
 const toggleGradeFormat = formatType => ({ type: TOGGLE_GRADE_FORMAT, formatType });
 
-const filterColumns = (filterType, exampleUser) => (
+const filterAssignmentType = filterType => (
   dispatch => dispatch({
-    type: FILTER_COLUMNS,
-    headings: headingMapper(filterType)(exampleUser),
+    type: FILTER_BY_ASSIGNMENT_TYPE,
+    filterType,
   })
 );
 
@@ -112,7 +112,6 @@ const fetchGrades = (
           cohort,
           track,
           assignmentType,
-          headings: headingMapper(assignmentType || defaultAssignmentFilter)(data.results[0]),
           prev: data.previous,
           next: data.next,
           courseId,
@@ -185,7 +184,6 @@ const fetchPrevNextGrades = (endpoint, courseId, cohort, track, assignmentType) 
           cohort,
           track,
           assignmentType,
-          headings: headingMapper(assignmentType || defaultAssignmentFilter)(data.results[0]),
           prev: data.previous,
           next: data.next,
           courseId,
@@ -259,7 +257,7 @@ export {
   gradeUpdateFailure,
   updateGrades,
   toggleGradeFormat,
-  filterColumns,
+  filterAssignmentType,
   closeBanner,
   submitFileUploadFormData,
   fetchBulkUpgradeHistory,

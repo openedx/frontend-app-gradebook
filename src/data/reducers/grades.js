@@ -3,7 +3,7 @@ import {
   ERROR_FETCHING_GRADES,
   GOT_GRADES,
   TOGGLE_GRADE_FORMAT,
-  FILTER_COLUMNS,
+  FILTER_BY_ASSIGNMENT_TYPE,
   OPEN_BANNER,
   CLOSE_BANNER,
   START_UPLOAD,
@@ -48,9 +48,6 @@ const grades = (state = initialState, action) => {
         headings: action.headings,
         finishedFetching: true,
         errorFetching: false,
-        selectedTrack: action.track,
-        selectedCohort: action.cohort,
-        selectedAssignmentType: action.assignmentType,
         prevPage: action.prev,
         nextPage: action.next,
         showSpinner: false,
@@ -98,9 +95,10 @@ const grades = (state = initialState, action) => {
         ...state,
         gradeFormat: action.formatType,
       };
-    case FILTER_COLUMNS:
+    case FILTER_BY_ASSIGNMENT_TYPE:
       return {
         ...state,
+        selectedAssignmentType: action.filterType,
         headings: action.headings,
       };
     case OPEN_BANNER:

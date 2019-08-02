@@ -41,7 +41,8 @@ export default class Gradebook extends React.Component {
 
   componentDidMount() {
     const urlQuery = queryString.parse(this.props.location.search);
-    this.props.getRoles(this.props.courseId, urlQuery);
+    this.props.initializeFilters(urlQuery);
+    this.props.getRoles(this.props.courseId);
     this.overrideReasonInput.focus();
   }
 
@@ -87,6 +88,17 @@ export default class Gradebook extends React.Component {
     return ['Grades'];
   };
 
+  getAssignmentFilterOptions = () => [
+    { label: 'All', value: '' },
+    ...this.props.assignmentFilterOptions.map((assignment) => {
+      const { label, subsectionLabel } = assignment;
+      return {
+        label: `${label}: ${subsectionLabel}`,
+        value: label,
+      };
+    }),
+  ];
+
   handleAdjustedGradeClick = () => {
     this.props.updateGrades(
       this.props.courseId, [
@@ -113,9 +125,23 @@ export default class Gradebook extends React.Component {
     });
   }
 
+  handleAssignmentFilterChange = (assignment) => {
+    const selectedFilterOption = this.props.assignmentFilterOptions.find(assig =>
+      assig.label === assignment);
+    const { type, id } = selectedFilterOption || {};
+    const typedValue = { label: assignment, type, id };
+    this.props.updateAssignmentFilter(typedValue);
+    const updatedQueryStrings = this.updateQueryParams('assignment', assignment);
+    this.props.history.push(updatedQueryStrings);
+  }
+
   updateQueryParams = (queryKey, queryValue) => {
     const parsed = queryString.parse(this.props.location.search);
-    parsed[queryKey] = queryValue;
+    if (queryValue) {
+      parsed[queryKey] = queryValue;
+    } else {
+      delete parsed[queryKey];
+    }
     return `?${queryString.stringify(parsed)}`;
   };
 
@@ -124,7 +150,7 @@ export default class Gradebook extends React.Component {
       id: entry,
       label: entry,
     }));
-    mapped.unshift({ id: 0, label: 'All' });
+    mapped.unshift({ id: 0, label: 'All', value: '' });
     return mapped;
   };
 
@@ -182,9 +208,9 @@ export default class Gradebook extends React.Component {
     return { resultsSummary, filename, ...rest };
   };
 
-  updateAssignmentTypes = (event) => {
-    this.props.filterColumns(event, this.props.grades[0]);
-    const updatedQueryStrings = this.updateQueryParams('assignmentType', event);
+  updateAssignmentTypes = (assignmentType) => {
+    this.props.filterAssignmentType(assignmentType);
+    const updatedQueryStrings = this.updateQueryParams('assignmentType', assignmentType);
     this.props.history.push(updatedQueryStrings);
   }
 
@@ -216,7 +242,8 @@ export default class Gradebook extends React.Component {
       this.props.selectedTrack,
       this.props.selectedAssignmentType,
     );
-    this.updateQueryParams('cohort', selectedCohortId);
+    const updatedQueryStrings = this.updateQueryParams('cohort', selectedCohortId);
+    this.props.history.push(updatedQueryStrings);
   };
 
   handleClickExportGrades = () => {
@@ -379,20 +406,32 @@ export default class Gradebook extends React.Component {
                       options={[{ label: 'Percent', value: 'percent' }, { label: 'Absolute', value: 'absolute' }]}
                       onChange={this.props.toggleFormat}
                     />
-                    {this.props.assignmentTypes.length > 0 &&
-                      <div className="student-filters">
-                        <span className="label">
-                          Assignment Types:
-                        </span>
-                        <InputSelect
-                          name="assignment-types"
-                          ariaLabel="Assignment Types"
-                          value={this.props.selectedAssignmentType}
-                          options={this.mapAssignmentTypeEntries(this.props.assignmentTypes)}
-                          onChange={this.updateAssignmentTypes}
-                        />
-                      </div>
-                    }
+                    <div className="student-filters">
+                      <span className="label">
+                        Assignment Types:
+                      </span>
+                      <InputSelect
+                        name="assignment-types"
+                        ariaLabel="Assignment Types"
+                        value={this.props.selectedAssignmentType}
+                        options={this.mapAssignmentTypeEntries(this.props.assignmentTypes)}
+                        onChange={this.updateAssignmentTypes}
+                        disabled={this.props.assignmentFilterOptions.length === 0}
+                      />
+                    </div>
+                    <div className="student-filters">
+                      <span className="label">
+                        Assignment:
+                      </span>
+                      <InputSelect
+                        name="assignment"
+                        ariaLabel="Assignment"
+                        value={this.props.selectedAssignment}
+                        options={this.getAssignmentFilterOptions()}
+                        onChange={this.handleAssignmentFilterChange}
+                        disabled={this.props.assignmentFilterOptions.length === 0}
+                      />
+                    </div>
                     <div className="student-filters">
                       <span className="label">
                         Student Groups:
@@ -643,6 +682,7 @@ export default class Gradebook extends React.Component {
 Gradebook.defaultProps = {
   areGradesFrozen: false,
   assignmentTypes: [],
+  assignmentFilterOptions: [],
   canUserViewGradebook: false,
   cohorts: [],
   grades: [],
@@ -655,7 +695,8 @@ Gradebook.defaultProps = {
   courseId: '',
   selectedCohort: null,
   selectedTrack: null,
-  selectedAssignmentType: 'All',
+  selectedAssignmentType: '',
+  selectedAssignment: '',
   showSpinner: false,
   tracks: [],
   bulkImportError: '',
@@ -671,9 +712,17 @@ Gradebook.defaultProps = {
 Gradebook.propTypes = {
   areGradesFrozen: PropTypes.bool,
   assignmentTypes: PropTypes.arrayOf(PropTypes.string),
+  assignmentFilterOptions: PropTypes.arrayOf(PropTypes.shape({
+    label: PropTypes.string,
+    subsectionLabel: PropTypes.string,
+  })),
   canUserViewGradebook: PropTypes.bool,
-  cohorts: PropTypes.arrayOf(PropTypes.string),
-  filterColumns: PropTypes.func.isRequired,
+  cohorts: PropTypes.arrayOf(PropTypes.shape({
+    name: PropTypes.string,
+    id: PropTypes.number,
+  })),
+  filterAssignmentType: PropTypes.func.isRequired,
+  updateAssignmentFilter: PropTypes.func.isRequired,
   format: PropTypes.string.isRequired,
   getRoles: PropTypes.func.isRequired,
   getUserGrades: PropTypes.func.isRequired,
@@ -711,9 +760,8 @@ Gradebook.propTypes = {
   courseId: PropTypes.string,
   searchForUser: PropTypes.func.isRequired,
   selectedAssignmentType: PropTypes.string,
-  selectedCohort: PropTypes.shape({
-    name: PropTypes.string,
-  }),
+  selectedAssignment: PropTypes.string,
+  selectedCohort: PropTypes.number,
   selectedTrack: PropTypes.string,
   showSpinner: PropTypes.bool,
   showSuccess: PropTypes.bool.isRequired,
@@ -744,4 +792,5 @@ Gradebook.propTypes = {
   totalUsersCount: PropTypes.number,
   filteredUsersCount: PropTypes.number,
   showDownloadButtons: PropTypes.bool,
+  initializeFilters: PropTypes.func.isRequired,
 };

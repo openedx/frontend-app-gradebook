@@ -8,14 +8,17 @@ import {
   fetchPrevNextGrades,
   updateGrades,
   toggleGradeFormat,
-  filterColumns,
+  filterAssignmentType,
   closeBanner,
   submitFileUploadFormData,
 } from '../../data/actions/grades';
 import { fetchCohorts } from '../../data/actions/cohorts';
 import { fetchTracks } from '../../data/actions/tracks';
+import { initializeFilters, updateAssignmentFilter } from '../../data/actions/filters';
 import stateHasMastersTrack from '../../data/selectors/tracks';
-import getBulkManagementHistory from '../../data/selectors/grades';
+import { getBulkManagementHistory, getHeadings } from '../../data/selectors/grades';
+import { selectableAssignmentLabels } from '../../data/selectors/filters';
+import { getCohortNameById } from '../../data/selectors/cohorts';
 import { fetchAssignmentTypes } from '../../data/actions/assignmentTypes';
 import { getRoles } from '../../data/actions/roles';
 import LmsApiService from '../../data/services/LmsApiService';
@@ -40,24 +43,28 @@ const mapStateToProps = (state, ownProps) => (
     gradeOverrideCurrentPossibleGradedOverride:
       state.grades.gradeOverrideCurrentPossibleGradedOverride,
     gradeOriginalEarnedGraded: state.grades.gradeOriginalEarnedGraded,
-    headings: state.grades.headings,
+    headings: getHeadings(state),
     tracks: state.tracks.results,
     cohorts: state.cohorts.results,
-    selectedTrack: state.grades.selectedTrack,
-    selectedCohort: state.grades.selectedCohort,
-    selectedAssignmentType: state.grades.selectedAssignmentType,
+    selectedTrack: state.filters.track,
+    selectedCohort: state.filters.cohort,
+    selectedAssignmentType: state.filters.assignmentType,
+    selectedAssignment: (state.filters.assignment || {}).label,
     format: state.grades.gradeFormat,
     showSuccess: state.grades.showSuccess,
     errorFetchingGradeOverrideHistory: state.grades.errorFetchingOverrideHistory,
     prevPage: state.grades.prevPage,
     nextPage: state.grades.nextPage,
     assignmentTypes: state.assignmentTypes.results,
+    assignmentFilterOptions: selectableAssignmentLabels(state),
     areGradesFrozen: state.assignmentTypes.areGradesFrozen,
     showSpinner: shouldShowSpinner(state),
     canUserViewGradebook: state.roles.canUserViewGradebook,
     gradeExportUrl: LmsApiService.getGradeExportCsvUrl(ownProps.match.params.courseId, {
-      cohort: state.grades.selectedCohort,
-      track: state.grades.selectedTrack,
+      cohort: getCohortNameById(state, state.filters.cohort),
+      track: state.filters.track,
+      assignment: (state.filters.assignment || {}).id,
+      assignmentType: state.filters.assignmentType,
     }),
     interventionExportUrl:
       LmsApiService.getInterventionExportCsvUrl(ownProps.match.params.courseId),
@@ -85,10 +92,12 @@ const mapDispatchToProps = {
   getAssignmentTypes: fetchAssignmentTypes,
   updateGrades,
   toggleFormat: toggleGradeFormat,
-  filterColumns,
+  filterAssignmentType,
   closeBanner,
   getRoles,
   submitFileUploadFormData,
+  initializeFilters,
+  updateAssignmentFilter,
 };
 
 const GradebookPage = connect(
