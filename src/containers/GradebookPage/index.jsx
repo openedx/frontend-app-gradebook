@@ -2,21 +2,22 @@ import { connect } from 'react-redux';
 
 import Gradebook from '../../components/Gradebook';
 import {
-  fetchGrades,
+  closeBanner,
   fetchGradeOverrideHistory,
+  fetchGrades,
   fetchMatchingUserGrades,
   fetchPrevNextGrades,
-  updateGrades,
-  toggleGradeFormat,
   filterAssignmentType,
-  closeBanner,
   submitFileUploadFormData,
+  toggleGradeFormat,
+  updateGrades,
+  updateGradesIfAssigGradeFiltersSet,
 } from '../../data/actions/grades';
 import { fetchCohorts } from '../../data/actions/cohorts';
 import { fetchTracks } from '../../data/actions/tracks';
-import { initializeFilters, updateAssignmentFilter } from '../../data/actions/filters';
+import { initializeFilters, updateAssignmentFilter, updateAssignmentLimits } from '../../data/actions/filters';
 import stateHasMastersTrack from '../../data/selectors/tracks';
-import { getBulkManagementHistory, getHeadings } from '../../data/selectors/grades';
+import { getBulkManagementHistory, getHeadings, formatMinAssigGrade, formatMaxAssigGrade } from '../../data/selectors/grades';
 import { selectableAssignmentLabels } from '../../data/selectors/filters';
 import { getCohortNameById } from '../../data/selectors/cohorts';
 import { fetchAssignmentTypes } from '../../data/actions/assignmentTypes';
@@ -50,6 +51,8 @@ const mapStateToProps = (state, ownProps) => (
     selectedCohort: state.filters.cohort,
     selectedAssignmentType: state.filters.assignmentType,
     selectedAssignment: (state.filters.assignment || {}).label,
+    selectedMinAssigGrade: state.filters.assignmentGradeMin || 0,
+    selectedMaxAssigGrade: state.filters.assignmentGradeMax || 100,
     format: state.grades.gradeFormat,
     showSuccess: state.grades.showSuccess,
     errorFetchingGradeOverrideHistory: state.grades.errorFetchingOverrideHistory,
@@ -65,6 +68,16 @@ const mapStateToProps = (state, ownProps) => (
       track: state.filters.track,
       assignment: (state.filters.assignment || {}).id,
       assignmentType: state.filters.assignmentType,
+      assignmentGradeMin: formatMinAssigGrade(
+        state,
+        (state.filters.assignment || {}).id,
+        state.filters.assignmentGradeMin,
+      ),
+      assignmentGradeMax: formatMaxAssigGrade(
+        state,
+        (state.filters.assignment || {}).id,
+        state.filters.assignmentGradeMax,
+      ),
     }),
     interventionExportUrl:
       LmsApiService.getInterventionExportCsvUrl(ownProps.match.params.courseId),
@@ -98,6 +111,8 @@ const mapDispatchToProps = {
   submitFileUploadFormData,
   initializeFilters,
   updateAssignmentFilter,
+  updateAssignmentLimits,
+  updateGradesIfAssigGradeFiltersSet,
 };
 
 const GradebookPage = connect(

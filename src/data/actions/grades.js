@@ -20,6 +20,8 @@ import {
 } from '../constants/actionTypes/grades';
 import LmsApiService from '../services/LmsApiService';
 import { sortAlphaAsc, formatDateForDisplay } from './utils';
+import { formatMaxAssigGrade, formatMinAssigGrade } from '../selectors/grades';
+import { getFilters } from '../selectors/filters';
 import apiClient from '../apiClient';
 
 const defaultAssignmentFilter = 'All';
@@ -102,9 +104,27 @@ const fetchGrades = (
   assignmentType,
   options = {},
 ) => (
-  (dispatch) => {
+  (dispatch, getState) => {
     dispatch(startedFetchingGrades());
-    return LmsApiService.fetchGradebookData(courseId, options.searchText || null, cohort, track)
+    const {
+      assignment,
+      assignmentGradeMax: assigMax,
+      assignmentGradeMin: assigMin,
+    } = getFilters(getState());
+    const { id: assignmentId } = assignment || {};
+    const assignmentGradeMax = formatMaxAssigGrade(getState(), assignmentId, assigMax);
+    const assignmentGradeMin = formatMinAssigGrade(getState(), assignmentId, assigMin);
+    return LmsApiService.fetchGradebookData(
+      courseId,
+      options.searchText || null,
+      cohort,
+      track,
+      {
+        assignment: assignmentId,
+        assignmentGradeMax,
+        assignmentGradeMin,
+      },
+    )
       .then(response => response.data)
       .then((data) => {
         dispatch(gotGrades({
@@ -244,6 +264,24 @@ const fetchBulkUpgradeHistory = courseId => (
     }).catch(() => dispatch(bulkHistoryError()))
 );
 
+const updateGradesIfAssigGradeFiltersSet = (
+  courseId,
+  cohort,
+  track,
+  assignmentType,
+) => (dispatch, getState) => {
+  const { filters } = getState();
+  const hasAssigGradeFiltersSet = filters.assignmentGradeMax || filters.assignmentGradeMin;
+  if (hasAssigGradeFiltersSet) {
+    dispatch(fetchGrades(
+      courseId,
+      cohort,
+      track,
+      assignmentType,
+    ));
+  }
+};
+
 export {
   startedFetchingGrades,
   finishedFetchingGrades,
@@ -262,4 +300,5 @@ export {
   submitFileUploadFormData,
   fetchBulkUpgradeHistory,
   fetchGradeOverrideHistory,
+  updateGradesIfAssigGradeFiltersSet,
 };
