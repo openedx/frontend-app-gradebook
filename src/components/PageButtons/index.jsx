@@ -13,7 +13,6 @@ export default function PageButtons({
       style={{ paddingBottom: '20px' }}
     >
       <Button
-        label="Previous Page"
         style={{ margin: '20px' }}
         buttonType="outline-primary"
         disabled={!prevPage}
@@ -25,9 +24,10 @@ export default function PageButtons({
             selectedTrack,
             selectedAssignmentType,
           )}
-      />
+      >
+        Previous Page
+      </Button>
       <Button
-        label="Next Page"
         style={{ margin: '20px' }}
         buttonType="outline-primary"
         disabled={!nextPage}
@@ -39,7 +39,9 @@ export default function PageButtons({
             selectedTrack,
             selectedAssignmentType,
           )}
-      />
+      >
+        Next Page
+      </Button>
     </div>
   );
 }

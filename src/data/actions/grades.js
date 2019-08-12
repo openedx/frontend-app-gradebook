@@ -20,7 +20,7 @@ import {
 } from '../constants/actionTypes/grades';
 import LmsApiService from '../services/LmsApiService';
 import { sortAlphaAsc, formatDateForDisplay } from './utils';
-import { formatMaxAssignmentGrade, formatMinAssignmentGrade } from '../selectors/grades';
+import { formatMaxAssignmentGrade, formatMinAssignmentGrade, formatMaxCourseGrade, formatMinCourseGrade } from '../selectors/grades';
 import { getFilters } from '../selectors/filters';
 import apiClient from '../apiClient';
 
@@ -110,10 +110,14 @@ const fetchGrades = (
       assignment,
       assignmentGradeMax: assignmentMax,
       assignmentGradeMin: assignmentMin,
+      courseGradeMin,
+      courseGradeMax,
     } = getFilters(getState());
     const { id: assignmentId } = assignment || {};
-    const assignmentGradeMax = formatMaxAssignmentGrade(getState(), assignmentId, assignmentMax);
-    const assignmentGradeMin = formatMinAssignmentGrade(getState(), assignmentId, assignmentMin);
+    const assignmentGradeMax = formatMaxAssignmentGrade(assignmentMax, { assignmentId });
+    const assignmentGradeMin = formatMinAssignmentGrade(assignmentMin, { assignmentId });
+    const courseGradeMinFormatted = formatMinCourseGrade(courseGradeMin);
+    const courseGradeMaxFormatted = formatMaxCourseGrade(courseGradeMax);
     return LmsApiService.fetchGradebookData(
       courseId,
       options.searchText || null,
@@ -123,7 +127,10 @@ const fetchGrades = (
         assignment: assignmentId,
         assignmentGradeMax,
         assignmentGradeMin,
+        courseGradeMin: courseGradeMinFormatted,
+        courseGradeMax: courseGradeMaxFormatted,
       },
+
     )
       .then(response => response.data)
       .then((data) => {

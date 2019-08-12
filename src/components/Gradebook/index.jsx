@@ -30,13 +30,17 @@ export default class Gradebook extends React.Component {
     super(props);
     this.state = {
       filterValue: '',
+      courseGradeMin: '0',
+      courseGradeMax: '100',
       modalOpen: false,
       adjustedGradeValue: 0,
       updateModuleId: null,
       updateUserId: null,
       reasonForChange: '',
-      assignmentGradeMin: '',
-      assignmentGradeMax: '',
+      assignmentGradeMin: '0',
+      assignmentGradeMax: '100',
+      isMinCourseGradeFilterValid: true,
+      isMaxCourseGradeFilterValid: true,
     };
     this.fileFormRef = React.createRef();
     this.fileInputRef = React.createRef();
@@ -48,8 +52,15 @@ export default class Gradebook extends React.Component {
     this.props.initializeFilters(urlQuery);
     this.props.getRoles(this.props.courseId);
     this.overrideReasonInput.focus();
-    const { assignmentGradeMin, assignmentGradeMax } = urlQuery;
-    this.setState({ assignmentGradeMin, assignmentGradeMax });
+
+    const newStateFields = {};
+    ['assignmentGradeMin', 'assignmentGradeMax', 'courseGradeMin', 'courseGradeMax'].forEach((attr) => {
+      if (urlQuery[attr]) {
+        newStateFields[attr] = urlQuery[attr];
+      }
+    });
+
+    this.setState(newStateFields);
   }
 
   onChange(e) {
@@ -104,6 +115,18 @@ export default class Gradebook extends React.Component {
       };
     }),
   ];
+
+  getCourseGradeFilterAlertDialog = () => {
+    let dialog = '';
+
+    if (!this.state.isMinCourseGradeFilterValid) {
+      dialog += 'Minimum course grade value must be between 0 and 100. ';
+    }
+    if (!this.state.isMaxCourseGradeFilterValid) {
+      dialog += 'Maximum course grade value must be between 0 and 100. ';
+    }
+    return dialog;
+  };
 
   handleAdjustedGradeClick = () => {
     this.props.updateGrades(
@@ -271,7 +294,6 @@ export default class Gradebook extends React.Component {
     }
   };
 
-
   handleFileInputChange = (event) => {
     const fileInput = event.target;
     const file = fileInput.files[0];
@@ -401,6 +423,54 @@ export default class Gradebook extends React.Component {
     return headings;
   }
 
+  handleCourseGradeFilterChange = (type, value) => {
+    const filterValue = value;
+
+    if (type === 'min') {
+      this.setState({
+        courseGradeMin: filterValue,
+      });
+    } else {
+      this.setState({
+        courseGradeMax: filterValue,
+      });
+    }
+  }
+
+  handleCourseGradeFilterApplyButtonClick = () => {
+    const { courseGradeMin, courseGradeMax } = this.state;
+    const isMinValid = this.isGradeFilterValueInRange(courseGradeMin);
+    const isMaxValid = this.isGradeFilterValueInRange(courseGradeMax);
+
+    this.setState({
+      isMinCourseGradeFilterValid: isMinValid,
+      isMaxCourseGradeFilterValid: isMaxValid,
+    });
+
+    if (isMinValid && isMaxValid) {
+      this.props.updateCourseGradeFilter(
+        courseGradeMin,
+        courseGradeMax,
+      );
+      this.props.getUserGrades(
+        this.props.courseId,
+        this.props.selectedCohort,
+        this.props.selectedTrack,
+        this.props.selectedAssignmentType,
+        {
+          courseGradeMin,
+          courseGradeMax,
+        },
+      );
+      this.updateQueryParams({ courseGradeMin, courseGradeMax });
+    }
+  }
+
+  isGradeFilterValueInRange = (value) => {
+    const valueAsInt = parseInt(value, 10);
+    return valueAsInt >= 0 && valueAsInt <= 100;
+  };
+
   render() {
     return (
       <div className="d-flex justify-content-center">
@@ -428,7 +498,7 @@ export default class Gradebook extends React.Component {
               <div>
                 <h4>Step 1: Filter the Grade Report</h4>
                 <div className="d-flex justify-content-between" >
-                  {this.props.showSpinner && <div className="spinner-overlay"><Icon className={['fa', 'fa-spinner', 'fa-spin', 'fa-5x', 'color-black']} /></div>}
+                  {this.props.showSpinner && <div className="spinner-overlay"><Icon className="fa fa-spinner fa-spin fa-5x color-black" /></div>}
                   <div>
                     <InputSelect
                       label="Score View:"
@@ -445,7 +515,7 @@ export default class Gradebook extends React.Component {
                           </span>
                           <InputSelect
                             name="assignment-types"
-                            ariaLabel="Assignment Types"
+                            aria-label="Assignment Types"
                             value={this.props.selectedAssignmentType}
                             options={this.mapAssignmentTypeEntries(this.props.assignmentTypes)}
                             onChange={this.updateAssignmentTypes}
@@ -458,7 +528,7 @@ export default class Gradebook extends React.Component {
                           </span>
                           <InputSelect
                             name="assignment"
-                            ariaLabel="Assignment"
+                            aria-label="Assignment"
                             value={this.props.selectedAssignment}
                             options={this.getAssignmentFilterOptions()}
                             onChange={this.handleAssignmentFilterChange}
@@ -466,7 +536,7 @@ export default class Gradebook extends React.Component {
                           />
                         </div>
                         <p>Grade Range (0% - 100%)</p>
-                        <form className="d-flex justify-content-between" onSubmit={this.handleSubmitAssignmentGrade}>
+                        <form className="d-flex justify-content-between align-items-center" onSubmit={this.handleSubmitAssignmentGrade}>
                           <InputText
                             label="Min Grade"
                             name="assignmentGradeMin"
@@ -478,6 +548,7 @@ export default class Gradebook extends React.Component {
                             disabled={!this.props.selectedAssignment}
                             onChange={this.handleMinAssigGradeChange}
                           />
+                          <span className="input-percent-label">%</span>
                           <InputText
                             label="Max Grade"
                             name="assignmentGradeMax"
@@ -489,14 +560,16 @@ export default class Gradebook extends React.Component {
                             disabled={!this.props.selectedAssignment}
                             onChange={this.handleMaxAssigGradeChange}
                           />
+                          <span className="input-percent-label">%</span>
                           <div className="d-flex align-items-center">
                             <Button
                               type="submit"
                               className="btn-outline-secondary"
-                              label="Apply"
                               name="assignmentGradeMinMax"
                               disabled={!this.props.selectedAssignment}
-                            />
+                            >
+                              Apply
+                            </Button>
                           </div>
                         </form>
                       </div>
@@ -507,7 +580,7 @@ export default class Gradebook extends React.Component {
                       </span>
                       <InputSelect
                         name="Tracks"
-                        ariaLabel="Tracks"
+                        aria-label="Tracks"
                         disabled={this.props.tracks.length === 0}
                         value={this.mapSelectedTrackEntry(this.props.selectedTrack)}
                         options={this.mapTracksEntries(this.props.tracks)}
@@ -515,12 +588,46 @@ export default class Gradebook extends React.Component {
                       />
                       <InputSelect
                         name="Cohorts"
-                        ariaLabel="Cohorts"
+                        aria-label="Cohorts"
                         disabled={this.props.cohorts.length === 0}
                         value={this.mapSelectedCohortEntry(this.props.selectedCohort)}
                         options={this.mapCohortsEntries(this.props.cohorts)}
                         onChange={this.updateCohorts}
                       />
+                    </div>
+                    <div>
+                      <span className="label">
+                        Course Grade (0%-100%)
+                      </span>
+                      <div className="d-flex justify-content-between align-items-center">
+                        <InputText
+                          value={this.state.courseGradeMin}
+                          name="minimum-grade"
+                          label="Min Grade"
+                          onChange={value => this.handleCourseGradeFilterChange('min', value)}
+                          type="number"
+                          min={0}
+                          max={100}
+                        />
+                        <span className="input-percent-label">%</span>
+                        <InputText
+                          value={this.state.courseGradeMax}
+                          name="max-grade"
+                          label="Max Grade"
+                          onChange={value => this.handleCourseGradeFilterChange('max', value)}
+                          type="number"
+                          min={0}
+                          max={100}
+                        />
+                        <span className="input-percent-label">%</span>
+                        <Button
+                          buttonType="outline-secondary"
+                          className="align-self-center"
+                          onClick={this.handleCourseGradeFilterApplyButtonClick}
+                        >
+                          Apply
+                        </Button>
+                      </div>
                     </div>
                   </div>
                   <div>
@@ -549,12 +656,20 @@ export default class Gradebook extends React.Component {
                     <small className="form-text text-muted search-help-text">Search by username, email, or student key</small>
                   </div>
                 </div>
-
                 <StatusAlert
                   alertType="success"
                   dialog="The grade has been successfully edited."
                   onClose={() => this.props.closeBanner()}
                   open={this.props.showSuccess}
+                />
+                <StatusAlert
+                  alertType="danger"
+                  dialog={this.getCourseGradeFilterAlertDialog()}
+                  dismissible={false}
+                  open={
+                    !this.state.isMinCourseGradeFilterValid ||
+                    !this.state.isMaxCourseGradeFilterValid
+                  }
                 />
                 <h4>Step 2: View or Modify Individual Grades</h4>
                 <div className="d-flex justify-content-between align-items-center mb-2">
@@ -577,8 +692,8 @@ export default class Gradebook extends React.Component {
                       pending: 'Download Gradebook',
                     }}
                     icons={{
-                      default: <FontAwesomeIcon icon={faDownload} />,
-                      pending: <FontAwesomeIcon className="fa-spin" icon={faSpinner} />,
+                      default: <FontAwesomeIcon className="mr-2" icon={faDownload} />,
+                      pending: <FontAwesomeIcon className="fa-spin mr-2" icon={faSpinner} />,
                     }}
                     disabledStates={['pending']}
                   />}
@@ -644,10 +759,11 @@ export default class Gradebook extends React.Component {
                   )}
                   buttons={[
                     <Button
-                      label="Save Grade"
                       buttonType="primary"
                       onClick={this.handleAdjustedGradeClick}
-                    />,
+                    >
+                      Save Grade
+                    </Button>,
                   ]}
                   onClose={() => this.setState({
                     modalOpen: false,
@@ -686,16 +802,18 @@ export default class Gradebook extends React.Component {
                     />
                   </form>
                   <Button
-                    label="Import Grades"
                     buttonType="primary"
                     onClick={this.handleClickImportGrades}
-                  />
+                  >
+                    Import Grades
+                  </Button>
                   <h4>Interventions Report</h4>
                   <Button
-                    label="Download Interventions report"
                     buttonType="primary"
                     onClick={this.handleClickDownloadInterventions}
-                  />
+                  >
+                    Download Interventions report
+                  </Button>
                   <br />
                   <p>
                     Results appear in the table below.<br />
@@ -831,7 +949,7 @@ Gradebook.propTypes = {
   searchForUser: PropTypes.func.isRequired,
   selectedAssignmentType: PropTypes.string,
   selectedAssignment: PropTypes.string,
-  selectedCohort: PropTypes.number,
+  selectedCohort: PropTypes.string,
   selectedTrack: PropTypes.string,
   showSpinner: PropTypes.bool,
   showSuccess: PropTypes.bool.isRequired,
@@ -864,4 +982,5 @@ Gradebook.propTypes = {
   showDownloadButtons: PropTypes.bool,
   initializeFilters: PropTypes.func.isRequired,
   updateGradesIfAssignmentGradeFiltersSet: PropTypes.func.isRequired,
+  updateCourseGradeFilter: PropTypes.func.isRequired,
 };
