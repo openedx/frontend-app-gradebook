@@ -83,13 +83,13 @@ const getHeadings = (state) => {
 };
 
 const formatMaxAssignmentGrade = (state, assignmentId, percentGrade) => {
-  if (percentGrade === '100') {
+  if (percentGrade === '100' || !assignmentId) {
     return null;
   }
   return percentGrade;
 };
 const formatMinAssignmentGrade = (state, assignmentId, percentGrade) => {
-  if (percentGrade === '0') {
+  if (percentGrade === '0' || !assignmentId) {
     return null;
   }
   return percentGrade;
