@@ -1,6 +1,6 @@
 import { GOT_GRADES, FILTER_BY_ASSIGNMENT_TYPE } from '../constants/actionTypes/grades';
 
-import { INITIALIZE_FILTERS, UPDATE_ASSIGNMENT_FILTER } from '../constants/actionTypes/filters';
+import { INITIALIZE_FILTERS, UPDATE_ASSIGNMENT_FILTER, UPDATE_ASSIGNMENT_LIMITS } from '../constants/actionTypes/filters';
 
 import { getAssignmentsFromResultsSubstate, chooseRelevantAssignmentData } from '../selectors/filters';
 
@@ -24,11 +24,11 @@ const reducer = (state = initialState, action) => {
       };
     case GOT_GRADES: {
       const { assignment } = state;
-      const { label, type } = assignment || {};
+      const { id, type } = assignment || {};
       if (!type) {
         const relevantAssignment = getAssignmentsFromResultsSubstate(action.grades)
           .map(chooseRelevantAssignmentData)
-          .find(assig => assig.label === label);
+          .find(assig => assig.id === id);
         return {
           ...state,
           track: action.track,
@@ -46,6 +46,12 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         assignment: action.data,
+      };
+    case UPDATE_ASSIGNMENT_LIMITS:
+      return {
+        ...state,
+        assignmentGradeMin: action.data.minGrade,
+        assignmentGradeMax: action.data.maxGrade,
       };
     default:
       return state;

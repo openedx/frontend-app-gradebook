@@ -2,13 +2,15 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {
   Button,
-  StatefulButton,
+  Collapsible,
+  Icon,
   InputSelect,
+  InputText,
   Modal,
   SearchField,
+  StatefulButton,
   StatusAlert,
   Table,
-  Icon,
   Tabs,
 } from '@edx/paragon';
 import queryString from 'query-string';
@@ -33,6 +35,8 @@ export default class Gradebook extends React.Component {
       updateModuleId: null,
       updateUserId: null,
       reasonForChange: '',
+      assignmentGradeMin: '',
+      assignmentGradeMax: '',
     };
     this.fileFormRef = React.createRef();
     this.fileInputRef = React.createRef();
@@ -44,6 +48,8 @@ export default class Gradebook extends React.Component {
     this.props.initializeFilters(urlQuery);
     this.props.getRoles(this.props.courseId);
     this.overrideReasonInput.focus();
+    const { assignmentGradeMin, assignmentGradeMax } = urlQuery;
+    this.setState({ assignmentGradeMin, assignmentGradeMax });
   }
 
   onChange(e) {
@@ -131,18 +137,25 @@ export default class Gradebook extends React.Component {
     const { type, id } = selectedFilterOption || {};
     const typedValue = { label: assignment, type, id };
     this.props.updateAssignmentFilter(typedValue);
-    const updatedQueryStrings = this.updateQueryParams('assignment', assignment);
-    this.props.history.push(updatedQueryStrings);
-  }
+    this.updateQueryParams({ assignment: id });
+    this.props.updateGradesIfAssignmentGradeFiltersSet(
+      this.props.courseId,
+      this.props.selectedCohort,
+      this.props.selectedTrack,
+      this.props.selectedAssignmentType,
+    );
+  };
 
-  updateQueryParams = (queryKey, queryValue) => {
+  updateQueryParams = (queryParams) => {
     const parsed = queryString.parse(this.props.location.search);
-    if (queryValue) {
-      parsed[queryKey] = queryValue;
-    } else {
-      delete parsed[queryKey];
-    }
-    return `?${queryString.stringify(parsed)}`;
+    Object.keys(queryParams).forEach((key) => {
+      if (queryParams[key]) {
+        parsed[key] = queryParams[key];
+      } else {
+        delete parsed[key];
+      }
+    });
+    this.props.history.push(`?${queryString.stringify(parsed)}`);
   };
 
   mapAssignmentTypeEntries = (entries) => {
@@ -210,8 +223,7 @@ export default class Gradebook extends React.Component {
 
   updateAssignmentTypes = (assignmentType) => {
     this.props.filterAssignmentType(assignmentType);
-    const updatedQueryStrings = this.updateQueryParams('assignmentType', assignmentType);
-    this.props.history.push(updatedQueryStrings);
+    this.updateQueryParams({ assignmentType });
   }
 
   updateTracks = (event) => {
@@ -226,8 +238,7 @@ export default class Gradebook extends React.Component {
       selectedTrackSlug,
       this.props.selectedAssignmentType,
     );
-    const updatedQueryStrings = this.updateQueryParams('track', selectedTrackSlug);
-    this.props.history.push(updatedQueryStrings);
+    this.updateQueryParams({ track: selectedTrackSlug });
   };
 
   updateCohorts = (event) => {
@@ -242,8 +253,7 @@ export default class Gradebook extends React.Component {
       this.props.selectedTrack,
       this.props.selectedAssignmentType,
     );
-    const updatedQueryStrings = this.updateQueryParams('cohort', selectedCohortId);
-    this.props.history.push(updatedQueryStrings);
+    this.updateQueryParams({ cohort: selectedCohortId });
   };
 
   handleClickExportGrades = () => {
@@ -273,6 +283,27 @@ export default class Gradebook extends React.Component {
       });
     }
   };
+
+  handleSubmitAssignmentGrade = (event) => {
+    event.preventDefault();
+    const {
+      assignmentGradeMin,
+      assignmentGradeMax,
+    } = this.state;
+
+    this.props.updateAssignmentLimits(assignmentGradeMin, assignmentGradeMax);
+    this.props.getUserGrades(
+      this.props.courseId,
+      this.props.selectedCohort,
+      this.props.selectedTrack,
+      this.props.selectedAssignmentType,
+    );
+    this.updateQueryParams({ assignmentGradeMin, assignmentGradeMax });
+  };
+
+  handleMinAssigGradeChange = assignmentGradeMin => this.setState({ assignmentGradeMin });
+
+  handleMaxAssigGradeChange = assignmentGradeMax => this.setState({ assignmentGradeMax });
 
   mapSelectedCohortEntry = (entry) => {
     const selectedCohortEntry = this.props.cohorts.find(x => x.id === parseInt(entry, 10));
@@ -406,32 +437,70 @@ export default class Gradebook extends React.Component {
                       options={[{ label: 'Percent', value: 'percent' }, { label: 'Absolute', value: 'absolute' }]}
                       onChange={this.props.toggleFormat}
                     />
-                    <div className="student-filters">
-                      <span className="label">
-                        Assignment Types:
-                      </span>
-                      <InputSelect
-                        name="assignment-types"
-                        ariaLabel="Assignment Types"
-                        value={this.props.selectedAssignmentType}
-                        options={this.mapAssignmentTypeEntries(this.props.assignmentTypes)}
-                        onChange={this.updateAssignmentTypes}
-                        disabled={this.props.assignmentFilterOptions.length === 0}
-                      />
-                    </div>
-                    <div className="student-filters">
-                      <span className="label">
-                        Assignment:
-                      </span>
-                      <InputSelect
-                        name="assignment"
-                        ariaLabel="Assignment"
-                        value={this.props.selectedAssignment}
-                        options={this.getAssignmentFilterOptions()}
-                        onChange={this.handleAssignmentFilterChange}
-                        disabled={this.props.assignmentFilterOptions.length === 0}
-                      />
-                    </div>
+                    <Collapsible title="Assignments" isOpen>
+                      <div>
+                        <div className="student-filters">
+                          <span className="label">
+                            Assignment Types:
+                          </span>
+                          <InputSelect
+                            name="assignment-types"
+                            ariaLabel="Assignment Types"
+                            value={this.props.selectedAssignmentType}
+                            options={this.mapAssignmentTypeEntries(this.props.assignmentTypes)}
+                            onChange={this.updateAssignmentTypes}
+                            disabled={this.props.assignmentFilterOptions.length === 0}
+                          />
+                        </div>
+                        <div className="student-filters">
+                          <span className="label">
+                            Assignment:
+                          </span>
+                          <InputSelect
+                            name="assignment"
+                            ariaLabel="Assignment"
+                            value={this.props.selectedAssignment}
+                            options={this.getAssignmentFilterOptions()}
+                            onChange={this.handleAssignmentFilterChange}
+                            disabled={this.props.assignmentFilterOptions.length === 0}
+                          />
+                        </div>
+                        <p>Grade Range (0% - 100%)</p>
+                        <form className="d-flex justify-content-between" onSubmit={this.handleSubmitAssignmentGrade}>
+                          <InputText
+                            label="Min Grade"
+                            name="assignmentGradeMin"
+                            type="number"
+                            min={0}
+                            max={100}
+                            step={1}
+                            value={this.state.assignmentGradeMin}
+                            disabled={!this.props.selectedAssignment}
+                            onChange={this.handleMinAssigGradeChange}
+                          />
+                          <InputText
+                            label="Max Grade"
+                            name="assignmentGradeMax"
+                            type="number"
+                            min={0}
+                            max={100}
+                            step={1}
+                            value={this.state.assignmentGradeMax}
+                            disabled={!this.props.selectedAssignment}
+                            onChange={this.handleMaxAssigGradeChange}
+                          />
+                          <div className="d-flex align-items-center">
+                            <Button
+                              type="submit"
+                              className="btn-outline-secondary"
+                              label="Apply"
+                              name="assignmentGradeMinMax"
+                              disabled={!this.props.selectedAssignment}
+                            />
+                          </div>
+                        </form>
+                      </div>
+                    </Collapsible>
                     <div className="student-filters">
                       <span className="label">
                         Student Groups:
@@ -723,6 +792,7 @@ Gradebook.propTypes = {
   })),
   filterAssignmentType: PropTypes.func.isRequired,
   updateAssignmentFilter: PropTypes.func.isRequired,
+  updateAssignmentLimits: PropTypes.func.isRequired,
   format: PropTypes.string.isRequired,
   getRoles: PropTypes.func.isRequired,
   getUserGrades: PropTypes.func.isRequired,
@@ -793,4 +863,5 @@ Gradebook.propTypes = {
   filteredUsersCount: PropTypes.number,
   showDownloadButtons: PropTypes.bool,
   initializeFilters: PropTypes.func.isRequired,
+  updateGradesIfAssignmentGradeFiltersSet: PropTypes.func.isRequired,
 };

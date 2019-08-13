@@ -5,19 +5,36 @@ class LmsApiService {
   static baseUrl = configuration.LMS_BASE_URL;
   static pageSize = 25
 
-  static fetchGradebookData(courseId, searchText, cohort, track) {
-    let gradebookUrl = `${LmsApiService.baseUrl}/api/grades/v1/gradebook/${courseId}/`;
-
-    gradebookUrl += `?page_size=${LmsApiService.pageSize}&`;
+  static fetchGradebookData(courseId, searchText, cohort, track, options = {}) {
+    const queryParams = {};
+    queryParams.page_size = LmsApiService.pageSize;
     if (searchText) {
-      gradebookUrl += `user_contains=${searchText}&`;
+      queryParams.user_contains = searchText;
     }
     if (cohort) {
-      gradebookUrl += `cohort_id=${cohort}&`;
+      queryParams.cohort_id = cohort;
     }
     if (track) {
-      gradebookUrl += `enrollment_mode=${track}`;
+      queryParams.enrollment_mode = track;
     }
+    if (options.assignmentGradeMax || options.assignmentGradeMin) {
+      if (!options.assignment) {
+        throw new Error('Gradebook LMS API requires assignment to be set to filter by min/max assig. grade');
+      }
+      queryParams.assignment = options.assignment;
+      if (options.assignmentGradeMin) {
+        queryParams.assignment_grade_min = options.assignmentGradeMin;
+      }
+      if (options.assignmentGradeMax) {
+        queryParams.assignment_grade_max = options.assignmentGradeMax;
+      }
+    }
+
+    const queryParamString = Object.keys(queryParams)
+      .map(attr => `${attr}=${encodeURIComponent(queryParams[attr])}`)
+      .join('&');
+    const gradebookUrl = `${LmsApiService.baseUrl}/api/grades/v1/gradebook/${courseId}/?${queryParamString}`;
+
     return apiClient.get(gradebookUrl);
   }
 
@@ -70,7 +87,7 @@ class LmsApiService {
   }
 
   static getGradeExportCsvUrl(courseId, options = {}) {
-    const queryParams = ['track', 'cohort', 'assignment', 'assignmentType']
+    const queryParams = ['track', 'cohort', 'assignment', 'assignmentType', 'assignmentGradeMax', 'assignmentGradeMin']
       .filter(opt => options[opt] &&
                    options[opt] !== 'All')
       .map(opt => `${opt}=${encodeURIComponent(options[opt])}`)

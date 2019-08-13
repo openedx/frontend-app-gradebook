@@ -68,16 +68,36 @@ const headingMapper = (category, label = 'All') => {
   };
 };
 
+const getExampleSectionBreakdown = state => (state.grades.results[0] || {}).section_breakdown || [];
+
 const getHeadings = (state) => {
   const filters = getFilters(state) || {};
   const {
     assignmentType: selectedAssignmentType,
     assignment: selectedAssignment,
   } = filters;
-  const assignments = (state.grades.results[0] || {}).section_breakdown || [];
+  const assignments = getExampleSectionBreakdown(state);
   const type = selectedAssignmentType || 'All';
   const assignment = (selectedAssignment || {}).label || 'All';
   return headingMapper(type, assignment)(assignments);
 };
 
-export { getBulkManagementHistory, getHeadings };
+const formatMaxAssignmentGrade = (state, assignmentId, percentGrade) => {
+  if (percentGrade === '100' || !assignmentId) {
+    return null;
+  }
+  return percentGrade;
+};
+const formatMinAssignmentGrade = (state, assignmentId, percentGrade) => {
+  if (percentGrade === '0' || !assignmentId) {
+    return null;
+  }
+  return percentGrade;
+};
+
+export {
+  getBulkManagementHistory,
+  getHeadings,
+  formatMinAssignmentGrade,
+  formatMaxAssignmentGrade,
+};
