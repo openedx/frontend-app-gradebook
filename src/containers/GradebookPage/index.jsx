@@ -11,13 +11,13 @@ import {
   submitFileUploadFormData,
   toggleGradeFormat,
   updateGrades,
-  updateGradesIfAssigGradeFiltersSet,
+  updateGradesIfAssignmentGradeFiltersSet,
 } from '../../data/actions/grades';
 import { fetchCohorts } from '../../data/actions/cohorts';
 import { fetchTracks } from '../../data/actions/tracks';
 import { initializeFilters, updateAssignmentFilter, updateAssignmentLimits } from '../../data/actions/filters';
 import stateHasMastersTrack from '../../data/selectors/tracks';
-import { getBulkManagementHistory, getHeadings, formatMinAssigGrade, formatMaxAssigGrade } from '../../data/selectors/grades';
+import { getBulkManagementHistory, getHeadings, formatMinAssignmentGrade, formatMaxAssignmentGrade } from '../../data/selectors/grades';
 import { selectableAssignmentLabels } from '../../data/selectors/filters';
 import { getCohortNameById } from '../../data/selectors/cohorts';
 import { fetchAssignmentTypes } from '../../data/actions/assignmentTypes';
@@ -51,8 +51,8 @@ const mapStateToProps = (state, ownProps) => (
     selectedCohort: state.filters.cohort,
     selectedAssignmentType: state.filters.assignmentType,
     selectedAssignment: (state.filters.assignment || {}).label,
-    selectedMinAssigGrade: state.filters.assignmentGradeMin || 0,
-    selectedMaxAssigGrade: state.filters.assignmentGradeMax || 100,
+    selectedMinAssignmentGrade: state.filters.assignmentGradeMin || 0,
+    selectedMaxAssignmentGrade: state.filters.assignmentGradeMax || 100,
     format: state.grades.gradeFormat,
     showSuccess: state.grades.showSuccess,
     errorFetchingGradeOverrideHistory: state.grades.errorFetchingOverrideHistory,
@@ -68,12 +68,12 @@ const mapStateToProps = (state, ownProps) => (
       track: state.filters.track,
       assignment: (state.filters.assignment || {}).id,
       assignmentType: state.filters.assignmentType,
-      assignmentGradeMin: formatMinAssigGrade(
+      assignmentGradeMin: formatMinAssignmentGrade(
         state,
         (state.filters.assignment || {}).id,
         state.filters.assignmentGradeMin,
       ),
-      assignmentGradeMax: formatMaxAssigGrade(
+      assignmentGradeMax: formatMaxAssignmentGrade(
         state,
         (state.filters.assignment || {}).id,
         state.filters.assignmentGradeMax,
@@ -112,7 +112,7 @@ const mapDispatchToProps = {
   initializeFilters,
   updateAssignmentFilter,
   updateAssignmentLimits,
-  updateGradesIfAssigGradeFiltersSet,
+  updateGradesIfAssignmentGradeFiltersSet,
 };
 
 const GradebookPage = connect(

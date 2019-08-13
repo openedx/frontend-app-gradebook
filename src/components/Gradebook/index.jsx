@@ -138,7 +138,7 @@ export default class Gradebook extends React.Component {
     const typedValue = { label: assignment, type, id };
     this.props.updateAssignmentFilter(typedValue);
     this.updateQueryParams({ assignment: id });
-    this.props.updateGradesIfAssigGradeFiltersSet(
+    this.props.updateGradesIfAssignmentGradeFiltersSet(
       this.props.courseId,
       this.props.selectedCohort,
       this.props.selectedTrack,
@@ -862,5 +862,5 @@ Gradebook.propTypes = {
   filteredUsersCount: PropTypes.number,
   showDownloadButtons: PropTypes.bool,
   initializeFilters: PropTypes.func.isRequired,
-  updateGradesIfAssigGradeFiltersSet: PropTypes.func.isRequired,
+  updateGradesIfAssignmentGradeFiltersSet: PropTypes.func.isRequired,
 };

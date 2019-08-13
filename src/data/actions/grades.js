@@ -20,7 +20,7 @@ import {
 } from '../constants/actionTypes/grades';
 import LmsApiService from '../services/LmsApiService';
 import { sortAlphaAsc, formatDateForDisplay } from './utils';
-import { formatMaxAssigGrade, formatMinAssigGrade } from '../selectors/grades';
+import { formatMaxAssignmentGrade, formatMinAssignmentGrade } from '../selectors/grades';
 import { getFilters } from '../selectors/filters';
 import apiClient from '../apiClient';
 
@@ -108,12 +108,12 @@ const fetchGrades = (
     dispatch(startedFetchingGrades());
     const {
       assignment,
-      assignmentGradeMax: assigMax,
-      assignmentGradeMin: assigMin,
+      assignmentGradeMax: assignmentMax,
+      assignmentGradeMin: assignmentMin,
     } = getFilters(getState());
     const { id: assignmentId } = assignment || {};
-    const assignmentGradeMax = formatMaxAssigGrade(getState(), assignmentId, assigMax);
-    const assignmentGradeMin = formatMinAssigGrade(getState(), assignmentId, assigMin);
+    const assignmentGradeMax = formatMaxAssignmentGrade(getState(), assignmentId, assignmentMax);
+    const assignmentGradeMin = formatMinAssignmentGrade(getState(), assignmentId, assignmentMin);
     return LmsApiService.fetchGradebookData(
       courseId,
       options.searchText || null,
@@ -264,15 +264,15 @@ const fetchBulkUpgradeHistory = courseId => (
     }).catch(() => dispatch(bulkHistoryError()))
 );
 
-const updateGradesIfAssigGradeFiltersSet = (
+const updateGradesIfAssignmentGradeFiltersSet = (
   courseId,
   cohort,
   track,
   assignmentType,
 ) => (dispatch, getState) => {
   const { filters } = getState();
-  const hasAssigGradeFiltersSet = filters.assignmentGradeMax || filters.assignmentGradeMin;
-  if (hasAssigGradeFiltersSet) {
+  const hasAssignmentGradeFiltersSet = filters.assignmentGradeMax || filters.assignmentGradeMin;
+  if (hasAssignmentGradeFiltersSet) {
     dispatch(fetchGrades(
       courseId,
       cohort,
@@ -300,5 +300,5 @@ export {
   submitFileUploadFormData,
   fetchBulkUpgradeHistory,
   fetchGradeOverrideHistory,
-  updateGradesIfAssigGradeFiltersSet,
+  updateGradesIfAssignmentGradeFiltersSet,
 };

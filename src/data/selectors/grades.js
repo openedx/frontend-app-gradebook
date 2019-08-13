@@ -82,17 +82,22 @@ const getHeadings = (state) => {
   return headingMapper(type, assignment)(assignments);
 };
 
-const formatMaxAssigGrade = (state, assignmentId, percentGrade) => {
+const formatMaxAssignmentGrade = (state, assignmentId, percentGrade) => {
   if (percentGrade === '100') {
     return null;
   }
   return percentGrade;
 };
-const formatMinAssigGrade = (state, assignmentId, percentGrade) => {
+const formatMinAssignmentGrade = (state, assignmentId, percentGrade) => {
   if (percentGrade === '0') {
     return null;
   }
   return percentGrade;
 };
 
-export { getBulkManagementHistory, getHeadings, formatMinAssigGrade, formatMaxAssigGrade };
+export {
+  getBulkManagementHistory,
+  getHeadings,
+  formatMinAssignmentGrade,
+  formatMaxAssignmentGrade,
+};
