@@ -286,9 +286,10 @@ export default class Gradebook extends React.Component {
 
   handleSubmitAssignmentGrade = (event) => {
     event.preventDefault();
-    const formContents = new FormData(event.target);
-    const assignmentGradeMin = formContents.get('assignmentGradeMin');
-    const assignmentGradeMax = formContents.get('assignmentGradeMax');
+    const {
+      assignmentGradeMin,
+      assignmentGradeMax,
+    } = this.state;
 
     this.props.updateAssignmentLimits(assignmentGradeMin, assignmentGradeMax);
     this.props.getUserGrades(

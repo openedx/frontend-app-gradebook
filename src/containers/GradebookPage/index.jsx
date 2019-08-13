@@ -51,8 +51,6 @@ const mapStateToProps = (state, ownProps) => (
     selectedCohort: state.filters.cohort,
     selectedAssignmentType: state.filters.assignmentType,
     selectedAssignment: (state.filters.assignment || {}).label,
-    selectedMinAssignmentGrade: state.filters.assignmentGradeMin || 0,
-    selectedMaxAssignmentGrade: state.filters.assignmentGradeMax || 100,
     format: state.grades.gradeFormat,
     showSuccess: state.grades.showSuccess,
     errorFetchingGradeOverrideHistory: state.grades.errorFetchingOverrideHistory,
