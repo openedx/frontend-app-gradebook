@@ -82,22 +82,42 @@ const getHeadings = (state) => {
   return headingMapper(type, assignment)(assignments);
 };
 
-const formatMaxAssignmentGrade = (state, assignmentId, percentGrade) => {
-  if (percentGrade === '100' || !assignmentId) {
-    return null;
-  }
-  return percentGrade;
-};
-const formatMinAssignmentGrade = (state, assignmentId, percentGrade) => {
-  if (percentGrade === '0' || !assignmentId) {
-    return null;
-  }
-  return percentGrade;
-};
+const composeFilters = (...predicates) => (percentGrade, options = {}) =>
+  predicates.reduce((accum, predicate) => {
+    if (predicate(percentGrade, options)) {
+      return null;
+    }
+    return accum;
+  }, percentGrade);
+
+const percentGradeIsMax = percentGrade => (
+  percentGrade === '100'
+);
+
+const percentGradeIsMin = percentGrade => (
+  percentGrade === '0'
+);
+
+const assignmentIdIsDefined = (percentGrade, { assignmentId }) => (
+  !assignmentId
+);
+
+const formatMaxCourseGrade = composeFilters(percentGradeIsMax);
+const formatMinCourseGrade = composeFilters(percentGradeIsMin);
+const formatMaxAssignmentGrade = composeFilters(
+  percentGradeIsMax,
+  assignmentIdIsDefined,
+);
+const formatMinAssignmentGrade = composeFilters(
+  percentGradeIsMin,
+  assignmentIdIsDefined,
+);
 
 export {
   getBulkManagementHistory,
   getHeadings,
   formatMinAssignmentGrade,
   formatMaxAssignmentGrade,
+  formatMaxCourseGrade,
+  formatMinCourseGrade,
 };

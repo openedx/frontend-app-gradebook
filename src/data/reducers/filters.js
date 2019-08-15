@@ -1,6 +1,6 @@
 import { GOT_GRADES, FILTER_BY_ASSIGNMENT_TYPE } from '../constants/actionTypes/grades';
 
-import { INITIALIZE_FILTERS, UPDATE_ASSIGNMENT_FILTER, UPDATE_ASSIGNMENT_LIMITS } from '../constants/actionTypes/filters';
+import { INITIALIZE_FILTERS, UPDATE_ASSIGNMENT_FILTER, UPDATE_ASSIGNMENT_LIMITS, UPDATE_COURSE_GRADE_LIMITS } from '../constants/actionTypes/filters';
 
 import { getAssignmentsFromResultsSubstate, chooseRelevantAssignmentData } from '../selectors/filters';
 
@@ -52,6 +52,12 @@ const reducer = (state = initialState, action) => {
         ...state,
         assignmentGradeMin: action.data.minGrade,
         assignmentGradeMax: action.data.maxGrade,
+      };
+    case UPDATE_COURSE_GRADE_LIMITS:
+      return {
+        ...state,
+        courseGradeMin: action.data.courseGradeMin,
+        courseGradeMax: action.data.courseGradeMax,
       };
     default:
       return state;

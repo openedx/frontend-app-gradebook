@@ -1,12 +1,14 @@
-import { INITIALIZE_FILTERS, UPDATE_ASSIGNMENT_FILTER, UPDATE_ASSIGNMENT_LIMITS } from '../constants/actionTypes/filters';
+import { INITIALIZE_FILTERS, UPDATE_ASSIGNMENT_FILTER, UPDATE_ASSIGNMENT_LIMITS, UPDATE_COURSE_GRADE_LIMITS } from '../constants/actionTypes/filters';
 
 const initializeFilters = ({
   assignment = '',
   assignmentType = '',
   track = '',
   cohort = '',
-  assignmentGradeMin = '',
-  assignmentGradeMax = '',
+  assignmentGradeMin = '0',
+  assignmentGradeMax = '100',
+  courseGradeMin = '0',
+  courseGradeMax = '100',
 }) => ({
   type: INITIALIZE_FILTERS,
   data: {
@@ -16,6 +18,8 @@ const initializeFilters = ({
     cohort,
     assignmentGradeMin,
     assignmentGradeMax,
+    courseGradeMin,
+    courseGradeMax,
   },
 });
 
@@ -29,4 +33,15 @@ const updateAssignmentLimits = (minGrade, maxGrade) => ({
   data: { minGrade, maxGrade },
 });
 
-export { initializeFilters, updateAssignmentFilter, updateAssignmentLimits };
+const updateCourseGradeFilter = (courseGradeMin, courseGradeMax) => ({
+  type: UPDATE_COURSE_GRADE_LIMITS,
+  data: {
+    courseGradeMin,
+    courseGradeMax,
+  },
+});
+
+export {
+  initializeFilters, updateAssignmentFilter,
+  updateAssignmentLimits, updateCourseGradeFilter,
+};

@@ -14,7 +14,9 @@ export default class Header extends React.Component {
     return (
       <div className="mb-3">
         <header className="d-flex justify-content-center align-items-center p-3 border-bottom-blue">
-          <Hyperlink content={this.renderLogo()} destination="https://www.edx.org" />
+          <Hyperlink destination="https://www.edx.org">
+            {this.renderLogo()}
+          </Hyperlink>
           <div />
         </header>
       </div>

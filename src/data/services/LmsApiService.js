@@ -29,10 +29,17 @@ class LmsApiService {
         queryParams.assignment_grade_max = options.assignmentGradeMax;
       }
     }
+    if (options.courseGradeMin) {
+      queryParams.course_grade_min = options.courseGradeMin;
+    }
+    if (options.courseGradeMax) {
+      queryParams.course_grade_max = options.courseGradeMax;
+    }
 
     const queryParamString = Object.keys(queryParams)
       .map(attr => `${attr}=${encodeURIComponent(queryParams[attr])}`)
       .join('&');
+
     const gradebookUrl = `${LmsApiService.baseUrl}/api/grades/v1/gradebook/${courseId}/?${queryParamString}`;
 
     return apiClient.get(gradebookUrl);
@@ -87,7 +94,8 @@ class LmsApiService {
   }
 
   static getGradeExportCsvUrl(courseId, options = {}) {
-    const queryParams = ['track', 'cohort', 'assignment', 'assignmentType', 'assignmentGradeMax', 'assignmentGradeMin']
+    const queryParams = ['track', 'cohort', 'assignment', 'assignmentType', 'assignmentGradeMax',
+      'assignmentGradeMin', 'courseGradeMin', 'courseGradeMax']
       .filter(opt => options[opt] &&
                    options[opt] !== 'All')
       .map(opt => `${opt}=${encodeURIComponent(options[opt])}`)

@@ -15,9 +15,16 @@ import {
 } from '../../data/actions/grades';
 import { fetchCohorts } from '../../data/actions/cohorts';
 import { fetchTracks } from '../../data/actions/tracks';
-import { initializeFilters, updateAssignmentFilter, updateAssignmentLimits } from '../../data/actions/filters';
+import { initializeFilters, updateAssignmentFilter, updateAssignmentLimits, updateCourseGradeFilter } from '../../data/actions/filters';
 import stateHasMastersTrack from '../../data/selectors/tracks';
-import { getBulkManagementHistory, getHeadings, formatMinAssignmentGrade, formatMaxAssignmentGrade } from '../../data/selectors/grades';
+import {
+  getBulkManagementHistory,
+  getHeadings,
+  formatMinAssignmentGrade,
+  formatMaxAssignmentGrade,
+  formatMinCourseGrade,
+  formatMaxCourseGrade,
+} from '../../data/selectors/grades';
 import { selectableAssignmentLabels } from '../../data/selectors/filters';
 import { getCohortNameById } from '../../data/selectors/cohorts';
 import { fetchAssignmentTypes } from '../../data/actions/assignmentTypes';
@@ -67,15 +74,15 @@ const mapStateToProps = (state, ownProps) => (
       assignment: (state.filters.assignment || {}).id,
       assignmentType: state.filters.assignmentType,
       assignmentGradeMin: formatMinAssignmentGrade(
-        state,
-        (state.filters.assignment || {}).id,
         state.filters.assignmentGradeMin,
+        { assignmentId: (state.filters.assignment || {}).id },
       ),
       assignmentGradeMax: formatMaxAssignmentGrade(
-        state,
-        (state.filters.assignment || {}).id,
         state.filters.assignmentGradeMax,
+        { assignmentId: (state.filters.assignment || {}).id },
       ),
+      courseGradeMin: formatMinCourseGrade(state.filters.courseGradeMin),
+      courseGradeMax: formatMaxCourseGrade(state.filters.courseGradeMax),
     }),
     interventionExportUrl:
       LmsApiService.getInterventionExportCsvUrl(ownProps.match.params.courseId),
@@ -111,6 +118,7 @@ const mapDispatchToProps = {
   updateAssignmentFilter,
   updateAssignmentLimits,
   updateGradesIfAssignmentGradeFiltersSet,
+  updateCourseGradeFilter,
 };
 
 const GradebookPage = connect(
