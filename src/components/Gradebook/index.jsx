@@ -683,20 +683,39 @@ export default class Gradebook extends React.Component {
                     options={[{ label: 'Percent', value: 'percent' }, { label: 'Absolute', value: 'absolute' }]}
                     onChange={this.props.toggleFormat}
                   />
-                  {this.props.showDownloadButtons && <StatefulButton
-                    buttonType="primary"
-                    onClick={this.handleClickExportGrades}
-                    state={this.props.showSpinner ? 'pending' : 'default'}
-                    labels={{
-                      default: 'Download Gradebook',
-                      pending: 'Download Gradebook',
-                    }}
-                    icons={{
-                      default: <FontAwesomeIcon className="mr-2" icon={faDownload} />,
-                      pending: <FontAwesomeIcon className="fa-spin mr-2" icon={faSpinner} />,
-                    }}
-                    disabledStates={['pending']}
-                  />}
+                  {this.props.showDownloadButtons && (
+                    <div>
+                      <StatefulButton
+                        buttonType="primary"
+                        onClick={this.handleClickExportGrades}
+                        state={this.props.showSpinner ? 'pending' : 'default'}
+                        labels={{
+                          default: 'Bulk Management',
+                          pending: 'Bulk Management',
+                        }}
+                        icons={{
+                          default: <FontAwesomeIcon className="mr-2" icon={faDownload} />,
+                          pending: <FontAwesomeIcon className="fa-spin mr-2" icon={faSpinner} />,
+                        }}
+                        disabledStates={['pending']}
+                      />
+                      <StatefulButton
+                        buttonType="primary"
+                        onClick={this.handleClickDownloadInterventions}
+                        state={this.props.showSpinner ? 'pending' : 'default'}
+                        className="ml-2"
+                        labels={{
+                          default: 'Interventions',
+                          pending: 'Interventions',
+                        }}
+                        icons={{
+                          default: <FontAwesomeIcon className="mr-2" icon={faDownload} />,
+                          pending: <FontAwesomeIcon className="fa-spin mr-2" icon={faSpinner} />,
+                        }}
+                        disabledStates={['pending']}
+                      />
+                    </div>
+                  )}
                 </div>
                 <div className="gbook">
                   <Table
@@ -807,14 +826,6 @@ export default class Gradebook extends React.Component {
                   >
                     Import Grades
                   </Button>
-                  <h4>Interventions Report</h4>
-                  <Button
-                    buttonType="primary"
-                    onClick={this.handleClickDownloadInterventions}
-                  >
-                    Download Interventions report
-                  </Button>
-                  <br />
                   <p>
                     Results appear in the table below.<br />
                     Grade processing may take a few seconds.
