@@ -500,13 +500,6 @@ export default class Gradebook extends React.Component {
                 <div className="d-flex justify-content-between" >
                   {this.props.showSpinner && <div className="spinner-overlay"><Icon className="fa fa-spinner fa-spin fa-5x color-black" /></div>}
                   <div>
-                    <InputSelect
-                      label="Score View:"
-                      name="ScoreView"
-                      value="percent"
-                      options={[{ label: 'Percent', value: 'percent' }, { label: 'Absolute', value: 'absolute' }]}
-                      onChange={this.props.toggleFormat}
-                    />
                     <Collapsible title="Assignments" isOpen>
                       <div>
                         <div className="student-filters">
@@ -672,17 +665,24 @@ export default class Gradebook extends React.Component {
                   }
                 />
                 <h4>Step 2: View or Modify Individual Grades</h4>
+                {this.props.totalUsersCount ?
+                  <div>
+                    Showing
+                    <span className="font-weight-bold"> {this.props.filteredUsersCount} </span>
+                    of
+                    <span className="font-weight-bold"> {this.props.totalUsersCount} </span>
+                    total learners
+                  </div> :
+                  null
+                }
                 <div className="d-flex justify-content-between align-items-center mb-2">
-                  {this.props.totalUsersCount ?
-                    <div>
-                      Showing
-                      <span className="font-weight-bold"> {this.props.filteredUsersCount} </span>
-                      of
-                      <span className="font-weight-bold"> {this.props.totalUsersCount} </span>
-                      total learners
-                    </div> :
-                    null
-                  }
+                  <InputSelect
+                    label="Score View:"
+                    name="ScoreView"
+                    value="percent"
+                    options={[{ label: 'Percent', value: 'percent' }, { label: 'Absolute', value: 'absolute' }]}
+                    onChange={this.props.toggleFormat}
+                  />
                   {this.props.showDownloadButtons && <StatefulButton
                     buttonType="primary"
                     onClick={this.handleClickExportGrades}
