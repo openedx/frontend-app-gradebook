@@ -85,7 +85,20 @@ const mapStateToProps = (state, ownProps) => (
       courseGradeMax: formatMaxCourseGrade(state.filters.courseGradeMax),
     }),
     interventionExportUrl:
-      LmsApiService.getInterventionExportCsvUrl(ownProps.match.params.courseId),
+      LmsApiService.getInterventionExportCsvUrl(ownProps.match.params.courseId, {
+        assignment: (state.filters.assignment || {}).id,
+        assignmentType: state.filters.assignmentType,
+        assignmentGradeMin: formatMinAssignmentGrade(
+          state.filters.assignmentGradeMin,
+          { assignmentId: (state.filters.assignment || {}).id },
+        ),
+        assignmentGradeMax: formatMaxAssignmentGrade(
+          state.filters.assignmentGradeMax,
+          { assignmentId: (state.filters.assignment || {}).id },
+        ),
+        courseGradeMin: formatMinCourseGrade(state.filters.courseGradeMin),
+        courseGradeMax: formatMaxCourseGrade(state.filters.courseGradeMax),
+      }),
     bulkImportError: state.grades.bulkManagement &&
       state.grades.bulkManagement.errorMessages ?
       `Errors while processing: ${state.grades.bulkManagement.errorMessages.join(', ')}` :
