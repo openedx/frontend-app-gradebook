@@ -500,13 +500,6 @@ export default class Gradebook extends React.Component {
                 <div className="d-flex justify-content-between" >
                   {this.props.showSpinner && <div className="spinner-overlay"><Icon className="fa fa-spinner fa-spin fa-5x color-black" /></div>}
                   <div>
-                    <InputSelect
-                      label="Score View:"
-                      name="ScoreView"
-                      value="percent"
-                      options={[{ label: 'Percent', value: 'percent' }, { label: 'Absolute', value: 'absolute' }]}
-                      onChange={this.props.toggleFormat}
-                    />
                     <Collapsible title="Assignments" isOpen>
                       <div>
                         <div className="student-filters">
@@ -672,31 +665,57 @@ export default class Gradebook extends React.Component {
                   }
                 />
                 <h4>Step 2: View or Modify Individual Grades</h4>
+                {this.props.totalUsersCount ?
+                  <div>
+                    Showing
+                    <span className="font-weight-bold"> {this.props.filteredUsersCount} </span>
+                    of
+                    <span className="font-weight-bold"> {this.props.totalUsersCount} </span>
+                    total learners
+                  </div> :
+                  null
+                }
                 <div className="d-flex justify-content-between align-items-center mb-2">
-                  {this.props.totalUsersCount ?
+                  <InputSelect
+                    label="Score View:"
+                    name="ScoreView"
+                    value="percent"
+                    options={[{ label: 'Percent', value: 'percent' }, { label: 'Absolute', value: 'absolute' }]}
+                    onChange={this.props.toggleFormat}
+                  />
+                  {this.props.showDownloadButtons && (
                     <div>
-                      Showing
-                      <span className="font-weight-bold"> {this.props.filteredUsersCount} </span>
-                      of
-                      <span className="font-weight-bold"> {this.props.totalUsersCount} </span>
-                      total learners
-                    </div> :
-                    null
-                  }
-                  {this.props.showDownloadButtons && <StatefulButton
-                    buttonType="primary"
-                    onClick={this.handleClickExportGrades}
-                    state={this.props.showSpinner ? 'pending' : 'default'}
-                    labels={{
-                      default: 'Download Gradebook',
-                      pending: 'Download Gradebook',
-                    }}
-                    icons={{
-                      default: <FontAwesomeIcon className="mr-2" icon={faDownload} />,
-                      pending: <FontAwesomeIcon className="fa-spin mr-2" icon={faSpinner} />,
-                    }}
-                    disabledStates={['pending']}
-                  />}
+                      <StatefulButton
+                        buttonType="primary"
+                        onClick={this.handleClickExportGrades}
+                        state={this.props.showSpinner ? 'pending' : 'default'}
+                        labels={{
+                          default: 'Bulk Management',
+                          pending: 'Bulk Management',
+                        }}
+                        icons={{
+                          default: <FontAwesomeIcon className="mr-2" icon={faDownload} />,
+                          pending: <FontAwesomeIcon className="fa-spin mr-2" icon={faSpinner} />,
+                        }}
+                        disabledStates={['pending']}
+                      />
+                      <StatefulButton
+                        buttonType="primary"
+                        onClick={this.handleClickDownloadInterventions}
+                        state={this.props.showSpinner ? 'pending' : 'default'}
+                        className="ml-2"
+                        labels={{
+                          default: 'Interventions',
+                          pending: 'Interventions',
+                        }}
+                        icons={{
+                          default: <FontAwesomeIcon className="mr-2" icon={faDownload} />,
+                          pending: <FontAwesomeIcon className="fa-spin mr-2" icon={faSpinner} />,
+                        }}
+                        disabledStates={['pending']}
+                      />
+                    </div>
+                  )}
                 </div>
                 <div className="gbook">
                   <Table
@@ -807,14 +826,6 @@ export default class Gradebook extends React.Component {
                   >
                     Import Grades
                   </Button>
-                  <h4>Interventions Report</h4>
-                  <Button
-                    buttonType="primary"
-                    onClick={this.handleClickDownloadInterventions}
-                  >
-                    Download Interventions report
-                  </Button>
-                  <br />
                   <p>
                     Results appear in the table below.<br />
                     Grade processing may take a few seconds.

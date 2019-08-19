@@ -103,9 +103,14 @@ class LmsApiService {
     return `${LmsApiService.baseUrl}/api/bulk_grades/course/${courseId}/?${queryParams}`;
   }
 
-  static getInterventionExportCsvUrl(courseId) {
-    const downloadUrl = `${LmsApiService.baseUrl}/api/bulk_grades/course/${courseId}/intervention`;
-    return downloadUrl;
+  static getInterventionExportCsvUrl(courseId, options = {}) {
+    const queryParams = ['track', 'cohort', 'assignment', 'assignmentType', 'assignmentGradeMax',
+      'assignmentGradeMin', 'courseGradeMin', 'courseGradeMax']
+      .filter(opt => options[opt] &&
+                   options[opt] !== 'All')
+      .map(opt => `${opt}=${encodeURIComponent(options[opt])}`)
+      .join('&');
+    return `${LmsApiService.baseUrl}/api/bulk_grades/course/${courseId}/intervention?${queryParams}`;
   }
 
   static getGradeImportCsvUrl = LmsApiService.getGradeExportCsvUrl;
