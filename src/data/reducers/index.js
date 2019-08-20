@@ -6,6 +6,7 @@ import tracks from './tracks';
 import assignmentTypes from './assignmentTypes';
 import roles from './roles';
 import filters from './filters';
+import config from './config';
 
 const rootReducer = combineReducers({
   grades,
@@ -14,6 +15,7 @@ const rootReducer = combineReducers({
   assignmentTypes,
   roles,
   filters,
+  config,
 });
 
 export default rootReducer;

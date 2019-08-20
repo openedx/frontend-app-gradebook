@@ -683,7 +683,7 @@ export default class Gradebook extends React.Component {
                     options={[{ label: 'Percent', value: 'percent' }, { label: 'Absolute', value: 'absolute' }]}
                     onChange={this.props.toggleFormat}
                   />
-                  {this.props.showDownloadButtons && (
+                  {this.props.showBulkManagement && (
                     <div>
                       <StatefulButton
                         buttonType="primary"
@@ -904,7 +904,6 @@ Gradebook.defaultProps = {
   errorFetchingGradeOverrideHistory: false,
   totalUsersCount: null,
   filteredUsersCount: null,
-  showDownloadButtons: false,
 };
 
 Gradebook.propTypes = {
@@ -990,7 +989,6 @@ Gradebook.propTypes = {
   })),
   totalUsersCount: PropTypes.number,
   filteredUsersCount: PropTypes.number,
-  showDownloadButtons: PropTypes.bool,
   initializeFilters: PropTypes.func.isRequired,
   updateGradesIfAssignmentGradeFiltersSet: PropTypes.func.isRequired,
   updateCourseGradeFilter: PropTypes.func.isRequired,
