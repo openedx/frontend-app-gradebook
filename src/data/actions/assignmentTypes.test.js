@@ -11,6 +11,7 @@ import {
   ERROR_FETCHING_ASSIGNMENT_TYPES,
   GOT_ARE_GRADES_FROZEN,
 } from '../constants/actionTypes/assignmentTypes';
+import GOT_BULK_MANAGEMENT_CONFIG from '../constants/actionTypes/config';
 
 const mockStore = configureMockStore([thunk]);
 const axiosMock = new MockAdapter(apiClient);
@@ -42,12 +43,14 @@ describe('actions', () => {
         },
       },
       grades_frozen: false,
+      can_see_bulk_management: true,
     };
     it('dispatches success action after fetching fetchAssignmentTypes', () => {
       const expectedActions = [
         { type: STARTED_FETCHING_ASSIGNMENT_TYPES },
         { type: GOT_ASSIGNMENT_TYPES, assignmentTypes: Object.keys(responseData.assignment_types) },
         { type: GOT_ARE_GRADES_FROZEN, areGradesFrozen: responseData.grades_frozen },
+        { type: GOT_BULK_MANAGEMENT_CONFIG, data: true },
       ];
       const store = mockStore();
 
@@ -79,6 +82,7 @@ describe('actions', () => {
         { type: STARTED_FETCHING_ASSIGNMENT_TYPES },
         { type: GOT_ASSIGNMENT_TYPES, assignmentTypes: Object.keys(responseData.assignment_types) },
         { type: GOT_ARE_GRADES_FROZEN, areGradesFrozen: true },
+        { type: GOT_BULK_MANAGEMENT_CONFIG, data: true },
       ];
       const store = mockStore();
       responseData.grades_frozen = true;
