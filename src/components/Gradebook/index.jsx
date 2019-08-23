@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import classNames from 'classnames';
 import {
   Button,
   Collapsible,
@@ -41,6 +42,7 @@ export default class Gradebook extends React.Component {
       assignmentGradeMax: '100',
       isMinCourseGradeFilterValid: true,
       isMaxCourseGradeFilterValid: true,
+      drawerOpen: true,
     };
     this.fileFormRef = React.createRef();
     this.fileInputRef = React.createRef();
@@ -471,10 +473,32 @@ export default class Gradebook extends React.Component {
     return valueAsInt >= 0 && valueAsInt <= 100;
   };
 
+  closeFilterDrawer = () => {
+    this.setState({ drawerOpen: false });
+  };
+
+  toggleFilterDrawer = () => {
+    this.setState(currState => ({ drawerOpen: !currState.drawerOpen }));
+  };
+
   render() {
+    // todo: add aria label for close button (is this broken for modal buttons?)
     return (
-      <div className="d-flex justify-content-center">
-        <div className="gradebook-container">
+      <div className="d-flex drawer-container">
+        <aside className={classNames('drawer', { open: this.state.drawerOpen })}>
+          <div className="modal-header">
+            <h2 className="modal-title"><Icon className="fa fa-filter" />Filter By...</h2>
+            <Button
+              className="p-1 js-close-modal-on-click"
+              onClick={this.closeFilterDrawer}
+              inputRef={this.setFirstFocusableElement}
+              onKeyDown={this.handleKeyDown}
+            >
+              <Icon className="fa fa-times js-close-modal-on-click" />
+            </Button>
+          </div>
+        </aside>
+        <div className="px-3 mw-100 gradebook-contents">
           <div>
             <a
               href={this.lmsInstructorDashboardUrl(this.props.courseId)}
@@ -497,6 +521,7 @@ export default class Gradebook extends React.Component {
             <Tabs labels={this.getActiveTabs()}>
               <div>
                 <h4>Step 1: Filter the Grade Report</h4>
+                <Button className="btn-primary" onClick={this.toggleFilterDrawer}>Filter</Button>
                 <div className="d-flex justify-content-between" >
                   {this.props.showSpinner && <div className="spinner-overlay"><Icon className="fa fa-spinner fa-spin fa-5x color-black" /></div>}
                   <div>
@@ -717,15 +742,17 @@ export default class Gradebook extends React.Component {
                     </div>
                   )}
                 </div>
-                <div className="gbook">
-                  <Table
-                    columns={this.formatHeadings()}
-                    data={this.formatter[this.props.format](
-                      this.props.grades,
-                      this.props.areGradesFrozen,
-                    )}
-                    rowHeaderColumnKey="username"
-                  />
+                <div className="gradebook-container">
+                  <div className="gbook">
+                    <Table
+                      columns={this.formatHeadings()}
+                      data={this.formatter[this.props.format](
+                        this.props.grades,
+                        this.props.areGradesFrozen,
+                      )}
+                      rowHeaderColumnKey="username"
+                    />
+                  </div>
                 </div>
                 {PageButtons(this.props)}
                 <Modal

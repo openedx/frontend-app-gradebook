@@ -17,24 +17,33 @@
     color: black;
 }
 
-.gradebook-container{
-    width: 500px;
-    @media only screen and (min-width: 640px) {
-        width: 630px;
+.gradebook-contents {
+    transition: transform 1.3s cubic-bezier(0.4,0,0.2,1);
+    .drawer.open + & {
+        transform: translateX(350px);
     }
-    @media only screen and (min-width: 992px) {
-        width: 900px;
-    }
-    @media only screen and (min-width: 1200px) {
-        width: 1024px;
-    }
-
     .search-help-text {
         margin-left: 20px;
     }
     h4 {
         font-weight: bold;
         margin-top: 2rem;
+    }
+}
+
+.drawer-container {
+    overflow-x: hidden;
+}
+
+.drawer {
+    height: 100%;
+    width: 350px;
+    position: absolute;
+    transform: translateX(-100%);
+    flex-direction: column;
+    transition: transform 1.3s cubic-bezier(0.4,0,0.2,1);
+    &.open {
+        transform: translateX(0%);
     }
 }
 
