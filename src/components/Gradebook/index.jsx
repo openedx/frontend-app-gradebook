@@ -16,9 +16,10 @@ import {
 import { trackEvent } from '@redux-beacon/segment';
 import queryString from 'query-string';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faDownload, faSpinner } from '@fortawesome/free-solid-svg-icons';
+import { faDownload, faSpinner, faFilter } from '@fortawesome/free-solid-svg-icons';
 import { configuration } from '../../config';
 import PageButtons from '../PageButtons';
+import Drawer from '../Drawer';
 import { formatDateForDisplay } from '../../data/actions/utils';
 import { trackingCategory } from '../../data/store';
 
@@ -495,11 +496,12 @@ export default class Gradebook extends React.Component {
     return valueAsInt >= 0 && valueAsInt <= 100;
   };
 
+
   render() {
     return (
-      <div className="d-flex justify-content-center">
-        <div className="gradebook-container">
-          <div>
+      <Drawer
+        mainContent={toggleFilterDrawer => (
+          <div className="px-3 gradebook-content">
             <a
               href={this.lmsInstructorDashboardUrl(this.props.courseId)}
               className="mb-3"
@@ -523,130 +525,7 @@ export default class Gradebook extends React.Component {
                 <h4>Step 1: Filter the Grade Report</h4>
                 <div className="d-flex justify-content-between" >
                   {this.props.showSpinner && <div className="spinner-overlay"><Icon className="fa fa-spinner fa-spin fa-5x color-black" /></div>}
-                  <div>
-                    <Collapsible title="Assignments" isOpen>
-                      <div>
-                        <div className="student-filters">
-                          <span className="label">
-                            Assignment Types:
-                          </span>
-                          <InputSelect
-                            name="assignment-types"
-                            aria-label="Assignment Types"
-                            value={this.props.selectedAssignmentType}
-                            options={this.mapAssignmentTypeEntries(this.props.assignmentTypes)}
-                            onChange={this.updateAssignmentTypes}
-                            disabled={this.props.assignmentFilterOptions.length === 0}
-                          />
-                        </div>
-                        <div className="student-filters">
-                          <span className="label">
-                            Assignment:
-                          </span>
-                          <InputSelect
-                            name="assignment"
-                            aria-label="Assignment"
-                            value={this.props.selectedAssignment}
-                            options={this.getAssignmentFilterOptions()}
-                            onChange={this.handleAssignmentFilterChange}
-                            disabled={this.props.assignmentFilterOptions.length === 0}
-                          />
-                        </div>
-                        <p>Grade Range (0% - 100%)</p>
-                        <form className="d-flex justify-content-between align-items-center" onSubmit={this.handleSubmitAssignmentGrade}>
-                          <InputText
-                            label="Min Grade"
-                            name="assignmentGradeMin"
-                            type="number"
-                            min={0}
-                            max={100}
-                            step={1}
-                            value={this.state.assignmentGradeMin}
-                            disabled={!this.props.selectedAssignment}
-                            onChange={this.handleMinAssigGradeChange}
-                          />
-                          <span className="input-percent-label">%</span>
-                          <InputText
-                            label="Max Grade"
-                            name="assignmentGradeMax"
-                            type="number"
-                            min={0}
-                            max={100}
-                            step={1}
-                            value={this.state.assignmentGradeMax}
-                            disabled={!this.props.selectedAssignment}
-                            onChange={this.handleMaxAssigGradeChange}
-                          />
-                          <span className="input-percent-label">%</span>
-                          <div className="d-flex align-items-center">
-                            <Button
-                              type="submit"
-                              className="btn-outline-secondary"
-                              name="assignmentGradeMinMax"
-                              disabled={!this.props.selectedAssignment}
-                            >
-                              Apply
-                            </Button>
-                          </div>
-                        </form>
-                      </div>
-                    </Collapsible>
-                    <div className="student-filters">
-                      <span className="label">
-                        Student Groups:
-                      </span>
-                      <InputSelect
-                        name="Tracks"
-                        aria-label="Tracks"
-                        disabled={this.props.tracks.length === 0}
-                        value={this.mapSelectedTrackEntry(this.props.selectedTrack)}
-                        options={this.mapTracksEntries(this.props.tracks)}
-                        onChange={this.updateTracks}
-                      />
-                      <InputSelect
-                        name="Cohorts"
-                        aria-label="Cohorts"
-                        disabled={this.props.cohorts.length === 0}
-                        value={this.mapSelectedCohortEntry(this.props.selectedCohort)}
-                        options={this.mapCohortsEntries(this.props.cohorts)}
-                        onChange={this.updateCohorts}
-                      />
-                    </div>
-                    <div>
-                      <span className="label">
-                        Course Grade (0%-100%)
-                      </span>
-                      <div className="d-flex justify-content-between align-items-center">
-                        <InputText
-                          value={this.state.courseGradeMin}
-                          name="minimum-grade"
-                          label="Min Grade"
-                          onChange={value => this.handleCourseGradeFilterChange('min', value)}
-                          type="number"
-                          min={0}
-                          max={100}
-                        />
-                        <span className="input-percent-label">%</span>
-                        <InputText
-                          value={this.state.courseGradeMax}
-                          name="max-grade"
-                          label="Max Grade"
-                          onChange={value => this.handleCourseGradeFilterChange('max', value)}
-                          type="number"
-                          min={0}
-                          max={100}
-                        />
-                        <span className="input-percent-label">%</span>
-                        <Button
-                          buttonType="outline-secondary"
-                          className="align-self-center"
-                          onClick={this.handleCourseGradeFilterApplyButtonClick}
-                        >
-                          Apply
-                        </Button>
-                      </div>
-                    </div>
-                  </div>
+                  <Button className="btn-primary align-self-start" onClick={toggleFilterDrawer}><FontAwesomeIcon icon={faFilter} /> Edit Filters</Button>
                   <div>
                     <SearchField
                       onSubmit={value =>
@@ -710,7 +589,7 @@ export default class Gradebook extends React.Component {
                   {this.props.showBulkManagement && (
                     <div>
                       <StatefulButton
-                        buttonType="primary"
+                        buttonType="outline-primary"
                         onClick={this.handleClickExportGrades}
                         state={this.props.showSpinner ? 'pending' : 'default'}
                         labels={{
@@ -724,7 +603,7 @@ export default class Gradebook extends React.Component {
                         disabledStates={['pending']}
                       />
                       <StatefulButton
-                        buttonType="primary"
+                        buttonType="outline-primary"
                         onClick={this.handleClickDownloadInterventions}
                         state={this.props.showSpinner ? 'pending' : 'default'}
                         className="ml-2"
@@ -741,15 +620,17 @@ export default class Gradebook extends React.Component {
                     </div>
                   )}
                 </div>
-                <div className="gbook">
-                  <Table
-                    columns={this.formatHeadings()}
-                    data={this.formatter[this.props.format](
-                      this.props.grades,
-                      this.props.areGradesFrozen,
-                    )}
-                    rowHeaderColumnKey="username"
-                  />
+                <div className="gradebook-container">
+                  <div className="gbook">
+                    <Table
+                      columns={this.formatHeadings()}
+                      data={this.formatter[this.props.format](
+                        this.props.grades,
+                        this.props.areGradesFrozen,
+                      )}
+                      rowHeaderColumnKey="username"
+                    />
+                  </div>
                 </div>
                 {PageButtons(this.props)}
                 <Modal
@@ -895,8 +776,131 @@ export default class Gradebook extends React.Component {
                 </div>)}
             </Tabs>
           </div>
-        </div>
-      </div>
+        )}
+        initiallyOpen={false}
+        title={
+          <React.Fragment>
+            <FontAwesomeIcon icon={faFilter} /> Filter By...
+          </React.Fragment>
+        }
+      >
+        <Collapsible title="Assignments" isOpen className="filter-group">
+          <div>
+            <div className="student-filters">
+              <span className="label">
+                Assignment Types:
+              </span>
+              <InputSelect
+                name="assignment-types"
+                aria-label="Assignment Types"
+                value={this.props.selectedAssignmentType}
+                options={this.mapAssignmentTypeEntries(this.props.assignmentTypes)}
+                onChange={this.updateAssignmentTypes}
+                disabled={this.props.assignmentFilterOptions.length === 0}
+              />
+            </div>
+            <div className="student-filters">
+              <span className="label">
+                Assignment:
+              </span>
+              <InputSelect
+                name="assignment"
+                aria-label="Assignment"
+                value={this.props.selectedAssignment}
+                options={this.getAssignmentFilterOptions()}
+                onChange={this.handleAssignmentFilterChange}
+                disabled={this.props.assignmentFilterOptions.length === 0}
+              />
+            </div>
+            <p>Grade Range (0% - 100%)</p>
+            <form className="d-flex justify-content-between align-items-center" onSubmit={this.handleSubmitAssignmentGrade}>
+              <InputText
+                label="Min Grade"
+                name="assignmentGradeMin"
+                type="number"
+                min={0}
+                max={100}
+                step={1}
+                value={this.state.assignmentGradeMin}
+                disabled={!this.props.selectedAssignment}
+                onChange={this.handleMinAssigGradeChange}
+              />
+              <span className="input-percent-label">%</span>
+              <InputText
+                label="Max Grade"
+                name="assignmentGradeMax"
+                type="number"
+                min={0}
+                max={100}
+                step={1}
+                value={this.state.assignmentGradeMax}
+                disabled={!this.props.selectedAssignment}
+                onChange={this.handleMaxAssigGradeChange}
+              />
+              <span className="input-percent-label">%</span>
+              <div className="d-flex align-items-center">
+                <Button
+                  type="submit"
+                  className="btn-outline-secondary"
+                  name="assignmentGradeMinMax"
+                  disabled={!this.props.selectedAssignment}
+                >
+                  Apply
+                </Button>
+              </div>
+            </form>
+          </div>
+        </Collapsible>
+        <Collapsible title="Overall Grade" isOpen className="filter-group">
+          <div className="d-flex justify-content-between align-items-center">
+            <InputText
+              value={this.state.courseGradeMin}
+              name="minimum-grade"
+              label="Min Grade"
+              onChange={value => this.handleCourseGradeFilterChange('min', value)}
+              type="number"
+              min={0}
+              max={100}
+            />
+            <span className="input-percent-label">%</span>
+            <InputText
+              value={this.state.courseGradeMax}
+              name="max-grade"
+              label="Max Grade"
+              onChange={value => this.handleCourseGradeFilterChange('max', value)}
+              type="number"
+              min={0}
+              max={100}
+            />
+            <span className="input-percent-label">%</span>
+            <Button
+              buttonType="outline-secondary"
+              className="align-self-center"
+              onClick={this.handleCourseGradeFilterApplyButtonClick}
+            >
+              Apply
+            </Button>
+          </div>
+        </Collapsible>
+        <Collapsible title="Student Groups" isOpen className="filter-group">
+          <InputSelect
+            name="Tracks"
+            aria-label="Tracks"
+            disabled={this.props.tracks.length === 0}
+            value={this.mapSelectedTrackEntry(this.props.selectedTrack)}
+            options={this.mapTracksEntries(this.props.tracks)}
+            onChange={this.updateTracks}
+          />
+          <InputSelect
+            name="Cohorts"
+            aria-label="Cohorts"
+            disabled={this.props.cohorts.length === 0}
+            value={this.mapSelectedCohortEntry(this.props.selectedCohort)}
+            options={this.mapCohortsEntries(this.props.cohorts)}
+            onChange={this.updateCohorts}
+          />
+        </Collapsible>
+      </Drawer>
     );
   }
 }
