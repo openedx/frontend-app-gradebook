@@ -1,3 +1,5 @@
+$drawer-width: 350px;
+
 .spinner-overlay {
     position: fixed;
     height: 100%;
@@ -20,7 +22,7 @@
 .gradebook-contents {
     transition: transform 1.3s cubic-bezier(0.4,0,0.2,1);
     .drawer.open + & {
-        transform: translateX(350px);
+        transform: translateX($drawer-width);
     }
     .search-help-text {
         margin-left: 20px;
@@ -31,15 +33,25 @@
     }
 }
 
+.drawer-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    padding: 15px;
+}
+
 .drawer-container {
     overflow-x: hidden;
+    .collapsible {
+        margin-bottom: 1em;
+    }
 }
 
 .drawer {
     height: 100%;
-    width: 350px;
+    width: $drawer-width;
     position: absolute;
-    transform: translateX(-100%);
+    transform: translateX(-$drawer-width);
     flex-direction: column;
     transition: transform 1.3s cubic-bezier(0.4,0,0.2,1);
     &.open {
