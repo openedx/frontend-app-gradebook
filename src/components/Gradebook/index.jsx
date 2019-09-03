@@ -651,7 +651,7 @@ export default class Gradebook extends React.Component {
                 </div>
                 <StatusAlert
                   alertType="success"
-                  dialog="The grade has been successfully edited."
+                  dialog="The grade has been successfully edited. You may see a slight delay before updates appear in the Gradebook."
                   onClose={() => this.props.closeBanner()}
                   open={this.props.showSuccess}
                 />
