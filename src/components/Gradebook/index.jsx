@@ -639,7 +639,7 @@ export default class Gradebook extends React.Component {
                 <h4>Step 1: Filter the Grade Report</h4>
                 <div className="d-flex justify-content-between" >
                   {this.props.showSpinner && <div className="spinner-overlay"><Icon className="fa fa-spinner fa-spin fa-5x color-black" /></div>}
-                  <Button className="btn-primary" onClick={this.toggleFilterDrawer}><Icon className="fa fa-filter" /> Edit Filters</Button>
+                  <Button className="btn-primary align-self-start" onClick={this.toggleFilterDrawer}><Icon className="fa fa-filter" /> Edit Filters</Button>
                   <div>
                     <SearchField
                       onSubmit={value =>
