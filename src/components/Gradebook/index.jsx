@@ -43,6 +43,7 @@ export default class Gradebook extends React.Component {
       isMinCourseGradeFilterValid: true,
       isMaxCourseGradeFilterValid: true,
       drawerOpen: true,
+      drawerTransitioning: false,
     };
     this.fileFormRef = React.createRef();
     this.fileInputRef = React.createRef();
@@ -474,18 +475,36 @@ export default class Gradebook extends React.Component {
   };
 
   closeFilterDrawer = () => {
-    this.setState({ drawerOpen: false });
+    this.setState({ drawerOpen: false, drawerTransitioning: true });
   };
 
   toggleFilterDrawer = () => {
-    this.setState(currState => ({ drawerOpen: !currState.drawerOpen }));
+    this.setState({ drawerTransitioning: true });
+    // defer the transition to the next repaint so we can be sure that
+    // opening drawer is visible before it transitions
+    // (the start state of the opening animation doesn't work if the element starts hidden)
+    window.requestAnimationFrame(() =>
+      this.setState(prevState => ({ drawerOpen: !prevState.drawerOpen })));
+  };
+
+  handleDrawerSlideDone = () => {
+    this.setState({ drawerTransitioning: false });
   };
 
   render() {
     // todo: add aria label for close button (is this broken for modal buttons?)
     return (
       <div className="d-flex drawer-container">
-        <aside className={classNames('drawer', { open: this.state.drawerOpen })}>
+        <aside
+          className={classNames(
+            'drawer',
+            {
+              open: this.state.drawerOpen,
+              'd-none': !this.state.drawerTransitioning && !this.state.drawerOpen,
+            },
+          )}
+          onTransitionEnd={this.handleDrawerSlideDone}
+        >
           <div className="drawer-header">
             <h2><Icon className="fa fa-filter" />Filter By...</h2>
             <Button
