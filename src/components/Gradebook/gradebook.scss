@@ -20,7 +20,7 @@ $drawer-width: 350px;
 }
 
 .gradebook-contents {
-    transition: transform 1.3s cubic-bezier(0.4,0,0.2,1);
+    transition: transform 300ms cubic-bezier(0.4,0,0.2,1);
     .drawer.open + & {
         transform: translateX($drawer-width);
     }
@@ -53,7 +53,7 @@ $drawer-width: 350px;
     position: absolute;
     transform: translateX(-$drawer-width);
     flex-direction: column;
-    transition: transform 1.3s cubic-bezier(0.4,0,0.2,1);
+    transition: transform 300ms cubic-bezier(0.4,0,0.2,1);
     &.open {
         transform: translateX(0%);
     }
