@@ -17,6 +17,8 @@ import {
   BULK_HISTORY_ERR,
   GOT_GRADE_OVERRIDE_HISTORY,
   ERROR_FETCHING_GRADE_OVERRIDE_HISTORY,
+  UPLOAD_OVERRIDE,
+  UPLOAD_OVERRIDE_ERROR,
 } from '../constants/actionTypes/grades';
 import LmsApiService from '../services/LmsApiService';
 import { sortAlphaAsc, formatDateForDisplay } from './utils';
@@ -80,6 +82,15 @@ const gradeUpdateSuccess = (courseId, responseData) => ({
 });
 const gradeUpdateFailure = (courseId, error) => ({
   type: GRADE_UPDATE_FAILURE,
+  courseId,
+  payload: { error },
+});
+const uploadOverrideSuccess = courseId => ({
+  type: UPLOAD_OVERRIDE,
+  courseId,
+});
+const uploadOverrideFailure = (courseId, error) => ({
+  type: UPLOAD_OVERRIDE_ERROR,
   courseId,
   payload: { error },
 });
@@ -251,9 +262,11 @@ const updateGrades = (courseId, updateData, searchText, cohort, track) => (
 const submitFileUploadFormData = (courseId, formData) => (
   (dispatch) => {
     dispatch(startedCsvUpload());
-    return LmsApiService.uploadGradeCsv(courseId, formData).then(() => (
-      dispatch(finishedCsvUpload())
-    )).catch((err) => {
+    return LmsApiService.uploadGradeCsv(courseId, formData).then(() => {
+      dispatch(finishedCsvUpload());
+      dispatch(uploadOverrideSuccess(courseId));
+    }).catch((err) => {
+      dispatch(uploadOverrideFailure(courseId, err));
       if (err.status === 200 && err.data.error_messages.length) {
         const { error_messages: errorMessages, saved, total } = err.data;
         return dispatch(csvUploadError({ errorMessages, saved, total }));
