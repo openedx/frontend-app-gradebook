@@ -5,5 +5,5 @@ nick: grbk
 oeps: {}
 owner: schenedx
 supporting_teams:
-  - masters-neem
+  - masters-devs
 openedx-release: {ref: master}
