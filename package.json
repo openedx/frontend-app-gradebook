@@ -1,10 +1,10 @@
 {
-  "name": "@edx/gradebook",
+  "name": "@edx/frontend-app-gradebook",
   "version": "0.1.0",
   "description": "edx editable gradebook-ui to manipulate grade overrides on subsections",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/edx/gradebook.git"
+    "url": "git+https://github.com/edx/frontend-app-gradebook.git"
   },
   "scripts": {
     "build": "NODE_ENV=production BABEL_ENV=production webpack --config=config/webpack.prod.config.js",
@@ -20,7 +20,7 @@
   },
   "author": "edX",
   "license": "AGPL-3.0",
-  "homepage": "https://github.com/edx/gradebook#readme",
+  "homepage": "https://github.com/edx/frontend-app-gradebook#readme",
   "publishConfig": {
     "access": "public"
   },
