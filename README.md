@@ -1,7 +1,7 @@
-[![Build Status](https://api.travis-ci.org/edx/gradebook.svg?branch=master)](https://travis-ci.org/edx/gradebook) [![Coveralls](https://img.shields.io/coveralls/edx/gradebook.svg?branch=master)](https://coveralls.io/github/edx/gradebook)
-[![npm_version](https://img.shields.io/npm/v/@edx/gradebook.svg)](@edx/gradebook)
-[![npm_downloads](https://img.shields.io/npm/dt/@edx/gradebook.svg)](@edx/gradebook)
-[![license](https://img.shields.io/npm/l/@edx/gradebook.svg)](@edx/gradebook)
+[![Build Status](https://api.travis-ci.org/edx/frontend-app-gradebook.svg?branch=master)](https://travis-ci.org/edx/frontend-app-gradebook) [![Coveralls](https://img.shields.io/coveralls/edx/frontend-app-gradebook.svg?branch=master)](https://coveralls.io/github/edx/frontend-app-gradebook)
+[![npm_version](https://img.shields.io/npm/v/@edx/frontend-app-gradebook.svg)](@edx/frontend-app-gradebook)
+[![npm_downloads](https://img.shields.io/npm/dt/@edx/frontend-app-gradebook.svg)](@edx/frontend-app-gradebook)
+[![license](https://img.shields.io/npm/l/@edx/frontend-app-gradebook.svg)](@edx/frontend-app-gradebook)
 [![semantic-release](https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg)](https://github.com/semantic-release/semantic-release)
 
 # gradebook
@@ -16,7 +16,7 @@ The front-end of our editable Gradebook feature.
 
 To install gradebook into your project:
 ```
-npm i --save @edx/gradebook
+npm i --save @edx/frontend-app-gradebook
 ```
 
 ## Running the UI Standalone
