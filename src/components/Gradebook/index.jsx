@@ -13,12 +13,15 @@ import {
   Table,
   Tabs,
 } from '@edx/paragon';
+import { trackEvent } from '@redux-beacon/segment';
 import queryString from 'query-string';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faDownload, faSpinner } from '@fortawesome/free-solid-svg-icons';
 import { configuration } from '../../config';
 import PageButtons from '../PageButtons';
 import { formatDateForDisplay } from '../../data/actions/utils';
+import { trackingCategory } from '../../data/store';
+
 
 const DECIMAL_PRECISION = 2;
 const GRADE_OVERRIDE_HISTORY_COLUMNS = [{ label: 'Date', key: 'date' }, { label: 'Grader', key: 'grader' },
@@ -280,10 +283,24 @@ export default class Gradebook extends React.Component {
   };
 
   handleClickExportGrades = () => {
+    trackEvent(() => ({
+      name: 'edx.gradebook.reports.grade_export',
+      properties: {
+        category: trackingCategory,
+        courseId: this.props.courseId,
+      },
+    }));
     window.location = this.props.gradeExportUrl;
   };
 
   handleClickDownloadInterventions = () => {
+    trackEvent(() => ({
+      name: 'edx.gradebook.reports.intervention',
+      properties: {
+        category: trackingCategory,
+        courseId: this.props.courseId,
+      },
+    }));
     window.location = this.props.interventionExportUrl;
   };
 
@@ -463,6 +480,13 @@ export default class Gradebook extends React.Component {
         },
       );
       this.updateQueryParams({ courseGradeMin, courseGradeMax });
+      trackEvent(() => ({
+        name: 'edx.gradebook.grades.filter_applied',
+        properties: {
+          category: trackingCategory,
+          courseId: this.props.courseId,
+        },
+      }));
     }
   }
 
