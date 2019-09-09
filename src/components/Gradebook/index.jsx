@@ -831,16 +831,14 @@ export default class Gradebook extends React.Component {
                 onChange={this.handleMaxAssigGradeChange}
               />
               <span className="input-percent-label">%</span>
-              <div className="d-flex align-items-center">
-                <Button
-                  type="submit"
-                  className="btn-outline-secondary"
-                  name="assignmentGradeMinMax"
-                  disabled={!this.props.selectedAssignment}
-                >
-                  Apply
-                </Button>
-              </div>
+              <Button
+                type="submit"
+                className="btn-outline-secondary"
+                name="assignmentGradeMinMax"
+                disabled={!this.props.selectedAssignment}
+              >
+                Apply
+              </Button>
             </form>
           </div>
         </Collapsible>
@@ -868,7 +866,6 @@ export default class Gradebook extends React.Component {
             <span className="input-percent-label">%</span>
             <Button
               buttonType="outline-secondary"
-              className="align-self-center"
               onClick={this.handleCourseGradeFilterApplyButtonClick}
             >
               Apply
