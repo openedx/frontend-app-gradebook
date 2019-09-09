@@ -854,13 +854,6 @@ export default class Gradebook extends React.Component {
                     Results appear in the table below.<br />
                     Grade processing may take a few seconds.
                   </p>
-                  <div>
-                    Showing
-                    <span className="font-weight-bold"> {this.props.filteredUsersCount} </span>
-                    of
-                    <span className="font-weight-bold"> {this.props.totalUsersCount} </span>
-                    total learners
-                  </div>
                   <Table
                     data={this.props.bulkManagementHistory.map(this.formatHistoryRow)}
                     hasFixedColumnWidths
