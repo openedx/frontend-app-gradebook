@@ -294,12 +294,17 @@ export default class Gradebook extends React.Component {
     this.updateQueryParams({ cohort: selectedCohortId });
   };
 
+  // At present, we don't store label and value in google analytics. By setting the label
+  // property of the below events, I want to verify that we can set the label of google anlatyics
+  // The following properties of a google analytics event are:
+  // category (used), name(used), lavel(not used), value(not used)
   handleClickExportGrades = () => {
     trackEvent(() => ({
-      name: 'edx.gradebook.reports.grade_export',
+      name: 'edx.gradebook.reports.grade_export.downloaded',
       properties: {
         category: trackingCategory,
         courseId: this.props.courseId,
+        label: this.props.courseId, // check to see if google analytics captures label property
       },
     }));
     window.location = this.props.gradeExportUrl;
@@ -307,10 +312,11 @@ export default class Gradebook extends React.Component {
 
   handleClickDownloadInterventions = () => {
     trackEvent(() => ({
-      name: 'edx.gradebook.reports.intervention',
+      name: 'edx.gradebook.reports.intervention.downloaded',
       properties: {
         category: trackingCategory,
         courseId: this.props.courseId,
+        label: this.props.courseId, // check to see if google analytics captures label property
       },
     }));
     window.location = this.props.interventionExportUrl;
@@ -497,6 +503,12 @@ export default class Gradebook extends React.Component {
         properties: {
           category: trackingCategory,
           courseId: this.props.courseId,
+          cohort: this.props.selectedCohort,
+          track: this.props.selectedTrack,
+          assignmentType: this.props.selectedAssignmentType,
+          gradeMin: courseGradeMin,
+          gradeMax: courseGradeMax,
+
         },
       }));
     }
