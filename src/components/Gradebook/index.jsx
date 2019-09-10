@@ -223,6 +223,7 @@ export default class Gradebook extends React.Component {
       unique_id: courseId,
       originalFilename,
       id,
+      user: username,
       ...rest
     } = row;
     const resultsText = [
@@ -241,11 +242,21 @@ export default class Gradebook extends React.Component {
       </a>
     );
     const filename = (
-      <span className="original-filename">
+      <span className="wrap-text-in-cell">
         {originalFilename}
       </span>
     );
-    return { resultsSummary, filename, ...rest };
+    const user = (
+      <span className="wrap-text-in-cell">
+        {username}
+      </span>
+    );
+    return {
+      resultsSummary,
+      filename,
+      user,
+      ...rest,
+    };
   };
 
   updateAssignmentTypes = (assignmentType) => {
