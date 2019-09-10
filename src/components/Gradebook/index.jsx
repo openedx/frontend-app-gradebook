@@ -439,14 +439,16 @@ export default class Gradebook extends React.Component {
       const userInformationHeadingLabel = (
         <div>
           <div>Username</div>
-          <div className="font-weight-normal student-key">Student Key</div>
+          <div className="font-weight-normal student-key">Student Key*</div>
         </div>
       );
+      const emailHeadingLabel = 'Email*';
 
       headings = headings.map(heading => ({ label: heading, key: heading }));
 
       // replace username heading label to include additional user data
       headings[0].label = userInformationHeadingLabel;
+      headings[1].label = emailHeadingLabel;
     }
 
     return headings;
@@ -619,8 +621,8 @@ export default class Gradebook extends React.Component {
                         state={this.props.showSpinner ? 'pending' : 'default'}
                         className="ml-2"
                         labels={{
-                          default: 'Interventions',
-                          pending: 'Interventions',
+                          default: 'Interventions*',
+                          pending: 'Interventions*',
                         }}
                         icons={{
                           default: <FontAwesomeIcon className="mr-2" icon={faDownload} />,
@@ -644,6 +646,7 @@ export default class Gradebook extends React.Component {
                   </div>
                 </div>
                 {PageButtons(this.props)}
+                <p>* available for learners in the Master&apos;s track only</p>
                 <Modal
                   open={this.state.modalOpen}
                   title="Edit Grades"
