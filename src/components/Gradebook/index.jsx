@@ -377,7 +377,14 @@ export default class Gradebook extends React.Component {
   formatter = {
     percent: (entries, areGradesFrozen) => entries.map((entry) => {
       const learnerInformation = this.getLearnerInformation(entry);
-      const results = { Username: learnerInformation, Email: entry.email };
+      const results = {
+        Username: (
+          <div><span className="wrap-text-in-cell">{learnerInformation}</span></div>
+        ),
+        Email: (
+          <span className="wrap-text-in-cell">{entry.email}</span>
+        ),
+      };
 
       const assignments = entry.section_breakdown
         .reduce((acc, subsection) => {
@@ -400,7 +407,14 @@ export default class Gradebook extends React.Component {
 
     absolute: (entries, areGradesFrozen) => entries.map((entry) => {
       const learnerInformation = this.getLearnerInformation(entry);
-      const results = { Username: learnerInformation, Email: entry.email };
+      const results = {
+        Username: (
+          <div><span className="wrap-text-in-cell">{learnerInformation}</span></div>
+        ),
+        Email: (
+          <span className="wrap-text-in-cell">{entry.email}</span>
+        ),
+      };
 
       const assignments = entry.section_breakdown
         .reduce((acc, subsection) => {
@@ -444,11 +458,13 @@ export default class Gradebook extends React.Component {
       );
       const emailHeadingLabel = 'Email*';
 
-      headings = headings.map(heading => ({ label: heading, key: heading }));
+      headings = headings.map(heading => ({ label: heading, key: heading, width: 'col' }));
 
       // replace username heading label to include additional user data
       headings[0].label = userInformationHeadingLabel;
+      headings[0].width = 'col-2';
       headings[1].label = emailHeadingLabel;
+      headings[1].width = 'col-2';
     }
 
     return headings;
@@ -642,6 +658,7 @@ export default class Gradebook extends React.Component {
                         this.props.areGradesFrozen,
                       )}
                       rowHeaderColumnKey="username"
+                      hasFixedColumnWidths
                     />
                   </div>
                 </div>
