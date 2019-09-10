@@ -33,7 +33,7 @@ const eventsMap = {
     },
   })),
   [GRADE_UPDATE_SUCCESS]: trackEvent(action => ({
-    name: 'edx.gradebook.grades.grade_override.success',
+    name: 'edx.gradebook.grades.grade_override.succeeded',
     properties: {
       category: trackingCategory,
       courseId: action.courseId,
@@ -41,7 +41,7 @@ const eventsMap = {
     },
   })),
   [GRADE_UPDATE_FAILURE]: trackEvent(action => ({
-    name: 'edx.gradebook.grades.grade_override.failure',
+    name: 'edx.gradebook.grades.grade_override.failed',
     properties: {
       category: trackingCategory,
       courseId: action.courseId,
@@ -49,18 +49,18 @@ const eventsMap = {
     },
   })),
   [UPLOAD_OVERRIDE]: trackEvent(action => ({
-    name: 'edx.gradebook.grades.upload.grades_overrides',
+    name: 'edx.gradebook.grades.upload.grades_overrides.succeeded',
     properties: {
       category: trackingCategory,
       courseId: action.courseId,
-      reportType: action.reportType,
     },
   })),
   [UPLOAD_OVERRIDE_ERROR]: trackEvent(action => ({
-    name: 'edx.gradebook.grades.upload.error',
+    name: 'edx.gradebook.grades.upload.grades_overrides.failed',
     properties: {
       category: trackingCategory,
       courseId: action.courseId,
+      error: action.payload.error,
     },
   })),
 };
