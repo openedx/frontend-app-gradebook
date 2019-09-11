@@ -383,7 +383,14 @@ export default class Gradebook extends React.Component {
   formatter = {
     percent: (entries, areGradesFrozen) => entries.map((entry) => {
       const learnerInformation = this.getLearnerInformation(entry);
-      const results = { Username: learnerInformation, Email: entry.email };
+      const results = {
+        Username: (
+          <div><span className="wrap-text-in-cell">{learnerInformation}</span></div>
+        ),
+        Email: (
+          <span className="wrap-text-in-cell">{entry.email}</span>
+        ),
+      };
 
       const assignments = entry.section_breakdown
         .reduce((acc, subsection) => {
@@ -406,7 +413,14 @@ export default class Gradebook extends React.Component {
 
     absolute: (entries, areGradesFrozen) => entries.map((entry) => {
       const learnerInformation = this.getLearnerInformation(entry);
-      const results = { Username: learnerInformation, Email: entry.email };
+      const results = {
+        Username: (
+          <div><span className="wrap-text-in-cell">{learnerInformation}</span></div>
+        ),
+        Email: (
+          <span className="wrap-text-in-cell">{entry.email}</span>
+        ),
+      };
 
       const assignments = entry.section_breakdown
         .reduce((acc, subsection) => {
@@ -445,14 +459,18 @@ export default class Gradebook extends React.Component {
       const userInformationHeadingLabel = (
         <div>
           <div>Username</div>
-          <div className="font-weight-normal student-key">Student Key</div>
+          <div className="font-weight-normal student-key">Student Key*</div>
         </div>
       );
+      const emailHeadingLabel = 'Email*';
 
-      headings = headings.map(heading => ({ label: heading, key: heading }));
+      headings = headings.map(heading => ({ label: heading, key: heading, width: 'col' }));
 
       // replace username heading label to include additional user data
       headings[0].label = userInformationHeadingLabel;
+      headings[0].width = 'col-2';
+      headings[1].label = emailHeadingLabel;
+      headings[1].width = 'col-2';
     }
 
     return headings;
@@ -631,8 +649,8 @@ export default class Gradebook extends React.Component {
                         state={this.props.showSpinner ? 'pending' : 'default'}
                         className="ml-2"
                         labels={{
-                          default: 'Interventions',
-                          pending: 'Interventions',
+                          default: 'Interventions*',
+                          pending: 'Interventions*',
                         }}
                         icons={{
                           default: <FontAwesomeIcon className="mr-2" icon={faDownload} />,
@@ -652,10 +670,12 @@ export default class Gradebook extends React.Component {
                         this.props.areGradesFrozen,
                       )}
                       rowHeaderColumnKey="username"
+                      hasFixedColumnWidths
                     />
                   </div>
                 </div>
                 {PageButtons(this.props)}
+                <p>* available for learners in the Master&apos;s track only</p>
                 <Modal
                   open={this.state.modalOpen}
                   title="Edit Grades"
