@@ -86,6 +86,7 @@ const mapStateToProps = (state, ownProps) => (
     }),
     interventionExportUrl:
       LmsApiService.getInterventionExportCsvUrl(ownProps.match.params.courseId, {
+        cohort: getCohortNameById(state, state.filters.cohort),
         assignment: (state.filters.assignment || {}).id,
         assignmentType: state.filters.assignmentType,
         assignmentGradeMin: formatMinAssignmentGrade(
