@@ -51,6 +51,7 @@ const mapStateToProps = (state, ownProps) => (
     gradeOverrideCurrentPossibleGradedOverride:
       state.grades.gradeOverrideCurrentPossibleGradedOverride,
     gradeOriginalEarnedGraded: state.grades.gradeOriginalEarnedGraded,
+    gradeOriginalPossibleGraded: state.grades.gradeOriginalPossibleGraded,
     headings: getHeadings(state),
     tracks: state.tracks.results,
     cohorts: state.cohorts.results,

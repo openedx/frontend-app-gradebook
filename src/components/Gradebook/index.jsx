@@ -78,10 +78,12 @@ export default class Gradebook extends React.Component {
     );
 
     let adjustedGradePossible = '';
-
-    if (subsection.attempted) {
-      adjustedGradePossible = ` / ${subsection.score_possible}`;
+    // this check is necessary because there can be a delay between the very first time the grade
+    // is calculcated by the backend.
+    if (this.props.gradeOriginalPossibleGraded != null) {
+      adjustedGradePossible = ` / ${this.props.gradeOriginalPossibleGraded}`;
     }
+
     this.setState({
       modalAssignmentName: `${subsection.subsection_name}`,
       modalOpen: true,
@@ -948,6 +950,7 @@ Gradebook.defaultProps = {
   gradeOverrides: [],
   gradeOverrideCurrentEarnedGradedOverride: null,
   gradeOriginalEarnedGraded: null,
+  gradeOriginalPossibleGraded: null,
   location: {
     search: '',
   },
@@ -1009,6 +1012,7 @@ Gradebook.propTypes = {
   })),
   gradeOverrideCurrentEarnedGradedOverride: PropTypes.number,
   gradeOriginalEarnedGraded: PropTypes.number,
+  gradeOriginalPossibleGraded: PropTypes.number,
   headings: PropTypes.arrayOf(PropTypes.string).isRequired,
   history: PropTypes.shape({
     push: PropTypes.func,
