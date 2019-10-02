@@ -78,10 +78,8 @@ export default class Gradebook extends React.Component {
     );
 
     let adjustedGradePossible = '';
-    // this check is necessary because there can be a delay between the very first time the grade
-    // is calculcated by the backend.
-    if (this.props.gradeOriginalPossibleGraded != null) {
-      adjustedGradePossible = ` / ${this.props.gradeOriginalPossibleGraded}`;
+    if (subsection.attempted) {
+      adjustedGradePossible = subsection.score_possible;
     }
 
     this.setState({
@@ -715,7 +713,12 @@ export default class Gradebook extends React.Component {
                                   name="adjustedGradeValue"
                                   value={this.state.adjustedGradeValue}
                                   onChange={value => this.onChange(value)}
-                                /> {this.state.adjustedGradePossible}
+                                />
+                                {(this.state.adjustedGradePossible
+                                  || this.props.gradeOriginalPossibleGraded)
+                                 && ' / '}
+                                {this.state.adjustedGradePossible
+                                 || this.props.gradeOriginalPossibleGraded}
                               </span>),
                           }]}
                         />)}
