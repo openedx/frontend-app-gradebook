@@ -78,10 +78,10 @@ export default class Gradebook extends React.Component {
     );
 
     let adjustedGradePossible = '';
-
     if (subsection.attempted) {
-      adjustedGradePossible = ` / ${subsection.score_possible}`;
+      adjustedGradePossible = subsection.score_possible;
     }
+
     this.setState({
       modalAssignmentName: `${subsection.subsection_name}`,
       modalOpen: true,
@@ -149,14 +149,20 @@ export default class Gradebook extends React.Component {
       this.props.selectedTrack,
     );
 
+    this.closeAssignmentModal();
+  }
+
+  closeAssignmentModal = () => {
+    this.props.doneViewingAssignment();
     this.setState({
+      adjustedGradePossible: '',
+      adjustedGradeValue: '',
       modalOpen: false,
+      reasonForChange: '',
       updateModuleId: null,
       updateUserId: null,
-      reasonForChange: '',
-      adjustedGradeValue: '',
     });
-  }
+  };
 
   handleAssignmentFilterChange = (assignment) => {
     const selectedFilterOption = this.props.assignmentFilterOptions.find(assig =>
@@ -713,7 +719,12 @@ export default class Gradebook extends React.Component {
                                   name="adjustedGradeValue"
                                   value={this.state.adjustedGradeValue}
                                   onChange={value => this.onChange(value)}
-                                /> {this.state.adjustedGradePossible}
+                                />
+                                {(this.state.adjustedGradePossible
+                                  || this.props.gradeOriginalPossibleGraded)
+                                 && ' / '}
+                                {this.state.adjustedGradePossible
+                                 || this.props.gradeOriginalPossibleGraded}
                               </span>),
                           }]}
                         />)}
@@ -732,13 +743,7 @@ export default class Gradebook extends React.Component {
                       Save Grade
                     </Button>,
                   ]}
-                  onClose={() => this.setState({
-                    modalOpen: false,
-                    adjustedGradeValue: 0,
-                    updateModuleId: null,
-                    updateUserId: null,
-                    reasonForChange: '',
-                  })}
+                  onClose={this.closeAssignmentModal}
                 />
               </div>
               {this.props.showBulkManagement && (
@@ -948,6 +953,7 @@ Gradebook.defaultProps = {
   gradeOverrides: [],
   gradeOverrideCurrentEarnedGradedOverride: null,
   gradeOriginalEarnedGraded: null,
+  gradeOriginalPossibleGraded: null,
   location: {
     search: '',
   },
@@ -1009,6 +1015,8 @@ Gradebook.propTypes = {
   })),
   gradeOverrideCurrentEarnedGradedOverride: PropTypes.number,
   gradeOriginalEarnedGraded: PropTypes.number,
+  gradeOriginalPossibleGraded: PropTypes.number,
+  doneViewingAssignment: PropTypes.func.isRequired,
   headings: PropTypes.arrayOf(PropTypes.string).isRequired,
   history: PropTypes.shape({
     push: PropTypes.func,

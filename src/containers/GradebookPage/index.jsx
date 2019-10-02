@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import Gradebook from '../../components/Gradebook';
 import {
   closeBanner,
+  doneViewingAssignment,
   fetchGradeOverrideHistory,
   fetchGrades,
   fetchMatchingUserGrades,
@@ -51,6 +52,7 @@ const mapStateToProps = (state, ownProps) => (
     gradeOverrideCurrentPossibleGradedOverride:
       state.grades.gradeOverrideCurrentPossibleGradedOverride,
     gradeOriginalEarnedGraded: state.grades.gradeOriginalEarnedGraded,
+    gradeOriginalPossibleGraded: state.grades.gradeOriginalPossibleGraded,
     headings: getHeadings(state),
     tracks: state.tracks.results,
     cohorts: state.cohorts.results,
@@ -114,6 +116,7 @@ const mapStateToProps = (state, ownProps) => (
 );
 
 const mapDispatchToProps = {
+  doneViewingAssignment,
   getUserGrades: fetchGrades,
   fetchGradeOverrideHistory,
   searchForUser: fetchMatchingUserGrades,
