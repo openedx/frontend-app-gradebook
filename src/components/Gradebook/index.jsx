@@ -149,14 +149,17 @@ export default class Gradebook extends React.Component {
       this.props.selectedTrack,
     );
 
-    this.setState({
-      modalOpen: false,
-      updateModuleId: null,
-      updateUserId: null,
-      reasonForChange: '',
-      adjustedGradeValue: '',
-    });
+    this.closeAssignmentModal();
   }
+
+  closeAssignmentModal = () => this.setState({
+    adjustedGradePossible: '',
+    adjustedGradeValue: '',
+    modalOpen: false,
+    reasonForChange: '',
+    updateModuleId: null,
+    updateUserId: null,
+  });
 
   handleAssignmentFilterChange = (assignment) => {
     const selectedFilterOption = this.props.assignmentFilterOptions.find(assig =>
@@ -737,13 +740,7 @@ export default class Gradebook extends React.Component {
                       Save Grade
                     </Button>,
                   ]}
-                  onClose={() => this.setState({
-                    modalOpen: false,
-                    adjustedGradeValue: 0,
-                    updateModuleId: null,
-                    updateUserId: null,
-                    reasonForChange: '',
-                  })}
+                  onClose={this.closeAssignmentModal}
                 />
               </div>
               {this.props.showBulkManagement && (
