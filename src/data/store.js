@@ -26,6 +26,7 @@ const eventsMap = {
       category: trackingCategory,
       courseId: action.courseId,
       track: action.track,
+      label: action.courseId,
       cohort: action.cohort,
       assignmentType: action.assignmentType,
       prev: action.prev,
@@ -34,6 +35,7 @@ const eventsMap = {
   })),
   [GRADE_UPDATE_SUCCESS]: trackEvent(action => ({
     name: 'edx.gradebook.grades.grade_override.succeeded',
+    label: action.courseId,
     properties: {
       category: trackingCategory,
       courseId: action.courseId,
