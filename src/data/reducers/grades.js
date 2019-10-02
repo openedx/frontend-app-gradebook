@@ -10,6 +10,7 @@ import {
   UPLOAD_COMPLETE,
   UPLOAD_ERR,
   GOT_BULK_HISTORY,
+  DONE_VIEWING_ASSIGNMENT,
   GOT_GRADE_OVERRIDE_HISTORY,
   ERROR_FETCHING_GRADE_OVERRIDE_HISTORY,
 } from '../constants/actionTypes/grades';
@@ -55,6 +56,21 @@ const grades = (state = initialState, action) => {
         totalUsersCount: action.totalUsersCount,
         filteredUsersCount: action.filteredUsersCount,
       };
+    case DONE_VIEWING_ASSIGNMENT: {
+      const {
+        gradeOverrideHistoryResults,
+        gradeOverrideCurrentEarnedAllOverride,
+        gradeOverrideCurrentPossibleAllOverride,
+        gradeOverrideCurrentEarnedGradedOverride,
+        gradeOverrideCurrentPossibleGradedOverride,
+        gradeOriginalEarnedAll,
+        gradeOriginalPossibleAll,
+        gradeOriginalEarnedGraded,
+        gradeOriginalPossibleGraded,
+        ...rest
+      } = state;
+      return rest;
+    }
     case GOT_GRADE_OVERRIDE_HISTORY:
       return {
         ...state,

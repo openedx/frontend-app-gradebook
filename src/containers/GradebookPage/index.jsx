@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import Gradebook from '../../components/Gradebook';
 import {
   closeBanner,
+  doneViewingAssignment,
   fetchGradeOverrideHistory,
   fetchGrades,
   fetchMatchingUserGrades,
@@ -115,6 +116,7 @@ const mapStateToProps = (state, ownProps) => (
 );
 
 const mapDispatchToProps = {
+  doneViewingAssignment,
   getUserGrades: fetchGrades,
   fetchGradeOverrideHistory,
   searchForUser: fetchMatchingUserGrades,

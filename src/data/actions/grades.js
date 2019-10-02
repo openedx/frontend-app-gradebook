@@ -16,6 +16,7 @@ import {
   GOT_BULK_HISTORY,
   BULK_HISTORY_ERR,
   GOT_GRADE_OVERRIDE_HISTORY,
+  DONE_VIEWING_ASSIGNMENT,
   ERROR_FETCHING_GRADE_OVERRIDE_HISTORY,
   UPLOAD_OVERRIDE,
   UPLOAD_OVERRIDE_ERROR,
@@ -174,6 +175,9 @@ const formatGradeOverrideForDisplay = historyArray => historyArray.map(item => (
   adjustedGrade: item.earned_graded_override,
 }));
 
+const doneViewingAssignment = () => dispatch => dispatch({
+  type: DONE_VIEWING_ASSIGNMENT,
+});
 const fetchGradeOverrideHistory = (subsectionId, userId) => (
   dispatch =>
     LmsApiService.fetchGradeOverrideHistory(subsectionId, userId)
@@ -319,6 +323,7 @@ export {
   closeBanner,
   submitFileUploadFormData,
   fetchBulkUpgradeHistory,
+  doneViewingAssignment,
   fetchGradeOverrideHistory,
   updateGradesIfAssignmentGradeFiltersSet,
 };

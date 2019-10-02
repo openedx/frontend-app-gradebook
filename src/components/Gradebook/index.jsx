@@ -152,14 +152,17 @@ export default class Gradebook extends React.Component {
     this.closeAssignmentModal();
   }
 
-  closeAssignmentModal = () => this.setState({
-    adjustedGradePossible: '',
-    adjustedGradeValue: '',
-    modalOpen: false,
-    reasonForChange: '',
-    updateModuleId: null,
-    updateUserId: null,
-  });
+  closeAssignmentModal = () => {
+    this.props.doneViewingAssignment();
+    this.setState({
+      adjustedGradePossible: '',
+      adjustedGradeValue: '',
+      modalOpen: false,
+      reasonForChange: '',
+      updateModuleId: null,
+      updateUserId: null,
+    });
+  };
 
   handleAssignmentFilterChange = (assignment) => {
     const selectedFilterOption = this.props.assignmentFilterOptions.find(assig =>
@@ -1013,6 +1016,7 @@ Gradebook.propTypes = {
   gradeOverrideCurrentEarnedGradedOverride: PropTypes.number,
   gradeOriginalEarnedGraded: PropTypes.number,
   gradeOriginalPossibleGraded: PropTypes.number,
+  doneViewingAssignment: PropTypes.func.isRequired,
   headings: PropTypes.arrayOf(PropTypes.string).isRequired,
   history: PropTypes.shape({
     push: PropTypes.func,
