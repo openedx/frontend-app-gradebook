@@ -760,7 +760,7 @@ export default class Gradebook extends React.Component {
                     />
                     <StatusAlert
                       alertType="success"
-                      dialog="CSV successfully uploaded. Refresh the page to review results."
+                      dialog="CSV processing. File uploads may take several minutes to complete"
                       open={this.props.uploadSuccess}
                       dismissible={false}
                     />
