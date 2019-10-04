@@ -309,8 +309,7 @@ export default class Gradebook extends React.Component {
       name: 'edx.gradebook.reports.grade_export.downloaded',
       properties: {
         category: trackingCategory,
-        courseId: this.props.courseId,
-        label: this.props.courseId, // check to see if google analytics captures label property
+        label: this.props.courseId,
       },
     }));
     window.location = this.props.gradeExportUrl;
@@ -321,8 +320,7 @@ export default class Gradebook extends React.Component {
       name: 'edx.gradebook.reports.intervention.downloaded',
       properties: {
         category: trackingCategory,
-        courseId: this.props.courseId,
-        label: this.props.courseId, // check to see if google analytics captures label property
+        label: this.props.courseId,
       },
     }));
     window.location = this.props.interventionExportUrl;
@@ -526,7 +524,7 @@ export default class Gradebook extends React.Component {
         name: 'edx.gradebook.grades.filter_applied',
         properties: {
           category: trackingCategory,
-          courseId: this.props.courseId,
+          label: this.props.courseId,
           cohort: this.props.selectedCohort,
           track: this.props.selectedTrack,
           assignmentType: this.props.selectedAssignmentType,
