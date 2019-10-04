@@ -6,9 +6,10 @@ import { createMiddleware } from 'redux-beacon';
 import Segment, { trackEvent, trackPageView } from '@redux-beacon/segment';
 import { GOT_ROLES } from './constants/actionTypes/roles';
 import {
-  GOT_GRADES, GRADE_UPDATE_SUCCESS, GRADE_UPDATE_FAILURE,
-  UPLOAD_OVERRIDE, UPLOAD_OVERRIDE_ERROR,
+  GOT_GRADES, GRADE_UPDATE_SUCCESS, GRADE_UPDATE_FAILURE, UPLOAD_OVERRIDE,
+  UPLOAD_OVERRIDE_ERROR, BULK_GRADE_REPORT_DOWNLOADED, INTERVENTION_REPORT_DOWNLOADED,
 } from './constants/actionTypes/grades';
+import { UPDATE_COURSE_GRADE_LIMITS } from './constants/actionTypes/filters';
 
 import reducers from './reducers';
 
@@ -61,6 +62,28 @@ const eventsMap = {
       category: trackingCategory,
       label: action.courseId,
       error: action.payload.error,
+    },
+  })),
+  [UPDATE_COURSE_GRADE_LIMITS]: trackEvent(action => ({
+    name: 'edx.gradebook.grades.filter_applied',
+    label: action.courseId,
+    properties: {
+      category: trackingCategory,
+      courseId: action.courseId,
+    },
+  })),
+  [BULK_GRADE_REPORT_DOWNLOADED]: trackEvent(action => ({
+    name: 'edx.gradebook.reports.grade_export.downloaded',
+    properties: {
+      category: trackingCategory,
+      courseId: action.courseId,
+    },
+  })),
+  [INTERVENTION_REPORT_DOWNLOADED]: trackEvent(action => ({
+    name: 'edx.gradebook.reports.intervention.downloaded',
+    properties: {
+      category: trackingCategory,
+      courseId: action.courseId,
     },
   })),
 };
