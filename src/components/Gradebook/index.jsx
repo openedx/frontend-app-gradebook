@@ -13,7 +13,6 @@ import {
   Table,
   Tabs,
 } from '@edx/paragon';
-import { trackEvent } from '@redux-beacon/segment';
 import queryString from 'query-string';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faDownload, faSpinner, faFilter } from '@fortawesome/free-solid-svg-icons';
@@ -21,7 +20,6 @@ import { configuration } from '../../config';
 import PageButtons from '../PageButtons';
 import Drawer from '../Drawer';
 import { formatDateForDisplay } from '../../data/actions/utils';
-import { trackingCategory } from '../../data/store';
 
 
 const DECIMAL_PRECISION = 2;
@@ -305,24 +303,12 @@ export default class Gradebook extends React.Component {
   // The following properties of a google analytics event are:
   // category (used), name(used), lavel(not used), value(not used)
   handleClickExportGrades = () => {
-    trackEvent(() => ({
-      name: 'edx.gradebook.reports.grade_export.downloaded',
-      properties: {
-        category: trackingCategory,
-        label: this.props.courseId,
-      },
-    }));
+    this.props.downloadBulkGradesReport(this.props.courseId);
     window.location = this.props.gradeExportUrl;
   };
 
   handleClickDownloadInterventions = () => {
-    trackEvent(() => ({
-      name: 'edx.gradebook.reports.intervention.downloaded',
-      properties: {
-        category: trackingCategory,
-        label: this.props.courseId,
-      },
-    }));
+    this.props.downloadInterventionReport(this.props.courseId);
     window.location = this.props.interventionExportUrl;
   };
 
@@ -508,6 +494,7 @@ export default class Gradebook extends React.Component {
       this.props.updateCourseGradeFilter(
         courseGradeMin,
         courseGradeMax,
+        this.props.courseId,
       );
       this.props.getUserGrades(
         this.props.courseId,
@@ -520,19 +507,6 @@ export default class Gradebook extends React.Component {
         },
       );
       this.updateQueryParams({ courseGradeMin, courseGradeMax });
-      trackEvent(() => ({
-        name: 'edx.gradebook.grades.filter_applied',
-        properties: {
-          category: trackingCategory,
-          label: this.props.courseId,
-          cohort: this.props.selectedCohort,
-          track: this.props.selectedTrack,
-          assignmentType: this.props.selectedAssignmentType,
-          gradeMin: courseGradeMin,
-          gradeMax: courseGradeMax,
-
-        },
-      }));
     }
   }
 
@@ -1059,4 +1033,6 @@ Gradebook.propTypes = {
   initializeFilters: PropTypes.func.isRequired,
   updateGradesIfAssignmentGradeFiltersSet: PropTypes.func.isRequired,
   updateCourseGradeFilter: PropTypes.func.isRequired,
+  downloadBulkGradesReport: PropTypes.func.isRequired,
+  downloadInterventionReport: PropTypes.func.isRequired,
 };

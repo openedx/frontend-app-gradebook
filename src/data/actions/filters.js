@@ -33,11 +33,12 @@ const updateAssignmentLimits = (minGrade, maxGrade) => ({
   data: { minGrade, maxGrade },
 });
 
-const updateCourseGradeFilter = (courseGradeMin, courseGradeMax) => ({
+const updateCourseGradeFilter = (courseGradeMin, courseGradeMax, courseId) => ({
   type: UPDATE_COURSE_GRADE_LIMITS,
   data: {
     courseGradeMin,
     courseGradeMax,
+    courseId,
   },
 });
 

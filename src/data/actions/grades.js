@@ -20,6 +20,8 @@ import {
   ERROR_FETCHING_GRADE_OVERRIDE_HISTORY,
   UPLOAD_OVERRIDE,
   UPLOAD_OVERRIDE_ERROR,
+  BULK_GRADE_REPORT_DOWNLOADED,
+  INTERVENTION_REPORT_DOWNLOADED,
 } from '../constants/actionTypes/grades';
 import LmsApiService from '../services/LmsApiService';
 import { sortAlphaAsc, formatDateForDisplay } from './utils';
@@ -88,6 +90,16 @@ const gradeUpdateFailure = (courseId, error) => ({
 });
 const uploadOverrideSuccess = courseId => ({
   type: UPLOAD_OVERRIDE,
+  courseId,
+});
+// This action is designed to drive analytics events only. Doesn't cause change in redux state
+const downloadBulkGradesReport = courseId => ({
+  type: BULK_GRADE_REPORT_DOWNLOADED,
+  courseId,
+});
+// This action is designed to drive analytics events only. Doesn't cause change in redux state
+const downloadInterventionReport = courseId => ({
+  type: INTERVENTION_REPORT_DOWNLOADED,
   courseId,
 });
 const uploadOverrideFailure = (courseId, error) => ({
@@ -326,4 +338,6 @@ export {
   doneViewingAssignment,
   fetchGradeOverrideHistory,
   updateGradesIfAssignmentGradeFiltersSet,
+  downloadBulkGradesReport,
+  downloadInterventionReport,
 };
