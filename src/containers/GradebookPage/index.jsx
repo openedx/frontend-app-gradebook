@@ -13,6 +13,8 @@ import {
   toggleGradeFormat,
   updateGrades,
   updateGradesIfAssignmentGradeFiltersSet,
+  downloadBulkGradesReport,
+  downloadInterventionReport,
 } from '../../data/actions/grades';
 import { fetchCohorts } from '../../data/actions/cohorts';
 import { fetchTracks } from '../../data/actions/tracks';
@@ -135,6 +137,8 @@ const mapDispatchToProps = {
   updateAssignmentLimits,
   updateGradesIfAssignmentGradeFiltersSet,
   updateCourseGradeFilter,
+  downloadBulkGradesReport,
+  downloadInterventionReport,
 };
 
 const GradebookPage = connect(
