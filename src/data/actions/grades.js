@@ -92,10 +92,12 @@ const uploadOverrideSuccess = courseId => ({
   type: UPLOAD_OVERRIDE,
   courseId,
 });
+// This action for google analytics only. Doesn't change redux state.
 const downloadBulkGradesReport = courseId => ({
   type: BULK_GRADE_REPORT_DOWNLOADED,
   courseId,
 });
+// This action for google analytics only. Doesn't change redux state.
 const downloadInterventionReport = courseId => ({
   type: INTERVENTION_REPORT_DOWNLOADED,
   courseId,
