@@ -69,21 +69,21 @@ const eventsMap = {
     label: action.courseId,
     properties: {
       category: trackingCategory,
-      courseId: action.courseId,
+      label: action.courseId,
     },
   })),
   [BULK_GRADE_REPORT_DOWNLOADED]: trackEvent(action => ({
     name: 'edx.gradebook.reports.grade_export.downloaded',
     properties: {
       category: trackingCategory,
-      courseId: action.courseId,
+      label: action.courseId,
     },
   })),
   [INTERVENTION_REPORT_DOWNLOADED]: trackEvent(action => ({
     name: 'edx.gradebook.reports.intervention.downloaded',
     properties: {
       category: trackingCategory,
-      courseId: action.courseId,
+      label: action.courseId,
     },
   })),
 };
