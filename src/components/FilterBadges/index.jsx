@@ -6,7 +6,7 @@ import initialFilters from '../../data/constants/filters';
 /*
   Active filter values are stored in GradebookPage State, passed into props in selected* variables
   The displayed numbers on the page are in the Gradebook State
-  The only real way to know if a filter is 'active' is if it has a value other than its initial value
+  A filter is considered 'active' is if it has a value other than its initial value
 
   If we want to 'disable' a filter, we must fire off an action to update
   the Page state and remove the 'functional' filters
