@@ -20,6 +20,8 @@ import { configuration } from '../../config';
 import PageButtons from '../PageButtons';
 import Drawer from '../Drawer';
 import { formatDateForDisplay } from '../../data/actions/utils';
+import initialFilters from '../../data/constants/filters';
+import FilterBadges from '../FilterBadges';
 
 
 const DECIMAL_PRECISION = 2;
@@ -515,6 +517,32 @@ export default class Gradebook extends React.Component {
     return valueAsInt >= 0 && valueAsInt <= 100;
   };
 
+  handleFilterBadgeClose = filterNames => () => {
+    this.props.resetFilters(filterNames);
+    const queryParams = {};
+    filterNames.forEach((filterName) => {
+      queryParams[filterName] = false;
+    });
+    this.updateQueryParams(queryParams);
+    const stateUpdate = {};
+    const rangeStateFilters = ['assignmentGradeMin', 'assignmentGradeMax', 'courseGradeMin', 'courseGradeMax'];
+    rangeStateFilters.forEach((filterName) => {
+      if (filterNames.includes(filterName)) {
+        stateUpdate[filterName] = initialFilters[filterName];
+      }
+    });
+    this.setState(
+      stateUpdate,
+      () => {
+        this.props.getUserGrades(
+          this.props.courseId,
+          this.props.selectedCohort,
+          this.props.selectedTrack,
+          this.props.selectedAssignmentType,
+        );
+      },
+    );
+  }
 
   render() {
     return (
@@ -571,6 +599,7 @@ export default class Gradebook extends React.Component {
                     <small className="form-text text-muted search-help-text">Search by username, email, or student key</small>
                   </div>
                 </div>
+                {FilterBadges(this.props, this.handleFilterBadgeClose)}
                 <StatusAlert
                   alertType="success"
                   dialog="The grade has been successfully edited. You may see a slight delay before updates appear in the Gradebook."
@@ -1002,6 +1031,7 @@ Gradebook.propTypes = {
   selectedAssignment: PropTypes.string,
   selectedCohort: PropTypes.string,
   selectedTrack: PropTypes.string,
+  resetFilters: PropTypes.func.isRequired,
   showSpinner: PropTypes.bool,
   showSuccess: PropTypes.bool.isRequired,
   toggleFormat: PropTypes.func.isRequired,

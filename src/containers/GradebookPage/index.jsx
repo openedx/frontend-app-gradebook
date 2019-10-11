@@ -18,7 +18,7 @@ import {
 } from '../../data/actions/grades';
 import { fetchCohorts } from '../../data/actions/cohorts';
 import { fetchTracks } from '../../data/actions/tracks';
-import { initializeFilters, updateAssignmentFilter, updateAssignmentLimits, updateCourseGradeFilter } from '../../data/actions/filters';
+import { initializeFilters, resetFilters, updateAssignmentFilter, updateAssignmentLimits, updateCourseGradeFilter } from '../../data/actions/filters';
 import stateHasMastersTrack from '../../data/selectors/tracks';
 import {
   getBulkManagementHistory,
@@ -62,6 +62,10 @@ const mapStateToProps = (state, ownProps) => (
     selectedCohort: state.filters.cohort,
     selectedAssignmentType: state.filters.assignmentType,
     selectedAssignment: (state.filters.assignment || {}).label,
+    selectedAssignmentGradeMin: state.filters.assignmentGradeMin,
+    selectedAssignmentGradeMax: state.filters.assignmentGradeMax,
+    selectedCourseGradeMin: state.filters.courseGradeMin,
+    selectedCourseGradeMax: state.filters.courseGradeMax,
     format: state.grades.gradeFormat,
     showSuccess: state.grades.showSuccess,
     errorFetchingGradeOverrideHistory: state.grades.errorFetchingOverrideHistory,
@@ -133,6 +137,7 @@ const mapDispatchToProps = {
   getRoles,
   submitFileUploadFormData,
   initializeFilters,
+  resetFilters,
   updateAssignmentFilter,
   updateAssignmentLimits,
   updateGradesIfAssignmentGradeFiltersSet,
