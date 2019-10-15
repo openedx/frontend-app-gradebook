@@ -21,7 +21,7 @@ import PageButtons from '../PageButtons';
 import Drawer from '../Drawer';
 import { formatDateForDisplay } from '../../data/actions/utils';
 import initialFilters from '../../data/constants/filters';
-import FilterBadges from '../FilterBadges';
+import ConnectedFilterBadges from '../FilterBadges';
 
 
 const DECIMAL_PRECISION = 2;
@@ -531,16 +531,12 @@ export default class Gradebook extends React.Component {
         stateUpdate[filterName] = initialFilters[filterName];
       }
     });
-    this.setState(
-      stateUpdate,
-      () => {
-        this.props.getUserGrades(
-          this.props.courseId,
-          this.props.selectedCohort,
-          this.props.selectedTrack,
-          this.props.selectedAssignmentType,
-        );
-      },
+    this.setState(stateUpdate);
+    this.props.getUserGrades(
+      this.props.courseId,
+      this.props.selectedCohort,
+      this.props.selectedTrack,
+      this.props.selectedAssignmentType,
     );
   }
 
@@ -569,7 +565,7 @@ export default class Gradebook extends React.Component {
             }
             <Tabs labels={this.getActiveTabs()}>
               <div>
-                <h4>Step 1: Filter the Grade Report</h4>
+                <h4>Step 1: Filter the Grade Reporb</h4>
                 <div className="d-flex justify-content-between" >
                   {this.props.showSpinner && <div className="spinner-overlay"><Icon className="fa fa-spinner fa-spin fa-5x color-black" /></div>}
                   <Button className="btn-primary align-self-start" onClick={toggleFilterDrawer}><FontAwesomeIcon icon={faFilter} /> Edit Filters</Button>
@@ -599,7 +595,9 @@ export default class Gradebook extends React.Component {
                     <small className="form-text text-muted search-help-text">Search by username, email, or student key</small>
                   </div>
                 </div>
-                {FilterBadges(this.props, this.handleFilterBadgeClose)}
+                <ConnectedFilterBadges
+                  handleFilterBadgeClose={this.handleFilterBadgeClose}
+                />
                 <StatusAlert
                   alertType="success"
                   dialog="The grade has been successfully edited. You may see a slight delay before updates appear in the Gradebook."
