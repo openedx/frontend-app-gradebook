@@ -9,7 +9,6 @@ import { IntlProvider } from 'react-intl';
 import {
   faFacebookSquare,
   faTwitterSquare,
-  faYoutubeSquare,
   faLinkedin,
   faRedditSquare,
 } from '@fortawesome/free-brands-svg-icons';
@@ -34,12 +33,6 @@ const socialLinks = [
     url: process.env.TWITTER_URL,
     icon: <FontAwesomeIcon icon={faTwitterSquare} className="social-icon" size="2x" />,
     screenReaderText: 'Follow edX on Twitter',
-  },
-  {
-    title: 'Youtube',
-    url: process.env.YOU_TUBE_URL,
-    icon: <FontAwesomeIcon icon={faYoutubeSquare} className="social-icon" size="2x" />,
-    screenReaderText: 'Subscribe to the edX YouTube channel',
   },
   {
     title: 'LinkedIn',
