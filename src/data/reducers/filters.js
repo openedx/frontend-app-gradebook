@@ -1,6 +1,8 @@
 import { GOT_GRADES, FILTER_BY_ASSIGNMENT_TYPE } from '../constants/actionTypes/grades';
 
-import { INITIALIZE_FILTERS, UPDATE_ASSIGNMENT_FILTER, UPDATE_ASSIGNMENT_LIMITS, UPDATE_COURSE_GRADE_LIMITS } from '../constants/actionTypes/filters';
+import { INITIALIZE_FILTERS, UPDATE_ASSIGNMENT_FILTER, UPDATE_ASSIGNMENT_LIMITS, UPDATE_COURSE_GRADE_LIMITS, RESET_FILTERS } from '../constants/actionTypes/filters';
+
+import initialFilters from '../constants/filters';
 
 import { getAssignmentsFromResultsSubstate, chooseRelevantAssignmentData } from '../selectors/filters';
 
@@ -41,6 +43,13 @@ const reducer = (state = initialState, action) => {
         track: action.track,
         cohort: action.cohort,
       };
+    }
+    case RESET_FILTERS: {
+      const result = { ...state };
+      action.filterNames.forEach((filterName) => {
+        result[filterName] = initialFilters[filterName];
+      });
+      return result;
     }
     case UPDATE_ASSIGNMENT_FILTER:
       return {

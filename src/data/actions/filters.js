@@ -1,14 +1,15 @@
-import { INITIALIZE_FILTERS, UPDATE_ASSIGNMENT_FILTER, UPDATE_ASSIGNMENT_LIMITS, UPDATE_COURSE_GRADE_LIMITS } from '../constants/actionTypes/filters';
+import initialFilters from '../constants/filters';
+import { INITIALIZE_FILTERS, RESET_FILTERS, UPDATE_ASSIGNMENT_FILTER, UPDATE_ASSIGNMENT_LIMITS, UPDATE_COURSE_GRADE_LIMITS } from '../constants/actionTypes/filters';
 
 const initializeFilters = ({
-  assignment = '',
-  assignmentType = '',
-  track = '',
-  cohort = '',
-  assignmentGradeMin = '0',
-  assignmentGradeMax = '100',
-  courseGradeMin = '0',
-  courseGradeMax = '100',
+  assignment = initialFilters.assignment,
+  assignmentType = initialFilters.assignmentType,
+  track = initialFilters.track,
+  cohort = initialFilters.cohort,
+  assignmentGradeMin = initialFilters.assignmentGradeMin,
+  assignmentGradeMax = initialFilters.assignmentGradeMax,
+  courseGradeMin = initialFilters.courseGradeMin,
+  courseGradeMax = initialFilters.assignmentGradeMax,
 }) => ({
   type: INITIALIZE_FILTERS,
   data: {
@@ -21,6 +22,11 @@ const initializeFilters = ({
     courseGradeMin,
     courseGradeMax,
   },
+});
+
+const resetFilters = filterNames => ({
+  type: RESET_FILTERS,
+  filterNames,
 });
 
 const updateAssignmentFilter = assignment => ({
@@ -43,6 +49,6 @@ const updateCourseGradeFilter = (courseGradeMin, courseGradeMax, courseId) => ({
 });
 
 export {
-  initializeFilters, updateAssignmentFilter,
+  initializeFilters, resetFilters, updateAssignmentFilter,
   updateAssignmentLimits, updateCourseGradeFilter,
 };

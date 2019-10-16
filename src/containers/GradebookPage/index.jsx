@@ -18,7 +18,7 @@ import {
 } from '../../data/actions/grades';
 import { fetchCohorts } from '../../data/actions/cohorts';
 import { fetchTracks } from '../../data/actions/tracks';
-import { initializeFilters, updateAssignmentFilter, updateAssignmentLimits, updateCourseGradeFilter } from '../../data/actions/filters';
+import { initializeFilters, resetFilters, updateAssignmentFilter, updateAssignmentLimits, updateCourseGradeFilter } from '../../data/actions/filters';
 import stateHasMastersTrack from '../../data/selectors/tracks';
 import {
   getBulkManagementHistory,
@@ -133,6 +133,7 @@ const mapDispatchToProps = {
   getRoles,
   submitFileUploadFormData,
   initializeFilters,
+  resetFilters,
   updateAssignmentFilter,
   updateAssignmentLimits,
   updateGradesIfAssignmentGradeFiltersSet,
