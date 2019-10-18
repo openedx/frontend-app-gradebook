@@ -824,7 +824,7 @@ export default class Gradebook extends React.Component {
           </React.Fragment>
         }
       >
-        <Collapsible title="Assignments" isOpen className="filter-group">
+        <Collapsible title="Assignments" isOpen className="filter-group mb-3">
           <div>
             <div className="student-filters">
               <span className="label">
@@ -889,7 +889,7 @@ export default class Gradebook extends React.Component {
             </form>
           </div>
         </Collapsible>
-        <Collapsible title="Overall Grade" isOpen className="filter-group">
+        <Collapsible title="Overall Grade" isOpen className="filter-group mb-3">
           <div className="d-flex justify-content-between align-items-center">
             <InputText
               value={this.state.courseGradeMin}
@@ -919,7 +919,7 @@ export default class Gradebook extends React.Component {
             </Button>
           </div>
         </Collapsible>
-        <Collapsible title="Student Groups" isOpen className="filter-group">
+        <Collapsible title="Student Groups" isOpen className="filter-group mb-3">
           <InputSelect
             name="Tracks"
             aria-label="Tracks"
