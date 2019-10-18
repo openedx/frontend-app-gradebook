@@ -28,7 +28,7 @@
     "@edx/edx-bootstrap": "^0.4.3",
     "@edx/frontend-auth": "^4.0.0",
     "@edx/frontend-component-footer": "^4.1.5",
-    "@edx/paragon": "^4.2.3",
+    "@edx/paragon": "^7.1.5",
     "@fortawesome/fontawesome-svg-core": "^1.2.25",
     "@fortawesome/free-brands-svg-icons": "^5.11.2",
     "@fortawesome/free-solid-svg-icons": "^5.11.2",
