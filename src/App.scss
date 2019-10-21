@@ -5,8 +5,6 @@ $fa-font-path: "~font-awesome/fonts";
 @import "~font-awesome/scss/font-awesome";
 
 $input-focus-box-shadow: $input-box-shadow; // hack to get upgrade to paragon 4.0.0 to work
-//@import "~@edx/paragon/src/SearchField/SearchField";
-//@import "~@edx/paragon/src/Collapsible/Collapsible";
 
 @import "~@edx/frontend-component-footer/src/lib/scss/site-footer";
 
