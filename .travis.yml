@@ -3,9 +3,7 @@ node_js: 12
 notifications:
   email:
     recipients:
-      - adusenbery@edx.org
-      - rreilly@edx.org
-      - schen@edx.org
+      - masters-grades@edx.org
     on_success: never
     on_failure: always
   webhooks: https://www.travisbuddy.com/
