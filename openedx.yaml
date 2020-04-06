@@ -2,8 +2,12 @@
 # http://open-edx-proposals.readthedocs.io/en/latest/oeps/oep-0002.html#specification
 
 nick: grbk
-oeps: {}
-owner: schenedx
-supporting_teams:
-  - masters-devs
+tags:
+  - frontend-app
+  - masters
+oeps:
+  oep-2: true    # Repository metadata
 openedx-release: {ref: master}
+owner:
+  type: team
+  team: edx/masters-devs-gta
