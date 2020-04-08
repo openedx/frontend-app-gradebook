@@ -98,7 +98,7 @@ module.exports = Merge.smart(commonConfig, {
     }),
     new webpack.EnvironmentPlugin({
       NODE_ENV: 'development',
-      BASE_URL: 'localhost:1994',
+      BASE_URL: 'localhost:19000/gradebook',
       LMS_BASE_URL: 'http://localhost:18000',
       LOGIN_URL: 'http://localhost:18000/login',
       LOGOUT_URL: 'http://localhost:18000/login',
