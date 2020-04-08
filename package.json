@@ -8,6 +8,7 @@
   },
   "scripts": {
     "build": "NODE_ENV=production BABEL_ENV=production webpack --config=config/webpack.prod.config.js",
+    "dev-build": "NODE_ENV=development BABEL_ENV=development webpack --config=config/webpack.dev.config.js",
     "coveralls": "cat ./coverage/lcov.info | coveralls",
     "is-es5": "es-check es5 ./dist/*.js",
     "lint": "eslint --ext .js --ext .jsx .",
