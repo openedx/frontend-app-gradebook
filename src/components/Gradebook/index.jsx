@@ -456,7 +456,7 @@ export default class Gradebook extends React.Component {
       );
       const emailHeadingLabel = 'Email*';
 
-      headings = headings.map(heading => ({ label: heading, key: heading, width: 'col' }));
+      headings = headings.map(heading => ({ label: heading, key: heading, width: 'col-1' }));
 
       // replace username heading label to include additional user data
       headings[0].label = userInformationHeadingLabel;
