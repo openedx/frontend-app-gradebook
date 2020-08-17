@@ -1,3 +1,4 @@
+import { getAuthenticatedHttpClient } from '@edx/frontend-platform/auth';
 import {
   STARTED_FETCHING_GRADES,
   FINISHED_FETCHING_GRADES,
@@ -27,7 +28,6 @@ import LmsApiService from '../services/LmsApiService';
 import { sortAlphaAsc, formatDateForDisplay } from './utils';
 import { formatMaxAssignmentGrade, formatMinAssignmentGrade, formatMaxCourseGrade, formatMinCourseGrade } from '../selectors/grades';
 import { getFilters } from '../selectors/filters';
-import apiClient from '../apiClient';
 
 const defaultAssignmentFilter = 'All';
 
@@ -230,7 +230,7 @@ const fetchMatchingUserGrades = (
 const fetchPrevNextGrades = (endpoint, courseId, cohort, track, assignmentType) => (
   (dispatch) => {
     dispatch(startedFetchingGrades());
-    return apiClient.get(endpoint)
+    return getAuthenticatedHttpClient().get(endpoint)
       .then(response => response.data)
       .then((data) => {
         dispatch(gotGrades({

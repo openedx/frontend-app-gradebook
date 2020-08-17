@@ -14,7 +14,7 @@ export default function PageButtons({
     >
       <Button
         style={{ margin: '20px' }}
-        buttonType="outline-primary"
+        variant="outline-primary"
         disabled={!prevPage}
         onClick={() =>
           getPrevNextGrades(
@@ -29,7 +29,7 @@ export default function PageButtons({
       </Button>
       <Button
         style={{ margin: '20px' }}
-        buttonType="outline-primary"
+        variant="outline-primary"
         disabled={!nextPage}
         onClick={() =>
           getPrevNextGrades(

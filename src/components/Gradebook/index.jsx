@@ -11,6 +11,7 @@ import {
   StatefulButton,
   StatusAlert,
   Table,
+  Tab,
   Tabs,
 } from '@edx/paragon';
 import queryString from 'query-string';
@@ -563,8 +564,8 @@ export default class Gradebook extends React.Component {
                 You are not authorized to view the gradebook for this course.
               </div>
             }
-            <Tabs labels={this.getActiveTabs()}>
-              <div>
+            <Tabs defaultActiveKey="grades">
+              <Tab eventKey="grades" title="Grades">
                 <h4>Step 1: Filter the Grade Report</h4>
                 <div className="d-flex justify-content-between" >
                   {this.props.showSpinner && <div className="spinner-overlay"><Icon className="fa fa-spinner fa-spin fa-5x color-black" /></div>}
@@ -635,7 +636,7 @@ export default class Gradebook extends React.Component {
                   {this.props.showBulkManagement && (
                     <div>
                       <StatefulButton
-                        buttonType="outline-primary"
+                        variant="outline-primary"
                         onClick={this.handleClickExportGrades}
                         state={this.props.showSpinner ? 'pending' : 'default'}
                         labels={{
@@ -649,7 +650,7 @@ export default class Gradebook extends React.Component {
                         disabledStates={['pending']}
                       />
                       <StatefulButton
-                        buttonType="outline-primary"
+                        variant="outline-primary"
                         onClick={this.handleClickDownloadInterventions}
                         state={this.props.showSpinner ? 'pending' : 'default'}
                         className="ml-2"
@@ -736,7 +737,7 @@ export default class Gradebook extends React.Component {
                   )}
                   buttons={[
                     <Button
-                      buttonType="primary"
+                      variant="primary"
                       onClick={this.handleAdjustedGradeClick}
                     >
                       Save Grade
@@ -744,9 +745,9 @@ export default class Gradebook extends React.Component {
                   ]}
                   onClose={this.closeAssignmentModal}
                 />
-              </div>
+              </Tab>
               {this.props.showBulkManagement && (
-                <div>
+                <Tab eventKey="bulk_management" title="Bulk Management">
                   <h4>Use this feature by downloading a CSV for bulk management,
                     overriding grades locally, and coming back here to upload.
                   </h4>
@@ -773,7 +774,7 @@ export default class Gradebook extends React.Component {
                     />
                   </form>
                   <Button
-                    buttonType="primary"
+                    variant="primary"
                     onClick={this.handleClickImportGrades}
                   >
                     Import Grades
@@ -813,7 +814,7 @@ export default class Gradebook extends React.Component {
                     ]}
                     className="table-striped"
                   />
-                </div>)}
+                </Tab>)}
             </Tabs>
           </div>
         )}
@@ -824,13 +825,14 @@ export default class Gradebook extends React.Component {
           </React.Fragment>
         }
       >
-        <Collapsible title="Assignments" isOpen className="filter-group mb-3">
+        <Collapsible title="Assignments" open className="filter-group mb-3">
           <div>
             <div className="student-filters">
               <span className="label">
                 Assignment Types:
               </span>
               <InputSelect
+                label="Assignment Types"
                 name="assignment-types"
                 aria-label="Assignment Types"
                 value={this.props.selectedAssignmentType}
@@ -844,6 +846,7 @@ export default class Gradebook extends React.Component {
                 Assignment:
               </span>
               <InputSelect
+                label="Assignment"
                 name="assignment"
                 aria-label="Assignment"
                 value={this.props.selectedAssignment}
@@ -889,7 +892,7 @@ export default class Gradebook extends React.Component {
             </form>
           </div>
         </Collapsible>
-        <Collapsible title="Overall Grade" isOpen className="filter-group mb-3">
+        <Collapsible title="Overall Grade" open className="filter-group mb-3">
           <div className="d-flex justify-content-between align-items-center">
             <InputText
               value={this.state.courseGradeMin}
@@ -912,15 +915,16 @@ export default class Gradebook extends React.Component {
             />
             <span className="input-percent-label">%</span>
             <Button
-              buttonType="outline-secondary"
+              variant="outline-secondary"
               onClick={this.handleCourseGradeFilterApplyButtonClick}
             >
               Apply
             </Button>
           </div>
         </Collapsible>
-        <Collapsible title="Student Groups" isOpen className="filter-group mb-3">
+        <Collapsible title="Student Groups" open className="filter-group mb-3">
           <InputSelect
+            label="Tracks"
             name="Tracks"
             aria-label="Tracks"
             disabled={this.props.tracks.length === 0}
@@ -931,6 +935,7 @@ export default class Gradebook extends React.Component {
           <InputSelect
             name="Cohorts"
             aria-label="Cohorts"
+            label="Cohorts"
             disabled={this.props.cohorts.length === 0}
             value={this.mapSelectedCohortEntry(this.props.selectedCohort)}
             options={this.mapCohortsEntries(this.props.cohorts)}

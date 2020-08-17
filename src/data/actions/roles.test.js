@@ -1,8 +1,9 @@
+import axios from 'axios';
 import configureMockStore from 'redux-mock-store';
 import MockAdapter from 'axios-mock-adapter';
 import thunk from 'redux-thunk';
+import { getAuthenticatedHttpClient } from '@edx/frontend-platform/auth';
 
-import apiClient from '../apiClient';
 import { configuration } from '../../config';
 import { getRoles } from './roles';
 import {
@@ -16,9 +17,12 @@ import { STARTED_FETCHING_ASSIGNMENT_TYPES } from '../constants/actionTypes/assi
 
 
 const mockStore = configureMockStore([thunk]);
-const axiosMock = new MockAdapter(apiClient);
-apiClient.isAccessTokenExpired = jest.fn();
-apiClient.isAccessTokenExpired.mockReturnValue(false);
+
+jest.mock('@edx/frontend-platform/auth');
+const axiosMock = new MockAdapter(axios);
+getAuthenticatedHttpClient.mockReturnValue(axios);
+axios.isAccessTokenExpired = jest.fn();
+axios.isAccessTokenExpired.mockReturnValue(false);
 
 const course1Id = 'course-v1:edX+DemoX+Demo_Course';
 const course2Id = 'course-v1:edX+DemoX+Demo_Course_2';
