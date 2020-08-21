@@ -38,4 +38,3 @@ export {
   gotAssignmentTypes,
   errorFetchingAssignmentTypes,
 };
-

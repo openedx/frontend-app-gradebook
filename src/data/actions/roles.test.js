@@ -15,7 +15,6 @@ import { STARTED_FETCHING_TRACKS } from '../constants/actionTypes/tracks';
 import { STARTED_FETCHING_COHORTS } from '../constants/actionTypes/cohorts';
 import { STARTED_FETCHING_ASSIGNMENT_TYPES } from '../constants/actionTypes/assignmentTypes';
 
-
 const mockStore = configureMockStore([thunk]);
 
 jest.mock('@edx/frontend-platform/auth');

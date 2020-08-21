@@ -26,7 +26,9 @@ import {
 } from '../constants/actionTypes/grades';
 import LmsApiService from '../services/LmsApiService';
 import { sortAlphaAsc, formatDateForDisplay } from './utils';
-import { formatMaxAssignmentGrade, formatMinAssignmentGrade, formatMaxCourseGrade, formatMinCourseGrade } from '../selectors/grades';
+import {
+  formatMaxAssignmentGrade, formatMinAssignmentGrade, formatMaxCourseGrade, formatMinCourseGrade,
+} from '../selectors/grades';
 import { getFilters } from '../selectors/filters';
 
 const defaultAssignmentFilter = 'All';
@@ -107,7 +109,6 @@ const uploadOverrideFailure = (courseId, error) => ({
   courseId,
   payload: { error },
 });
-
 
 const toggleGradeFormat = formatType => ({ type: TOGGLE_GRADE_FORMAT, formatType });
 
@@ -191,27 +192,26 @@ const doneViewingAssignment = () => dispatch => dispatch({
   type: DONE_VIEWING_ASSIGNMENT,
 });
 const fetchGradeOverrideHistory = (subsectionId, userId) => (
-  dispatch =>
-    LmsApiService.fetchGradeOverrideHistory(subsectionId, userId)
-      .then(response => response.data)
-      .then((data) => {
-        dispatch(gotGradeOverrideHistory({
-          overrideHistory: formatGradeOverrideForDisplay(data.history),
-          currentEarnedAllOverride: data.override ? data.override.earned_all_override : null,
-          currentPossibleAllOverride: data.override ? data.override.possible_all_override : null,
-          currentEarnedGradedOverride: data.override ? data.override.earned_graded_override : null,
-          currentPossibleGradedOverride: data.override ?
-            data.override.possible_graded_override : null,
-          originalGradeEarnedAll: data.original_grade ? data.original_grade.earned_all : null,
-          originalGradePossibleAll: data.original_grade ? data.original_grade.possible_all : null,
-          originalGradeEarnedGraded: data.original_grade ? data.original_grade.earned_graded : null,
-          originalGradePossibleGraded: data.original_grade ?
-            data.original_grade.possible_graded : null,
-        }));
-      })
-      .catch(() => {
-        dispatch(errorFetchingGradeOverrideHistory());
-      })
+  dispatch => LmsApiService.fetchGradeOverrideHistory(subsectionId, userId)
+    .then(response => response.data)
+    .then((data) => {
+      dispatch(gotGradeOverrideHistory({
+        overrideHistory: formatGradeOverrideForDisplay(data.history),
+        currentEarnedAllOverride: data.override ? data.override.earned_all_override : null,
+        currentPossibleAllOverride: data.override ? data.override.possible_all_override : null,
+        currentEarnedGradedOverride: data.override ? data.override.earned_graded_override : null,
+        currentPossibleGradedOverride: data.override
+          ? data.override.possible_graded_override : null,
+        originalGradeEarnedAll: data.original_grade ? data.original_grade.earned_all : null,
+        originalGradePossibleAll: data.original_grade ? data.original_grade.possible_all : null,
+        originalGradeEarnedGraded: data.original_grade ? data.original_grade.earned_graded : null,
+        originalGradePossibleGraded: data.original_grade
+          ? data.original_grade.possible_graded : null,
+      }));
+    })
+    .catch(() => {
+      dispatch(errorFetchingGradeOverrideHistory());
+    })
 );
 
 const fetchMatchingUserGrades = (
@@ -293,11 +293,10 @@ const submitFileUploadFormData = (courseId, formData) => (
 );
 
 const fetchBulkUpgradeHistory = courseId => (
-  dispatch =>
-    // todo add loading effect
-    LmsApiService.fetchGradeBulkOperationHistory(courseId).then((response) => {
-      dispatch(gotBulkHistory(response));
-    }).catch(() => dispatch(bulkHistoryError()))
+  // todo add loading effect
+  dispatch => LmsApiService.fetchGradeBulkOperationHistory(courseId).then(
+    (response) => { dispatch(gotBulkHistory(response)); },
+  ).catch(() => dispatch(bulkHistoryError()))
 );
 
 const updateGradesIfAssignmentGradeFiltersSet = (

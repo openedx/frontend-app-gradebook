@@ -1,8 +1,9 @@
-import { getAuthenticatedHttpClient } from '@edx/frontend-platform/auth'
+import { getAuthenticatedHttpClient } from '@edx/frontend-platform/auth';
 import { configuration } from '../../config';
 
 class LmsApiService {
   static baseUrl = configuration.LMS_BASE_URL;
+
   static pageSize = 25
 
   static fetchGradebookData(courseId, searchText, cohort, track, options = {}) {
@@ -96,8 +97,8 @@ class LmsApiService {
   static getGradeExportCsvUrl(courseId, options = {}) {
     const queryParams = ['track', 'cohort', 'assignment', 'assignmentType', 'assignmentGradeMax',
       'assignmentGradeMin', 'courseGradeMin', 'courseGradeMax']
-      .filter(opt => options[opt] &&
-                   options[opt] !== 'All')
+      .filter(opt => options[opt]
+                   && options[opt] !== 'All')
       .map(opt => `${opt}=${encodeURIComponent(options[opt])}`)
       .join('&');
     return `${LmsApiService.baseUrl}/api/bulk_grades/course/${courseId}/?${queryParams}`;
@@ -106,8 +107,8 @@ class LmsApiService {
   static getInterventionExportCsvUrl(courseId, options = {}) {
     const queryParams = ['track', 'cohort', 'assignment', 'assignmentType', 'assignmentGradeMax',
       'assignmentGradeMin', 'courseGradeMin', 'courseGradeMax']
-      .filter(opt => options[opt] &&
-                   options[opt] !== 'All')
+      .filter(opt => options[opt]
+                   && options[opt] !== 'All')
       .map(opt => `${opt}=${encodeURIComponent(options[opt])}`)
       .join('&');
     return `${LmsApiService.baseUrl}/api/bulk_grades/course/${courseId}/intervention?${queryParams}`;

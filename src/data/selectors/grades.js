@@ -33,10 +33,8 @@ const transformHistoryEntry = (historyRow) => {
     ...rest,
   };
 };
-const getBulkManagementHistoryFromState = state =>
-  state.grades.bulkManagement.history || [];
-const getBulkManagementHistory = state =>
-  getBulkManagementHistoryFromState(state).map(transformHistoryEntry);
+const getBulkManagementHistoryFromState = state => state.grades.bulkManagement.history || [];
+const getBulkManagementHistory = state => getBulkManagementHistoryFromState(state).map(transformHistoryEntry);
 
 const headingMapper = (category, label = 'All') => {
   const filters = {
@@ -82,13 +80,12 @@ const getHeadings = (state) => {
   return headingMapper(type, assignment)(assignments);
 };
 
-const composeFilters = (...predicates) => (percentGrade, options = {}) =>
-  predicates.reduce((accum, predicate) => {
-    if (predicate(percentGrade, options)) {
-      return null;
-    }
-    return accum;
-  }, percentGrade);
+const composeFilters = (...predicates) => (percentGrade, options = {}) => predicates.reduce((accum, predicate) => {
+  if (predicate(percentGrade, options)) {
+    return null;
+  }
+  return accum;
+}, percentGrade);
 
 const percentGradeIsMax = percentGrade => (
   percentGrade === '100'

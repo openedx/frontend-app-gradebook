@@ -1,7 +1,6 @@
 const compose = (...fns) => {
   const [firstFunc, ...rest] = fns.reverse();
-  return (...args) =>
-    rest.reduce((accum, fn) => fn(accum), firstFunc(...args));
+  return (...args) => rest.reduce((accum, fn) => fn(accum), firstFunc(...args));
 };
 
 const getTracks = state => state.tracks.results || [];

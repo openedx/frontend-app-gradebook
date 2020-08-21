@@ -1,4 +1,3 @@
-
 import { connect } from 'react-redux';
 
 import React from 'react';
@@ -27,27 +26,43 @@ function RangeFilterBadge({
   filterValue2,
   handleBadgeClose,
 }) {
-  return ((filterValue1 !== initialFilters[filterName1]) ||
-  (filterValue2 !== initialFilters[filterName2]))
-   &&
+  return ((filterValue1 !== initialFilters[filterName1])
+  || (filterValue2 !== initialFilters[filterName2]))
+   && (
    <FilterBadge
      name={displayName}
      value={`${filterValue1} - ${filterValue2}`}
      onClick={handleBadgeClose}
-   />;
+   />
+   );
 }
-
+RangeFilterBadge.propTypes = {
+  displayName: PropTypes.string.isRequired,
+  filterName1: PropTypes.string.isRequired,
+  filterValue1: PropTypes.string.isRequired,
+  filterName2: PropTypes.string.isRequired,
+  filterValue2: PropTypes.string.isRequired,
+  handleBadgeClose: PropTypes.func.isRequired,
+};
 
 function SingleValueFilterBadge({
   displayName, filterName, filterValue, handleBadgeClose,
 }) {
-  return (filterValue !== initialFilters[filterName]) &&
+  return (filterValue !== initialFilters[filterName])
+  && (
   <FilterBadge
     name={displayName}
     value={filterValue}
     onClick={handleBadgeClose}
-  />;
+  />
+  );
 }
+SingleValueFilterBadge.propTypes = {
+  displayName: PropTypes.string.isRequired,
+  filterName: PropTypes.string.isRequired,
+  filterValue: PropTypes.string.isRequired,
+  handleBadgeClose: PropTypes.func.isRequired,
+};
 
 function FilterBadges({
   assignment,
@@ -150,4 +165,3 @@ FilterBadges.propTypes = {
   courseGradeMax: PropTypes.string,
   handleFilterBadgeClose: PropTypes.func.isRequired,
 };
-

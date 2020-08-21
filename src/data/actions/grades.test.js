@@ -14,7 +14,6 @@ import {
 } from '../constants/actionTypes/grades';
 import { sortAlphaAsc } from './utils';
 
-
 const mockStore = configureMockStore([thunk]);
 
 jest.mock('@edx/frontend-platform/auth');

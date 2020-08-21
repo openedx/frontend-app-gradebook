@@ -90,7 +90,6 @@ const eventsMap = {
 
 const segmentMiddleware = createMiddleware(eventsMap, Segment());
 
-
 const store = createStore(
   reducers,
   composeWithDevTools(applyMiddleware(thunkMiddleware, loggerMiddleware, segmentMiddleware)),

@@ -1,5 +1,7 @@
 import initialFilters from '../constants/filters';
-import { INITIALIZE_FILTERS, RESET_FILTERS, UPDATE_ASSIGNMENT_FILTER, UPDATE_ASSIGNMENT_LIMITS, UPDATE_COURSE_GRADE_LIMITS } from '../constants/actionTypes/filters';
+import {
+  INITIALIZE_FILTERS, RESET_FILTERS, UPDATE_ASSIGNMENT_FILTER, UPDATE_ASSIGNMENT_LIMITS, UPDATE_COURSE_GRADE_LIMITS,
+} from '../constants/actionTypes/filters';
 
 const initializeFilters = ({
   assignment = initialFilters.assignment,
