@@ -30,6 +30,7 @@ const initialState = {
   startedFetching: false,
   finishedFetching: false,
   errorFetching: false,
+  overrideHistoryError: '',
   gradeFormat: 'percent',
   showSuccess: false,
   prevPage: null,
@@ -83,14 +84,14 @@ const grades = (state = initialState, action) => {
         gradeOriginalPossibleAll: action.originalGradePossibleAll,
         gradeOriginalEarnedGraded: action.originalGradeEarnedGraded,
         gradeOriginalPossibleGraded: action.originalGradePossibleGraded,
-        errorFetchingOverrideHistory: false,
+        overrideHistoryError: '',
       };
 
     case ERROR_FETCHING_GRADE_OVERRIDE_HISTORY:
       return {
         ...state,
         finishedFetchingOverrideHistory: true,
-        errorFetchingOverrideHistory: true,
+        overrideHistoryError: action.errorMessage,
       };
 
     case STARTED_FETCHING_GRADES:

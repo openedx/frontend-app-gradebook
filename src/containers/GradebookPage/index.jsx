@@ -66,7 +66,7 @@ const mapStateToProps = (state, ownProps) => (
     selectedAssignment: (state.filters.assignment || {}).label,
     format: state.grades.gradeFormat,
     showSuccess: state.grades.showSuccess,
-    errorFetchingGradeOverrideHistory: state.grades.errorFetchingOverrideHistory,
+    gradeOverrideHistoryError: state.grades.overrideHistoryError,
     prevPage: state.grades.prevPage,
     nextPage: state.grades.nextPage,
     assignmentTypes: state.assignmentTypes.results,
