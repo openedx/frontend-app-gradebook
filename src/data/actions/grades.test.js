@@ -12,7 +12,7 @@ import {
   ERROR_FETCHING_GRADES,
   GOT_GRADES,
   GOT_GRADE_OVERRIDE_HISTORY,
-  ERROR_FETCHING_GRADE_OVERRIDE_HISTORY
+  ERROR_FETCHING_GRADE_OVERRIDE_HISTORY,
 } from '../constants/actionTypes/grades';
 import GRADE_OVERRIDE_HISTORY_ERROR_DEFAULT_MSG from '../constants/errors';
 import { sortAlphaAsc } from './utils';
@@ -185,9 +185,8 @@ describe('actions', () => {
   });
 
   describe('fetchGradeOverridHistory', () => {
-
     const subsectionId = 'subsectionId-11111';
-    const userId = 'user-id-11111';    
+    const userId = 'user-id-11111';
 
     const fetchOverridesURL = `${LmsApiService.baseUrl}/api/grades/v1/subsection/${subsectionId}/?user_id=${userId}&history_record_limit=5`;
 
@@ -195,23 +194,23 @@ describe('actions', () => {
       earned_all: 1.0,
       possible_all: 12.0,
       earned_graded: 3.0,
-      possible_graded: 8.0
-    }
+      possible_graded: 8.0,
+    };
 
-    const override = { 
+    const override = {
       earned_all_override: 13.0,
       possible_all_override: 13.0,
       earned_graded_override: 10.0,
-      possible_graded_override: 10.0
-    }
+      possible_graded_override: 10.0,
+    };
 
     it('dispatches success action after successfully getting override info', () => {
       const responseData = {
         success: true,
         original_grade: originalGrade,
-        override: override,
-        history: []
-      }
+        history: [],
+        override,
+      };
 
       axiosMock.onGet(fetchOverridesURL)
         .replyOnce(200, JSON.stringify(responseData));
@@ -227,14 +226,12 @@ describe('actions', () => {
           originalGradeEarnedAll: originalGrade.earned_all,
           originalGradePossibleAll: originalGrade.possible_all,
           originalGradeEarnedGraded: originalGrade.earned_graded,
-          originalGradePossibleGraded: originalGrade.possible_graded
-        }
+          originalGradePossibleGraded: originalGrade.possible_graded,
+        },
       ];
       const store = mockStore();
 
-      return store.dispatch(
-        fetchGradeOverrideHistory(subsectionId, userId)
-      ).then(() => {
+      return store.dispatch(fetchGradeOverrideHistory(subsectionId, userId)).then(() => {
         expect(store.getActions()).toEqual(expectedActions);
       });
     });
@@ -243,20 +240,18 @@ describe('actions', () => {
       it('on failure response', () => {
         const responseData = {
           success: false,
-          error_message: "There was an error!!!!!!!!!"
-        }
+          error_message: 'There was an error!!!!!!!!!',
+        };
 
         axiosMock.onGet(fetchOverridesURL).replyOnce(200, JSON.stringify(responseData));
 
         const expectedActions = [{
           type: ERROR_FETCHING_GRADE_OVERRIDE_HISTORY,
-          errorMessage: responseData.error_message
+          errorMessage: responseData.error_message,
         }];
         const store = mockStore();
 
-        return store.dispatch(
-          fetchGradeOverrideHistory(subsectionId, userId)
-        ).then(() => {
+        return store.dispatch(fetchGradeOverrideHistory(subsectionId, userId)).then(() => {
           expect(store.getActions()).toEqual(expectedActions);
         });
       });
@@ -266,13 +261,11 @@ describe('actions', () => {
 
         const expectedActions = [{
           type: ERROR_FETCHING_GRADE_OVERRIDE_HISTORY,
-          errorMessage: GRADE_OVERRIDE_HISTORY_ERROR_DEFAULT_MSG
+          errorMessage: GRADE_OVERRIDE_HISTORY_ERROR_DEFAULT_MSG,
         }];
         const store = mockStore();
 
-        return store.dispatch(
-          fetchGradeOverrideHistory(subsectionId, userId)
-        ).then(() => {
+        return store.dispatch(fetchGradeOverrideHistory(subsectionId, userId)).then(() => {
           expect(store.getActions()).toEqual(expectedActions);
         });
       });

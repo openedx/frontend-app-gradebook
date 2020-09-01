@@ -43,7 +43,10 @@ const bulkHistoryError = () => ({ type: BULK_HISTORY_ERR });
 const startedFetchingGrades = () => ({ type: STARTED_FETCHING_GRADES });
 const finishedFetchingGrades = () => ({ type: FINISHED_FETCHING_GRADES });
 const errorFetchingGrades = () => ({ type: ERROR_FETCHING_GRADES });
-const errorFetchingGradeOverrideHistory = errorMessage => ({ type: ERROR_FETCHING_GRADE_OVERRIDE_HISTORY, errorMessage });
+const errorFetchingGradeOverrideHistory = errorMessage => ({
+  type: ERROR_FETCHING_GRADE_OVERRIDE_HISTORY,
+  errorMessage,
+});
 
 const gotGrades = ({
   grades, cohort, track, assignmentType, headings, prev,
@@ -206,7 +209,8 @@ const fetchGradeOverrideHistory = (subsectionId, userId) => (
             ? data.override.possible_graded_override : null,
           originalGradeEarnedAll: data.original_grade ? data.original_grade.earned_all : null,
           originalGradePossibleAll: data.original_grade ? data.original_grade.possible_all : null,
-          originalGradeEarnedGraded: data.original_grade ? data.original_grade.earned_graded : null,
+          originalGradeEarnedGraded: data.original_grade
+            ? data.original_grade.earned_graded : null,
           originalGradePossibleGraded: data.original_grade
             ? data.original_grade.possible_graded : null,
         }));
