@@ -14,11 +14,6 @@ export default class Drawer extends React.Component {
     };
   }
 
-  deferToNextRepaint(callback) {
-    window.requestAnimationFrame(() =>
-      window.setTimeout(callback, 0));
-  }
-
   close = () => {
     if (this.state.open) {
       this.toggleOpen();
@@ -38,6 +33,10 @@ export default class Drawer extends React.Component {
       this.setState({ transitioning: false });
     }
   };
+
+  deferToNextRepaint(callback) {
+    window.requestAnimationFrame(() => window.setTimeout(callback, 0));
+  }
 
   render() {
     return (

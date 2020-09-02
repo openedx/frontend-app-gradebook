@@ -1,3 +1,4 @@
+/* eslint-disable react/sort-comp, react/button-has-type */
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
@@ -11,6 +12,7 @@ import {
   StatefulButton,
   StatusAlert,
   Table,
+  Tab,
   Tabs,
 } from '@edx/paragon';
 import queryString from 'query-string';
@@ -22,7 +24,6 @@ import Drawer from '../Drawer';
 import { formatDateForDisplay } from '../../data/actions/utils';
 import initialFilters from '../../data/constants/filters';
 import ConnectedFilterBadges from '../FilterBadges';
-
 
 const DECIMAL_PRECISION = 2;
 const GRADE_OVERRIDE_HISTORY_COLUMNS = [{ label: 'Date', key: 'date' }, { label: 'Grader', key: 'grader' },
@@ -165,8 +166,7 @@ export default class Gradebook extends React.Component {
   };
 
   handleAssignmentFilterChange = (assignment) => {
-    const selectedFilterOption = this.props.assignmentFilterOptions.find(assig =>
-      assig.label === assignment);
+    const selectedFilterOption = this.props.assignmentFilterOptions.find(assig => assig.label === assignment);
     const { type, id } = selectedFilterOption || {};
     const typedValue = { label: assignment, type, id };
     this.props.updateAssignmentFilter(typedValue);
@@ -395,7 +395,8 @@ export default class Gradebook extends React.Component {
                 onClick={() => this.setNewModalState(entry, subsection)}
               >
                 {this.roundGrade(subsection.percent * 100)}%
-              </button>);
+              </button>
+            );
           }
           return acc;
         }, {});
@@ -549,47 +550,45 @@ export default class Gradebook extends React.Component {
               href={this.lmsInstructorDashboardUrl(this.props.courseId)}
               className="mb-3"
             >
-              <span aria-hidden="true">{'<< '}</span> {'Back to Dashboard'}
+              <span aria-hidden="true">{'<< '}</span> Back to Dashboard
             </a>
             <h1>Gradebook</h1>
             <h3> {this.props.courseId}</h3>
-            {this.props.areGradesFrozen &&
-              <div className="alert alert-warning" role="alert" >
+            {this.props.areGradesFrozen
+              && (
+              <div className="alert alert-warning" role="alert">
                 The grades for this course are now frozen. Editing of grades is no longer allowed.
               </div>
-            }
-            {(this.props.canUserViewGradebook === false) &&
-              <div className="alert alert-warning" role="alert" >
+              )}
+            {(this.props.canUserViewGradebook === false)
+              && (
+              <div className="alert alert-warning" role="alert">
                 You are not authorized to view the gradebook for this course.
               </div>
-            }
-            <Tabs labels={this.getActiveTabs()}>
-              <div>
+              )}
+            <Tabs defaultActiveKey="grades">
+              <Tab eventKey="grades" title="Grades">
                 <h4>Step 1: Filter the Grade Report</h4>
-                <div className="d-flex justify-content-between" >
+                <div className="d-flex justify-content-between">
                   {this.props.showSpinner && <div className="spinner-overlay"><Icon className="fa fa-spinner fa-spin fa-5x color-black" /></div>}
                   <Button className="btn-primary align-self-start" onClick={toggleFilterDrawer}><FontAwesomeIcon icon={faFilter} /> Edit Filters</Button>
                   <div>
                     <SearchField
-                      onSubmit={value =>
-                        this.props.searchForUser(
-                          this.props.courseId,
-                          value,
-                          this.props.selectedCohort,
-                          this.props.selectedTrack,
-                          this.props.selectedAssignmentType,
-                        )
-                      }
+                      onSubmit={value => this.props.searchForUser(
+                        this.props.courseId,
+                        value,
+                        this.props.selectedCohort,
+                        this.props.selectedTrack,
+                        this.props.selectedAssignmentType,
+                      )}
                       inputLabel="Search for a learner"
                       onChange={filterValue => this.setState({ filterValue })}
-                      onClear={() =>
-                        this.props.getUserGrades(
-                          this.props.courseId,
-                          this.props.selectedCohort,
-                          this.props.selectedTrack,
-                          this.props.selectedAssignmentType,
-                        )
-                      }
+                      onClear={() => this.props.getUserGrades(
+                        this.props.courseId,
+                        this.props.selectedCohort,
+                        this.props.selectedTrack,
+                        this.props.selectedAssignmentType,
+                      )}
                       value={this.state.filterValue}
                     />
                     <small className="form-text text-muted search-help-text">Search by username, email, or student key</small>
@@ -609,21 +608,22 @@ export default class Gradebook extends React.Component {
                   dialog={this.getCourseGradeFilterAlertDialog()}
                   dismissible={false}
                   open={
-                    !this.state.isMinCourseGradeFilterValid ||
-                    !this.state.isMaxCourseGradeFilterValid
+                    !this.state.isMinCourseGradeFilterValid
+                    || !this.state.isMaxCourseGradeFilterValid
                   }
                 />
                 <h4>Step 2: View or Modify Individual Grades</h4>
-                {this.props.totalUsersCount ?
-                  <div>
-                    Showing
-                    <span className="font-weight-bold"> {this.props.filteredUsersCount} </span>
-                    of
-                    <span className="font-weight-bold"> {this.props.totalUsersCount} </span>
-                    total learners
-                  </div> :
-                  null
-                }
+                {this.props.totalUsersCount
+                  ? (
+                    <div>
+                      Showing
+                      <span className="font-weight-bold"> {this.props.filteredUsersCount} </span>
+                      of
+                      <span className="font-weight-bold"> {this.props.totalUsersCount} </span>
+                      total learners
+                    </div>
+                  )
+                  : null}
                 <div className="d-flex justify-content-between align-items-center mb-2">
                   <InputSelect
                     label="Score View:"
@@ -635,7 +635,7 @@ export default class Gradebook extends React.Component {
                   {this.props.showBulkManagement && (
                     <div>
                       <StatefulButton
-                        buttonType="outline-primary"
+                        variant="outline-primary"
                         onClick={this.handleClickExportGrades}
                         state={this.props.showSpinner ? 'pending' : 'default'}
                         labels={{
@@ -649,7 +649,7 @@ export default class Gradebook extends React.Component {
                         disabledStates={['pending']}
                       />
                       <StatefulButton
-                        buttonType="outline-primary"
+                        variant="outline-primary"
                         onClick={this.handleClickDownloadInterventions}
                         state={this.props.showSpinner ? 'pending' : 'default'}
                         className="ml-2"
@@ -726,17 +726,18 @@ export default class Gradebook extends React.Component {
                                  || this.props.gradeOriginalPossibleGraded}
                               </span>),
                           }]}
-                        />)}
+                        />
+                      )}
 
                       <div>Showing most recent actions (max 5). To see more, please contact
-                      support.
+                        support.
                       </div>
                       <div>Note: Once you save, your changes will be visible to students.</div>
                     </div>
                   )}
                   buttons={[
                     <Button
-                      buttonType="primary"
+                      variant="primary"
                       onClick={this.handleAdjustedGradeClick}
                     >
                       Save Grade
@@ -744,9 +745,9 @@ export default class Gradebook extends React.Component {
                   ]}
                   onClose={this.closeAssignmentModal}
                 />
-              </div>
+              </Tab>
               {this.props.showBulkManagement && (
-                <div>
+                <Tab eventKey="bulk_management" title="Bulk Management">
                   <h4>Use this feature by downloading a CSV for bulk management,
                     overriding grades locally, and coming back here to upload.
                   </h4>
@@ -773,7 +774,7 @@ export default class Gradebook extends React.Component {
                     />
                   </form>
                   <Button
-                    buttonType="primary"
+                    variant="primary"
                     onClick={this.handleClickImportGrades}
                   >
                     Import Grades
@@ -813,24 +814,26 @@ export default class Gradebook extends React.Component {
                     ]}
                     className="table-striped"
                   />
-                </div>)}
+                </Tab>
+              )}
             </Tabs>
           </div>
         )}
         initiallyOpen={false}
-        title={
-          <React.Fragment>
+        title={(
+          <>
             <FontAwesomeIcon icon={faFilter} /> Filter By...
-          </React.Fragment>
-        }
+          </>
+        )}
       >
-        <Collapsible title="Assignments" isOpen className="filter-group mb-3">
+        <Collapsible title="Assignments" open className="filter-group mb-3">
           <div>
             <div className="student-filters">
               <span className="label">
                 Assignment Types:
               </span>
               <InputSelect
+                label="Assignment Types"
                 name="assignment-types"
                 aria-label="Assignment Types"
                 value={this.props.selectedAssignmentType}
@@ -844,6 +847,7 @@ export default class Gradebook extends React.Component {
                 Assignment:
               </span>
               <InputSelect
+                label="Assignment"
                 name="assignment"
                 aria-label="Assignment"
                 value={this.props.selectedAssignment}
@@ -889,7 +893,7 @@ export default class Gradebook extends React.Component {
             </form>
           </div>
         </Collapsible>
-        <Collapsible title="Overall Grade" isOpen className="filter-group mb-3">
+        <Collapsible title="Overall Grade" open className="filter-group mb-3">
           <div className="d-flex justify-content-between align-items-center">
             <InputText
               value={this.state.courseGradeMin}
@@ -912,15 +916,16 @@ export default class Gradebook extends React.Component {
             />
             <span className="input-percent-label">%</span>
             <Button
-              buttonType="outline-secondary"
+              variant="outline-secondary"
               onClick={this.handleCourseGradeFilterApplyButtonClick}
             >
               Apply
             </Button>
           </div>
         </Collapsible>
-        <Collapsible title="Student Groups" isOpen className="filter-group mb-3">
+        <Collapsible title="Student Groups" open className="filter-group mb-3">
           <InputSelect
+            label="Tracks"
             name="Tracks"
             aria-label="Tracks"
             disabled={this.props.tracks.length === 0}
@@ -931,6 +936,7 @@ export default class Gradebook extends React.Component {
           <InputSelect
             name="Cohorts"
             aria-label="Cohorts"
+            label="Cohorts"
             disabled={this.props.cohorts.length === 0}
             value={this.mapSelectedCohortEntry(this.props.selectedCohort)}
             options={this.mapCohortsEntries(this.props.cohorts)}

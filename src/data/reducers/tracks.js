@@ -10,7 +10,6 @@ const initialState = {
   errorFetching: false,
 };
 
-
 const tracks = (state = initialState, action) => {
   switch (action.type) {
     case GOT_TRACKS:
@@ -37,4 +36,3 @@ const tracks = (state = initialState, action) => {
 };
 
 export default tracks;
-

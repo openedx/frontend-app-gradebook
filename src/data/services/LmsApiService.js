@@ -1,8 +1,9 @@
-import apiClient from '../apiClient';
+import { getAuthenticatedHttpClient } from '@edx/frontend-platform/auth';
 import { configuration } from '../../config';
 
 class LmsApiService {
   static baseUrl = configuration.LMS_BASE_URL;
+
   static pageSize = 25
 
   static fetchGradebookData(courseId, searchText, cohort, track, options = {}) {
@@ -42,7 +43,7 @@ class LmsApiService {
 
     const gradebookUrl = `${LmsApiService.baseUrl}/api/grades/v1/gradebook/${courseId}/?${queryParamString}`;
 
-    return apiClient.get(gradebookUrl);
+    return getAuthenticatedHttpClient().get(gradebookUrl);
   }
 
   static updateGradebookData(courseId, updateData) {
@@ -70,34 +71,34 @@ class LmsApiService {
         ]
     */
     const gradebookUrl = `${LmsApiService.baseUrl}/api/grades/v1/gradebook/${courseId}/bulk-update`;
-    return apiClient.post(gradebookUrl, updateData);
+    return getAuthenticatedHttpClient().post(gradebookUrl, updateData);
   }
 
   static fetchTracks(courseId) {
     const trackUrl = `${LmsApiService.baseUrl}/api/enrollment/v1/course/${courseId}?include_expired=1`;
-    return apiClient.get(trackUrl);
+    return getAuthenticatedHttpClient().get(trackUrl);
   }
 
   static fetchCohorts(courseId) {
     const cohortsUrl = `${LmsApiService.baseUrl}/courses/${courseId}/cohorts/`;
-    return apiClient.get(cohortsUrl);
+    return getAuthenticatedHttpClient().get(cohortsUrl);
   }
 
   static fetchAssignmentTypes(courseId) {
     const assignmentTypesUrl = `${LmsApiService.baseUrl}/api/grades/v1/gradebook/${courseId}/grading-info?graded_only=true`;
-    return apiClient.get(assignmentTypesUrl);
+    return getAuthenticatedHttpClient().get(assignmentTypesUrl);
   }
 
   static fetchUserRoles(courseId) {
     const rolesUrl = `${LmsApiService.baseUrl}/api/enrollment/v1/roles/?course_id=${encodeURIComponent(courseId)}`;
-    return apiClient.get(rolesUrl);
+    return getAuthenticatedHttpClient().get(rolesUrl);
   }
 
   static getGradeExportCsvUrl(courseId, options = {}) {
     const queryParams = ['track', 'cohort', 'assignment', 'assignmentType', 'assignmentGradeMax',
       'assignmentGradeMin', 'courseGradeMin', 'courseGradeMax']
-      .filter(opt => options[opt] &&
-                   options[opt] !== 'All')
+      .filter(opt => options[opt]
+                   && options[opt] !== 'All')
       .map(opt => `${opt}=${encodeURIComponent(options[opt])}`)
       .join('&');
     return `${LmsApiService.baseUrl}/api/bulk_grades/course/${courseId}/?${queryParams}`;
@@ -106,8 +107,8 @@ class LmsApiService {
   static getInterventionExportCsvUrl(courseId, options = {}) {
     const queryParams = ['track', 'cohort', 'assignment', 'assignmentType', 'assignmentGradeMax',
       'assignmentGradeMin', 'courseGradeMin', 'courseGradeMax']
-      .filter(opt => options[opt] &&
-                   options[opt] !== 'All')
+      .filter(opt => options[opt]
+                   && options[opt] !== 'All')
       .map(opt => `${opt}=${encodeURIComponent(options[opt])}`)
       .join('&');
     return `${LmsApiService.baseUrl}/api/bulk_grades/course/${courseId}/intervention?${queryParams}`;
@@ -117,7 +118,7 @@ class LmsApiService {
 
   static uploadGradeCsv(courseId, formData) {
     const fileUploadUrl = LmsApiService.getGradeImportCsvUrl(courseId);
-    return apiClient.post(fileUploadUrl, formData).then((result) => {
+    return getAuthenticatedHttpClient().post(fileUploadUrl, formData).then((result) => {
       if (result.status === 200 && !result.data.error_messages.length) {
         return result.data;
       }
@@ -127,12 +128,12 @@ class LmsApiService {
 
   static fetchGradeBulkOperationHistory(courseId) {
     const url = `${LmsApiService.baseUrl}/api/bulk_grades/course/${courseId}/history/`;
-    return apiClient.get(url).then(response => response.data).catch(() => Promise.reject(Error('unhandled response error')));
+    return getAuthenticatedHttpClient().get(url).then(response => response.data).catch(() => Promise.reject(Error('unhandled response error')));
   }
 
   static fetchGradeOverrideHistory(subsectionId, userId) {
     const historyUrl = `${LmsApiService.baseUrl}/api/grades/v1/subsection/${subsectionId}/?user_id=${userId}&history_record_limit=5`;
-    return apiClient.get(historyUrl);
+    return getAuthenticatedHttpClient().get(historyUrl);
   }
 }
 

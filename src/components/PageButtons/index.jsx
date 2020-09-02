@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Button } from '@edx/paragon';
 
-
 export default function PageButtons({
   prevPage, nextPage, selectedTrack, selectedCohort, selectedAssignmentType,
   getPrevNextGrades, match,
@@ -14,31 +13,29 @@ export default function PageButtons({
     >
       <Button
         style={{ margin: '20px' }}
-        buttonType="outline-primary"
+        variant="outline-primary"
         disabled={!prevPage}
-        onClick={() =>
-          getPrevNextGrades(
-            prevPage,
-            match.params.courseId,
-            selectedCohort,
-            selectedTrack,
-            selectedAssignmentType,
-          )}
+        onClick={() => getPrevNextGrades(
+          prevPage,
+          match.params.courseId,
+          selectedCohort,
+          selectedTrack,
+          selectedAssignmentType,
+        )}
       >
         Previous Page
       </Button>
       <Button
         style={{ margin: '20px' }}
-        buttonType="outline-primary"
+        variant="outline-primary"
         disabled={!nextPage}
-        onClick={() =>
-          getPrevNextGrades(
-            nextPage,
-            match.params.courseId,
-            selectedCohort,
-            selectedTrack,
-            selectedAssignmentType,
-          )}
+        onClick={() => getPrevNextGrades(
+          nextPage,
+          match.params.courseId,
+          selectedCohort,
+          selectedTrack,
+          selectedAssignmentType,
+        )}
       >
         Next Page
       </Button>
@@ -76,4 +73,3 @@ PageButtons.propTypes = {
     name: PropTypes.string,
   }),
 };
-

@@ -11,7 +11,6 @@ const initialState = {
   errorFetching: false,
 };
 
-
 const assignmentTypes = (state = initialState, action) => {
   switch (action.type) {
     case GOT_ASSIGNMENT_TYPES:
@@ -45,4 +44,3 @@ const assignmentTypes = (state = initialState, action) => {
 };
 
 export default assignmentTypes;
-

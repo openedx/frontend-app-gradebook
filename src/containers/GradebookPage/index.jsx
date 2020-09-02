@@ -18,7 +18,9 @@ import {
 } from '../../data/actions/grades';
 import { fetchCohorts } from '../../data/actions/cohorts';
 import { fetchTracks } from '../../data/actions/tracks';
-import { initializeFilters, resetFilters, updateAssignmentFilter, updateAssignmentLimits, updateCourseGradeFilter } from '../../data/actions/filters';
+import {
+  initializeFilters, resetFilters, updateAssignmentFilter, updateAssignmentLimits, updateCourseGradeFilter,
+} from '../../data/actions/filters';
 import stateHasMastersTrack from '../../data/selectors/tracks';
 import {
   getBulkManagementHistory,
@@ -37,7 +39,7 @@ import LmsApiService from '../../data/services/LmsApiService';
 function shouldShowSpinner(state) {
   if (state.roles.canUserViewGradebook === true) {
     return state.grades.showSpinner;
-  } else if (state.roles.canUserViewGradebook === false) {
+  } if (state.roles.canUserViewGradebook === false) {
     return false;
   } // canUserViewGradebook === null
   return true;
@@ -104,12 +106,12 @@ const mapStateToProps = (state, ownProps) => (
         courseGradeMin: formatMinCourseGrade(state.filters.courseGradeMin),
         courseGradeMax: formatMaxCourseGrade(state.filters.courseGradeMax),
       }),
-    bulkImportError: state.grades.bulkManagement &&
-      state.grades.bulkManagement.errorMessages ?
-      `Errors while processing: ${state.grades.bulkManagement.errorMessages.join(', ')}` :
-      '',
-    uploadSuccess: !!(state.grades.bulkManagement &&
-                      state.grades.bulkManagement.uploadSuccess),
+    bulkImportError: state.grades.bulkManagement
+      && state.grades.bulkManagement.errorMessages
+      ? `Errors while processing: ${state.grades.bulkManagement.errorMessages.join(', ')}`
+      : '',
+    uploadSuccess: !!(state.grades.bulkManagement
+                      && state.grades.bulkManagement.uploadSuccess),
     showBulkManagement: stateHasMastersTrack(state) && state.config.bulkManagementAvailable,
     bulkManagementHistory: getBulkManagementHistory(state),
     totalUsersCount: state.grades.totalUsersCount,

@@ -1,7 +1,6 @@
 const getFilters = state => state.filters || {};
 
-const getAssignmentsFromResultsSubstate = results =>
-  (results[0] || {}).section_breakdown || [];
+const getAssignmentsFromResultsSubstate = results => (results[0] || {}).section_breakdown || [];
 
 const selectableAssignments = (state) => {
   const selectedAssignmentType = getFilters(state).assignmentType;
@@ -20,14 +19,12 @@ const chooseRelevantAssignmentData = assignment => ({
   id: assignment.module_id,
 });
 
-const selectableAssignmentLabels = state =>
-  selectableAssignments(state).map(chooseRelevantAssignmentData);
+const selectableAssignmentLabels = state => selectableAssignments(state).map(chooseRelevantAssignmentData);
 
 const typeOfSelectedAssignment = (state) => {
   const selectedAssignmentLabel = getFilters(state).assignment;
   const sectionBreakdown = (state.grades.results[0] || {}).section_breakdown || [];
-  const selectedAssignment = sectionBreakdown.find(section =>
-    section.label === selectedAssignmentLabel);
+  const selectedAssignment = sectionBreakdown.find(section => section.label === selectedAssignmentLabel);
   return selectedAssignment && selectedAssignment.category;
 };
 

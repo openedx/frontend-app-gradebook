@@ -10,7 +10,6 @@ const initialState = {
   errorFetching: false,
 };
 
-
 const cohorts = (state = initialState, action) => {
   switch (action.type) {
     case GOT_COHORTS:
@@ -37,4 +36,3 @@ const cohorts = (state = initialState, action) => {
 };
 
 export default cohorts;
-

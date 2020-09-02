@@ -1,9 +1,9 @@
-import 'babel-polyfill';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { Provider } from 'react-redux';
-import SiteFooter from '@edx/frontend-component-footer';
+import SiteFooter, { messages as footerMessages } from '@edx/frontend-component-footer';
+import { APP_READY, subscribe, initialize } from '@edx/frontend-platform';
 import { IntlProvider } from 'react-intl';
 
 import {
@@ -14,7 +14,6 @@ import {
 } from '@fortawesome/free-brands-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-import apiClient from './data/apiClient';
 import GradebookPage from './containers/GradebookPage';
 import Header from './components/Header';
 import store from './data/store';
@@ -49,7 +48,7 @@ const socialLinks = [
 ];
 
 const App = () => (
-  <IntlProvider>
+  <IntlProvider locale="en">
     <Provider store={store}>
       <Router>
         <div>
@@ -86,9 +85,13 @@ const App = () => (
   </IntlProvider>
 );
 
-apiClient.ensurePublicOrAuthenticationAndCookies(
-  window.location.pathname,
-  () => {
-    ReactDOM.render(<App />, document.getElementById('root'));
-  },
-);
+subscribe(APP_READY, () => {
+  ReactDOM.render(<App />, document.getElementById('root'));
+});
+
+initialize({
+  messages: [
+    footerMessages,
+  ],
+  requireAuthenticatedUser: true,
+});

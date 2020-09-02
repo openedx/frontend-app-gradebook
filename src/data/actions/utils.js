@@ -27,4 +27,3 @@ const sortAlphaAsc = (gradeRowA, gradeRowB) => {
 };
 
 export { sortAlphaAsc, formatDateForDisplay };
-

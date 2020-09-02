@@ -1,6 +1,8 @@
 import { GOT_GRADES, FILTER_BY_ASSIGNMENT_TYPE } from '../constants/actionTypes/grades';
 
-import { INITIALIZE_FILTERS, UPDATE_ASSIGNMENT_FILTER, UPDATE_ASSIGNMENT_LIMITS, UPDATE_COURSE_GRADE_LIMITS, RESET_FILTERS } from '../constants/actionTypes/filters';
+import {
+  INITIALIZE_FILTERS, UPDATE_ASSIGNMENT_FILTER, UPDATE_ASSIGNMENT_LIMITS, UPDATE_COURSE_GRADE_LIMITS, RESET_FILTERS,
+} from '../constants/actionTypes/filters';
 
 import initialFilters from '../constants/filters';
 
@@ -15,8 +17,8 @@ const reducer = (state = initialState, action) => {
         ...state,
         assignmentType: action.filterType,
         assignment: (
-          action.filterType !== '' &&
-          (state.assignment || {}).type !== action.filterType)
+          action.filterType !== ''
+          && (state.assignment || {}).type !== action.filterType)
           ? '' : state.assignment,
       };
     case INITIALIZE_FILTERS:

@@ -1,8 +1,9 @@
+import axios from 'axios';
 import configureMockStore from 'redux-mock-store';
 import MockAdapter from 'axios-mock-adapter';
 import thunk from 'redux-thunk';
 
-import apiClient from '../apiClient';
+import { getAuthenticatedHttpClient } from '@edx/frontend-platform/auth';
 import { configuration } from '../../config';
 import { fetchCohorts } from './cohorts';
 import {
@@ -12,9 +13,12 @@ import {
 } from '../constants/actionTypes/cohorts';
 
 const mockStore = configureMockStore([thunk]);
-const axiosMock = new MockAdapter(apiClient);
-apiClient.isAccessTokenExpired = jest.fn();
-apiClient.isAccessTokenExpired.mockReturnValue(false);
+
+jest.mock('@edx/frontend-platform/auth');
+const axiosMock = new MockAdapter(axios);
+getAuthenticatedHttpClient.mockReturnValue(axios);
+axios.isAccessTokenExpired = jest.fn();
+axios.isAccessTokenExpired.mockReturnValue(false);
 
 describe('actions', () => {
   afterEach(() => {
