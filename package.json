@@ -34,8 +34,8 @@
     "@fortawesome/free-solid-svg-icons": "^5.11.2",
     "@fortawesome/react-fontawesome": "^0.1.5",
     "@redux-beacon/segment": "^1.0.0",
-    "core-js": "3.6.5",
     "classnames": "^2.2.6",
+    "core-js": "3.6.5",
     "email-prop-type": "^1.1.7",
     "font-awesome": "4.7.0",
     "history": "4.10.1",
@@ -54,6 +54,7 @@
     "redux-devtools-extension": "2.13.8",
     "redux-logger": "3.0.6",
     "redux-thunk": "2.3.0",
+    "regenerator-runtime": "^0.13.7",
     "whatwg-fetch": "^2.0.4"
   },
   "devDependencies": {
