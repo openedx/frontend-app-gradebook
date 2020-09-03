@@ -163,7 +163,7 @@ describe('grades reducer', () => {
     })).toEqual(expected);
   });
 
-  describe('updates fetch grade history failure state', () => {
+  it('updates fetch grade override history failure state', () => {
     const errorMessage = 'This is the error message';
     const expected = {
       ...initialState,

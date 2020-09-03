@@ -237,7 +237,7 @@ describe('actions', () => {
     });
 
     describe('dispatches failure action with expected message', () => {
-      it('on failure response', () => {
+      test('on failure response', () => {
         const responseData = {
           success: false,
           error_message: 'There was an error!!!!!!!!!',
@@ -256,7 +256,7 @@ describe('actions', () => {
         });
       });
 
-      it('on 500 error', () => {
+      test('on 500 error', () => {
         axiosMock.onGet(fetchOverridesURL).replyOnce(500);
 
         const expectedActions = [{
