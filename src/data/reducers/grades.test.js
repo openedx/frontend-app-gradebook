@@ -6,6 +6,7 @@ import {
   TOGGLE_GRADE_FORMAT,
   FILTER_BY_ASSIGNMENT_TYPE,
   OPEN_BANNER,
+  ERROR_FETCHING_GRADE_OVERRIDE_HISTORY,
 } from '../constants/actionTypes/grades';
 
 const courseId = 'course-v1:edX+DemoX+Demo_Course';
@@ -159,6 +160,19 @@ describe('grades reducer', () => {
     };
     expect(grades(undefined, {
       type: ERROR_FETCHING_GRADES,
+    })).toEqual(expected);
+  });
+
+  it('updates fetch grade override history failure state', () => {
+    const errorMessage = 'This is the error message';
+    const expected = {
+      ...initialState,
+      finishedFetchingOverrideHistory: true,
+      overrideHistoryError: errorMessage,
+    };
+    expect(grades(undefined, {
+      type: ERROR_FETCHING_GRADE_OVERRIDE_HISTORY,
+      errorMessage,
     })).toEqual(expected);
   });
 });

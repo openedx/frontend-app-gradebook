@@ -695,11 +695,11 @@ export default class Gradebook extends React.Component {
                       </div>
                       <StatusAlert
                         alertType="danger"
-                        dialog="Error retrieving grade override history."
-                        open={this.props.errorFetchingGradeOverrideHistory}
+                        dialog={this.props.gradeOverrideHistoryError}
+                        open={this.props.gradeOverrideHistoryError}
                         dismissible={false}
                       />
-                      {!this.props.errorFetchingGradeOverrideHistory && (
+                      {!this.props.gradeOverrideHistoryError && (
                         <Table
                           columns={GRADE_OVERRIDE_HISTORY_COLUMNS}
                           data={[...this.props.gradeOverrides, {
@@ -973,7 +973,7 @@ Gradebook.defaultProps = {
   uploadSuccess: false,
   showBulkManagement: false,
   bulkManagementHistory: [],
-  errorFetchingGradeOverrideHistory: false,
+  gradeOverrideHistoryError: '',
   totalUsersCount: null,
   filteredUsersCount: null,
 };
@@ -1049,7 +1049,7 @@ Gradebook.propTypes = {
   submitFileUploadFormData: PropTypes.func.isRequired,
   bulkImportError: PropTypes.string,
   uploadSuccess: PropTypes.bool,
-  errorFetchingGradeOverrideHistory: PropTypes.bool,
+  gradeOverrideHistoryError: PropTypes.string,
   showBulkManagement: PropTypes.bool,
   bulkManagementHistory: PropTypes.arrayOf(PropTypes.shape({
     originalFilename: PropTypes.string.isRequired,

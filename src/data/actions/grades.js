@@ -24,6 +24,7 @@ import {
   BULK_GRADE_REPORT_DOWNLOADED,
   INTERVENTION_REPORT_DOWNLOADED,
 } from '../constants/actionTypes/grades';
+import GRADE_OVERRIDE_HISTORY_ERROR_DEFAULT_MSG from '../constants/errors';
 import LmsApiService from '../services/LmsApiService';
 import { sortAlphaAsc, formatDateForDisplay } from './utils';
 import {
@@ -42,7 +43,10 @@ const bulkHistoryError = () => ({ type: BULK_HISTORY_ERR });
 const startedFetchingGrades = () => ({ type: STARTED_FETCHING_GRADES });
 const finishedFetchingGrades = () => ({ type: FINISHED_FETCHING_GRADES });
 const errorFetchingGrades = () => ({ type: ERROR_FETCHING_GRADES });
-const errorFetchingGradeOverrideHistory = () => ({ type: ERROR_FETCHING_GRADE_OVERRIDE_HISTORY });
+const errorFetchingGradeOverrideHistory = errorMessage => ({
+  type: ERROR_FETCHING_GRADE_OVERRIDE_HISTORY,
+  errorMessage,
+});
 
 const gotGrades = ({
   grades, cohort, track, assignmentType, headings, prev,
@@ -195,22 +199,27 @@ const fetchGradeOverrideHistory = (subsectionId, userId) => (
   dispatch => LmsApiService.fetchGradeOverrideHistory(subsectionId, userId)
     .then(response => response.data)
     .then((data) => {
-      dispatch(gotGradeOverrideHistory({
-        overrideHistory: formatGradeOverrideForDisplay(data.history),
-        currentEarnedAllOverride: data.override ? data.override.earned_all_override : null,
-        currentPossibleAllOverride: data.override ? data.override.possible_all_override : null,
-        currentEarnedGradedOverride: data.override ? data.override.earned_graded_override : null,
-        currentPossibleGradedOverride: data.override
-          ? data.override.possible_graded_override : null,
-        originalGradeEarnedAll: data.original_grade ? data.original_grade.earned_all : null,
-        originalGradePossibleAll: data.original_grade ? data.original_grade.possible_all : null,
-        originalGradeEarnedGraded: data.original_grade ? data.original_grade.earned_graded : null,
-        originalGradePossibleGraded: data.original_grade
-          ? data.original_grade.possible_graded : null,
-      }));
+      if (data.success) {
+        dispatch(gotGradeOverrideHistory({
+          overrideHistory: formatGradeOverrideForDisplay(data.history),
+          currentEarnedAllOverride: data.override ? data.override.earned_all_override : null,
+          currentPossibleAllOverride: data.override ? data.override.possible_all_override : null,
+          currentEarnedGradedOverride: data.override ? data.override.earned_graded_override : null,
+          currentPossibleGradedOverride: data.override
+            ? data.override.possible_graded_override : null,
+          originalGradeEarnedAll: data.original_grade ? data.original_grade.earned_all : null,
+          originalGradePossibleAll: data.original_grade ? data.original_grade.possible_all : null,
+          originalGradeEarnedGraded: data.original_grade
+            ? data.original_grade.earned_graded : null,
+          originalGradePossibleGraded: data.original_grade
+            ? data.original_grade.possible_graded : null,
+        }));
+      } else {
+        dispatch(errorFetchingGradeOverrideHistory(data.error_message));
+      }
     })
     .catch(() => {
-      dispatch(errorFetchingGradeOverrideHistory());
+      dispatch(errorFetchingGradeOverrideHistory(GRADE_OVERRIDE_HISTORY_ERROR_DEFAULT_MSG));
     })
 );
 
