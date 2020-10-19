@@ -82,7 +82,6 @@ export class BulkManagement extends React.Component {
     }
   };
 
-
   render() {
     return (
       <Tab eventKey="bulk_management" title="Bulk Management">
@@ -160,6 +159,7 @@ export class BulkManagement extends React.Component {
 BulkManagement.defaultProps = {
   bulkImportError: '',
   bulkManagementHistory: [],
+  courseId: '',
   uploadSuccess: false,
 };
 
@@ -195,6 +195,6 @@ export const mapStateToProps = (state) => ({
 
 export const mapDispatchToProps = {
   submitFileUploadFormData,
-}
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(BulkManagement);

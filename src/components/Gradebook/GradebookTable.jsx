@@ -8,6 +8,7 @@ import { Table } from '@edx/paragon';
 import { formatDateForDisplay } from '../../data/actions/utils';
 import { getHeadings } from '../../data/selectors/grades';
 import { fetchGradeOverrideHistory } from '../../data/actions/grades';
+
 const DECIMAL_PRECISION = 2;
 
 export class GradebookTable extends React.Component {
@@ -25,7 +26,7 @@ export class GradebookTable extends React.Component {
     this.props.setGradebookState({
       adjustedGradePossible,
       adjustedGradeValue: '',
-      modalAssignmentName: `${subsection.subsection_name}`,
+      assignmentName: `${subsection.subsection_name}`,
       modalOpen: true,
       reasonForChange: '',
       todaysDate: formatDateForDisplay(new Date()),
@@ -34,7 +35,6 @@ export class GradebookTable extends React.Component {
       updateUserName: userEntry.username,
     });
   }
-
 
   getLearnerInformation = entry => (
     <div>
@@ -160,7 +160,6 @@ export class GradebookTable extends React.Component {
 }
 
 GradebookTable.defaultProps = {
-  areGradesFrozen: false,
   grades: [],
 };
 

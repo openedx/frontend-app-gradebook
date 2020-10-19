@@ -1,4 +1,4 @@
-/* eslint-disable react/sort-comp, react/button-has-type */
+/* eslint-disable react/sort-comp, react/button-has-type, import/no-named-as-default */
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
@@ -7,21 +7,17 @@ import {
   Icon,
   InputSelect,
   InputText,
-  Modal,
   SearchField,
-  StatefulButton,
   StatusAlert,
-  Table,
   Tab,
   Tabs,
 } from '@edx/paragon';
 import queryString from 'query-string';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faDownload, faSpinner, faFilter } from '@fortawesome/free-solid-svg-icons';
+import { faFilter } from '@fortawesome/free-solid-svg-icons';
 import { configuration } from '../../config';
 import PageButtons from '../PageButtons';
 import Drawer from '../Drawer';
-import { formatDateForDisplay } from '../../data/actions/utils';
 import initialFilters from '../../data/constants/filters';
 import ConnectedFilterBadges from '../FilterBadges';
 
@@ -45,7 +41,6 @@ export default class Gradebook extends React.Component {
       filterValue: '',
       isMinCourseGradeFilterValid: true,
       isMaxCourseGradeFilterValid: true,
-      modalAssignmentName: '',
       modalOpen: false,
       reasonForChange: '',
       todaysDate: '',
@@ -247,14 +242,15 @@ export default class Gradebook extends React.Component {
 
   createLimitedSetter = (...keys) => (values) => this.setState(
     keys.reduce(
-      (obj, key) => ( values[key] === undefined ? obj : { ...obj, [key]: values[key] } ),
-      {}
-    )
+      (obj, key) => (values[key] === undefined ? obj : { ...obj, [key]: values[key] }),
+      {},
+    ),
   )
 
   safeSetState = this.createLimitedSetter(
     'adjustedGradePossible',
     'adjustedGradeValue',
+    'assignmnentName',
     'modalOpen',
     'reasonForChange',
     'todaysDate',
@@ -383,14 +379,15 @@ export default class Gradebook extends React.Component {
                   updateUserId={this.state.updateUserId}
                   updateUserName={this.state.updateUserName}
                 />
-                  
+
               </Tab>
-              {this.props.showBulkManagement && 
+              {this.props.showBulkManagement
+                && (
                 <BulkManagement
                   courseId={this.props.courseId}
                   gradeExportUrl={this.props.gradeExportUrl}
                 />
-              }
+                )}
             </Tabs>
           </div>
         )}
@@ -401,7 +398,7 @@ export default class Gradebook extends React.Component {
           </>
         )}
       >
-        <Assignments 
+        <Assignments
           assignmentGradeMin={this.state.assignmentGradeMin}
           assignmentGradeMax={this.state.assignmentGradeMax}
           courseId={this.props.courseId}
@@ -470,7 +467,6 @@ Gradebook.defaultProps = {
   cohorts: [],
   courseId: '',
   filteredUsersCount: null,
-  grades: [],
   location: {
     search: '',
   },
@@ -492,28 +488,10 @@ Gradebook.propTypes = {
     id: PropTypes.number,
   })),
   courseId: PropTypes.string,
-  fetchGradeOverrideHistory: PropTypes.func.isRequired,
   filteredUsersCount: PropTypes.number,
-  format: PropTypes.string.isRequired,
   getRoles: PropTypes.func.isRequired,
   getUserGrades: PropTypes.func.isRequired,
   gradeExportUrl: PropTypes.string.isRequired,
-  grades: PropTypes.arrayOf(PropTypes.shape({
-    percent: PropTypes.number,
-    section_breakdown: PropTypes.arrayOf(PropTypes.shape({
-      attempted: PropTypes.bool,
-      category: PropTypes.string,
-      label: PropTypes.string,
-      module_id: PropTypes.string,
-      percent: PropTypes.number,
-      scoreEarned: PropTypes.number,
-      scorePossible: PropTypes.number,
-      subsection_name: PropTypes.string,
-    })),
-    user_id: PropTypes.number,
-    user_name: PropTypes.string,
-  })),
-  headings: PropTypes.arrayOf(PropTypes.string).isRequired,
   history: PropTypes.shape({
     push: PropTypes.func,
   }).isRequired,

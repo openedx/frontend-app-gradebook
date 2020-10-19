@@ -9,8 +9,6 @@ import {
   InputSelect,
   InputText,
 } from '@edx/paragon';
-import queryString from 'query-string';
-
 import { selectableAssignmentLabels } from '../../data/selectors/filters';
 import {
   filterAssignmentType,
@@ -21,12 +19,6 @@ import {
   updateAssignmentFilter,
   updateAssignmentLimits,
 } from '../../data/actions/filters';
-
-
-const DECIMAL_PRECISION = 2;
-const GRADE_OVERRIDE_HISTORY_COLUMNS = [{ label: 'Date', key: 'date' }, { label: 'Grader', key: 'grader' },
-  { label: 'Reason', key: 'reason' },
-  { label: 'Adjusted grade', key: 'adjustedGrade' }];
 
 export class Assignments extends React.Component {
   getAssignmentFilterOptions = () => [
@@ -81,7 +73,6 @@ export class Assignments extends React.Component {
     this.updateQueryParams({ assignmentType });
   }
 
-
   render() {
     return (
       <Collapsible title="Assignments" open className="filter-group mb-3">
@@ -125,7 +116,7 @@ export class Assignments extends React.Component {
               step={1}
               value={this.props.assignmentGradeMin}
               disabled={!this.props.selectedAssignment}
-              onChange={this.props.setAssignmentGradeMax}
+              onChange={this.props.setAssignmentGradeMin}
             />
             <span className="input-percent-label">%</span>
             <InputText
@@ -160,7 +151,9 @@ Assignments.defaultProps = {
   assignmentFilterOptions: [],
   selectedAssignment: '',
   selectedAssignmentType: '',
-}
+  selectedCohort: null,
+  selectedTrack: null,
+};
 
 Assignments.propTypes = {
   assignmentGradeMin: PropTypes.string.isRequired,
@@ -177,6 +170,7 @@ Assignments.propTypes = {
     subsectionLabel: PropTypes.string,
   })),
   filterAssignmentType: PropTypes.func.isRequired,
+  getUserGrades: PropTypes.func.isRequired,
   selectedAssignmentType: PropTypes.string,
   selectedAssignment: PropTypes.string,
   selectedCohort: PropTypes.string,
@@ -196,11 +190,11 @@ export const mapStateToProps = (state) => ({
 });
 
 export const mapDispatchToProps = {
-  fetchGrades,
+  getUserGrades: fetchGrades,
   filterAssignmentType,
   updateAssignmentFilter,
   updateAssignmentLimits,
   updateGradesIfAssignmentGradeFiltersSet,
-}
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(Assignments);

@@ -9,10 +9,8 @@ import { faDownload, faSpinner } from '@fortawesome/free-solid-svg-icons';
 
 import {
   downloadBulkGradesReport,
-  downloadInterventionReport
+  downloadInterventionReport,
 } from '../../data/actions/grades';
-
-
 
 export class BulkManagementControls extends React.Component {
   handleClickDownloadInterventions = () => {
@@ -66,6 +64,11 @@ export class BulkManagementControls extends React.Component {
   }
 }
 
+BulkManagementControls.defaultProps = {
+  courseId: '',
+  showSpinner: false,
+};
+
 BulkManagementControls.propTypes = {
   courseId: PropTypes.string,
   gradeExportUrl: PropTypes.string.isRequired,
@@ -77,7 +80,7 @@ BulkManagementControls.propTypes = {
   downloadInterventionReport: PropTypes.func.isRequired,
 };
 
-export const mapStateToProps = (state) => ({ });
+export const mapStateToProps = () => ({ });
 
 export const mapDispatchToProps = {
   downloadBulkGradesReport,

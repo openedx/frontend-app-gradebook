@@ -12,7 +12,7 @@ import {
 
 import {
   doneViewingAssignment,
-  updateGrades
+  updateGrades,
 } from '../../data/actions/grades';
 
 const GRADE_OVERRIDE_HISTORY_COLUMNS = [{ label: 'Date', key: 'date' }, { label: 'Grader', key: 'grader' },
@@ -133,51 +133,35 @@ export class EditModal extends React.Component {
 }
 
 EditModal.defaultProps = {
-
-  areGradesFrozen: false,
-  assignmentTypes: [],
-  assignmentFilterOptions: [],
-  canUserViewGradebook: false,
-  cohorts: [],
-  gradeOverrides: [],
+  courseId: '',
   gradeOverrideCurrentEarnedGradedOverride: null,
+  gradeOverrideHistoryError: '',
+  gradeOverrides: [],
   gradeOriginalEarnedGraded: null,
   gradeOriginalPossibleGraded: null,
-  location: {
-    search: '',
-  },
-  courseId: '',
   selectedCohort: null,
   selectedTrack: null,
-  selectedAssignmentType: '',
-  selectedAssignment: '',
-  showSpinner: false,
-  tracks: [],
-  bulkImportError: '',
-  uploadSuccess: false,
-  showBulkManagement: false,
-  bulkManagementHistory: [],
-  gradeOverrideHistoryError: '',
-  totalUsersCount: null,
-  filteredUsersCount: null,
 };
 
 EditModal.propTypes = {
-
-  assignmentName: PropTypes.string,
-  adjustedGradePossible: PropTypes.string,
-  adjustedGradeValue: PropTypes.number,
   courseId: PropTypes.string,
-  filterValue: PropTypes.string,
-  open: PropTypes.bool,
-  reasonForChange: PropTypes.string,
-  setAdjustedGradeValue: PropTypes.func,
-  setGradebookState: PropTypes.func,
-  setReasonForChange: PropTypes.func,
-  todaysDate: PropTypes.string,
-  updateModuleId: PropTypes.string,
-  updateUserId: PropTypes.string,
-  updateUserName: PropTypes.string,
+
+  // Gradebook State
+  adjustedGradePossible: PropTypes.string.isRequired,
+  adjustedGradeValue: PropTypes.number.isRequired,
+  assignmentName: PropTypes.string.isRequired,
+  filterValue: PropTypes.string.isRequired,
+  open: PropTypes.bool.isRequired,
+  reasonForChange: PropTypes.string.isRequired,
+  todaysDate: PropTypes.string.isRequired,
+  updateModuleId: PropTypes.string.isRequired,
+  updateUserId: PropTypes.string.isRequired,
+  updateUserName: PropTypes.string.isRequired,
+
+  // Gradebook State Setters
+  setAdjustedGradeValue: PropTypes.func.isRequired,
+  setGradebookState: PropTypes.func.isRequired,
+  setReasonForChange: PropTypes.func.isRequired,
 
   // redux
   doneViewingAssignment: PropTypes.func.isRequired,
@@ -204,11 +188,11 @@ export const mapStateToProps = (state) => ({
   grdaeOriginalPossibleGraded: state.grades.grdaeOriginalPossibleGraded,
   selectedCohort: state.filters.cohort,
   selectedTrack: state.filters.track,
-})
+});
 
 export const mapDispatchToProps = {
   doneViewingAssignment,
   updateGrades,
-}
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(EditModal);
