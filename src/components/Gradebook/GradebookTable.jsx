@@ -128,7 +128,10 @@ export class GradebookTable extends React.Component {
       );
       const emailHeadingLabel = 'Email*';
 
-      headings = headings.map(heading => ({ label: heading, key: heading }));
+      headings = headings.map(heading => ({
+        label: heading,
+        key: heading,
+      }));
 
       // replace username heading label to include additional user data
       headings[0].label = userInformationHeadingLabel;
@@ -167,7 +170,7 @@ GradebookTable.defaultProps = {
 GradebookTable.propTypes = {
   setGradebookState: PropTypes.func.isRequired,
   // redux
-  areGradesFrozen: PropTypes.bool.isRequired,
+  areGradesFrozen: PropTypes.bool,
   format: PropTypes.string.isRequired,
   grades: PropTypes.arrayOf(PropTypes.shape({
     percent: PropTypes.number,

@@ -142,8 +142,8 @@ EditModal.defaultProps = {
   gradeOriginalPossibleGraded: null,
   selectedCohort: null,
   selectedTrack: null,
-  updateModuleId: null,
-  updateUserId: null,
+  updateModuleId: '',
+  updateUserId: '',
   updateUserName: '',
 };
 
