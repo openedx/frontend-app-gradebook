@@ -147,12 +147,10 @@ export class GradebookTable extends React.Component {
         <div className="gbook">
           <Table
             columns={this.formatHeadings()}
-            data={[
-              ...this.formatter[this.props.format](
-                this.props.grades,
-                this.props.areGradesFrozen,
-              )
-            ]}
+            data={this.formatter[this.props.format](
+              this.props.grades,
+              this.props.areGradesFrozen,
+            )}
             rowHeaderColumnKey="username"
             hasFixedColumnWidths
           />
