@@ -128,13 +128,11 @@ export class GradebookTable extends React.Component {
       );
       const emailHeadingLabel = 'Email*';
 
-      headings = headings.map(heading => ({ label: heading, key: heading, width: 'col-1' }));
+      headings = headings.map(heading => ({ label: heading, key: heading }));
 
       // replace username heading label to include additional user data
       headings[0].label = userInformationHeadingLabel;
-      headings[0].width = 'col-2';
       headings[1].label = emailHeadingLabel;
-      headings[1].width = 'col-2';
     }
 
     return headings;
@@ -150,27 +148,7 @@ export class GradebookTable extends React.Component {
               ...this.formatter[this.props.format](
                 this.props.grades,
                 this.props.areGradesFrozen,
-              ),
-              ...this.formatter[this.props.format](
-                this.props.grades,
-                this.props.areGradesFrozen,
-              ),
-              ...this.formatter[this.props.format](
-                this.props.grades,
-                this.props.areGradesFrozen,
-              ),
-              ...this.formatter[this.props.format](
-                this.props.grades,
-                this.props.areGradesFrozen,
-              ),
-              ...this.formatter[this.props.format](
-                this.props.grades,
-                this.props.areGradesFrozen,
-              ),
-              ...this.formatter[this.props.format](
-                this.props.grades,
-                this.props.areGradesFrozen,
-              ),
+              )
             ]}
             rowHeaderColumnKey="username"
             hasFixedColumnWidths
