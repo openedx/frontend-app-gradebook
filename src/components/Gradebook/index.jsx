@@ -1,4 +1,4 @@
-/* eslint-disable react/sort-comp, react/button-has-type */
+/* eslint-disable react/sort-comp, react/button-has-type, import/no-named-as-default */
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
@@ -7,48 +7,46 @@ import {
   Icon,
   InputSelect,
   InputText,
-  Modal,
   SearchField,
-  StatefulButton,
   StatusAlert,
-  Table,
   Tab,
   Tabs,
 } from '@edx/paragon';
 import queryString from 'query-string';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faDownload, faSpinner, faFilter } from '@fortawesome/free-solid-svg-icons';
+import { faFilter } from '@fortawesome/free-solid-svg-icons';
 import { configuration } from '../../config';
 import PageButtons from '../PageButtons';
 import Drawer from '../Drawer';
-import { formatDateForDisplay } from '../../data/actions/utils';
 import initialFilters from '../../data/constants/filters';
 import ConnectedFilterBadges from '../FilterBadges';
 
-const DECIMAL_PRECISION = 2;
-const GRADE_OVERRIDE_HISTORY_COLUMNS = [{ label: 'Date', key: 'date' }, { label: 'Grader', key: 'grader' },
-  { label: 'Reason', key: 'reason' },
-  { label: 'Adjusted grade', key: 'adjustedGrade' }];
+import Assignments from './Assignments';
+import BulkManagement from './BulkManagement';
+import BulkManagementControls from './BulkManagementControls';
+import EditModal from './EditModal';
+import GradebookTable from './GradebookTable';
 
 export default class Gradebook extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      filterValue: '',
-      courseGradeMin: '0',
-      courseGradeMax: '100',
-      modalOpen: false,
+      adjustedGradePossible: '',
       adjustedGradeValue: 0,
-      updateModuleId: null,
-      updateUserId: null,
-      reasonForChange: '',
       assignmentGradeMin: '0',
       assignmentGradeMax: '100',
+      assignmentName: '',
+      courseGradeMin: '0',
+      courseGradeMax: '100',
+      filterValue: '',
       isMinCourseGradeFilterValid: true,
       isMaxCourseGradeFilterValid: true,
+      modalOpen: false,
+      reasonForChange: '',
+      todaysDate: '',
+      updateModuleId: null,
+      updateUserId: null,
     };
-    this.fileFormRef = React.createRef();
-    this.fileInputRef = React.createRef();
     this.myRef = React.createRef();
   }
 
@@ -56,7 +54,6 @@ export default class Gradebook extends React.Component {
     const urlQuery = queryString.parse(this.props.location.search);
     this.props.initializeFilters(urlQuery);
     this.props.getRoles(this.props.courseId);
-    this.overrideReasonInput.focus();
 
     const newStateFields = {};
     ['assignmentGradeMin', 'assignmentGradeMax', 'courseGradeMin', 'courseGradeMax'].forEach((attr) => {
@@ -72,54 +69,12 @@ export default class Gradebook extends React.Component {
     this.setState({ [e.target.name]: e.target.value });
   }
 
-  setNewModalState = (userEntry, subsection) => {
-    this.props.fetchGradeOverrideHistory(
-      subsection.module_id,
-      userEntry.user_id,
-    );
-
-    let adjustedGradePossible = '';
-    if (subsection.attempted) {
-      adjustedGradePossible = subsection.score_possible;
-    }
-
-    this.setState({
-      modalAssignmentName: `${subsection.subsection_name}`,
-      modalOpen: true,
-      updateModuleId: subsection.module_id,
-      updateUserId: userEntry.user_id,
-      updateUserName: userEntry.username,
-      todaysDate: formatDateForDisplay(new Date()),
-      adjustedGradePossible,
-      reasonForChange: '',
-      adjustedGradeValue: '',
-    });
-  }
-
-  getLearnerInformation = entry => (
-    <div>
-      <div>{entry.username}</div>
-      {entry.external_user_key && <div className="student-key">{entry.external_user_key}</div>}
-    </div>
-  )
-
   getActiveTabs = () => {
     if (this.props.showBulkManagement) {
       return ['Grades', 'Bulk Management'];
     }
     return ['Grades'];
   };
-
-  getAssignmentFilterOptions = () => [
-    { label: 'All', value: '' },
-    ...this.props.assignmentFilterOptions.map((assignment) => {
-      const { label, subsectionLabel } = assignment;
-      return {
-        label: `${label}: ${subsectionLabel}`,
-        value: label,
-      };
-    }),
-  ];
 
   getCourseGradeFilterAlertDialog = () => {
     let dialog = '';
@@ -133,52 +88,6 @@ export default class Gradebook extends React.Component {
     return dialog;
   };
 
-  handleAdjustedGradeClick = () => {
-    this.props.updateGrades(
-      this.props.courseId, [
-        {
-          user_id: this.state.updateUserId,
-          usage_id: this.state.updateModuleId,
-          grade: {
-            earned_graded_override: this.state.adjustedGradeValue,
-            comment: this.state.reasonForChange,
-          },
-        },
-      ],
-      this.state.filterValue,
-      this.props.selectedCohort,
-      this.props.selectedTrack,
-    );
-
-    this.closeAssignmentModal();
-  }
-
-  closeAssignmentModal = () => {
-    this.props.doneViewingAssignment();
-    this.setState({
-      adjustedGradePossible: '',
-      adjustedGradeValue: '',
-      modalOpen: false,
-      reasonForChange: '',
-      updateModuleId: null,
-      updateUserId: null,
-    });
-  };
-
-  handleAssignmentFilterChange = (assignment) => {
-    const selectedFilterOption = this.props.assignmentFilterOptions.find(assig => assig.label === assignment);
-    const { type, id } = selectedFilterOption || {};
-    const typedValue = { label: assignment, type, id };
-    this.props.updateAssignmentFilter(typedValue);
-    this.updateQueryParams({ assignment: id });
-    this.props.updateGradesIfAssignmentGradeFiltersSet(
-      this.props.courseId,
-      this.props.selectedCohort,
-      this.props.selectedTrack,
-      this.props.selectedAssignmentType,
-    );
-  };
-
   updateQueryParams = (queryParams) => {
     const parsed = queryString.parse(this.props.location.search);
     Object.keys(queryParams).forEach((key) => {
@@ -189,15 +98,6 @@ export default class Gradebook extends React.Component {
       }
     });
     this.props.history.push(`?${queryString.stringify(parsed)}`);
-  };
-
-  mapAssignmentTypeEntries = (entries) => {
-    const mapped = entries.map(entry => ({
-      id: entry,
-      label: entry,
-    }));
-    mapped.unshift({ id: 0, label: 'All', value: '' });
-    return mapped;
   };
 
   mapCohortsEntries = (entries) => {
@@ -217,58 +117,6 @@ export default class Gradebook extends React.Component {
     mapped.unshift({ label: 'Track-All' });
     return mapped;
   };
-
-  formatHistoryRow = (row) => {
-    const {
-      summaryOfRowsProcessed: {
-        total,
-        successfullyProcessed,
-        failed,
-        skipped,
-      },
-      unique_id: courseId,
-      originalFilename,
-      id,
-      user: username,
-      ...rest
-    } = row;
-    const resultsText = [
-      `${total} Students: ${successfullyProcessed} processed`,
-      ...(skipped > 0 ? [`${skipped} skipped`] : []),
-      ...(failed > 0 ? [`${failed} failed`] : []),
-    ].join(', ');
-    const resultsSummary = (
-      <a
-        href={`${configuration.LMS_BASE_URL}/api/bulk_grades/course/${courseId}/?error_id=${id}`}
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        <FontAwesomeIcon icon={faDownload} />
-        {resultsText}
-      </a>
-    );
-    const filename = (
-      <span className="wrap-text-in-cell">
-        {originalFilename}
-      </span>
-    );
-    const user = (
-      <span className="wrap-text-in-cell">
-        {username}
-      </span>
-    );
-    return {
-      resultsSummary,
-      filename,
-      user,
-      ...rest,
-    };
-  };
-
-  updateAssignmentTypes = (assignmentType) => {
-    this.props.filterAssignmentType(assignmentType);
-    this.updateQueryParams({ assignmentType });
-  }
 
   updateTracks = (event) => {
     const selectedTrackItem = this.props.tracks.find(x => x.name === event);
@@ -300,60 +148,6 @@ export default class Gradebook extends React.Component {
     this.updateQueryParams({ cohort: selectedCohortId });
   };
 
-  // At present, we don't store label and value in google analytics. By setting the label
-  // property of the below events, I want to verify that we can set the label of google anlatyics
-  // The following properties of a google analytics event are:
-  // category (used), name(used), lavel(not used), value(not used)
-  handleClickExportGrades = () => {
-    this.props.downloadBulkGradesReport(this.props.courseId);
-    window.location = this.props.gradeExportUrl;
-  };
-
-  handleClickDownloadInterventions = () => {
-    this.props.downloadInterventionReport(this.props.courseId);
-    window.location = this.props.interventionExportUrl;
-  };
-
-  handleClickImportGrades = () => {
-    const fileInput = this.fileInputRef.current;
-    if (fileInput) {
-      fileInput.click();
-    }
-  };
-
-  handleFileInputChange = (event) => {
-    const fileInput = event.target;
-    const file = fileInput.files[0];
-    const form = this.fileFormRef.current;
-    if (file && form) {
-      const formData = new FormData(form);
-      this.props.submitFileUploadFormData(this.props.courseId, formData).then(() => {
-        fileInput.value = null;
-      });
-    }
-  };
-
-  handleSubmitAssignmentGrade = (event) => {
-    event.preventDefault();
-    const {
-      assignmentGradeMin,
-      assignmentGradeMax,
-    } = this.state;
-
-    this.props.updateAssignmentLimits(assignmentGradeMin, assignmentGradeMax);
-    this.props.getUserGrades(
-      this.props.courseId,
-      this.props.selectedCohort,
-      this.props.selectedTrack,
-      this.props.selectedAssignmentType,
-    );
-    this.updateQueryParams({ assignmentGradeMin, assignmentGradeMax });
-  };
-
-  handleMinAssigGradeChange = assignmentGradeMin => this.setState({ assignmentGradeMin });
-
-  handleMaxAssigGradeChange = assignmentGradeMax => this.setState({ assignmentGradeMax });
-
   mapSelectedCohortEntry = (entry) => {
     const selectedCohortEntry = this.props.cohorts.find(x => x.id === parseInt(entry, 10));
     if (selectedCohortEntry) {
@@ -370,102 +164,7 @@ export default class Gradebook extends React.Component {
     return 'Tracks';
   };
 
-  roundGrade = percent => parseFloat((percent || 0).toFixed(DECIMAL_PRECISION));
-
-  formatter = {
-    percent: (entries, areGradesFrozen) => entries.map((entry) => {
-      const learnerInformation = this.getLearnerInformation(entry);
-      const results = {
-        Username: (
-          <div><span className="wrap-text-in-cell">{learnerInformation}</span></div>
-        ),
-        Email: (
-          <span className="wrap-text-in-cell">{entry.email}</span>
-        ),
-      };
-
-      const assignments = entry.section_breakdown
-        .reduce((acc, subsection) => {
-          if (areGradesFrozen) {
-            acc[subsection.label] = `${this.roundGrade(subsection.percent * 100)} %`;
-          } else {
-            acc[subsection.label] = (
-              <button
-                className="btn btn-header link-style grade-button"
-                onClick={() => this.setNewModalState(entry, subsection)}
-              >
-                {this.roundGrade(subsection.percent * 100)}%
-              </button>
-            );
-          }
-          return acc;
-        }, {});
-      const totals = { Total: `${this.roundGrade(entry.percent * 100)}%` };
-      return Object.assign(results, assignments, totals);
-    }),
-
-    absolute: (entries, areGradesFrozen) => entries.map((entry) => {
-      const learnerInformation = this.getLearnerInformation(entry);
-      const results = {
-        Username: (
-          <div><span className="wrap-text-in-cell">{learnerInformation}</span></div>
-        ),
-        Email: (
-          <span className="wrap-text-in-cell">{entry.email}</span>
-        ),
-      };
-
-      const assignments = entry.section_breakdown
-        .reduce((acc, subsection) => {
-          const scoreEarned = this.roundGrade(subsection.score_earned);
-          const scorePossible = this.roundGrade(subsection.score_possible);
-          let label = `${scoreEarned}`;
-          if (subsection.attempted) {
-            label = `${scoreEarned}/${scorePossible}`;
-          }
-          if (areGradesFrozen) {
-            acc[subsection.label] = label;
-          } else {
-            acc[subsection.label] = (
-              <button
-                className="btn btn-header link-style"
-                onClick={() => this.setNewModalState(entry, subsection)}
-              >
-                {label}
-              </button>
-            );
-          }
-          return acc;
-        }, {});
-
-      const totals = { Total: `${this.roundGrade(entry.percent * 100)}/100` };
-      return Object.assign(results, assignments, totals);
-    }),
-  };
-
   lmsInstructorDashboardUrl = courseId => `${configuration.LMS_BASE_URL}/courses/${courseId}/instructor`;
-
-  formatHeadings = () => {
-    let headings = [...this.props.headings];
-
-    if (headings.length > 0) {
-      const userInformationHeadingLabel = (
-        <div>
-          <div>Username</div>
-          <div className="font-weight-normal student-key">Student Key*</div>
-        </div>
-      );
-      const emailHeadingLabel = 'Email*';
-
-      headings = headings.map(heading => ({ label: heading, key: heading }));
-
-      // replace username heading label to include additional user data
-      headings[0].label = userInformationHeadingLabel;
-      headings[1].label = emailHeadingLabel;
-    }
-
-    return headings;
-  }
 
   handleCourseGradeFilterChange = (type, value) => {
     const filterValue = value;
@@ -538,6 +237,29 @@ export default class Gradebook extends React.Component {
       filterNames.includes('assignmentType') ? initialFilters.assignmentType : this.props.selectedAssignmentType,
     );
   }
+
+  createStateFieldSetter = (key) => (value) => this.setState({ [key]: value });
+
+  createStateFieldOnChange = (key) => ({ target }) => this.setState({ [key]: target.value });
+
+  createLimitedSetter = (...keys) => (values) => this.setState(
+    keys.reduce(
+      (obj, key) => (values[key] === undefined ? obj : { ...obj, [key]: values[key] }),
+      {},
+    ),
+  )
+
+  safeSetState = this.createLimitedSetter(
+    'adjustedGradePossible',
+    'adjustedGradeValue',
+    'assignmnentName',
+    'modalOpen',
+    'reasonForChange',
+    'todaysDate',
+    'updateModuleId',
+    'updateUserId',
+    'updateUserName',
+  );
 
   render() {
     return (
@@ -631,189 +353,43 @@ export default class Gradebook extends React.Component {
                     onChange={this.props.toggleFormat}
                   />
                   {this.props.showBulkManagement && (
-                    <div>
-                      <StatefulButton
-                        variant="outline-primary"
-                        onClick={this.handleClickExportGrades}
-                        state={this.props.showSpinner ? 'pending' : 'default'}
-                        labels={{
-                          default: 'Bulk Management',
-                          pending: 'Bulk Management',
-                        }}
-                        icons={{
-                          default: <FontAwesomeIcon className="mr-2" icon={faDownload} />,
-                          pending: <FontAwesomeIcon className="fa-spin mr-2" icon={faSpinner} />,
-                        }}
-                        disabledStates={['pending']}
-                      />
-                      <StatefulButton
-                        variant="outline-primary"
-                        onClick={this.handleClickDownloadInterventions}
-                        state={this.props.showSpinner ? 'pending' : 'default'}
-                        className="ml-2"
-                        labels={{
-                          default: 'Interventions*',
-                          pending: 'Interventions*',
-                        }}
-                        icons={{
-                          default: <FontAwesomeIcon className="mr-2" icon={faDownload} />,
-                          pending: <FontAwesomeIcon className="fa-spin mr-2" icon={faSpinner} />,
-                        }}
-                        disabledStates={['pending']}
-                      />
-                    </div>
+                    <BulkManagementControls
+                      courseId={this.props.courseId}
+                      gradeExportUrl={this.props.gradeExportUrl}
+                      interventionExportUrl={this.props.interventionExportUrl}
+                      showSpinner={this.props.showSpinner}
+                    />
                   )}
                 </div>
-                <div className="gradebook-container">
-                  <div className="gbook">
-                    <Table
-                      columns={this.formatHeadings()}
-                      data={this.formatter[this.props.format](
-                        this.props.grades,
-                        this.props.areGradesFrozen,
-                      )}
-                      rowHeaderColumnKey="username"
-                      hasFixedColumnWidths
-                    />
-                  </div>
-                </div>
+                <GradebookTable setGradebookState={this.safeSetState} />
                 {PageButtons(this.props)}
                 <p>* available for learners in the Master&apos;s track only</p>
-                <Modal
+                <EditModal
+                  assignmentName={this.state.assignmentName}
+                  adjustedGradeValue={this.state.adjustedGradeValue}
+                  adjustedGradePossible={this.state.adjustedGradePossible}
+                  courseId={this.props.courseId}
+                  filterValue={this.state.filterValue}
+                  onChange={this.onChange}
                   open={this.state.modalOpen}
-                  title="Edit Grades"
-                  closeText="Cancel"
-                  body={(
-                    <div>
-                      <div>
-                        <div className="grade-history-header grade-history-assignment">Assignment: </div> <div>{this.state.modalAssignmentName}</div>
-                        <div className="grade-history-header grade-history-student">Student: </div> <div>{this.state.updateUserName}</div>
-                        <div className="grade-history-header grade-history-original-grade">Original Grade: </div> <div>{this.props.gradeOriginalEarnedGraded}</div>
-                        <div className="grade-history-header grade-history-current-grade">Current Grade: </div> <div>{this.props.gradeOverrideCurrentEarnedGradedOverride}</div>
-                      </div>
-                      <StatusAlert
-                        alertType="danger"
-                        dialog={this.props.gradeOverrideHistoryError}
-                        open={this.props.gradeOverrideHistoryError}
-                        dismissible={false}
-                      />
-                      {!this.props.gradeOverrideHistoryError && (
-                        <Table
-                          columns={GRADE_OVERRIDE_HISTORY_COLUMNS}
-                          data={[...this.props.gradeOverrides, {
-                            date: this.state.todaysDate,
-                            reason: (<input
-                              type="text"
-                              name="reasonForChange"
-                              value={this.state.reasonForChange}
-                              onChange={value => this.onChange(value)}
-                              ref={(input) => { this.overrideReasonInput = input; }}
-                            />),
-                            adjustedGrade: (
-                              <span>
-                                <input
-                                  type="text"
-                                  name="adjustedGradeValue"
-                                  value={this.state.adjustedGradeValue}
-                                  onChange={value => this.onChange(value)}
-                                />
-                                {(this.state.adjustedGradePossible
-                                  || this.props.gradeOriginalPossibleGraded)
-                                 && ' / '}
-                                {this.state.adjustedGradePossible
-                                 || this.props.gradeOriginalPossibleGraded}
-                              </span>),
-                          }]}
-                        />
-                      )}
-
-                      <div>Showing most recent actions (max 5). To see more, please contact
-                        support.
-                      </div>
-                      <div>Note: Once you save, your changes will be visible to students.</div>
-                    </div>
-                  )}
-                  buttons={[
-                    <Button
-                      variant="primary"
-                      onClick={this.handleAdjustedGradeClick}
-                    >
-                      Save Grade
-                    </Button>,
-                  ]}
-                  onClose={this.closeAssignmentModal}
+                  reasonForChange={this.state.reasonForChange}
+                  setAdjustedGradeValue={this.createStateFieldOnChange('adjustedGradeValue')}
+                  setGradebookState={this.safeSetState}
+                  setReasonForChange={this.createStateFieldOnChange('reasonForChange')}
+                  todaysDate={this.state.todaysDate}
+                  updateModuleId={this.state.updateModuleId}
+                  updateUserId={this.state.updateUserId}
+                  updateUserName={this.state.updateUserName}
                 />
+
               </Tab>
-              {this.props.showBulkManagement && (
-                <Tab eventKey="bulk_management" title="Bulk Management">
-                  <h4>Use this feature by downloading a CSV for bulk management,
-                    overriding grades locally, and coming back here to upload.
-                  </h4>
-                  <form ref={this.fileFormRef} action={this.props.gradeExportUrl} method="post">
-                    <StatusAlert
-                      alertType="danger"
-                      dialog={this.props.bulkImportError}
-                      open={this.props.bulkImportError}
-                      dismissible={false}
-                    />
-                    <StatusAlert
-                      alertType="success"
-                      dialog="CSV processing. File uploads may take several minutes to complete"
-                      open={this.props.uploadSuccess}
-                      dismissible={false}
-                    />
-                    <input
-                      className="d-none"
-                      type="file"
-                      name="csv"
-                      label="Upload Grade CSV"
-                      onChange={this.handleFileInputChange}
-                      ref={this.fileInputRef}
-                    />
-                  </form>
-                  <Button
-                    variant="primary"
-                    onClick={this.handleClickImportGrades}
-                  >
-                    Import Grades
-                  </Button>
-                  <p>
-                    Results appear in the table below.<br />
-                    Grade processing may take a few seconds.
-                  </p>
-                  <Table
-                    data={this.props.bulkManagementHistory.map(this.formatHistoryRow)}
-                    hasFixedColumnWidths
-                    columns={[
-                      {
-                        key: 'filename',
-                        label: 'Gradebook',
-                        columnSortable: false,
-                        width: 'col-5',
-                      },
-                      {
-                        key: 'resultsSummary',
-                        label: 'Download Summary',
-                        columnSortable: false,
-                        width: 'col',
-                      },
-                      {
-                        key: 'user',
-                        label: 'Who',
-                        columnSortable: false,
-                        width: 'col-1',
-                      },
-                      {
-                        key: 'timeUploaded',
-                        label: 'When',
-                        columnSortable: false,
-                        width: 'col',
-                      },
-                    ]}
-                    className="table-striped"
-                  />
-                </Tab>
-              )}
+              {this.props.showBulkManagement
+                && (
+                <BulkManagement
+                  courseId={this.props.courseId}
+                  gradeExportUrl={this.props.gradeExportUrl}
+                />
+                )}
             </Tabs>
           </div>
         )}
@@ -824,73 +400,14 @@ export default class Gradebook extends React.Component {
           </>
         )}
       >
-        <Collapsible title="Assignments" open className="filter-group mb-3">
-          <div>
-            <div className="student-filters">
-              <span className="label">
-                Assignment Types:
-              </span>
-              <InputSelect
-                label="Assignment Types"
-                name="assignment-types"
-                aria-label="Assignment Types"
-                value={this.props.selectedAssignmentType}
-                options={this.mapAssignmentTypeEntries(this.props.assignmentTypes)}
-                onChange={this.updateAssignmentTypes}
-                disabled={this.props.assignmentFilterOptions.length === 0}
-              />
-            </div>
-            <div className="student-filters">
-              <span className="label">
-                Assignment:
-              </span>
-              <InputSelect
-                label="Assignment"
-                name="assignment"
-                aria-label="Assignment"
-                value={this.props.selectedAssignment}
-                options={this.getAssignmentFilterOptions()}
-                onChange={this.handleAssignmentFilterChange}
-                disabled={this.props.assignmentFilterOptions.length === 0}
-              />
-            </div>
-            <p>Grade Range (0% - 100%)</p>
-            <form className="d-flex justify-content-between align-items-center" onSubmit={this.handleSubmitAssignmentGrade}>
-              <InputText
-                label="Min Grade"
-                name="assignmentGradeMin"
-                type="number"
-                min={0}
-                max={100}
-                step={1}
-                value={this.state.assignmentGradeMin}
-                disabled={!this.props.selectedAssignment}
-                onChange={this.handleMinAssigGradeChange}
-              />
-              <span className="input-percent-label">%</span>
-              <InputText
-                label="Max Grade"
-                name="assignmentGradeMax"
-                type="number"
-                min={0}
-                max={100}
-                step={1}
-                value={this.state.assignmentGradeMax}
-                disabled={!this.props.selectedAssignment}
-                onChange={this.handleMaxAssigGradeChange}
-              />
-              <span className="input-percent-label">%</span>
-              <Button
-                type="submit"
-                className="btn-outline-secondary"
-                name="assignmentGradeMinMax"
-                disabled={!this.props.selectedAssignment}
-              >
-                Apply
-              </Button>
-            </form>
-          </div>
-        </Collapsible>
+        <Assignments
+          assignmentGradeMin={this.state.assignmentGradeMin}
+          assignmentGradeMax={this.state.assignmentGradeMax}
+          courseId={this.props.courseId}
+          setAssignmentGradeMin={this.createStateFieldSetter('assignmentGradeMin')}
+          setAssignmentGradeMax={this.createStateFieldSetter('assignmentGradeMax')}
+          updateQueryParams={this.updateQueryParams}
+        />
         <Collapsible title="Overall Grade" open className="filter-group mb-3">
           <div className="d-flex justify-content-between align-items-center">
             <InputText
@@ -948,123 +465,55 @@ export default class Gradebook extends React.Component {
 
 Gradebook.defaultProps = {
   areGradesFrozen: false,
-  assignmentTypes: [],
-  assignmentFilterOptions: [],
   canUserViewGradebook: false,
   cohorts: [],
-  grades: [],
-  gradeOverrides: [],
-  gradeOverrideCurrentEarnedGradedOverride: null,
-  gradeOriginalEarnedGraded: null,
-  gradeOriginalPossibleGraded: null,
+  courseId: '',
+  filteredUsersCount: null,
   location: {
     search: '',
   },
-  courseId: '',
+  selectedAssignmentType: '',
   selectedCohort: null,
   selectedTrack: null,
-  selectedAssignmentType: '',
-  selectedAssignment: '',
-  showSpinner: false,
-  tracks: [],
-  bulkImportError: '',
-  uploadSuccess: false,
   showBulkManagement: false,
-  bulkManagementHistory: [],
-  gradeOverrideHistoryError: '',
+  showSpinner: false,
   totalUsersCount: null,
-  filteredUsersCount: null,
+  tracks: [],
 };
 
 Gradebook.propTypes = {
   areGradesFrozen: PropTypes.bool,
-  assignmentTypes: PropTypes.arrayOf(PropTypes.string),
-  assignmentFilterOptions: PropTypes.arrayOf(PropTypes.shape({
-    label: PropTypes.string,
-    subsectionLabel: PropTypes.string,
-  })),
   canUserViewGradebook: PropTypes.bool,
+  closeBanner: PropTypes.func.isRequired,
   cohorts: PropTypes.arrayOf(PropTypes.shape({
     name: PropTypes.string,
     id: PropTypes.number,
   })),
-  filterAssignmentType: PropTypes.func.isRequired,
-  updateAssignmentFilter: PropTypes.func.isRequired,
-  updateAssignmentLimits: PropTypes.func.isRequired,
-  format: PropTypes.string.isRequired,
+  courseId: PropTypes.string,
+  filteredUsersCount: PropTypes.number,
   getRoles: PropTypes.func.isRequired,
   getUserGrades: PropTypes.func.isRequired,
-  fetchGradeOverrideHistory: PropTypes.func.isRequired,
-  grades: PropTypes.arrayOf(PropTypes.shape({
-    percent: PropTypes.number,
-    section_breakdown: PropTypes.arrayOf(PropTypes.shape({
-      attempted: PropTypes.bool,
-      category: PropTypes.string,
-      label: PropTypes.string,
-      module_id: PropTypes.string,
-      percent: PropTypes.number,
-      scoreEarned: PropTypes.number,
-      scorePossible: PropTypes.number,
-      subsection_name: PropTypes.string,
-    })),
-    user_id: PropTypes.number,
-    user_name: PropTypes.string,
-  })),
-  gradeOverrides: PropTypes.arrayOf(PropTypes.shape({
-    date: PropTypes.string,
-    grader: PropTypes.string,
-    reason: PropTypes.string,
-    adjustedGrade: PropTypes.number,
-  })),
-  gradeOverrideCurrentEarnedGradedOverride: PropTypes.number,
-  gradeOriginalEarnedGraded: PropTypes.number,
-  gradeOriginalPossibleGraded: PropTypes.number,
-  doneViewingAssignment: PropTypes.func.isRequired,
-  headings: PropTypes.arrayOf(PropTypes.string).isRequired,
+  gradeExportUrl: PropTypes.string.isRequired,
   history: PropTypes.shape({
     push: PropTypes.func,
   }).isRequired,
+  initializeFilters: PropTypes.func.isRequired,
+  interventionExportUrl: PropTypes.string.isRequired,
   location: PropTypes.shape({
     search: PropTypes.string,
   }),
-  courseId: PropTypes.string,
+  resetFilters: PropTypes.func.isRequired,
   searchForUser: PropTypes.func.isRequired,
   selectedAssignmentType: PropTypes.string,
-  selectedAssignment: PropTypes.string,
   selectedCohort: PropTypes.string,
   selectedTrack: PropTypes.string,
-  resetFilters: PropTypes.func.isRequired,
+  showBulkManagement: PropTypes.bool,
   showSpinner: PropTypes.bool,
   showSuccess: PropTypes.bool.isRequired,
   toggleFormat: PropTypes.func.isRequired,
+  totalUsersCount: PropTypes.number,
   tracks: PropTypes.arrayOf(PropTypes.shape({
     name: PropTypes.string,
   })),
-  closeBanner: PropTypes.func.isRequired,
-  updateGrades: PropTypes.func.isRequired,
-  gradeExportUrl: PropTypes.string.isRequired,
-  interventionExportUrl: PropTypes.string.isRequired,
-  submitFileUploadFormData: PropTypes.func.isRequired,
-  bulkImportError: PropTypes.string,
-  uploadSuccess: PropTypes.bool,
-  gradeOverrideHistoryError: PropTypes.string,
-  showBulkManagement: PropTypes.bool,
-  bulkManagementHistory: PropTypes.arrayOf(PropTypes.shape({
-    originalFilename: PropTypes.string.isRequired,
-    user: PropTypes.string.isRequired,
-    timeUploaded: PropTypes.string.isRequired,
-    summaryOfRowsProcessed: PropTypes.shape({
-      total: PropTypes.number.isRequired,
-      successfullyProcessed: PropTypes.number.isRequired,
-      failed: PropTypes.number.isRequired,
-      skipped: PropTypes.number.isRequired,
-    }).isRequired,
-  })),
-  totalUsersCount: PropTypes.number,
-  filteredUsersCount: PropTypes.number,
-  initializeFilters: PropTypes.func.isRequired,
-  updateGradesIfAssignmentGradeFiltersSet: PropTypes.func.isRequired,
   updateCourseGradeFilter: PropTypes.func.isRequired,
-  downloadBulkGradesReport: PropTypes.func.isRequired,
-  downloadInterventionReport: PropTypes.func.isRequired,
 };

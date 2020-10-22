@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import Gradebook from '../../components/Gradebook';
 import {
   closeBanner,
-  doneViewingAssignment,
   fetchGradeOverrideHistory,
   fetchGrades,
   fetchMatchingUserGrades,
@@ -11,8 +10,6 @@ import {
   filterAssignmentType,
   submitFileUploadFormData,
   toggleGradeFormat,
-  updateGrades,
-  updateGradesIfAssignmentGradeFiltersSet,
   downloadBulkGradesReport,
   downloadInterventionReport,
 } from '../../data/actions/grades';
@@ -47,33 +44,19 @@ function shouldShowSpinner(state) {
 
 const mapStateToProps = (state, ownProps) => (
   {
-    courseId: ownProps.match.params.courseId,
-    grades: state.grades.results,
-    gradeOverrides: state.grades.gradeOverrideHistoryResults,
-    gradeOverrideCurrentEarnedAllOverride: state.grades.gradeOverrideCurrentEarnedAllOverride,
-    gradeOverrideCurrentPossibleAllOverride: state.grades.gradeOverrideCurrentPossibleAllOverride,
-    gradeOverrideCurrentEarnedGradedOverride: state.grades.gradeOverrideCurrentEarnedGradedOverride,
-    gradeOverrideCurrentPossibleGradedOverride:
-      state.grades.gradeOverrideCurrentPossibleGradedOverride,
-    gradeOriginalEarnedGraded: state.grades.gradeOriginalEarnedGraded,
-    gradeOriginalPossibleGraded: state.grades.gradeOriginalPossibleGraded,
-    headings: getHeadings(state),
-    tracks: state.tracks.results,
-    cohorts: state.cohorts.results,
-    selectedTrack: state.filters.track,
-    selectedCohort: state.filters.cohort,
-    selectedAssignmentType: state.filters.assignmentType,
-    selectedAssignment: (state.filters.assignment || {}).label,
-    format: state.grades.gradeFormat,
-    showSuccess: state.grades.showSuccess,
-    gradeOverrideHistoryError: state.grades.overrideHistoryError,
-    prevPage: state.grades.prevPage,
-    nextPage: state.grades.nextPage,
+    areGradesFrozen: state.assignmentTypes.areGradesFrozen,
     assignmentTypes: state.assignmentTypes.results,
     assignmentFilterOptions: selectableAssignmentLabels(state),
-    areGradesFrozen: state.assignmentTypes.areGradesFrozen,
-    showSpinner: shouldShowSpinner(state),
+    bulkImportError: state.grades.bulkManagement
+      && state.grades.bulkManagement.errorMessages
+      ? `Errors while processing: ${state.grades.bulkManagement.errorMessages.join(', ')}`
+      : '',
+    bulkManagementHistory: getBulkManagementHistory(state),
+    cohorts: state.cohorts.results,
+    courseId: ownProps.match.params.courseId,
     canUserViewGradebook: state.roles.canUserViewGradebook,
+    filteredUsersCount: state.grades.filteredUsersCount,
+    format: state.grades.gradeFormat,
     gradeExportUrl: LmsApiService.getGradeExportCsvUrl(ownProps.match.params.courseId, {
       cohort: getCohortNameById(state, state.filters.cohort),
       track: state.filters.track,
@@ -90,6 +73,8 @@ const mapStateToProps = (state, ownProps) => (
       courseGradeMin: formatMinCourseGrade(state.filters.courseGradeMin),
       courseGradeMax: formatMaxCourseGrade(state.filters.courseGradeMax),
     }),
+    grades: state.grades.results,
+    headings: getHeadings(state),
     interventionExportUrl:
       LmsApiService.getInterventionExportCsvUrl(ownProps.match.params.courseId, {
         cohort: getCohortNameById(state, state.filters.cohort),
@@ -106,42 +91,42 @@ const mapStateToProps = (state, ownProps) => (
         courseGradeMin: formatMinCourseGrade(state.filters.courseGradeMin),
         courseGradeMax: formatMaxCourseGrade(state.filters.courseGradeMax),
       }),
-    bulkImportError: state.grades.bulkManagement
-      && state.grades.bulkManagement.errorMessages
-      ? `Errors while processing: ${state.grades.bulkManagement.errorMessages.join(', ')}`
-      : '',
+    nextPage: state.grades.nextPage,
+    prevPage: state.grades.prevPage,
+    selectedTrack: state.filters.track,
+    selectedCohort: state.filters.cohort,
+    selectedAssignmentType: state.filters.assignmentType,
+    selectedAssignment: (state.filters.assignment || {}).label,
+    showBulkManagement: stateHasMastersTrack(state) && state.config.bulkManagementAvailable,
+    showSpinner: shouldShowSpinner(state),
+    showSuccess: state.grades.showSuccess,
+    totalUsersCount: state.grades.totalUsersCount,
+    tracks: state.tracks.results,
     uploadSuccess: !!(state.grades.bulkManagement
                       && state.grades.bulkManagement.uploadSuccess),
-    showBulkManagement: stateHasMastersTrack(state) && state.config.bulkManagementAvailable,
-    bulkManagementHistory: getBulkManagementHistory(state),
-    totalUsersCount: state.grades.totalUsersCount,
-    filteredUsersCount: state.grades.filteredUsersCount,
   }
 );
 
 const mapDispatchToProps = {
-  doneViewingAssignment,
-  getUserGrades: fetchGrades,
-  fetchGradeOverrideHistory,
-  searchForUser: fetchMatchingUserGrades,
-  getPrevNextGrades: fetchPrevNextGrades,
-  getCohorts: fetchCohorts,
-  getTracks: fetchTracks,
-  getAssignmentTypes: fetchAssignmentTypes,
-  updateGrades,
-  toggleFormat: toggleGradeFormat,
-  filterAssignmentType,
   closeBanner,
-  getRoles,
-  submitFileUploadFormData,
-  initializeFilters,
-  resetFilters,
-  updateAssignmentFilter,
-  updateAssignmentLimits,
-  updateGradesIfAssignmentGradeFiltersSet,
-  updateCourseGradeFilter,
   downloadBulkGradesReport,
   downloadInterventionReport,
+  fetchGradeOverrideHistory,
+  filterAssignmentType,
+  getAssignmentTypes: fetchAssignmentTypes,
+  getCohorts: fetchCohorts,
+  getPrevNextGrades: fetchPrevNextGrades,
+  getRoles,
+  getTracks: fetchTracks,
+  getUserGrades: fetchGrades,
+  initializeFilters,
+  resetFilters,
+  searchForUser: fetchMatchingUserGrades,
+  submitFileUploadFormData,
+  toggleFormat: toggleGradeFormat,
+  updateAssignmentFilter,
+  updateAssignmentLimits,
+  updateCourseGradeFilter,
 };
 
 const GradebookPage = connect(
