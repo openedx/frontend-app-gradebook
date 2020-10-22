@@ -240,6 +240,8 @@ export default class Gradebook extends React.Component {
 
   createStateFieldSetter = (key) => (value) => this.setState({ [key]: value });
 
+  createStateFieldOnChange = (key) => ({ target }) => this.setState({ [key]: target.value });
+
   createLimitedSetter = (...keys) => (values) => this.setState(
     keys.reduce(
       (obj, key) => (values[key] === undefined ? obj : { ...obj, [key]: values[key] }),
@@ -371,9 +373,9 @@ export default class Gradebook extends React.Component {
                   onChange={this.onChange}
                   open={this.state.modalOpen}
                   reasonForChange={this.state.reasonForChange}
-                  setAdjustedGradeValue={this.createStateFieldSetter('adjustedGradeValue')}
+                  setAdjustedGradeValue={this.createStateFieldOnChange('adjustedGradeValue')}
                   setGradebookState={this.safeSetState}
-                  setReasonForChange={this.createStateFieldSetter('reasonForChange')}
+                  setReasonForChange={this.createStateFieldOnChange('reasonForChange')}
                   todaysDate={this.state.todaysDate}
                   updateModuleId={this.state.updateModuleId}
                   updateUserId={this.state.updateUserId}
