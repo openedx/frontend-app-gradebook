@@ -133,6 +133,7 @@ export class EditModal extends React.Component {
 }
 
 EditModal.defaultProps = {
+  adjustedGradeValue: null,
   courseId: '',
   gradeOverrideCurrentEarnedGradedOverride: null,
   gradeOverrideHistoryError: '',
@@ -141,6 +142,9 @@ EditModal.defaultProps = {
   gradeOriginalPossibleGraded: null,
   selectedCohort: null,
   selectedTrack: null,
+  updateModuleId: null,
+  updateUserId: null,
+  updateUserName: '',
 };
 
 EditModal.propTypes = {
@@ -148,15 +152,16 @@ EditModal.propTypes = {
 
   // Gradebook State
   adjustedGradePossible: PropTypes.string.isRequired,
-  adjustedGradeValue: PropTypes.number.isRequired,
+  // should pick one?
+  adjustedGradeValue: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   assignmentName: PropTypes.string.isRequired,
   filterValue: PropTypes.string.isRequired,
   open: PropTypes.bool.isRequired,
   reasonForChange: PropTypes.string.isRequired,
   todaysDate: PropTypes.string.isRequired,
-  updateModuleId: PropTypes.string.isRequired,
-  updateUserId: PropTypes.string.isRequired,
-  updateUserName: PropTypes.string.isRequired,
+  updateModuleId: PropTypes.string,
+  updateUserId: PropTypes.number,
+  updateUserName: PropTypes.string,
 
   // Gradebook State Setters
   setAdjustedGradeValue: PropTypes.func.isRequired,

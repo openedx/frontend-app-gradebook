@@ -160,6 +160,7 @@ export class GradebookTable extends React.Component {
 }
 
 GradebookTable.defaultProps = {
+  areGradesFrozen: false,
   grades: [],
 };
 
