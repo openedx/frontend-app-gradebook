@@ -27,7 +27,7 @@
   },
   "dependencies": {
     "@edx/frontend-component-footer": "10.0.11",
-    "@edx/frontend-platform": "1.5.0",
+    "@edx/frontend-platform": "1.6.1",
     "@edx/paragon": "10.0.1",
     "@fortawesome/fontawesome-svg-core": "^1.2.25",
     "@fortawesome/free-brands-svg-icons": "^5.11.2",
