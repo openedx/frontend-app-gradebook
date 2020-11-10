@@ -58,7 +58,7 @@ const App = () => (
           <Header />
           <main>
             <Switch>
-              <Route exact path="/:courseId" component={GradebookPage} />
+              <Route exact path={process.env.PUBLIC_PATH.concat(':courseId')} component={GradebookPage} />
             </Switch>
           </main>
           <SiteFooter
