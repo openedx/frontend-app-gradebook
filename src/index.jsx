@@ -6,7 +6,12 @@ import ReactDOM from 'react-dom';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import SiteFooter, { messages as footerMessages } from '@edx/frontend-component-footer';
-import { APP_READY, subscribe, initialize } from '@edx/frontend-platform';
+import {
+  APP_READY,
+  getConfig,
+  initialize,
+  subscribe,
+} from '@edx/frontend-platform';
 import { IntlProvider } from 'react-intl';
 
 import {
@@ -58,7 +63,7 @@ const App = () => (
           <Header />
           <main>
             <Switch>
-              <Route exact path="/:courseId" component={GradebookPage} />
+              <Route exact path={getConfig().PUBLIC_PATH.concat(':courseId')} component={GradebookPage} />
             </Switch>
           </main>
           <SiteFooter
