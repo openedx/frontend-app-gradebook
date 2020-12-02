@@ -1,12 +1,11 @@
 import React from 'react';
 import { Hyperlink } from '@edx/paragon';
-
-import EdxLogo from '../../../assets/edx-sm.png';
+import { getConfig } from '@edx/frontend-platform';
 
 export default class Header extends React.Component {
   renderLogo() {
     return (
-      <img src={EdxLogo} alt="edX logo" height="30" width="60" />
+      <img src={getConfig().LOGO_URL} alt="edX logo" height="30" width="60" />
     );
   }
 
