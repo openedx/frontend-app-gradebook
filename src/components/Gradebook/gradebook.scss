@@ -113,10 +113,10 @@
       td:nth-child(1),
       th:nth-child(2),
       td:nth-child(2) {
-        min-width: 240px;
+        width: 240px;
       }
       th, td {
-        min-width: 120px;
+        width: 120px;
       }
     }
     .table tbody th {
