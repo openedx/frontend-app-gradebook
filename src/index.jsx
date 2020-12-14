@@ -5,7 +5,6 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { Provider } from 'react-redux';
-import SiteFooter, { messages as footerMessages } from '@edx/frontend-component-footer';
 import {
   APP_READY,
   getConfig,
@@ -22,10 +21,11 @@ import {
 } from '@fortawesome/free-brands-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
+import SiteFooter, { messages as footerMessages } from '@edx/frontend-component-footer';
+
 import GradebookPage from './containers/GradebookPage';
 import Header from './components/Header';
 import store from './data/store';
-import FooterLogo from '../assets/edx-footer.png';
 import './App.scss';
 
 const socialLinks = [
@@ -68,7 +68,7 @@ const App = () => (
           </main>
           <SiteFooter
             siteName={process.env.SITE_NAME}
-            siteLogo={FooterLogo}
+            logo={process.env.LOGO_POWERED_BY_OPEN_EDX_URL_SVG}
             marketingSiteBaseUrl={process.env.MARKETING_SITE_BASE_URL}
             supportUrl={process.env.SUPPORT_URL}
             contactUrl={process.env.CONTACT_URL}
