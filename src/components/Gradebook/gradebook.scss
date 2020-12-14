@@ -151,10 +151,33 @@
             text-decoration: underline;
         }
     }
+
 }
 
-.input-percent-label {
-    margin-top: 10px;
+.form-group {
+  label {
+    font-weight: bold;
+  }
+}
+
+.filter-group {
+  .grade-filter-inputs {
+    .percent-group {
+      display: inline-block;
+      .form-group {
+        width: 115px;
+        display: inline-block;
+      }
+      .input-percent-label {
+          margin-top: 22px;
+          margin-left: 5px;
+          margin-right: 5px;
+      }
+    }
+  }
+  .grade-filter-action {
+    text-align: right;
+  }
 }
 
 .mb-85 {
