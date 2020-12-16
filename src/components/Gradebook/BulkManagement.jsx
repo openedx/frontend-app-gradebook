@@ -83,7 +83,7 @@ export class BulkManagement extends React.Component {
 
   render() {
     return (
-      <React.Fragment>
+      <div>
         <h4>Use this feature by downloading a CSV for bulk management,
           overriding grades locally, and coming back here to upload.
         </h4>
@@ -150,7 +150,7 @@ export class BulkManagement extends React.Component {
           ]}
           className="table-striped"
         />
-      </React.Fragment>
+      </div>
     );
   }
 }
