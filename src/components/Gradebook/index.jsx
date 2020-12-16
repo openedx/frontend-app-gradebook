@@ -385,10 +385,12 @@ export default class Gradebook extends React.Component {
               </Tab>
               {this.props.showBulkManagement
                 && (
-                <BulkManagement
-                  courseId={this.props.courseId}
-                  gradeExportUrl={this.props.gradeExportUrl}
-                />
+                  <Tab eventKey="bulk_management" title="Bulk Management">
+                    <BulkManagement
+                      courseId={this.props.courseId}
+                      gradeExportUrl={this.props.gradeExportUrl}
+                    />
+                  </Tab>
                 )}
             </Tabs>
           </div>

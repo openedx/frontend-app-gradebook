@@ -7,7 +7,6 @@ import {
   Button,
   StatusAlert,
   Table,
-  Tab,
 } from '@edx/paragon';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faDownload } from '@fortawesome/free-solid-svg-icons';
@@ -84,7 +83,7 @@ export class BulkManagement extends React.Component {
 
   render() {
     return (
-      <Tab eventKey="bulk_management" title="Bulk Management">
+      <>
         <h4>Use this feature by downloading a CSV for bulk management,
           overriding grades locally, and coming back here to upload.
         </h4>
@@ -151,7 +150,7 @@ export class BulkManagement extends React.Component {
           ]}
           className="table-striped"
         />
-      </Tab>
+      </>
     );
   }
 }
