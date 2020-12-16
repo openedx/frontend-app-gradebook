@@ -75,7 +75,7 @@ export class Assignments extends React.Component {
 
   render() {
     return (
-      <Collapsible title="Assignments" open className="filter-group mb-3">
+      <Collapsible title="Assignments" defaultOpen className="filter-group mb-3">
         <div>
           <div className="student-filters">
             <span className="label">
@@ -106,39 +106,45 @@ export class Assignments extends React.Component {
             />
           </div>
           <p>Grade Range (0% - 100%)</p>
-          <form className="d-fnlex justify-content-between align-items-center" onSubmit={this.handleSubmitAssignmentGrade}>
-            <InputText
-              label="Min Grade"
-              name="assignmentGradeMin"
-              type="number"
-              min={0}
-              max={100}
-              step={1}
-              value={this.props.assignmentGradeMin}
-              disabled={!this.props.selectedAssignment}
-              onChange={this.props.setAssignmentGradeMin}
-            />
-            <span className="input-percent-label">%</span>
-            <InputText
-              label="Max Grade"
-              name="assignmentGradeMax"
-              type="number"
-              min={0}
-              max={100}
-              step={1}
-              value={this.props.assignmentGradeMax}
-              disabled={!this.props.selectedAssignment}
-              onChange={this.props.setAssignmentGradeMax}
-            />
-            <span className="input-percent-label">%</span>
-            <Button
-              type="submit"
-              className="btn-outline-secondary"
-              name="assignmentGradeMinMax"
-              disabled={!this.props.selectedAssignment}
-            >
-              Apply
-            </Button>
+          <form className="grade-filter-inputs" onSubmit={this.handleSubmitAssignmentGrade}>
+            <div className="percent-group">
+              <InputText
+                label="Min Grade"
+                name="assignmentGradeMin"
+                type="number"
+                min={0}
+                max={100}
+                step={1}
+                value={this.props.assignmentGradeMin}
+                disabled={!this.props.selectedAssignment}
+                onChange={this.props.setAssignmentGradeMin}
+              />
+              <span className="input-percent-label">%</span>
+            </div>
+            <div className="percent-group">
+              <InputText
+                label="Max Grade"
+                name="assignmentGradeMax"
+                type="number"
+                min={0}
+                max={100}
+                step={1}
+                value={this.props.assignmentGradeMax}
+                disabled={!this.props.selectedAssignment}
+                onChange={this.props.setAssignmentGradeMax}
+              />
+              <span className="input-percent-label">%</span>
+            </div>
+            <div className="grade-filter-action">
+              <Button
+                type="submit"
+                className="btn-outline-secondary"
+                name="assignmentGradeMinMax"
+                disabled={!this.props.selectedAssignment}
+              >
+                Apply
+              </Button>
+            </div>
           </form>
         </div>
       </Collapsible>

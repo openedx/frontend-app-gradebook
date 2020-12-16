@@ -408,28 +408,34 @@ export default class Gradebook extends React.Component {
           setAssignmentGradeMax={this.createStateFieldSetter('assignmentGradeMax')}
           updateQueryParams={this.updateQueryParams}
         />
-        <Collapsible title="Overall Grade" open className="filter-group mb-3">
-          <div className="d-flex justify-content-between align-items-center">
-            <InputText
-              value={this.state.courseGradeMin}
-              name="minimum-grade"
-              label="Min Grade"
-              onChange={value => this.handleCourseGradeFilterChange('min', value)}
-              type="number"
-              min={0}
-              max={100}
-            />
-            <span className="input-percent-label">%</span>
-            <InputText
-              value={this.state.courseGradeMax}
-              name="max-grade"
-              label="Max Grade"
-              onChange={value => this.handleCourseGradeFilterChange('max', value)}
-              type="number"
-              min={0}
-              max={100}
-            />
-            <span className="input-percent-label">%</span>
+        <Collapsible title="Overall Grade" defaultOpen className="filter-group mb-3">
+          <div className="grade-filter-inputs">
+            <div className="percent-group">
+              <InputText
+                value={this.state.courseGradeMin}
+                name="minimum-grade"
+                label="Min Grade"
+                onChange={value => this.handleCourseGradeFilterChange('min', value)}
+                type="number"
+                min={0}
+                max={100}
+              />
+              <span className="input-percent-label">%</span>
+            </div>
+            <div className="percent-group">
+              <InputText
+                value={this.state.courseGradeMax}
+                name="max-grade"
+                label="Max Grade"
+                onChange={value => this.handleCourseGradeFilterChange('max', value)}
+                type="number"
+                min={0}
+                max={100}
+              />
+              <span className="input-percent-label">%</span>
+            </div>
+          </div>
+          <div className="grade-filter-action">
             <Button
               variant="outline-secondary"
               onClick={this.handleCourseGradeFilterApplyButtonClick}
@@ -438,7 +444,7 @@ export default class Gradebook extends React.Component {
             </Button>
           </div>
         </Collapsible>
-        <Collapsible title="Student Groups" open className="filter-group mb-3">
+        <Collapsible title="Student Groups" defaultOpen className="filter-group mb-3">
           <InputSelect
             label="Tracks"
             name="Tracks"
