@@ -1,6 +1,5 @@
 .DS_Store
 .eslintcache
-.idea
 node_modules
 npm-debug.log
 coverage
@@ -14,3 +13,7 @@ dist/
 *~
 *.swo
 *.swp
+
+### Development environments ###
+.idea
+.vscode
