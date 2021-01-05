@@ -28,7 +28,7 @@
   "dependencies": {
     "@edx/brand": "npm:@edx/brand-edx.org@^1.3.2",
     "@edx/frontend-component-footer": "10.1.1",
-    "@edx/frontend-platform": "^1.8.0",
+    "@edx/frontend-platform": "1.8.1",
     "@edx/paragon": "12.4.1",
     "@fortawesome/fontawesome-svg-core": "^1.2.25",
     "@fortawesome/free-brands-svg-icons": "^5.11.2",
@@ -60,7 +60,7 @@
   },
   "devDependencies": {
     "@edx/frontend-build": "5.5.2",
-    "axios": "0.19.2",
+    "axios": "0.21.1",
     "axios-mock-adapter": "^1.17.0",
     "codecov": "^3.6.1",
     "enzyme": "^3.10.0",
