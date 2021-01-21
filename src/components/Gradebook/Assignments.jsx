@@ -78,9 +78,6 @@ export class Assignments extends React.Component {
       <Collapsible title="Assignments" defaultOpen className="filter-group mb-3">
         <div>
           <div className="student-filters">
-            <span className="label">
-              Assignment Types:
-            </span>
             <InputSelect
               label="Assignment Types"
               name="assignment-types"
@@ -92,9 +89,6 @@ export class Assignments extends React.Component {
             />
           </div>
           <div className="student-filters">
-            <span className="label">
-              Assignment:
-            </span>
             <InputSelect
               label="Assignment"
               name="assignment"
@@ -105,7 +99,6 @@ export class Assignments extends React.Component {
               disabled={this.props.assignmentFilterOptions.length === 0}
             />
           </div>
-          <p>Grade Range (0% - 100%)</p>
           <form className="grade-filter-inputs" onSubmit={this.handleSubmitAssignmentGrade}>
             <div className="percent-group">
               <InputText

@@ -1,6 +1,6 @@
 {
   "name": "@edx/frontend-app-gradebook",
-  "version": "1.4.16",
+  "version": "1.4.18",
   "description": "edx editable gradebook-ui to manipulate grade overrides on subsections",
   "repository": {
     "type": "git",
