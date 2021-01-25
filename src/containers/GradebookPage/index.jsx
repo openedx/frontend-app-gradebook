@@ -28,6 +28,7 @@ import {
   formatMaxCourseGrade,
 } from '../../data/selectors/grades';
 import { selectableAssignmentLabels } from '../../data/selectors/filters';
+import { hasSpecialBulkManagementAccess } from '../../data/selectors/special';
 import { getCohortNameById } from '../../data/selectors/cohorts';
 import { fetchAssignmentTypes } from '../../data/actions/assignmentTypes';
 import { getRoles } from '../../data/actions/roles';
@@ -97,7 +98,10 @@ const mapStateToProps = (state, ownProps) => (
     selectedCohort: state.filters.cohort,
     selectedAssignmentType: state.filters.assignmentType,
     selectedAssignment: (state.filters.assignment || {}).label,
-    showBulkManagement: stateHasMastersTrack(state) && state.config.bulkManagementAvailable,
+    showBulkManagement: (
+      hasSpecialBulkManagementAccess(ownProps.match.params.courseId)
+      || (stateHasMastersTrack(state) && state.config.bulkManagementAvailable)
+    ),
     showSpinner: shouldShowSpinner(state),
     showSuccess: state.grades.showSuccess,
     totalUsersCount: state.grades.totalUsersCount,
