@@ -16,7 +16,12 @@ import {
 import { fetchCohorts } from '../../data/actions/cohorts';
 import { fetchTracks } from '../../data/actions/tracks';
 import {
-  initializeFilters, resetFilters, updateAssignmentFilter, updateAssignmentLimits, updateCourseGradeFilter,
+  initializeFilters,
+  resetFilters,
+  updateAssignmentFilter,
+  updateAssignmentLimits,
+  updateCourseGradeFilter,
+  updateIncludeCourseRoleMembers,
 } from '../../data/actions/filters';
 import stateHasMastersTrack from '../../data/selectors/tracks';
 import {
@@ -108,6 +113,7 @@ const mapStateToProps = (state, ownProps) => (
     tracks: state.tracks.results,
     uploadSuccess: !!(state.grades.bulkManagement
                       && state.grades.bulkManagement.uploadSuccess),
+    includeCourseRoleMembers: state.filters.includeCourseRoleMembers,
   }
 );
 
@@ -131,6 +137,7 @@ const mapDispatchToProps = {
   updateAssignmentFilter,
   updateAssignmentLimits,
   updateCourseGradeFilter,
+  updateIncludeCourseRoleMembers,
 };
 
 const GradebookPage = connect(

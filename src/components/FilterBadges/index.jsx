@@ -57,10 +57,14 @@ function SingleValueFilterBadge({
   />
   );
 }
+
 SingleValueFilterBadge.propTypes = {
   displayName: PropTypes.string.isRequired,
   filterName: PropTypes.string.isRequired,
-  filterValue: PropTypes.string.isRequired,
+  filterValue: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.bool,
+  ]).isRequired,
   handleBadgeClose: PropTypes.func.isRequired,
 };
 
@@ -73,6 +77,7 @@ function FilterBadges({
   assignmentGradeMax,
   courseGradeMin,
   courseGradeMax,
+  includeCourseRoleMembers,
   handleFilterBadgeClose,
 }) {
   return (
@@ -113,9 +118,15 @@ function FilterBadges({
       />
       <SingleValueFilterBadge
         displayName="Cohort"
-        filterName="track"
+        filterName="cohort"
         filterValue={cohort}
         handleBadgeClose={handleFilterBadgeClose(['cohort'])}
+      />
+      <SingleValueFilterBadge
+        displayName="Show Course Staff"
+        filterName="includeCourseRoleMembers"
+        filterValue={includeCourseRoleMembers}
+        handleBadgeClose={handleFilterBadgeClose(['includeCourseRoleMembers'])}
       />
     </div>
   );
@@ -131,6 +142,7 @@ const mapStateToProps = state => (
     assignmentGradeMax: state.filters.assignmentGradeMax,
     courseGradeMin: state.filters.courseGradeMin,
     courseGradeMax: state.filters.courseGradeMax,
+    includeCourseRoleMembers: state.filters.includeCourseRoleMembers,
   }
 );
 
@@ -139,7 +151,10 @@ export default ConnectedFilterBadges;
 
 FilterBadge.propTypes = {
   name: PropTypes.string.isRequired,
-  value: PropTypes.string.isRequired,
+  value: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.bool,
+  ]).isRequired,
   onClick: PropTypes.func.isRequired,
 };
 
@@ -152,6 +167,7 @@ FilterBadges.defaultProps = {
   assignmentGradeMax: initialFilters.assignmentGradeMax,
   courseGradeMin: initialFilters.courseGradeMin,
   courseGradeMax: initialFilters.courseGradeMax,
+  includeCourseRoleMembers: initialFilters.includeCourseRoleMembers,
 };
 
 FilterBadges.propTypes = {
@@ -163,5 +179,6 @@ FilterBadges.propTypes = {
   assignmentGradeMax: PropTypes.string,
   courseGradeMin: PropTypes.string,
   courseGradeMax: PropTypes.string,
+  includeCourseRoleMembers: PropTypes.bool,
   handleFilterBadgeClose: PropTypes.func.isRequired,
 };

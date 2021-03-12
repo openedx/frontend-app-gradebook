@@ -1,7 +1,14 @@
 import initialFilters from '../constants/filters';
 import {
-  INITIALIZE_FILTERS, RESET_FILTERS, UPDATE_ASSIGNMENT_FILTER, UPDATE_ASSIGNMENT_LIMITS, UPDATE_COURSE_GRADE_LIMITS,
+  INITIALIZE_FILTERS,
+  RESET_FILTERS,
+  UPDATE_ASSIGNMENT_FILTER,
+  UPDATE_ASSIGNMENT_LIMITS,
+  UPDATE_COURSE_GRADE_LIMITS,
+  UPDATE_INCLUDE_COURSE_ROLE_MEMBERS,
 } from '../constants/actionTypes/filters';
+import { getFilters } from '../selectors/filters';
+import { fetchGrades } from './grades';
 
 const initializeFilters = ({
   assignment = initialFilters.assignment,
@@ -12,6 +19,7 @@ const initializeFilters = ({
   assignmentGradeMax = initialFilters.assignmentGradeMax,
   courseGradeMin = initialFilters.courseGradeMin,
   courseGradeMax = initialFilters.assignmentGradeMax,
+  includeCourseRoleMembers = initialFilters.includeCourseRoleMembers,
 }) => ({
   type: INITIALIZE_FILTERS,
   data: {
@@ -23,6 +31,7 @@ const initializeFilters = ({
     assignmentGradeMax,
     courseGradeMin,
     courseGradeMax,
+    includeCourseRoleMembers,
   },
 });
 
@@ -50,7 +59,21 @@ const updateCourseGradeFilter = (courseGradeMin, courseGradeMax, courseId) => ({
   },
 });
 
+const updateIncludeCourseRoleMembersFilter = (includeCourseRoleMembers) => ({
+  type: UPDATE_INCLUDE_COURSE_ROLE_MEMBERS,
+  data: {
+    includeCourseRoleMembers,
+  },
+});
+
+const updateIncludeCourseRoleMembers = includeCourseRoleMembers => (dispatch, getState) => {
+  dispatch(updateIncludeCourseRoleMembersFilter(includeCourseRoleMembers));
+  const state = getState();
+  const { cohort, track, assignmentType } = getFilters(state);
+  dispatch(fetchGrades(state.grades.courseId, cohort, track, assignmentType));
+};
+
 export {
   initializeFilters, resetFilters, updateAssignmentFilter,
-  updateAssignmentLimits, updateCourseGradeFilter,
+  updateAssignmentLimits, updateCourseGradeFilter, updateIncludeCourseRoleMembers,
 };

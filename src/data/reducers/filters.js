@@ -1,7 +1,12 @@
 import { GOT_GRADES, FILTER_BY_ASSIGNMENT_TYPE } from '../constants/actionTypes/grades';
 
 import {
-  INITIALIZE_FILTERS, UPDATE_ASSIGNMENT_FILTER, UPDATE_ASSIGNMENT_LIMITS, UPDATE_COURSE_GRADE_LIMITS, RESET_FILTERS,
+  INITIALIZE_FILTERS,
+  UPDATE_ASSIGNMENT_FILTER,
+  UPDATE_ASSIGNMENT_LIMITS,
+  UPDATE_COURSE_GRADE_LIMITS,
+  RESET_FILTERS,
+  UPDATE_INCLUDE_COURSE_ROLE_MEMBERS,
 } from '../constants/actionTypes/filters';
 
 import initialFilters from '../constants/filters';
@@ -69,6 +74,11 @@ const reducer = (state = initialState, action) => {
         ...state,
         courseGradeMin: action.data.courseGradeMin,
         courseGradeMax: action.data.courseGradeMax,
+      };
+    case UPDATE_INCLUDE_COURSE_ROLE_MEMBERS:
+      return {
+        ...state,
+        includeCourseRoleMembers: action.data.includeCourseRoleMembers,
       };
     default:
       return state;

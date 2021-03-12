@@ -7,6 +7,7 @@ const initialFilters = {
   assignmentGradeMax: '100',
   courseGradeMin: '0',
   courseGradeMax: '100',
+  includeCourseRoleMembers: false,
 };
 
 export default initialFilters;

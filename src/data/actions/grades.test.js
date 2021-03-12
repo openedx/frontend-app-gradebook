@@ -36,7 +36,7 @@ describe('actions', () => {
     const expectedCohort = 1;
     const expectedTrack = 'verified';
     const expectedAssignmentType = 'Exam';
-    const fetchGradesURL = `${configuration.LMS_BASE_URL}/api/grades/v1/gradebook/${courseId}/?page_size=25&cohort_id=${expectedCohort}&enrollment_mode=${expectedTrack}`;
+    const fetchGradesURL = `${configuration.LMS_BASE_URL}/api/grades/v1/gradebook/${courseId}/?page_size=25&cohort_id=${expectedCohort}&enrollment_mode=${expectedTrack}&excluded_course_roles=all`;
     const responseData = {
       next: `${fetchGradesURL}&cursor=2344fda`,
       previous: null,

@@ -36,6 +36,9 @@ class LmsApiService {
     if (options.courseGradeMax) {
       queryParams.course_grade_max = options.courseGradeMax;
     }
+    if (!options.includeCourseRoleMembers) {
+      queryParams.excluded_course_roles = ['all'];
+    }
 
     const queryParamString = Object.keys(queryParams)
       .map(attr => `${attr}=${encodeURIComponent(queryParams[attr])}`)

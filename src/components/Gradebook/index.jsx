@@ -5,6 +5,7 @@ import {
   Button,
   Collapsible,
   Icon,
+  CheckBox,
   InputSelect,
   InputText,
   SearchField,
@@ -466,6 +467,15 @@ export default class Gradebook extends React.Component {
             onChange={this.updateCohorts}
           />
         </Collapsible>
+        <Collapsible title="Show Course Staff" className="filter-group mb-3">
+          <CheckBox
+            name="show-course-staff"
+            aria-label="Show Course Staff"
+            label="Show Course Staff"
+            checked={this.props.includeCourseRoleMembers}
+            onChange={this.props.updateIncludeCourseRoleMembers}
+          />
+        </Collapsible>
       </Drawer>
     );
   }
@@ -487,6 +497,7 @@ Gradebook.defaultProps = {
   showSpinner: false,
   totalUsersCount: null,
   tracks: [],
+  includeCourseRoleMembers: false,
 };
 
 Gradebook.propTypes = {
@@ -524,4 +535,6 @@ Gradebook.propTypes = {
     name: PropTypes.string,
   })),
   updateCourseGradeFilter: PropTypes.func.isRequired,
+  includeCourseRoleMembers: PropTypes.bool,
+  updateIncludeCourseRoleMembers: PropTypes.func.isRequired,
 };
