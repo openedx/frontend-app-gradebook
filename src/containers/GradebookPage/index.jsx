@@ -78,6 +78,7 @@ const mapStateToProps = (state, ownProps) => (
       ),
       courseGradeMin: formatMinCourseGrade(state.filters.courseGradeMin),
       courseGradeMax: formatMaxCourseGrade(state.filters.courseGradeMax),
+      excludedCourseRoles: state.filters.includeCourseRoleMembers ? '' : 'all',
     }),
     grades: state.grades.results,
     headings: getHeadings(state),

@@ -99,7 +99,7 @@ class LmsApiService {
 
   static getGradeExportCsvUrl(courseId, options = {}) {
     const queryParams = ['track', 'cohort', 'assignment', 'assignmentType', 'assignmentGradeMax',
-      'assignmentGradeMin', 'courseGradeMin', 'courseGradeMax']
+      'assignmentGradeMin', 'courseGradeMin', 'courseGradeMax', 'excludedCourseRoles']
       .filter(opt => options[opt]
                    && options[opt] !== 'All')
       .map(opt => `${opt}=${encodeURIComponent(options[opt])}`)
