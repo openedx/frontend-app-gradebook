@@ -467,11 +467,11 @@ export default class Gradebook extends React.Component {
             onChange={this.updateCohorts}
           />
         </Collapsible>
-        <Collapsible title="Show Course Staff" className="filter-group mb-3">
+        <Collapsible title="Include Course Team Members" className="filter-group mb-3">
           <CheckBox
-            name="show-course-staff"
-            aria-label="Show Course Staff"
-            label="Show Course Staff"
+            name="include-course-team-members"
+            aria-label="Include Course Team Members"
+            label="Include Course Team Members"
             checked={this.props.includeCourseRoleMembers}
             onChange={this.props.updateIncludeCourseRoleMembers}
           />
