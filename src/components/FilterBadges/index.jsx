@@ -4,11 +4,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import initialFilters from '../../data/constants/filters';
 
-function FilterBadge({ name, value, onClick }) {
+function FilterBadge({
+  name, value, onClick, showValue,
+}) {
   return (
     <div>
       <span className="badge badge-info">
-        <span>{`${name}: ${value}`}</span>
+        <span>{name}{showValue && `: ${value}`}</span>
         <button type="button" className="btn-info" aria-label="Close" onClick={onClick}>
           <span aria-hidden="true">&times;</span>
         </button>
@@ -17,6 +19,20 @@ function FilterBadge({ name, value, onClick }) {
     </div>
   );
 }
+
+FilterBadge.defaultProps = {
+  showValue: true,
+};
+
+FilterBadge.propTypes = {
+  name: PropTypes.string.isRequired,
+  value: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.bool,
+  ]).isRequired,
+  onClick: PropTypes.func.isRequired,
+  showValue: PropTypes.bool,
+};
 
 function RangeFilterBadge({
   displayName,
@@ -46,7 +62,7 @@ RangeFilterBadge.propTypes = {
 };
 
 function SingleValueFilterBadge({
-  displayName, filterName, filterValue, handleBadgeClose,
+  displayName, filterName, filterValue, handleBadgeClose, showValue,
 }) {
   return (filterValue !== initialFilters[filterName])
   && (
@@ -54,9 +70,14 @@ function SingleValueFilterBadge({
     name={displayName}
     value={filterValue}
     onClick={handleBadgeClose}
+    showValue={showValue}
   />
   );
 }
+
+SingleValueFilterBadge.defaultProps = {
+  showValue: true,
+};
 
 SingleValueFilterBadge.propTypes = {
   displayName: PropTypes.string.isRequired,
@@ -66,6 +87,7 @@ SingleValueFilterBadge.propTypes = {
     PropTypes.bool,
   ]).isRequired,
   handleBadgeClose: PropTypes.func.isRequired,
+  showValue: PropTypes.bool,
 };
 
 function FilterBadges({
@@ -126,6 +148,7 @@ function FilterBadges({
         displayName="Show Course Staff"
         filterName="includeCourseRoleMembers"
         filterValue={includeCourseRoleMembers}
+        showValue={false}
         handleBadgeClose={handleFilterBadgeClose(['includeCourseRoleMembers'])}
       />
     </div>
@@ -148,15 +171,6 @@ const mapStateToProps = state => (
 
 const ConnectedFilterBadges = connect(mapStateToProps)(FilterBadges);
 export default ConnectedFilterBadges;
-
-FilterBadge.propTypes = {
-  name: PropTypes.string.isRequired,
-  value: PropTypes.oneOfType([
-    PropTypes.string,
-    PropTypes.bool,
-  ]).isRequired,
-  onClick: PropTypes.func.isRequired,
-};
 
 FilterBadges.defaultProps = {
   assignment: initialFilters.assignmentType,
