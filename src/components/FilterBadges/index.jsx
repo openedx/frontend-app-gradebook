@@ -145,7 +145,7 @@ function FilterBadges({
         handleBadgeClose={handleFilterBadgeClose(['cohort'])}
       />
       <SingleValueFilterBadge
-        displayName="Show Course Staff"
+        displayName="Include Course Team Members"
         filterName="includeCourseRoleMembers"
         filterValue={includeCourseRoleMembers}
         showValue={false}
