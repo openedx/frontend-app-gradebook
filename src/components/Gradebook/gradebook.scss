@@ -72,7 +72,10 @@
     .student-key {
         font-size: 14px;
     }
-    
+
+    #courseGradeTooltipIcon {
+      float: right;
+    }
 
     .table thead tr {
         min-height: 60px;
@@ -110,6 +113,9 @@
       th:nth-child(2),
       td:nth-child(2) {
         width: 240px;
+      }
+      th:nth-last-of-type(1) {
+        width: 150px;
       }
       th, td {
         width: 120px;
