@@ -36,6 +36,9 @@ class LmsApiService {
     if (options.courseGradeMax) {
       queryParams.course_grade_max = options.courseGradeMax;
     }
+    if (!options.includeCourseRoleMembers) {
+      queryParams.excluded_course_roles = ['all'];
+    }
 
     const queryParamString = Object.keys(queryParams)
       .map(attr => `${attr}=${encodeURIComponent(queryParams[attr])}`)
@@ -96,7 +99,7 @@ class LmsApiService {
 
   static getGradeExportCsvUrl(courseId, options = {}) {
     const queryParams = ['track', 'cohort', 'assignment', 'assignmentType', 'assignmentGradeMax',
-      'assignmentGradeMin', 'courseGradeMin', 'courseGradeMax']
+      'assignmentGradeMin', 'courseGradeMin', 'courseGradeMax', 'excludedCourseRoles']
       .filter(opt => options[opt]
                    && options[opt] !== 'All')
       .map(opt => `${opt}=${encodeURIComponent(options[opt])}`)

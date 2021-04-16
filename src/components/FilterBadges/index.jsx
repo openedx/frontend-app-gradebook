@@ -4,11 +4,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import initialFilters from '../../data/constants/filters';
 
-function FilterBadge({ name, value, onClick }) {
+function FilterBadge({
+  name, value, onClick, showValue,
+}) {
   return (
     <div>
       <span className="badge badge-info">
-        <span>{`${name}: ${value}`}</span>
+        <span>{name}{showValue && `: ${value}`}</span>
         <button type="button" className="btn-info" aria-label="Close" onClick={onClick}>
           <span aria-hidden="true">&times;</span>
         </button>
@@ -17,6 +19,20 @@ function FilterBadge({ name, value, onClick }) {
     </div>
   );
 }
+
+FilterBadge.defaultProps = {
+  showValue: true,
+};
+
+FilterBadge.propTypes = {
+  name: PropTypes.string.isRequired,
+  value: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.bool,
+  ]).isRequired,
+  onClick: PropTypes.func.isRequired,
+  showValue: PropTypes.bool,
+};
 
 function RangeFilterBadge({
   displayName,
@@ -46,7 +62,7 @@ RangeFilterBadge.propTypes = {
 };
 
 function SingleValueFilterBadge({
-  displayName, filterName, filterValue, handleBadgeClose,
+  displayName, filterName, filterValue, handleBadgeClose, showValue,
 }) {
   return (filterValue !== initialFilters[filterName])
   && (
@@ -54,14 +70,24 @@ function SingleValueFilterBadge({
     name={displayName}
     value={filterValue}
     onClick={handleBadgeClose}
+    showValue={showValue}
   />
   );
 }
+
+SingleValueFilterBadge.defaultProps = {
+  showValue: true,
+};
+
 SingleValueFilterBadge.propTypes = {
   displayName: PropTypes.string.isRequired,
   filterName: PropTypes.string.isRequired,
-  filterValue: PropTypes.string.isRequired,
+  filterValue: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.bool,
+  ]).isRequired,
   handleBadgeClose: PropTypes.func.isRequired,
+  showValue: PropTypes.bool,
 };
 
 function FilterBadges({
@@ -73,6 +99,7 @@ function FilterBadges({
   assignmentGradeMax,
   courseGradeMin,
   courseGradeMax,
+  includeCourseRoleMembers,
   handleFilterBadgeClose,
 }) {
   return (
@@ -113,9 +140,16 @@ function FilterBadges({
       />
       <SingleValueFilterBadge
         displayName="Cohort"
-        filterName="track"
+        filterName="cohort"
         filterValue={cohort}
         handleBadgeClose={handleFilterBadgeClose(['cohort'])}
+      />
+      <SingleValueFilterBadge
+        displayName="Including Course Team Members"
+        filterName="includeCourseRoleMembers"
+        filterValue={includeCourseRoleMembers}
+        showValue={false}
+        handleBadgeClose={handleFilterBadgeClose(['includeCourseRoleMembers'])}
       />
     </div>
   );
@@ -131,17 +165,12 @@ const mapStateToProps = state => (
     assignmentGradeMax: state.filters.assignmentGradeMax,
     courseGradeMin: state.filters.courseGradeMin,
     courseGradeMax: state.filters.courseGradeMax,
+    includeCourseRoleMembers: state.filters.includeCourseRoleMembers,
   }
 );
 
 const ConnectedFilterBadges = connect(mapStateToProps)(FilterBadges);
 export default ConnectedFilterBadges;
-
-FilterBadge.propTypes = {
-  name: PropTypes.string.isRequired,
-  value: PropTypes.string.isRequired,
-  onClick: PropTypes.func.isRequired,
-};
 
 FilterBadges.defaultProps = {
   assignment: initialFilters.assignmentType,
@@ -152,6 +181,7 @@ FilterBadges.defaultProps = {
   assignmentGradeMax: initialFilters.assignmentGradeMax,
   courseGradeMin: initialFilters.courseGradeMin,
   courseGradeMax: initialFilters.courseGradeMax,
+  includeCourseRoleMembers: initialFilters.includeCourseRoleMembers,
 };
 
 FilterBadges.propTypes = {
@@ -163,5 +193,6 @@ FilterBadges.propTypes = {
   assignmentGradeMax: PropTypes.string,
   courseGradeMin: PropTypes.string,
   courseGradeMax: PropTypes.string,
+  includeCourseRoleMembers: PropTypes.bool,
   handleFilterBadgeClose: PropTypes.func.isRequired,
 };

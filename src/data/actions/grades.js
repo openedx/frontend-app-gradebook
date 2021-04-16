@@ -141,6 +141,7 @@ const fetchGrades = (
       assignmentGradeMin: assignmentMin,
       courseGradeMin,
       courseGradeMax,
+      includeCourseRoleMembers,
     } = getFilters(getState());
     const { id: assignmentId } = assignment || {};
     const assignmentGradeMax = formatMaxAssignmentGrade(assignmentMax, { assignmentId });
@@ -158,6 +159,7 @@ const fetchGrades = (
         assignmentGradeMin,
         courseGradeMin: courseGradeMinFormatted,
         courseGradeMax: courseGradeMaxFormatted,
+        includeCourseRoleMembers,
       },
 
     )
