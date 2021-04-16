@@ -253,7 +253,7 @@ export default class Gradebook extends React.Component {
   safeSetState = this.createLimitedSetter(
     'adjustedGradePossible',
     'adjustedGradeValue',
-    'assignmnentName',
+    'assignmentName',
     'modalOpen',
     'reasonForChange',
     'todaysDate',
