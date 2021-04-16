@@ -1,10 +1,11 @@
-# Smoke Test
+# Test Plan
 
 Designed to be a catalog of major Gradebook locations and operations to aid in testing. This should be updated with new feature changes.
 
 ## Quickstart
 
-Check that the items below are complete and continue to [Test Plan](#test-plan). Otherwise, followed the [Detailed Setup](#detailed-setup) below.
+Check that the items below are complete and continue to [Workflow Tests
+](#workflow-tests). Otherwise, followed the detailed setup in [test-setup.md](./test-setup.md) below.
 
 - [ ] Course set up with graded content
 - [ ] Gradebook & feature toggle set up for course
@@ -12,7 +13,7 @@ Check that the items below are complete and continue to [Test Plan](#test-plan).
 - [ ] Different types of students enrolled in course (e.g. Master's, TA's)
 - [ ] Gradebook started
 
-## Test Plan
+## Workflow Tests
 
 Visit a course as an instructor/staff then **Instructor** tab > **Student Admin** sub-tab > click **Show Gradebook**. Should navigate to `<root-url>:1994/{course-id}`.
 
