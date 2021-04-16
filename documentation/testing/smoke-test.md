@@ -14,44 +14,15 @@ Check that the items below are complete and continue to [Test Plan](#test-plan).
 
 ## Test Plan
 
-Visit a course as an instructor/staff then **Instructor** tab > **Student Admin** sub-tab > click **Show Gradebook**. Should navigate to `<root-url>:1994/{course-id}`
+Visit a course as an instructor/staff then **Instructor** tab > **Student Admin** sub-tab > click **Show Gradebook**. Should navigate to `<root-url>:1994/{course-id}`.
 
-### Render tests
-
-Simplest tests to verify that all page elements appear and navigation works.
-
-- [ ] Page renders
-- [ ] Grades Tab renders
-    - [ ] Search bar renders
-    - [ ] "Edit Filters" button renders
-    - [ ] Score View selector (Absolute/Percent) renders
-    - [ ] Grades table shows with columns: Username, Email, {numbered-assignments}, Total
-    - [ ] Students appear in Grades table
-    - [ ] *Masters only*: Bulk Management button appears
-    - [ ] *Masters only*: Interventions button appears
-- [ ] Filter panel renders
-    - [ ] Clicking "Edit Filters" opens the "Filter" panel
-    - [ ] Filter panel shows the sections: Assignments, Overall Grade, Student Groups, Show Staff Members
-- [ ] Edit grades modal renders
-    - [ ] Clicking on an assignment grade in the Grades table opens the "Edit Grades" modal
-    - [ ] Assignment name, student username, original grade, and current grade show at the top
-    - [ ] A history of grade overrides including date, grader, reason, and adjusted grade shows
-    - [ ] An entry with the current time appears with areas to enter adjusted grades and reasons for adjusting
-    - [ ] Cancel and save buttons appear
-    - [ ] Modal can be navigated away from by clicking outside the modal, clicking the 'x' button, or hitting 'Cancel'
-- [ ] *Masters only*: Bulk management. Should not appear for courses without a Masters track.
-    - [ ] Clicking the "Bulk Management" tab shows the Bulk Management page
-    - [ ] "Import Grades" button appears
-    - [ ] Bulk Management history table appears with columns: Gradebook, Download Summary, Who, When
-    - [ ] Previous Bulk Management imports (if applicable) appear in the table
-
-### Functional tests
-
-Tests to verify most functional interactions/workflows.
+Confirm the following workflows:
 
 - [ ] Grades table results can be filtered from the "Filter" panel
+    - [ ] The "Edit Filters" button renders for any course.
     - Click the "Edit Filters" button to open the "Filter" panel
-    - Filter panel shows the sections: Assignments, Overall Grade, Student Groups, Include Course Team Members. Filters are cumulative and act with other applied filters.
+    - [ ] Filter panel shows the sections: Assignments, Overall Grade, Student Groups, Include Course Team Members.
+    - **Note:** Filters are cumulative and act with other applied filters.
     - Assignments pane
         - [ ] Applying the Assignment Types filter shows only the selected assignment type
         - [ ] Applying an Assignment filter shows only the selected assignment
@@ -64,10 +35,14 @@ Tests to verify most functional interactions/workflows.
     - Include Course Team Members pane
         - Normally, any user with a course role (e.g. staff, beta testers, TA's) are hidden from the grades table.
         - [ ] Selecting "Include Course Team Members" shows course team members in the grades table.
-    - Search box
-        - [ ] Entering characters into the searchbox filters students on top of already applied filters. Note: characters can appear anywhere in a name or email, even though emails are only shown for masters-track students. It doesn't appear that search actually works for student keys.
+
+- [ ] Users can be searched/filtered using the Search box
+    - [ ] Search bar renders for all courses
+    - [ ] Entering characters into the searchbox filters students on top of already applied filters.
+    - Note: characters can appear anywhere in a name or email, even though emails are only shown for masters-track students. It doesn't appear that search actually works for student keys.
 
 - [ ] Grades table "Score View"
+    - [ ] Score View selector renders with the options: Absolute, Percent
     - [ ] Changing the Score View dropdown to Percent shows scores as percentages in the assignment columns (can be over 100%)
     - [ ] Changing the Score View dropdown to Absolute shows scores as {awarded-points}/{possible-points} values, rounded to 2 decimal points
         - [ ] For unattempted problems score shows '0'
@@ -75,6 +50,7 @@ Tests to verify most functional interactions/workflows.
     - [ ] Total Course Grade always shows scores as percentages (including 0% for unattempted)
 
 - [ ] Grades table display
+    - [ ] Grades table shows with columns: Username, Email, {numbered-assignments}, Total
     - [ ] Usernames appear in the username column
     - [ ] Student external keys (where applicable) also appear in the username column
     - [ ] Student emails appear in the email column (only for masters-track students)
@@ -83,7 +59,11 @@ Tests to verify most functional interactions/workflows.
 
 - [ ] Grade overrides
     - [ ] Clicking on an assignment score in the Grades table opens the "Edit Grades" modal
-    - [ ] Staff has an area to enter in adjusted grade and reason for override
+    - [ ] Assignment name, student username, original grade, and current grade show at the top of the modal.
+    - [ ] A history of grade overrides including date, grader, reason, and adjusted grade shows (if previously overridden)
+    - [ ] An entry with the current time appears in the table with areas to enter adjusted grades and reasons for adjusting
+    - Enter an adjusted grade (float) and reason (string)
+    - [ ] Modal can be navigated away from by clicking outside the modal, clicking the 'x' button, or hitting 'Cancel'
     - [ ] Clicking "Save Grade" applies the override, shows the successful "grade has been edited" banner and updates score in grades table (may take a few seconds)
     - [ ] Opening back up the "Edit Grades" modal shows the change as an entry in the override history table.
 
@@ -97,7 +77,9 @@ Tests to verify most functional interactions/workflows.
     - Click the "Bulk Management" button. This downloads existing student/assignment info.
     - [ ] Open the downloaded CSV and verify that students and assignments in the file match applied filters/searches.
     - Add values in the "new_override-{subsection-short-id}" columns for student grades to be overridden and save the CSV file.
-    - Click the "Bulk Management" tab to show the Bulk Management window.
+    - [ ] Clicking the "Bulk Management" tab shows the Bulk Management page
+    - [ ] Bulk Management history table appears with columns: Gradebook, Download Summary, Who, When
+    - [ ] Previous Bulk Management imports (if applicable) appear in the table
     - Click the "Import Grades" button and select the modified CSV file.
     - [ ] Verify that the "CSV processing" banner appears.
     - Wait a few minutes for processing to complete and reload the page.
@@ -107,4 +89,10 @@ Tests to verify most functional interactions/workflows.
     - [ ] Verify that students are shown with modified subsections and actions: "No Action" for unchanged users, "Success" for successful overrides.
 
 - [ ] *Masters only*: Interventions report
+    - Open a non-masters-track course.
+    - [ ] Verify that the "Interventions" tab does not appear.
+    - [ ] Verify that the "Interventions" button does not appear.
+    - Open a masters-track course.
+    - [ ] Verify that the "Interventions" tab appears to the right of the "Grades" tab.
+    - [ ] Verify that the "Interventions" button appears.
     - Click on the "Interventions" button to generate a CSV students and activity info.
