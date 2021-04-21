@@ -31,7 +31,7 @@ const initializeFilters = ({
     assignmentGradeMax,
     courseGradeMin,
     courseGradeMax,
-    includeCourseRoleMembers,
+    includeCourseRoleMembers: Boolean(includeCourseRoleMembers),
   },
 });
 
