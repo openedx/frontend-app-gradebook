@@ -34,7 +34,7 @@ export class Assignments extends React.Component {
     const { type, id } = selectedFilterOption || {};
     const typedValue = { label: assignment, type, id };
     this.props.updateAssignmentFilter(typedValue);
-    this.updateQueryParams({ assignment: id });
+    this.props.updateQueryParams({ assignment: id });
     this.props.updateGradesIfAssignmentGradeFiltersSet(
       this.props.courseId,
       this.props.selectedCohort,
@@ -70,7 +70,7 @@ export class Assignments extends React.Component {
 
   updateAssignmentTypes = (assignmentType) => {
     this.props.filterAssignmentType(assignmentType);
-    this.updateQueryParams({ assignmentType });
+    this.props.updateQueryParams({ assignmentType });
   }
 
   render() {

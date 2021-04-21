@@ -239,6 +239,12 @@ export default class Gradebook extends React.Component {
     );
   }
 
+  handleIncludeTeamMembersChange = (includeCourseRoleMembers) => {
+    this.props.updateIncludeCourseRoleMembers(includeCourseRoleMembers);
+    this.updateQueryParams({ includeCourseRoleMembers });
+
+  };
+
   createStateFieldSetter = (key) => (value) => this.setState({ [key]: value });
 
   createStateFieldOnChange = (key) => ({ target }) => this.setState({ [key]: target.value });
@@ -473,7 +479,7 @@ export default class Gradebook extends React.Component {
             aria-label="Include Course Team Members"
             label="Include Course Team Members"
             checked={this.props.includeCourseRoleMembers}
-            onChange={this.props.updateIncludeCourseRoleMembers}
+            onChange={this.handleIncludeTeamMembersChange} 
           />
         </Collapsible>
       </Drawer>
