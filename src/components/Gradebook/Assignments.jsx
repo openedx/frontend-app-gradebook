@@ -6,41 +6,36 @@ import { connect } from 'react-redux';
 import {
   Button,
   Collapsible,
-  InputSelect,
-  InputText,
+  Form,
 } from '@edx/paragon';
+
 import { selectableAssignmentLabels } from '../../data/selectors/filters';
-import {
-  filterAssignmentType,
-  fetchGrades,
-  updateGradesIfAssignmentGradeFiltersSet,
-} from '../../data/actions/grades';
-import {
-  updateAssignmentFilter,
-  updateAssignmentLimits,
-} from '../../data/actions/filters';
+import * as gradesActions from '../../data/actions/grades';
+import * as filterActions from '../../data/actions/filters';
 
 export class Assignments extends React.Component {
   getAssignmentFilterOptions = () => [
-    { label: 'All', value: '' },
-    ...this.props.assignmentFilterOptions.map(({ label, subsectionLabel }) => ({
-      label: `${label}: ${subsectionLabel}`,
-      value: label,
-    })),
+    <option key="0" value="">All</option>,
+    ...this.props.assignmentFilterOptions.map(({ label, subsectionLabel }) => (
+      <option key={label} value={label}>{label}: {subsectionLabel}</option>
+    )),
   ];
 
-  handleAssignmentFilterChange = (assignment) => {
-    const selectedFilterOption = this.props.assignmentFilterOptions.find(assig => assig.label === assignment);
+  handleAssignmentFilterChange = (event) => {
+    const assignment = event.target.value;
+    const {
+      assignmentFilterOptions,
+      courseId,
+      selectedCohort,
+      selectedTrack,
+      selectedAssignmentType,
+    } = this.props;
+    const selectedFilterOption = assignmentFilterOptions.find(assig => assig.label === assignment);
     const { type, id } = selectedFilterOption || {};
-    const typedValue = { label: assignment, type, id };
-    this.props.updateAssignmentFilter(typedValue);
-    this.updateQueryParams({ assignment: id });
-    this.props.updateGradesIfAssignmentGradeFiltersSet(
-      this.props.courseId,
-      this.props.selectedCohort,
-      this.props.selectedTrack,
-      this.props.selectedAssignmentType,
-    );
+
+    this.props.updateAssignmentFilter({ label: assignment, type, id });
+    this.props.updateQueryParams({ assignment: id });
+    this.props.updateGradesIfAssignmentGradeFiltersSet(courseId, selectedCohort, selectedTrack, selectedAssignmentType);
   };
 
   handleSubmitAssignmentGrade = (event) => {
@@ -60,17 +55,15 @@ export class Assignments extends React.Component {
     this.props.updateQueryParams({ assignmentGradeMin, assignmentGradeMax });
   };
 
-  mapAssignmentTypeEntries = (entries) => {
-    const mapped = [
-      { id: 0, label: 'All', value: '' },
-      ...entries.map(entry => ({ id: entry, label: entry })),
-    ];
-    return mapped;
-  };
+  assignmentTypeOptions = () => ([
+    <option key="0" value="">All</option>,
+    ...this.props.assignmentTypes.map(entry => <option key={entry} value={entry}>{entry}</option>),
+  ]);
 
-  updateAssignmentTypes = (assignmentType) => {
+  updateAssignmentTypes = (e) => {
+    const assignmentType = e.target.value;
     this.props.filterAssignmentType(assignmentType);
-    this.updateQueryParams({ assignmentType });
+    this.props.updateQueryParams({ assignmentType });
   }
 
   render() {
@@ -78,60 +71,66 @@ export class Assignments extends React.Component {
       <Collapsible title="Assignments" defaultOpen className="filter-group mb-3">
         <div>
           <div className="student-filters">
-            <InputSelect
-              label="Assignment Types"
-              name="assignment-types"
-              aria-label="Assignment Types"
-              value={this.props.selectedAssignmentType}
-              options={this.mapAssignmentTypeEntries(this.props.assignmentTypes)}
-              onChange={this.updateAssignmentTypes}
-              disabled={this.props.assignmentFilterOptions.length === 0}
-            />
+            <Form.Group controlId="assignment-types">
+              <Form.Label>Assignment Types</Form.Label>
+              <Form.Control
+                as="select"
+                value={this.props.selectedAssignmentType}
+                onChange={this.updateAssignmentTypes}
+                disabled={this.props.assignmentFilterOptions.length === 0}
+              >
+                {this.assignmentTypeOptions()}
+              </Form.Control>
+            </Form.Group>
           </div>
           <div className="student-filters">
-            <InputSelect
-              label="Assignment"
-              name="assignment"
-              aria-label="Assignment"
-              value={this.props.selectedAssignment}
-              options={this.getAssignmentFilterOptions()}
-              onChange={this.handleAssignmentFilterChange}
-              disabled={this.props.assignmentFilterOptions.length === 0}
-            />
+            <Form.Group controlId="assignment">
+              <Form.Label>Assignment</Form.Label>
+              <Form.Control
+                as="select"
+                value={this.props.selectedAssignment}
+                onChange={this.handleAssignmentFilterChange}
+                disabled={this.props.assignmentFilterOptions.length === 0}
+              >
+                {this.getAssignmentFilterOptions()}
+              </Form.Control>
+            </Form.Group>
           </div>
           <form className="grade-filter-inputs" onSubmit={this.handleSubmitAssignmentGrade}>
             <div className="percent-group">
-              <InputText
-                label="Min Grade"
-                name="assignmentGradeMin"
-                type="number"
-                min={0}
-                max={100}
-                step={1}
-                value={this.props.assignmentGradeMin}
-                disabled={!this.props.selectedAssignment}
-                onChange={this.props.setAssignmentGradeMin}
-              />
+              <Form.Group controlId="assignmentGradeMin">
+                <Form.Label>Min Grade</Form.Label>
+                <Form.Control
+                  type="number"
+                  min={0}
+                  max={100}
+                  step={1}
+                  value={this.props.assignmentGradeMin}
+                  disabled={!this.props.selectedAssignment}
+                  onChange={(e) => this.props.setAssignmentGradeMin(e.target.value)}
+                />
+              </Form.Group>
               <span className="input-percent-label">%</span>
             </div>
             <div className="percent-group">
-              <InputText
-                label="Max Grade"
-                name="assignmentGradeMax"
-                type="number"
-                min={0}
-                max={100}
-                step={1}
-                value={this.props.assignmentGradeMax}
-                disabled={!this.props.selectedAssignment}
-                onChange={this.props.setAssignmentGradeMax}
-              />
+              <Form.Group controlId="assignmentGradeMax">
+                <Form.Label>Max Grade</Form.Label>
+                <Form.Control
+                  type="number"
+                  min={0}
+                  max={100}
+                  step={1}
+                  value={this.props.assignmentGradeMax}
+                  disabled={!this.props.selectedAssignment}
+                  onChange={(e) => this.props.setAssignmentGradeMax(e.target.value)}
+                />
+              </Form.Group>
               <span className="input-percent-label">%</span>
             </div>
             <div className="grade-filter-action">
               <Button
                 type="submit"
-                className="btn-outline-secondary"
+                variant="outline-secondary"
                 name="assignmentGradeMinMax"
                 disabled={!this.props.selectedAssignment}
               >
@@ -189,11 +188,11 @@ export const mapStateToProps = (state) => ({
 });
 
 export const mapDispatchToProps = {
-  getUserGrades: fetchGrades,
-  filterAssignmentType,
-  updateAssignmentFilter,
-  updateAssignmentLimits,
-  updateGradesIfAssignmentGradeFiltersSet,
+  getUserGrades: gradesActions.fetchGrades,
+  filterAssignmentType: gradesActions.filterAssignmentType,
+  updateAssignmentFilter: filterActions.updateAssignmentFilter,
+  updateAssignmentLimits: filterActions.updateAssignmentLimits,
+  updateGradesIfAssignmentGradeFiltersSet: gradesActions.updateGradesIfAssignmentGradeFilterSet,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Assignments);

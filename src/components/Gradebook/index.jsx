@@ -7,7 +7,6 @@ import {
   Icon,
   CheckBox,
   InputSelect,
-  InputText,
   SearchField,
   StatusAlert,
   Tab,
@@ -27,6 +26,8 @@ import BulkManagement from './BulkManagement';
 import BulkManagementControls from './BulkManagementControls';
 import EditModal from './EditModal';
 import GradebookTable from './GradebookTable';
+import CourseGradeFilters from './CourseGradeFilters';
+import StudentGroupsFilters from './StudentGroupsFilters';
 
 export default class Gradebook extends React.Component {
   constructor(props) {
@@ -411,62 +412,22 @@ export default class Gradebook extends React.Component {
           setAssignmentGradeMax={this.createStateFieldSetter('assignmentGradeMax')}
           updateQueryParams={this.updateQueryParams}
         />
-        <Collapsible title="Overall Grade" defaultOpen className="filter-group mb-3">
-          <div className="grade-filter-inputs">
-            <div className="percent-group">
-              <InputText
-                value={this.state.courseGradeMin}
-                name="minimum-grade"
-                label="Min Grade"
-                onChange={value => this.handleCourseGradeFilterChange('min', value)}
-                type="number"
-                min={0}
-                max={100}
-              />
-              <span className="input-percent-label">%</span>
-            </div>
-            <div className="percent-group">
-              <InputText
-                value={this.state.courseGradeMax}
-                name="max-grade"
-                label="Max Grade"
-                onChange={value => this.handleCourseGradeFilterChange('max', value)}
-                type="number"
-                min={0}
-                max={100}
-              />
-              <span className="input-percent-label">%</span>
-            </div>
-          </div>
-          <div className="grade-filter-action">
-            <Button
-              variant="outline-secondary"
-              onClick={this.handleCourseGradeFilterApplyButtonClick}
-            >
-              Apply
-            </Button>
-          </div>
-        </Collapsible>
-        <Collapsible title="Student Groups" defaultOpen className="filter-group mb-3">
-          <InputSelect
-            label="Tracks"
-            name="Tracks"
-            aria-label="Tracks"
-            disabled={this.props.tracks.length === 0}
-            value={this.mapSelectedTrackEntry(this.props.selectedTrack)}
-            options={this.mapTracksEntries(this.props.tracks)}
-            onChange={this.updateTracks}
-          />
-          <InputSelect
-            name="Cohorts"
-            aria-label="Cohorts"
-            label="Cohorts"
-            disabled={this.props.cohorts.length === 0}
-            value={this.mapSelectedCohortEntry(this.props.selectedCohort)}
-            options={this.mapCohortsEntries(this.props.cohorts)}
-            onChange={this.updateCohorts}
-          />
-        </Collapsible>
+        <CourseGradeFilters
+          {...{
+            courseGradeMin: this.state.courseGradeMin,
+            courseGradeMax: this.state.courseGradeMax,
+            courseId: this.props.courseId,
+            setCourseGradeMin: this.createStateFieldSetter('courseGradeMin'),
+            setCourseGradeMax: this.createStateFieldSetter('courseGradeMax'),
+            setIsMaxCourseGradeFilterValid: this.createStateFieldSetter('isMinCourseGradeFilterValid'),
+            setIsMinCourseGradeFilterValid: this.createStateFieldSetter('isMaxCourseGradeFilterValid'),
+            updateQueryParams: this.updateQueryParams,
+          }}
+        />
+        <StudentGroupsFilters
+          courseId={this.props.courseId}
+          updateQueryParams={this.updateQueryParams}
+        />
         <Collapsible title="Include Course Team Members" className="filter-group mb-3">
           <CheckBox
             name="include-course-team-members"
@@ -484,7 +445,10 @@ export default class Gradebook extends React.Component {
 Gradebook.defaultProps = {
   areGradesFrozen: false,
   canUserViewGradebook: false,
-  cohorts: [],
+  cohorts: [
+    { name: 'Fake Cohort 1', id: 'fake_cohort_1' },
+    { name: 'Fake Cohort 2', id: 'fake_cohort_2' },
+  ],
   courseId: '',
   filteredUsersCount: null,
   location: {
@@ -496,8 +460,11 @@ Gradebook.defaultProps = {
   showBulkManagement: false,
   showSpinner: false,
   totalUsersCount: null,
-  tracks: [],
   includeCourseRoleMembers: false,
+  tracks: [
+    { name: 'Fake Track 1', id: 'fake_track_1' },
+    { name: 'Fake Track 2', id: 'fake_track_2' },
+  ],
 };
 
 Gradebook.propTypes = {
