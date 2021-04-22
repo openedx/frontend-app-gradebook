@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { shallow } from 'enzyme';
+import { mount, shallow } from 'enzyme';
 import toJson from 'enzyme-to-json';
 
 import {
@@ -9,8 +9,13 @@ import {
   mapDispatchToProps
 } from './Assignments';
 
-describe("Assignments", () => {
+jest.mock('@edx/paragon', () => ({
+  Button: 'Button',
+  Collapsible: 'Collapsible',
+  Form: 'Form',
+}));
 
+describe("Assignments", () => {
   const props = {
     assignmentGradeMin: '0',
     assignmentGradeMax: '100',
@@ -21,13 +26,14 @@ describe("Assignments", () => {
 
     assignmentTypes: ['assgn1', 'assgn2', 'assgn3'],
     assignmentFilterOptions: [
-      { label: 'assgnFilterLabel1', subsectionLabel: 'assgnFilterSubLabel1' },
-      { label: 'assgnFilterLabel2', subsectionLabel: 'assgnFilterSubLabel2' },
+      { label: 'assgn_type1', subsectionLabel: 'subLabel1' },
+      { label: 'assgn_type2', subsectionLabel: 'subLabel2' },
     ],
     filterAssignmentType: jest.fn().mockName('filterAssignmentType'),
-    getUserGrades: jest.fn().mockName('getUserGrades').mockReturnValue( /** TODO */),
-    selectedAssignmentType: 'assgn1',
-    selectedAssignment: 'first assignment',
+    // TODO
+    getUserGrades: jest.fn().mockName('getUserGrades').mockReturnValue(),
+    selectedAssignmentType: 'assgnFilterLabel1',
+    selectedAssignment: 'assgn1',
     selectedCohort: 'a cohort',
     selectedTrack: 'a track',
     updateGradesIfAssignmentGradeFiltersSet: jest.fn().mockName(
@@ -39,11 +45,28 @@ describe("Assignments", () => {
 
   describe("Component", () => {
     describe("snapshots", () => {
-      it("renders", () => {
-        expect(shallow(<Assignments {...props} />)).toMatchSnapshot();
+      const methods = [
+        "handleAssignmentFilterChange",
+        "handleAssignmentTypeFilterChange",
+        "handleSubmitAssignmentGrade",
+        "handleSetAssignmentGradeMin",
+        "handleSetAssignmentGradeMax",
+      ];
+      let el;
+      const mockHandlers = (el) => {
+        const mockMethod = 
+        methods.map((name) => {
+          el.instance()[name] = jest.fn().mockName(name);
+          return el.instance()[name];
+        });
+      };
+      test("basic snapshot: allEnabled", () => {
+        const el = shallow(<Assignments {...props} />);
+        mockHandlers(el);
+        expect(el.instance().render()).toMatchSnapshot();
       });
-    });
 
+    });
   });
   describe("mapStateToProps", () => {
 

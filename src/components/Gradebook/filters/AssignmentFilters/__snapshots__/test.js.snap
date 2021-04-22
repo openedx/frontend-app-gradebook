@@ -1,0 +1,26 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Assignments Component snapshots basic snapshot 1`] = `
+<Collapsible
+  className="filter-group mb-3"
+  defaultOpen={true}
+  title="Assignments"
+>
+  <div>
+    <Connect(AssignmentTypeFilter)
+      updateQueryParams={[MockFunction updateQueryParams]}
+    />
+    <Connect(AssignmentFilter)
+      courseId="12345"
+      updateQueryParams={[MockFunction updateQueryParams]}
+    />
+    <Connect(AssignmentGradeFilter)
+      assignmentGradeMax="92"
+      assignmentGradeMin="5"
+      courseId="12345"
+      setAssignmentGradeMax={[MockFunction setAssignmentGradeMax]}
+      setAssignmentGradeMin={[MockFunction setAssignmentGradeMin]}
+    />
+  </div>
+</Collapsible>
+`;

@@ -21,7 +21,7 @@ import Drawer from '../Drawer';
 import initialFilters from '../../data/constants/filters';
 import ConnectedFilterBadges from '../FilterBadges';
 
-import Assignments from './Assignments';
+import AssignmentFilters from './filters/AssignmentFilters';
 import BulkManagement from './BulkManagement';
 import BulkManagementControls from './BulkManagementControls';
 import EditModal from './EditModal';
@@ -396,7 +396,7 @@ export default class Gradebook extends React.Component {
           </>
         )}
       >
-        <Assignments
+        <AssignmentFilters
           assignmentGradeMin={this.state.assignmentGradeMin}
           assignmentGradeMax={this.state.assignmentGradeMax}
           courseId={this.props.courseId}

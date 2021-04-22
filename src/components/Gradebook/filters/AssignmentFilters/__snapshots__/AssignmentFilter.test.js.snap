@@ -1,0 +1,34 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AssignmentFilter Component snapshots basic snapshot 1`] = `
+<SelectGroup
+  disabled={false}
+  id="assignment"
+  label="Assignment"
+  onChange={[MockFunction handleChange]}
+  options={
+    Array [
+      <option
+        value=""
+      >
+        All
+      </option>,
+      <option
+        value="assgn_type1"
+      >
+        assgn_type1
+        : 
+        subLabel1
+      </option>,
+      <option
+        value="assgn_type2"
+      >
+        assgn_type2
+        : 
+        subLabel2
+      </option>,
+    ]
+  }
+  value="assgn1"
+/>
+`;
