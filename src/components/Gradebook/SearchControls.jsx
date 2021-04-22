@@ -1,4 +1,3 @@
-/* eslint-disable react/prefer-stateless-function */
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -17,6 +16,29 @@ import {
  * as well as the search box for searching by username/email.
  */
 export class SearchControls extends React.Component {
+  onSubmit = value => {
+    this.props.searchForUser(
+      this.props.courseId,
+      value,
+      this.props.selectedCohort,
+      this.props.selectedTrack,
+      this.props.selectedAssignmentType,
+    );
+  }
+
+  onChange = (filterValue) => {
+    this.props.setGradebookState({ filterValue });
+  }
+
+  onClear = () => {
+    this.props.getUserGrades(
+      this.props.courseId,
+      this.props.selectedCohort,
+      this.props.selectedTrack,
+      this.props.selectedAssignmentType,
+    );
+  }
+
   render() {
     return (
       <>
@@ -26,21 +48,10 @@ export class SearchControls extends React.Component {
           <Button className="btn-primary align-self-start" onClick={this.props.toggleFilterDrawer}><FontAwesomeIcon icon={faFilter} /> Edit Filters</Button>
           <div>
             <SearchField
-              onSubmit={value => this.props.searchForUser(
-                this.props.courseId,
-                value,
-                this.props.selectedCohort,
-                this.props.selectedTrack,
-                this.props.selectedAssignmentType,
-              )}
+              onSubmit={this.onSubmit}
               inputLabel="Search for a learner"
-              onChange={filterValue => this.props.setGradebookState({ filterValue })}
-              onClear={() => this.props.getUserGrades(
-                this.props.courseId,
-                this.props.selectedCohort,
-                this.props.selectedTrack,
-                this.props.selectedAssignmentType,
-              )}
+              onChange={this.onChange}
+              onClear={this.onClear}
               value={this.props.filterValue}
             />
             <small className="form-text text-muted search-help-text">Search by username, email, or student key</small>
