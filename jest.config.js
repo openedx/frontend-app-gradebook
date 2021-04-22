@@ -1,11 +1,11 @@
-const { createConfig } = require('@edx/frontend-build');
+const { createConfig } = require("@edx/frontend-build");
 
-module.exports = createConfig('jest', {
+module.exports = createConfig("jest", {
   setupFilesAfterEnv: [
-    '<rootDir>/src/setupTest.js',
+    "<rootDir>/src/setupTest.js",
   ],
-  modulePaths: ['<rootDir>/src/'],
+  modulePaths: ["<rootDir>/src/"],
   snapshotSerializers: [
-    'enzyme-to-json/serializer',
+    "enzyme-to-json/serializer",
   ],
 });
