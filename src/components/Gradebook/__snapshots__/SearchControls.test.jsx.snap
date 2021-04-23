@@ -12,6 +12,7 @@ exports[`SearchControls Component Snapshots renders 1`] = `
       active={false}
       className="btn-primary align-self-start"
       disabled={false}
+      id="edit-filters-btn"
       onClick={[MockFunction toggleFilterDrawer]}
       variant="primary"
     >
