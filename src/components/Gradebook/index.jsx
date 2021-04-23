@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import {
   Icon,
   InputSelect,
-  StatusAlert,
   Tab,
   Tabs,
 } from '@edx/paragon';
@@ -20,9 +19,10 @@ import ConnectedFilterBadges from '../FilterBadges';
 import BulkManagement from './BulkManagement';
 import BulkManagementControls from './BulkManagementControls';
 import EditModal from './EditModal';
+import GradebookFilters from './GradebookFilters';
 import GradebookTable from './GradebookTable';
 import SearchControls from './SearchControls';
-import GradebookFilters from './GradebookFilters';
+import StatusAlerts from './StatusAlerts';
 
 export default class Gradebook extends React.Component {
   constructor(props) {
@@ -71,18 +71,6 @@ export default class Gradebook extends React.Component {
       return ['Grades', 'Bulk Management'];
     }
     return ['Grades'];
-  };
-
-  getCourseGradeFilterAlertDialog = () => {
-    let dialog = '';
-
-    if (!this.state.isMinCourseGradeFilterValid) {
-      dialog += 'Minimum course grade value must be between 0 and 100. ';
-    }
-    if (!this.state.isMaxCourseGradeFilterValid) {
-      dialog += 'Maximum course grade value must be between 0 and 100. ';
-    }
-    return dialog;
   };
 
   updateQueryParams = (queryParams) => {
@@ -203,20 +191,9 @@ export default class Gradebook extends React.Component {
                 <ConnectedFilterBadges
                   handleFilterBadgeClose={this.handleFilterBadgeClose}
                 />
-                <StatusAlert
-                  alertType="success"
-                  dialog="The grade has been successfully edited. You may see a slight delay before updates appear in the Gradebook."
-                  onClose={() => this.props.closeBanner()}
-                  open={this.props.showSuccess}
-                />
-                <StatusAlert
-                  alertType="danger"
-                  dialog={this.getCourseGradeFilterAlertDialog()}
-                  dismissible={false}
-                  open={
-                    !this.state.isMinCourseGradeFilterValid
-                    || !this.state.isMaxCourseGradeFilterValid
-                  }
+                <StatusAlerts
+                  isMinCourseGradeFilterValid={this.state.isMinCourseGradeFilterValid}
+                  isMaxCourseGradeFilterValid={this.state.isMaxCourseGradeFilterValid}
                 />
                 <h4>Step 2: View or Modify Individual Grades</h4>
                 {this.props.totalUsersCount
@@ -318,7 +295,6 @@ Gradebook.defaultProps = {
 Gradebook.propTypes = {
   areGradesFrozen: PropTypes.bool,
   canUserViewGradebook: PropTypes.bool,
-  closeBanner: PropTypes.func.isRequired,
   courseId: PropTypes.string,
   filteredUsersCount: PropTypes.number,
   getRoles: PropTypes.func.isRequired,
@@ -338,7 +314,6 @@ Gradebook.propTypes = {
   selectedTrack: PropTypes.string,
   showBulkManagement: PropTypes.bool,
   showSpinner: PropTypes.bool,
-  showSuccess: PropTypes.bool.isRequired,
   toggleFormat: PropTypes.func.isRequired,
   totalUsersCount: PropTypes.number,
 };

@@ -2,7 +2,6 @@ import { connect } from 'react-redux';
 
 import Gradebook from '../../components/Gradebook';
 import {
-  closeBanner,
   fetchGradeOverrideHistory,
   fetchGrades,
   fetchPrevNextGrades,
@@ -105,7 +104,6 @@ const mapStateToProps = (state, ownProps) => (
       || (stateHasMastersTrack(state) && state.config.bulkManagementAvailable)
     ),
     showSpinner: shouldShowSpinner(state),
-    showSuccess: state.grades.showSuccess,
     totalUsersCount: state.grades.totalUsersCount,
     uploadSuccess: !!(state.grades.bulkManagement
                       && state.grades.bulkManagement.uploadSuccess),
@@ -113,7 +111,6 @@ const mapStateToProps = (state, ownProps) => (
 );
 
 const mapDispatchToProps = {
-  closeBanner,
   downloadBulkGradesReport,
   downloadInterventionReport,
   fetchGradeOverrideHistory,
