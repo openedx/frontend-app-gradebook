@@ -47,8 +47,18 @@ export class SearchControls extends React.Component {
       <>
         <h4>Step 1: Filter the Grade Report</h4>
         <div className="d-flex justify-content-between">
-          {this.props.showSpinner && <div className="spinner-overlay"><Icon className="fa fa-spinner fa-spin fa-5x color-black" /></div>}
-          <Button id="edit-filters-btn" className="btn-primary align-self-start" onClick={this.props.toggleFilterDrawer}><FontAwesomeIcon icon={faFilter} /> Edit Filters</Button>
+          {this.props.showSpinner && (
+            <div className="spinner-overlay">
+              <Icon className="fa fa-spinner fa-spin fa-5x color-black" />
+            </div>
+          )}
+          <Button
+            id="edit-filters-btn"
+            className="btn-primary align-self-start"
+            onClick={this.props.toggleFilterDrawer}
+          >
+            <FontAwesomeIcon icon={faFilter} />Edit Filters
+          </Button>
           <div>
             <SearchField
               onSubmit={this.onSubmit}
