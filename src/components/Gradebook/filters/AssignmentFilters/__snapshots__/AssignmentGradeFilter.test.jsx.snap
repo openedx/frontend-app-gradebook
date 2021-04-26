@@ -1,9 +1,8 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`AssignmentGradeFilter Component snapshots buttons and groups disabled if no selected assignment 1`] = `
-<form
+<div
   className="grade-filter-inputs"
-  onSubmit={[MockFunction handleSubmit]}
 >
   <PercentGroup
     disabled={true}
@@ -26,19 +25,19 @@ exports[`AssignmentGradeFilter Component snapshots buttons and groups disabled i
       active={false}
       disabled={true}
       name="assignmentGradeMinMax"
+      onClick={[MockFunction handleSubmit]}
       type="submit"
       variant="outline-secondary"
     >
       Apply
     </Button>
   </div>
-</form>
+</div>
 `;
 
 exports[`AssignmentGradeFilter Component snapshots smoke test 1`] = `
-<form
+<div
   className="grade-filter-inputs"
-  onSubmit={[MockFunction handleSubmit]}
 >
   <PercentGroup
     disabled={false}
@@ -61,11 +60,12 @@ exports[`AssignmentGradeFilter Component snapshots smoke test 1`] = `
       active={false}
       disabled={false}
       name="assignmentGradeMinMax"
+      onClick={[MockFunction handleSubmit]}
       type="submit"
       variant="outline-secondary"
     >
       Apply
     </Button>
   </div>
-</form>
+</div>
 `;

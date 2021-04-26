@@ -39,12 +39,9 @@ describe('AssignmentGradeFilter', () => {
         let el;
         let event;
         beforeEach(() => {
-          event = { preventDefault: jest.fn() };
+          event = {};
           el = mount(<AssignmentGradeFilter {...props} />);
           el.instance().handleSubmit(event);
-        });
-        it('prevents default event propagation', () => {
-          expect(event.preventDefault).toHaveBeenCalled();
         });
         it('calls props.updateAssignmentLimits with min and max', () => {
           expect(props.updateAssignmentLimits).toHaveBeenCalledWith(

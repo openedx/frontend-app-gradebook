@@ -25,12 +25,15 @@ const PercentGroup = ({
     <span className="input-percent-label">%</span>
   </div>
 );
+PercentGroup.defaultProps = {
+  disabled: false,
+};
 PercentGroup.propTypes = {
   id: PropTypes.string.isRequired,
   label: PropTypes.string.isRequired,
   value: PropTypes.string.isRequired,
   onChange: PropTypes.func.isRequired,
-  disabled: PropTypes.bool.isRequired,
+  disabled: PropTypes.bool,
 };
 
 export default PercentGroup;

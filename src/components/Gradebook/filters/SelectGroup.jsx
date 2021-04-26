@@ -26,8 +26,11 @@ SelectGroup.propTypes = {
   label: PropTypes.string.isRequired,
   value: PropTypes.string.isRequired,
   onChange: PropTypes.func.isRequired,
-  disabled: PropTypes.bool.isRequired,
+  disabled: PropTypes.bool,
   options: PropTypes.arrayOf(PropTypes.node).isRequired,
+};
+SelectGroup.defaultProps = {
+  disabled: false,
 };
 
 export default SelectGroup;

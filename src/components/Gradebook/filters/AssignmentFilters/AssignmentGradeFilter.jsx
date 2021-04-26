@@ -8,7 +8,7 @@ import { Button } from '@edx/paragon';
 import * as gradesActions from 'data/actions/grades';
 import * as filterActions from 'data/actions/filters';
 
-import PercentGroup from './PercentGroup';
+import PercentGroup from '../PercentGroup';
 
 export class AssignmentGradeFilter extends React.Component {
   constructor(props) {
@@ -18,8 +18,7 @@ export class AssignmentGradeFilter extends React.Component {
     this.handleSetMin = this.handleSetMin.bind(this);
   }
 
-  handleSubmit(event) {
-    event.preventDefault();
+  handleSubmit() {
     const {
       assignmentGradeMin,
       assignmentGradeMax,
@@ -51,10 +50,7 @@ export class AssignmentGradeFilter extends React.Component {
 
   render() {
     return (
-      <form
-        className="grade-filter-inputs"
-        onSubmit={this.handleSubmit}
-      >
+      <div className="grade-filter-inputs">
         <PercentGroup
           id="assignmentGradeMin"
           label="Min Grade"
@@ -75,11 +71,12 @@ export class AssignmentGradeFilter extends React.Component {
             variant="outline-secondary"
             name="assignmentGradeMinMax"
             disabled={!this.props.selectedAssignment}
+            onClick={this.handleSubmit}
           >
             Apply
           </Button>
         </div>
-      </form>
+      </div>
     );
   }
 }

@@ -20,6 +20,7 @@ exports[`Assignments Component snapshots basic snapshot 1`] = `
       courseId="12345"
       setAssignmentGradeMax={[MockFunction setAssignmentGradeMax]}
       setAssignmentGradeMin={[MockFunction setAssignmentGradeMin]}
+      updateQueryParams={[MockFunction updateQueryParams]}
     />
   </div>
 </Collapsible>

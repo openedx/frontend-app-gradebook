@@ -7,7 +7,7 @@ import { selectableAssignmentLabels } from 'data/selectors/filters';
 import * as gradesActions from 'data/actions/grades';
 import * as filterActions from 'data/actions/filters';
 
-import SelectGroup from './SelectGroup';
+import SelectGroup from '../SelectGroup';
 
 export class AssignmentFilter extends React.Component {
   constructor(props) {
@@ -44,14 +44,16 @@ export class AssignmentFilter extends React.Component {
 
   render() {
     return (
-      <SelectGroup
-        id="assignment"
-        label="Assignment"
-        value={this.props.selectedAssignment}
-        onChange={this.handleChange}
-        disabled={this.props.assignmentFilterOptions.length === 0}
-        options={this.options}
-      />
+      <div className="student-filters">
+        <SelectGroup
+          id="assignment"
+          label="Assignment"
+          value={this.props.selectedAssignment}
+          onChange={this.handleChange}
+          disabled={this.props.assignmentFilterOptions.length === 0}
+          options={this.options}
+        />
+      </div>
     );
   }
 }

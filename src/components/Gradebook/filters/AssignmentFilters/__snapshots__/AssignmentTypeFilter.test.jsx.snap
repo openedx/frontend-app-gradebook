@@ -1,59 +1,67 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`AssignmentTypeFilter Component snapshots SelectGroup disabled if no assignmentFilterOptions 1`] = `
-<SelectGroup
-  disabled={true}
-  id="assignment-types"
-  label="Assignment Types"
-  onChange={[MockFunction handleSubmit]}
-  options={
-    Array [
-      <option
-        value=""
-      >
-        All
-      </option>,
-      <option
-        value="assignMentType1"
-      >
-        assignMentType1
-      </option>,
-      <option
-        value="AssigNmentType2"
-      >
-        AssigNmentType2
-      </option>,
-    ]
-  }
-  value="assigNmentType2"
-/>
+<div
+  className="student-filters"
+>
+  <SelectGroup
+    disabled={true}
+    id="assignment-types"
+    label="Assignment Types"
+    onChange={[MockFunction handleSubmit]}
+    options={
+      Array [
+        <option
+          value=""
+        >
+          All
+        </option>,
+        <option
+          value="assignMentType1"
+        >
+          assignMentType1
+        </option>,
+        <option
+          value="AssigNmentType2"
+        >
+          AssigNmentType2
+        </option>,
+      ]
+    }
+    value="assigNmentType2"
+  />
+</div>
 `;
 
 exports[`AssignmentTypeFilter Component snapshots smoke test 1`] = `
-<SelectGroup
-  disabled={false}
-  id="assignment-types"
-  label="Assignment Types"
-  onChange={[MockFunction handleSubmit]}
-  options={
-    Array [
-      <option
-        value=""
-      >
-        All
-      </option>,
-      <option
-        value="assignMentType1"
-      >
-        assignMentType1
-      </option>,
-      <option
-        value="AssigNmentType2"
-      >
-        AssigNmentType2
-      </option>,
-    ]
-  }
-  value="assigNmentType2"
-/>
+<div
+  className="student-filters"
+>
+  <SelectGroup
+    disabled={false}
+    id="assignment-types"
+    label="Assignment Types"
+    onChange={[MockFunction handleSubmit]}
+    options={
+      Array [
+        <option
+          value=""
+        >
+          All
+        </option>,
+        <option
+          value="assignMentType1"
+        >
+          assignMentType1
+        </option>,
+        <option
+          value="AssigNmentType2"
+        >
+          AssigNmentType2
+        </option>,
+      ]
+    }
+    value="assigNmentType2"
+  />
+</div>
 `;

@@ -21,14 +21,14 @@ import Drawer from '../Drawer';
 import initialFilters from '../../data/constants/filters';
 import ConnectedFilterBadges from '../FilterBadges';
 
-import AssignmentFilters from './filters/AssignmentFilters';
 import BulkManagement from './BulkManagement';
 import BulkManagementControls from './BulkManagementControls';
 import EditModal from './EditModal';
 import GradebookTable from './GradebookTable';
 import SearchControls from './SearchControls';
-import CourseGradeFilters from './CourseGradeFilters';
-import StudentGroupsFilters from './StudentGroupsFilters';
+import AssignmentFilters from './filters/AssignmentFilters';
+import CourseGradeFilters from './filters/CourseGradeFilters';
+import StudentGroupsFilters from './filters/StudentGroupsFilters';
 
 export default class Gradebook extends React.Component {
   constructor(props) {

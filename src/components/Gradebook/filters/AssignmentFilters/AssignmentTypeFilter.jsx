@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import { selectableAssignmentLabels } from 'data/selectors/filters';
 import * as gradesActions from 'data/actions/grades';
 
-import SelectGroup from './SelectGroup';
+import SelectGroup from '../SelectGroup';
 
 export class AssignmentTypeFilter extends React.Component {
   constructor(props) {
@@ -32,14 +32,16 @@ export class AssignmentTypeFilter extends React.Component {
 
   render() {
     return (
-      <SelectGroup
-        id="assignment-types"
-        label="Assignment Types"
-        value={this.props.selectedAssignmentType}
-        onChange={this.handleChange}
-        disabled={this.props.assignmentFilterOptions.length === 0}
-        options={this.options}
-      />
+      <div className="student-filters">
+        <SelectGroup
+          id="assignment-types"
+          label="Assignment Types"
+          value={this.props.selectedAssignmentType}
+          onChange={this.handleChange}
+          disabled={this.props.assignmentFilterOptions.length === 0}
+          options={this.options}
+        />
+      </div>
     );
   }
 }

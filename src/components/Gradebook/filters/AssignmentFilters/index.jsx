@@ -31,6 +31,7 @@ export const AssignmentFilters = ({
         assignmentGradeMax={assignmentGradeMax}
         setAssignmentGradeMin={setAssignmentGradeMin}
         setAssignmentGradeMax={setAssignmentGradeMax}
+        updateQueryParams={updateQueryParams}
       />
     </div>
   </Collapsible>

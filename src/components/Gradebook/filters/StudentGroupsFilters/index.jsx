@@ -5,12 +5,18 @@ import PropTypes from 'prop-types';
 
 import {
   Collapsible,
-  Form,
 } from '@edx/paragon';
 
-import { fetchGrades } from '../../data/actions/grades';
+import { fetchGrades } from 'data/actions/grades';
+import SelectGroup from '../SelectGroup';
 
 export class StudentGroupsFilters extends React.Component {
+  constructor(props) {
+    super(props);
+    this.updateCohorts = this.updateCohorts.bind(this);
+    this.updateTracks = this.updateTracks.bind(this);
+  }
+
   mapCohortsEntries = () => {
     const mapper = ({ id, name }) => (
       <option key={id} value={name}>{name}</option>
@@ -32,85 +38,77 @@ export class StudentGroupsFilters extends React.Component {
   };
 
   mapSelectedCohortEntry = () => {
-    const { cohorts, selectedCohort } = this.props;
-    const filterCohorts = (x) => x.id === parseInt(selectedCohort, 10);
-    const selectedCohortEntry = cohorts.find(filterCohorts);
+    const selectedCohortEntry = this.props.cohorts.find(
+      (x) => x.id === parseInt(this.props.selectedCohort, 10),
+    );
     return selectedCohortEntry ? selectedCohortEntry.name : 'Cohorts';
   };
 
   mapSelectedTrackEntry = () => {
-    const { selectedTrack, tracks } = this.props;
-    const trackFilter = ({ slug }) => slug === selectedTrack;
-    const selectedTrackEntry = tracks.find(trackFilter);
+    const selectedTrackEntry = this.props.tracks.find(
+      ({ slug }) => slug === this.props.selectedTrack,
+    );
     return selectedTrackEntry ? selectedTrackEntry.name : 'Tracks';
   };
 
-  updateTracks = (event) => {
-    const {
-      courseId,
-      getUserGrades,
-      selectedAssignmentType,
-      selectedCohort,
-      tracks,
-      updateQueryParams,
-    } = this.props;
-    const selectedTrackItem = tracks.find(x => x.name === event.target.value);
-    const selectedTrackSlug = selectedTrackItem ? selectedTrackItem.slug : null;
+  selectedTrackSlugFromEvent(event) {
+    const selectedTrackItem = this.props.tracks.find(
+      ({ name }) => name === event.target.value,
+    );
+    return selectedTrackItem ? selectedTrackItem.slug : null;
+  }
 
-    getUserGrades(
-      courseId,
-      selectedCohort,
+  selectedCohortIdFromEvent(event) {
+    const selectedCohortItem = this.props.cohorts.find(
+      x => x.name === event.target.value,
+    );
+    return selectedCohortItem ? selectedCohortItem.id : null;
+  }
+
+  updateTracks(event) {
+    const selectedTrackSlug = this.selectedTrackSlugFromEvent(event);
+    this.props.getUserGrades(
+      this.props.courseId,
+      this.props.selectedCohort,
       selectedTrackSlug,
-      selectedAssignmentType,
+      this.props.selectedAssignmentType,
     );
-    updateQueryParams({ track: selectedTrackSlug });
-  };
+    this.props.updateQueryParams({ track: selectedTrackSlug });
+  }
 
-  updateCohorts = (event) => {
-    const {
-      cohorts,
-      courseId,
-      getUserGrades,
-      selectedTrack,
-      selectedAssignmentType,
-      updateQueryParams,
-    } = this.props;
-    const selectedCohortItem = cohorts.find(x => x.name === event.target.value);
-    const selectedCohortId = selectedCohortItem ? selectedCohortItem.id : null;
-
-    getUserGrades(
-      courseId,
+  updateCohorts(event) {
+    const selectedCohortId = this.selectedCohortIdFromEvent(event);
+    this.props.getUserGrades(
+      this.props.courseId,
       selectedCohortId,
-      selectedTrack,
-      selectedAssignmentType,
+      this.props.selectedTrack,
+      this.props.selectedAssignmentType,
     );
-    updateQueryParams({ cohort: selectedCohortId });
-  };
+    this.props.updateQueryParams({ cohort: selectedCohortId });
+  }
 
   render() {
     return (
-      <Collapsible title="Student Groups" defaultOpen className="filter-group mb-3">
-        <Form.Group controlId="Tracks">
-          <Form.Label>Tracks</Form.Label>
-          <Form.Control
-            as="select"
-            value={this.mapSelectedTrackEntry()}
-            onChange={this.updateTracks}
-          >
-            {this.mapTracksEntries()}
-          </Form.Control>
-        </Form.Group>
-        <Form.Group controlId="Cohorts">
-          <Form.Label>Cohorts</Form.Label>
-          <Form.Control
-            as="select"
-            value={this.mapSelectedCohortEntry()}
-            disabled={this.props.cohorts.length === 0}
-            onChange={this.updateCohorts}
-          >
-            {this.mapCohortsEntries()}
-          </Form.Control>
-        </Form.Group>
+      <Collapsible
+        title="Student Groups"
+        defaultOpen
+        className="filter-group mb-3"
+      >
+        <SelectGroup
+          id="Tracks"
+          label="Tracks"
+          value={this.mapSelectedTrackEntry()}
+          onChange={this.updateTracks}
+          options={this.mapTracksEntries()}
+        />
+        <SelectGroup
+          id="Cohorts"
+          label="Cohorts"
+          value={this.mapSelectedCohortEntry()}
+          disabled={this.props.cohorts.length === 0}
+          onChange={this.updateCohorts}
+          options={this.mapCohortsEntries()}
+        />
       </Collapsible>
     );
   }
@@ -165,7 +163,6 @@ export const mapStateToProps = (state) => ({
 
 export const mapDispatchToProps = {
   getUserGrades: fetchGrades,
-
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(StudentGroupsFilters);
