@@ -1,0 +1,71 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`PercentGroup Component snapshots basic snapshot 1`] = `
+<div
+  className="percent-group"
+>
+  <FormGroup
+    as="div"
+    controlId="group id"
+    isInvalid={false}
+    isValid={false}
+  >
+    <FormLabel
+      isInline={false}
+    >
+      Group Label
+    </FormLabel>
+    <ForwardRef
+      as="input"
+      disabled={false}
+      max={100}
+      min={0}
+      onChange={[MockFunction props.onChange]}
+      plaintext={false}
+      step={1}
+      type="number"
+      value="group VALUE"
+    />
+  </FormGroup>
+  <span
+    className="input-percent-label"
+  >
+    %
+  </span>
+</div>
+`;
+
+exports[`PercentGroup Component snapshots disabled 1`] = `
+<div
+  className="percent-group"
+>
+  <FormGroup
+    as="div"
+    controlId="group id"
+    isInvalid={false}
+    isValid={false}
+  >
+    <FormLabel
+      isInline={false}
+    >
+      Group Label
+    </FormLabel>
+    <ForwardRef
+      as="input"
+      disabled={true}
+      max={100}
+      min={0}
+      onChange={[MockFunction props.onChange]}
+      plaintext={false}
+      step={1}
+      type="number"
+      value="group VALUE"
+    />
+  </FormGroup>
+  <span
+    className="input-percent-label"
+  >
+    %
+  </span>
+</div>
+`;

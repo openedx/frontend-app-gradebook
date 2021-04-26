@@ -14,21 +14,21 @@ exports[`AssignmentFilter Component snapshots basic snapshot 1`] = `
         All
       </option>,
       <option
-        value="assgn_type1"
+        value="assgN1"
       >
-        assgn_type1
+        assgN1
         : 
         subLabel1
       </option>,
       <option
-        value="assgn_type2"
+        value="assgN2"
       >
-        assgn_type2
+        assgN2
         : 
         subLabel2
       </option>,
     ]
   }
-  value="assgn1"
+  value="assgN1"
 />
 `;

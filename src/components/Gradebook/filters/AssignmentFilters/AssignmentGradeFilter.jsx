@@ -16,7 +16,7 @@ export class AssignmentGradeFilter extends React.Component {
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleSetMax = this.handleSetMax.bind(this);
     this.handleSetMin = this.handleSetMin.bind(this);
-  };
+  }
 
   handleSubmit(event) {
     event.preventDefault();
@@ -27,7 +27,7 @@ export class AssignmentGradeFilter extends React.Component {
 
     this.props.updateAssignmentLimits(
       assignmentGradeMin,
-      assignmentGradeMax
+      assignmentGradeMax,
     );
     this.props.getUserGrades(
       this.props.courseId,
@@ -37,7 +37,7 @@ export class AssignmentGradeFilter extends React.Component {
     );
     this.props.updateQueryParams({
       assignmentGradeMin,
-      assignmentGradeMax
+      assignmentGradeMax,
     });
   }
 

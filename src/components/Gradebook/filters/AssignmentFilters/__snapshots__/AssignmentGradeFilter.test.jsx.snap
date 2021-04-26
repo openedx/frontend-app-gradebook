@@ -1,0 +1,71 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AssignmentGradeFilter Component snapshots buttons and groups disabled if no selected assignment 1`] = `
+<form
+  className="grade-filter-inputs"
+  onSubmit={[MockFunction handleSubmit]}
+>
+  <PercentGroup
+    disabled={true}
+    id="assignmentGradeMin"
+    label="Min Grade"
+    onChange={[MockFunction handleSetMin]}
+    value="1"
+  />
+  <PercentGroup
+    disabled={true}
+    id="assignmentGradeMax"
+    label="Max Grade"
+    onChange={[MockFunction handleSetMax]}
+    value="100"
+  />
+  <div
+    className="grade-filter-action"
+  >
+    <Button
+      active={false}
+      disabled={true}
+      name="assignmentGradeMinMax"
+      type="submit"
+      variant="outline-secondary"
+    >
+      Apply
+    </Button>
+  </div>
+</form>
+`;
+
+exports[`AssignmentGradeFilter Component snapshots smoke test 1`] = `
+<form
+  className="grade-filter-inputs"
+  onSubmit={[MockFunction handleSubmit]}
+>
+  <PercentGroup
+    disabled={false}
+    id="assignmentGradeMin"
+    label="Min Grade"
+    onChange={[MockFunction handleSetMin]}
+    value="1"
+  />
+  <PercentGroup
+    disabled={false}
+    id="assignmentGradeMax"
+    label="Max Grade"
+    onChange={[MockFunction handleSetMax]}
+    value="100"
+  />
+  <div
+    className="grade-filter-action"
+  >
+    <Button
+      active={false}
+      disabled={false}
+      name="assignmentGradeMinMax"
+      type="submit"
+      variant="outline-secondary"
+    >
+      Apply
+    </Button>
+  </div>
+</form>
+`;

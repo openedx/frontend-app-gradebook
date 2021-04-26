@@ -1,4 +1,4 @@
-/* eslint-disable react/sort-comp, react/button-has-type */
+/* eslint-disable react/sort-comp, import/no-named-as-default */
 import React from 'react';
 import PropTypes from 'prop-types';
 
@@ -15,28 +15,26 @@ export const AssignmentFilters = ({
   setAssignmentGradeMax,
   setAssignmentGradeMin,
   updateQueryParams,
-}) => {
-  return (
-    <Collapsible title="Assignments" defaultOpen className="filter-group mb-3">
-      <div>
-        <AssignmentTypeFilter
-          updateQueryParams={updateQueryParams}
-        />
-        <AssignmentFilter
-          courseId={courseId}
-          updateQueryParams={updateQueryParams}
-        />
-        <AssignmentGradeFilter
-          courseId={courseId}
-          assignmentGradeMin={assignmentGradeMin}
-          assignmentGradeMax={assignmentGradeMax}
-          setAssignmentGradeMin={setAssignmentGradeMin}
-          setAssignmentGradeMax={setAssignmentGradeMax}
-        />
-      </div>
-    </Collapsible>
-  );
-}
+}) => (
+  <Collapsible title="Assignments" defaultOpen className="filter-group mb-3">
+    <div>
+      <AssignmentTypeFilter
+        updateQueryParams={updateQueryParams}
+      />
+      <AssignmentFilter
+        courseId={courseId}
+        updateQueryParams={updateQueryParams}
+      />
+      <AssignmentGradeFilter
+        courseId={courseId}
+        assignmentGradeMin={assignmentGradeMin}
+        assignmentGradeMax={assignmentGradeMax}
+        setAssignmentGradeMin={setAssignmentGradeMin}
+        setAssignmentGradeMax={setAssignmentGradeMax}
+      />
+    </div>
+  </Collapsible>
+);
 
 AssignmentFilters.propTypes = {
   assignmentGradeMin: PropTypes.string.isRequired,

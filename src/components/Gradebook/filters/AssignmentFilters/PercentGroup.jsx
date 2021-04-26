@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 
 import { Form } from '@edx/paragon';
 
-export const PercentGroup = ({
+const PercentGroup = ({
   id,
   label,
   value,

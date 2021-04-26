@@ -13,11 +13,11 @@ export class AssignmentFilter extends React.Component {
   constructor(props) {
     super(props);
     this.handleChange = this.handleChange.bind(this);
-  };
+  }
 
   handleChange(event) {
     const assignment = event.target.value;
-    const selectedFilterOption = assignmentFilterOptions.find(assig => assig.label === assignment);
+    const selectedFilterOption = this.props.assignmentFilterOptions.find(assig => assig.label === assignment);
     const { type, id } = selectedFilterOption || {};
     const typedValue = { label: assignment, type, id };
     this.props.updateAssignmentFilter(typedValue);
@@ -72,6 +72,8 @@ AssignmentFilter.propTypes = {
   assignmentFilterOptions: PropTypes.arrayOf(PropTypes.shape({
     label: PropTypes.string,
     subsectionLabel: PropTypes.string,
+    type: PropTypes.string,
+    id: PropTypes.string,
   })),
   selectedAssignmentType: PropTypes.string,
   selectedAssignment: PropTypes.string,
