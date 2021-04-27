@@ -3,8 +3,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {
   Button,
-  Collapsible,
-  CheckBox,
   Icon,
   InputSelect,
   SearchField,
@@ -26,9 +24,7 @@ import BulkManagementControls from './BulkManagementControls';
 import EditModal from './EditModal';
 import GradebookTable from './GradebookTable';
 import SearchControls from './SearchControls';
-import AssignmentFilters from './filters/AssignmentFilters';
-import CourseGradeFilters from './filters/CourseGradeFilters';
-import StudentGroupsFilters from './filters/StudentGroupsFilters';
+import GradebookFilters from './GradebookFilters';
 
 export default class Gradebook extends React.Component {
   constructor(props) {
@@ -241,11 +237,6 @@ export default class Gradebook extends React.Component {
     );
   }
 
-  handleIncludeTeamMembersChange = (includeCourseRoleMembers) => {
-    this.props.updateIncludeCourseRoleMembers(includeCourseRoleMembers);
-    this.updateQueryParams({ includeCourseRoleMembers });
-  };
-
   createStateFieldSetter = (key) => (value) => this.setState({ [key]: value });
 
   createStateFieldOnChange = (key) => ({ target }) => this.setState({ [key]: target.value });
@@ -269,6 +260,22 @@ export default class Gradebook extends React.Component {
     'updateUserId',
     'updateUserName',
   );
+
+  setFilters = this.createLimitedSetter(
+    'assignmentGradeMin',
+    'assignmentGradeMax',
+    'courseGradeMin',
+    'courseGradeMax',
+    'isMinCourseGradeFilterValid',
+    'isMaxCourseGradeFilterValid',
+  );
+
+  filterValues = () => ({
+    assignmentGradeMin: this.state.assignmentGradeMin,
+    assignmentGradeMax: this.state.assignmentGradeMax,
+    courseGradeMin: this.state.courseGradeMin,
+    courseGradeMax: this.state.courseGradeMax,
+  });
 
   render() {
     return (
@@ -396,39 +403,12 @@ export default class Gradebook extends React.Component {
           </>
         )}
       >
-        <AssignmentFilters
-          assignmentGradeMin={this.state.assignmentGradeMin}
-          assignmentGradeMax={this.state.assignmentGradeMax}
-          courseId={this.props.courseId}
-          setAssignmentGradeMin={this.createStateFieldSetter('assignmentGradeMin')}
-          setAssignmentGradeMax={this.createStateFieldSetter('assignmentGradeMax')}
+        <GradebookFilters
+          setFilters={this.setFilters}
+          filterValues={this.filterValues()}
           updateQueryParams={this.updateQueryParams}
-        />
-        <CourseGradeFilters
-          {...{
-            courseGradeMin: this.state.courseGradeMin,
-            courseGradeMax: this.state.courseGradeMax,
-            courseId: this.props.courseId,
-            setCourseGradeMin: this.createStateFieldSetter('courseGradeMin'),
-            setCourseGradeMax: this.createStateFieldSetter('courseGradeMax'),
-            setIsMaxCourseGradeFilterValid: this.createStateFieldSetter('isMinCourseGradeFilterValid'),
-            setIsMinCourseGradeFilterValid: this.createStateFieldSetter('isMaxCourseGradeFilterValid'),
-            updateQueryParams: this.updateQueryParams,
-          }}
-        />
-        <StudentGroupsFilters
           courseId={this.props.courseId}
-          updateQueryParams={this.updateQueryParams}
         />
-        <Collapsible title="Include Course Team Members" className="filter-group mb-3">
-          <CheckBox
-            name="include-course-team-members"
-            aria-label="Include Course Team Members"
-            label="Include Course Team Members"
-            checked={this.props.includeCourseRoleMembers}
-            onChange={this.handleIncludeTeamMembersChange}
-          />
-        </Collapsible>
       </Drawer>
     );
   }
@@ -452,7 +432,6 @@ Gradebook.defaultProps = {
   showBulkManagement: false,
   showSpinner: false,
   totalUsersCount: null,
-  includeCourseRoleMembers: false,
   tracks: [
     { name: 'Fake Track 1', id: 'fake_track_1' },
     { name: 'Fake Track 2', id: 'fake_track_2' },
@@ -493,6 +472,4 @@ Gradebook.propTypes = {
     name: PropTypes.string,
   })),
   updateCourseGradeFilter: PropTypes.func.isRequired,
-  includeCourseRoleMembers: PropTypes.bool,
-  updateIncludeCourseRoleMembers: PropTypes.func.isRequired,
 };

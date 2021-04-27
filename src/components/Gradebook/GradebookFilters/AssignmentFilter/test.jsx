@@ -7,7 +7,7 @@ import {
   AssignmentFilter,
   mapStateToProps,
   mapDispatchToProps,
-} from './AssignmentFilter';
+} from '.';
 
 jest.mock('data/selectors/filters', () => ({
   /** Mocking to use passed state for validation purposes */
@@ -43,11 +43,9 @@ describe('AssignmentFilter', () => {
   beforeEach(() => {
     props = {
       ...props,
-      updateQueryParams: jest.fn().mockName('updateQueryParams'),
-      updateGradesIfAssignmentGradeFiltersSet: jest.fn().mockName(
-        'updateGradesIfAssignmentGradeFiltersSet',
-      ),
-      updateAssignmentFilter: jest.fn().mockName('updateAssignmentFilter'),
+      updateQueryParams: jest.fn(),
+      updateGradesIfAssignmentGradeFiltersSet: jest.fn(),
+      updateAssignmentFilter: jest.fn(),
     };
   });
 

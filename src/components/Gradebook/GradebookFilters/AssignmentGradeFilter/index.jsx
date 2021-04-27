@@ -22,7 +22,7 @@ export class AssignmentGradeFilter extends React.Component {
     const {
       assignmentGradeMin,
       assignmentGradeMax,
-    } = this.props;
+    } = this.props.filterValues;
 
     this.props.updateAssignmentLimits(
       assignmentGradeMin,
@@ -41,11 +41,11 @@ export class AssignmentGradeFilter extends React.Component {
   }
 
   handleSetMax(event) {
-    this.props.setAssignmentGradeMax(event.target.value);
+    this.props.setFilters({ assignmentGradeMax: event.target.value });
   }
 
   handleSetMin(event) {
-    this.props.setAssignmentGradeMin(event.target.value);
+    this.props.setFilters({ assignmentGradeMin: event.target.value });
   }
 
   render() {
@@ -54,14 +54,14 @@ export class AssignmentGradeFilter extends React.Component {
         <PercentGroup
           id="assignmentGradeMin"
           label="Min Grade"
-          value={this.props.assignmentGradeMin}
+          value={this.props.filterValues.assignmentGradeMin}
           disabled={!this.props.selectedAssignment}
           onChange={this.handleSetMin}
         />
         <PercentGroup
           id="assignmentGradeMax"
           label="Max Grade"
-          value={this.props.assignmentGradeMax}
+          value={this.props.filterValues.assignmentGradeMax}
           disabled={!this.props.selectedAssignment}
           onChange={this.handleSetMax}
         />
@@ -89,11 +89,12 @@ AssignmentGradeFilter.defaultProps = {
 };
 
 AssignmentGradeFilter.propTypes = {
-  assignmentGradeMin: PropTypes.string.isRequired,
-  assignmentGradeMax: PropTypes.string.isRequired,
   courseId: PropTypes.string.isRequired,
-  setAssignmentGradeMin: PropTypes.func.isRequired,
-  setAssignmentGradeMax: PropTypes.func.isRequired,
+  filterValues: PropTypes.shape({
+    assignmentGradeMin: PropTypes.string.isRequired,
+    assignmentGradeMax: PropTypes.string.isRequired,
+  }).isRequired,
+  setFilters: PropTypes.func.isRequired,
   updateQueryParams: PropTypes.func.isRequired,
 
   // redux

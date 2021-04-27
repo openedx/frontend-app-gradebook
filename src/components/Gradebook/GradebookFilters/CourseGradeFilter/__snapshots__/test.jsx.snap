@@ -1,11 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`CourseGradeFilters Component snapshots basic snapshot 1`] = `
-<Collapsible
-  className="filter-group mb-3"
-  defaultOpen={true}
-  title="Overall Grade"
->
+exports[`CourseGradeFilter Component snapshots basic snapshot 1`] = `
+<React.Fragment>
   <div
     className="grade-filter-inputs"
   >
@@ -34,5 +30,5 @@ exports[`CourseGradeFilters Component snapshots basic snapshot 1`] = `
       Apply
     </Button>
   </div>
-</Collapsible>
+</React.Fragment>
 `;

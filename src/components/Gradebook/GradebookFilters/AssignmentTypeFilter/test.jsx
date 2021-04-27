@@ -7,7 +7,7 @@ import {
   AssignmentTypeFilter,
   mapStateToProps,
   mapDispatchToProps,
-} from './AssignmentTypeFilter';
+} from '.';
 
 jest.mock('data/selectors/filters', () => ({
   /** Mocking to use passed state for validation purposes */

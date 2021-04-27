@@ -1,11 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`StudentGroupsFilters Component snapshots basic snapshot 1`] = `
-<Collapsible
-  className="filter-group mb-3"
-  defaultOpen={true}
-  title="Student Groups"
->
+exports[`StudentGroupsFilter Component snapshots basic snapshot 1`] = `
+<React.Fragment>
   <SelectGroup
     disabled={false}
     id="Tracks"
@@ -68,10 +64,10 @@ exports[`StudentGroupsFilters Component snapshots basic snapshot 1`] = `
     }
     value="cohorT3"
   />
-</Collapsible>
+</React.Fragment>
 `;
 
-exports[`StudentGroupsFilters Component snapshots mapCohortsEntries cohort options: [Cohort-All, <{slug, name}...>] 1`] = `
+exports[`StudentGroupsFilter Component snapshots mapCohortsEntries cohort options: [Cohort-All, <{slug, name}...>] 1`] = `
 Array [
   <option
     value="Cohort-All"
@@ -96,7 +92,7 @@ Array [
 ]
 `;
 
-exports[`StudentGroupsFilters Component snapshots mapTracksEntries cohort options: [Track-All, <{id, name}...>] 1`] = `
+exports[`StudentGroupsFilter Component snapshots mapTracksEntries cohort options: [Track-All, <{id, name}...>] 1`] = `
 Array [
   <option
     value="Track-All"

@@ -4,14 +4,13 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import {
   Button,
-  Collapsible,
 } from '@edx/paragon';
 
 import { updateCourseGradeFilter } from 'data/actions/filters';
 import { fetchGrades } from 'data/actions/grades';
 import PercentGroup from '../PercentGroup';
 
-export class CourseGradeFilters extends React.Component {
+export class CourseGradeFilter extends React.Component {
   constructor(props) {
     super(props);
     this.handleApplyClick = this.handleApplyClick.bind(this);
@@ -21,11 +20,14 @@ export class CourseGradeFilters extends React.Component {
   }
 
   handleApplyClick() {
-    const isMinValid = this.isGradeFilterValueInRange(this.props.courseGradeMin);
-    const isMaxValid = this.isGradeFilterValueInRange(this.props.courseGradeMax);
+    const { courseGradeMin, courseGradeMax } = this.props.filterValues;
+    const isMinValid = this.isGradeFilterValueInRange(courseGradeMin);
+    const isMaxValid = this.isGradeFilterValueInRange(courseGradeMax);
 
-    this.props.setIsMinCourseGradeFilterValid(isMinValid);
-    this.props.setIsMaxCourseGradeFilterValid(isMaxValid);
+    this.props.setFilters({
+      isMinCourseGradeFilterValid: isMinValid,
+      isMaxCourseGradeFilterValid: isMaxValid,
+    });
 
     if (isMinValid && isMaxValid) {
       this.updateAPI();
@@ -33,7 +35,7 @@ export class CourseGradeFilters extends React.Component {
   }
 
   updateAPI() {
-    const { courseGradeMin, courseGradeMax } = this.props;
+    const { courseGradeMin, courseGradeMax } = this.props.filterValues;
     this.props.updateFilter(
       courseGradeMin,
       courseGradeMax,
@@ -50,11 +52,11 @@ export class CourseGradeFilters extends React.Component {
   }
 
   handleUpdateMin(event) {
-    this.props.setCourseGradeMin(event.target.value);
+    this.props.setFilters({ courseGradeMin: event.target.value });
   }
 
   handleUpdateMax(event) {
-    this.props.setCourseGradeMax(event.target.value);
+    this.props.setFilters({ courseGradeMax: event.target.value });
   }
 
   isGradeFilterValueInRange = (value) => {
@@ -64,18 +66,18 @@ export class CourseGradeFilters extends React.Component {
 
   render() {
     return (
-      <Collapsible title="Overall Grade" defaultOpen className="filter-group mb-3">
+      <>
         <div className="grade-filter-inputs">
           <PercentGroup
             id="minimum-grade"
             label="Min Grade"
-            value={this.props.courseGradeMin}
+            value={this.props.filterValues.courseGradeMin}
             onChange={this.handleUpdateMin}
           />
           <PercentGroup
             id="maximum-grade"
             label="Max Grade"
-            value={this.props.courseGradeMax}
+            value={this.props.filterValues.courseGradeMax}
             onChange={this.handleUpdateMax}
           />
         </div>
@@ -87,27 +89,27 @@ export class CourseGradeFilters extends React.Component {
             Apply
           </Button>
         </div>
-      </Collapsible>
+      </>
     );
   }
 }
 
-CourseGradeFilters.defaultProps = {
+CourseGradeFilter.defaultProps = {
   courseId: '',
   selectedAssignmentType: '',
   selectedCohort: null,
   selectedTrack: null,
 };
 
-CourseGradeFilters.propTypes = {
-  courseGradeMin: PropTypes.string.isRequired,
-  courseGradeMax: PropTypes.string.isRequired,
+CourseGradeFilter.propTypes = {
   courseId: PropTypes.string,
-  setCourseGradeMin: PropTypes.func.isRequired,
-  setCourseGradeMax: PropTypes.func.isRequired,
-  setIsMaxCourseGradeFilterValid: PropTypes.func.isRequired,
-  setIsMinCourseGradeFilterValid: PropTypes.func.isRequired,
+  filterValues: PropTypes.shape({
+    courseGradeMin: PropTypes.string.isRequired,
+    courseGradeMax: PropTypes.string.isRequired,
+  }).isRequired,
+  setFilters: PropTypes.func.isRequired,
   updateQueryParams: PropTypes.func.isRequired,
+
   // Redux
   getUserGrades: PropTypes.func.isRequired,
   selectedAssignmentType: PropTypes.string,
@@ -127,4 +129,4 @@ export const mapDispatchToProps = {
   getUserGrades: fetchGrades,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(CourseGradeFilters);
+export default connect(mapStateToProps, mapDispatchToProps)(CourseGradeFilter);

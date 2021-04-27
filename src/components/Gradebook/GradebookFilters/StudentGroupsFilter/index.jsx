@@ -3,14 +3,10 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
-import {
-  Collapsible,
-} from '@edx/paragon';
-
 import { fetchGrades } from 'data/actions/grades';
 import SelectGroup from '../SelectGroup';
 
-export class StudentGroupsFilters extends React.Component {
+export class StudentGroupsFilter extends React.Component {
   constructor(props) {
     super(props);
     this.updateCohorts = this.updateCohorts.bind(this);
@@ -89,11 +85,7 @@ export class StudentGroupsFilters extends React.Component {
 
   render() {
     return (
-      <Collapsible
-        title="Student Groups"
-        defaultOpen
-        className="filter-group mb-3"
-      >
+      <>
         <SelectGroup
           id="Tracks"
           label="Tracks"
@@ -109,12 +101,12 @@ export class StudentGroupsFilters extends React.Component {
           onChange={this.updateCohorts}
           options={this.mapCohortsEntries()}
         />
-      </Collapsible>
+      </>
     );
   }
 }
 
-StudentGroupsFilters.defaultProps = {
+StudentGroupsFilter.defaultProps = {
   /** testing
   cohorts: [
     { name: 'Fake Cohort 1', id: 'fake_cohort_1' },
@@ -134,7 +126,7 @@ StudentGroupsFilters.defaultProps = {
   tracks: [],
 };
 
-StudentGroupsFilters.propTypes = {
+StudentGroupsFilter.propTypes = {
   courseId: PropTypes.string,
   updateQueryParams: PropTypes.func.isRequired,
 
@@ -165,4 +157,4 @@ export const mapDispatchToProps = {
   getUserGrades: fetchGrades,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(StudentGroupsFilters);
+export default connect(mapStateToProps, mapDispatchToProps)(StudentGroupsFilter);

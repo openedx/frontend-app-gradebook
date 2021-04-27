@@ -8,12 +8,14 @@ import {
   AssignmentGradeFilter,
   mapStateToProps,
   mapDispatchToProps,
-} from './AssignmentGradeFilter';
+} from '.';
 
 describe('AssignmentGradeFilter', () => {
   let props = {
-    assignmentGradeMin: '1',
-    assignmentGradeMax: '100',
+    filterValues: {
+      assignmentGradeMin: '1',
+      assignmentGradeMax: '100',
+    },
     courseId: '12345',
 
     selectedAssignmentType: 'assgnFilterLabel1',
@@ -25,8 +27,7 @@ describe('AssignmentGradeFilter', () => {
   beforeEach(() => {
     props = {
       ...props,
-      setAssignmentGradeMin: jest.fn(),
-      setAssignmentGradeMax: jest.fn(),
+      setFilters: jest.fn(),
       updateQueryParams: jest.fn(),
       getUserGrades: jest.fn(),
       updateAssignmentLimits: jest.fn(),
@@ -45,8 +46,8 @@ describe('AssignmentGradeFilter', () => {
         });
         it('calls props.updateAssignmentLimits with min and max', () => {
           expect(props.updateAssignmentLimits).toHaveBeenCalledWith(
-            props.assignmentGradeMin,
-            props.assignmentGradeMax,
+            props.filterValues.assignmentGradeMin,
+            props.filterValues.assignmentGradeMax,
           );
         });
         it('calls getUserGrades w/ selection', () => {
@@ -59,8 +60,28 @@ describe('AssignmentGradeFilter', () => {
         });
         it('updates queryParams with assignment grade min and max', () => {
           expect(props.updateQueryParams).toHaveBeenCalledWith({
-            assignmentGradeMin: props.assignmentGradeMin,
-            assignmentGradeMax: props.assignmentGradeMax,
+            assignmentGradeMin: props.filterValues.assignmentGradeMin,
+            assignmentGradeMax: props.filterValues.assignmentGradeMax,
+          });
+        });
+      });
+      describe('handleSetMin', () => {
+        it('calls setFilters for assignmentGradeMin', () => {
+          const testVal = 23;
+          const el = mount(<AssignmentGradeFilter {...props} />);
+          el.instance().handleSetMin({ target: { value: testVal } });
+          expect(props.setFilters).toHaveBeenCalledWith({
+            assignmentGradeMin: testVal,
+          });
+        });
+      });
+      describe('handleSetMax', () => {
+        it('calls setFilters for assignmentGradeMax', () => {
+          const testVal = 92;
+          const el = mount(<AssignmentGradeFilter {...props} />);
+          el.instance().handleSetMax({ target: { value: testVal } });
+          expect(props.setFilters).toHaveBeenCalledWith({
+            assignmentGradeMax: testVal,
           });
         });
       });

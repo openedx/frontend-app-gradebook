@@ -6,7 +6,7 @@ import { shallow } from 'enzyme';
 import { updateCourseGradeFilter } from 'data/actions/filters';
 import { fetchGrades } from 'data/actions/grades';
 import {
-  CourseGradeFilters,
+  CourseGradeFilter,
   mapStateToProps,
   mapDispatchToProps,
 } from '.';
@@ -16,10 +16,12 @@ jest.mock('@edx/paragon', () => ({
   Collapsible: 'Collapsible',
 }));
 
-describe('CourseGradeFilters', () => {
+describe('CourseGradeFilter', () => {
   let props = {
-    courseGradeMin: '5',
-    courseGradeMax: '92',
+    filterValues: {
+      courseGradeMin: '5',
+      courseGradeMax: '92',
+    },
     courseId: '12345',
     selectedAssignmentType: 'assignMent type 1',
     selectedCohort: 'COHort',
@@ -30,10 +32,7 @@ describe('CourseGradeFilters', () => {
     props = {
       ...props,
       getUserGrades: jest.fn(),
-      setCourseGradeMin: jest.fn(),
-      setCourseGradeMax: jest.fn(),
-      setIsMinCourseGradeFilterValid: jest.fn(),
-      setIsMaxCourseGradeFilterValid: jest.fn(),
+      setFilters: jest.fn(),
       updateQueryParams: jest.fn(),
       updateFilter: jest.fn(),
     };
@@ -42,7 +41,7 @@ describe('CourseGradeFilters', () => {
   describe('Component', () => {
     describe('snapshots', () => {
       test('basic snapshot', () => {
-        const el = shallow(<CourseGradeFilters {...props} />);
+        const el = shallow(<CourseGradeFilter {...props} />);
         el.instance().handleUpdateMin = jest.fn().mockName(
           'handleUpdateMin',
         );
@@ -60,9 +59,32 @@ describe('CourseGradeFilters', () => {
       let el;
       const testVal = 'TESTvalue';
       beforeEach(() => {
-        el = shallow(<CourseGradeFilters {...props} />);
+        el = shallow(<CourseGradeFilter {...props} />);
       });
       describe('handleApplyClick', () => {
+        beforeEach(() => {
+          el.instance().updateAPI = jest.fn();
+        });
+        it('calls setFilters for isMin(Max)CourseGradeFilterValid', () => {
+          el.instance().isGradeFilterValueInRange = jest.fn().mockImplementation(v => v >= 50);
+          el.instance().handleApplyClick();
+          expect(props.setFilters).toHaveBeenCalledWith({
+            isMinCourseGradeFilterValid: false,
+            isMaxCourseGradeFilterValid: true,
+          });
+        });
+        it('calls updateAPI only if both min and max are valid', () => {
+          const isValid = jest.fn().mockImplementation(v => v >= 50);
+          el.instance().isGradeFilterValueInRange = isValid;
+          el.instance().handleApplyClick();
+          expect(el.instance().updateAPI).not.toHaveBeenCalled();
+          isValid.mockImplementation(v => v <= 50);
+          el.instance().handleApplyClick();
+          expect(el.instance().updateAPI).not.toHaveBeenCalled();
+          isValid.mockImplementation(v => v >= 0);
+          el.instance().handleApplyClick();
+          expect(el.instance().updateAPI).toHaveBeenCalled();
+        });
       });
       describe('updateAPI', () => {
         beforeEach(() => {
@@ -70,8 +92,8 @@ describe('CourseGradeFilters', () => {
         });
         it('calls props.updateFilter with selection', () => {
           expect(props.updateFilter).toHaveBeenCalledWith(
-            props.courseGradeMin,
-            props.courseGradeMax,
+            props.filterValues.courseGradeMin,
+            props.filterValues.courseGradeMax,
             props.courseId,
           );
         });
@@ -82,15 +104,15 @@ describe('CourseGradeFilters', () => {
             props.selectedTrack,
             props.selectedAssignmentType,
             {
-              courseGradeMin: props.courseGradeMin,
-              courseGradeMax: props.courseGradeMax,
+              courseGradeMin: props.filterValues.courseGradeMin,
+              courseGradeMax: props.filterValues.courseGradeMax,
             },
           );
         });
         it('updates query params with courseGradeMin and courseGradeMax', () => {
           expect(props.updateQueryParams).toHaveBeenCalledWith({
-            courseGradeMin: props.courseGradeMin,
-            courseGradeMax: props.courseGradeMax,
+            courseGradeMin: props.filterValues.courseGradeMin,
+            courseGradeMax: props.filterValues.courseGradeMax,
           });
         });
       });
@@ -99,7 +121,9 @@ describe('CourseGradeFilters', () => {
           el.instance().handleUpdateMin(
             { target: { value: testVal } },
           );
-          expect(props.setCourseGradeMin).toHaveBeenCalledWith(testVal);
+          expect(props.setFilters).toHaveBeenCalledWith({
+            courseGradeMin: testVal,
+          });
         });
       });
       describe('handleUpdateMax', () => {
@@ -107,7 +131,9 @@ describe('CourseGradeFilters', () => {
           el.instance().handleUpdateMax(
             { target: { value: testVal } },
           );
-          expect(props.setCourseGradeMax).toHaveBeenCalledWith(testVal);
+          expect(props.setFilters).toHaveBeenCalledWith({
+            courseGradeMax: testVal,
+          });
         });
       });
       describe('isFilterValueInRange', () => {

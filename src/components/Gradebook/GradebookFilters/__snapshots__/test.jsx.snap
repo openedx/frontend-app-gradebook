@@ -1,0 +1,135 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`GradebookFilters Component snapshots basic snapshot 1`] = `
+<React.Fragment>
+  <ForwardRef
+    className="filter-group mb-3"
+    defaultOpen={true}
+    iconWhenClosed={
+      <withDeprecatedProps(Icon)
+        src={[Function]}
+      />
+    }
+    iconWhenOpen={
+      <withDeprecatedProps(Icon)
+        src={[Function]}
+      />
+    }
+    styling="card"
+    title="Assignments"
+  >
+    <div>
+      <Connect(AssignmentTypeFilter)
+        updateQueryParams={[MockFunction]}
+      />
+      <Connect(AssignmentFilter)
+        courseId="12345"
+        updateQueryParams={[MockFunction]}
+      />
+      <Connect(AssignmentGradeFilter)
+        courseId="12345"
+        filterValues={
+          Object {
+            "assignmentGradeMax": "90",
+            "assignmentGradeMin": "10",
+            "courseGradeMax": "80",
+            "courseGradeMin": "20",
+          }
+        }
+        setFilters={[MockFunction]}
+        updateQueryParams={[MockFunction]}
+      />
+    </div>
+  </ForwardRef>
+  <ForwardRef
+    className="filter-group mb-3"
+    defaultOpen={true}
+    iconWhenClosed={
+      <withDeprecatedProps(Icon)
+        src={[Function]}
+      />
+    }
+    iconWhenOpen={
+      <withDeprecatedProps(Icon)
+        src={[Function]}
+      />
+    }
+    styling="card"
+    title="Overall Grade"
+  >
+    <Connect(CourseGradeFilter)
+      courseId="12345"
+      filterValues={
+        Object {
+          "assignmentGradeMax": "90",
+          "assignmentGradeMin": "10",
+          "courseGradeMax": "80",
+          "courseGradeMin": "20",
+        }
+      }
+      setFilters={[MockFunction]}
+      updateQueryParams={[MockFunction]}
+    />
+  </ForwardRef>
+  <ForwardRef
+    className="filter-group mb-3"
+    defaultOpen={true}
+    iconWhenClosed={
+      <withDeprecatedProps(Icon)
+        src={[Function]}
+      />
+    }
+    iconWhenOpen={
+      <withDeprecatedProps(Icon)
+        src={[Function]}
+      />
+    }
+    styling="card"
+    title="Student Groups"
+  >
+    <Connect(StudentGroupsFilter)
+      courseId="12345"
+      updateQueryParams={[MockFunction]}
+    />
+  </ForwardRef>
+  <ForwardRef
+    className="filter-group mb-3"
+    defaultOpen={true}
+    iconWhenClosed={
+      <withDeprecatedProps(Icon)
+        src={[Function]}
+      />
+    }
+    iconWhenOpen={
+      <withDeprecatedProps(Icon)
+        src={[Function]}
+      />
+    }
+    styling="card"
+    title="Include Course Team Members"
+  >
+    <ForwardRef
+      checked={true}
+      controlAs={
+        Object {
+          "$$typeof": Symbol(react.forward_ref),
+          "defaultProps": Object {
+            "className": undefined,
+            "isIndeterminate": false,
+          },
+          "propTypes": Object {
+            "className": [Function],
+            "isIndeterminate": [Function],
+          },
+          "render": [Function],
+        }
+      }
+      isInvalid={false}
+      isValid={false}
+      onChange={[MockFunction handleIncludeTeamMembersChange]}
+    >
+      Include Course Team Members
+    </ForwardRef>
+  </ForwardRef>
+</React.Fragment>
+`;

@@ -5,7 +5,7 @@ import { shallow } from 'enzyme';
 
 import { fetchGrades } from 'data/actions/grades';
 import {
-  StudentGroupsFilters,
+  StudentGroupsFilter,
   mapStateToProps,
   mapDispatchToProps,
 } from '.';
@@ -14,7 +14,7 @@ jest.mock('@edx/paragon', () => ({
   Collapsible: 'Collapsible',
 }));
 
-describe('StudentGroupsFilters', () => {
+describe('StudentGroupsFilter', () => {
   let props = {
     courseId: '12345',
     cohorts: [
@@ -44,7 +44,7 @@ describe('StudentGroupsFilters', () => {
     describe('snapshots', () => {
       let el;
       beforeEach(() => {
-        el = shallow(<StudentGroupsFilters {...props} />);
+        el = shallow(<StudentGroupsFilter {...props} />);
       });
       test('basic snapshot', () => {
         el.instance().updateTracks = jest.fn().mockName(
@@ -70,7 +70,7 @@ describe('StudentGroupsFilters', () => {
     describe('behavior', () => {
       let el;
       beforeEach(() => {
-        el = shallow(<StudentGroupsFilters {...props} />);
+        el = shallow(<StudentGroupsFilter {...props} />);
       });
       describe('mapSelectedCohortEntry', () => {
         it('returns the name of the cohort with the same numerical id', () => {
@@ -135,7 +135,7 @@ describe('StudentGroupsFilters', () => {
       describe('updateTracks', () => {
         const selectedSlug = 'SLUG';
         beforeEach(() => {
-          el = shallow(<StudentGroupsFilters {...props} />);
+          el = shallow(<StudentGroupsFilter {...props} />);
           jest.spyOn(
             el.instance(),
             'selectedTrackSlugFromEvent',
@@ -159,7 +159,7 @@ describe('StudentGroupsFilters', () => {
       describe('updateCohorts', () => {
         const selectedId = 23;
         beforeEach(() => {
-          el = shallow(<StudentGroupsFilters {...props} />);
+          el = shallow(<StudentGroupsFilter {...props} />);
           jest.spyOn(
             el.instance(),
             'selectedCohortIdFromEvent',
