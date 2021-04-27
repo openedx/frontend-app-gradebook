@@ -74,7 +74,7 @@ describe('SearchControls', () => {
     describe('onClear', () => {
       it('re-runs search with existing filters', () => {
         const wrapper = searchControls();
-        wrapper.instance().onClear('bob');
+        wrapper.instance().onClear();
         expect(props.getUserGrades).toHaveBeenCalledWith(
           'course-v1:edX+DEV101+T1',
           'spring term',
