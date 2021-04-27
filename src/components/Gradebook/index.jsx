@@ -298,7 +298,7 @@ export default class Gradebook extends React.Component {
                 <SearchControls
                   courseId={this.props.courseId}
                   filterValue={this.state.filterValue}
-                  setGradebookState={this.safeSetState}
+                  setFilterValue={this.createStateFieldSetter('filterValue')}
                   toggleFilterDrawer={toggleFilterDrawer}
                 />
                 <ConnectedFilterBadges

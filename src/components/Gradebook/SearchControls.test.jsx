@@ -26,7 +26,7 @@ describe('SearchControls', () => {
       selectedTrack: 'masters',
       getUserGrades: jest.fn(),
       searchForUser: jest.fn(),
-      setGradebookState: jest.fn(),
+      setFilterValue: jest.fn(),
       toggleFilterDrawer: jest.fn().mockName('toggleFilterDrawer'),
     };
   });
@@ -56,7 +56,7 @@ describe('SearchControls', () => {
       it('saves the changed search value to Gradebook state', () => {
         const wrapper = searchControls();
         wrapper.instance().onChange('bob');
-        expect(props.setGradebookState).toHaveBeenCalledWith({ filterValue: 'bob' });
+        expect(props.setFilterValue).toHaveBeenCalledWith('bob');
       });
     });
 

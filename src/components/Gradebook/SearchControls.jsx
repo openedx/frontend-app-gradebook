@@ -27,7 +27,7 @@ export class SearchControls extends React.Component {
 
   /** Changing the search value stores the key in Gradebook. Currently unused */
   onChange = (filterValue) => {
-    this.props.setGradebookState({ filterValue });
+    this.props.setFilterValue(filterValue);
   }
 
   /** Clearing the search box falls back to showing students with already applied filters */
@@ -79,7 +79,7 @@ SearchControls.defaultProps = {
 SearchControls.propTypes = {
   courseId: PropTypes.string,
   filterValue: PropTypes.string,
-  setGradebookState: PropTypes.func.isRequired,
+  setFilterValue: PropTypes.func.isRequired,
   toggleFilterDrawer: PropTypes.func.isRequired,
   // From Redux
   getUserGrades: PropTypes.func.isRequired,
