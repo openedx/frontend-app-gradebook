@@ -29,7 +29,7 @@ describe('SearchControls', () => {
   });
 
   const searchControls = (overriddenProps) => {
-    props = Object.assign(props, overriddenProps);
+    props = { ...props, ...overriddenProps };
     return shallow(<SearchControls {...props} />);
   };
 
