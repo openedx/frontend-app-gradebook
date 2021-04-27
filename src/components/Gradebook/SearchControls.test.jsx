@@ -1,7 +1,11 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 
-import { SearchControls } from './SearchControls';
+import {
+  fetchGrades,
+  fetchMatchingUserGrades,
+} from '../../data/actions/grades';
+import { mapDispatchToProps, mapStateToProps, SearchControls } from './SearchControls';
 
 jest.mock('@edx/paragon', () => ({
   Icon: 'Icon',
@@ -66,6 +70,38 @@ describe('SearchControls', () => {
           props.selectedTrack,
           props.selectedAssignmentType,
         );
+      });
+    });
+
+    describe('mapStateToProps', () => {
+      const state = {
+        filters: {
+          assignmentType: 'labs',
+          track: 'honor',
+          cohort: 'fall term',
+        },
+      };
+
+      it('is maps assignment type filter correctly', () => {
+        expect(mapStateToProps(state).selectedAssignmentType).toEqual(state.filters.assignmentType);
+      });
+
+      it('is maps track filter correctly', () => {
+        expect(mapStateToProps(state).selectedTrack).toEqual(state.filters.track);
+      });
+
+      it('is maps cohort filter correctly', () => {
+        expect(mapStateToProps(state).selectedCohort).toEqual(state.filters.cohort);
+      });
+    });
+
+    describe('mapDispatchToProps', () => {
+      test('getUserGrades', () => {
+        expect(mapDispatchToProps.getUserGrades).toEqual(fetchGrades);
+      });
+
+      test('searchForUser', () => {
+        expect(mapDispatchToProps.searchForUser).toEqual(fetchMatchingUserGrades);
       });
     });
 
