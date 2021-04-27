@@ -22,7 +22,8 @@ export class GradebookFilters extends React.Component {
     this.handleIncludeTeamMembersChange = this.handleIncludeTeamMembersChange.bind(this);
   }
 
-  handleIncludeTeamMembersChange(includeCourseRoleMembers) {
+  handleIncludeTeamMembersChange(event) {
+    const includeCourseRoleMembers = event.target.checked;
     this.setState({ includeCourseRoleMembers });
     this.props.updateIncludeCourseRoleMembers(includeCourseRoleMembers);
     this.props.updateQueryParams({ includeCourseRoleMembers });

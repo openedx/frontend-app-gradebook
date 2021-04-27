@@ -58,7 +58,7 @@ export class StudentGroupsFilter extends React.Component {
     const selectedCohortItem = this.props.cohorts.find(
       x => x.name === event.target.value,
     );
-    return selectedCohortItem ? selectedCohortItem.id : null;
+    return selectedCohortItem ? selectedCohortItem.id.toString() : null;
   }
 
   updateTracks(event) {
