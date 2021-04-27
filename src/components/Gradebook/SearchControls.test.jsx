@@ -17,15 +17,14 @@ describe('SearchControls', () => {
     props = {
       courseId: 'course-v1:edX+DEV101+T1',
       filterValue: 'alice',
-      setGradebookState: jest.fn().mockName('setGradebookState'),
-      showSpinner: false,
-      toggleFilterDrawer: jest.fn().mockName('toggleFilterDrawer'),
-      // From Redux
-      getUserGrades: jest.fn().mockName('getUserGrades'),
-      searchForUser: jest.fn().mockName('searchForUser'),
       selectedAssignmentType: 'homework',
       selectedCohort: 'spring term',
       selectedTrack: 'masters',
+      showSpinner: false,
+      getUserGrades: jest.fn(),
+      searchForUser: jest.fn(),
+      setGradebookState: jest.fn(),
+      toggleFilterDrawer: jest.fn().mockName('toggleFilterDrawer'),
     };
   });
 
