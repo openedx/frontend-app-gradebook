@@ -3,6 +3,12 @@ import { shallow } from 'enzyme';
 
 import { SearchControls } from './SearchControls';
 
+jest.mock('@edx/paragon', () => ({
+  Icon: 'Icon',
+  Button: 'Button',
+  SearchField: 'SearchField',
+}));
+
 describe('SearchControls', () => {
   let props;
 
