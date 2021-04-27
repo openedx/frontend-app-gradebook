@@ -299,7 +299,6 @@ export default class Gradebook extends React.Component {
                   courseId={this.props.courseId}
                   filterValue={this.state.filterValue}
                   setGradebookState={this.safeSetState}
-                  showSpinner={this.props.showSpinner}
                   toggleFilterDrawer={toggleFilterDrawer}
                 />
                 <ConnectedFilterBadges
