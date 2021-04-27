@@ -15,7 +15,7 @@ import {
  */
 export class SearchControls extends React.Component {
   /** Submitting searches for user matching the username/email in `value` */
-  onSubmit(value) {
+  onSubmit = value => {
     this.props.searchForUser(
       this.props.courseId,
       value,
@@ -26,12 +26,12 @@ export class SearchControls extends React.Component {
   }
 
   /** Changing the search value stores the key in Gradebook. Currently unused */
-  onChange(filterValue) {
+  onChange = (filterValue) => {
     this.props.setGradebookState({ filterValue });
   }
 
   /** Clearing the search box falls back to showing students with already applied filters */
-  onClear() {
+  onClear = () => {
     this.props.getUserGrades(
       this.props.courseId,
       this.props.selectedCohort,
