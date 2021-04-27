@@ -53,7 +53,13 @@ describe('SearchControls', () => {
         const wrapper = searchControls();
         wrapper.instance().onSubmit('bob');
 
-        expect(props.searchForUser).toHaveBeenCalledWith('course-v1:edX+DEV101+T1', 'bob', 'spring term', 'masters', 'homework');
+        expect(props.searchForUser).toHaveBeenCalledWith(
+          'course-v1:edX+DEV101+T1',
+          'bob',
+          'spring term',
+          'masters',
+          'homework',
+        );
       });
     });
 
@@ -69,7 +75,12 @@ describe('SearchControls', () => {
       it('re-runs search with existing filters', () => {
         const wrapper = searchControls();
         wrapper.instance().onClear('bob');
-        expect(props.getUserGrades).toHaveBeenCalledWith('course-v1:edX+DEV101+T1', 'spring term', 'masters', 'homework');
+        expect(props.getUserGrades).toHaveBeenCalledWith(
+          'course-v1:edX+DEV101+T1',
+          'spring term',
+          'masters',
+          'homework',
+        );
       });
     });
 
