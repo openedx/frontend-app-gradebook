@@ -103,6 +103,9 @@ GradebookFilters.propTypes = {
   updateIncludeCourseRoleMembers: PropTypes.func.isRequired,
   updateQueryParams: PropTypes.func.isRequired,
 };
+GradebookFilters.defaultProps = {
+  includeCourseRoleMembers: false,
+};
 
 export const mapStateToProps = (state) => ({
   includeCourseRoleMembers: state.filters.includeCourseRoleMembers,
