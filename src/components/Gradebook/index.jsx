@@ -5,6 +5,7 @@ import {
   Button,
   Collapsible,
   CheckBox,
+  Icon,
   InputSelect,
   InputText,
   StatusAlert,
@@ -289,6 +290,11 @@ export default class Gradebook extends React.Component {
               )}
             <Tabs defaultActiveKey="grades">
               <Tab eventKey="grades" title="Grades">
+                {this.props.showSpinner && (
+                  <div className="spinner-overlay">
+                    <Icon className="fa fa-spinner fa-spin fa-5x color-black" />
+                  </div>
+                )}
                 <SearchControls
                   courseId={this.props.courseId}
                   filterValue={this.state.filterValue}

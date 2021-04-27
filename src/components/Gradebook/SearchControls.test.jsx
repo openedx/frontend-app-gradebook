@@ -20,7 +20,6 @@ describe('SearchControls', () => {
       selectedAssignmentType: 'homework',
       selectedCohort: 'spring term',
       selectedTrack: 'masters',
-      showSpinner: false,
       getUserGrades: jest.fn(),
       searchForUser: jest.fn(),
       setGradebookState: jest.fn(),
@@ -34,19 +33,6 @@ describe('SearchControls', () => {
   };
 
   describe('Component', () => {
-    describe('spinner', () => {
-      // These tests aren't strictly necessary since they're already covered by snapshot tests
-      it('shows a spinner overlay when the page is waiting for some action to complete', () => {
-        const wrapper = searchControls({ showSpinner: true });
-        expect(wrapper.find('.spinner-overlay').exists()).toEqual(true);
-      });
-
-      it('does not show a spinner overlay when page indicates it is not loading', () => {
-        const wrapper = searchControls();
-        expect(wrapper.find('.spinner-overlay').exists()).toEqual(false);
-      });
-    });
-
     describe('onSubmit', () => {
       it('calls props.searchForUser with correct data', () => {
         const wrapper = searchControls();
@@ -86,10 +72,6 @@ describe('SearchControls', () => {
     describe('Snapshots', () => {
       test('basic snapshot', () => {
         expect(searchControls()).toMatchSnapshot();
-      });
-
-      test('show spinner', () => {
-        expect(searchControls({ showSpinner: true })).toMatchSnapshot();
       });
     });
   });

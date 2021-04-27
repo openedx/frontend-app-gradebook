@@ -45,11 +45,6 @@ export class SearchControls extends React.Component {
       <>
         <h4>Step 1: Filter the Grade Report</h4>
         <div className="d-flex justify-content-between">
-          {this.props.showSpinner && (
-            <div className="spinner-overlay">
-              <Icon className="fa fa-spinner fa-spin fa-5x color-black" />
-            </div>
-          )}
           <Button
             id="edit-filters-btn"
             className="btn-primary align-self-start"
@@ -79,14 +74,12 @@ SearchControls.defaultProps = {
   selectedAssignmentType: '',
   selectedCohort: null,
   selectedTrack: null,
-  showSpinner: false,
 };
 
 SearchControls.propTypes = {
   courseId: PropTypes.string,
   filterValue: PropTypes.string,
   setGradebookState: PropTypes.func.isRequired,
-  showSpinner: PropTypes.bool,
   toggleFilterDrawer: PropTypes.func.isRequired,
   // From Redux
   getUserGrades: PropTypes.func.isRequired,
