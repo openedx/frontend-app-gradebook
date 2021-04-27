@@ -53,11 +53,11 @@ describe('SearchControls', () => {
         wrapper.instance().onSubmit('bob');
 
         expect(props.searchForUser).toHaveBeenCalledWith(
-          'course-v1:edX+DEV101+T1',
+          props.courseId,
           'bob',
-          'spring term',
-          'masters',
-          'homework',
+          props.selectedCohort,
+          props.selectedTrack,
+          props.selectedAssignmentType,
         );
       });
     });
@@ -75,10 +75,10 @@ describe('SearchControls', () => {
         const wrapper = searchControls();
         wrapper.instance().onClear();
         expect(props.getUserGrades).toHaveBeenCalledWith(
-          'course-v1:edX+DEV101+T1',
-          'spring term',
-          'masters',
-          'homework',
+          props.courseId,
+          props.selectedCohort,
+          props.selectedTrack,
+          props.selectedAssignmentType,
         );
       });
     });
