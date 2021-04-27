@@ -3,8 +3,6 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 import { Button, Icon, SearchField } from '@edx/paragon';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faFilter } from '@fortawesome/free-solid-svg-icons';
 
 import {
   fetchGrades,
@@ -57,7 +55,7 @@ export class SearchControls extends React.Component {
             className="btn-primary align-self-start"
             onClick={this.props.toggleFilterDrawer}
           >
-            <FontAwesomeIcon icon={faFilter} />Edit Filters
+            <Icon className="fa fa-filter" /> Edit Filters
           </Button>
           <div>
             <SearchField
