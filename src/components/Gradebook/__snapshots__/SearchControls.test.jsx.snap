@@ -1,0 +1,37 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SearchControls Component Snapshots basic snapshot 1`] = `
+<React.Fragment>
+  <h4>
+    Step 1: Filter the Grade Report
+  </h4>
+  <div
+    className="d-flex justify-content-between"
+  >
+    <Button
+      className="btn-primary align-self-start"
+      id="edit-filters-btn"
+      onClick={[MockFunction toggleFilterDrawer]}
+    >
+      <Icon
+        className="fa fa-filter"
+      />
+       Edit Filters
+    </Button>
+    <div>
+      <SearchField
+        inputLabel="Search for a learner"
+        onChange={[MockFunction onChange]}
+        onClear={[MockFunction onClear]}
+        onSubmit={[MockFunction onSubmit]}
+        value="alice"
+      />
+      <small
+        className="form-text text-muted search-help-text"
+      >
+        Search by username, email, or student key
+      </small>
+    </div>
+  </div>
+</React.Fragment>
+`;

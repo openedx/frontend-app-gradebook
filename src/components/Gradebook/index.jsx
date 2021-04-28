@@ -4,11 +4,10 @@ import PropTypes from 'prop-types';
 import {
   Button,
   Collapsible,
-  Icon,
   CheckBox,
+  Icon,
   InputSelect,
   InputText,
-  SearchField,
   StatusAlert,
   Tab,
   Tabs,
@@ -27,6 +26,7 @@ import BulkManagement from './BulkManagement';
 import BulkManagementControls from './BulkManagementControls';
 import EditModal from './EditModal';
 import GradebookTable from './GradebookTable';
+import SearchControls from './SearchControls';
 
 export default class Gradebook extends React.Component {
   constructor(props) {
@@ -259,6 +259,7 @@ export default class Gradebook extends React.Component {
     'adjustedGradePossible',
     'adjustedGradeValue',
     'assignmentName',
+    'filterValue',
     'modalOpen',
     'reasonForChange',
     'todaysDate',
@@ -294,32 +295,17 @@ export default class Gradebook extends React.Component {
               )}
             <Tabs defaultActiveKey="grades">
               <Tab eventKey="grades" title="Grades">
-                <h4>Step 1: Filter the Grade Report</h4>
-                <div className="d-flex justify-content-between">
-                  {this.props.showSpinner && <div className="spinner-overlay"><Icon className="fa fa-spinner fa-spin fa-5x color-black" /></div>}
-                  <Button className="btn-primary align-self-start" onClick={toggleFilterDrawer}><FontAwesomeIcon icon={faFilter} /> Edit Filters</Button>
-                  <div>
-                    <SearchField
-                      onSubmit={value => this.props.searchForUser(
-                        this.props.courseId,
-                        value,
-                        this.props.selectedCohort,
-                        this.props.selectedTrack,
-                        this.props.selectedAssignmentType,
-                      )}
-                      inputLabel="Search for a learner"
-                      onChange={filterValue => this.setState({ filterValue })}
-                      onClear={() => this.props.getUserGrades(
-                        this.props.courseId,
-                        this.props.selectedCohort,
-                        this.props.selectedTrack,
-                        this.props.selectedAssignmentType,
-                      )}
-                      value={this.state.filterValue}
-                    />
-                    <small className="form-text text-muted search-help-text">Search by username, email, or student key</small>
+                {this.props.showSpinner && (
+                  <div className="spinner-overlay">
+                    <Icon className="fa fa-spinner fa-spin fa-5x color-black" />
                   </div>
-                </div>
+                )}
+                <SearchControls
+                  courseId={this.props.courseId}
+                  filterValue={this.state.filterValue}
+                  setFilterValue={this.createStateFieldSetter('filterValue')}
+                  toggleFilterDrawer={toggleFilterDrawer}
+                />
                 <ConnectedFilterBadges
                   handleFilterBadgeClose={this.handleFilterBadgeClose}
                 />
@@ -527,7 +513,6 @@ Gradebook.propTypes = {
     search: PropTypes.string,
   }),
   resetFilters: PropTypes.func.isRequired,
-  searchForUser: PropTypes.func.isRequired,
   selectedAssignmentType: PropTypes.string,
   selectedCohort: PropTypes.string,
   selectedTrack: PropTypes.string,
