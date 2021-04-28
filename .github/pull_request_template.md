@@ -10,6 +10,7 @@ JIRA: [JIRA-XXXX](https://openedx.atlassian.net/browse/JIRA-XXXX)
 
 **Developer Checklist**
 - [ ] Test suites passing
+- [ ] Documentation and test plan updated, if applicable
 - [ ] Received code-owner approving review
 - [ ] Bumped version number [package.json](../package.json)
 
