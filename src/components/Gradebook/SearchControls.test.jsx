@@ -82,15 +82,15 @@ describe('SearchControls', () => {
         },
       };
 
-      it('is maps assignment type filter correctly', () => {
+      it('maps assignment type filter correctly', () => {
         expect(mapStateToProps(state).selectedAssignmentType).toEqual(state.filters.assignmentType);
       });
 
-      it('is maps track filter correctly', () => {
+      it('maps track filter correctly', () => {
         expect(mapStateToProps(state).selectedTrack).toEqual(state.filters.track);
       });
 
-      it('is maps cohort filter correctly', () => {
+      it('maps cohort filter correctly', () => {
         expect(mapStateToProps(state).selectedCohort).toEqual(state.filters.cohort);
       });
     });
