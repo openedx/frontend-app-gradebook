@@ -8,7 +8,7 @@ exports[`AssignmentTypeFilter Component snapshots SelectGroup disabled if no ass
     disabled={true}
     id="assignment-types"
     label="Assignment Types"
-    onChange={[MockFunction handleSubmit]}
+    onChange={[MockFunction handleChange]}
     options={
       Array [
         <option
@@ -41,7 +41,7 @@ exports[`AssignmentTypeFilter Component snapshots smoke test 1`] = `
     disabled={false}
     id="assignment-types"
     label="Assignment Types"
-    onChange={[MockFunction handleSubmit]}
+    onChange={[MockFunction handleChange]}
     options={
       Array [
         <option

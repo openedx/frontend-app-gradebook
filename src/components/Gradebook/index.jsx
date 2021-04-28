@@ -304,10 +304,6 @@ export default class Gradebook extends React.Component {
 Gradebook.defaultProps = {
   areGradesFrozen: false,
   canUserViewGradebook: false,
-  cohorts: [
-    { name: 'Fake Cohort 1', id: 'fake_cohort_1' },
-    { name: 'Fake Cohort 2', id: 'fake_cohort_2' },
-  ],
   courseId: '',
   filteredUsersCount: null,
   location: {
@@ -319,20 +315,12 @@ Gradebook.defaultProps = {
   showBulkManagement: false,
   showSpinner: false,
   totalUsersCount: null,
-  tracks: [
-    { name: 'Fake Track 1', id: 'fake_track_1' },
-    { name: 'Fake Track 2', id: 'fake_track_2' },
-  ],
 };
 
 Gradebook.propTypes = {
   areGradesFrozen: PropTypes.bool,
   canUserViewGradebook: PropTypes.bool,
   closeBanner: PropTypes.func.isRequired,
-  cohorts: PropTypes.arrayOf(PropTypes.shape({
-    name: PropTypes.string,
-    id: PropTypes.number,
-  })),
   courseId: PropTypes.string,
   filteredUsersCount: PropTypes.number,
   getRoles: PropTypes.func.isRequired,
@@ -355,8 +343,4 @@ Gradebook.propTypes = {
   showSuccess: PropTypes.bool.isRequired,
   toggleFormat: PropTypes.func.isRequired,
   totalUsersCount: PropTypes.number,
-  tracks: PropTypes.arrayOf(PropTypes.shape({
-    name: PropTypes.string,
-  })),
-  updateCourseGradeFilter: PropTypes.func.isRequired,
 };

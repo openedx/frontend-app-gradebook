@@ -36,15 +36,28 @@ describe('GradebookFilters', () => {
         let el;
         beforeEach(() => {
           el = shallow(<GradebookFilters {...props} />);
+          el.instance().setState = jest.fn();
+        });
+        it('calls setState with newVal', () => {
+          el.instance().handleIncludeTeamMembersChange(
+            { target: { checked: true } },
+          );
+          expect(
+            el.instance().setState,
+          ).toHaveBeenCalledWith({ includeCourseRoleMembers: true });
         });
         it('calls props.updateIncludeCourseRoleMembers with newVal', () => {
-          el.instance().handleIncludeTeamMembersChange(false);
+          el.instance().handleIncludeTeamMembersChange(
+            { target: { checked: false } },
+          );
           expect(
             props.updateIncludeCourseRoleMembers,
           ).toHaveBeenCalledWith(false);
         });
-        it('calls props.updateIncludeCourseRoleMembers with newVal', () => {
-          el.instance().handleIncludeTeamMembersChange(true);
+        it('calls props.updateQueryParams with newVal', () => {
+          el.instance().handleIncludeTeamMembersChange(
+            { target: { checked: true } },
+          );
           expect(
             props.updateQueryParams,
           ).toHaveBeenCalledWith({ includeCourseRoleMembers: true });

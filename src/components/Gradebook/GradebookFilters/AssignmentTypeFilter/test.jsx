@@ -60,7 +60,7 @@ describe('AssignmentTypeFilter', () => {
     describe('snapshots', () => {
       let el;
       const mockMethods = () => {
-        el.instance().handleChange = jest.fn().mockName('handleSubmit');
+        el.instance().handleChange = jest.fn().mockName('handleChange');
       };
       test('smoke test', () => {
         el = shallow(<AssignmentTypeFilter {...props} />);
@@ -84,6 +84,8 @@ describe('AssignmentTypeFilter', () => {
       },
       filters: {
         assignmentType: 'selectedAssignMent',
+        cohort: 'selectedCOHOrt',
+        track: 'SELectedTrack',
       },
     };
     describe('assignmentTypes', () => {
@@ -107,24 +109,6 @@ describe('AssignmentTypeFilter', () => {
           mapStateToProps(state).selectedAssignmentType,
         ).toEqual(
           state.filters.assignmentType,
-        );
-      });
-    });
-    describe('selectedCohort', () => {
-      it('is drawn from state.filters.cohort', () => {
-        expect(
-          mapStateToProps(state).selectedCohort,
-        ).toEqual(
-          state.filters.cohort,
-        );
-      });
-    });
-    describe('selectedTrack', () => {
-      it('is drawn from state.filters.track', () => {
-        expect(
-          mapStateToProps(state).selectedTrack,
-        ).toEqual(
-          state.filters.track,
         );
       });
     });

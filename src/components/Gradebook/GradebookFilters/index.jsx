@@ -91,6 +91,9 @@ export class GradebookFilters extends React.Component {
     );
   }
 }
+GradebookFilters.defaultProps = {
+  includeCourseRoleMembers: false,
+};
 GradebookFilters.propTypes = {
   courseId: PropTypes.string.isRequired,
   filterValues: PropTypes.shape({
@@ -100,12 +103,9 @@ GradebookFilters.propTypes = {
     courseGradeMax: PropTypes.string,
   }).isRequired,
   setFilters: PropTypes.func.isRequired,
-  includeCourseRoleMembers: PropTypes.bool.isRequired,
+  includeCourseRoleMembers: PropTypes.bool,
   updateIncludeCourseRoleMembers: PropTypes.func.isRequired,
   updateQueryParams: PropTypes.func.isRequired,
-};
-GradebookFilters.defaultProps = {
-  includeCourseRoleMembers: false,
 };
 
 export const mapStateToProps = (state) => ({

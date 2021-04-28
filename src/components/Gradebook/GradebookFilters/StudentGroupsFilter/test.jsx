@@ -106,7 +106,7 @@ describe('StudentGroupsFilter', () => {
             el.instance().selectedCohortIdFromEvent(
               { target: { value: props.cohorts[1].name } },
             ),
-          ).toEqual(props.cohorts[1].id);
+          ).toEqual(props.cohorts[1].id.toString());
         });
         it('returns null if no matching cohort is found', () => {
           expect(
