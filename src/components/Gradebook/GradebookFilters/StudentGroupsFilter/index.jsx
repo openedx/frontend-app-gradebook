@@ -150,7 +150,7 @@ export const mapStateToProps = (state) => ({
   selectedAssignmentType: state.filters.assignmentType,
   selectedCohort: state.filters.cohort,
   selectedTrack: state.filters.track,
-  tracks: state.filters.tracks,
+  tracks: state.tracks.results,
 });
 
 export const mapDispatchToProps = {

@@ -184,13 +184,21 @@ describe('StudentGroupsFilter', () => {
   });
   describe('mapStateToProps', () => {
     const state = {
-      cohorts: { results: ['cohorts'] },
+      cohorts: { results: ['some', 'cohorts'] },
       filters: {
         cohort: 'COHort',
         track: 'TRacK',
         assignmentType: 'TYPe',
       },
+      tracks: { results: ['a', 'few', 'tracks'] },
     };
+    describe('cohorts', () => {
+      test('drawn from cohorts.results', () => {
+        expect(mapStateToProps(state).cohorts).toEqual(
+          state.cohorts.results,
+        );
+      });
+    });
     describe('selectedAssignmentType', () => {
       test('drawn from filters.assignmentType', () => {
         expect(mapStateToProps(state).selectedAssignmentType).toEqual(
@@ -209,6 +217,13 @@ describe('StudentGroupsFilter', () => {
       test('drawn from filters.track', () => {
         expect(mapStateToProps(state).selectedTrack).toEqual(
           state.filters.track,
+        );
+      });
+    });
+    describe('tracks', () => {
+      test('drawn from tracks.results', () => {
+        expect(mapStateToProps(state).tracks).toEqual(
+          state.tracks.results,
         );
       });
     });
