@@ -1,0 +1,91 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SelectGroup Component snapshots basic snapshot 1`] = `
+<div
+  className="student-filters"
+>
+  <FormGroup
+    as="div"
+    controlId="group id"
+    isInvalid={false}
+    isValid={false}
+  >
+    <FormLabel
+      isInline={false}
+    >
+      Group Label
+    </FormLabel>
+    <ForwardRef
+      as="select"
+      disabled={false}
+      onChange={[MockFunction props.onChange]}
+      plaintext={false}
+      value="group VALUE"
+    >
+      <option
+        key="opt1"
+        value="opt1"
+      >
+        Option 1
+      </option>
+      <option
+        key="opt2"
+        value="opt2"
+      >
+        Option 2
+      </option>
+      <option
+        key="opt3"
+        value="opt3"
+      >
+        Option 3
+      </option>
+    </ForwardRef>
+  </FormGroup>
+</div>
+`;
+
+exports[`SelectGroup Component snapshots disabled 1`] = `
+<div
+  className="student-filters"
+>
+  <FormGroup
+    as="div"
+    controlId="group id"
+    isInvalid={false}
+    isValid={false}
+  >
+    <FormLabel
+      isInline={false}
+    >
+      Group Label
+    </FormLabel>
+    <ForwardRef
+      as="select"
+      disabled={true}
+      onChange={[MockFunction props.onChange]}
+      plaintext={false}
+      value="group VALUE"
+    >
+      <option
+        key="opt1"
+        value="opt1"
+      >
+        Option 1
+      </option>
+      <option
+        key="opt2"
+        value="opt2"
+      >
+        Option 2
+      </option>
+      <option
+        key="opt3"
+        value="opt3"
+      >
+        Option 3
+      </option>
+    </ForwardRef>
+  </FormGroup>
+</div>
+`;

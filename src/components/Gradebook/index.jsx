@@ -2,12 +2,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-  Button,
-  Collapsible,
-  CheckBox,
   Icon,
   InputSelect,
-  InputText,
   StatusAlert,
   Tab,
   Tabs,
@@ -21,12 +17,12 @@ import Drawer from '../Drawer';
 import initialFilters from '../../data/constants/filters';
 import ConnectedFilterBadges from '../FilterBadges';
 
-import Assignments from './Assignments';
 import BulkManagement from './BulkManagement';
 import BulkManagementControls from './BulkManagementControls';
 import EditModal from './EditModal';
 import GradebookTable from './GradebookTable';
 import SearchControls from './SearchControls';
+import GradebookFilters from './GradebookFilters';
 
 export default class Gradebook extends React.Component {
   constructor(props) {
@@ -101,120 +97,7 @@ export default class Gradebook extends React.Component {
     this.props.history.push(`?${queryString.stringify(parsed)}`);
   };
 
-  mapCohortsEntries = (entries) => {
-    const mapped = entries.map(entry => ({
-      id: entry.id,
-      label: entry.name,
-    }));
-    mapped.unshift({ id: 0, label: 'Cohort-All' });
-    return mapped;
-  };
-
-  mapTracksEntries = (entries) => {
-    const mapped = entries.map(entry => ({
-      id: entry.slug,
-      label: entry.name,
-    }));
-    mapped.unshift({ label: 'Track-All' });
-    return mapped;
-  };
-
-  updateTracks = (event) => {
-    const selectedTrackItem = this.props.tracks.find(x => x.name === event);
-    let selectedTrackSlug = null;
-    if (selectedTrackItem) {
-      selectedTrackSlug = selectedTrackItem.slug;
-    }
-    this.props.getUserGrades(
-      this.props.courseId,
-      this.props.selectedCohort,
-      selectedTrackSlug,
-      this.props.selectedAssignmentType,
-    );
-    this.updateQueryParams({ track: selectedTrackSlug });
-  };
-
-  updateCohorts = (event) => {
-    const selectedCohortItem = this.props.cohorts.find(x => x.name === event);
-    let selectedCohortId = null;
-    if (selectedCohortItem) {
-      selectedCohortId = selectedCohortItem.id;
-    }
-    this.props.getUserGrades(
-      this.props.courseId,
-      selectedCohortId,
-      this.props.selectedTrack,
-      this.props.selectedAssignmentType,
-    );
-    this.updateQueryParams({ cohort: selectedCohortId });
-  };
-
-  mapSelectedCohortEntry = (entry) => {
-    const selectedCohortEntry = this.props.cohorts.find(x => x.id === parseInt(entry, 10));
-    if (selectedCohortEntry) {
-      return selectedCohortEntry.name;
-    }
-    return 'Cohorts';
-  };
-
-  mapSelectedTrackEntry = (entry) => {
-    const selectedTrackEntry = this.props.tracks.find(x => x.slug === entry);
-    if (selectedTrackEntry) {
-      return selectedTrackEntry.name;
-    }
-    return 'Tracks';
-  };
-
   lmsInstructorDashboardUrl = courseId => `${configuration.LMS_BASE_URL}/courses/${courseId}/instructor`;
-
-  handleCourseGradeFilterChange = (type, value) => {
-    const filterValue = value;
-
-    if (type === 'min') {
-      this.setState({
-        courseGradeMin: filterValue,
-      });
-    } else {
-      this.setState({
-        courseGradeMax: filterValue,
-      });
-    }
-  }
-
-  handleCourseGradeFilterApplyButtonClick = () => {
-    const { courseGradeMin, courseGradeMax } = this.state;
-    const isMinValid = this.isGradeFilterValueInRange(courseGradeMin);
-    const isMaxValid = this.isGradeFilterValueInRange(courseGradeMax);
-
-    this.setState({
-      isMinCourseGradeFilterValid: isMinValid,
-      isMaxCourseGradeFilterValid: isMaxValid,
-    });
-
-    if (isMinValid && isMaxValid) {
-      this.props.updateCourseGradeFilter(
-        courseGradeMin,
-        courseGradeMax,
-        this.props.courseId,
-      );
-      this.props.getUserGrades(
-        this.props.courseId,
-        this.props.selectedCohort,
-        this.props.selectedTrack,
-        this.props.selectedAssignmentType,
-        {
-          courseGradeMin,
-          courseGradeMax,
-        },
-      );
-      this.updateQueryParams({ courseGradeMin, courseGradeMax });
-    }
-  }
-
-  isGradeFilterValueInRange = (value) => {
-    const valueAsInt = parseInt(value, 10);
-    return valueAsInt >= 0 && valueAsInt <= 100;
-  };
 
   handleFilterBadgeClose = filterNames => () => {
     this.props.resetFilters(filterNames);
@@ -239,11 +122,6 @@ export default class Gradebook extends React.Component {
     );
   }
 
-  handleIncludeTeamMembersChange = (includeCourseRoleMembers) => {
-    this.props.updateIncludeCourseRoleMembers(includeCourseRoleMembers);
-    this.updateQueryParams({ includeCourseRoleMembers });
-  };
-
   createStateFieldSetter = (key) => (value) => this.setState({ [key]: value });
 
   createStateFieldOnChange = (key) => ({ target }) => this.setState({ [key]: target.value });
@@ -267,6 +145,22 @@ export default class Gradebook extends React.Component {
     'updateUserId',
     'updateUserName',
   );
+
+  setFilters = this.createLimitedSetter(
+    'assignmentGradeMin',
+    'assignmentGradeMax',
+    'courseGradeMin',
+    'courseGradeMax',
+    'isMinCourseGradeFilterValid',
+    'isMaxCourseGradeFilterValid',
+  );
+
+  filterValues = () => ({
+    assignmentGradeMin: this.state.assignmentGradeMin,
+    assignmentGradeMax: this.state.assignmentGradeMax,
+    courseGradeMin: this.state.courseGradeMin,
+    courseGradeMax: this.state.courseGradeMax,
+  });
 
   render() {
     return (
@@ -394,79 +288,12 @@ export default class Gradebook extends React.Component {
           </>
         )}
       >
-        <Assignments
-          assignmentGradeMin={this.state.assignmentGradeMin}
-          assignmentGradeMax={this.state.assignmentGradeMax}
-          courseId={this.props.courseId}
-          setAssignmentGradeMin={this.createStateFieldSetter('assignmentGradeMin')}
-          setAssignmentGradeMax={this.createStateFieldSetter('assignmentGradeMax')}
+        <GradebookFilters
+          setFilters={this.setFilters}
+          filterValues={this.filterValues()}
           updateQueryParams={this.updateQueryParams}
+          courseId={this.props.courseId}
         />
-        <Collapsible title="Overall Grade" defaultOpen className="filter-group mb-3">
-          <div className="grade-filter-inputs">
-            <div className="percent-group">
-              <InputText
-                value={this.state.courseGradeMin}
-                name="minimum-grade"
-                label="Min Grade"
-                onChange={value => this.handleCourseGradeFilterChange('min', value)}
-                type="number"
-                min={0}
-                max={100}
-              />
-              <span className="input-percent-label">%</span>
-            </div>
-            <div className="percent-group">
-              <InputText
-                value={this.state.courseGradeMax}
-                name="max-grade"
-                label="Max Grade"
-                onChange={value => this.handleCourseGradeFilterChange('max', value)}
-                type="number"
-                min={0}
-                max={100}
-              />
-              <span className="input-percent-label">%</span>
-            </div>
-          </div>
-          <div className="grade-filter-action">
-            <Button
-              variant="outline-secondary"
-              onClick={this.handleCourseGradeFilterApplyButtonClick}
-            >
-              Apply
-            </Button>
-          </div>
-        </Collapsible>
-        <Collapsible title="Student Groups" defaultOpen className="filter-group mb-3">
-          <InputSelect
-            label="Tracks"
-            name="Tracks"
-            aria-label="Tracks"
-            disabled={this.props.tracks.length === 0}
-            value={this.mapSelectedTrackEntry(this.props.selectedTrack)}
-            options={this.mapTracksEntries(this.props.tracks)}
-            onChange={this.updateTracks}
-          />
-          <InputSelect
-            name="Cohorts"
-            aria-label="Cohorts"
-            label="Cohorts"
-            disabled={this.props.cohorts.length === 0}
-            value={this.mapSelectedCohortEntry(this.props.selectedCohort)}
-            options={this.mapCohortsEntries(this.props.cohorts)}
-            onChange={this.updateCohorts}
-          />
-        </Collapsible>
-        <Collapsible title="Include Course Team Members" className="filter-group mb-3">
-          <CheckBox
-            name="include-course-team-members"
-            aria-label="Include Course Team Members"
-            label="Include Course Team Members"
-            checked={this.props.includeCourseRoleMembers}
-            onChange={this.handleIncludeTeamMembersChange}
-          />
-        </Collapsible>
       </Drawer>
     );
   }
@@ -475,7 +302,6 @@ export default class Gradebook extends React.Component {
 Gradebook.defaultProps = {
   areGradesFrozen: false,
   canUserViewGradebook: false,
-  cohorts: [],
   courseId: '',
   filteredUsersCount: null,
   location: {
@@ -487,18 +313,12 @@ Gradebook.defaultProps = {
   showBulkManagement: false,
   showSpinner: false,
   totalUsersCount: null,
-  tracks: [],
-  includeCourseRoleMembers: false,
 };
 
 Gradebook.propTypes = {
   areGradesFrozen: PropTypes.bool,
   canUserViewGradebook: PropTypes.bool,
   closeBanner: PropTypes.func.isRequired,
-  cohorts: PropTypes.arrayOf(PropTypes.shape({
-    name: PropTypes.string,
-    id: PropTypes.number,
-  })),
   courseId: PropTypes.string,
   filteredUsersCount: PropTypes.number,
   getRoles: PropTypes.func.isRequired,
@@ -521,10 +341,4 @@ Gradebook.propTypes = {
   showSuccess: PropTypes.bool.isRequired,
   toggleFormat: PropTypes.func.isRequired,
   totalUsersCount: PropTypes.number,
-  tracks: PropTypes.arrayOf(PropTypes.shape({
-    name: PropTypes.string,
-  })),
-  updateCourseGradeFilter: PropTypes.func.isRequired,
-  includeCourseRoleMembers: PropTypes.bool,
-  updateIncludeCourseRoleMembers: PropTypes.func.isRequired,
 };

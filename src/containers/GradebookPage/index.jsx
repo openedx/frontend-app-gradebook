@@ -19,8 +19,6 @@ import {
   resetFilters,
   updateAssignmentFilter,
   updateAssignmentLimits,
-  updateCourseGradeFilter,
-  updateIncludeCourseRoleMembers,
 } from '../../data/actions/filters';
 import stateHasMastersTrack from '../../data/selectors/tracks';
 import {
@@ -57,7 +55,6 @@ const mapStateToProps = (state, ownProps) => (
       ? `Errors while processing: ${state.grades.bulkManagement.errorMessages.join(', ')}`
       : '',
     bulkManagementHistory: getBulkManagementHistory(state),
-    cohorts: state.cohorts.results,
     courseId: ownProps.match.params.courseId,
     canUserViewGradebook: state.roles.canUserViewGradebook,
     filteredUsersCount: state.grades.filteredUsersCount,
@@ -110,10 +107,8 @@ const mapStateToProps = (state, ownProps) => (
     showSpinner: shouldShowSpinner(state),
     showSuccess: state.grades.showSuccess,
     totalUsersCount: state.grades.totalUsersCount,
-    tracks: state.tracks.results,
     uploadSuccess: !!(state.grades.bulkManagement
                       && state.grades.bulkManagement.uploadSuccess),
-    includeCourseRoleMembers: state.filters.includeCourseRoleMembers,
   }
 );
 
@@ -135,8 +130,6 @@ const mapDispatchToProps = {
   toggleFormat: toggleGradeFormat,
   updateAssignmentFilter,
   updateAssignmentLimits,
-  updateCourseGradeFilter,
-  updateIncludeCourseRoleMembers,
 };
 
 const GradebookPage = connect(

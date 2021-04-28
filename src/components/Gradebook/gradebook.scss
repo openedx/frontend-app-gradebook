@@ -150,7 +150,7 @@
 
 }
 
-.form-group {
+.form-group, .pgn__form-group {
   label {
     font-weight: bold;
   }
@@ -160,7 +160,7 @@
   .grade-filter-inputs {
     .percent-group {
       display: inline-block;
-      .form-group {
+      .form-group, .pgn__form-group {
         width: 115px;
         display: inline-block;
       }

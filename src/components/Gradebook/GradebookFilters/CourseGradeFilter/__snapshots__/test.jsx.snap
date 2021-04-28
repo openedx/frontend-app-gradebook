@@ -1,0 +1,34 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`CourseGradeFilter Component snapshots basic snapshot 1`] = `
+<React.Fragment>
+  <div
+    className="grade-filter-inputs"
+  >
+    <PercentGroup
+      disabled={false}
+      id="minimum-grade"
+      label="Min Grade"
+      onChange={[MockFunction handleUpdateMin]}
+      value="5"
+    />
+    <PercentGroup
+      disabled={false}
+      id="maximum-grade"
+      label="Max Grade"
+      onChange={[MockFunction handleUpdateMax]}
+      value="92"
+    />
+  </div>
+  <div
+    className="grade-filter-action"
+  >
+    <Button
+      onClick={[MockFunction handleApplyClick]}
+      variant="outline-secondary"
+    >
+      Apply
+    </Button>
+  </div>
+</React.Fragment>
+`;

@@ -1,0 +1,170 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`StudentGroupsFilter Component snapshots Cohorts group disabled if no cohorts 1`] = `
+<React.Fragment>
+  <SelectGroup
+    disabled={false}
+    id="Tracks"
+    label="Tracks"
+    onChange={[Function]}
+    options={
+      Array [
+        <option
+          value="Track-All"
+        >
+          Track-All
+        </option>,
+        <option
+          value="TracK1"
+        >
+          TracK1
+        </option>,
+        <option
+          value="TracK2"
+        >
+          TracK2
+        </option>,
+        <option
+          value="TRACK3"
+        >
+          TRACK3
+        </option>,
+      ]
+    }
+    value="TracK2"
+  />
+  <SelectGroup
+    disabled={true}
+    id="Cohorts"
+    label="Cohorts"
+    onChange={[Function]}
+    options={
+      Array [
+        <option
+          value="Cohort-All"
+        >
+          Cohort-All
+        </option>,
+      ]
+    }
+    value="Cohorts"
+  />
+</React.Fragment>
+`;
+
+exports[`StudentGroupsFilter Component snapshots basic snapshot 1`] = `
+<React.Fragment>
+  <SelectGroup
+    disabled={false}
+    id="Tracks"
+    label="Tracks"
+    onChange={[MockFunction updateTracks]}
+    options={
+      Array [
+        <option
+          value="Track-All"
+        >
+          Track-All
+        </option>,
+        <option
+          value="TracK1"
+        >
+          TracK1
+        </option>,
+        <option
+          value="TracK2"
+        >
+          TracK2
+        </option>,
+        <option
+          value="TRACK3"
+        >
+          TRACK3
+        </option>,
+      ]
+    }
+    value="TracK2"
+  />
+  <SelectGroup
+    disabled={false}
+    id="Cohorts"
+    label="Cohorts"
+    onChange={[MockFunction updateCohorts]}
+    options={
+      Array [
+        <option
+          value="Cohort-All"
+        >
+          Cohort-All
+        </option>,
+        <option
+          value="cohorT1"
+        >
+          cohorT1
+        </option>,
+        <option
+          value="cohorT2"
+        >
+          cohorT2
+        </option>,
+        <option
+          value="cohorT3"
+        >
+          cohorT3
+        </option>,
+      ]
+    }
+    value="cohorT3"
+  />
+</React.Fragment>
+`;
+
+exports[`StudentGroupsFilter Component snapshots mapCohortsEntries cohort options: [Cohort-All, <{slug, name}...>] 1`] = `
+Array [
+  <option
+    value="Cohort-All"
+  >
+    Cohort-All
+  </option>,
+  <option
+    value="cohorT1"
+  >
+    cohorT1
+  </option>,
+  <option
+    value="cohorT2"
+  >
+    cohorT2
+  </option>,
+  <option
+    value="cohorT3"
+  >
+    cohorT3
+  </option>,
+]
+`;
+
+exports[`StudentGroupsFilter Component snapshots mapTracksEntries cohort options: [Track-All, <{id, name}...>] 1`] = `
+Array [
+  <option
+    value="Track-All"
+  >
+    Track-All
+  </option>,
+  <option
+    value="TracK1"
+  >
+    TracK1
+  </option>,
+  <option
+    value="TracK2"
+  >
+    TracK2
+  </option>,
+  <option
+    value="TRACK3"
+  >
+    TRACK3
+  </option>,
+]
+`;
