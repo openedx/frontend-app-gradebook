@@ -107,7 +107,11 @@ describe('SearchControls', () => {
 
     describe('Snapshots', () => {
       test('basic snapshot', () => {
-        expect(searchControls()).toMatchSnapshot();
+        const wrapper = searchControls();
+        wrapper.instance().onChange = jest.fn().mockName('onChange');
+        wrapper.instance().onClear = jest.fn().mockName('onClear');
+        wrapper.instance().onSubmit = jest.fn().mockName('onSubmit');
+        expect(wrapper.instance().render()).toMatchSnapshot();
       });
     });
   });

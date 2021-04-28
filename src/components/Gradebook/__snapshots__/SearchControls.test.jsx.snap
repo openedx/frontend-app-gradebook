@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`SearchControls Component Snapshots basic snapshot 1`] = `
-<Fragment>
+<React.Fragment>
   <h4>
     Step 1: Filter the Grade Report
   </h4>
@@ -21,9 +21,9 @@ exports[`SearchControls Component Snapshots basic snapshot 1`] = `
     <div>
       <SearchField
         inputLabel="Search for a learner"
-        onChange={[Function]}
-        onClear={[Function]}
-        onSubmit={[Function]}
+        onChange={[MockFunction onChange]}
+        onClear={[MockFunction onClear]}
+        onSubmit={[MockFunction onSubmit]}
         value="alice"
       />
       <small
@@ -33,5 +33,5 @@ exports[`SearchControls Component Snapshots basic snapshot 1`] = `
       </small>
     </div>
   </div>
-</Fragment>
+</React.Fragment>
 `;
