@@ -38,11 +38,9 @@ describe('AssignmentGradeFilter', () => {
     describe('behavior', () => {
       describe('handleSubmit', () => {
         let el;
-        let event;
         beforeEach(() => {
-          event = {};
           el = mount(<AssignmentGradeFilter {...props} />);
-          el.instance().handleSubmit(event);
+          el.instance().handleSubmit();
         });
         it('calls props.updateAssignmentLimits with min and max', () => {
           expect(props.updateAssignmentLimits).toHaveBeenCalledWith(

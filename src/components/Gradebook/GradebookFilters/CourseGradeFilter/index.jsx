@@ -16,7 +16,7 @@ export class CourseGradeFilter extends React.Component {
     this.handleApplyClick = this.handleApplyClick.bind(this);
     this.handleUpdateMin = this.handleUpdateMin.bind(this);
     this.handleUpdateMax = this.handleUpdateMax.bind(this);
-    this.updateAPI = this.updateAPI.bind(this);
+    this.updateCourseGradeFilters = this.updateCourseGradeFilters.bind(this);
   }
 
   handleApplyClick() {
@@ -30,11 +30,11 @@ export class CourseGradeFilter extends React.Component {
     });
 
     if (isMinValid && isMaxValid) {
-      this.updateAPI();
+      this.updateCourseGradeFilters();
     }
   }
 
-  updateAPI() {
+  updateCourseGradeFilters() {
     const { courseGradeMin, courseGradeMax } = this.props.filterValues;
     this.props.updateFilter(
       courseGradeMin,

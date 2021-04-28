@@ -9,6 +9,13 @@ import {
   mapDispatchToProps,
 } from '.';
 
+jest.mock('@edx/paragon', () => ({
+  Collapsible: 'Collapsible',
+  Form: {
+    Checkbox: 'Checkbox',
+  },
+}));
+
 describe('GradebookFilters', () => {
   let props = {
     courseId: '12345',

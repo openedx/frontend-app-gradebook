@@ -63,7 +63,7 @@ describe('CourseGradeFilter', () => {
       });
       describe('handleApplyClick', () => {
         beforeEach(() => {
-          el.instance().updateAPI = jest.fn();
+          el.instance().updateCourseGradeFilters = jest.fn();
         });
         it('calls setFilters for isMin(Max)CourseGradeFilterValid', () => {
           el.instance().isGradeFilterValueInRange = jest.fn().mockImplementation(v => v >= 50);
@@ -73,22 +73,22 @@ describe('CourseGradeFilter', () => {
             isMaxCourseGradeFilterValid: true,
           });
         });
-        it('calls updateAPI only if both min and max are valid', () => {
+        it('calls updateCourseGradeFilters only if both min and max are valid', () => {
           const isValid = jest.fn().mockImplementation(v => v >= 50);
           el.instance().isGradeFilterValueInRange = isValid;
           el.instance().handleApplyClick();
-          expect(el.instance().updateAPI).not.toHaveBeenCalled();
+          expect(el.instance().updateCourseGradeFilters).not.toHaveBeenCalled();
           isValid.mockImplementation(v => v <= 50);
           el.instance().handleApplyClick();
-          expect(el.instance().updateAPI).not.toHaveBeenCalled();
+          expect(el.instance().updateCourseGradeFilters).not.toHaveBeenCalled();
           isValid.mockImplementation(v => v >= 0);
           el.instance().handleApplyClick();
-          expect(el.instance().updateAPI).toHaveBeenCalled();
+          expect(el.instance().updateCourseGradeFilters).toHaveBeenCalled();
         });
       });
-      describe('updateAPI', () => {
+      describe('updateCourseGradeFilters', () => {
         beforeEach(() => {
-          el.instance().updateAPI();
+          el.instance().updateCourseGradeFilters();
         });
         it('calls props.updateFilter with selection', () => {
           expect(props.updateFilter).toHaveBeenCalledWith(

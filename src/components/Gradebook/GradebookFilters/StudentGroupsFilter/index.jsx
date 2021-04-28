@@ -107,17 +107,6 @@ export class StudentGroupsFilter extends React.Component {
 }
 
 StudentGroupsFilter.defaultProps = {
-  /** testing
-  cohorts: [
-    { name: 'Fake Cohort 1', id: 'fake_cohort_1' },
-    { name: 'Fake Cohort 2', id: 'fake_cohort_2' },
-  ],
-  tracks: [
-    { name: 'Fake Track 1', slug: 'fake_track_1' },
-    { name: 'Fake Track 2', slug: 'fake_track_2' },
-  ],
-  */
-
   cohorts: [],
   courseId: '',
   selectedAssignmentType: '',

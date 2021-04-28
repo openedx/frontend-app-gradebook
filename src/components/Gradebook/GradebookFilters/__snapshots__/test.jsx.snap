@@ -2,20 +2,9 @@
 
 exports[`GradebookFilters Component snapshots basic snapshot 1`] = `
 <React.Fragment>
-  <ForwardRef
+  <Collapsible
     className="filter-group mb-3"
     defaultOpen={true}
-    iconWhenClosed={
-      <withDeprecatedProps(Icon)
-        src={[Function]}
-      />
-    }
-    iconWhenOpen={
-      <withDeprecatedProps(Icon)
-        src={[Function]}
-      />
-    }
-    styling="card"
     title="Assignments"
   >
     <div>
@@ -40,21 +29,10 @@ exports[`GradebookFilters Component snapshots basic snapshot 1`] = `
         updateQueryParams={[MockFunction]}
       />
     </div>
-  </ForwardRef>
-  <ForwardRef
+  </Collapsible>
+  <Collapsible
     className="filter-group mb-3"
     defaultOpen={true}
-    iconWhenClosed={
-      <withDeprecatedProps(Icon)
-        src={[Function]}
-      />
-    }
-    iconWhenOpen={
-      <withDeprecatedProps(Icon)
-        src={[Function]}
-      />
-    }
-    styling="card"
     title="Overall Grade"
   >
     <Connect(CourseGradeFilter)
@@ -70,66 +48,28 @@ exports[`GradebookFilters Component snapshots basic snapshot 1`] = `
       setFilters={[MockFunction]}
       updateQueryParams={[MockFunction]}
     />
-  </ForwardRef>
-  <ForwardRef
+  </Collapsible>
+  <Collapsible
     className="filter-group mb-3"
     defaultOpen={true}
-    iconWhenClosed={
-      <withDeprecatedProps(Icon)
-        src={[Function]}
-      />
-    }
-    iconWhenOpen={
-      <withDeprecatedProps(Icon)
-        src={[Function]}
-      />
-    }
-    styling="card"
     title="Student Groups"
   >
     <Connect(StudentGroupsFilter)
       courseId="12345"
       updateQueryParams={[MockFunction]}
     />
-  </ForwardRef>
-  <ForwardRef
+  </Collapsible>
+  <Collapsible
     className="filter-group mb-3"
     defaultOpen={true}
-    iconWhenClosed={
-      <withDeprecatedProps(Icon)
-        src={[Function]}
-      />
-    }
-    iconWhenOpen={
-      <withDeprecatedProps(Icon)
-        src={[Function]}
-      />
-    }
-    styling="card"
     title="Include Course Team Members"
   >
-    <ForwardRef
+    <Checkbox
       checked={true}
-      controlAs={
-        Object {
-          "$$typeof": Symbol(react.forward_ref),
-          "defaultProps": Object {
-            "className": undefined,
-            "isIndeterminate": false,
-          },
-          "propTypes": Object {
-            "className": [Function],
-            "isIndeterminate": [Function],
-          },
-          "render": [Function],
-        }
-      }
-      isInvalid={false}
-      isValid={false}
       onChange={[MockFunction handleIncludeTeamMembersChange]}
     >
       Include Course Team Members
-    </ForwardRef>
-  </ForwardRef>
+    </Checkbox>
+  </Collapsible>
 </React.Fragment>
 `;

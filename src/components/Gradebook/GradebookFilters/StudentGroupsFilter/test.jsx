@@ -10,20 +10,16 @@ import {
   mapDispatchToProps,
 } from '.';
 
-jest.mock('@edx/paragon', () => ({
-  Collapsible: 'Collapsible',
-}));
-
 describe('StudentGroupsFilter', () => {
   let props = {
     courseId: '12345',
     cohorts: [
-      { name: 'cohorT1', id: 1 },
-      { name: 'cohorT2', id: 2 },
-      { name: 'cohorT3', id: 3 },
+      { name: 'cohorT1', id: 8001 },
+      { name: 'cohorT2', id: 8002 },
+      { name: 'cohorT3', id: 8003 },
     ],
     selectedAssignmentType: 'assignMent type 1',
-    selectedCohort: '3',
+    selectedCohort: '8003',
     selectedTrack: 'TracK2_slug',
     tracks: [
       { name: 'TracK1', slug: 'TracK1_slug' },
@@ -55,6 +51,10 @@ describe('StudentGroupsFilter', () => {
         );
         expect(el.instance().render()).toMatchSnapshot();
       });
+      test('Cohorts group disabled if no cohorts', () => {
+        el.setProps({ cohorts: [] });
+        expect(el.instance().render()).toMatchSnapshot();
+      });
       describe('mapCohortsEntries', () => {
         test('cohort options: [Cohort-All, <{slug, name}...>]', () => {
           expect(el.instance().mapCohortsEntries()).toMatchSnapshot();
@@ -79,7 +79,7 @@ describe('StudentGroupsFilter', () => {
             props.cohorts[2].name,
           );
         });
-        it('returns "Cohorts" if no track is found', () => {
+        it('returns "Cohorts" if no cohort is found', () => {
           el.setProps({ selectedCohort: '999' });
           expect(el.instance().mapSelectedCohortEntry()).toEqual(
             'Cohorts',
