@@ -1,0 +1,5 @@
+const EMAIL_HEADING = 'Email';
+const TOTAL_COURSE_GRADE_HEADING = 'Total Grade (%)';
+const USERNAME_HEADING = 'Username';
+
+export { EMAIL_HEADING, TOTAL_COURSE_GRADE_HEADING, USERNAME_HEADING };

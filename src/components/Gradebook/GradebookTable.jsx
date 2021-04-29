@@ -2,12 +2,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-
-import { Table } from '@edx/paragon';
-
+import {
+  Table, OverlayTrigger, Tooltip, Icon,
+} from '@edx/paragon';
 import { formatDateForDisplay } from '../../data/actions/utils';
 import { getHeadings } from '../../data/selectors/grades';
 import { fetchGradeOverrideHistory } from '../../data/actions/grades';
+import { EMAIL_HEADING, TOTAL_COURSE_GRADE_HEADING, USERNAME_HEADING } from '../../data/constants/grades';
 
 const DECIMAL_PRECISION = 2;
 
@@ -49,10 +50,10 @@ export class GradebookTable extends React.Component {
     percent: (entries, areGradesFrozen) => entries.map((entry) => {
       const learnerInformation = this.getLearnerInformation(entry);
       const results = {
-        Username: (
+        [USERNAME_HEADING]: (
           <div><span className="wrap-text-in-cell">{learnerInformation}</span></div>
         ),
-        Email: (
+        [EMAIL_HEADING]: (
           <span className="wrap-text-in-cell">{entry.email}</span>
         ),
       };
@@ -73,17 +74,17 @@ export class GradebookTable extends React.Component {
           }
           return acc;
         }, {});
-      const totals = { Total: `${this.roundGrade(entry.percent * 100)}%` };
+      const totals = { [TOTAL_COURSE_GRADE_HEADING]: `${this.roundGrade(entry.percent * 100)}%` };
       return Object.assign(results, assignments, totals);
     }),
 
     absolute: (entries, areGradesFrozen) => entries.map((entry) => {
       const learnerInformation = this.getLearnerInformation(entry);
       const results = {
-        Username: (
+        [USERNAME_HEADING]: (
           <div><span className="wrap-text-in-cell">{learnerInformation}</span></div>
         ),
-        Email: (
+        [EMAIL_HEADING]: (
           <span className="wrap-text-in-cell">{entry.email}</span>
         ),
       };
@@ -111,7 +112,10 @@ export class GradebookTable extends React.Component {
           return acc;
         }, {});
 
-      const totals = { Total: `${this.roundGrade(entry.percent * 100)}/100` };
+      // Show this as a percent no matter what the other setting is. The data
+      // we're getting gives the final grade as a percentage so making it appear
+      // to be "out of" 100 is misleading.
+      const totals = { [TOTAL_COURSE_GRADE_HEADING]: `${this.roundGrade(entry.percent * 100)}%` };
       return Object.assign(results, assignments, totals);
     }),
   };
@@ -120,22 +124,44 @@ export class GradebookTable extends React.Component {
     let headings = [...this.props.headings];
 
     if (headings.length > 0) {
-      const userInformationHeadingLabel = (
+      const headerLabelReplacements = {};
+      headerLabelReplacements[USERNAME_HEADING] = (
         <div>
           <div>Username</div>
           <div className="font-weight-normal student-key">Student Key*</div>
         </div>
       );
-      const emailHeadingLabel = 'Email*';
+      headerLabelReplacements[EMAIL_HEADING] = 'Email*';
 
-      headings = headings.map(heading => ({
-        label: heading,
-        key: heading,
-      }));
+      const totalGradePercentageMessage = 'Total Grade values are always displayed as a percentage.';
+      headerLabelReplacements[TOTAL_COURSE_GRADE_HEADING] = (
+        <div>
+          <OverlayTrigger
+            trigger={['hover', 'focus']}
+            key="left-basic"
+            placement="left"
+            overlay={(<Tooltip id="course-grade-tooltip">{totalGradePercentageMessage}</Tooltip>)}
+          >
+            <div>
+              {TOTAL_COURSE_GRADE_HEADING}
+              <div id="courseGradeTooltipIcon">
+                <Icon className="fa fa-info-circle" screenReaderText={totalGradePercentageMessage} />
+              </div>
+            </div>
+          </OverlayTrigger>
+        </div>
+      );
 
-      // replace username heading label to include additional user data
-      headings[0].label = userInformationHeadingLabel;
-      headings[1].label = emailHeadingLabel;
+      headings = headings.map(heading => {
+        const result = {
+          label: heading,
+          key: heading,
+        };
+        if (headerLabelReplacements[heading] !== undefined) {
+          result.label = headerLabelReplacements[heading];
+        }
+        return result;
+      });
     }
 
     return headings;
