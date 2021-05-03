@@ -1,5 +1,4 @@
 import { formatDateForDisplay } from '../actions/utils';
-import { getFilters } from './filters';
 import * as utils from '../utils';
 
 const getRowsProcessed = (data) => {
@@ -22,10 +21,10 @@ const transformHistoryEntry = ({
   data,
   ...rest
 }) => ({
-    timeUploaded: formatDateForDisplay(new Date(modified)),
-    originalFilename,
-    summaryOfRowsProcessed: getRowsProcessed(data),
-    ...rest,
+  timeUploaded: formatDateForDisplay(new Date(modified)),
+  originalFilename,
+  summaryOfRowsProcessed: getRowsProcessed(data),
+  ...rest,
 });
 
 const bulkManagementHistory = ({ grades: { bulkManagement } }) => (
@@ -114,15 +113,13 @@ const simpleSelectors = utils.simpleSelectors(
   ],
 );
 const allGrades = ({ grades: { results } }) => results;
-const uploadSuccess = ({ grades: { bulkManagement } }) => {
-  return (!!bulkManagement && bulkManagement.uploadSuccess);
-};
+const uploadSuccess = ({ grades: { bulkManagement } }) => (!!bulkManagement && bulkManagement.uploadSuccess);
 const bulkImportError = ({ grades: { bulkManagement } }) => (
   (!!bulkManagement && bulkManagement.errorMessages)
     ? `Errors while processing: ${bulkManagement.errorMessages.join(', ')}`
     : ''
 );
-const gradeOverrides = ({ grades }) =>  grades.gradeOverrideHistoryResults;
+const gradeOverrides = ({ grades }) => grades.gradeOverrideHistoryResults;
 
 const selectors = {
   bulkImportError,

@@ -1,3 +1,5 @@
+import LmsApiService from 'data/services/LmsApiService';
+
 import assignmentTypes from './assignmentTypes';
 import cohorts from './cohorts';
 import filters from './filters';
@@ -5,8 +7,6 @@ import grades from './grades';
 import roles from './roles';
 import special from './special';
 import tracks from './tracks';
-
-import LmsApiService from 'data/services/LmsApiService';
 
 const lmsApiServiceArgs = (state) => ({
   cohort: cohorts.getCohortNameById(state, filters.cohort(state)),
@@ -23,7 +23,6 @@ const lmsApiServiceArgs = (state) => ({
   courseGradeMin: grades.formatMinCourseGrade(filters.courseGradeMin(state)),
   courseGradeMax: grades.formatMaxCourseGrade(filters.courseGradeMax(state)),
 });
-
 
 const gradeExportUrl = (state, { courseId }) => (
   LmsApiService.getGradeExportCsvUrl(courseId, {
@@ -46,17 +45,13 @@ const showBulkManagement = (state, { courseId }) => (
 
 const shouldShowSpinner = (state) => {
   const canView = roles.canUserViewGradebook(state);
-  return canView === true 
-    ? grades.showSpinner(state) 
-    : (canView === false ? false : true);
+  return canView && grades.showSpinner(state);
 };
 
-const getHeadings = (state) => {
-  return grades.headingMapper(
-    filters.assignmentType(state) || 'All',
-    filters.selectedAssignmentLabel(state) || 'All',
-  )(grades.getExampleSectionBreakdown(state))
-};
+const getHeadings = (state) => grades.headingMapper(
+  filters.assignmentType(state) || 'All',
+  filters.selectedAssignmentLabel(state) || 'All',
+)(grades.getExampleSectionBreakdown(state));
 
 export default {
   root: {
