@@ -10,18 +10,17 @@ import {
   Table,
 } from '@edx/paragon';
 
+import selectors from 'data/selectors';
 import {
   doneViewingAssignment,
   updateGrades,
 } from '../../data/actions/grades';
 
-import selectors from 'data/selectors';
-
 const GRADE_OVERRIDE_HISTORY_COLUMNS = [
   { label: 'Date', key: 'date' },
   { label: 'Grader', key: 'grader' },
   { label: 'Reason', key: 'reason' },
-  { label: 'Adjusted grade', key: 'adjustedGrade' }
+  { label: 'Adjusted grade', key: 'adjustedGrade' },
 ];
 
 export class EditModal extends React.Component {

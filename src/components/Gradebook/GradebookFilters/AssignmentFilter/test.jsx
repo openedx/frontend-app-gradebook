@@ -110,7 +110,7 @@ describe('AssignmentFilter', () => {
         });
       });
     });
-    describe('selectedAsssignment', () => {
+    describe('selectedAssignment', () => {
       it('is undefined if no assignment is passed', () => {
         expect(
           mapStateToProps({ filters: {} }).selectedAssignment,

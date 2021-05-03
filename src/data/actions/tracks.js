@@ -1,3 +1,5 @@
+/* eslint-disable camelcase */
+import tracksSelectors from 'data/selectors/tracks';
 import {
   STARTED_FETCHING_TRACKS,
   GOT_TRACKS,
@@ -5,7 +7,6 @@ import {
 } from '../constants/actionTypes/tracks';
 import { fetchBulkUpgradeHistory } from './grades';
 import LmsApiService from '../services/LmsApiService';
-import tracksSelectors from 'data/selectors/tracks';
 
 const { hasMastersTrack } = tracksSelectors;
 

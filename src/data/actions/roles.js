@@ -1,3 +1,4 @@
+import filtersSelectors from 'data/selectors/filters';
 import {
   GOT_ROLES,
   ERROR_FETCHING_ROLES,
@@ -7,7 +8,6 @@ import { fetchTracks } from './tracks';
 import { fetchCohorts } from './cohorts';
 import { fetchAssignmentTypes } from './assignmentTypes';
 import LmsApiService from '../services/LmsApiService';
-import filtersSelectors from 'data/selectors/filters';
 
 const { allFilters } = filtersSelectors;
 

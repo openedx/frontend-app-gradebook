@@ -3,7 +3,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
-import { selectableAssignmentLabels } from 'data/selectors/filters';
 import * as gradesActions from 'data/actions/grades';
 import selectors from 'data/selectors';
 

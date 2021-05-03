@@ -1,5 +1,6 @@
 import { connect } from 'react-redux';
 
+import selectors from 'data/selectors';
 import Gradebook from '../../components/Gradebook';
 import {
   fetchGradeOverrideHistory,
@@ -21,30 +22,14 @@ import {
 } from '../../data/actions/filters';
 import { fetchAssignmentTypes } from '../../data/actions/assignmentTypes';
 import { getRoles } from '../../data/actions/roles';
-import LmsApiService from '../../data/services/LmsApiService';
-
-import selectors from 'data/selectors';
-
-
-
-function shouldShowSpinner(state) {
-  if (state.roles.canUserViewGradebook === true) {
-    return state.grades.showSpinner;
-  } if (state.roles.canUserViewGradebook === false) {
-    return false;
-  } // canUserViewGradebook === null
-  return true;
-}
 
 const mapStateToProps = (state, ownProps) => {
   const {
     root,
     assignmentTypes,
-    cohorts,
     filters,
     grades,
     roles,
-    tracks,
   } = selectors;
 
   const { courseId } = ownProps.match.params;

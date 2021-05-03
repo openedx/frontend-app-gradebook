@@ -4,8 +4,8 @@ import { connect } from 'react-redux';
 
 import { StatusAlert } from '@edx/paragon';
 
-import { closeBanner } from '../../data/actions/grades';
 import selectors from 'data/selectors';
+import { closeBanner } from '../../data/actions/grades';
 
 export const maxCourseGradeInvalidMessage = 'Maximum course grade value must be between 0 and 100. ';
 export const minCourseGradeInvalidMessage = 'Minimum course grade value must be between 0 and 100. ';

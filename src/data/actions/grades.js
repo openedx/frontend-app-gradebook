@@ -1,4 +1,6 @@
 import { getAuthenticatedHttpClient } from '@edx/frontend-platform/auth';
+import gradesSelectors from 'data/selectors/grades';
+import filtersSelectors from 'data/selectors/filters';
 import {
   STARTED_FETCHING_GRADES,
   FINISHED_FETCHING_GRADES,
@@ -27,9 +29,6 @@ import {
 import GRADE_OVERRIDE_HISTORY_ERROR_DEFAULT_MSG from '../constants/errors';
 import LmsApiService from '../services/LmsApiService';
 import { sortAlphaAsc, formatDateForDisplay } from './utils';
-
-import gradesSelectors from 'data/selectors/grades';
-import filtersSelectors from 'data/selectors/filters';
 
 const {
   formatMaxAssignmentGrade,

@@ -135,7 +135,6 @@ StudentGroupsFilter.propTypes = {
   })),
 };
 
-
 export const mapStateToProps = (state) => {
   const { filters, cohorts, tracks } = selectors;
   return {

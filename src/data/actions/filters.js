@@ -1,3 +1,4 @@
+import filterSelectors from 'data/selectors/filters';
 import initialFilters from '../constants/filters';
 import {
   INITIALIZE_FILTERS,
@@ -7,8 +8,6 @@ import {
   UPDATE_COURSE_GRADE_LIMITS,
   UPDATE_INCLUDE_COURSE_ROLE_MEMBERS,
 } from '../constants/actionTypes/filters';
-
-import filterSelectors from 'data/selectors/filters';
 import { fetchGrades } from './grades';
 
 const { allFilters } = filterSelectors;

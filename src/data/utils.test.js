@@ -1,6 +1,6 @@
-import { simpleSelectors } from './utils';
+import simpleSelectors from './utils';
 
-describe('Redux utiltites - creators', () => {
+describe('Redux utilities - creators', () => {
   describe('simpleSelectors', () => {
     const data = { a: 1, b: 2, c: 3 };
     const state = {

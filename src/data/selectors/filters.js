@@ -12,7 +12,7 @@ const selectableAssignments = (state) => {
   const allAssignments = getAssignmentsFromResultsSubstate(state.grades.results);
   if (needToFilter) {
     return allAssignments.filter(
-      (assignment) => assignment.category === selectedAssignmentType
+      (assignment) => assignment.category === selectedAssignmentType,
     );
   }
   return allAssignments;
@@ -22,8 +22,10 @@ const chooseRelevantAssignmentData = ({
   label,
   subsection_name: subsectionLabel,
   category,
-  module_id: id
-}) => ({ label, subsectionLabel, type, id });
+  module_id: id,
+}) => ({
+  label, subsectionLabel, category, id,
+});
 
 const selectableAssignmentLabels = (state) => (
   selectableAssignments(state).map(chooseRelevantAssignmentData)
@@ -33,7 +35,7 @@ const typeOfSelectedAssignment = (state) => {
   const selectedAssignmentLabel = allFilters(state).assignment;
   const sectionBreakdown = (state.grades.results[0] || {}).section_breakdown || [];
   const selectedAssignment = sectionBreakdown.find(
-    ({ label }) => label === selectedAssignmentLabel
+    ({ label }) => label === selectedAssignmentLabel,
   );
   return selectedAssignment && selectedAssignment.category;
 };
@@ -50,7 +52,7 @@ const simpleSelectors = utils.simpleSelectors(
     'courseGradeMin',
     'track',
     'includeCourseRoleMembers',
-  ]
+  ],
 );
 const selectedAssignmentId = (state) => (simpleSelectors.assignment(state) || {}).id;
 const selectedAssignmentLabel = (state) => (simpleSelectors.assignment(state) || {}).label;

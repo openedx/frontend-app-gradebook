@@ -4,12 +4,11 @@ import { connect } from 'react-redux';
 
 import { Button, Icon, SearchField } from '@edx/paragon';
 
+import selectors from 'data/selectors';
 import {
   fetchGrades,
   fetchMatchingUserGrades,
 } from '../../data/actions/grades';
-
-import selectors from 'data/selectors';
 
 /**
  * Controls for filtering the GradebookTable. Contains the "Edit Filters" button for opening the filter drawer
@@ -104,7 +103,7 @@ export const mapStateToProps = (state) => {
     selectedAssignmentType: filters.assignmentType(state),
     selectedTrack: filters.track(state),
     selectedCohort: filters.cohort(state),
-  }
+  };
 };
 
 export const mapDispatchToProps = {

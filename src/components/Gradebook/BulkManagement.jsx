@@ -10,10 +10,10 @@ import {
 } from '@edx/paragon';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faDownload } from '@fortawesome/free-solid-svg-icons';
-import { configuration } from '../../config';
 
-import { submitFileUploadFormData } from '../../data/actions/grades';
 import selectors from 'data/selectors';
+import { configuration } from '../../config';
+import { submitFileUploadFormData } from '../../data/actions/grades';
 
 export class BulkManagement extends React.Component {
   constructor(props) {

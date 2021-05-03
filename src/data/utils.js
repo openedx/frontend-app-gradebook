@@ -6,12 +6,14 @@
  * @param {Object|string[]} keys - If passed as object, Object.keys(keys) is used.
  * @return {Object} - object of `{[key]: ({key}) => key}`
  */
-export const simpleSelectors = (transformer, keys) => {
-  let selKeys = Array.isArray(keys) ? keys : Object.keys(keys);
+const simpleSelectors = (transformer, keys) => {
+  const selKeys = Array.isArray(keys) ? keys : Object.keys(keys);
   return selKeys.reduce(
     (obj, key) => ({
-      ...obj, [key]: (state) => transformer(state)[key]
+      ...obj, [key]: (state) => transformer(state)[key],
     }),
     { root: (state) => transformer(state) },
   );
-}
+};
+
+export default simpleSelectors;

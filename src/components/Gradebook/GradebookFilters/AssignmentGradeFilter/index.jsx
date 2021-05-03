@@ -114,7 +114,7 @@ export const mapStateToProps = (state) => {
     selectedAssignmentType: filters.assignmentType(state),
     selectedCohort: filters.cohort(state),
     selectedTrack: filters.track(state),
-  }
+  };
 };
 
 export const mapDispatchToProps = {
