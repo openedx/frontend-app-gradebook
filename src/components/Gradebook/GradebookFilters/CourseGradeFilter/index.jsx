@@ -8,6 +8,7 @@ import {
 
 import { updateCourseGradeFilter } from 'data/actions/filters';
 import { fetchGrades } from 'data/actions/grades';
+import selectors from 'data/selectors';
 import PercentGroup from '../PercentGroup';
 
 export class CourseGradeFilter extends React.Component {
@@ -118,11 +119,14 @@ CourseGradeFilter.propTypes = {
   updateFilter: PropTypes.func.isRequired,
 };
 
-export const mapStateToProps = (state) => ({
-  selectedCohort: state.filters.cohort,
-  selectedTrack: state.filters.track,
-  selectedAssignmentType: state.filters.assignmentType,
-});
+export const mapStateToProps = (state) => {
+  const { filters } = selectors;
+  return {
+    selectedCohort: filters.cohort(state),
+    selectedTrack: filters.track(state),
+    selectedAssignmentType: filters.assignmentType(state),
+  };
+};
 
 export const mapDispatchToProps = {
   updateFilter: updateCourseGradeFilter,

@@ -27,10 +27,17 @@ import {
 import GRADE_OVERRIDE_HISTORY_ERROR_DEFAULT_MSG from '../constants/errors';
 import LmsApiService from '../services/LmsApiService';
 import { sortAlphaAsc, formatDateForDisplay } from './utils';
-import {
-  formatMaxAssignmentGrade, formatMinAssignmentGrade, formatMaxCourseGrade, formatMinCourseGrade,
-} from '../selectors/grades';
-import { getFilters } from '../selectors/filters';
+
+import gradesSelectors from 'data/selectors/grades';
+import filtersSelectors from 'data/selectors/filters';
+
+const {
+  formatMaxAssignmentGrade,
+  formatMinAssignmentGrade,
+  formatMaxCourseGrade,
+  formatMinCourseGrade,
+} = gradesSelectors;
+const { allFilters } = filtersSelectors;
 
 const defaultAssignmentFilter = 'All';
 
@@ -142,7 +149,7 @@ const fetchGrades = (
       courseGradeMin,
       courseGradeMax,
       includeCourseRoleMembers,
-    } = getFilters(getState());
+    } = allFilters(getState());
     const { id: assignmentId } = assignment || {};
     const assignmentGradeMax = formatMaxAssignmentGrade(assignmentMax, { assignmentId });
     const assignmentGradeMin = formatMinAssignmentGrade(assignmentMin, { assignmentId });

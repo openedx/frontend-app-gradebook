@@ -1,5 +1,6 @@
 import { formatDateForDisplay } from '../actions/utils';
 import { getFilters } from './filters';
+import * as utils from '../utils';
 
 const getRowsProcessed = (data) => {
   const {
@@ -15,26 +16,24 @@ const getRowsProcessed = (data) => {
   };
 };
 
-const transformHistoryEntry = (historyRow) => {
-  const {
-    modified,
-    original_filename: originalFilename,
-    data,
-    ...rest
-  } = historyRow;
-
-  const timeUploaded = formatDateForDisplay(new Date(modified));
-  const summaryOfRowsProcessed = getRowsProcessed(data);
-
-  return {
-    timeUploaded,
+const transformHistoryEntry = ({
+  modified,
+  original_filename: originalFilename,
+  data,
+  ...rest
+}) => ({
+    timeUploaded: formatDateForDisplay(new Date(modified)),
     originalFilename,
-    summaryOfRowsProcessed,
+    summaryOfRowsProcessed: getRowsProcessed(data),
     ...rest,
-  };
-};
-const getBulkManagementHistoryFromState = state => state.grades.bulkManagement.history || [];
-const getBulkManagementHistory = state => getBulkManagementHistoryFromState(state).map(transformHistoryEntry);
+});
+
+const bulkManagementHistory = ({ grades: { bulkManagement } }) => (
+  (bulkManagement.history || [])
+);
+const bulkManagementHistoryEntries = (state) => (
+  bulkManagementHistory(state).map(transformHistoryEntry)
+);
 
 const headingMapper = (category, label = 'All') => {
   const filters = {
@@ -66,19 +65,9 @@ const headingMapper = (category, label = 'All') => {
   };
 };
 
-const getExampleSectionBreakdown = state => (state.grades.results[0] || {}).section_breakdown || [];
-
-const getHeadings = (state) => {
-  const filters = getFilters(state) || {};
-  const {
-    assignmentType: selectedAssignmentType,
-    assignment: selectedAssignment,
-  } = filters;
-  const assignments = getExampleSectionBreakdown(state);
-  const type = selectedAssignmentType || 'All';
-  const assignment = (selectedAssignment || {}).label || 'All';
-  return headingMapper(type, assignment)(assignments);
-};
+const getExampleSectionBreakdown = ({ grades }) => (
+  (grades.results[0] || {}).section_breakdown || []
+);
 
 const composeFilters = (...predicates) => (percentGrade, options = {}) => predicates.reduce((accum, predicate) => {
   if (predicate(percentGrade, options)) {
@@ -110,11 +99,45 @@ const formatMinAssignmentGrade = composeFilters(
   assignmentIdIsDefined,
 );
 
-export {
-  getBulkManagementHistory,
-  getHeadings,
+const simpleSelectors = utils.simpleSelectors(
+  ({ grades }) => grades,
+  [
+    'filteredUsersCount',
+    'totalUsersCount',
+    'gradeFormat',
+    'showSpinner',
+    'gradeOverrideCurrentEarnedGradedOverride',
+    'gradeOverrideHistoryError',
+    'gradeOriginalEarnedGraded',
+    'gradeOriginalPossibleGraded',
+    'showSuccess',
+  ],
+);
+const allGrades = ({ grades: { results } }) => results;
+const uploadSuccess = ({ grades: { bulkManagement } }) => {
+  return (!!bulkManagement && bulkManagement.uploadSuccess);
+};
+const bulkImportError = ({ grades: { bulkManagement } }) => (
+  (!!bulkManagement && bulkManagement.errorMessages)
+    ? `Errors while processing: ${bulkManagement.errorMessages.join(', ')}`
+    : ''
+);
+const gradeOverrides = ({ grades }) =>  grades.gradeOverrideHistoryResults;
+
+const selectors = {
+  bulkImportError,
   formatMinAssignmentGrade,
   formatMaxAssignmentGrade,
   formatMaxCourseGrade,
   formatMinCourseGrade,
+  getExampleSectionBreakdown,
+  headingMapper,
+
+  ...simpleSelectors,
+  allGrades,
+  uploadSuccess,
+  bulkManagementHistoryEntries,
+  gradeOverrides,
 };
+
+export default selectors;

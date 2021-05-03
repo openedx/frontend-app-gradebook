@@ -6,8 +6,10 @@ import { fetchGrades } from './grades';
 import { fetchTracks } from './tracks';
 import { fetchCohorts } from './cohorts';
 import { fetchAssignmentTypes } from './assignmentTypes';
-import { getFilters } from '../selectors/filters';
 import LmsApiService from '../services/LmsApiService';
+import filtersSelectors from 'data/selectors/filters';
+
+const { allFilters } = filtersSelectors;
 
 const allowedRoles = ['staff', 'instructor', 'support'];
 
@@ -26,7 +28,7 @@ const getRoles = courseId => (
                                   || (response.roles.some(role => (role.course_id === courseId)
                                       && allowedRoles.includes(role.role)));
       dispatch(gotRoles(canUserViewGradebook, courseId));
-      const { cohort, track, assignmentType } = getFilters(getState());
+      const { cohort, track, assignmentType } = allFilters(getState());
       if (canUserViewGradebook) {
         dispatch(fetchGrades(courseId, cohort, track, assignmentType));
         dispatch(fetchTracks(courseId));

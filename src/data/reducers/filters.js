@@ -11,8 +11,8 @@ import {
 
 import initialFilters from '../constants/filters';
 
-import { getAssignmentsFromResultsSubstate, chooseRelevantAssignmentData } from '../selectors/filters';
-
+import filterSelectors from 'data/selectors/filters';
+const { getAssignmentsFromResultsSubstate, chooseRelevantAssignmentData } = filterSelectors;
 const initialState = {};
 
 const reducer = (state = initialState, action) => {

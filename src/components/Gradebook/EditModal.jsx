@@ -15,9 +15,14 @@ import {
   updateGrades,
 } from '../../data/actions/grades';
 
-const GRADE_OVERRIDE_HISTORY_COLUMNS = [{ label: 'Date', key: 'date' }, { label: 'Grader', key: 'grader' },
+import selectors from 'data/selectors';
+
+const GRADE_OVERRIDE_HISTORY_COLUMNS = [
+  { label: 'Date', key: 'date' },
+  { label: 'Grader', key: 'grader' },
   { label: 'Reason', key: 'reason' },
-  { label: 'Adjusted grade', key: 'adjustedGrade' }];
+  { label: 'Adjusted grade', key: 'adjustedGrade' }
+];
 
 export class EditModal extends React.Component {
   constructor(props) {
@@ -185,15 +190,18 @@ EditModal.propTypes = {
   updateGrades: PropTypes.func.isRequired,
 };
 
-export const mapStateToProps = (state) => ({
-  gradeOverrides: state.grades.gradeOverrideHistoryResults,
-  gradeOverrideCurrentEarnedGradedOverride: state.grades.gradeOverrideCurrentEarnedGradedOverride,
-  gradeOverrideHistoryError: state.grades.gradeOverrideHistoryError,
-  gradeOriginalEarnedGraded: state.grades.gradeOriginalEarnedGraded,
-  grdaeOriginalPossibleGraded: state.grades.grdaeOriginalPossibleGraded,
-  selectedCohort: state.filters.cohort,
-  selectedTrack: state.filters.track,
-});
+export const mapStateToProps = (state) => {
+  const { filters, grades } = selectors;
+  return {
+    gradeOverrides: grades.gradeOverrides(state),
+    gradeOverrideCurrentEarnedGradedOverride: grades.gradeOverrideCurrentEarnedGradedOverride(state),
+    gradeOverrideHistoryError: grades.gradeOverrideHistoryError(state),
+    gradeOriginalEarnedGraded: grades.gradeOriginalEarnedGraded(state),
+    gradeOriginalPossibleGraded: grades.gradeOriginalPossibleGraded(state),
+    selectedCohort: filters.cohort(state),
+    selectedTrack: filters.track(state),
+  };
+};
 
 export const mapDispatchToProps = {
   doneViewingAssignment,

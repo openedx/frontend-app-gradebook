@@ -3,9 +3,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
-import { selectableAssignmentLabels } from 'data/selectors/filters';
 import * as gradesActions from 'data/actions/grades';
 import * as filterActions from 'data/actions/filters';
+import selectors from 'data/selectors';
 
 import SelectGroup from '../SelectGroup';
 
@@ -85,13 +85,16 @@ AssignmentFilter.propTypes = {
   updateAssignmentFilter: PropTypes.func.isRequired,
 };
 
-export const mapStateToProps = (state) => ({
-  assignmentFilterOptions: selectableAssignmentLabels(state),
-  selectedAssignment: (state.filters.assignment || {}).label,
-  selectedAssignmentType: state.filters.assignmentType,
-  selectedCohort: state.filters.cohort,
-  selectedTrack: state.filters.track,
-});
+export const mapStateToProps = (state) => {
+  const { filters } = selectors;
+  return {
+    assignmentFilterOptions: filters.selectableAssignmentLabels(state),
+    selectedAssignment: filters.selectedAssignmentLabel(state),
+    selectedAssignmentType: filters.assignmentType(state),
+    selectedCohort: filters.cohort(state),
+    selectedTrack: filters.track(state),
+  }
+};
 
 export const mapDispatchToProps = {
   updateAssignmentFilter: filterActions.updateAssignmentFilter,

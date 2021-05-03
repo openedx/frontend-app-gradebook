@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
 import { fetchGrades } from 'data/actions/grades';
+import selectors from 'data/selectors';
 import SelectGroup from '../SelectGroup';
 
 export class StudentGroupsFilter extends React.Component {
@@ -134,13 +135,17 @@ StudentGroupsFilter.propTypes = {
   })),
 };
 
-export const mapStateToProps = (state) => ({
-  cohorts: state.cohorts.results,
-  selectedAssignmentType: state.filters.assignmentType,
-  selectedCohort: state.filters.cohort,
-  selectedTrack: state.filters.track,
-  tracks: state.tracks.results,
-});
+
+export const mapStateToProps = (state) => {
+  const { filters, cohorts, tracks } = selectors;
+  return {
+    cohorts: cohorts.allCohorts(state),
+    selectedAssignmentType: filters.assignmentType(state),
+    selectedCohort: filters.cohort(state),
+    selectedTrack: filters.track(state),
+    tracks: tracks.allTracks(state),
+  };
+};
 
 export const mapDispatchToProps = {
   getUserGrades: fetchGrades,

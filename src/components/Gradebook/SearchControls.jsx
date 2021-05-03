@@ -9,6 +9,8 @@ import {
   fetchMatchingUserGrades,
 } from '../../data/actions/grades';
 
+import selectors from 'data/selectors';
+
 /**
  * Controls for filtering the GradebookTable. Contains the "Edit Filters" button for opening the filter drawer
  * as well as the search box for searching by username/email.
@@ -96,11 +98,14 @@ SearchControls.propTypes = {
   selectedTrack: PropTypes.string,
 };
 
-export const mapStateToProps = (state) => ({
-  selectedAssignmentType: state.filters.assignmentType,
-  selectedTrack: state.filters.track,
-  selectedCohort: state.filters.cohort,
-});
+export const mapStateToProps = (state) => {
+  const { filters } = selectors;
+  return {
+    selectedAssignmentType: filters.assignmentType(state),
+    selectedTrack: filters.track(state),
+    selectedCohort: filters.cohort(state),
+  }
+};
 
 export const mapDispatchToProps = {
   getUserGrades: fetchGrades,
