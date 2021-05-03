@@ -1,4 +1,4 @@
-import { getBulkManagementHistory } from './grades';
+import selectors from './grades';
 
 const genericHistoryRow = {
   id: 5,
@@ -15,14 +15,14 @@ const genericHistoryRow = {
   },
 };
 
-describe('getBulkManagementHistory', () => {
+describe('bulkManagementHistoryEntries', () => {
   it('handles history being as-yet unloaded', () => {
-    const result = getBulkManagementHistory({ grades: { bulkManagement: {} } });
+    const result = selectors.bulkManagementHistoryEntries({ grades: { bulkManagement: {} } });
     expect(result).toEqual([]);
   });
 
   it('formats dates for us', () => {
-    const result = getBulkManagementHistory({
+    const result = selectors.bulkManagementHistoryEntries({
       grades: {
         bulkManagement: {
           history: [
@@ -37,7 +37,7 @@ describe('getBulkManagementHistory', () => {
   });
 
   const exerciseGetRowsProcessed = (input, expectation) => {
-    const result = getBulkManagementHistory({
+    const result = selectors.bulkManagementHistoryEntries({
       grades: {
         bulkManagement: {
           history: [
@@ -50,7 +50,7 @@ describe('getBulkManagementHistory', () => {
     expect(summaryOfRowsProcessed).toEqual(expect.objectContaining(expectation));
   };
 
-  it('calculates skippage', () => {
+  it('calculates skipped rows', () => {
     exerciseGetRowsProcessed({
       total_rows: 100,
       processed_rows: 10,

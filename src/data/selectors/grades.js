@@ -30,6 +30,7 @@ const transformHistoryEntry = ({
 const bulkManagementHistory = ({ grades: { bulkManagement } }) => (
   (bulkManagement.history || [])
 );
+
 const bulkManagementHistoryEntries = (state) => (
   bulkManagementHistory(state).map(transformHistoryEntry)
 );
@@ -89,10 +90,12 @@ const assignmentIdIsDefined = (percentGrade, { assignmentId }) => (
 
 const formatMaxCourseGrade = composeFilters(percentGradeIsMax);
 const formatMinCourseGrade = composeFilters(percentGradeIsMin);
+
 const formatMaxAssignmentGrade = composeFilters(
   percentGradeIsMax,
   assignmentIdIsDefined,
 );
+
 const formatMinAssignmentGrade = composeFilters(
   percentGradeIsMin,
   assignmentIdIsDefined,
@@ -112,8 +115,10 @@ const simpleSelectors = utils.simpleSelectors(
     'showSuccess',
   ],
 );
+
 const allGrades = ({ grades: { results } }) => results;
 const uploadSuccess = ({ grades: { bulkManagement } }) => (!!bulkManagement && bulkManagement.uploadSuccess);
+
 const bulkImportError = ({ grades: { bulkManagement } }) => (
   (!!bulkManagement && bulkManagement.errorMessages)
     ? `Errors while processing: ${bulkManagement.errorMessages.join(', ')}`
