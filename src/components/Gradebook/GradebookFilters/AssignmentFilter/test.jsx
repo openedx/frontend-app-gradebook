@@ -1,6 +1,7 @@
 import React from 'react';
 import { mount, shallow } from 'enzyme';
 
+import selectors from 'data/selectors';
 import { updateAssignmentFilter } from 'data/actions/filters';
 import { updateGradesIfAssignmentGradeFiltersSet } from 'data/actions/grades';
 import {
@@ -9,12 +10,20 @@ import {
   mapDispatchToProps,
 } from '.';
 
-jest.mock('data/selectors/filters', () => ({
+jest.mock('data/selectors', () => ({
   /** Mocking to use passed state for validation purposes */
-  selectableAssignmentLabels: jest.fn().mockImplementation((state) => ({
-    state,
-    selectableLabels: 'selectableLabels',
-  })),
+  filters: {
+    selectableAssignmentLabels: jest.fn(() => ([{
+      label: 'assigNment',
+      subsectionLabel: 'subsection',
+      type: 'assignMentType',
+      id: 'subsectionId',
+    }])),
+    selectedAssignmentLabel: jest.fn(() => 'assigNment'),
+    assignmentType: jest.fn(() => 'assignMentType'),
+    cohort: jest.fn(() => 'COhort'),
+    track: jest.fn(() => 'traCK'),
+  },
 }));
 
 describe('AssignmentFilter', () => {
@@ -103,51 +112,47 @@ describe('AssignmentFilter', () => {
       },
     };
     describe('assignmentFilterOptions', () => {
-      it('is drawn from selectableAssignmentLabels', () => {
-        expect(mapStateToProps(state).assignmentFilterOptions).toEqual({
-          state,
-          selectableLabels: 'selectableLabels',
-        });
+      it('is selected from filters.selectableAssignmentLabels', () => {
+        expect(
+          mapStateToProps(state).assignmentFilterOptions,
+        ).toEqual(
+          selectors.filters.selectableAssignmentLabels(state),
+        );
       });
     });
     describe('selectedAssignment', () => {
-      it('is undefined if no assignment is passed', () => {
-        expect(
-          mapStateToProps({ filters: {} }).selectedAssignment,
-        ).toEqual(undefined);
-      });
-      it('returns the label of selected assignment if there is one', () => {
+      it('is selected from filters.selectedAssignmentLabel', () => {
         expect(
           mapStateToProps(state).selectedAssignment,
         ).toEqual(
-          state.filters.assignment.label,
+          selectors.filters.selectedAssignmentLabel(state),
         );
       });
     });
     describe('selectedAssignmentType', () => {
-      it('is drawn from state.filters.assignmentType', () => {
+      it('is selected from filters.assignmentType', () => {
         expect(
           mapStateToProps(state).selectedAssignmentType,
         ).toEqual(
-          state.filters.assignmentType,
+          selectors.filters.assignmentType(state),
         );
       });
     });
     describe('selectedCohort', () => {
-      it('is drawn from state.filters.cohort', () => {
+      it('is selected from filters.cohort', () => {
         expect(
           mapStateToProps(state).selectedCohort,
         ).toEqual(
-          state.filters.cohort,
+          selectors.filters.cohort(state),
         );
       });
     });
     describe('selectedTrack', () => {
-      it('is drawn from state.filters.track', () => {
+      it('is selected from filters.track', () => {
         expect(
           mapStateToProps(state).selectedTrack,
         ).toEqual(
-          state.filters.track,
+          selectors.filters.track(state),
         );
       });
     });
