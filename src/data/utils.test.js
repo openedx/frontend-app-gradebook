@@ -1,4 +1,4 @@
-import simpleSelectors from './utils';
+import simpleSelectorFactory from './utils';
 
 describe('Redux utilities - creators', () => {
   describe('simpleSelectors', () => {
@@ -11,13 +11,13 @@ describe('Redux utilities - creators', () => {
 
     test('given a list of strings, returns a dict w/ a simple selector per string', () => {
       const keys = ['a', 'b'];
-      const selectors = simpleSelectors(transformer, keys);
+      const selectors = simpleSelectorFactory(transformer, keys);
       expect(Object.keys(selectors)).toEqual(['root', ...keys]);
       expect(selectors.a(state)).toEqual(data.a);
       expect(selectors.b(state)).toEqual(data.b);
     });
-    test('given an object for keys, returns a dict w/ simple selecter per key', () => {
-      const selectors = simpleSelectors(transformer, data);
+    test('given an object for keys, returns a dict w/ simple selector per key', () => {
+      const selectors = simpleSelectorFactory(transformer, data);
       expect(Object.keys(selectors)).toEqual(['root', ...Object.keys(data)]);
       expect(selectors.a(state)).toEqual(data.a);
       expect(selectors.b(state)).toEqual(data.b);

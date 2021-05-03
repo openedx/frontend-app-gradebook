@@ -1,4 +1,4 @@
-import * as utils from '../utils';
+import simpleSelectorFactory from '../utils';
 
 const allFilters = (state) => state.filters || {};
 
@@ -40,7 +40,7 @@ const typeOfSelectedAssignment = (state) => {
   return selectedAssignment && selectedAssignment.category;
 };
 
-const simpleSelectors = utils.simpleSelectors(
+const simpleSelectors = simpleSelectorFactory(
   ({ filters }) => filters,
   [
     'assignment',

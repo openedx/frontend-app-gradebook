@@ -1,5 +1,5 @@
 import { formatDateForDisplay } from '../actions/utils';
-import * as utils from '../utils';
+import simpleSelectorFactory from '../utils';
 
 const getRowsProcessed = (data) => {
   const {
@@ -101,7 +101,7 @@ const formatMinAssignmentGrade = composeFilters(
   assignmentIdIsDefined,
 );
 
-const simpleSelectors = utils.simpleSelectors(
+const simpleSelectors = simpleSelectorFactory(
   ({ grades }) => grades,
   [
     'filteredUsersCount',
