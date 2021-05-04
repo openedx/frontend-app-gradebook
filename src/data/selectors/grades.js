@@ -1,5 +1,6 @@
 import { formatDateForDisplay } from '../actions/utils';
 import simpleSelectorFactory from '../utils';
+import { EMAIL_HEADING, TOTAL_COURSE_GRADE_HEADING, USERNAME_HEADING } from '../constants/grades';
 
 const getRowsProcessed = (data) => {
   const {
@@ -51,13 +52,13 @@ const headingMapper = (category, label = 'All') => {
 
   return (entry) => {
     if (entry) {
-      const results = ['Username', 'Email'];
+      const results = [USERNAME_HEADING, EMAIL_HEADING];
 
       const assignmentHeadings = entry
         .filter(filters[filter])
         .map(s => s.label);
 
-      const totals = ['Total'];
+      const totals = [TOTAL_COURSE_GRADE_HEADING];
 
       return results.concat(assignmentHeadings).concat(totals);
     }
