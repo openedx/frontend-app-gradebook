@@ -15,6 +15,23 @@ const genericHistoryRow = {
   },
 };
 
+describe('bulkImportError', () => {
+  it('returns an empty string when bulkManagement not run', () => {
+    const result = selectors.bulkImportError({ grades: { bulkManagement: null } });
+    expect(result).toEqual('');
+  });
+
+  it('returns an empty string when bulkManagement runs without error', () => {
+    const result = selectors.bulkImportError({ grades: { bulkManagement: { uploadSuccess: true } } });
+    expect(result).toEqual('');
+  });
+
+  it('returns error string when bulkManagement encounters an error', () => {
+    const result = selectors.bulkImportError({ grades: { bulkManagement: { errorMessages: ['It\'s over 9000', 'Neutrino-triggered bit flips'] } } });
+    expect(result).toEqual('Errors while processing: It\'s over 9000, Neutrino-triggered bit flips');
+  });
+});
+
 describe('bulkManagementHistoryEntries', () => {
   it('handles history being as-yet unloaded', () => {
     const result = selectors.bulkManagementHistoryEntries({ grades: { bulkManagement: {} } });
