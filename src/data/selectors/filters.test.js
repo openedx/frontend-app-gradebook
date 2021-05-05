@@ -3,7 +3,7 @@ import selectors from './filters';
 const filters = {
   assignment: {
     category: 'Homework',
-    id: 'block-v1:edX+type@sequential+block@abcdef',
+    id: 'block-v1:edX+type@sequential+block@abcde',
     label: 'HW 01',
     subsectionLabel: 'Example Week 1: Getting Started',
   },
@@ -81,7 +81,7 @@ describe('allFilters', () => {
 describe('selectedAssignmentId', () => {
   it('gets filtered assignment ID when available', () => {
     const assignmentId = selectors.selectedAssignmentId(testState);
-    expect(assignmentId).toEqual('block-v1:edX+type@sequential+block@abcdef');
+    expect(assignmentId).toEqual('block-v1:edX+type@sequential+block@abcde');
   });
   it('returns undefined when assignment ID unavailable', () => {
     const assignmentId = selectors.selectedAssignmentId({ filters: { assignment: undefined } });
