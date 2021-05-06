@@ -15,6 +15,39 @@ const genericHistoryRow = {
   },
 };
 
+const genericResultsRows = [
+  {
+    attempted: true,
+    category: 'Homework',
+    label: 'HW 01',
+    module_id: 'block-v1:edX+Term+type@sequential+block@1',
+    percent: 1,
+    score_earned: 1,
+    score_possible: 1,
+    subsection_name: 'Week 1',
+  },
+  {
+    attempted: true,
+    category: 'Homework',
+    label: 'HW 02',
+    module_id: 'block-v1:edX+Term+type@sequential+block@2',
+    percent: 1,
+    score_earned: 1,
+    score_possible: 1,
+    subsection_name: 'Week 2',
+  },
+  {
+    attempted: false,
+    category: 'Lab',
+    label: 'Lab 01',
+    module_id: 'block-v1:edX+Term+type@sequential+block@3',
+    percent: 0,
+    score_earned: 0,
+    score_possible: 0,
+    subsection_name: 'Week 3',
+  },
+];
+
 describe('bulkImportError', () => {
   it('returns an empty string when bulkManagement not run', () => {
     const result = selectors.bulkImportError({ grades: { bulkManagement: null } });
@@ -112,6 +145,66 @@ describe('getExampleSectionBreakdown', () => {
       displayed_value: '1.00',
       grade_description: '(0.00/0.00)',
     }]);
+  });
+});
+
+describe('headingMapper', () => {
+  const allSubsectionLabels = ['HW 01', 'HW 02', 'Lab 01'];
+  const expectedHeaders = (subsectionLabels) => (['Username', 'Email', ...subsectionLabels, 'Total Grade (%)']);
+
+  it('creates headers for all assignments when no filtering is applied', () => {
+    const headingMapper = selectors.headingMapper('All');
+    const headers = headingMapper(genericResultsRows);
+    expect(headers).toEqual(expectedHeaders(allSubsectionLabels));
+  });
+  it('creates headers for only matching assignment types when type filter is applied', () => {
+    const headingMapper = selectors.headingMapper('Homework');
+    const headers = headingMapper(genericResultsRows);
+    expect(headers).toEqual(expectedHeaders(['HW 01', 'HW 02']));
+  });
+  it('creates headers for only matching assignment when label filter is applied', () => {
+    const headingMapper = selectors.headingMapper('Homework', 'HW 02');
+    const headers = headingMapper(genericResultsRows);
+    expect(headers).toEqual(expectedHeaders(['HW 02']));
+  });
+  it('returns an empty array when no entries are passed', () => {
+    const headingMapper = selectors.headingMapper('All');
+    const headers = headingMapper(undefined);
+    expect(headers).toEqual([]);
+  });
+});
+
+describe('simpleSelectors', () => {
+  const simpleSelectorState = {
+    grades: {
+      filteredUsersCount: 9000,
+      totalUsersCount: 9001,
+      gradeFormat: 'percent',
+      showSpinner: false,
+      gradeOverrideCurrentEarnedGradedOverride: null,
+      gradeOverrideHistoryError: null,
+      gradeOriginalEarnedGraded: null,
+      gradeOriginalPossibleGraded: null,
+      showSuccess: false,
+    },
+  };
+
+  it('selects simple data by name from grades state', () => {
+    // the selector factory is already tested, this just exercises some of these mappings
+    expect(selectors.filteredUsersCount(simpleSelectorState)).toEqual(9000);
+    expect(selectors.totalUsersCount(simpleSelectorState)).toEqual(9001);
+    expect(selectors.gradeFormat(simpleSelectorState)).toEqual('percent');
+  });
+});
+
+describe('uploadSuccess', () => {
+  it('shows an upload success when bulk management data returned and completed successfully', () => {
+    const uploadSuccess = selectors.uploadSuccess({ grades: { bulkManagement: { uploadSuccess: true } } });
+    expect(uploadSuccess).toEqual(true);
+  });
+  it('returns false when bulk management data not returned', () => {
+    const uploadSuccess = selectors.uploadSuccess({ grades: {} });
+    expect(uploadSuccess).toEqual(false);
   });
 });
 
