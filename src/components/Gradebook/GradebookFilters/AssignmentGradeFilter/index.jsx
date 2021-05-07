@@ -5,9 +5,8 @@ import { connect } from 'react-redux';
 
 import { Button } from '@edx/paragon';
 
-import * as gradesActions from 'data/actions/grades';
-import * as filterActions from 'data/actions/filters';
 import selectors from 'data/selectors';
+import * as actions from 'data/actions';
 
 import PercentGroup from '../PercentGroup';
 
@@ -118,8 +117,8 @@ export const mapStateToProps = (state) => {
 };
 
 export const mapDispatchToProps = {
-  getUserGrades: gradesActions.fetchGrades,
-  updateAssignmentLimits: filterActions.updateAssignmentLimits,
+  getUserGrades: fetchGrades,
+  updateAssignmentLimits: actions.filters.update.assignmentLimits,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(AssignmentGradeFilter);

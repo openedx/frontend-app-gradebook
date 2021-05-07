@@ -3,9 +3,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
-import * as gradesActions from 'data/actions/grades';
-import * as filterActions from 'data/actions/filters';
 import selectors from 'data/selectors';
+import * as actions from 'data/actions';
+import { updateGradesIfAssignmentGradeFiltersSet } from 'data/thunkActions/grades';
 
 import SelectGroup from '../SelectGroup';
 
@@ -97,8 +97,8 @@ export const mapStateToProps = (state) => {
 };
 
 export const mapDispatchToProps = {
-  updateAssignmentFilter: filterActions.updateAssignmentFilter,
-  updateGradesIfAssignmentGradeFiltersSet: gradesActions.updateGradesIfAssignmentGradeFiltersSet,
+  updateAssignmentFilter: actions.filters.update.assignment,
+  updateGradesIfAssignmentGradeFiltersSet,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(AssignmentFilter);

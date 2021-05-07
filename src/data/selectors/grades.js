@@ -102,6 +102,23 @@ const formatMinAssignmentGrade = composeFilters(
   assignmentIdIsDefined,
 );
 
+const allGrades = ({ grades: { results } }) => results;
+const uploadSuccess = ({ grades: { bulkManagement } }) => (!!bulkManagement && bulkManagement.uploadSuccess);
+
+const bulkImportError = ({ grades: { bulkManagement } }) => (
+  (!!bulkManagement && bulkManagement.errorMessages)
+    ? `Errors while processing: ${bulkManagement.errorMessages.join(', ')}`
+    : ''
+);
+const gradeOverrides = ({ grades }) => grades.gradeOverrideHistoryResults;
+
+const formatGradeOverrideForDisplay = historyArray => historyArray.map(item => ({
+  date: formatDateForDisplay(new Date(item.history_date)),
+  grader: item.history_user,
+  reason: item.override_reason,
+  adjustedGrade: item.earned_graded_override,
+}));
+
 const simpleSelectors = simpleSelectorFactory(
   ({ grades }) => grades,
   [
@@ -117,18 +134,9 @@ const simpleSelectors = simpleSelectorFactory(
   ],
 );
 
-const allGrades = ({ grades: { results } }) => results;
-const uploadSuccess = ({ grades: { bulkManagement } }) => (!!bulkManagement && bulkManagement.uploadSuccess);
-
-const bulkImportError = ({ grades: { bulkManagement } }) => (
-  (!!bulkManagement && bulkManagement.errorMessages)
-    ? `Errors while processing: ${bulkManagement.errorMessages.join(', ')}`
-    : ''
-);
-const gradeOverrides = ({ grades }) => grades.gradeOverrideHistoryResults;
-
 const selectors = {
   bulkImportError,
+  formatGradeOverrideForDisplay,
   formatMinAssignmentGrade,
   formatMaxAssignmentGrade,
   formatMaxCourseGrade,

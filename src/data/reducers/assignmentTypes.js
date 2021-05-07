@@ -1,9 +1,4 @@
-import {
-  STARTED_FETCHING_ASSIGNMENT_TYPES,
-  ERROR_FETCHING_ASSIGNMENT_TYPES,
-  GOT_ASSIGNMENT_TYPES,
-  GOT_ARE_GRADES_FROZEN,
-} from '../constants/actionTypes/assignmentTypes';
+import * as actions from '../actions/assignmentTypes';
 
 const initialState = {
   results: [],
@@ -11,30 +6,30 @@ const initialState = {
   errorFetching: false,
 };
 
-const assignmentTypes = (state = initialState, action) => {
-  switch (action.type) {
-    case GOT_ASSIGNMENT_TYPES:
+const assignmentTypes = (state = initialState, { type, payload }) => {
+  switch (type) {
+    case actions.received.toString():
       return {
         ...state,
-        results: action.assignmentTypes,
+        results: payload,
         errorFetching: false,
         finishedFetching: true,
       };
-    case STARTED_FETCHING_ASSIGNMENT_TYPES:
+    case actions.startedFetching.toString():
       return {
         ...state,
         startedFetching: true,
       };
-    case ERROR_FETCHING_ASSIGNMENT_TYPES:
+    case actions.errorFetching.toString():
       return {
         ...state,
         finishedFetching: true,
         errorFetching: true,
       };
-    case GOT_ARE_GRADES_FROZEN:
+    case actions.gotGradesFrozen.toString():
       return {
         ...state,
-        areGradesFrozen: action.areGradesFrozen,
+        areGradesFrozen: payload,
         errorFetching: false,
         finishedFetching: true,
       };

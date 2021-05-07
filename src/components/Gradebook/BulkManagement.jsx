@@ -12,8 +12,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faDownload } from '@fortawesome/free-solid-svg-icons';
 
 import selectors from 'data/selectors';
-import { configuration } from '../../config';
-import { submitFileUploadFormData } from '../../data/actions/grades';
+import { configuration } from 'config';
+import { submitFileUploadFormData } from 'data/thunkActions/grades';
 
 export class BulkManagement extends React.Component {
   constructor(props) {

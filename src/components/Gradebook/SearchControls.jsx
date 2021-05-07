@@ -8,7 +8,7 @@ import selectors from 'data/selectors';
 import {
   fetchGrades,
   fetchMatchingUserGrades,
-} from '../../data/actions/grades';
+} from 'data/thunkActions/grades';
 
 /**
  * Controls for filtering the GradebookTable. Contains the "Edit Filters" button for opening the filter drawer

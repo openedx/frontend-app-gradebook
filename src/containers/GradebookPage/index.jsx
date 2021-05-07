@@ -1,27 +1,19 @@
 import { connect } from 'react-redux';
 
-import selectors from 'data/selectors';
-import Gradebook from '../../components/Gradebook';
+import { fetchAssignmentTypes } from 'data/thunkActions/assignmentTypes';
 import {
   fetchGradeOverrideHistory,
   fetchGrades,
   fetchPrevNextGrades,
-  filterAssignmentType,
   submitFileUploadFormData,
-  toggleGradeFormat,
-  downloadBulkGradesReport,
-  downloadInterventionReport,
-} from '../../data/actions/grades';
-import { fetchCohorts } from '../../data/actions/cohorts';
-import { fetchTracks } from '../../data/actions/tracks';
-import {
-  initializeFilters,
-  resetFilters,
-  updateAssignmentFilter,
-  updateAssignmentLimits,
-} from '../../data/actions/filters';
-import { fetchAssignmentTypes } from '../../data/actions/assignmentTypes';
-import { getRoles } from '../../data/actions/roles';
+} from 'data/thunkActions/grades';
+import { fetchCohorts } from 'data/thunkActions/cohorts';
+import { fetchTracks } from 'data/thunkActions/tracks';
+import { getRoles } from 'data/thunkActions/roles';
+import * as actions from 'data/actions';
+import selectors from 'data/selectors';
+
+import Gradebook from 'components/Gradebook';
 
 const mapStateToProps = (state, ownProps) => {
   const {
@@ -61,22 +53,22 @@ const mapStateToProps = (state, ownProps) => {
 };
 
 const mapDispatchToProps = {
-  downloadBulkGradesReport,
-  downloadInterventionReport,
+  downloadBulkGradesReport: actions.grades.downloadReport.bulkGrades,
+  downloadInterventionReport: actions.grades.downloadReport.intervention,
   fetchGradeOverrideHistory,
-  filterAssignmentType,
+  filterAssignmentType: actions.filter.update.assignmentType,
   getAssignmentTypes: fetchAssignmentTypes,
   getCohorts: fetchCohorts,
   getPrevNextGrades: fetchPrevNextGrades,
   getRoles,
   getTracks: fetchTracks,
   getUserGrades: fetchGrades,
-  initializeFilters,
-  resetFilters,
+  initializeFilters: actions.filters.initialize,
+  resetFilters: actions.filters.reset,
   submitFileUploadFormData,
-  toggleFormat: toggleGradeFormat,
-  updateAssignmentFilter,
-  updateAssignmentLimits,
+  toggleFormat: actions.grades.toggleGradeFormat,
+  updateAssignmentFilter: actions.filters.update.assignment,
+  updateAssignmentLimits: actions.filters.update.assignmentLimits,
 };
 
 const GradebookPage = connect(

@@ -3,7 +3,6 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
-import { fetchGrades } from 'data/actions/grades';
 import selectors from 'data/selectors';
 import SelectGroup from '../SelectGroup';
 

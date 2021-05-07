@@ -1,7 +1,4 @@
-import {
-  GOT_ROLES,
-  ERROR_FETCHING_ROLES,
-} from '../constants/actionTypes/roles';
+import * as actions from '../actions/roles';
 
 const initialState = {
   canUserViewGradebook: null,
@@ -9,12 +6,12 @@ const initialState = {
 
 const roles = (state = initialState, action) => {
   switch (action.type) {
-    case GOT_ROLES:
+    case actions.received.toString():
       return {
         ...state,
-        canUserViewGradebook: action.canUserViewGradebook,
+        canUserViewGradebook: action.payload,
       };
-    case ERROR_FETCHING_ROLES:
+    case actions.errorFetching.toString():
       return {
         ...state,
         canUserViewGradebook: false,

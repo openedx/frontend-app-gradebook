@@ -1,82 +1,77 @@
 import filterSelectors from 'data/selectors/filters';
-import { GOT_GRADES, FILTER_BY_ASSIGNMENT_TYPE } from '../constants/actionTypes/grades';
-import {
-  INITIALIZE_FILTERS,
-  UPDATE_ASSIGNMENT_FILTER,
-  UPDATE_ASSIGNMENT_LIMITS,
-  UPDATE_COURSE_GRADE_LIMITS,
-  RESET_FILTERS,
-  UPDATE_INCLUDE_COURSE_ROLE_MEMBERS,
-} from '../constants/actionTypes/filters';
+import * as actions from '../actions/filters';
+import * as gradeActions from '../actions/grades';
 import initialFilters from '../constants/filters';
 
 const { getAssignmentsFromResultsSubstate, chooseRelevantAssignmentData } = filterSelectors;
 const initialState = {};
 
-const reducer = (state = initialState, action) => {
-  switch (action.type) {
-    case FILTER_BY_ASSIGNMENT_TYPE:
+const reducer = (state = initialState, { type: actionType, payload }) => {
+  switch (actionType) {
+    case actions.update.assignmentType.toString():
       return {
         ...state,
-        assignmentType: action.filterType,
+        assignmentType: payload.filterType,
         assignment: (
-          action.filterType !== ''
-          && (state.assignment || {}).type !== action.filterType)
+          payload.filterType !== ''
+          && (state.assignment || {}).type !== payload.filterType)
           ? '' : state.assignment,
       };
-    case INITIALIZE_FILTERS:
+    case actions.initialize.toString():
       return {
         ...state,
-        ...action.data,
+        ...payload,
       };
-    case GOT_GRADES: {
+    case gradeActions.received.toString(): {
       const { assignment } = state;
       const { id, type } = assignment || {};
       if (!type) {
-        const relevantAssignment = getAssignmentsFromResultsSubstate(action.grades)
-          .map(chooseRelevantAssignmentData)
-          .find(assig => assig.id === id);
+        const relevantAssignment = getAssignmentsFromResultsSubstate(
+          payload.grades,
+        ).map(
+          chooseRelevantAssignmentData,
+        ).find(assig => assig.id === id);
         return {
           ...state,
-          track: action.track,
-          cohort: action.cohort,
+          track: payload.track,
+          cohort: payload.cohort,
           assignment: relevantAssignment,
         };
       }
       return {
         ...state,
-        track: action.track,
-        cohort: action.cohort,
+        track: payload.track,
+        cohort: payload.cohort,
       };
     }
-    case RESET_FILTERS: {
+    case actions.reset.toString(): {
       const result = { ...state };
-      action.filterNames.forEach((filterName) => {
+      payload.forEach((filterName) => {
         result[filterName] = initialFilters[filterName];
       });
       return result;
     }
-    case UPDATE_ASSIGNMENT_FILTER:
+    case actions.update.assignment.toString():
       return {
         ...state,
-        assignment: action.data,
+        assignment: payload,
       };
-    case UPDATE_ASSIGNMENT_LIMITS:
+    case actions.update.assignmentLimits.toString():
       return {
         ...state,
-        assignmentGradeMin: action.data.minGrade,
-        assignmentGradeMax: action.data.maxGrade,
+        assignmentGradeMin: payload.minGrade,
+        assignmentGradeMax: payload.maxGrade,
       };
-    case UPDATE_COURSE_GRADE_LIMITS:
+    case actions.update.courseGradeLimits.toString():
       return {
         ...state,
-        courseGradeMin: action.data.courseGradeMin,
-        courseGradeMax: action.data.courseGradeMax,
+        courseGradeMin: payload.courseGradeMin,
+        courseGradeMax: payload.courseGradeMax,
       };
-    case UPDATE_INCLUDE_COURSE_ROLE_MEMBERS:
+    case actions.update.includeCourseRoleMembers.toString():
       return {
         ...state,
-        includeCourseRoleMembers: action.data.includeCourseRoleMembers,
+        includeCourseRoleMembers: payload,
       };
     default:
       return state;

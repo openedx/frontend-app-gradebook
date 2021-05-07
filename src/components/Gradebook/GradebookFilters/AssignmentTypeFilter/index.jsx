@@ -3,8 +3,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
+<<<<<<< HEAD
 import * as gradesActions from 'data/actions/grades';
 import selectors from 'data/selectors';
+=======
+import { selectableAssignmentLabels } from 'data/selectors/filters';
+import * as actions from 'data/actions';
+>>>>>>> 5694a3b... update actions to use redux toolkit action creators
 
 import SelectGroup from '../SelectGroup';
 
@@ -72,7 +77,7 @@ export const mapStateToProps = (state) => ({
 });
 
 export const mapDispatchToProps = {
-  filterAssignmentType: gradesActions.filterAssignmentType,
+  filterAssignmentType: actions.filters.update.assignmentType,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(AssignmentTypeFilter);

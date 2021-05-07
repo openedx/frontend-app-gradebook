@@ -7,10 +7,10 @@ import {
   Table, OverlayTrigger, Tooltip, Icon,
 } from '@edx/paragon';
 
-import { formatDateForDisplay } from '../../data/actions/utils';
-import { fetchGradeOverrideHistory } from '../../data/actions/grades';
-import { EMAIL_HEADING, TOTAL_COURSE_GRADE_HEADING, USERNAME_HEADING } from '../../data/constants/grades';
-import selectors from '../../data/selectors';
+import { EMAIL_HEADING, TOTAL_COURSE_GRADE_HEADING, USERNAME_HEADING } from 'data/constants/grades';
+import selectors from 'data/selectors';
+import { formatDateForDisplay } from 'data/actions/utils';
+import { fetchGradeOverrideHistory } from 'data/thunkActions/grades';
 
 const DECIMAL_PRECISION = 2;
 
@@ -219,7 +219,7 @@ GradebookTable.propTypes = {
 
 export const mapStateToProps = (state) => {
   const { assignmentTypes, grades, root } = selectors;
-  return {
+  returg {
     areGradesFrozen: assignmentTypes.areGradesFrozen(state),
     format: grades.gradeFormat(state),
     grades: grades.allGrades(state),
