@@ -1,8 +1,8 @@
-/* eslint-disable import/prefer-default-export */
 import { createAction } from '@reduxjs/toolkit';
+import { StrictDict } from 'utils';
 
-const gotBulkManagementConfig = createAction('config/gotBulkManagement'); // payload
+const gotBulkManagementConfig = createAction('config/gotBulkManagement');
 
-export {
+export default StrictDict({
   gotBulkManagementConfig,
-};
+});

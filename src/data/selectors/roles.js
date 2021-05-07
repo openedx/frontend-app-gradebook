@@ -1,5 +1,5 @@
 const selectors = {
-  canUserViewGradebook: ({ roles }) => roles.canUserViewGradebook,
+  canUserViewGradebook: ({ roles }) => !!roles.canUserViewGradebook,
 };
 
 export default selectors;

@@ -1,7 +1,6 @@
 /* eslint-disable import/prefer-default-export */
-import * as roles from '../actions/roles';
-
-import { getFilters } from '../selectors/filters';
+import roles from '../actions/roles';
+import selectors from '../selectors';
 
 import { fetchCohorts } from './cohorts';
 import {
@@ -24,7 +23,11 @@ const getRoles = courseId => (
 
       const canUserViewGradebook = (response.is_staff || (response.roles.some(isAllowedRole)));
       dispatch(roles.received({ canUserViewGradebook, courseId }));
-      const { cohort, track, assignmentType } = getFilters(getState());
+      const {
+        cohort,
+        track,
+        assignmentType,
+      } = selectors.filters.allFilters(getState());
       if (canUserViewGradebook) {
         dispatch(fetchGrades(courseId, cohort, track, assignmentType));
         dispatch(fetchTracks(courseId));

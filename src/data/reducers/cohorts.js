@@ -1,4 +1,4 @@
-import * as actions from '../actions/cohorts';
+import actions from '../actions/cohorts';
 
 const initialState = {
   results: [],

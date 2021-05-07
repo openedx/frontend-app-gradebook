@@ -1,19 +1,19 @@
 /* eslint-disable import/prefer-default-export */
 
-import * as cohorts from '../actions/cohorts';
+import cohorts from '../actions/cohorts';
 
 import LmsApiService from '../services/LmsApiService';
 
 const fetchCohorts = courseId => (
   (dispatch) => {
-    dispatch(cohorts.startedFetching());
+    dispatch(cohorts.fetching.started());
     return LmsApiService.fetchCohorts(courseId)
       .then(response => response.data)
       .then((data) => {
-        dispatch(cohorts.received(data.cohorts));
+        dispatch(cohorts.fetching.received(data.cohorts));
       })
       .catch(() => {
-        dispatch(cohorts.errorFetching());
+        dispatch(cohorts.fetching.error());
       });
   }
 );

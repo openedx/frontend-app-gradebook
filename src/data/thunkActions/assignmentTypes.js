@@ -1,22 +1,23 @@
 /* eslint-disable import/prefer-default-export */
-
-import * as assignmentTypes from '../actions/assignmentTypes';
-import * as config from '../actions/config';
+import actions from '../actions';
 
 import LmsApiService from '../services/LmsApiService';
 
+const { fetching, gotGradesFrozen } = actions.assignmentTypes;
+const { gotBulkManagementConfig } = actions.config;
+
 const fetchAssignmentTypes = courseId => (
   (dispatch) => {
-    dispatch(assignmentTypes.startedFetching());
+    dispatch(fetching.started());
     return LmsApiService.fetchAssignmentTypes(courseId)
       .then(response => response.data)
       .then((data) => {
-        dispatch(assignmentTypes.received(Object.keys(data.assignment_types)));
-        dispatch(assignmentTypes.gotGradesFrozen(data.grades_frozen));
-        dispatch(config.gotBulkManagementConfig(data.can_see_bulk_management));
+        dispatch(fetching.received(Object.keys(data.assignment_types)));
+        dispatch(gotGradesFrozen(data.grades_frozen));
+        dispatch(gotBulkManagementConfig(data.can_see_bulk_management));
       })
       .catch(() => {
-        dispatch(assignmentTypes.errorFetching());
+        dispatch(fetching.error());
       });
   }
 );

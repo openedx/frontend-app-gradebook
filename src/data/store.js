@@ -5,8 +5,7 @@ import { createLogger } from 'redux-logger';
 import { createMiddleware } from 'redux-beacon';
 import Segment, { trackEvent, trackPageView } from '@redux-beacon/segment';
 
-import * as actions from './actions';
-
+import actions from './actions';
 import reducers from './reducers';
 
 const loggerMiddleware = createLogger();
@@ -68,7 +67,7 @@ const eventsMap = {
       label: payload.courseId,
     },
   })),
-  [actions.grades.downloadReport.bulkGrade.toString()]: trackEvent(
+  [actions.grades.downloadReport.bulkGrades.toString()]: trackEvent(
     ({ payload }) => ({
       name: 'edx.gradebook.reports.grade_export.downloaded',
       properties: {
@@ -77,7 +76,7 @@ const eventsMap = {
       },
     }),
   ),
-  [actions.grades.downloadReport.invervention.toString()]: trackEvent(
+  [actions.grades.downloadReport.intervention.toString()]: trackEvent(
     ({ payload }) => ({
       name: 'edx.gradebook.reports.intervention.downloaded',
       properties: {

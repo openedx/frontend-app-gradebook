@@ -1,7 +1,7 @@
 /* eslint-disable import/prefer-default-export */
-import * as tracks from '../actions/tracks';
+import tracks from '../actions/tracks';
 
-import { hasMastersTrack } from '../selectors/tracks';
+import selectors from '../selectors';
 
 import {
   fetchBulkUpgradeHistory,
@@ -16,7 +16,7 @@ const fetchTracks = courseId => (
       .then(response => response.data)
       .then((data) => {
         dispatch(tracks.fetching.received(data.course_modes));
-        if (hasMastersTrack(data.course_modes)) {
+        if (selectors.tracks.hasMastersTrack(data.course_modes)) {
           dispatch(fetchBulkUpgradeHistory(courseId));
         }
       })

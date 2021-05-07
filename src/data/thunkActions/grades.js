@@ -1,20 +1,21 @@
 import { getAuthenticatedHttpClient } from '@edx/frontend-platform/auth';
 
-import * as grades from '../actions/grades';
+import grades from '../actions/grades';
 import { sortAlphaAsc } from '../actions/utils';
 
-import { getFilters } from '../selectors/filters';
-import {
+import selectors from '../selectors';
+
+import GRADE_OVERRIDE_HISTORY_ERROR_DEFAULT_MSG from '../constants/errors';
+
+import LmsApiService from '../services/LmsApiService';
+
+const {
   formatMaxAssignmentGrade,
   formatMinAssignmentGrade,
   formatMaxCourseGrade,
   formatMinCourseGrade,
   formatGradeOverrideForDisplay,
-} from '../selectors/grades';
-
-import GRADE_OVERRIDE_HISTORY_ERROR_DEFAULT_MSG from '../constants/errors';
-
-import LmsApiService from '../services/LmsApiService';
+} = selectors.grades;
 
 const defaultAssignmentFilter = 'All';
 
@@ -41,7 +42,7 @@ const fetchGrades = (
       courseGradeMin,
       courseGradeMax,
       includeCourseRoleMembers,
-    } = getFilters(getState());
+    } = selectors.filters.allFilters(getState());
     const { id: assignmentId } = assignment || {};
     const assignmentGradeMax = formatMaxAssignmentGrade(assignmentMax, { assignmentId });
     const assignmentGradeMin = formatMinAssignmentGrade(assignmentMin, { assignmentId });

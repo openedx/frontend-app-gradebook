@@ -11,7 +11,8 @@ import {
 } from '@edx/paragon';
 
 import selectors from 'data/selectors';
-import * as actions from 'data/actions';
+import actions from 'data/actions';
+import { updateGrades } from 'data/thunkActions/grades';
 
 const GRADE_OVERRIDE_HISTORY_COLUMNS = [
   { label: 'Date', key: 'date' },
@@ -201,7 +202,7 @@ export const mapStateToProps = (state) => {
 
 export const mapDispatchToProps = {
   doneViewingAssignment: actions.grades.doneViewingAssignment,
-  updateGrades: actions.grades.updateGrades,
+  updateGrades,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(EditModal);

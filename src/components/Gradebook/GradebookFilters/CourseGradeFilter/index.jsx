@@ -6,6 +6,7 @@ import {
   Button,
 } from '@edx/paragon';
 
+import { fetchGrades } from 'data/thunkActions/grades';
 import selectors from 'data/selectors';
 import actions from 'data/actions';
 import PercentGroup from '../PercentGroup';
@@ -128,7 +129,7 @@ export const mapStateToProps = (state) => {
 };
 
 export const mapDispatchToProps = {
-  updateFilter: actions.filter.update.courseGrade,
+  updateFilter: actions.filters.update.courseGradeLimits,
   getUserGrades: fetchGrades,
 };
 

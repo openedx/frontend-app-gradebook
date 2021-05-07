@@ -1,14 +1,15 @@
 import { createAction } from '@reduxjs/toolkit';
+import { StrictDict } from 'utils';
 
-const errorFetching = createAction('assignmentTypes/errorFetching');
-const startedFetching = createAction('assignmentTypes/startedFetching');
-
-const received = createAction('assignmentTypes/results'); // payload
-const gotGradesFrozen = createAction('assignmentTypes/gotGradesFrozen'); // payload
-
-export {
-  errorFetching,
-  startedFetching,
-  received,
-  gotGradesFrozen,
+const fetching = {
+  error: createAction('assignmentTypes/fetching/error'),
+  started: createAction('assignmentTypes/fetching/started'),
+  received: createAction('assignmentTypes/fetching/received'),
 };
+const gotGradesFrozen = createAction('assignmentTypes/gotGradesFrozen');
+
+const actions = StrictDict({
+  fetching,
+  gotGradesFrozen,
+});
+export default actions;

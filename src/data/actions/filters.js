@@ -1,4 +1,5 @@
 import { createAction } from '@reduxjs/toolkit';
+import { StrictDict } from 'utils';
 import initialFilters from '../constants/filters';
 
 const initialize = createAction('filters/initialize', ({
@@ -26,16 +27,16 @@ const initialize = createAction('filters/initialize', ({
 }));
 
 const reset = createAction('filters/reset'); // paylaod
-const update = {
+const update = StrictDict({
   assignment: createAction('filters/update/assignment'),
   assignmentType: createAction('filters/update/assignmentType'),
   assignmentLimits: createAction('filters/update/assignmentLimits'),
-  courseGrade: createAction('filters/update/courseGrade'),
+  courseGradeLimits: createAction('filters/update/courseGradeLimits'),
   includeCourseRoleMembers: createAction('filters/update/includeCourseRoleMembers'),
-};
+});
 
-export {
+export default StrictDict({
   initialize,
   reset,
   update,
-};
+});

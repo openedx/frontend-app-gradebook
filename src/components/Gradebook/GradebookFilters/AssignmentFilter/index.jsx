@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 import selectors from 'data/selectors';
-import * as actions from 'data/actions';
+import actions from 'data/actions';
 import { updateGradesIfAssignmentGradeFiltersSet } from 'data/thunkActions/grades';
 
 import SelectGroup from '../SelectGroup';

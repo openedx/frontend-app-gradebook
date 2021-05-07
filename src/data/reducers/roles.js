@@ -1,4 +1,4 @@
-import * as actions from '../actions/roles';
+import actions from '../actions/roles';
 
 const initialState = {
   canUserViewGradebook: null,

@@ -5,8 +5,9 @@ import { connect } from 'react-redux';
 
 import { Button } from '@edx/paragon';
 
+import { fetchGrades } from 'data/thunkActions/grades';
 import selectors from 'data/selectors';
-import * as actions from 'data/actions';
+import actions from 'data/actions';
 
 import PercentGroup from '../PercentGroup';
 

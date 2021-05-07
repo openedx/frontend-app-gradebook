@@ -10,7 +10,8 @@ import {
 import { fetchCohorts } from 'data/thunkActions/cohorts';
 import { fetchTracks } from 'data/thunkActions/tracks';
 import { getRoles } from 'data/thunkActions/roles';
-import * as actions from 'data/actions';
+
+import actions from 'data/actions';
 import selectors from 'data/selectors';
 
 import Gradebook from 'components/Gradebook';
@@ -55,20 +56,22 @@ const mapStateToProps = (state, ownProps) => {
 const mapDispatchToProps = {
   downloadBulkGradesReport: actions.grades.downloadReport.bulkGrades,
   downloadInterventionReport: actions.grades.downloadReport.intervention,
+  toggleFormat: actions.grades.toggleGradeFormat,
+
+  filterAssignmentType: actions.filters.update.assignmentType,
+  initializeFilters: actions.filters.initialize,
+  updateAssignmentFilter: actions.filters.update.assignment,
+  updateAssignmentLimits: actions.filters.update.assignmentLimits,
+  resetFilters: actions.filters.reset,
+
   fetchGradeOverrideHistory,
-  filterAssignmentType: actions.filter.update.assignmentType,
   getAssignmentTypes: fetchAssignmentTypes,
   getCohorts: fetchCohorts,
   getPrevNextGrades: fetchPrevNextGrades,
   getRoles,
   getTracks: fetchTracks,
   getUserGrades: fetchGrades,
-  initializeFilters: actions.filters.initialize,
-  resetFilters: actions.filters.reset,
   submitFileUploadFormData,
-  toggleFormat: actions.grades.toggleGradeFormat,
-  updateAssignmentFilter: actions.filters.update.assignment,
-  updateAssignmentLimits: actions.filters.update.assignmentLimits,
 };
 
 const GradebookPage = connect(

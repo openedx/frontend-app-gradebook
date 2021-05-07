@@ -1,4 +1,4 @@
-import * as actions from '../actions/assignmentTypes';
+import actions from '../actions/assignmentTypes';
 
 const initialState = {
   results: [],
@@ -8,19 +8,19 @@ const initialState = {
 
 const assignmentTypes = (state = initialState, { type, payload }) => {
   switch (type) {
-    case actions.received.toString():
+    case actions.fetching.received.toString():
       return {
         ...state,
         results: payload,
         errorFetching: false,
         finishedFetching: true,
       };
-    case actions.startedFetching.toString():
+    case actions.fetching.started.toString():
       return {
         ...state,
         startedFetching: true,
       };
-    case actions.errorFetching.toString():
+    case actions.fetching.error.toString():
       return {
         ...state,
         finishedFetching: true,

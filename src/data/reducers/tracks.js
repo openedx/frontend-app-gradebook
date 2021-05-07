@@ -1,4 +1,4 @@
-import * as actions from '../actions/tracks';
+import actions from '../actions/tracks';
 
 const initialState = {
   results: [],

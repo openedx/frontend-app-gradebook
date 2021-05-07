@@ -1,15 +1,19 @@
-import * as assignmentTypes from './assignmentTypes';
-import * as cohorts from './cohorts';
-import * as config from './config';
-import * as grades from './grades';
-import * as roles from './roles';
-import * as tracks from './tracks';
+import { StrictDict } from 'utils';
 
-export {
+import assignmentTypes from './assignmentTypes';
+import cohorts from './cohorts';
+import config from './config';
+import filters from './filters';
+import grades from './grades';
+import roles from './roles';
+import tracks from './tracks';
+
+export default StrictDict({
   assignmentTypes,
   cohorts,
   config,
+  filters,
   grades,
   roles,
   tracks,
-};
+});

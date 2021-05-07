@@ -1,4 +1,5 @@
 import { createAction } from '@reduxjs/toolkit';
+import { StrictDict } from 'utils';
 
 const csvUpload = {
   started: createAction('grades/csvUpload/started'),
@@ -82,7 +83,7 @@ const banner = {
 
 const doneViewingAssignment = createAction('grades/doneViewingAssignment');
 
-export {
+export default StrictDict({
   banner,
   bulkHistory,
   csvUpload,
@@ -94,4 +95,4 @@ export {
   toggleGradeFormat,
   update,
   uploadOverride,
-};
+});

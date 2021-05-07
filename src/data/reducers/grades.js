@@ -1,5 +1,5 @@
-import * as actions from '../actions/grades';
-import * as filterActions from '../actions/filters';
+import actions from '../actions/grades';
+import filterActions from '../actions/filters';
 
 const initialState = {
   results: [],
@@ -58,7 +58,7 @@ const grades = (state = initialState, { type, payload }) => {
       } = state;
       return rest;
     }
-    case actions.gradeOverride.received.toString():
+    case actions.overrideHistory.received.toString():
       return {
         ...state,
         gradeOverrideHistoryResults: payload.overrideHistory,
@@ -98,7 +98,7 @@ const grades = (state = initialState, { type, payload }) => {
         ...state,
         gradeFormat: payload,
       };
-    case filterActions.filterAssignmentType.toString():
+    case filterActions.update.assignmentType.toString():
       return {
         ...state,
         selectedAssignmentType: payload.filterType,

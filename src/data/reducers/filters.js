@@ -1,6 +1,6 @@
 import filterSelectors from 'data/selectors/filters';
-import * as actions from '../actions/filters';
-import * as gradeActions from '../actions/grades';
+import actions from '../actions/filters';
+import gradeActions from '../actions/grades';
 import initialFilters from '../constants/filters';
 
 const { getAssignmentsFromResultsSubstate, chooseRelevantAssignmentData } = filterSelectors;

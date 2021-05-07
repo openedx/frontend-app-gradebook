@@ -1,5 +1,5 @@
-/* eslint-disable import/prefer-default-export */
 import { createAction } from '@reduxjs/toolkit';
+import { StrictDict } from 'utils';
 
 const fetching = {
   started: createAction('tracks/fetching/started'),
@@ -7,6 +7,6 @@ const fetching = {
   received: createAction('tracks/fetching/received'),
 };
 
-export {
+export default StrictDict({
   fetching,
-};
+});

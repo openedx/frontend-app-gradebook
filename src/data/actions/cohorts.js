@@ -1,12 +1,12 @@
 import { createAction } from '@reduxjs/toolkit';
+import { StrictDict } from 'utils';
 
-
-const startedFetching = createAction('cohorts/startedFetching');
-const errorFetching = createAction('cohorts/errorFetching');
-const received = createAction('cohorts/received');
-
-export {
-  errorFetching,
-  received,
-  startedFetching,
+const fetching = {
+  started: createAction('cohorts/startedFetching'),
+  error: createAction('cohorts/errorFetching'),
+  received: createAction('cohorts/received'),
 };
+
+export default StrictDict({
+  fetching,
+});
