@@ -1,12 +1,10 @@
 import selectors from './assignmentTypes';
 
 describe('areGradesFrozen', () => {
-  it('returns whether grades are frozen', () => {
-    let areGradesFrozen = selectors.areGradesFrozen({ assignmentTypes: { areGradesFrozen: true } });
-    expect(areGradesFrozen).toBeTruthy();
-
-    areGradesFrozen = selectors.areGradesFrozen({ assignmentTypes: { areGradesFrozen: false } });
-    expect(areGradesFrozen).toBeFalsy();
+  it('selects areGradesFrozen from state', () => {
+    const testValue = 'THX 1138';
+    const areGradesFrozen = selectors.areGradesFrozen({ assignmentTypes: { areGradesFrozen: testValue } });
+    expect(areGradesFrozen).toEqual(testValue);
   });
 });
 

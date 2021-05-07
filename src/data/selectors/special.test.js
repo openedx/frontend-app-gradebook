@@ -6,7 +6,6 @@ describe('hasSpecialBulkManagementAccess', () => {
   const allowedCourses = 'edX/DemoX/2021T1,edX/DemoX/2021T2';
 
   beforeEach(() => {
-    jest.resetModules();
     process.env = { ...OLD_ENV };
   });
 

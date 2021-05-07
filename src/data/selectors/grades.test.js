@@ -69,37 +69,61 @@ describe('grade formatters', () => {
   const selectedAssignment = { assignmentId: 'block-v1:edX+type@sequential+block@abcde' };
 
   describe('formatMinAssignmentGrade', () => {
-    it('passes numbers through grade has been modified and assignment is supplied', () => {
+    it('passes numbers through when grade is not default (0) and assignment is supplied', () => {
       const formattedMinAssignmentGrade = selectors.formatMinAssignmentGrade('1', selectedAssignment);
-      const formattedMaxAssignmentGrade = selectors.formatMaxAssignmentGrade('99', selectedAssignment);
-      const formattedMinGrade = selectors.formatMinCourseGrade('37', selectedAssignment);
-      const formattedMaxGrade = selectors.formatMaxCourseGrade('42', selectedAssignment);
-
       expect(formattedMinAssignmentGrade).toEqual('1');
-      expect(formattedMaxAssignmentGrade).toEqual('99');
-      expect(formattedMinGrade).toEqual('37');
-      expect(formattedMaxGrade).toEqual('42');
     });
-    it('ignores unmodified grades', () => {
+    it('ignores grade when unmodified from default (0)', () => {
       const formattedMinAssignmentGrade = selectors.formatMinAssignmentGrade('0', selectedAssignment);
-      const formattedMaxAssignmentGrade = selectors.formatMaxAssignmentGrade('100', selectedAssignment);
-      const formattedMinGrade = selectors.formatMinCourseGrade('0', selectedAssignment);
-      const formattedMaxGrade = selectors.formatMaxCourseGrade('100', selectedAssignment);
-
       expect(formattedMinAssignmentGrade).toEqual(null);
-      expect(formattedMaxAssignmentGrade).toEqual(null);
-      expect(formattedMinGrade).toEqual(null);
-      expect(formattedMaxGrade).toEqual(null);
     });
     it('ignores grade when an assignment is not supplied', () => {
       const formattedMinAssignmentGrade = selectors.formatMinAssignmentGrade('0', {});
-      const formattedMaxAssignmentGrade = selectors.formatMaxAssignmentGrade('100', {});
-      const formattedMinGrade = selectors.formatMinCourseGrade('0', {});
-      const formattedMaxGrade = selectors.formatMaxCourseGrade('100', {});
-
       expect(formattedMinAssignmentGrade).toEqual(null);
+    });
+  });
+
+  describe('formatMaxAssignmentGrade', () => {
+    it('passes numbers through when grade is not default (100) and assignment is supplied', () => {
+      const formattedMaxAssignmentGrade = selectors.formatMaxAssignmentGrade('99', selectedAssignment);
+      expect(formattedMaxAssignmentGrade).toEqual('99');
+    });
+    it('ignores grade when unmodified from default (100)', () => {
+      const formattedMaxAssignmentGrade = selectors.formatMaxAssignmentGrade('100', selectedAssignment);
       expect(formattedMaxAssignmentGrade).toEqual(null);
+    });
+    it('ignores grade when an assignment is not supplied', () => {
+      const formattedMaxAssignmentGrade = selectors.formatMaxAssignmentGrade('100', {});
+      expect(formattedMaxAssignmentGrade).toEqual(null);
+    });
+  });
+
+  describe('formatMinCourseGrade', () => {
+    it('passes numbers through when grade is not default (0) and assignment is supplied', () => {
+      const formattedMinGrade = selectors.formatMinCourseGrade('37', selectedAssignment);
+      expect(formattedMinGrade).toEqual('37');
+    });
+    it('ignores grade when unmodified from default (0)', () => {
+      const formattedMinGrade = selectors.formatMinCourseGrade('0', selectedAssignment);
       expect(formattedMinGrade).toEqual(null);
+    });
+    it('ignores grade when an assignment is not supplied', () => {
+      const formattedMinGrade = selectors.formatMinCourseGrade('0', {});
+      expect(formattedMinGrade).toEqual(null);
+    });
+  });
+
+  describe('formatMaxCourseGrade', () => {
+    it('passes numbers through when grade is not default (100) and assignment is supplied', () => {
+      const formattedMaxGrade = selectors.formatMaxCourseGrade('42', selectedAssignment);
+      expect(formattedMaxGrade).toEqual('42');
+    });
+    it('ignores unmodified grades', () => {
+      const formattedMaxGrade = selectors.formatMaxCourseGrade('100', selectedAssignment);
+      expect(formattedMaxGrade).toEqual(null);
+    });
+    it('ignores grade when an assignment is not supplied', () => {
+      const formattedMaxGrade = selectors.formatMaxCourseGrade('100', {});
       expect(formattedMaxGrade).toEqual(null);
     });
   });

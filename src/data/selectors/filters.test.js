@@ -54,13 +54,7 @@ const sectionBreakdowns = [
   },
 ];
 
-const gradesData = {
-  results: [
-    {
-      section_breakdown: sectionBreakdowns,
-    },
-  ],
-};
+const gradesData = { results: [{ section_breakdown: sectionBreakdowns }] };
 
 const testState = {
   filters,
