@@ -8,6 +8,7 @@ import Segment, { trackEvent, trackPageView } from '@redux-beacon/segment';
 import actions from './actions';
 import selectors from './selectors';
 import reducers from './reducers';
+import { configuration } from '../config';
 
 const loggerMiddleware = createLogger();
 const trackingCategory = 'gradebook';
@@ -88,11 +89,15 @@ const eventsMap = {
   ),
 };
 
-const segmentMiddleware = createMiddleware(eventsMap, Segment());
+const middleware = [thunkMiddleware, loggerMiddleware];
+// Conditionally add the segmentMiddleware only if the SEGMENT_KEY environment variable exists.
+if (configuration.SEGMENT_KEY) {
+  middleware.push(createMiddleware(eventsMap, Segment()));
+}
 
 const store = createStore(
   reducers,
-  composeWithDevTools(applyMiddleware(thunkMiddleware, loggerMiddleware, segmentMiddleware)),
+  composeWithDevTools(applyMiddleware(...middleware)),
 );
 
 // TODO debug only
