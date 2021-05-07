@@ -1,5 +1,5 @@
+import filterSelectors from 'data/selectors/filters';
 import { GOT_GRADES, FILTER_BY_ASSIGNMENT_TYPE } from '../constants/actionTypes/grades';
-
 import {
   INITIALIZE_FILTERS,
   UPDATE_ASSIGNMENT_FILTER,
@@ -8,11 +8,9 @@ import {
   RESET_FILTERS,
   UPDATE_INCLUDE_COURSE_ROLE_MEMBERS,
 } from '../constants/actionTypes/filters';
-
 import initialFilters from '../constants/filters';
 
-import { getAssignmentsFromResultsSubstate, chooseRelevantAssignmentData } from '../selectors/filters';
-
+const { getAssignmentsFromResultsSubstate, chooseRelevantAssignmentData } = filterSelectors;
 const initialState = {};
 
 const reducer = (state = initialState, action) => {

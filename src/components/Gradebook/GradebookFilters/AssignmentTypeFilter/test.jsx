@@ -1,6 +1,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 
+import selectors from 'data/selectors';
 import { filterAssignmentType } from 'data/actions/grades';
 
 import {
@@ -9,12 +10,20 @@ import {
   mapDispatchToProps,
 } from '.';
 
-jest.mock('data/selectors/filters', () => ({
+jest.mock('data/selectors', () => ({
   /** Mocking to use passed state for validation purposes */
-  selectableAssignmentLabels: jest.fn().mockImplementation((state) => ({
-    state,
-    selectableLabels: 'selectableLabels',
-  })),
+  assignmentTypes: {
+    allAssignmentTypes: jest.fn(() => (['assignment', 'labs'])),
+  },
+  filters: {
+    selectableAssignmentLabels: jest.fn(() => ([{
+      label: 'assigNment',
+      subsectionLabel: 'subsection',
+      type: 'assignMentType',
+      id: 'subsectionId',
+    }])),
+    assignmentType: jest.fn(() => 'assignMentType'),
+  },
 }));
 
 describe('AssignmentTypeFilter', () => {
@@ -89,26 +98,29 @@ describe('AssignmentTypeFilter', () => {
       },
     };
     describe('assignmentTypes', () => {
-      it('is drawn from assignmentTypes.results', () => {
-        expect(mapStateToProps(state).assignmentTypes).toEqual(
-          state.assignmentTypes.results,
+      it('is selected from assignmentTypes.allAssignmentTypes', () => {
+        expect(
+          mapStateToProps(state).assignmentTypes,
+        ).toEqual(
+          selectors.assignmentTypes.allAssignmentTypes(state),
         );
       });
     });
     describe('assignmentFilterOptions', () => {
-      it('is drawn from selectableAssignmentLabels', () => {
-        expect(mapStateToProps(state).assignmentFilterOptions).toEqual({
-          state,
-          selectableLabels: 'selectableLabels',
-        });
+      it('is selected from filters.selectableAssignmentLabels', () => {
+        expect(
+          mapStateToProps(state).assignmentFilterOptions,
+        ).toEqual(
+          selectors.filters.selectableAssignmentLabels(state),
+        );
       });
     });
     describe('selectedAssignmentType', () => {
-      it('is drawn from state.filters.assignmentType', () => {
+      it('is selected from filters.assignmentType', () => {
         expect(
           mapStateToProps(state).selectedAssignmentType,
         ).toEqual(
-          state.filters.assignmentType,
+          selectors.filters.assignmentType(state),
         );
       });
     });

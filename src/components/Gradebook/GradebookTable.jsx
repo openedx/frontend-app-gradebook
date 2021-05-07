@@ -2,13 +2,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+
 import {
   Table, OverlayTrigger, Tooltip, Icon,
 } from '@edx/paragon';
+
 import { formatDateForDisplay } from '../../data/actions/utils';
-import { getHeadings } from '../../data/selectors/grades';
 import { fetchGradeOverrideHistory } from '../../data/actions/grades';
 import { EMAIL_HEADING, TOTAL_COURSE_GRADE_HEADING, USERNAME_HEADING } from '../../data/constants/grades';
+import selectors from '../../data/selectors';
 
 const DECIMAL_PRECISION = 2;
 
@@ -215,12 +217,15 @@ GradebookTable.propTypes = {
   fetchGradeOverrideHistory: PropTypes.func.isRequired,
 };
 
-export const mapStateToProps = (state) => ({
-  areGradesFrozen: state.assignmentTypes.areGradesFrozen,
-  format: state.grades.gradeFormat,
-  grades: state.grades.results,
-  headings: getHeadings(state),
-});
+export const mapStateToProps = (state) => {
+  const { assignmentTypes, grades, root } = selectors;
+  return {
+    areGradesFrozen: assignmentTypes.areGradesFrozen(state),
+    format: grades.gradeFormat(state),
+    grades: grades.allGrades(state),
+    headings: root.getHeadings(state),
+  };
+};
 
 export const mapDispatchToProps = {
   fetchGradeOverrideHistory,

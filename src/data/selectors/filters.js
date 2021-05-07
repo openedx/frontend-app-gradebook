@@ -1,38 +1,73 @@
-const getFilters = state => state.filters || {};
+import simpleSelectorFactory from '../utils';
 
-const getAssignmentsFromResultsSubstate = results => (results[0] || {}).section_breakdown || [];
+const allFilters = (state) => state.filters || {};
+
+const getAssignmentsFromResultsSubstate = (results) => (
+  (results[0] || {}).section_breakdown || []
+);
 
 const selectableAssignments = (state) => {
-  const selectedAssignmentType = getFilters(state).assignmentType;
+  const selectedAssignmentType = allFilters(state).assignmentType;
   const needToFilter = selectedAssignmentType && selectedAssignmentType !== 'All';
   const allAssignments = getAssignmentsFromResultsSubstate(state.grades.results);
   if (needToFilter) {
-    return allAssignments.filter(assignment => assignment.category === selectedAssignmentType);
+    return allAssignments.filter(
+      (assignment) => assignment.category === selectedAssignmentType,
+    );
   }
   return allAssignments;
 };
 
-const chooseRelevantAssignmentData = assignment => ({
-  label: assignment.label,
-  subsectionLabel: assignment.subsection_name,
-  type: assignment.category,
-  id: assignment.module_id,
+const chooseRelevantAssignmentData = ({
+  label,
+  subsection_name: subsectionLabel,
+  category,
+  module_id: id,
+}) => ({
+  label, subsectionLabel, category, id,
 });
 
-const selectableAssignmentLabels = state => selectableAssignments(state).map(chooseRelevantAssignmentData);
+const selectableAssignmentLabels = (state) => (
+  selectableAssignments(state).map(chooseRelevantAssignmentData)
+);
 
 const typeOfSelectedAssignment = (state) => {
-  const selectedAssignmentLabel = getFilters(state).assignment;
+  const selectedAssignmentLabel = allFilters(state).assignment;
   const sectionBreakdown = (state.grades.results[0] || {}).section_breakdown || [];
-  const selectedAssignment = sectionBreakdown.find(section => section.label === selectedAssignmentLabel);
+  const selectedAssignment = sectionBreakdown.find(
+    ({ label }) => label === selectedAssignmentLabel,
+  );
   return selectedAssignment && selectedAssignment.category;
 };
 
-export {
+const simpleSelectors = simpleSelectorFactory(
+  ({ filters }) => filters,
+  [
+    'assignment',
+    'assignmentGradeMax',
+    'assignmentGradeMin',
+    'assignmentType',
+    'cohort',
+    'courseGradeMax',
+    'courseGradeMin',
+    'track',
+    'includeCourseRoleMembers',
+  ],
+);
+const selectedAssignmentId = (state) => (simpleSelectors.assignment(state) || {}).id;
+const selectedAssignmentLabel = (state) => (simpleSelectors.assignment(state) || {}).label;
+
+const selectors = {
+  ...simpleSelectors,
+  selectedAssignmentId,
+  selectedAssignmentLabel,
+
   selectableAssignmentLabels,
   selectableAssignments,
-  getFilters,
+  allFilters,
   typeOfSelectedAssignment,
   chooseRelevantAssignmentData,
   getAssignmentsFromResultsSubstate,
 };
+
+export default selectors;

@@ -1,3 +1,4 @@
+import filterSelectors from 'data/selectors/filters';
 import initialFilters from '../constants/filters';
 import {
   INITIALIZE_FILTERS,
@@ -7,8 +8,9 @@ import {
   UPDATE_COURSE_GRADE_LIMITS,
   UPDATE_INCLUDE_COURSE_ROLE_MEMBERS,
 } from '../constants/actionTypes/filters';
-import { getFilters } from '../selectors/filters';
 import { fetchGrades } from './grades';
+
+const { allFilters } = filterSelectors;
 
 const initializeFilters = ({
   assignment = initialFilters.assignment,
@@ -69,7 +71,7 @@ const updateIncludeCourseRoleMembersFilter = (includeCourseRoleMembers) => ({
 const updateIncludeCourseRoleMembers = includeCourseRoleMembers => (dispatch, getState) => {
   dispatch(updateIncludeCourseRoleMembersFilter(includeCourseRoleMembers));
   const state = getState();
-  const { cohort, track, assignmentType } = getFilters(state);
+  const { cohort, track, assignmentType } = allFilters(state);
   dispatch(fetchGrades(state.grades.courseId, cohort, track, assignmentType));
 };
 

@@ -10,10 +10,10 @@ import {
 } from '@edx/paragon';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faDownload } from '@fortawesome/free-solid-svg-icons';
-import { configuration } from '../../config';
 
+import selectors from 'data/selectors';
+import { configuration } from '../../config';
 import { submitFileUploadFormData } from '../../data/actions/grades';
-import { getBulkManagementHistory } from '../../data/selectors/grades';
 
 export class BulkManagement extends React.Component {
   constructor(props) {
@@ -183,14 +183,14 @@ BulkManagement.propTypes = {
   uploadSuccess: PropTypes.bool,
 };
 
-export const mapStateToProps = (state) => ({
-  bulkImportError: state.grades.bulkManagement
-    && state.grades.bulkManagement.errorMessages
-    ? `Errors while processing: ${state.grades.bulkManagement.errorMessages.join(', ')}`
-    : '',
-  bulkManagementHistory: getBulkManagementHistory(state),
-  uploadSuccess: !!(state.grades.bulkManagement && state.grades.bulkManagement.uploadSuccess),
-});
+export const mapStateToProps = (state) => {
+  const { grades } = selectors;
+  return {
+    bulkImportError: grades.bulkImportError(state),
+    bulkManagementHistory: grades.bulkManagementHistoryEntries(state),
+    uploadSuccess: grades.uploadSuccess(state),
+  };
+};
 
 export const mapDispatchToProps = {
   submitFileUploadFormData,

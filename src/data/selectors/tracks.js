@@ -3,10 +3,16 @@ const compose = (...fns) => {
   return (...args) => rest.reduce((accum, fn) => fn(accum), firstFunc(...args));
 };
 
-const getTracks = state => state.tracks.results || [];
+const allTracks = state => state.tracks.results || [];
 const trackIsMasters = track => track.slug === 'masters';
 const hasMastersTrack = tracks => tracks.some(trackIsMasters);
-const stateHasMastersTrack = compose(hasMastersTrack, getTracks);
+const stateHasMastersTrack = compose(hasMastersTrack, allTracks);
 
-export { hasMastersTrack, trackIsMasters };
-export default stateHasMastersTrack;
+const selectors = {
+  allTracks,
+  hasMastersTrack,
+  stateHasMastersTrack,
+  trackIsMasters,
+};
+
+export default selectors;

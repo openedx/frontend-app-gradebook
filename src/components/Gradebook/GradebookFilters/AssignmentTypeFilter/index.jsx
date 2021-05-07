@@ -3,8 +3,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
-import { selectableAssignmentLabels } from 'data/selectors/filters';
 import * as gradesActions from 'data/actions/grades';
+import selectors from 'data/selectors';
 
 import SelectGroup from '../SelectGroup';
 
@@ -66,9 +66,9 @@ AssignmentTypeFilter.propTypes = {
 };
 
 export const mapStateToProps = (state) => ({
-  assignmentTypes: state.assignmentTypes.results,
-  assignmentFilterOptions: selectableAssignmentLabels(state),
-  selectedAssignmentType: state.filters.assignmentType,
+  assignmentTypes: selectors.assignmentTypes.allAssignmentTypes(state),
+  assignmentFilterOptions: selectors.filters.selectableAssignmentLabels(state),
+  selectedAssignmentType: selectors.filters.assignmentType(state),
 });
 
 export const mapDispatchToProps = {

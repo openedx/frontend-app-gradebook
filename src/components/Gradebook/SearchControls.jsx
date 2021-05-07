@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 
 import { Button, Icon, SearchField } from '@edx/paragon';
 
+import selectors from 'data/selectors';
 import {
   fetchGrades,
   fetchMatchingUserGrades,
@@ -96,11 +97,14 @@ SearchControls.propTypes = {
   selectedTrack: PropTypes.string,
 };
 
-export const mapStateToProps = (state) => ({
-  selectedAssignmentType: state.filters.assignmentType,
-  selectedTrack: state.filters.track,
-  selectedCohort: state.filters.cohort,
-});
+export const mapStateToProps = (state) => {
+  const { filters } = selectors;
+  return {
+    selectedAssignmentType: filters.assignmentType(state),
+    selectedTrack: filters.track(state),
+    selectedCohort: filters.cohort(state),
+  };
+};
 
 export const mapDispatchToProps = {
   getUserGrades: fetchGrades,

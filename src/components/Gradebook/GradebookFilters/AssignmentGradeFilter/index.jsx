@@ -7,6 +7,7 @@ import { Button } from '@edx/paragon';
 
 import * as gradesActions from 'data/actions/grades';
 import * as filterActions from 'data/actions/filters';
+import selectors from 'data/selectors';
 
 import PercentGroup from '../PercentGroup';
 
@@ -106,12 +107,15 @@ AssignmentGradeFilter.propTypes = {
   updateAssignmentLimits: PropTypes.func.isRequired,
 };
 
-export const mapStateToProps = (state) => ({
-  selectedAssignment: (state.filters.assignment || {}).label,
-  selectedAssignmentType: state.filters.assignmentType,
-  selectedCohort: state.filters.cohort,
-  selectedTrack: state.filters.track,
-});
+export const mapStateToProps = (state) => {
+  const { filters } = selectors;
+  return {
+    selectedAssignment: filters.selectedAssignmentLabel(state),
+    selectedAssignmentType: filters.assignmentType(state),
+    selectedCohort: filters.cohort(state),
+    selectedTrack: filters.track(state),
+  };
+};
 
 export const mapDispatchToProps = {
   getUserGrades: gradesActions.fetchGrades,
