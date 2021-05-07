@@ -4,21 +4,26 @@ import LmsApiService from '../services/LmsApiService';
 describe('root', () => {
   const testCourseId = 'OxfordX+Time+Travel';
 
+  const mockAssignmentId = 'block-v1:edX+Term+type@sequential+block@1';
+  const mockAssignmentType = 'Homework';
+  const mockAssignmentLabel = 'HW 42';
+  const mockCohort = 'test cohort';
+
   const baseApiArgs = {
-    assignment: 'block-v1:edX+Term+type@sequential+block@1',
+    assignment: mockAssignmentId,
     assignmentGradeMax: '99',
     assignmentGradeMin: '1',
-    assignmentType: 'Homework',
-    cohort: 'test cohort',
+    assignmentType: mockAssignmentType,
+    cohort: mockCohort,
     courseGradeMax: '98',
     courseGradeMin: '2',
   };
 
   beforeEach(() => {
-    selectors.cohorts.getCohortNameById = jest.fn(() => 'test cohort');
-    selectors.filters.assignmentType = jest.fn(() => 'Homework');
+    selectors.cohorts.getCohortNameById = jest.fn(() => mockCohort);
+    selectors.filters.assignmentType = jest.fn(() => mockAssignmentType);
     selectors.filters.includeCourseRoleMembers = jest.fn();
-    selectors.filters.selectedAssignmentId = jest.fn(() => 'block-v1:edX+Term+type@sequential+block@1');
+    selectors.filters.selectedAssignmentId = jest.fn(() => mockAssignmentId);
     selectors.grades.formatMaxAssignmentGrade = jest.fn(() => '99');
     selectors.grades.formatMinAssignmentGrade = jest.fn(() => '1');
     selectors.grades.formatMaxCourseGrade = jest.fn(() => '98');
@@ -52,17 +57,17 @@ describe('root', () => {
     });
 
     it('filters headings by assignment type when type filter is applied', () => {
-      selectors.filters.assignmentType.mockReturnValue('Homework');
+      selectors.filters.assignmentType.mockReturnValue(mockAssignmentType);
       selectors.filters.selectedAssignmentLabel.mockReturnValue(undefined);
       selectors.root.getHeadings({});
-      expect(mockHeadingMapper).toHaveBeenCalledWith('Homework', 'All');
+      expect(mockHeadingMapper).toHaveBeenCalledWith(mockAssignmentType, 'All');
     });
 
     it('filters headings by assignment when a type and assignment filter are applied', () => {
-      selectors.filters.assignmentType.mockReturnValue('Homework');
-      selectors.filters.selectedAssignmentLabel.mockReturnValue('HW 42');
+      selectors.filters.assignmentType.mockReturnValue(mockAssignmentType);
+      selectors.filters.selectedAssignmentLabel.mockReturnValue(mockAssignmentLabel);
       selectors.root.getHeadings({});
-      expect(mockHeadingMapper).toHaveBeenCalledWith('Homework', 'HW 42');
+      expect(mockHeadingMapper).toHaveBeenCalledWith(mockAssignmentType, mockAssignmentLabel);
     });
   });
 
@@ -104,6 +109,7 @@ describe('root', () => {
 
   describe('showBulkManagement', () => {
     let state = {};
+    const mockCourseInfo = { courseId: 'foo' };
 
     beforeEach(() => {
       const templateState = { config: { bulkManagementAvailable: true } };
@@ -114,20 +120,20 @@ describe('root', () => {
     });
 
     it('does not show bulk management when the course does not have a masters track', () => {
-      expect(selectors.root.showBulkManagement(state, { courseId: 'foo' })).toEqual(false);
+      expect(selectors.root.showBulkManagement(state, mockCourseInfo)).toEqual(false);
     });
     it('shows bulk management when the course has a masters track', () => {
       selectors.tracks.stateHasMastersTrack = jest.fn(() => (true));
-      expect(selectors.root.showBulkManagement(state, { courseId: 'foo' })).toEqual(true);
+      expect(selectors.root.showBulkManagement(state, mockCourseInfo)).toEqual(true);
     });
     it('shows bulk management when a course is configured for special access, regardless of other settings', () => {
       selectors.special.hasSpecialBulkManagementAccess = jest.fn(() => (true));
-      expect(selectors.root.showBulkManagement(state, { courseId: 'foo' })).toEqual(true);
+      expect(selectors.root.showBulkManagement(state, mockCourseInfo)).toEqual(true);
     });
     it('does not show bulk management when bulk management is not available', () => {
       selectors.tracks.stateHasMastersTrack = jest.fn(() => (true));
       state.config.bulkManagementAvailable = false;
-      expect(selectors.root.showBulkManagement(state, { courseId: 'foo' })).toEqual(false);
+      expect(selectors.root.showBulkManagement(state, mockCourseInfo)).toEqual(false);
     });
   });
 

@@ -10,7 +10,8 @@ describe('areGradesFrozen', () => {
 
 describe('allAssignmentTypes', () => {
   it('returns assignment types', () => {
-    const allAssignmentTypes = selectors.allAssignmentTypes({ assignmentTypes: { results: ['assignment', 'labs'] } });
-    expect(allAssignmentTypes).toEqual(['assignment', 'labs']);
+    const testAssignmentTypes = ['assignment', 'labs'];
+    const allAssignmentTypes = selectors.allAssignmentTypes({ assignmentTypes: { results: testAssignmentTypes } });
+    expect(allAssignmentTypes).toEqual(testAssignmentTypes);
   });
 });

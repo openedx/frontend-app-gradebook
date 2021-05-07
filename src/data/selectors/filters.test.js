@@ -1,12 +1,14 @@
 import selectors from './filters';
 
+const selectedAssignmentInfo = {
+  category: 'Homework',
+  id: 'block-v1:edX+type@sequential+block@abcde',
+  label: 'HW 01',
+  subsectionLabel: 'Example Week 1: Getting Started',
+};
+
 const filters = {
-  assignment: {
-    category: 'Homework',
-    id: 'block-v1:edX+type@sequential+block@abcde',
-    label: 'HW 01',
-    subsectionLabel: 'Example Week 1: Getting Started',
-  },
+  assignment: selectedAssignmentInfo,
   assignmentGradeMax: '100',
   assignmentGradeMin: '0',
   assignmentType: 'Homework',
@@ -75,7 +77,7 @@ describe('allFilters', () => {
 describe('selectedAssignmentId', () => {
   it('gets filtered assignment ID when available', () => {
     const assignmentId = selectors.selectedAssignmentId(testState);
-    expect(assignmentId).toEqual('block-v1:edX+type@sequential+block@abcde');
+    expect(assignmentId).toEqual(filters.assignment.id);
   });
   it('returns undefined when assignment ID unavailable', () => {
     const assignmentId = selectors.selectedAssignmentId({ filters: { assignment: undefined } });
@@ -86,7 +88,7 @@ describe('selectedAssignmentId', () => {
 describe('selectedAssignmentLabel', () => {
   it('gets filtered assignment label when available', () => {
     const assignmentLabel = selectors.selectedAssignmentLabel(testState);
-    expect(assignmentLabel).toEqual('HW 01');
+    expect(assignmentLabel).toEqual(filters.assignment.label);
   });
   it('returns undefined when assignment label is unavailable', () => {
     const assignmentLabel = selectors.selectedAssignmentLabel({ filters: { assignment: undefined } });
@@ -97,14 +99,7 @@ describe('selectedAssignmentLabel', () => {
 describe('selectableAssignmentLabels', () => {
   it('gets assignment data for sections matching selected type filters', () => {
     const selectableAssignmentLabels = selectors.selectableAssignmentLabels(testState);
-    expect(selectableAssignmentLabels).toEqual([
-      {
-        category: 'Homework',
-        id: 'block-v1:edX+type@sequential+block@abcde',
-        label: 'HW 01',
-        subsectionLabel: 'Example Week 1: Getting Started',
-      },
-    ]);
+    expect(selectableAssignmentLabels).toEqual([filters.assignment]);
   });
 });
 
@@ -122,12 +117,7 @@ describe('selectableAssignments', () => {
 describe('chooseRelevantAssignmentData', () => {
   it('maps label, subsection, category, and ID from assignment data', () => {
     const assignmentData = selectors.chooseRelevantAssignmentData(sectionBreakdowns[0]);
-    expect(assignmentData).toEqual({
-      label: 'HW 01',
-      subsectionLabel: 'Example Week 1: Getting Started',
-      category: 'Homework',
-      id: 'block-v1:edX+type@sequential+block@abcde',
-    });
+    expect(assignmentData).toEqual(selectedAssignmentInfo);
   });
 });
 
@@ -141,7 +131,7 @@ describe('getAssignmentsFromResultsSubstate', () => {
     expect(assignments).toEqual([]);
   });
   it('returns an empty array when section breakdowns are not supplied', () => {
-    const assignments = selectors.getAssignmentsFromResultsSubstate([{ foo: 'bar' }]);
+    const assignments = selectors.getAssignmentsFromResultsSubstate([{}]);
     expect(assignments).toEqual([]);
   });
 });

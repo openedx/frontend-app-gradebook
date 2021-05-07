@@ -11,26 +11,28 @@ const testCohorts = [
   },
 ];
 
+const nonMatchingId = '9001';
+
 const testState = { cohorts: { results: testCohorts } };
 
 describe('getCohortById', () => {
   it('returns cohort when a match is found', () => {
-    const cohort = selectors.getCohortById(testState, '1');
+    const cohort = selectors.getCohortById(testState, testCohorts[0].id);
     expect(cohort).toEqual(testCohorts[0]);
   });
   it('returns undefined when no match is found', () => {
-    const cohort = selectors.getCohortById(testState, '9001');
+    const cohort = selectors.getCohortById(testState, nonMatchingId);
     expect(cohort).toEqual(undefined);
   });
 });
 
 describe('getCohortNameById', () => {
   it('returns a cohort name when cohort matching ID is found', () => {
-    const cohortName = selectors.getCohortNameById(testState, '9000');
-    expect(cohortName).toEqual('Cohort 9000');
+    const cohortName = selectors.getCohortNameById(testState, testCohorts[1].id);
+    expect(cohortName).toEqual(testCohorts[1].name);
   });
   it('returns undefined when no matching cohort is found', () => {
-    const cohortName = selectors.getCohortNameById(testState, '9001');
+    const cohortName = selectors.getCohortNameById(testState, nonMatchingId);
     expect(cohortName).toEqual(undefined);
   });
 });

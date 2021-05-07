@@ -60,8 +60,10 @@ describe('bulkImportError', () => {
   });
 
   it('returns error string when bulkManagement encounters an error', () => {
-    const result = selectors.bulkImportError({ grades: { bulkManagement: { errorMessages: ['It\'s over 9000', 'Neutrino-triggered bit flips'] } } });
-    expect(result).toEqual('Errors while processing: It\'s over 9000, Neutrino-triggered bit flips');
+    const errorMessages = ['error1', 'also error2'];
+    const expectedErrorString = `Errors while processing: ${errorMessages[0]}, ${errorMessages[1]}`;
+    const result = selectors.bulkImportError({ grades: { bulkManagement: { errorMessages } } });
+    expect(result).toEqual(expectedErrorString);
   });
 });
 
@@ -69,61 +71,65 @@ describe('grade formatters', () => {
   const selectedAssignment = { assignmentId: 'block-v1:edX+type@sequential+block@abcde' };
 
   describe('formatMinAssignmentGrade', () => {
+    const defaultGrade = '0';
+    const modifiedGrade = '1';
+
     it('passes numbers through when grade is not default (0) and assignment is supplied', () => {
-      const formattedMinAssignmentGrade = selectors.formatMinAssignmentGrade('1', selectedAssignment);
-      expect(formattedMinAssignmentGrade).toEqual('1');
+      const formattedMinAssignmentGrade = selectors.formatMinAssignmentGrade(modifiedGrade, selectedAssignment);
+      expect(formattedMinAssignmentGrade).toEqual(modifiedGrade);
     });
     it('ignores grade when unmodified from default (0)', () => {
-      const formattedMinAssignmentGrade = selectors.formatMinAssignmentGrade('0', selectedAssignment);
+      const formattedMinAssignmentGrade = selectors.formatMinAssignmentGrade(defaultGrade, selectedAssignment);
       expect(formattedMinAssignmentGrade).toEqual(null);
     });
     it('ignores grade when an assignment is not supplied', () => {
-      const formattedMinAssignmentGrade = selectors.formatMinAssignmentGrade('0', {});
+      const formattedMinAssignmentGrade = selectors.formatMinAssignmentGrade(modifiedGrade, {});
       expect(formattedMinAssignmentGrade).toEqual(null);
     });
   });
 
   describe('formatMaxAssignmentGrade', () => {
+    const defaultGrade = '100';
+    const modifiedGrade = '99';
+
     it('passes numbers through when grade is not default (100) and assignment is supplied', () => {
-      const formattedMaxAssignmentGrade = selectors.formatMaxAssignmentGrade('99', selectedAssignment);
-      expect(formattedMaxAssignmentGrade).toEqual('99');
+      const formattedMaxAssignmentGrade = selectors.formatMaxAssignmentGrade(modifiedGrade, selectedAssignment);
+      expect(formattedMaxAssignmentGrade).toEqual(modifiedGrade);
     });
     it('ignores grade when unmodified from default (100)', () => {
-      const formattedMaxAssignmentGrade = selectors.formatMaxAssignmentGrade('100', selectedAssignment);
+      const formattedMaxAssignmentGrade = selectors.formatMaxAssignmentGrade(defaultGrade, selectedAssignment);
       expect(formattedMaxAssignmentGrade).toEqual(null);
     });
     it('ignores grade when an assignment is not supplied', () => {
-      const formattedMaxAssignmentGrade = selectors.formatMaxAssignmentGrade('100', {});
+      const formattedMaxAssignmentGrade = selectors.formatMaxAssignmentGrade(modifiedGrade, {});
       expect(formattedMaxAssignmentGrade).toEqual(null);
     });
   });
 
   describe('formatMinCourseGrade', () => {
+    const defaultGrade = '0';
+    const modifiedGrade = '37';
+
     it('passes numbers through when grade is not default (0) and assignment is supplied', () => {
-      const formattedMinGrade = selectors.formatMinCourseGrade('37', selectedAssignment);
-      expect(formattedMinGrade).toEqual('37');
+      const formattedMinGrade = selectors.formatMinCourseGrade(modifiedGrade, selectedAssignment);
+      expect(formattedMinGrade).toEqual(modifiedGrade);
     });
     it('ignores grade when unmodified from default (0)', () => {
-      const formattedMinGrade = selectors.formatMinCourseGrade('0', selectedAssignment);
-      expect(formattedMinGrade).toEqual(null);
-    });
-    it('ignores grade when an assignment is not supplied', () => {
-      const formattedMinGrade = selectors.formatMinCourseGrade('0', {});
+      const formattedMinGrade = selectors.formatMinCourseGrade(defaultGrade, selectedAssignment);
       expect(formattedMinGrade).toEqual(null);
     });
   });
 
   describe('formatMaxCourseGrade', () => {
+    const defaultGrade = '100';
+    const modifiedGrade = '42';
+
     it('passes numbers through when grade is not default (100) and assignment is supplied', () => {
-      const formattedMaxGrade = selectors.formatMaxCourseGrade('42', selectedAssignment);
-      expect(formattedMaxGrade).toEqual('42');
+      const formattedMaxGrade = selectors.formatMaxCourseGrade(modifiedGrade, selectedAssignment);
+      expect(formattedMaxGrade).toEqual(modifiedGrade);
     });
     it('ignores unmodified grades', () => {
-      const formattedMaxGrade = selectors.formatMaxCourseGrade('100', selectedAssignment);
-      expect(formattedMaxGrade).toEqual(null);
-    });
-    it('ignores grade when an assignment is not supplied', () => {
-      const formattedMaxGrade = selectors.formatMaxCourseGrade('100', {});
+      const formattedMaxGrade = selectors.formatMaxCourseGrade(defaultGrade, selectedAssignment);
       expect(formattedMaxGrade).toEqual(null);
     });
   });
@@ -173,23 +179,25 @@ describe('getExampleSectionBreakdown', () => {
 });
 
 describe('headingMapper', () => {
-  const allSubsectionLabels = ['HW 01', 'HW 02', 'Lab 01'];
   const expectedHeaders = (subsectionLabels) => (['Username', 'Email', ...subsectionLabels, 'Total Grade (%)']);
 
   it('creates headers for all assignments when no filtering is applied', () => {
+    const allSubsectionLabels = ['HW 01', 'HW 02', 'Lab 01'];
     const headingMapper = selectors.headingMapper('All');
     const headers = headingMapper(genericResultsRows);
     expect(headers).toEqual(expectedHeaders(allSubsectionLabels));
   });
   it('creates headers for only matching assignment types when type filter is applied', () => {
+    const homeworkHeaders = ['HW 01', 'HW 02'];
     const headingMapper = selectors.headingMapper('Homework');
     const headers = headingMapper(genericResultsRows);
-    expect(headers).toEqual(expectedHeaders(['HW 01', 'HW 02']));
+    expect(headers).toEqual(expectedHeaders(homeworkHeaders));
   });
   it('creates headers for only matching assignment when label filter is applied', () => {
+    const homeworkHeader = ['HW 02'];
     const headingMapper = selectors.headingMapper('Homework', 'HW 02');
     const headers = headingMapper(genericResultsRows);
-    expect(headers).toEqual(expectedHeaders(['HW 02']));
+    expect(headers).toEqual(expectedHeaders(homeworkHeader));
   });
   it('returns an empty array when no entries are passed', () => {
     const headingMapper = selectors.headingMapper('All');
@@ -214,10 +222,14 @@ describe('simpleSelectors', () => {
   };
 
   it('selects simple data by name from grades state', () => {
+    const expectedFilteredUsers = 9000;
+    const expectedTotalUsers = 9001;
+    const expectedGradeFormat = 'percent';
+
     // the selector factory is already tested, this just exercises some of these mappings
-    expect(selectors.filteredUsersCount(simpleSelectorState)).toEqual(9000);
-    expect(selectors.totalUsersCount(simpleSelectorState)).toEqual(9001);
-    expect(selectors.gradeFormat(simpleSelectorState)).toEqual('percent');
+    expect(selectors.filteredUsersCount(simpleSelectorState)).toEqual(expectedFilteredUsers);
+    expect(selectors.totalUsersCount(simpleSelectorState)).toEqual(expectedTotalUsers);
+    expect(selectors.gradeFormat(simpleSelectorState)).toEqual(expectedGradeFormat);
   });
 });
 
