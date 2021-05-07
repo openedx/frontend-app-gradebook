@@ -10,7 +10,6 @@ import {
 import { fetchCohorts } from 'data/thunkActions/cohorts';
 import { fetchTracks } from 'data/thunkActions/tracks';
 import { getRoles } from 'data/thunkActions/roles';
-
 import actions from 'data/actions';
 import selectors from 'data/selectors';
 

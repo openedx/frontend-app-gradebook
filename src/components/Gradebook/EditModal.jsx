@@ -202,7 +202,7 @@ export const mapStateToProps = (state) => {
 
 export const mapDispatchToProps = {
   doneViewingAssignment: actions.grades.doneViewingAssignment,
-  updateGrades,
+  updateGrades: actions.grades.updateGrades,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(EditModal);

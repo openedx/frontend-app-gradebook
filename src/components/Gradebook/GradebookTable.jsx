@@ -219,7 +219,7 @@ GradebookTable.propTypes = {
 
 export const mapStateToProps = (state) => {
   const { assignmentTypes, grades, root } = selectors;
-  return {
+  returg {
     areGradesFrozen: assignmentTypes.areGradesFrozen(state),
     format: grades.gradeFormat(state),
     grades: grades.allGrades(state),
