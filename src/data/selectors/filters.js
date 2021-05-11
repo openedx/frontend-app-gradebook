@@ -31,15 +31,6 @@ const selectableAssignmentLabels = (state) => (
   selectableAssignments(state).map(chooseRelevantAssignmentData)
 );
 
-const typeOfSelectedAssignment = (state) => {
-  const selectedAssignmentLabel = allFilters(state).assignment;
-  const sectionBreakdown = (state.grades.results[0] || {}).section_breakdown || [];
-  const selectedAssignment = sectionBreakdown.find(
-    ({ label }) => label === selectedAssignmentLabel,
-  );
-  return selectedAssignment && selectedAssignment.category;
-};
-
 const simpleSelectors = simpleSelectorFactory(
   ({ filters }) => filters,
   [
@@ -61,11 +52,9 @@ const selectors = {
   ...simpleSelectors,
   selectedAssignmentId,
   selectedAssignmentLabel,
-
   selectableAssignmentLabels,
   selectableAssignments,
   allFilters,
-  typeOfSelectedAssignment,
   chooseRelevantAssignmentData,
   getAssignmentsFromResultsSubstate,
 };
