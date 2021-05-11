@@ -1,10 +1,5 @@
 import assignmentTypes from './assignmentTypes';
-import {
-  STARTED_FETCHING_ASSIGNMENT_TYPES,
-  ERROR_FETCHING_ASSIGNMENT_TYPES,
-  GOT_ASSIGNMENT_TYPES,
-  GOT_ARE_GRADES_FROZEN,
-} from '../constants/actionTypes/assignmentTypes';
+import actions from '../actions/assignmentTypes';
 
 const initialState = {
   results: [],
@@ -24,9 +19,8 @@ describe('assignmentTypes reducer', () => {
       ...initialState,
       startedFetching: true,
     };
-    expect(assignmentTypes(undefined, {
-      type: STARTED_FETCHING_ASSIGNMENT_TYPES,
-    })).toEqual(expected);
+    expect(assignmentTypes(undefined, actions.fetching.started()))
+      .toEqual(expected);
   });
 
   it('updates fetch assignmentTypes success state', () => {
@@ -36,10 +30,9 @@ describe('assignmentTypes reducer', () => {
       errorFetching: false,
       finishedFetching: true,
     };
-    expect(assignmentTypes(undefined, {
-      type: GOT_ASSIGNMENT_TYPES,
-      assignmentTypes: assignmentTypesData,
-    })).toEqual(expected);
+    expect(
+      assignmentTypes(undefined, actions.fetching.received(assignmentTypesData)),
+    ).toEqual(expected);
   });
 
   it('updates fetch assignmentTypes failure state', () => {
@@ -48,21 +41,21 @@ describe('assignmentTypes reducer', () => {
       errorFetching: true,
       finishedFetching: true,
     };
-    expect(assignmentTypes(undefined, {
-      type: ERROR_FETCHING_ASSIGNMENT_TYPES,
-    })).toEqual(expected);
+    expect(
+      assignmentTypes(undefined, actions.fetching.error()),
+    ).toEqual(expected);
   });
 
   it('updates areGradesFrozen success state', () => {
+    const expectedAreGradesFrozen = true;
     const expected = {
       ...initialState,
       errorFetching: false,
       finishedFetching: true,
-      areGradesFrozen: true,
+      areGradesFrozen: expectedAreGradesFrozen,
     };
-    expect(assignmentTypes(undefined, {
-      type: GOT_ARE_GRADES_FROZEN,
-      areGradesFrozen: true,
-    })).toEqual(expected);
+    expect(
+      assignmentTypes(undefined, actions.gotGradesFrozen(expectedAreGradesFrozen)),
+    ).toEqual(expected);
   });
 });

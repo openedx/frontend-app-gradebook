@@ -1,9 +1,5 @@
 import tracks from './tracks';
-import {
-  STARTED_FETCHING_TRACKS,
-  ERROR_FETCHING_TRACKS,
-  GOT_TRACKS,
-} from '../constants/actionTypes/tracks';
+import actions from '../actions/tracks';
 
 const initialState = {
   results: [],
@@ -45,9 +41,7 @@ describe('tracks reducer', () => {
       ...initialState,
       startedFetching: true,
     };
-    expect(tracks(undefined, {
-      type: STARTED_FETCHING_TRACKS,
-    })).toEqual(expected);
+    expect(tracks(undefined, actions.fetching.started())).toEqual(expected);
   });
 
   it('updates fetch tracks success state', () => {
@@ -57,10 +51,7 @@ describe('tracks reducer', () => {
       errorFetching: false,
       finishedFetching: true,
     };
-    expect(tracks(undefined, {
-      type: GOT_TRACKS,
-      tracks: tracksData,
-    })).toEqual(expected);
+    expect(tracks(undefined, actions.fetching.received(tracksData))).toEqual(expected);
   });
 
   it('updates fetch tracks failure state', () => {
@@ -69,8 +60,6 @@ describe('tracks reducer', () => {
       errorFetching: true,
       finishedFetching: true,
     };
-    expect(tracks(undefined, {
-      type: ERROR_FETCHING_TRACKS,
-    })).toEqual(expected);
+    expect(tracks(undefined, actions.fetching.error())).toEqual(expected);
   });
 });

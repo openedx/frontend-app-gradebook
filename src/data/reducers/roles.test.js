@@ -1,8 +1,5 @@
 import roles from './roles';
-import {
-  ERROR_FETCHING_ROLES,
-  GOT_ROLES,
-} from '../constants/actionTypes/roles';
+import actions from '../actions/roles';
 
 const initialState = {
   canUserViewGradebook: null,
@@ -18,10 +15,7 @@ describe('tracks reducer', () => {
       ...initialState,
       canUserViewGradebook: true,
     };
-    expect(roles(undefined, {
-      type: GOT_ROLES,
-      canUserViewGradebook: true,
-    })).toEqual(expected);
+    expect(roles(undefined, actions.received(true))).toEqual(expected);
   });
 
   it('updates canUserViewGradebook to false', () => {
@@ -29,10 +23,7 @@ describe('tracks reducer', () => {
       ...initialState,
       canUserViewGradebook: false,
     };
-    expect(roles(undefined, {
-      type: GOT_ROLES,
-      canUserViewGradebook: false,
-    })).toEqual(expected);
+    expect(roles(undefined, actions.received(false))).toEqual(expected);
   });
 
   it('updates fetch roles failure state', () => {
@@ -40,8 +31,6 @@ describe('tracks reducer', () => {
       ...initialState,
       canUserViewGradebook: false,
     };
-    expect(roles(undefined, {
-      type: ERROR_FETCHING_ROLES,
-    })).toEqual(expected);
+    expect(roles(undefined, actions.errorFetching())).toEqual(expected);
   });
 });

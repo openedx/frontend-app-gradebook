@@ -1,9 +1,5 @@
 import cohorts from './cohorts';
-import {
-  STARTED_FETCHING_COHORTS,
-  ERROR_FETCHING_COHORTS,
-  GOT_COHORTS,
-} from '../constants/actionTypes/cohorts';
+import actions from '../actions/cohorts';
 
 const initialState = {
   results: [],
@@ -39,9 +35,9 @@ describe('cohorts reducer', () => {
       ...initialState,
       startedFetching: true,
     };
-    expect(cohorts(undefined, {
-      type: STARTED_FETCHING_COHORTS,
-    })).toEqual(expected);
+    expect(
+      cohorts(undefined, actions.fetching.started()),
+    ).toEqual(expected);
   });
 
   it('updates fetch cohorts success state', () => {
@@ -51,10 +47,9 @@ describe('cohorts reducer', () => {
       errorFetching: false,
       finishedFetching: true,
     };
-    expect(cohorts(undefined, {
-      type: GOT_COHORTS,
-      cohorts: cohortsData,
-    })).toEqual(expected);
+    expect(
+      cohorts(undefined, actions.fetching.received(cohortsData)),
+    ).toEqual(expected);
   });
 
   it('updates fetch cohorts failure state', () => {
@@ -63,8 +58,8 @@ describe('cohorts reducer', () => {
       errorFetching: true,
       finishedFetching: true,
     };
-    expect(cohorts(undefined, {
-      type: ERROR_FETCHING_COHORTS,
-    })).toEqual(expected);
+    expect(
+      cohorts(undefined, actions.fetching.error()),
+    ).toEqual(expected);
   });
 });
