@@ -1,3 +1,4 @@
+/* eslint-disable import/no-self-import */
 import { getAuthenticatedHttpClient } from '@edx/frontend-platform/auth';
 
 import grades from '../actions/grades';
@@ -8,6 +9,7 @@ import selectors from '../selectors';
 import GRADE_OVERRIDE_HISTORY_ERROR_DEFAULT_MSG from '../constants/errors';
 
 import LmsApiService from '../services/LmsApiService';
+import * as module from './grades';
 
 const {
   formatMaxAssignmentGrade,
@@ -124,16 +126,16 @@ const fetchMatchingUserGrades = (
   options = {},
 ) => {
   const newOptions = { ...options, searchText, showSuccess };
-  return fetchGrades(courseId, cohort, track, assignmentType, newOptions);
+  return module.fetchGrades(courseId, cohort, track, assignmentType, newOptions);
 };
 
 const fetchPrevNextGrades = (endpoint, courseId, cohort, track, assignmentType) => (
   (dispatch) => {
     dispatch(grades.fetching.started());
     return getAuthenticatedHttpClient().get(endpoint)
-      .then(response => response.data)
+      .then(({ data }) => data)
       .then((data) => {
-        dispatch(grades.fetching.results({
+        dispatch(grades.received({
           grades: data.results.sort(sortAlphaAsc),
           cohort,
           track,
@@ -176,7 +178,7 @@ const updateGrades = (courseId, updateData, searchText, cohort, track) => (
       .then(response => response.data)
       .then((data) => {
         dispatch(grades.update.success({ courseId, data }));
-        dispatch(fetchMatchingUserGrades(
+        dispatch(module.fetchMatchingUserGrades(
           courseId,
           searchText,
           cohort,
@@ -198,10 +200,11 @@ const updateGradesIfAssignmentGradeFiltersSet = (
   track,
   assignmentType,
 ) => (dispatch, getState) => {
-  const { filters: { assignmentGradeMin, assignmentGradeMax } } = getState();
+  const assignmentGradeMin = selectors.filters.assignmentGradeMin(getState());
+  const assignmentGradeMax = selectors.filters.assignmentGradeMax(getState());
   const hasAssignmentGradeFiltersSet = assignmentGradeMax || assignmentGradeMin;
   if (hasAssignmentGradeFiltersSet) {
-    dispatch(fetchGrades(
+    dispatch(module.fetchGrades(
       courseId,
       cohort,
       track,
@@ -211,6 +214,7 @@ const updateGradesIfAssignmentGradeFiltersSet = (
 };
 
 export {
+  defaultAssignmentFilter,
   fetchBulkUpgradeHistory,
   fetchGrades,
   fetchGradeOverrideHistory,
