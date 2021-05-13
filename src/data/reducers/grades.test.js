@@ -63,7 +63,9 @@ const gradesData = [
 
 describe('grades reducer group', () => {
   it('has initial state', () => {
-    expect(grades(undefined, {})).toEqual(initialState);
+    expect(
+      grades(undefined, {}),
+    ).toEqual(initialState);
   });
 
   it('updates fetch grades request state', () => {
@@ -72,9 +74,11 @@ describe('grades reducer group', () => {
       startedFetching: true,
       showSpinner: true,
     };
-    expect(grades(undefined, {
-      type: actions.fetching.started.toString(),
-    })).toEqual(expected);
+    expect(
+      grades(undefined, {
+        type: actions.fetching.started.toString(),
+      }),
+    ).toEqual(expected);
   });
 
   it('updates fetch grades success state', () => {
@@ -98,17 +102,19 @@ describe('grades reducer group', () => {
       filteredUsersCount: expectedFilterUsersCount,
     };
 
-    expect(grades(undefined, actions.received({
-      grades: gradesData,
-      headings: headingsData,
-      next: expectedNext,
-      prev: expectedPrev,
-      track: expectedTrack,
-      totalUsersCount: expectedTotalUsersCount,
-      cohort: expectedCohortId,
-      courseId,
-      filteredUsersCount: expectedFilterUsersCount,
-    }))).toEqual(expected);
+    expect(
+      grades(undefined, actions.received({
+        grades: gradesData,
+        headings: headingsData,
+        next: expectedNext,
+        prev: expectedPrev,
+        track: expectedTrack,
+        totalUsersCount: expectedTotalUsersCount,
+        cohort: expectedCohortId,
+        courseId,
+        filteredUsersCount: expectedFilterUsersCount,
+      })),
+    ).toEqual(expected);
   });
 
   it('updates toggle grade format state success', () => {
@@ -117,8 +123,9 @@ describe('grades reducer group', () => {
       ...initialState,
       gradeFormat: formatTypeData,
     };
-    expect(grades(undefined, actions.toggleGradeFormat(formatTypeData)))
-      .toEqual(expected);
+    expect(
+      grades(undefined, actions.toggleGradeFormat(formatTypeData)),
+    ).toEqual(expected);
   });
 
   it('updates filter columns state success', () => {
@@ -128,10 +135,12 @@ describe('grades reducer group', () => {
       selectedAssignmentType: expectedSelectedAssignmentType,
       headings: headingsData,
     };
-    expect(grades(undefined, filterActions.update.assignmentType({
-      headings: headingsData,
-      filterType: expectedSelectedAssignmentType,
-    }))).toEqual(expected);
+    expect(
+      grades(undefined, filterActions.update.assignmentType({
+        headings: headingsData,
+        filterType: expectedSelectedAssignmentType,
+      })),
+    ).toEqual(expected);
   });
 
   it('updates fetch grades failure state', () => {
@@ -140,7 +149,9 @@ describe('grades reducer group', () => {
       errorFetching: true,
       finishedFetching: true,
     };
-    expect(grades(undefined, actions.fetching.error())).toEqual(expected);
+    expect(
+      grades(undefined, actions.fetching.error()),
+    ).toEqual(expected);
   });
 });
 
@@ -151,7 +162,9 @@ describe('banner group', () => {
       ...initialState,
       showSuccess: expectedShowSuccess,
     };
-    expect(grades(undefined, actions.banner.open())).toEqual(expected);
+    expect(
+      grades(undefined, actions.banner.open()),
+    ).toEqual(expected);
   });
 
   it('updates update_banner state fail', () => {
@@ -160,7 +173,9 @@ describe('banner group', () => {
       ...initialState,
       showSuccess: expectedShowSuccess,
     };
-    expect(grades(undefined, actions.banner.close())).toEqual(expected);
+    expect(
+      grades(undefined, actions.banner.close()),
+    ).toEqual(expected);
   });
 });
 
@@ -290,7 +305,8 @@ describe('viewing assignment group', () => {
       gradeOriginalPossibleGraded,
       ...expected
     } = initialState;
-    expect(grades(undefined, actions.doneViewingAssignment()))
-      .toEqual(expected);
+    expect(
+      grades(undefined, actions.doneViewingAssignment()),
+    ).toEqual(expected);
   });
 });

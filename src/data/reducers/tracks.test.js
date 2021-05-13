@@ -33,7 +33,9 @@ const tracksData = [
 
 describe('tracks reducer', () => {
   it('has initial state', () => {
-    expect(tracks(undefined, {})).toEqual(initialState);
+    expect(
+      tracks(undefined, {}),
+    ).toEqual(initialState);
   });
 
   it('updates fetch tracks request state', () => {
@@ -41,7 +43,9 @@ describe('tracks reducer', () => {
       ...initialState,
       startedFetching: true,
     };
-    expect(tracks(undefined, actions.fetching.started())).toEqual(expected);
+    expect(
+      tracks(undefined, actions.fetching.started()),
+    ).toEqual(expected);
   });
 
   it('updates fetch tracks success state', () => {
@@ -51,7 +55,9 @@ describe('tracks reducer', () => {
       errorFetching: false,
       finishedFetching: true,
     };
-    expect(tracks(undefined, actions.fetching.received(tracksData))).toEqual(expected);
+    expect(
+      tracks(undefined, actions.fetching.received(tracksData)),
+    ).toEqual(expected);
   });
 
   it('updates fetch tracks failure state', () => {
@@ -60,6 +66,8 @@ describe('tracks reducer', () => {
       errorFetching: true,
       finishedFetching: true,
     };
-    expect(tracks(undefined, actions.fetching.error())).toEqual(expected);
+    expect(
+      tracks(undefined, actions.fetching.error()),
+    ).toEqual(expected);
   });
 });

@@ -27,7 +27,9 @@ const cohortsData = [
 
 describe('cohorts reducer', () => {
   it('has initial state', () => {
-    expect(cohorts(undefined, {})).toEqual(initialState);
+    expect(
+      cohorts(undefined, {}),
+    ).toEqual(initialState);
   });
 
   it('updates fetch cohorts request state', () => {
@@ -49,6 +51,28 @@ describe('cohorts reducer', () => {
     };
     expect(
       cohorts(undefined, actions.fetching.received(cohortsData)),
+    ).toEqual(expected);
+  });
+
+  it('updates fetch cohorts success state with arbitrary objects', () => {
+    const arbitraryCohortsData = [
+      {
+        a: 'cohort',
+        another: 'COHort',
+      },
+      {
+        b: 'cohort_b',
+        another: 'cohORT_B',
+      },
+    ];
+    const expected = {
+      ...initialState,
+      results: arbitraryCohortsData,
+      errorFetching: false,
+      finishedFetching: true,
+    };
+    expect(
+      cohorts(undefined, actions.fetching.received(arbitraryCohortsData)),
     ).toEqual(expected);
   });
 

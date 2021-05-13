@@ -17,29 +17,9 @@ const testingState = {
 
 describe('filter reducer group', () => {
   it('has initial state', () => {
-    expect(filter(undefined, {})).toEqual(initialState);
-  });
-
-  it('filter by assignment type', () => {
-    const expected = {
-      ...testingState,
-      assignmentType: expectedFilterType,
-    };
-    expect(filter(testingState, actions.update.assignmentType({
-      filterType: expectedFilterType,
-    }))).toEqual(expected);
-  });
-
-  it('filter on not existed assignment type', () => {
-    const notExistFilter = 'not exist filter';
-    const expected = {
-      ...testingState,
-      assignmentType: notExistFilter,
-      assignment: '',
-    };
-    expect(filter(testingState, actions.update.assignmentType({
-      filterType: notExistFilter,
-    }))).toEqual(expected);
+    expect(
+      filter(undefined, {}),
+    ).toEqual(initialState);
   });
 
   it('initialize', () => {
@@ -61,12 +41,44 @@ describe('filter reducer group', () => {
         id: payload.assignment,
       },
     };
-    expect(filter(undefined, actions.initialize(payload))).toEqual(expected);
+    expect(
+      filter(undefined, actions.initialize(payload)),
+    ).toEqual(expected);
   });
 
   it('reset', () => {
     const payload = Object.keys(initialFilters);
-    expect(filter(testingState, actions.reset(payload))).toEqual(initialFilters);
+    expect(
+      filter(testingState, actions.reset(payload)),
+    ).toEqual(initialFilters);
+  });
+});
+
+describe('handle actions.update.assignmentType', () => {
+  it('get assignments for filtering with exist assignment type', () => {
+    const expected = {
+      ...testingState,
+      assignmentType: expectedFilterType,
+    };
+    expect(
+      filter(testingState, actions.update.assignmentType({
+        filterType: expectedFilterType,
+      })),
+    ).toEqual(expected);
+  });
+
+  it('clear the assignment if assignment type not existed', () => {
+    const notExistFilter = 'not exist filter';
+    const expected = {
+      ...testingState,
+      assignmentType: notExistFilter,
+      assignment: '',
+    };
+    expect(
+      filter(testingState, actions.update.assignmentType({
+        filterType: notExistFilter,
+      })),
+    ).toEqual(expected);
   });
 
   it('update assignment', () => {
@@ -124,7 +136,7 @@ describe('filter reducer group', () => {
   });
 });
 
-describe('grade reducer group', () => {
+describe('handling of receiving grade action', () => {
   const expectedTrack = 'verified';
   const expectedCohortId = 5;
   const grades = [
@@ -151,11 +163,13 @@ describe('grade reducer group', () => {
       cohort: expectedCohortId,
     };
 
-    expect(filter(testingState, gradeActions.received({
-      grades,
-      track: expectedTrack,
-      cohort: expectedCohortId,
-    }))).toEqual(expected);
+    expect(
+      filter(testingState, gradeActions.received({
+        grades,
+        track: expectedTrack,
+        cohort: expectedCohortId,
+      })),
+    ).toEqual(expected);
   });
 
   it('grade receive with assignment type', () => {
@@ -164,9 +178,11 @@ describe('grade reducer group', () => {
       track: expectedTrack,
       cohort: expectedCohortId,
     };
-    expect(filter(testingState, gradeActions.received({
-      track: expectedTrack,
-      cohort: expectedCohortId,
-    }))).toEqual(expected);
+    expect(
+      filter(testingState, gradeActions.received({
+        track: expectedTrack,
+        cohort: expectedCohortId,
+      })),
+    ).toEqual(expected);
   });
 });

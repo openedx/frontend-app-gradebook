@@ -7,7 +7,9 @@ const initialState = {
 
 describe('tracks reducer', () => {
   it('has initial state', () => {
-    expect(roles(undefined, {})).toEqual(initialState);
+    expect(
+      roles(undefined, {}),
+    ).toEqual(initialState);
   });
 
   it('updates canUserViewGradebook to true', () => {
@@ -15,7 +17,9 @@ describe('tracks reducer', () => {
       ...initialState,
       canUserViewGradebook: true,
     };
-    expect(roles(undefined, actions.received(true))).toEqual(expected);
+    expect(
+      roles(undefined, actions.received(true)),
+    ).toEqual(expected);
   });
 
   it('updates canUserViewGradebook to false', () => {
@@ -23,7 +27,9 @@ describe('tracks reducer', () => {
       ...initialState,
       canUserViewGradebook: false,
     };
-    expect(roles(undefined, actions.received(false))).toEqual(expected);
+    expect(
+      roles(undefined, actions.received(false)),
+    ).toEqual(expected);
   });
 
   it('updates fetch roles failure state', () => {
@@ -31,6 +37,8 @@ describe('tracks reducer', () => {
       ...initialState,
       canUserViewGradebook: false,
     };
-    expect(roles(undefined, actions.errorFetching())).toEqual(expected);
+    expect(
+      roles(undefined, actions.errorFetching()),
+    ).toEqual(expected);
   });
 });
