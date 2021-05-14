@@ -31,4 +31,5 @@ const cohorts = (state = initialState, action) => {
   }
 };
 
+export { initialState };
 export default cohorts;

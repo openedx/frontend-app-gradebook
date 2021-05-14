@@ -1,6 +1,8 @@
 import actions from '../actions/config';
 
-const reducer = (state = {}, action) => {
+const initialState = {};
+
+const reducer = (state = initialState, action) => {
   switch (action.type) {
     case actions.gotBulkManagementConfig.toString():
       return {
@@ -12,4 +14,5 @@ const reducer = (state = {}, action) => {
   }
 };
 
+export { initialState };
 export default reducer;

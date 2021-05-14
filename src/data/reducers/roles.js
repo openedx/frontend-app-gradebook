@@ -21,4 +21,5 @@ const roles = (state = initialState, action) => {
   }
 };
 
+export { initialState };
 export default roles;

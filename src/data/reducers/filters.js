@@ -1,4 +1,4 @@
-import filterSelectors from 'data/selectors/filters';
+import filterSelectors from '../selectors/filters';
 import actions from '../actions/filters';
 import gradeActions from '../actions/grades';
 import initialFilters from '../constants/filters';
@@ -78,4 +78,5 @@ const reducer = (state = initialState, { type: actionType, payload }) => {
   }
 };
 
+export { initialState };
 export default reducer;

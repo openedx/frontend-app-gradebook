@@ -31,4 +31,5 @@ const tracks = (state = initialState, action) => {
   }
 };
 
+export { initialState };
 export default tracks;

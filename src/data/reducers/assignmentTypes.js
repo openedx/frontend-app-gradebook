@@ -38,4 +38,5 @@ const assignmentTypes = (state = initialState, { type, payload }) => {
   }
 };
 
+export { initialState };
 export default assignmentTypes;
