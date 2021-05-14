@@ -1,15 +1,14 @@
 /* eslint-disable import/prefer-default-export */
+import { StrictDict } from 'utils';
 import tracks from '../actions/tracks';
 
 import selectors from '../selectors';
 
-import {
-  fetchBulkUpgradeHistory,
-} from './grades';
+import { fetchBulkUpgradeHistory } from './grades';
 
 import LmsApiService from '../services/LmsApiService';
 
-const fetchTracks = courseId => (
+export const fetchTracks = courseId => (
   (dispatch) => {
     dispatch(tracks.fetching.started());
     return LmsApiService.fetchTracks(courseId)
@@ -26,6 +25,6 @@ const fetchTracks = courseId => (
   }
 );
 
-export {
+export default StrictDict({
   fetchTracks,
-};
+});

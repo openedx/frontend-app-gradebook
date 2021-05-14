@@ -1,4 +1,5 @@
 /* eslint-disable import/prefer-default-export */
+import { StrictDict } from 'utils';
 import actions from '../actions';
 
 import LmsApiService from '../services/LmsApiService';
@@ -6,7 +7,7 @@ import LmsApiService from '../services/LmsApiService';
 const { fetching, gotGradesFrozen } = actions.assignmentTypes;
 const { gotBulkManagementConfig } = actions.config;
 
-const fetchAssignmentTypes = courseId => (
+export const fetchAssignmentTypes = courseId => (
   (dispatch) => {
     dispatch(fetching.started());
     return LmsApiService.fetchAssignmentTypes(courseId)
@@ -22,4 +23,4 @@ const fetchAssignmentTypes = courseId => (
   }
 );
 
-export { fetchAssignmentTypes };
+export default StrictDict({ fetchAssignmentTypes });

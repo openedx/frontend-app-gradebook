@@ -122,6 +122,7 @@ const formatGradeOverrideForDisplay = historyArray => historyArray.map(item => (
 const simpleSelectors = simpleSelectorFactory(
   ({ grades }) => grades,
   [
+    'courseId',
     'filteredUsersCount',
     'totalUsersCount',
     'gradeFormat',

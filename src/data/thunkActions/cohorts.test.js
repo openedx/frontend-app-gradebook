@@ -1,76 +1,44 @@
-import axios from 'axios';
-import configureMockStore from 'redux-mock-store';
-import MockAdapter from 'axios-mock-adapter';
-import thunk from 'redux-thunk';
+import LmsApiService from '../services/LmsApiService';
 
-import { getAuthenticatedHttpClient } from '@edx/frontend-platform/auth';
-import { configuration } from '../../config';
-import { fetchCohorts } from './cohorts';
 import actions from '../actions';
+import * as thunkActions from './cohorts';
+import { createTestFetcher } from './testUtils';
 
-const mockStore = configureMockStore([thunk]);
+jest.mock('../services/LmsApiService', () => ({
+  fetchCohorts: jest.fn(),
+}));
 
-jest.mock('@edx/frontend-platform/auth');
-const axiosMock = new MockAdapter(axios);
-getAuthenticatedHttpClient.mockReturnValue(axios);
-axios.isAccessTokenExpired = jest.fn();
-axios.isAccessTokenExpired.mockReturnValue(false);
+const responseData = {
+  cohorts: {
+    some: 'COHorts',
+    other: 'cohORT$',
+  },
+};
 
-describe('cohort thunkActions', () => {
-  afterEach(() => {
-    axiosMock.reset();
-  });
-
+describe('cohorts thunkActions', () => {
   describe('fetchCohorts', () => {
     const courseId = 'course-v1:edX+DemoX+Demo_Course';
-
-    it('dispatches success action after fetching cohorts', () => {
-      const responseData = {
-        cohorts: [
-          {
-            assignment_type: 'manual',
-            group_id: null,
-            id: 1,
-            name: 'default_group',
-            user_count: 2,
-            user_partition_id: null,
-          },
-          {
-            assignment_type: 'auto',
-            group_id: null,
-            id: 2,
-            name: 'auto_group',
-            user_count: 5,
-            user_partition_id: null,
-          }],
-      };
-      const expectedActions = [
-        actions.cohorts.fetching.started(),
-        actions.cohorts.fetching.received(responseData.cohorts),
-      ];
-      const store = mockStore();
-
-      axiosMock.onGet(`${configuration.LMS_BASE_URL}/courses/${courseId}/cohorts/`)
-        .replyOnce(200, JSON.stringify(responseData));
-
-      return store.dispatch(fetchCohorts(courseId)).then(() => {
-        expect(store.getActions()).toEqual(expectedActions);
+    const testFetch = createTestFetcher(
+      LmsApiService.fetchCohorts,
+      thunkActions.fetchCohorts,
+      [courseId],
+    );
+    describe('actions dispatched on valid response', () => {
+      test('fetching.started, fetching.received', () => {
+        return testFetch((resolve) => resolve({ data: responseData }), [
+          actions.cohorts.fetching.started(),
+          actions.cohorts.fetching.received(responseData.cohorts),
+        ]);
       });
     });
-
-    it('dispatches failure action after fetching cohorts', () => {
-      const expectedActions = [
-        actions.cohorts.fetching.started(),
-        actions.cohorts.fetching.error(),
-      ];
-      const store = mockStore();
-
-      axiosMock.onGet(`${configuration.LMS_BASE_URL}/courses/${courseId}/cohorts/`)
-        .replyOnce(500, JSON.stringify({}));
-
-      return store.dispatch(fetchCohorts(courseId)).then(() => {
-        expect(store.getActions()).toEqual(expectedActions);
-      });
+    describe('actions dispatched on api error', () => {
+      test('fetching.started, fetching.error', () => testFetch(
+        (resolve, reject) => reject(),
+        [
+          actions.cohorts.fetching.started(),
+          actions.cohorts.fetching.error(),
+        ],
+      ));
     });
   });
 });

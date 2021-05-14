@@ -1,99 +1,55 @@
-import axios from 'axios';
-import configureMockStore from 'redux-mock-store';
-import MockAdapter from 'axios-mock-adapter';
-import thunk from 'redux-thunk';
+import LmsApiService from '../services/LmsApiService';
 
-import { getAuthenticatedHttpClient } from '@edx/frontend-platform/auth';
-import { configuration } from '../../config';
-import { fetchAssignmentTypes } from './assignmentTypes';
 import actions from '../actions';
+import * as thunkActions from './assignmentTypes';
+import { createTestFetcher } from './testUtils';
 
-const mockStore = configureMockStore([thunk]);
+jest.mock('../services/LmsApiService', () => ({
+  fetchAssignmentTypes: jest.fn(),
+}));
 
-jest.mock('@edx/frontend-platform/auth');
-const axiosMock = new MockAdapter(axios);
-getAuthenticatedHttpClient.mockReturnValue(axios);
-axios.isAccessTokenExpired = jest.fn();
-axios.isAccessTokenExpired.mockReturnValue(false);
+const responseData = {
+  assignment_types: {
+    some: 'types',
+    other: 'TYpeS',
+  },
+  grades_frozen: 'bOOl',
+  can_see_bulk_management: 'BooL',
+};
 
-describe('actions', () => {
-  afterEach(() => {
-    axiosMock.reset();
-  });
-
+describe('assignmentType thunkActions', () => {
   describe('fetchAssignmentTypes', () => {
     const courseId = 'course-v1:edX+DemoX+Demo_Course';
-    const responseData = {
-      assignment_types: {
-        Exam: {
-          drop_count: 0,
-          min_count: 1,
-          short_label: 'Exam',
-          type: 'Exam',
-          weight: 0.25,
-        },
-        Homework: {
-          drop_count: 1,
-          min_count: 3,
-          short_label: 'Ex',
-          type: 'Homework',
-          weight: 0.75,
-        },
-      },
-      grades_frozen: false,
-      can_see_bulk_management: true,
-    };
-    it('dispatches success action after fetching fetchAssignmentTypes', () => {
-      const expectedActions = [
-        actions.assignmentTypes.fetching.started(),
-        actions.assignmentTypes.fetching.received(
-          Object.keys(responseData.assignment_types),
-        ),
-        actions.assignmentTypes.gotGradesFrozen(responseData.grades_frozen),
-        actions.assignmentTypes.config.gotBulkManagementConfig(true),
+    const testFetch = createTestFetcher(
+      LmsApiService.fetchAssignmentTypes,
+      thunkActions.fetchAssignmentTypes,
+      [courseId],
+    );
+    describe('actions dispatched on valid response', () => {
+      const actionNames = [
+        'fetching.started',
+        'fetching.received with data.assignment_types',
+        'gotGradesFrozen with data.grades_frozen',
+        'config.gotBulkManagement with data.can_see_bulk_management',
       ];
-      const store = mockStore();
-
-      axiosMock.onGet(`${configuration.LMS_BASE_URL}/api/grades/v1/gradebook/${courseId}/grading-info?graded_only=true`)
-        .replyOnce(200, JSON.stringify(responseData));
-
-      return store.dispatch(fetchAssignmentTypes(courseId)).then(() => {
-        expect(store.getActions()).toEqual(expectedActions);
-      });
+      test(actionNames.join(', '), () => testFetch(
+        (resolve) => resolve({ data: responseData }),
+        [
+          actions.assignmentTypes.fetching.started(),
+          actions.assignmentTypes.fetching.received(Object.keys(responseData.assignment_types)),
+          actions.assignmentTypes.gotGradesFrozen(responseData.grades_frozen),
+          actions.config.gotBulkManagementConfig(responseData.can_see_bulk_management),
+        ],
+      ));
     });
-
-    it('dispatches failure action after fetching cohorts', () => {
-      const expectedActions = [
-        actions.assignmentTypes.fetching.started(),
-        actions.assignmentTypes.fetching.error(),
-      ];
-      const store = mockStore();
-
-      axiosMock.onGet(`${configuration.LMS_BASE_URL}/api/grades/v1/gradebook/${courseId}/grading-info?graded_only=true`)
-        .replyOnce(500, JSON.stringify({}));
-
-      return store.dispatch(fetchAssignmentTypes(courseId)).then(() => {
-        expect(store.getActions()).toEqual(expectedActions);
-      });
-    });
-
-    it('dispatches frozen grade action with True value after fetching', () => {
-      const expectedActions = [
-        actions.assignmentTypes.fetching.started(),
-        actions.assignmentTypes.fetching.received(
-          Object.keys(responseData.assignment_types),
-        ),
-        actions.assignmentTypes.gotGradesFrozen(true),
-        actions.assignmentTypes.config.gotBulkManagementConfig(true),
-      ];
-      const store = mockStore();
-      responseData.grades_frozen = true;
-      axiosMock.onGet(`${configuration.LMS_BASE_URL}/api/grades/v1/gradebook/${courseId}/grading-info?graded_only=true`)
-        .replyOnce(200, JSON.stringify(responseData));
-
-      return store.dispatch(fetchAssignmentTypes(courseId)).then(() => {
-        expect(store.getActions()).toEqual(expectedActions);
-      });
+    describe('actions dispatched on api error', () => {
+      test('fetching.started, fetching.error', () => testFetch(
+        (resolve, reject) => reject(),
+        [
+          actions.assignmentTypes.fetching.started(),
+          actions.assignmentTypes.fetching.error(),
+        ],
+      ));
     });
   });
 });

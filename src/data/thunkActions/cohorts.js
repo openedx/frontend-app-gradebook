@@ -1,10 +1,10 @@
 /* eslint-disable import/prefer-default-export */
-
+import { StrictDict } from 'utils';
 import cohorts from '../actions/cohorts';
 
 import LmsApiService from '../services/LmsApiService';
 
-const fetchCohorts = courseId => (
+export const fetchCohorts = courseId => (
   (dispatch) => {
     dispatch(cohorts.fetching.started());
     return LmsApiService.fetchCohorts(courseId)
@@ -18,4 +18,4 @@ const fetchCohorts = courseId => (
   }
 );
 
-export { fetchCohorts };
+export default StrictDict({ fetchCohorts });

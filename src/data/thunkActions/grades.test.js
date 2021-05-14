@@ -9,6 +9,8 @@ import { sortAlphaAsc } from '../actions/utils';
 import LmsApiService from '../services/LmsApiService';
 import selectors from '../selectors';
 
+import { createTestFetcher } from './testUtils';
+
 const mockStore = configureMockStore([thunk]);
 
 const courseId = 'course-v1:edX+DemoX+Demo_Course';
@@ -104,29 +106,6 @@ jest.mock('../selectors', () => ({
 }));
 
 selectors.filters.allFilters.mockReturnValue(allFilters);
-
-const createTestFetcher = (
-  mockedMethod,
-  thunkAction,
-  args,
-  onDispatch,
-) => (
-  resolveFn,
-  expectedActions,
-  verifyFn,
-) => {
-  const store = mockStore({});
-  mockedMethod.mockReturnValue(new Promise(resolve => {
-    resolve(new Promise(resolveFn));
-  }));
-  return store.dispatch(thunkAction(...args)).then(() => {
-    onDispatch();
-    if (verifyFn) {
-      verifyFn();
-    }
-    expect(store.getActions()).toEqual(expectedActions);
-  });
-};
 
 describe('grades thunkActions', () => {
   let oldSelectors;

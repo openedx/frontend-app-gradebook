@@ -1,6 +1,7 @@
 /* eslint-disable import/no-self-import */
 import { getAuthenticatedHttpClient } from '@edx/frontend-platform/auth';
 
+import { StrictDict } from 'utils';
 import grades from '../actions/grades';
 import { sortAlphaAsc } from '../actions/utils';
 
@@ -19,16 +20,16 @@ const {
   formatGradeOverrideForDisplay,
 } = selectors.grades;
 
-const defaultAssignmentFilter = 'All';
+export const defaultAssignmentFilter = 'All';
 
-const fetchBulkUpgradeHistory = courseId => (
+export const fetchBulkUpgradeHistory = courseId => (
   // todo add loading effect
   dispatch => LmsApiService.fetchGradeBulkOperationHistory(courseId).then(
     (response) => { dispatch(grades.bulkHistory.received(response)); },
   ).catch(() => dispatch(grades.bulkHistory.error()))
 );
 
-const fetchGrades = (
+export const fetchGrades = (
   courseId,
   cohort,
   track,
@@ -88,7 +89,7 @@ const fetchGrades = (
   }
 );
 
-const fetchGradeOverrideHistory = (subsectionId, userId) => (
+export const fetchGradeOverrideHistory = (subsectionId, userId) => (
   dispatch => LmsApiService.fetchGradeOverrideHistory(subsectionId, userId)
     .then(response => response.data)
     .then((data) => {
@@ -116,7 +117,7 @@ const fetchGradeOverrideHistory = (subsectionId, userId) => (
     })
 );
 
-const fetchMatchingUserGrades = (
+export const fetchMatchingUserGrades = (
   courseId,
   searchText,
   cohort,
@@ -129,7 +130,7 @@ const fetchMatchingUserGrades = (
   return module.fetchGrades(courseId, cohort, track, assignmentType, newOptions);
 };
 
-const fetchPrevNextGrades = (endpoint, courseId, cohort, track, assignmentType) => (
+export const fetchPrevNextGrades = (endpoint, courseId, cohort, track, assignmentType) => (
   (dispatch) => {
     dispatch(grades.fetching.started());
     return getAuthenticatedHttpClient().get(endpoint)
@@ -154,7 +155,7 @@ const fetchPrevNextGrades = (endpoint, courseId, cohort, track, assignmentType) 
   }
 );
 
-const submitFileUploadFormData = (courseId, formData) => (
+export const submitFileUploadFormData = (courseId, formData) => (
   (dispatch) => {
     dispatch(grades.csvUpload.started());
     return LmsApiService.uploadGradeCsv(courseId, formData).then(() => {
@@ -171,7 +172,7 @@ const submitFileUploadFormData = (courseId, formData) => (
   }
 );
 
-const updateGrades = (courseId, updateData, searchText, cohort, track) => (
+export const updateGrades = (courseId, updateData, searchText, cohort, track) => (
   (dispatch) => {
     dispatch(grades.update.request());
     return LmsApiService.updateGradebookData(courseId, updateData)
@@ -194,7 +195,7 @@ const updateGrades = (courseId, updateData, searchText, cohort, track) => (
   }
 );
 
-const updateGradesIfAssignmentGradeFiltersSet = (
+export const updateGradesIfAssignmentGradeFiltersSet = (
   courseId,
   cohort,
   track,
@@ -213,8 +214,7 @@ const updateGradesIfAssignmentGradeFiltersSet = (
   }
 };
 
-export {
-  defaultAssignmentFilter,
+export default StrictDict({
   fetchBulkUpgradeHistory,
   fetchGrades,
   fetchGradeOverrideHistory,
@@ -223,4 +223,4 @@ export {
   submitFileUploadFormData,
   updateGrades,
   updateGradesIfAssignmentGradeFiltersSet,
-};
+});
