@@ -1,8 +1,9 @@
-import roles from './roles';
+import roles, { initialState } from './roles';
 import actions from '../actions/roles';
 
-const initialState = {
-  canUserViewGradebook: null,
+const testingState = {
+  ...initialState,
+  arbitraryField: 'arbitrary',
 };
 
 describe('tracks reducer', () => {
@@ -12,33 +13,28 @@ describe('tracks reducer', () => {
     ).toEqual(initialState);
   });
 
-  it('updates canUserViewGradebook to true', () => {
-    const expected = {
-      ...initialState,
-      canUserViewGradebook: true,
-    };
-    expect(
-      roles(undefined, actions.received(true)),
-    ).toEqual(expected);
+  describe('handling actions.received', () => {
+    it('updates canUserViewGradebook to the received payload', () => {
+      const expectedCanUserViewGradebook = true;
+      const expected = {
+        ...testingState,
+        canUserViewGradebook: expectedCanUserViewGradebook,
+      };
+      expect(
+        roles(testingState, actions.received(expectedCanUserViewGradebook)),
+      ).toEqual(expected);
+    });
   });
 
-  it('updates canUserViewGradebook to false', () => {
-    const expected = {
-      ...initialState,
-      canUserViewGradebook: false,
-    };
-    expect(
-      roles(undefined, actions.received(false)),
-    ).toEqual(expected);
-  });
-
-  it('updates fetch roles failure state', () => {
-    const expected = {
-      ...initialState,
-      canUserViewGradebook: false,
-    };
-    expect(
-      roles(undefined, actions.errorFetching()),
-    ).toEqual(expected);
+  describe('handling actions.errorFetching', () => {
+    it('set canUserViewGradebook to false on failure', () => {
+      const expected = {
+        ...testingState,
+        canUserViewGradebook: false,
+      };
+      expect(
+        roles(testingState, actions.errorFetching()),
+      ).toEqual(expected);
+    });
   });
 });
