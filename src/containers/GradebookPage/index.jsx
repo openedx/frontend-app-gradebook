@@ -1,15 +1,9 @@
 import { connect } from 'react-redux';
 
-import { fetchAssignmentTypes } from 'data/thunkActions/assignmentTypes';
-import {
-  fetchGradeOverrideHistory,
-  fetchGrades,
-  fetchPrevNextGrades,
-  submitFileUploadFormData,
-} from 'data/thunkActions/grades';
+import thunkActions from 'data/thunkActions';;
 import { fetchCohorts } from 'data/thunkActions/cohorts';
 import { fetchTracks } from 'data/thunkActions/tracks';
-import { getRoles } from 'data/thunkActions/roles';
+import { fetchRoles } from 'data/thunkActions/roles';
 import actions from 'data/actions';
 import selectors from 'data/selectors';
 
@@ -63,14 +57,14 @@ const mapDispatchToProps = {
   updateAssignmentLimits: actions.filters.update.assignmentLimits,
   resetFilters: actions.filters.reset,
 
-  fetchGradeOverrideHistory,
-  getAssignmentTypes: fetchAssignmentTypes,
-  getCohorts: fetchCohorts,
-  getPrevNextGrades: fetchPrevNextGrades,
-  getRoles,
-  getTracks: fetchTracks,
-  getUserGrades: fetchGrades,
-  submitFileUploadFormData,
+  fetchGradeOverrideHistory: thunkActions.grades.fetchGradeOverrideHistory,
+  getAssignmentTypes: thunkActions.assignmentTypes.fetchAssignmentTypes,
+  getCohorts: thunkActions.cohorts.fetchCohorts,
+  getPrevNextGrades: thunkActions.grades.fetchPrevNextGrades,
+  getRoles: thunkActions.roles.fetchRoles,
+  getTracks: thunkActions.tracks.fetchTracks,
+  getUserGrades: thunkActions.grades.fetchGrades,
+  submitFileUploadFormData: thunkActions.grades.submitFileUploadFormData,
 };
 
 const GradebookPage = connect(

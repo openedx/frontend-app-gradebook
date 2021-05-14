@@ -6,9 +6,9 @@ import {
   Button,
 } from '@edx/paragon';
 
-import { fetchGrades } from 'data/thunkActions/grades';
 import selectors from 'data/selectors';
 import actions from 'data/actions';
+import thunkActions from 'data/thunkActions';
 import PercentGroup from '../PercentGroup';
 
 export class CourseGradeFilter extends React.Component {
@@ -130,7 +130,7 @@ export const mapStateToProps = (state) => {
 
 export const mapDispatchToProps = {
   updateFilter: actions.filters.update.courseGradeLimits,
-  getUserGrades: fetchGrades,
+  getUserGrades: thunkActions.grades.fetchGrades,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(CourseGradeFilter);

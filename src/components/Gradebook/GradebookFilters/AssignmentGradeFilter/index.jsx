@@ -5,9 +5,9 @@ import { connect } from 'react-redux';
 
 import { Button } from '@edx/paragon';
 
-import { fetchGrades } from 'data/thunkActions/grades';
 import selectors from 'data/selectors';
 import actions from 'data/actions';
+import thunkActions from 'data/thunkActions';
 
 import PercentGroup from '../PercentGroup';
 
@@ -118,7 +118,7 @@ export const mapStateToProps = (state) => {
 };
 
 export const mapDispatchToProps = {
-  getUserGrades: fetchGrades,
+  getUserGrades: thunkActions.grades.fetchGrades,
   updateAssignmentLimits: actions.filters.update.assignmentLimits,
 };
 

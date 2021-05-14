@@ -5,9 +5,11 @@ import { connect } from 'react-redux';
 
 import selectors from 'data/selectors';
 import actions from 'data/actions';
-import { updateGradesIfAssignmentGradeFiltersSet } from 'data/thunkActions/grades';
+import thunkActions from 'data/thunkActions';
 
 import SelectGroup from '../SelectGroup';
+
+const { updateGradesIfAssignmentGradeFiltersSet } = thunkActions.grades;
 
 export class AssignmentFilter extends React.Component {
   constructor(props) {

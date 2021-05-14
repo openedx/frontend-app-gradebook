@@ -10,7 +10,7 @@ import {
 import { EMAIL_HEADING, TOTAL_COURSE_GRADE_HEADING, USERNAME_HEADING } from 'data/constants/grades';
 import selectors from 'data/selectors';
 import { formatDateForDisplay } from 'data/actions/utils';
-import { fetchGradeOverrideHistory } from 'data/thunkActions/grades';
+import thunkActions from 'data/thunkActions';
 
 const DECIMAL_PRECISION = 2;
 
@@ -228,7 +228,7 @@ export const mapStateToProps = (state) => {
 };
 
 export const mapDispatchToProps = {
-  fetchGradeOverrideHistory,
+  fetchGradeOverrideHistory: thunkActions.grades.fetchGradeOverrideHistory,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(GradebookTable);

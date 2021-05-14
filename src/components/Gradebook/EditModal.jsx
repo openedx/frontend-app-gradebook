@@ -12,7 +12,7 @@ import {
 
 import selectors from 'data/selectors';
 import actions from 'data/actions';
-import { updateGrades } from 'data/thunkActions/grades';
+import thunkActions from 'data/thunkActions';
 
 const GRADE_OVERRIDE_HISTORY_COLUMNS = [
   { label: 'Date', key: 'date' },
@@ -202,7 +202,7 @@ export const mapStateToProps = (state) => {
 
 export const mapDispatchToProps = {
   doneViewingAssignment: actions.grades.doneViewingAssignment,
-  updateGrades: actions.grades.updateGrades,
+  updateGrades: thunkActions.grades.updateGrades,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(EditModal);

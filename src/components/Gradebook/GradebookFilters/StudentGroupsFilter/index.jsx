@@ -3,8 +3,9 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
-import { fetchGrades } from 'data/thunkActions/grades';
 import selectors from 'data/selectors';
+import thunkActions from 'data/thunkActions';
+
 import SelectGroup from '../SelectGroup';
 
 export class StudentGroupsFilter extends React.Component {
@@ -147,7 +148,7 @@ export const mapStateToProps = (state) => {
 };
 
 export const mapDispatchToProps = {
-  getUserGrades: fetchGrades,
+  getUserGrades: thunkActions.grades.fetchGrades,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(StudentGroupsFilter);
