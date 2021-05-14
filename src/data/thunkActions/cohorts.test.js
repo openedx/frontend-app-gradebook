@@ -24,12 +24,13 @@ describe('cohorts thunkActions', () => {
       [courseId],
     );
     describe('actions dispatched on valid response', () => {
-      test('fetching.started, fetching.received', () => {
-        return testFetch((resolve) => resolve({ data: responseData }), [
+      test('fetching.started, fetching.received', () => testFetch(
+        (resolve) => resolve({ data: responseData }),
+        [
           actions.cohorts.fetching.started(),
           actions.cohorts.fetching.received(responseData.cohorts),
-        ]);
-      });
+        ],
+      ));
     });
     describe('actions dispatched on api error', () => {
       test('fetching.started, fetching.error', () => testFetch(

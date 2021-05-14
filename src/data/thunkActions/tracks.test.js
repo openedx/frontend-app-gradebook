@@ -40,7 +40,7 @@ describe('tracjs thunkActions', () => {
           });
           const expectedActions = [
             'tracks.fetching.started',
-            'tracks.fetching.received with course_modes'
+            'tracks.fetching.received with course_modes',
           ];
           it(`dispatches [${expectedActions.join(', ')}]`, () => testFetch(
             (resolve) => resolve({ data: responseData }),
