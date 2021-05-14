@@ -611,19 +611,24 @@ describe('grades thunkActions', () => {
       total_users_count: 23,
       filtered_users_count: 12,
     };
+    const { fetching, received } = actions.grades;
     let getClient;
-    afterEach(() => {
-      getClient.mockRestore();
-    });
+
+    const mockClient = (resolveFn) => {
+      getClient = jest.spyOn(
+        auth,
+        'getAuthenticatedHttpClient',
+      ).mockReturnValue({
+        get: jest.fn().mockReturnValue(new Promise(resolveFn)),
+      });
+    };
+
     const testFetch = (
       resolveFn,
       expectedActions,
     ) => {
       const store = mockStore({});
-      getClient = jest.spyOn(auth, 'getAuthenticatedHttpClient')
-        .mockReturnValue({
-          get: jest.fn().mockReturnValue(new Promise(resolveFn)),
-        });
+      mockClient(resolveFn);
       return store.dispatch(thunkActions.fetchPrevNextGrades(
         args.endpoint,
         courseId,
@@ -634,12 +639,17 @@ describe('grades thunkActions', () => {
         expect(store.getActions()).toEqual(expectedActions);
       });
     };
+
+    afterEach(() => {
+      getClient.mockRestore();
+    });
+
     describe('valid data', () => {
       it('sends finished action and loads results', () => testFetch(
         (resolve) => resolve({ data: response }),
         [
-          actions.grades.fetching.started(),
-          actions.grades.received({
+          fetching.started(),
+          received({
             grades: gradesResults.sort(sortAlphaAsc),
             prev: response.previous,
             next: response.next,
@@ -650,14 +660,14 @@ describe('grades thunkActions', () => {
             assignmentType: args.assignmentType,
             courseId,
           }),
-          actions.grades.fetching.finished(),
+          fetching.finished(),
         ],
       ));
     });
     describe('error response', () => {
       it('sends error action', () => testFetch(
         (resolve, reject) => reject(),
-        [actions.grades.fetching.started(), actions.grades.fetching.error()],
+        [fetching.started(), fetching.error()],
       ));
     });
   });
@@ -670,34 +680,37 @@ describe('grades thunkActions', () => {
       [courseId, formData],
       () => expect(LmsApiService.uploadGradeCsv).toHaveBeenCalledWith(courseId, formData),
     );
+    const { csvUpload, uploadOverride } = actions.grades;
     describe('valid data', () => {
-      it('sends csvUpload finished and uploadOverride success actions', () => testFetch(
-        (resolve) => resolve(),
-        [
-          actions.grades.csvUpload.started(),
-          actions.grades.csvUpload.finished(),
-          actions.grades.uploadOverride.success(courseId),
-        ],
-      ));
+      it('sends csvUpload finished and uploadOverride success actions', () =>  {
+        testFetch(
+          (resolve) => resolve(),
+          [
+            csvUpload.started(),
+            csvUpload.finished(),
+            uploadOverride.success(courseId),
+          ],
+        );
+      });
     });
     describe('error response', () => {
       describe('non-200 error', () => {
         it('sends uploadOverride failure w/ raw error and csvUploadError with default', () => {
           const error = { some: 'error' };
-          return testFetch((resolve, reject) => reject(error), [
-            actions.grades.csvUpload.started(),
-            actions.grades.uploadOverride.failure(courseId, error),
-            actions.grades.csvUpload.error({ errorMessages: ['Unknown error.'] }),
+          testFetch((resolve, reject) => reject(error), [
+            csvUpload.started(),
+            uploadOverride.failure(courseId, error),
+            csvUpload.error({ errorMessages: ['Unknown error.'] }),
           ]);
         });
       });
       describe('200 error with no messages', () => {
         it('sends uploadOverride failure w/ raw error and csvUploadError with default', () => {
           const error = { status: 200, data: { error_messages: [] }, some: 'error' };
-          return testFetch((resolve, reject) => reject(error), [
-            actions.grades.csvUpload.started(),
-            actions.grades.uploadOverride.failure(courseId, error),
-            actions.grades.csvUpload.error({ errorMessages: ['Unknown error.'] }),
+          testFetch((resolve, reject) => reject(error), [
+            csvUpload.started(),
+            uploadOverride.failure(courseId, error),
+            csvUpload.error({ errorMessages: ['Unknown error.'] }),
           ]);
         });
       });
@@ -709,10 +722,10 @@ describe('grades thunkActions', () => {
               error_messages: ['some', 'errors'], saved: 21, total: 32,
             },
           };
-          return testFetch((resolve, reject) => reject(error), [
-            actions.grades.csvUpload.started(),
-            actions.grades.uploadOverride.failure(courseId, error),
-            actions.grades.csvUpload.error({
+          testFetch((resolve, reject) => reject(error), [
+            csvUpload.started(),
+            uploadOverride.failure(courseId, error),
+            csvUpload.error({
               errorMessages: error.data.error_messages,
               saved: error.data.saved,
               total: error.data.total,
