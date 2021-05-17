@@ -91,7 +91,7 @@ export class BulkManagement extends React.Component {
           <StatusAlert
             alertType="danger"
             dialog={this.props.bulkImportError}
-            isOpen={this.props.bulkImportError}
+            open={!!this.props.bulkImportError}
             dismissible={false}
           />
           <StatusAlert
