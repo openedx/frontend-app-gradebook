@@ -2,64 +2,10 @@ import grades, { initialGradesState as initialState } from './grades';
 import actions from '../actions/grades';
 import filterActions from '../actions/filters';
 
-const courseId = 'course-v1:edX+DemoX+Demo_Course';
 const headingsData = [
   { name: 'exam' },
   { name: 'homework2' },
 ];
-const gradesData = [
-  {
-    course_id: courseId,
-    email: 'user1@example.com',
-    username: 'user1',
-    user_id: 1,
-    percent: 0.5,
-    letter_grade: null,
-    section_breakdown: [
-      {
-        subsection_name: 'Demo Course Overview',
-        score_earned: 0,
-        score_possible: 0,
-        percent: 0,
-        displayed_value: '0.00',
-        grade_description: '(0.00/0.00)',
-      },
-      {
-        subsection_name: 'Example Week 1: Getting Started',
-        score_earned: 1,
-        score_possible: 1,
-        percent: 1,
-        displayed_value: '1.00',
-        grade_description: '(0.00/0.00)',
-      },
-    ],
-  },
-  {
-    course_id: courseId,
-    email: 'user22@example.com',
-    username: 'user22',
-    user_id: 22,
-    percent: 0,
-    letter_grade: null,
-    section_breakdown: [
-      {
-        subsection_name: 'Demo Course Overview',
-        score_earned: 0,
-        score_possible: 0,
-        percent: 0,
-        displayed_value: '0.00',
-        grade_description: '(0.00/0.00)',
-      },
-      {
-        subsection_name: 'Example Week 1: Getting Started',
-        score_earned: 1,
-        score_possible: 1,
-        percent: 0,
-        displayed_value: '0.00',
-        grade_description: '(0.00/0.00)',
-      },
-    ],
-  }];
 
 const testingState = {
   ...initialState,
@@ -79,24 +25,31 @@ describe('grades reducer', () => {
 
   describe('handling actions.received', () => {
     it('finish fetch then set error and show spinner to false. Add grade data to the results.', () => {
+      const courseId = 'course-v1:edX+DemoX+Demo_Course';
       const expectedPrev = 'testPrevUrl';
       const expectedNext = 'testNextUrl';
       const expectedTrack = 'verified';
       const expectedCohortId = 2;
       const expectedTotalUsersCount = 4;
       const expectedFilterUsersCount = 2;
+      const expectedAssignmentType = 'Homework';
+      const gradesData = {
+        somethingArbitrary: 'some data',
+      };
       const payload = {
         grades: gradesData,
-        headings: headingsData,
-        next: expectedNext,
-        prev: expectedPrev,
-        track: expectedTrack,
-        totalUsersCount: expectedTotalUsersCount,
         cohort: expectedCohortId,
+        track: expectedTrack,
+        assignmentType: expectedAssignmentType,
+        headings: headingsData,
+        prev: expectedPrev,
+        next: expectedNext,
         courseId,
+        totalUsersCount: expectedTotalUsersCount,
         filteredUsersCount: expectedFilterUsersCount,
       };
 
+      // because of double remapping (action&reducer). It is difficult to reuse expected.
       const expected = {
         ...testingState,
         results: gradesData,

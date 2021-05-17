@@ -3,21 +3,12 @@ import actions from '../actions/cohorts';
 
 const cohortsData = [
   {
-    assignment_type: 'manual',
-    group_id: null,
-    id: 1,
-    name: 'default_group',
-    user_count: 2,
-    user_partition_id: null,
+    arbitraryCohortField: 'some data',
   },
   {
-    assignment_type: 'auto',
-    group_id: null,
-    id: 2,
-    name: 'auto_group',
-    user_count: 5,
-    user_partition_id: null,
-  }];
+    anotherArbitraryCohortField: 'some data',
+  },
+];
 
 const testingState = {
   ...initialState,
@@ -49,20 +40,7 @@ describe('cohorts reducer', () => {
       it('set finish fetch to true and error to false then replace results', () => {
         const newCohortData = [
           {
-            assignment_type: 'manual',
-            group_id: null,
-            id: 3,
-            name: 'default_group',
-            user_count: 3,
-            user_partition_id: null,
-          },
-          {
-            assignment_type: 'auto',
-            group_id: null,
-            id: 4,
-            name: 'auto_group',
-            user_count: 6,
-            user_partition_id: null,
+            newResultFields: 'recieved data',
           },
         ];
         const expected = {

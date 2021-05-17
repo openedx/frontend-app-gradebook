@@ -3,26 +3,10 @@ import actions from '../actions/tracks';
 
 const tracksData = [
   {
-    slug: 'audit',
-    name: 'Audit',
-    min_price: 0,
-    suggested_prices: '',
-    currency: 'usd',
-    expiration_datetime: null,
-    description: null,
-    sku: '68EFFFF',
-    bulk_sku: null,
+    someArbitraryField: 'arbitrary data',
   },
   {
-    slug: 'verified',
-    name: 'Verified Certificate',
-    min_price: 100,
-    suggested_prices: '',
-    currency: 'usd',
-    expiration_datetime: '2021-05-04T18:08:12.644361Z',
-    description: null,
-    sku: '8CF08E5',
-    bulk_sku: 'A5B6DBE',
+    anotherArbitraryField: 'more arbitrary data',
   }];
 
 const testingState = {
@@ -54,27 +38,9 @@ describe('tracks reducer', () => {
     it('replace results then set finish fetching to true and error to false', () => {
       const newTraksData = [
         {
-          slug: 'audit',
-          name: 'New Audit',
-          min_price: 0,
-          suggested_prices: '',
-          currency: 'usd',
-          expiration_datetime: null,
-          description: null,
-          sku: '68EFFFF',
-          bulk_sku: null,
+          receivedData: 'new data',
         },
-        {
-          slug: 'verified',
-          name: 'New Verified Certificate',
-          min_price: 100,
-          suggested_prices: '',
-          currency: 'usd',
-          expiration_datetime: '2021-05-04T18:08:12.644361Z',
-          description: null,
-          sku: '8CF08E5',
-          bulk_sku: 'A5B6DBE',
-        }];
+      ];
       const expected = {
         ...testingState,
         results: newTraksData,
