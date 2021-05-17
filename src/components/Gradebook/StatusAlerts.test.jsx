@@ -7,7 +7,7 @@ import {
   maxCourseGradeInvalidMessage,
   minCourseGradeInvalidMessage,
 } from './StatusAlerts';
-import { closeBanner } from '../../data/actions/grades';
+import actions from 'data/actions';
 
 jest.mock('@edx/paragon', () => ({
   StatusAlert: 'StatusAlert',
@@ -92,7 +92,7 @@ describe('StatusAlerts', () => {
       expect(
         mapDispatchToProps.handleCloseSuccessBanner,
       ).toEqual(
-        closeBanner,
+        actions.grades.banner.close,
       );
     });
   });

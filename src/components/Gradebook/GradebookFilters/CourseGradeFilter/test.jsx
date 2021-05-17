@@ -3,8 +3,8 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 
-import { updateCourseGradeFilter } from 'data/actions/filters';
-import { fetchGrades } from 'data/actions/grades';
+import actions from 'data/actions';
+import { fetchGrades } from 'data/thunkActions/grades';
 import {
   CourseGradeFilter,
   mapStateToProps,
@@ -91,11 +91,11 @@ describe('CourseGradeFilter', () => {
           el.instance().updateCourseGradeFilters();
         });
         it('calls props.updateFilter with selection', () => {
-          expect(props.updateFilter).toHaveBeenCalledWith(
-            props.filterValues.courseGradeMin,
-            props.filterValues.courseGradeMax,
-            props.courseId,
-          );
+          expect(props.updateFilter).toHaveBeenCalledWith({
+            courseGradeMin: props.filterValues.courseGradeMin,
+            courseGradeMax: props.filterValues.courseGradeMax,
+            courseId: props.courseId,
+          });
         });
         it('calls props.getUserGrades with selection', () => {
           expect(props.getUserGrades).toHaveBeenCalledWith(
@@ -184,7 +184,7 @@ describe('CourseGradeFilter', () => {
   describe('mapDispatchToProps', () => {
     describe('updateFilter', () => {
       test('from updateCourseGradeFilter', () => {
-        expect(mapDispatchToProps.updateFilter).toEqual(updateCourseGradeFilter);
+        expect(mapDispatchToProps.updateFilter).toEqual(actions.filters.update.courseGradeLimits);
       });
     });
     describe('getUserGrades', () => {

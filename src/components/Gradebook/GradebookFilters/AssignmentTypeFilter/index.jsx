@@ -70,7 +70,6 @@ export const mapStateToProps = (state) => ({
   selectedAssignmentType: selectors.filters.assignmentType(state),
 });
 
-console.log({ actions });
 export const mapDispatchToProps = {
   filterAssignmentType: actions.filters.update.assignmentType,
 };

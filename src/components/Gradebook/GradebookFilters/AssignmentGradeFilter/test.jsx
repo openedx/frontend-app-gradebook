@@ -1,8 +1,8 @@
 import React from 'react';
 import { mount, shallow } from 'enzyme';
 
-import { updateAssignmentLimits } from 'data/actions/filters';
-import { fetchGrades } from 'data/actions/grades';
+import actions from 'data/actions';
+import { fetchGrades } from 'data/thunkActions/grades';
 
 import {
   AssignmentGradeFilter,
@@ -167,7 +167,7 @@ describe('AssignmentGradeFilter', () => {
       expect(
         mapDispatchToProps.updateAssignmentLimits,
       ).toEqual(
-        updateAssignmentLimits,
+        actions.filters.update.assignmentLimits,
       );
     });
   });

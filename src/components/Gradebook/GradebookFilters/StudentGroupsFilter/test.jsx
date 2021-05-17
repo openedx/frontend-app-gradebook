@@ -3,7 +3,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 
-import { fetchGrades } from 'data/actions/grades';
+import { fetchGrades } from 'data/thunkActions/grades';
 import {
   StudentGroupsFilter,
   mapStateToProps,

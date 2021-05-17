@@ -682,7 +682,7 @@ describe('grades thunkActions', () => {
     );
     const { csvUpload, uploadOverride } = actions.grades;
     describe('valid data', () => {
-      it('sends csvUpload finished and uploadOverride success actions', () =>  {
+      it('sends csvUpload finished and uploadOverride success actions', () => {
         testFetch(
           (resolve) => resolve(),
           [
