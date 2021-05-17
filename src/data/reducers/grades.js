@@ -136,12 +136,16 @@ const grades = (state = initialState, action) => {
         bulkManagement: rest,
       };
     }
-    case UPLOAD_COMPLETE:
+    case UPLOAD_COMPLETE: {
       return {
         ...state,
         showSpinner: false,
-        bulkManagement: { uploadSuccess: true, ...state.bulkManagement },
+        bulkManagement: {
+          ...state.bulkManagement,
+          uploadSuccess: true,
+        },
       };
+    }
     case UPLOAD_ERR:
       return {
         ...state,
