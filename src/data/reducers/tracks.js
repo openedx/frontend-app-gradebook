@@ -8,17 +8,17 @@ const initialState = {
 
 const tracks = (state = initialState, action) => {
   switch (action.type) {
+    case actions.fetching.started.toString():
+      return {
+        ...state,
+        startedFetching: true,
+      };
     case actions.fetching.received.toString():
       return {
         ...state,
         results: action.payload,
         errorFetching: false,
         finishedFetching: true,
-      };
-    case actions.fetching.started.toString():
-      return {
-        ...state,
-        startedFetching: true,
       };
     case actions.fetching.error.toString():
       return {

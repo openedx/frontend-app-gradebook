@@ -58,6 +58,11 @@ const grades = (state = initialState, { type, payload }) => {
       } = state;
       return rest;
     }
+    case actions.toggleGradeFormat.toString():
+      return {
+        ...state,
+        gradeFormat: payload,
+      };
     case actions.overrideHistory.received.toString():
       return {
         ...state,
@@ -72,14 +77,12 @@ const grades = (state = initialState, { type, payload }) => {
         gradeOriginalPossibleGraded: payload.originalGradePossibleGraded,
         overrideHistoryError: '',
       };
-
     case actions.overrideHistory.errorFetching.toString():
       return {
         ...state,
         finishedFetchingOverrideHistory: true,
         overrideHistoryError: payload,
       };
-
     case actions.fetching.started.toString():
       return {
         ...state,
@@ -92,17 +95,6 @@ const grades = (state = initialState, { type, payload }) => {
         ...state,
         finishedFetching: true,
         errorFetching: true,
-      };
-    case actions.toggleGradeFormat.toString():
-      return {
-        ...state,
-        gradeFormat: payload,
-      };
-    case filterActions.update.assignmentType.toString():
-      return {
-        ...state,
-        selectedAssignmentType: payload.filterType,
-        headings: payload.headings,
       };
     case actions.banner.open.toString():
       return {
@@ -147,6 +139,12 @@ const grades = (state = initialState, { type, payload }) => {
           ...state.bulkManagement,
           history: payload,
         },
+      };
+    case filterActions.update.assignmentType.toString():
+      return {
+        ...state,
+        selectedAssignmentType: payload.filterType,
+        headings: payload.headings,
       };
     default:
       return state;

@@ -8,6 +8,18 @@ const initialState = {};
 
 const reducer = (state = initialState, { type: actionType, payload }) => {
   switch (actionType) {
+    case actions.initialize.toString():
+      return {
+        ...state,
+        ...payload,
+      };
+    case actions.reset.toString(): {
+      const result = { ...state };
+      payload.forEach((filterName) => {
+        result[filterName] = initialFilters[filterName];
+      });
+      return result;
+    }
     case actions.update.assignmentType.toString():
       return {
         ...state,
@@ -17,10 +29,27 @@ const reducer = (state = initialState, { type: actionType, payload }) => {
           && (state.assignment || {}).type !== payload.filterType)
           ? '' : state.assignment,
       };
-    case actions.initialize.toString():
+    case actions.update.assignment.toString():
       return {
         ...state,
-        ...payload,
+        assignment: payload,
+      };
+    case actions.update.assignmentLimits.toString():
+      return {
+        ...state,
+        assignmentGradeMin: payload.minGrade,
+        assignmentGradeMax: payload.maxGrade,
+      };
+    case actions.update.courseGradeLimits.toString():
+      return {
+        ...state,
+        courseGradeMin: payload.courseGradeMin,
+        courseGradeMax: payload.courseGradeMax,
+      };
+    case actions.update.includeCourseRoleMembers.toString():
+      return {
+        ...state,
+        includeCourseRoleMembers: payload,
       };
     case gradeActions.received.toString(): {
       const { assignment } = state;
@@ -44,35 +73,6 @@ const reducer = (state = initialState, { type: actionType, payload }) => {
         cohort: payload.cohort,
       };
     }
-    case actions.reset.toString(): {
-      const result = { ...state };
-      payload.forEach((filterName) => {
-        result[filterName] = initialFilters[filterName];
-      });
-      return result;
-    }
-    case actions.update.assignment.toString():
-      return {
-        ...state,
-        assignment: payload,
-      };
-    case actions.update.assignmentLimits.toString():
-      return {
-        ...state,
-        assignmentGradeMin: payload.minGrade,
-        assignmentGradeMax: payload.maxGrade,
-      };
-    case actions.update.courseGradeLimits.toString():
-      return {
-        ...state,
-        courseGradeMin: payload.courseGradeMin,
-        courseGradeMax: payload.courseGradeMax,
-      };
-    case actions.update.includeCourseRoleMembers.toString():
-      return {
-        ...state,
-        includeCourseRoleMembers: payload,
-      };
     default:
       return state;
   }

@@ -117,32 +117,23 @@ describe('grades reducer', () => {
     });
   });
 
-  describe('handling grade fetching actions', () => {
-    describe('handling actions.fetching.started', () => {
-      it('set start fetching and show spinner to true. Preserve the results if existed', () => {
-        const expected = {
-          ...testingState,
-          startedFetching: true,
-          showSpinner: true,
-        };
-        expect(
-          grades(testingState, {
-            type: actions.fetching.started.toString(),
-          }),
-        ).toEqual(expected);
-      });
-    });
-    describe('handling actions.fetching.error', () => {
-      it('set finish fetching and error to true. Preserve existing state.', () => {
-        const expected = {
-          ...testingState,
-          errorFetching: true,
-          finishedFetching: true,
-        };
-        expect(
-          grades(testingState, actions.fetching.error()),
-        ).toEqual(expected);
-      });
+  describe('handling actions.doneViewingAssignment', () => {
+    it('remove gradeOverride* and gradeOriginal* from existing state', () => {
+      const {
+        gradeOverrideHistoryResults,
+        gradeOverrideCurrentEarnedAllOverride,
+        gradeOverrideCurrentPossibleAllOverride,
+        gradeOverrideCurrentEarnedGradedOverride,
+        gradeOverrideCurrentPossibleGradedOverride,
+        gradeOriginalEarnedAll,
+        gradeOriginalPossibleAll,
+        gradeOriginalEarnedGraded,
+        gradeOriginalPossibleGraded,
+        ...expected
+      } = testingState;
+      expect(
+        grades(testingState, actions.doneViewingAssignment()),
+      ).toEqual(expected);
     });
   });
 
@@ -156,33 +147,6 @@ describe('grades reducer', () => {
       expect(
         grades(undefined, actions.toggleGradeFormat(formatTypeData)),
       ).toEqual(expected);
-    });
-  });
-
-  describe('handling banner actions', () => {
-    describe('handling actions.banner.open', () => {
-      it('set showSuccess to true', () => {
-        const expectedShowSuccess = true;
-        const expected = {
-          ...initialState,
-          showSuccess: expectedShowSuccess,
-        };
-        expect(
-          grades(undefined, actions.banner.open()),
-        ).toEqual(expected);
-      });
-    });
-    describe('handling actions.banner.close', () => {
-      it('set showSuccess to false', () => {
-        const expectedShowSuccess = false;
-        const expected = {
-          ...initialState,
-          showSuccess: expectedShowSuccess,
-        };
-        expect(
-          grades(undefined, actions.banner.close()),
-        ).toEqual(expected);
-      });
     });
   });
 
@@ -243,20 +207,59 @@ describe('grades reducer', () => {
     });
   });
 
-  describe('handling actions.bulkHistory.received', () => {
-    it('add payload to existing bulkManagement history attribute. Preserve everything else.', () => {
-      const payload = 'history';
-      const expectedBulkManagement = {
-        ...testingState.bulkManagement,
-        history: payload,
-      };
-      const expected = {
-        ...testingState,
-        bulkManagement: expectedBulkManagement,
-      };
-      expect(
-        grades(testingState, actions.bulkHistory.received(payload)),
-      ).toEqual(expected);
+  describe('handling grade fetching actions', () => {
+    describe('handling actions.fetching.started', () => {
+      it('set start fetching and show spinner to true. Preserve the results if existed', () => {
+        const expected = {
+          ...testingState,
+          startedFetching: true,
+          showSpinner: true,
+        };
+        expect(
+          grades(testingState, {
+            type: actions.fetching.started.toString(),
+          }),
+        ).toEqual(expected);
+      });
+    });
+    describe('handling actions.fetching.error', () => {
+      it('set finish fetching and error to true. Preserve existing state.', () => {
+        const expected = {
+          ...testingState,
+          errorFetching: true,
+          finishedFetching: true,
+        };
+        expect(
+          grades(testingState, actions.fetching.error()),
+        ).toEqual(expected);
+      });
+    });
+  });
+
+  describe('handling banner actions', () => {
+    describe('handling actions.banner.open', () => {
+      it('set showSuccess to true', () => {
+        const expectedShowSuccess = true;
+        const expected = {
+          ...initialState,
+          showSuccess: expectedShowSuccess,
+        };
+        expect(
+          grades(undefined, actions.banner.open()),
+        ).toEqual(expected);
+      });
+    });
+    describe('handling actions.banner.close', () => {
+      it('set showSuccess to false', () => {
+        const expectedShowSuccess = false;
+        const expected = {
+          ...initialState,
+          showSuccess: expectedShowSuccess,
+        };
+        expect(
+          grades(undefined, actions.banner.close()),
+        ).toEqual(expected);
+      });
     });
   });
 
@@ -276,12 +279,11 @@ describe('grades reducer', () => {
     });
     describe('handling acitons.csvUpload.finished', () => {
       it('hide spinner, remove error message and set uploadSuccess to true', () => {
-        const { errorMessages, ...rest } = testingState.bulkManagement;
         const expected = {
           ...testingState,
           showSpinner: false,
           bulkManagement: {
-            ...rest,
+            ...testingState.bulkManagement,
             uploadSuccess: true,
           },
         };
@@ -311,22 +313,19 @@ describe('grades reducer', () => {
     });
   });
 
-  describe('handling actions.doneViewingAssignment', () => {
-    it('remove gradeOverride* and gradeOriginal* from existing state', () => {
-      const {
-        gradeOverrideHistoryResults,
-        gradeOverrideCurrentEarnedAllOverride,
-        gradeOverrideCurrentPossibleAllOverride,
-        gradeOverrideCurrentEarnedGradedOverride,
-        gradeOverrideCurrentPossibleGradedOverride,
-        gradeOriginalEarnedAll,
-        gradeOriginalPossibleAll,
-        gradeOriginalEarnedGraded,
-        gradeOriginalPossibleGraded,
-        ...expected
-      } = testingState;
+  describe('handling actions.bulkHistory.received', () => {
+    it('add payload to existing bulkManagement history attribute. Preserve everything else.', () => {
+      const payload = 'history';
+      const expectedBulkManagement = {
+        ...testingState.bulkManagement,
+        history: payload,
+      };
+      const expected = {
+        ...testingState,
+        bulkManagement: expectedBulkManagement,
+      };
       expect(
-        grades(testingState, actions.doneViewingAssignment()),
+        grades(testingState, actions.bulkHistory.received(payload)),
       ).toEqual(expected);
     });
   });
