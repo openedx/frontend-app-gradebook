@@ -67,7 +67,7 @@ export const fetchGrades = (
     )
       .then(response => response.data)
       .then((data) => {
-        dispatch(grades.received({
+        dispatch(grades.fetching.received({
           grades: data.results.sort(sortAlphaAsc),
           cohort,
           track,
@@ -109,11 +109,11 @@ export const fetchGradeOverrideHistory = (subsectionId, userId) => (
             ? data.original_grade.possible_graded : null,
         }));
       } else {
-        dispatch(grades.overrideHistory.errorFetching(data.error_message));
+        dispatch(grades.overrideHistory.error(data.error_message));
       }
     })
     .catch(() => {
-      dispatch(grades.overrideHistory.errorFetching(GRADE_OVERRIDE_HISTORY_ERROR_DEFAULT_MSG));
+      dispatch(grades.overrideHistory.error(GRADE_OVERRIDE_HISTORY_ERROR_DEFAULT_MSG));
     })
 );
 
@@ -136,7 +136,7 @@ export const fetchPrevNextGrades = (endpoint, courseId, cohort, track, assignmen
     return getAuthenticatedHttpClient().get(endpoint)
       .then(({ data }) => data)
       .then((data) => {
-        dispatch(grades.received({
+        dispatch(grades.fetching.received({
           grades: data.results.sort(sortAlphaAsc),
           cohort,
           track,

@@ -1,32 +1,22 @@
-import actions from './assignmentTypes';
+import actions, { dataKey } from './assignmentTypes';
+import { testAction, testActionTypes } from './testUtils';
 
 describe('actions', () => {
   describe('action types', () => {
     const actionTypes = [
       actions.fetching.error,
       actions.fetching.started,
-      actions.fetching.createAction,
+      actions.fetching.received,
       actions.gotGradesFrozen,
     ].map(action => action.toString());
-    test('all types are unique', () => {
-      expect(actionTypes.length).toEqual((new Set(actionTypes)).size);
-    });
-    test('all types begin with "assignmentTypes" key', () => {
-      actionTypes.forEach(type => {
-        expect(type.startsWith('assignmentTypes')).toEqual(true);
-      });
-    });
+    testActionTypes(actionTypes, dataKey);
   });
   describe('actions provided', () => {
-    const payload = { test: 'PAYload' };
-    const testAction = (action) => {
-      expect(action(payload)).toEqual({ type: action.toString(), payload });
-    };
-    describe('fecthing actions', () => {
+    describe('fetching actions', () => {
       test('error action', () => testAction(actions.fetching.error));
       test('started action', () => testAction(actions.fetching.started));
       test('received action', () => testAction(actions.fetching.received));
     });
-    test('gotGradesFrozen action', () => testAction(actions.gotGradesFozen));
+    test('gotGradesFrozen action', () => testAction(actions.gotGradesFrozen));
   });
 });

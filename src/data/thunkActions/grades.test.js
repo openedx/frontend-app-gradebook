@@ -240,7 +240,7 @@ describe('grades thunkActions', () => {
     describe('after valid response', () => {
       const successActions = [
         actions.grades.fetching.started(),
-        actions.grades.received({ ...expected }),
+        actions.grades.fetching.received({ ...expected }),
         actions.grades.fetching.finished(),
       ];
       it('dispatches success', () => testFetch(
@@ -293,7 +293,7 @@ describe('grades thunkActions', () => {
         (resolve) => resolve({ data: { ...responseData, results: [] } }),
         [
           actions.grades.fetching.started(),
-          actions.grades.received({ ...expected, grades: [] }),
+          actions.grades.fetching.received({ ...expected, grades: [] }),
           actions.grades.fetching.finished(),
         ],
       ));
@@ -409,7 +409,7 @@ describe('grades thunkActions', () => {
             resolve({ data: { success: false, error_message: errorMessage } });
           };
           return testFetch(resolveFn, [
-            actions.grades.overrideHistory.errorFetching(errorMessage),
+            actions.grades.overrideHistory.error(errorMessage),
           ]);
         });
       });
@@ -418,7 +418,7 @@ describe('grades thunkActions', () => {
       it('sends error action with default error message', () => {
         const resolveFn = (resolve, reject) => reject();
         return testFetch(resolveFn, [
-          actions.grades.overrideHistory.errorFetching(
+          actions.grades.overrideHistory.error(
             GRADE_OVERRIDE_HISTORY_ERROR_DEFAULT_MSG,
           ),
         ]);
@@ -611,7 +611,7 @@ describe('grades thunkActions', () => {
       total_users_count: 23,
       filtered_users_count: 12,
     };
-    const { fetching, received } = actions.grades;
+    const { fetching } = actions.grades;
     let getClient;
 
     const mockClient = (resolveFn) => {
@@ -649,7 +649,7 @@ describe('grades thunkActions', () => {
         (resolve) => resolve({ data: response }),
         [
           fetching.started(),
-          received({
+          fetching.received({
             grades: gradesResults.sort(sortAlphaAsc),
             prev: response.previous,
             next: response.next,

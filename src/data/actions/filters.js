@@ -1,8 +1,11 @@
-import { createAction } from '@reduxjs/toolkit';
 import { StrictDict } from 'utils';
 import initialFilters from '../constants/filters';
+import { createActionFactory } from './utils';
 
-const initialize = createAction('filters/initialize', ({
+export const dataKey = 'filters';
+const createAction = createActionFactory(dataKey);
+
+const initialize = createAction('initialize', ({
   assignment = initialFilters.assignment,
   assignmentType = initialFilters.assignmentType,
   track = initialFilters.track,
@@ -26,17 +29,17 @@ const initialize = createAction('filters/initialize', ({
   },
 }));
 
-const reset = createAction('filters/reset'); // paylaod
+const reset = createAction('reset'); // paylaod
 const update = StrictDict({
-  assignment: createAction('filters/update/assignment'),
-  assignmentType: createAction('filters/update/assignmentType'),
-  assignmentLimits: createAction('filters/update/assignmentLimits'),
-  courseGradeLimits: createAction('filters/update/courseGradeLimits'),
-  includeCourseRoleMembers: createAction('filters/update/includeCourseRoleMembers'),
+  assignment: createAction('update/assignment'),
+  assignmentType: createAction('update/assignmentType'),
+  assignmentLimits: createAction('update/assignmentLimits'),
+  courseGradeLimits: createAction('update/courseGradeLimits'),
+  includeCourseRoleMembers: createAction('update/includeCourseRoleMembers'),
 });
 
 export default StrictDict({
   initialize,
   reset,
-  update,
+  update: StrictDict(update),
 });

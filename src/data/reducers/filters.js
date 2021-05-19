@@ -1,9 +1,8 @@
-import filterSelectors from '../selectors/filters';
+import selectors from 'data/selectors';
 import actions from '../actions/filters';
 import gradeActions from '../actions/grades';
 import initialFilters from '../constants/filters';
 
-const { getAssignmentsFromResultsSubstate, chooseRelevantAssignmentData } = filterSelectors;
 const initialState = {};
 
 const reducer = (state = initialState, { type: actionType, payload }) => {
@@ -20,15 +19,6 @@ const reducer = (state = initialState, { type: actionType, payload }) => {
       });
       return result;
     }
-    case actions.update.assignmentType.toString():
-      return {
-        ...state,
-        assignmentType: payload.filterType,
-        assignment: (
-          payload.filterType !== ''
-          && (state.assignment || {}).type !== payload.filterType)
-          ? '' : state.assignment,
-      };
     case actions.update.assignment.toString():
       return {
         ...state,
@@ -39,6 +29,17 @@ const reducer = (state = initialState, { type: actionType, payload }) => {
         ...state,
         assignmentGradeMin: payload.minGrade,
         assignmentGradeMax: payload.maxGrade,
+      };
+    case actions.update.assignmentType.toString():
+      return {
+        ...state,
+        assignmentType: payload.filterType,
+        assignment: (
+          (
+            payload.filterType !== ''
+            && (state.assignment || {}).type !== payload.filterType
+          ) ? '' : state.assignment
+        ),
       };
     case actions.update.courseGradeLimits.toString():
       return {
@@ -51,15 +52,15 @@ const reducer = (state = initialState, { type: actionType, payload }) => {
         ...state,
         includeCourseRoleMembers: payload,
       };
-    case gradeActions.received.toString(): {
+    case gradeActions.fetching.received.toString(): {
       const { assignment } = state;
       const { id, type } = assignment || {};
-      if (!type) {
-        const relevantAssignment = getAssignmentsFromResultsSubstate(
+      if (id && !type) {
+        const { relevantAssignmentDataFromResults } = selectors.filters;
+        const relevantAssignment = relevantAssignmentDataFromResults(
           payload.grades,
-        ).map(
-          chooseRelevantAssignmentData,
-        ).find(assig => assig.id === id);
+          id,
+        );
         return {
           ...state,
           track: payload.track,

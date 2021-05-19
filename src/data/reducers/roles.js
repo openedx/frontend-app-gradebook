@@ -6,12 +6,12 @@ const initialState = {
 
 const roles = (state = initialState, action) => {
   switch (action.type) {
-    case actions.received.toString():
+    case actions.fetching.received.toString():
       return {
         ...state,
         canUserViewGradebook: action.payload,
       };
-    case actions.errorFetching.toString():
+    case actions.fetching.error.toString():
       return {
         ...state,
         canUserViewGradebook: false,

@@ -21,14 +21,20 @@ const selectableAssignments = (state) => {
 const chooseRelevantAssignmentData = ({
   label,
   subsection_name: subsectionLabel,
-  category,
+  category: type,
   module_id: id,
 }) => ({
-  label, subsectionLabel, category, id,
+  label, subsectionLabel, type, id,
 });
 
 const selectableAssignmentLabels = (state) => (
   selectableAssignments(state).map(chooseRelevantAssignmentData)
+);
+
+const relevantAssignmentDataFromResults = (grades, id) => (
+  getAssignmentsFromResultsSubstate(grades).map(chooseRelevantAssignmentData).find(
+    assignment => assignment.id === id,
+  )
 );
 
 const simpleSelectors = simpleSelectorFactory(
@@ -50,6 +56,7 @@ const selectedAssignmentLabel = (state) => (simpleSelectors.assignment(state) ||
 
 const selectors = {
   ...simpleSelectors,
+  relevantAssignmentDataFromResults,
   selectedAssignmentId,
   selectedAssignmentLabel,
   selectableAssignmentLabels,

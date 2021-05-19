@@ -16,7 +16,7 @@ const eventsMap = {
     category: trackingCategory,
     page: payload.courseId,
   })),
-  [actions.grades.received.toString()]: trackEvent(({ payload }) => ({
+  [actions.grades.fetching.received.toString()]: trackEvent(({ payload }) => ({
     name: 'edx.gradebook.grades.displayed',
     properties: {
       category: trackingCategory,

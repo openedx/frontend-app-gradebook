@@ -2,12 +2,9 @@ import tracks, { initialState } from './tracks';
 import actions from '../actions/tracks';
 
 const tracksData = [
-  {
-    someArbitraryField: 'arbitrary data',
-  },
-  {
-    anotherArbitraryField: 'more arbitrary data',
-  }];
+  { someArbitraryField: 'arbitrary data' },
+  { anotherArbitraryField: 'more arbitrary data' },
+];
 
 const testingState = {
   ...initialState,
@@ -24,45 +21,38 @@ describe('tracks reducer', () => {
 
   describe('handling actions.fetching.started', () => {
     it('set start fetching to true. Preserve results if existed', () => {
-      const expected = {
-        ...testingState,
-        startedFetching: true,
-      };
       expect(
         tracks(testingState, actions.fetching.started()),
-      ).toEqual(expected);
+      ).toEqual({
+        ...testingState,
+        startedFetching: true,
+      });
     });
   });
 
   describe('handling actions.fetching.received', () => {
     it('replace results then set finish fetching to true and error to false', () => {
-      const newTraksData = [
-        {
-          receivedData: 'new data',
-        },
-      ];
-      const expected = {
+      const newTracksData = [{ receivedData: 'new data' }];
+      expect(
+        tracks(testingState, actions.fetching.received(newTracksData)),
+      ).toEqual({
         ...testingState,
-        results: newTraksData,
+        results: newTracksData,
         errorFetching: false,
         finishedFetching: true,
-      };
-      expect(
-        tracks(testingState, actions.fetching.received(newTraksData)),
-      ).toEqual(expected);
+      });
     });
   });
 
   describe('handling actions.fetching.error', () => {
     it('set finish fetch and error to true. Preserve results if existed.', () => {
-      const expected = {
+      expect(
+        tracks(testingState, actions.fetching.error()),
+      ).toEqual({
         ...testingState,
         errorFetching: true,
         finishedFetching: true,
-      };
-      expect(
-        tracks(testingState, actions.fetching.error()),
-      ).toEqual(expected);
+      });
     });
   });
 });

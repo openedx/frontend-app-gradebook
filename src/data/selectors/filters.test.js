@@ -1,7 +1,7 @@
 import selectors from './filters';
 
 const selectedAssignmentInfo = {
-  category: 'Homework',
+  type: 'Homework',
   id: 'block-v1:edX+type@sequential+block@abcde',
   label: 'HW 01',
   subsectionLabel: 'Example Week 1: Getting Started',

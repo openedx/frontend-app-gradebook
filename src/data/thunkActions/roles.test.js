@@ -64,7 +64,7 @@ describe('roles thunkActions', () => {
       describe('cannot view gradebook (not is_staff, and no allowed roles)', () => {
         it('dispatches received with canUserViewGradeBook=false and the courseId', () => (
           testFetch((resolve) => resolve({ data: responseData }), [
-            actions.roles.received({
+            actions.roles.fetching.received({
               canUserViewGradebook: false,
               courseId,
             }),
@@ -84,7 +84,7 @@ describe('roles thunkActions', () => {
           it(`dispatches the appropriate actions:  [\n  ${expectedActions.join('\n  ')}\n]`, () => testFetch(
             resolveFn,
             [
-              actions.roles.received({ canUserViewGradebook: true, courseId }),
+              actions.roles.fetching.received({ canUserViewGradebook: true, courseId }),
               fetchGrades(courseId, filters.cohort, filters.track, filters.assignmentType),
               fetchTracks(courseId),
               fetchCohorts(courseId),
@@ -105,7 +105,7 @@ describe('roles thunkActions', () => {
     describe('actions dispatched on api error', () => {
       test('errorFetching', () => testFetch(
         (resolve, reject) => reject(),
-        [actions.roles.errorFetching()],
+        [actions.roles.fetching.error()],
       ));
     });
   });

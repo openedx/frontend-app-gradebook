@@ -1,24 +1,61 @@
-import { createAction } from '@reduxjs/toolkit';
 import { StrictDict } from 'utils';
+import { createActionFactory } from './utils';
+
+export const dataKey = 'grades';
+const createAction = createActionFactory(dataKey);
+
+const banner = {
+  open: createAction('banner/open'),
+  close: createAction('banner/close'),
+};
+
+const bulkHistory = {
+  received: createAction('bulkHistory/received'),
+  error: createAction('bulkHistory/error'),
+};
 
 const csvUpload = {
-  started: createAction('grades/csvUpload/started'),
-  finished: createAction('grades/csvUpload/finished'),
-  error: createAction('grades/csvUpload/error'),
+  started: createAction('csvUpload/started'),
+  finished: createAction('csvUpload/finished'),
+  error: createAction('csvUpload/error'),
 };
-const bulkHistory = {
-  received: createAction('grades/bulkHistory/received'),
-  error: createAction('grades/bulkHistory/error'),
+
+const doneViewingAssignment = createAction('doneViewingAssignment');
+
+// for segment tracking
+const downloadReport = {
+  bulkGrades: createAction('downloadReport/bulkGrades'),
+  intervention: createAction('downloadReport/intervention'),
 };
+
 const fetching = {
-  started: createAction('grades/fetching/started'),
-  finished: createAction('grades/fetching/finished'),
-  error: createAction('grades/fetching/error'),
-};
-const overrideHistory = {
-  errorFetching: createAction('grades/overrideHistory/errorFetching'),
+  started: createAction('fetching/started'),
+  finished: createAction('fetching/finished'),
+  error: createAction('fetching/error'),
+  // for segment tracking
   received: createAction(
-    'grades/overrideHistory/received',
+    'received',
+    (data) => ({
+      payload: {
+        grades: data.grades,
+        cohort: data.cohort,
+        track: data.track,
+        assignmentType: data.assignmentType,
+        headings: data.headings,
+        prev: data.prev,
+        next: data.next,
+        courseId: data.courseId,
+        totalUsersCount: data.totalUsersCount,
+        filteredUsersCount: data.filteredUsersCount,
+      },
+    }),
+  ),
+};
+
+const overrideHistory = {
+  error: createAction('overrideHistory/errorFetching'),
+  received: createAction(
+    'overrideHistory/received',
     (data) => ({
       payload: {
         overrideHistory: data.overrideHistory,
@@ -35,64 +72,32 @@ const overrideHistory = {
   ),
 };
 
-const received = createAction(
-  'grades/received',
-  (data) => ({
-    payload: {
-      grades: data.grades,
-      cohort: data.cohort,
-      track: data.track,
-      assignmentType: data.assignmentType,
-      headings: data.headings,
-      prev: data.prev,
-      next: data.next,
-      courseId: data.courseId,
-      totalUsersCount: data.totalUsersCount,
-      filteredUsersCount: data.filteredUsersCount,
-    },
-  }),
-);
+const toggleGradeFormat = createAction('toggleGradeFormat');
 
 const update = {
-  request: createAction('grades/update/request'),
-  success: createAction('grades/update/success'),
-  failure: createAction('grades/update/failure', (courseId, error) => ({
+  request: createAction('update/request'),
+  success: createAction('update/success'),
+  failure: createAction('update/failure', (courseId, error) => ({
     payload: { courseId, error },
   })),
 };
 
 const uploadOverride = {
-  success: createAction('grades/uploadOverride/success'),
-  failure: createAction('grades/uploadOverride/failure', (courseId, error) => ({
+  success: createAction('uploadOverride/success'),
+  failure: createAction('uploadOverride/failure', (courseId, error) => ({
     payload: { courseId, error },
   })),
 };
 
-// These actions for google analytics only. Doesn't change redux state.
-const downloadReport = {
-  bulkGrades: createAction('grades/downloadReport/bulkGrades'),
-  intervention: createAction('grades/downloadReport/intervention'),
-};
-
-const toggleGradeFormat = createAction('grades/toggleGradeFormat');
-
-const banner = {
-  open: createAction('grades/banner/open'),
-  close: createAction('grades/banner/close'),
-};
-
-const doneViewingAssignment = createAction('grades/doneViewingAssignment');
-
 export default StrictDict({
-  banner,
-  bulkHistory,
-  csvUpload,
+  banner: StrictDict(banner),
+  bulkHistory: StrictDict(bulkHistory),
+  csvUpload: StrictDict(csvUpload),
   doneViewingAssignment,
-  downloadReport,
-  fetching,
-  overrideHistory,
-  received,
+  downloadReport: StrictDict(downloadReport),
+  fetching: StrictDict(fetching),
+  overrideHistory: StrictDict(overrideHistory),
   toggleGradeFormat,
-  update,
-  uploadOverride,
+  update: StrictDict(update),
+  uploadOverride: StrictDict(uploadOverride),
 });

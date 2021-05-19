@@ -1,10 +1,14 @@
-import { createAction } from '@reduxjs/toolkit';
 import { StrictDict } from 'utils';
+import { createActionFactory } from './utils';
 
-const errorFetching = createAction('roles/errorFetching');
-const received = createAction('roles/received');
+export const dataKey = 'roles';
+const createAction = createActionFactory(dataKey);
+
+const fetching = {
+  error: createAction('errorFetching'),
+  received: createAction('received'),
+};
 
 export default StrictDict({
-  errorFetching,
-  received,
+  fetching: StrictDict(fetching),
 });

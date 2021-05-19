@@ -1,9 +1,6 @@
 import { connect } from 'react-redux';
 
-import thunkActions from 'data/thunkActions';;
-import { fetchCohorts } from 'data/thunkActions/cohorts';
-import { fetchTracks } from 'data/thunkActions/tracks';
-import { fetchRoles } from 'data/thunkActions/roles';
+import thunkActions from 'data/thunkActions';
 import actions from 'data/actions';
 import selectors from 'data/selectors';
 

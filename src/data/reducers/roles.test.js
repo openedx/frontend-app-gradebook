@@ -6,7 +6,7 @@ const testingState = {
   arbitraryField: 'arbitrary',
 };
 
-describe('tracks reducer', () => {
+describe('roles reducer', () => {
   it('has initial state', () => {
     expect(
       roles(undefined, {}),
@@ -16,25 +16,23 @@ describe('tracks reducer', () => {
   describe('handling actions.received', () => {
     it('updates canUserViewGradebook to the received payload', () => {
       const expectedCanUserViewGradebook = true;
-      const expected = {
+      expect(
+        roles(testingState, actions.fetching.received(expectedCanUserViewGradebook)),
+      ).toEqual({
         ...testingState,
         canUserViewGradebook: expectedCanUserViewGradebook,
-      };
-      expect(
-        roles(testingState, actions.received(expectedCanUserViewGradebook)),
-      ).toEqual(expected);
+      });
     });
   });
 
   describe('handling actions.errorFetching', () => {
-    it('set canUserViewGradebook to false on failure', () => {
-      const expected = {
+    it('sets canUserViewGradebook to false', () => {
+      expect(
+        roles(testingState, actions.fetching.error()),
+      ).toEqual({
         ...testingState,
         canUserViewGradebook: false,
-      };
-      expect(
-        roles(testingState, actions.errorFetching()),
-      ).toEqual(expected);
+      });
     });
   });
 });

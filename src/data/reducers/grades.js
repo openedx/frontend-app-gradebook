@@ -29,73 +29,6 @@ const initialState = {
 
 const grades = (state = initialState, { type, payload }) => {
   switch (type) {
-    case actions.received.toString():
-      return {
-        ...state,
-        results: payload.grades,
-        headings: payload.headings,
-        finishedFetching: true,
-        errorFetching: false,
-        prevPage: payload.prev,
-        nextPage: payload.next,
-        showSpinner: false,
-        courseId: payload.courseId,
-        totalUsersCount: payload.totalUsersCount,
-        filteredUsersCount: payload.filteredUsersCount,
-      };
-    case actions.doneViewingAssignment.toString(): {
-      const {
-        gradeOverrideHistoryResults,
-        gradeOverrideCurrentEarnedAllOverride,
-        gradeOverrideCurrentPossibleAllOverride,
-        gradeOverrideCurrentEarnedGradedOverride,
-        gradeOverrideCurrentPossibleGradedOverride,
-        gradeOriginalEarnedAll,
-        gradeOriginalPossibleAll,
-        gradeOriginalEarnedGraded,
-        gradeOriginalPossibleGraded,
-        ...rest
-      } = state;
-      return rest;
-    }
-    case actions.toggleGradeFormat.toString():
-      return {
-        ...state,
-        gradeFormat: payload,
-      };
-    case actions.overrideHistory.received.toString():
-      return {
-        ...state,
-        gradeOverrideHistoryResults: payload.overrideHistory,
-        gradeOverrideCurrentEarnedAllOverride: payload.currentEarnedAllOverride,
-        gradeOverrideCurrentPossibleAllOverride: payload.currentPossibleAllOverride,
-        gradeOverrideCurrentEarnedGradedOverride: payload.currentEarnedGradedOverride,
-        gradeOverrideCurrentPossibleGradedOverride: payload.currentPossibleGradedOverride,
-        gradeOriginalEarnedAll: payload.originalGradeEarnedAll,
-        gradeOriginalPossibleAll: payload.originalGradePossibleAll,
-        gradeOriginalEarnedGraded: payload.originalGradeEarnedGraded,
-        gradeOriginalPossibleGraded: payload.originalGradePossibleGraded,
-        overrideHistoryError: '',
-      };
-    case actions.overrideHistory.errorFetching.toString():
-      return {
-        ...state,
-        finishedFetchingOverrideHistory: true,
-        overrideHistoryError: payload,
-      };
-    case actions.fetching.started.toString():
-      return {
-        ...state,
-        startedFetching: true,
-        finishedFetching: false,
-        showSpinner: true,
-      };
-    case actions.fetching.error.toString():
-      return {
-        ...state,
-        finishedFetching: true,
-        errorFetching: true,
-      };
     case actions.banner.open.toString():
       return {
         ...state,
@@ -105,6 +38,14 @@ const grades = (state = initialState, { type, payload }) => {
       return {
         ...state,
         showSuccess: false,
+      };
+    case actions.bulkHistory.received.toString():
+      return {
+        ...state,
+        bulkManagement: {
+          ...state.bulkManagement,
+          history: payload,
+        },
       };
     case actions.csvUpload.started.toString(): {
       const { errorMessages, uploadSuccess, ...rest } = state.bulkManagement;
@@ -132,13 +73,72 @@ const grades = (state = initialState, { type, payload }) => {
           ...payload,
         },
       };
-    case actions.bulkHistory.received.toString():
+    case actions.doneViewingAssignment.toString(): {
+      const {
+        gradeOverrideHistoryResults,
+        gradeOverrideCurrentEarnedAllOverride,
+        gradeOverrideCurrentPossibleAllOverride,
+        gradeOverrideCurrentEarnedGradedOverride,
+        gradeOverrideCurrentPossibleGradedOverride,
+        gradeOriginalEarnedAll,
+        gradeOriginalPossibleAll,
+        gradeOriginalEarnedGraded,
+        gradeOriginalPossibleGraded,
+        ...rest
+      } = state;
+      return rest;
+    }
+    case actions.fetching.started.toString():
       return {
         ...state,
-        bulkManagement: {
-          ...state.bulkManagement,
-          history: payload,
-        },
+        startedFetching: true,
+        finishedFetching: false,
+        showSpinner: true,
+      };
+    case actions.fetching.error.toString():
+      return {
+        ...state,
+        finishedFetching: true,
+        errorFetching: true,
+      };
+    case actions.fetching.received.toString():
+      return {
+        ...state,
+        results: payload.grades,
+        headings: payload.headings,
+        finishedFetching: true,
+        errorFetching: false,
+        prevPage: payload.prev,
+        nextPage: payload.next,
+        showSpinner: false,
+        courseId: payload.courseId,
+        totalUsersCount: payload.totalUsersCount,
+        filteredUsersCount: payload.filteredUsersCount,
+      };
+    case actions.overrideHistory.received.toString():
+      return {
+        ...state,
+        gradeOverrideHistoryResults: payload.overrideHistory,
+        gradeOverrideCurrentEarnedAllOverride: payload.currentEarnedAllOverride,
+        gradeOverrideCurrentPossibleAllOverride: payload.currentPossibleAllOverride,
+        gradeOverrideCurrentEarnedGradedOverride: payload.currentEarnedGradedOverride,
+        gradeOverrideCurrentPossibleGradedOverride: payload.currentPossibleGradedOverride,
+        gradeOriginalEarnedAll: payload.originalGradeEarnedAll,
+        gradeOriginalPossibleAll: payload.originalGradePossibleAll,
+        gradeOriginalEarnedGraded: payload.originalGradeEarnedGraded,
+        gradeOriginalPossibleGraded: payload.originalGradePossibleGraded,
+        overrideHistoryError: '',
+      };
+    case actions.overrideHistory.error.toString():
+      return {
+        ...state,
+        finishedFetchingOverrideHistory: true,
+        overrideHistoryError: payload,
+      };
+    case actions.toggleGradeFormat.toString():
+      return {
+        ...state,
+        gradeFormat: payload,
       };
     case filterActions.update.assignmentType.toString():
       return {

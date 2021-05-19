@@ -1,15 +1,18 @@
-import { createAction } from '@reduxjs/toolkit';
 import { StrictDict } from 'utils';
+import { createActionFactory } from './utils';
+
+export const dataKey = 'assignmentTypes';
+const createAction = createActionFactory(dataKey);
 
 const fetching = {
-  error: createAction('assignmentTypes/fetching/error'),
-  started: createAction('assignmentTypes/fetching/started'),
-  received: createAction('assignmentTypes/fetching/received'),
+  error: createAction('fetching/error'),
+  started: createAction('fetching/started'),
+  received: createAction('fetching/received'),
 };
-const gotGradesFrozen = createAction('assignmentTypes/gotGradesFrozen');
+const gotGradesFrozen = createAction('gotGradesFrozen');
 
 const actions = StrictDict({
-  fetching,
+  fetching: StrictDict(fetching),
   gotGradesFrozen,
 });
 export default actions;

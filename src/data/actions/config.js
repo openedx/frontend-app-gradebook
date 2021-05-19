@@ -1,7 +1,10 @@
-import { createAction } from '@reduxjs/toolkit';
 import { StrictDict } from 'utils';
+import { createActionFactory } from './utils';
 
-const gotBulkManagementConfig = createAction('config/gotBulkManagement');
+export const dataKey = 'config';
+const createAction = createActionFactory(dataKey);
+
+const gotBulkManagementConfig = createAction('gotBulkManagement');
 
 export default StrictDict({
   gotBulkManagementConfig,

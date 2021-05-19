@@ -23,7 +23,7 @@ export const fetchRoles = courseId => (
       );
       const canUserViewGradebook = (response.is_staff || (response.roles.some(isAllowedRole)));
 
-      dispatch(roles.received({ canUserViewGradebook, courseId }));
+      dispatch(roles.fetching.received({ canUserViewGradebook, courseId }));
 
       const { cohort, track, assignmentType } = selectors.filters.allFilters(getState());
       if (canUserViewGradebook) {
@@ -34,7 +34,7 @@ export const fetchRoles = courseId => (
       }
     })
     .catch(() => {
-      dispatch(roles.errorFetching());
+      dispatch(roles.fetching.error());
     }));
 
 export default StrictDict({

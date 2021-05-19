@@ -1,7 +1,17 @@
+import selectors from 'data/selectors';
 import filter, { initialState } from './filters';
 import actions from '../actions/filters';
 import gradeActions from '../actions/grades';
 import initialFilters from '../constants/filters';
+
+jest.mock('data/selectors', () => ({
+  __esModule: true,
+  default: {
+    filters: {
+      relevantAssignmentDataFromResults: jest.fn(),
+    },
+  },
+}));
 
 const expectedFilterType = 'homework';
 const expectedAssignmentId = 'assignment 1';
@@ -12,6 +22,7 @@ const expectedAssignment = {
 const testingState = {
   ...initialState,
   arbitraryField: 'arbirary',
+  assignmentType: 'exam',
   assignment: { ...expectedAssignment },
 };
 
@@ -23,7 +34,7 @@ describe('filter reducer', () => {
   });
 
   describe('handling actions.initialize', () => {
-    it('replace existing state with the payload', () => {
+    it('replaces all passed fields', () => {
       const payload = {
         assignment: { ...expectedAssignment },
         assignmentType: expectedFilterType,
@@ -35,169 +46,155 @@ describe('filter reducer', () => {
         courseGradeMax: 100,
         includeCourseRoleMembers: true,
       };
-      const expected = {
-        ...testingState,
-        ...payload,
-        assignment: { id: { ...expectedAssignment } },
-      };
-      expect(
-        filter(testingState, actions.initialize(payload)),
-      ).toEqual(expected);
+      const action = { type: actions.initialize.toString(), payload };
+      expect(filter(testingState, action)).toEqual({ ...testingState, ...payload });
+    });
+    it('only replaces passed fields', () => {
+      const payload = { otherField: 'some data' };
+      const action = { type: actions.initialize.toString(), payload };
+      expect(filter(testingState, action)).toEqual({ ...testingState, ...payload });
     });
   });
 
   describe('handling actions.reset', () => {
-    it('reset the all attribute existed in filter to initial filter', () => {
-      const payload = Object.keys(initialFilters);
-      const expected = {
-        ...testingState,
-        ...initialFilters,
-      };
+    it('resets the all attribute existed in filter to initial filter', () => {
       expect(
-        filter(testingState, actions.reset(payload)),
-      ).toEqual(expected);
+        filter(testingState, actions.reset(Object.keys(initialFilters))),
+      ).toEqual({ ...testingState, ...initialFilters });
     });
-  });
-
-  describe('handle actions.update.assignmentType', () => {
-    it('get assignments for filtering with exist assignment type', () => {
-      const expected = {
+    it('only resets keys passed in the action', () => {
+      const payload = ['assignment', 'assignmentType'];
+      expect(filter(testingState, actions.reset(payload))).toEqual({
         ...testingState,
-        assignmentType: expectedFilterType,
-      };
-      expect(
-        filter(testingState, actions.update.assignmentType({
-          filterType: expectedFilterType,
-        })),
-      ).toEqual(expected);
-    });
-
-    it('clear the assignment if assignment type not existed', () => {
-      const notExistFilter = 'not exist filter';
-      const expected = {
-        ...testingState,
-        assignmentType: notExistFilter,
-        assignment: '',
-      };
-      expect(
-        filter(testingState, actions.update.assignmentType({
-          filterType: notExistFilter,
-        })),
-      ).toEqual(expected);
+        [payload[0]]: initialFilters[payload[0]],
+        [payload[1]]: initialFilters[payload[1]],
+      });
     });
   });
 
   describe('handle actions.update.assignment', () => {
-    it('update assignment', () => {
-      const expected = {
-        ...testingState,
-        assignment: expectedAssignment,
-      };
+    it('loads assignment from payload', () => {
       expect(
         filter(testingState, actions.update.assignment(expectedAssignment)),
-      ).toEqual(expected);
+      ).toEqual({ ...testingState, assignment: expectedAssignment });
     });
   });
 
   describe('handle actions.update.assignmentLimits', () => {
-    it('update assignment limit', () => {
+    it('loads assignmentGrade[Min/Max] from payload [min/max]grade', () => {
       const expectedMinGrade = 50;
       const expectedMaxGrade = 100;
-      const expected = {
-        ...testingState,
-        assignmentGradeMin: expectedMinGrade,
-        assignmentGradeMax: expectedMaxGrade,
-      };
       expect(
         filter(testingState, actions.update.assignmentLimits({
           minGrade: expectedMinGrade,
           maxGrade: expectedMaxGrade,
         })),
-      ).toEqual(expected);
+      ).toEqual({
+        ...testingState,
+        assignmentGradeMin: expectedMinGrade,
+        assignmentGradeMax: expectedMaxGrade,
+      });
+    });
+  });
+
+  describe('handle actions.update.assignmentType', () => {
+    const action = actions.update.assignmentType;
+    describe('new non-empty type', () => {
+      const newType = 'new ASsignment TYpe';
+      it('loads assignmentType and clears assignment', () => {
+        expect(
+          filter(testingState, action({ filterType: newType })),
+        ).toEqual({
+          ...testingState,
+          assignmentType: newType,
+          assignment: '',
+        });
+      });
+    });
+    describe('empty string type', () => {
+      it('does not clear assignment if the type is empty', () => {
+        expect(
+          filter(testingState, action({ filterType: '' })),
+        ).toEqual({ ...testingState, assignmentType: '' });
+      });
+    });
+    describe('matching type', () => {
+      it('does not clear the assignment if the type still matches the assignment', () => {
+        expect(
+          filter(testingState, action({ filterType: testingState.assignment.type })),
+        ).toEqual({
+          ...testingState,
+          assignmentType: testingState.assignment.type,
+        });
+      });
     });
   });
 
   describe('handling actions.update.courseGradeLimits', () => {
-    it('update grade limit', () => {
-      const expectedCourseMinGrade = 50;
-      const expectedCourseMaxGrade = 100;
-      const expected = {
-        ...initialState,
-        courseGradeMin: expectedCourseMinGrade,
-        courseGradeMax: expectedCourseMaxGrade,
+    it('updates courseGrade[Min/Max]', () => {
+      const payload = {
+        courseGradeMin: 20,
+        courseGradeMax: 70,
       };
       expect(
-        filter(initialState, actions.update.courseGradeLimits({
-          courseGradeMin: expectedCourseMinGrade,
-          courseGradeMax: expectedCourseMaxGrade,
-        })),
-      ).toEqual(expected);
+        filter(initialState, actions.update.courseGradeLimits(payload)),
+      ).toEqual({ ...initialState, ...payload });
     });
   });
 
   describe('handling actions.update.includeCourseRoleMembers', () => {
-    it('update include course role members', () => {
-      const expectedIncludeCourseRoleMembers = true;
-      const expected = {
-        ...initialState,
-        includeCourseRoleMembers: expectedIncludeCourseRoleMembers,
-      };
+    it('updates includeCourseRoleMembers from payload', () => {
+      const includeCourseRoleMembers = true;
       expect(
-        filter(initialState,
-          actions.update.includeCourseRoleMembers(expectedIncludeCourseRoleMembers)),
-      ).toEqual(expected);
+        filter(initialState, actions.update.includeCourseRoleMembers(includeCourseRoleMembers)),
+      ).toEqual({ ...initialState, includeCourseRoleMembers });
     });
   });
 
-  describe('handling gradeActions.received', () => {
-    const expectedTrack = 'verified';
-    const expectedCohortId = 5;
-    const grades = [
-      {
-        section_breakdown: [
-          {
-            subsection_name: 'Demo Course Overview',
-            category: expectedAssignment,
-            module_id: expectedAssignmentId,
-          },
-          {
-            subsection_name: 'Example Week 1: Getting Started',
-            category: expectedAssignment,
-            module_id: expectedAssignmentId,
-          },
-        ],
-      },
-    ];
-
-    describe('handling gradeActions.received', () => {
-      it('without assignment type. replace grades, track, cohort from the payload', () => {
-        const expected = {
-          ...testingState,
-          track: expectedTrack,
-          cohort: expectedCohortId,
-        };
-
-        expect(
-          filter(testingState, gradeActions.received({
-            grades,
-            track: expectedTrack,
-            cohort: expectedCohortId,
-          })),
-        ).toEqual(expected);
+  describe('handling gradeActions.fetching.received', () => {
+    const mockSelector = (val) => {
+      selectors.filters.relevantAssignmentDataFromResults.mockImplementation(
+        (...args) => ({ args, val }),
+      );
+    };
+    const assignmentId = 'fake ID';
+    const action = gradeActions.fetching.received;
+    const payload = {
+      cohort: 'aCohoRT',
+      track: 'ATRacK',
+      grades: 'someGrades',
+    };
+    const relevantAssignment = { relevant: 'assignment' };
+    describe('with non-typed assignment filter', () => {
+      const state = { ...testingState, assignment: { id: assignmentId } };
+      it('loads relevant assignment data by id with track and cohort from payload', () => {
+        mockSelector(relevantAssignment);
+        expect(filter(state, action(payload))).toEqual({
+          ...state,
+          cohort: payload.cohort,
+          track: payload.track,
+          assignment: { args: [payload.grades, assignmentId], val: relevantAssignment },
+        });
       });
-
-      it('with assignment type. Preserve grade if existed and replace track, cohort from the payload', () => {
-        const expected = {
-          ...testingState,
-          track: expectedTrack,
-          cohort: expectedCohortId,
-        };
-        expect(
-          filter(testingState, gradeActions.received({
-            track: expectedTrack,
-            cohort: expectedCohortId,
-          })),
-        ).toEqual(expected);
+    });
+    describe('with empty assignment filter', () => {
+      const state = { ...testingState, assignment: '' };
+      it('loads cohort and track from payload', () => {
+        expect(filter(state, action(payload))).toEqual({
+          ...state,
+          cohort: payload.cohort,
+          track: payload.track,
+        });
+      });
+    });
+    describe('with typed assignment filter', () => {
+      const state = { ...testingState, assignment: { id: assignmentId, type: 'homework' } };
+      it('loads cohort and track from payload', () => {
+        expect(filter(state, action(payload))).toEqual({
+          ...state,
+          cohort: payload.cohort,
+          track: payload.track,
+        });
       });
     });
   });

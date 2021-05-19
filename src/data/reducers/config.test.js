@@ -12,16 +12,14 @@ describe('config reducer', () => {
     ).toEqual(initialState);
   });
 
-  describe('handling actions.gotBulkManagementConfig', () => {
-    it('replace bulkManagementAvailable', () => {
-      const expectedBulkManagementAvailable = true;
-      const expected = {
-        ...testingState,
-        bulkManagementAvailable: expectedBulkManagementAvailable,
-      };
-      expect(
-        config(testingState, actions.gotBulkManagementConfig(expectedBulkManagementAvailable)),
-      ).toEqual(expected);
-    });
+  it('loads bulkManagementAvailable from payload', () => {
+    const expectedBulkManagementAvailable = true;
+    const expected = {
+      ...testingState,
+      bulkManagementAvailable: expectedBulkManagementAvailable,
+    };
+    expect(
+      config(testingState, actions.gotBulkManagementConfig(expectedBulkManagementAvailable)),
+    ).toEqual(expected);
   });
 });

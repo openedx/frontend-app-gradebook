@@ -14,50 +14,48 @@ describe('assignmentTypes reducer', () => {
     ).toEqual(initialState);
   });
 
-  describe('handling action fetching', () => {
-    describe('handling actions.fetching.started', () => {
-      it('only change startedFetching attribute to true. Preserve result if existed.', () => {
-        const expected = {
-          ...testingState,
-          startedFetching: true,
-        };
-        expect(
-          assignmentTypes(testingState, actions.fetching.started()),
-        ).toEqual(expected);
-      });
+  describe('handling actions.fetching.started', () => {
+    it('sets startedFetching=true', () => {
+      const expected = {
+        ...testingState,
+        startedFetching: true,
+      };
+      expect(
+        assignmentTypes(testingState, actions.fetching.started()),
+      ).toEqual(expected);
     });
+  });
 
-    describe('handling actions.fetching.received', () => {
-      it('replace the results then make finished fetching true and error fetching false', () => {
-        const expectedResults = ['Exam'];
-        const expected = {
-          ...testingState,
-          results: expectedResults,
-          errorFetching: false,
-          finishedFetching: true,
-        };
-        expect(
-          assignmentTypes(testingState, actions.fetching.received(expectedResults)),
-        ).toEqual(expected);
-      });
+  describe('handling actions.fetching.received', () => {
+    it('loads the results and sets finishedFetching=true and errorFetching=false', () => {
+      const expectedResults = ['Exam'];
+      const expected = {
+        ...testingState,
+        results: expectedResults,
+        errorFetching: false,
+        finishedFetching: true,
+      };
+      expect(
+        assignmentTypes(testingState, actions.fetching.received(expectedResults)),
+      ).toEqual(expected);
     });
+  });
 
-    describe('handling actions.fetching.error', () => {
-      it('make error fetching true and finished fetching true. Preserve result if existed.', () => {
-        const expected = {
-          ...testingState,
-          errorFetching: true,
-          finishedFetching: true,
-        };
-        expect(
-          assignmentTypes(testingState, actions.fetching.error()),
-        ).toEqual(expected);
-      });
+  describe('handling actions.fetching.error', () => {
+    it('sets errorFetching=true and finishedFetching=true', () => {
+      const expected = {
+        ...testingState,
+        errorFetching: true,
+        finishedFetching: true,
+      };
+      expect(
+        assignmentTypes(testingState, actions.fetching.error()),
+      ).toEqual(expected);
     });
   });
 
   describe('handling actions.gotGradesFrozen', () => {
-    it('updates areGradesFrozen success state', () => {
+    it('loads areGradesFrozen and sets errorFetching=false and finishedFetching=true', () => {
       const expectedAreGradesFrozen = true;
       const expected = {
         ...testingState,
