@@ -108,48 +108,12 @@ jest.mock('../selectors', () => ({
 selectors.filters.allFilters.mockReturnValue(allFilters);
 
 describe('grades thunkActions', () => {
-  let oldSelectors;
-  const mockSelectors = () => {
-    oldSelectors = { ...selectors };
-    selectors.grades = {
-      formatGradeOverrideForDisplay: (override) => ({
-        formatGradeOverrideForDisplay: { override },
-      }),
-      formatMaxAssignmentGrade: (grade, { assignmentId }) => ({
-        formatMaxAssignmentGrade: { grade, assignmentId },
-      }),
-      formatMinAssignmentGrade: (grade, { assignmentId }) => ({
-        formatMinAssignmentGrade: { grade, assignmentId },
-      }),
-      formatMinCourseGrade: (grade) => ({
-        formatMinCourseGrade: { grade },
-      }),
-      formatMaxCourseGrade: (grade) => ({
-        formatMaxCourseGrade: { grade },
-      }),
-    };
-    selectors.filters = {
-      allFilters: () => allFilters,
-      assignmentGradeMin: jest.fn(),
-      assignmentGradeMax: jest.fn(),
-    };
-  };
-  const restoreSelectors = () => {
-    selectors.grades = { ...oldSelectors.grades };
-    selectors.filters = { ...oldSelectors.filters };
-  };
   beforeEach(() => {
     LmsApiService.fetchGradebookData.mockClear();
     LmsApiService.fetchGradeBulkOperationHistory.mockClear();
     LmsApiService.fetchGradeOverrideHistory.mockClear();
     LmsApiService.fetchPrevNextGrades.mockClear();
     LmsApiService.updateGrades.mockClear();
-  });
-  beforeAll(() => {
-    mockSelectors();
-  });
-  afterAll(() => {
-    restoreSelectors();
   });
   describe('fetchBulkUpgradeHistory', () => {
     const testFetch = createTestFetcher(
@@ -195,19 +159,20 @@ describe('grades thunkActions', () => {
         assignmentGradeMax, assignmentGradeMin,
         courseGradeMax, courseGradeMin,
         includeCourseRoleMembers,
-      } = allFilters;
+      } = selectors.filters.allFilters();
+      const assignmentId = (assignment || {}).id;
       return [
         courseId,
         options.searchText || null,
         expected.cohort,
         expected.track,
         {
-          assignment: assignment.id,
+          assignment: assignmentId,
           assignmentGradeMax: selectors.grades.formatMaxAssignmentGrade(
-            assignmentGradeMax, { assignmentId: assignment.id },
+            assignmentGradeMax, { assignmentId },
           ),
           assignmentGradeMin: selectors.grades.formatMinAssignmentGrade(
-            assignmentGradeMin, { assignmentId: assignment.id },
+            assignmentGradeMin, { assignmentId },
           ),
           courseGradeMax: selectors.grades.formatMaxCourseGrade(
             courseGradeMax,
@@ -247,6 +212,77 @@ describe('grades thunkActions', () => {
         (resolve) => resolve({ data: responseData }),
         [...successActions],
       ));
+      it('passes the correct args to the fetchGradebookData query', () => {
+        const assignmentId = allFilters.assignment.id;
+        return testFetch(
+          (resolve) => resolve({ data: responseData }),
+          [...successActions],
+          () => {
+            const {
+              formatMaxAssignmentGrade,
+              formatMinAssignmentGrade,
+              formatMaxCourseGrade,
+              formatMinCourseGrade,
+            } = selectors.grades;
+            expect(LmsApiService.fetchGradebookData).toHaveBeenCalledWith(
+              courseId,
+              null,
+              expected.cohort,
+              expected.track,
+              {
+                assignment: allFilters.assignment.id,
+                assignmentGradeMax: formatMaxAssignmentGrade(
+                  allFilters.assignmentGradeMax,
+                  { assignmentId },
+                ),
+                assignmentGradeMin: formatMinAssignmentGrade(
+                  allFilters.assignmentGradeMin,
+                  { assignmentId },
+                ),
+                courseGradeMax: formatMaxCourseGrade(allFilters.courseGradeMax),
+                courseGradeMin: formatMinCourseGrade(allFilters.courseGradeMin),
+                includeCourseRoleMembers: allFilters.includeCourseRoleMembers,
+              },
+            );
+          },
+        );
+      });
+      describe('no assignment selected', () => {
+        beforeAll(() => {
+          selectors.filters.allFilters.mockReturnValue({
+            ...allFilters,
+            assignment: undefined,
+          });
+        });
+        afterAll(() => {
+          selectors.filters.allFilters.mockReturnValue(allFilters);
+        });
+        it('passes the correct args to the fetchGradebookData query', () => testFetch(
+          (resolve) => resolve({ data: responseData }),
+          undefined,
+          () => {
+            const {
+              formatMaxAssignmentGrade,
+              formatMinAssignmentGrade,
+              formatMaxCourseGrade,
+              formatMinCourseGrade,
+            } = selectors.grades;
+            expect(LmsApiService.fetchGradebookData).toHaveBeenCalledWith(
+              courseId,
+              null,
+              expected.cohort,
+              expected.track,
+              {
+                assignmentGradeMax: formatMaxAssignmentGrade(allFilters.assignmentGradeMax, {}),
+                assignmentGradeMin: formatMinAssignmentGrade(allFilters.assignmentGradeMin, {}),
+                courseGradeMax: formatMaxCourseGrade(allFilters.courseGradeMax),
+                courseGradeMin: formatMinCourseGrade(allFilters.courseGradeMin),
+                includeCourseRoleMembers: allFilters.includeCourseRoleMembers,
+              },
+            );
+          },
+        ));
+      });
       describe('options', () => {
         const resolveFn = (resolve) => resolve({ data: responseData });
         describe('showSuccess', () => {

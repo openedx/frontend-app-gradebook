@@ -242,7 +242,7 @@ describe('grades selectors', () => {
   describe('getExampleSectionBreakdown', () => {
     const selector = selectors.getExampleSectionBreakdown;
     it('returns an empty array when results are unavailable', () => {
-      expect(selector({ grades: { results: [{}] } })).toEqual([]);
+      expect(selector({ grades: { results: [] } })).toEqual([]);
     });
     it('returns an empty array when breakdowns are unavailable', () => {
       expect(selector({ grades: { results: [{ foo: 'bar' }] } })).toEqual([]);

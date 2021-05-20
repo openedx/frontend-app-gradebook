@@ -49,8 +49,8 @@ export const fetchGrades = (
     const { id: assignmentId } = assignment || {};
     const assignmentGradeMax = formatMaxAssignmentGrade(assignmentMax, { assignmentId });
     const assignmentGradeMin = formatMinAssignmentGrade(assignmentMin, { assignmentId });
-    const courseGradeMinFormatted = formatMinCourseGrade(courseGradeMin);
     const courseGradeMaxFormatted = formatMaxCourseGrade(courseGradeMax);
+    const courseGradeMinFormatted = formatMinCourseGrade(courseGradeMin);
     return LmsApiService.fetchGradebookData(
       courseId,
       options.searchText || null,
@@ -60,8 +60,8 @@ export const fetchGrades = (
         assignment: assignmentId,
         assignmentGradeMax,
         assignmentGradeMin,
-        courseGradeMin: courseGradeMinFormatted,
         courseGradeMax: courseGradeMaxFormatted,
+        courseGradeMin: courseGradeMinFormatted,
         includeCourseRoleMembers,
       },
     )
