@@ -12,7 +12,7 @@ const loggerMiddleware = createLogger();
 const trackingCategory = 'gradebook';
 
 const eventsMap = {
-  [actions.roles.received.toString()]: trackPageView(({ payload }) => ({
+  [actions.roles.fetching.received.toString()]: trackPageView(({ payload }) => ({
     category: trackingCategory,
     page: payload.courseId,
   })),
