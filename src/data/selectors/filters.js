@@ -1,12 +1,64 @@
+/* eslint-disable import/no-self-import */
+import { StrictDict } from 'utils';
+import * as module from './filters';
 import simpleSelectorFactory from '../utils';
 
-const allFilters = (state) => state.filters || {};
+// Transformers
+/**
+ * chooseRelevantAssignmentData(assignment)
+ * formats the assignment api data for an assignment object for consumption
+ * @param {object} assignment - assignment data to prepare
+ * @return {object} - formatted data ({ label, subsectionLabel, type, id })
+ */
+export const chooseRelevantAssignmentData = ({
+  label,
+  subsection_name: subsectionLabel,
+  category: type,
+  module_id: id,
+}) => ({
+  label, subsectionLabel, type, id,
+});
 
-const getAssignmentsFromResultsSubstate = (results) => (
+/**
+ * getAssignmentsFromResultsSubstate(results)
+ * returns the section_breakdown of the first results entry
+ * defaulting to an empty list.
+ * @param {[object[]]} results - list of result entries from grades fetch
+ * @return {object} - section_breakdown of first grade entry
+ */
+export const getAssignmentsFromResultsSubstate = (results) => (
   (results[0] || {}).section_breakdown || []
 );
 
-const selectableAssignments = (state) => {
+/**
+ * relevantAssignmentDataFromResults
+ * returns assignment info from grades results for the assignment with the given id
+ * @param {object} grades - grades fetch result
+ * @param {string} id - selected assignment id from assignment filter
+ * @return {object} assignment data with type, label, and subsectionLabel
+ */
+export const relevantAssignmentDataFromResults = (grades, id) => (
+  module.getAssignmentsFromResultsSubstate(grades)
+    .map(module.chooseRelevantAssignmentData)
+    .find(assignment => assignment.id === id)
+);
+
+// Selectors
+/**
+ * allFilters(state)
+ * returns the top-level filter state.
+ * @param {object} state - redux state
+ * @return {object} - filter substate from redux state
+ */
+export const allFilters = (state) => state.filters || {};
+
+/**
+ * selectableAssignments(state)
+ * @param {object} state - redux state
+ * @return {object[]} - list of selectable assignment objects, filtered if there is an
+ *   assignmentType filter selected.
+ */
+export const selectableAssignments = (state) => {
   const selectedAssignmentType = allFilters(state).assignmentType;
   const needToFilter = selectedAssignmentType && selectedAssignmentType !== 'All';
   const allAssignments = getAssignmentsFromResultsSubstate(state.grades.results);
@@ -18,26 +70,16 @@ const selectableAssignments = (state) => {
   return allAssignments;
 };
 
-const chooseRelevantAssignmentData = ({
-  label,
-  subsection_name: subsectionLabel,
-  category: type,
-  module_id: id,
-}) => ({
-  label, subsectionLabel, type, id,
-});
-
-const selectableAssignmentLabels = (state) => (
+/**
+ * Returns the relevant assignment data for all selectable assignments
+ * @param {object} state - redux state
+ * @return {object[]} - object of assignment data entries [({ label, subsectionLabel, type, id })]
+ */
+export const selectableAssignmentLabels = (state) => (
   selectableAssignments(state).map(chooseRelevantAssignmentData)
 );
 
-const relevantAssignmentDataFromResults = (grades, id) => (
-  getAssignmentsFromResultsSubstate(grades).map(chooseRelevantAssignmentData).find(
-    assignment => assignment.id === id,
-  )
-);
-
-const simpleSelectors = simpleSelectorFactory(
+export const simpleSelectors = simpleSelectorFactory(
   ({ filters }) => filters,
   [
     'assignment',
@@ -51,10 +93,22 @@ const simpleSelectors = simpleSelectorFactory(
     'includeCourseRoleMembers',
   ],
 );
-const selectedAssignmentId = (state) => (simpleSelectors.assignment(state) || {}).id;
-const selectedAssignmentLabel = (state) => (simpleSelectors.assignment(state) || {}).label;
+/**
+ * Returns the id of the selected assignment filter
+ * @param {object} state - redux state
+ * @return {string} - assignment id
+ */
+export const selectedAssignmentId = (state) => (simpleSelectors.assignment(state) || {}).id;
 
-const selectors = {
+/**
+ * selectedAssignmentLabel(state)
+ * Returns the label of the selected assignment filter
+ * @param {object} state - redux state
+ * @return {string} - assignment label
+ */
+export const selectedAssignmentLabel = (state) => (simpleSelectors.assignment(state) || {}).label;
+
+export default StrictDict({
   ...simpleSelectors,
   relevantAssignmentDataFromResults,
   selectedAssignmentId,
@@ -64,6 +118,4 @@ const selectors = {
   allFilters,
   chooseRelevantAssignmentData,
   getAssignmentsFromResultsSubstate,
-};
-
-export default selectors;
+});

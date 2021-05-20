@@ -1,19 +1,9 @@
-import selectors from './grades';
+import { EMAIL_HEADING, TOTAL_COURSE_GRADE_HEADING, USERNAME_HEADING } from '../constants/grades';
+import { formatDateForDisplay } from '../actions/utils';
+import * as selectors from './grades';
+import exportedSelectors from './grades';
 
-const genericHistoryRow = {
-  id: 5,
-  class_name: 'bulk_grades.api.GradeCSVProcessor',
-  unique_id: 'course-v1:google+goog101+2018_spring',
-  operation: 'commit',
-  user: 'edx',
-  modified: '2019-07-16T20:25:46.700802Z',
-  original_filename: '',
-  data: {
-    total_rows: 5,
-    processed_rows: 3,
-    saved_rows: 3,
-  },
-};
+const { minGrade, maxGrade } = selectors;
 
 const genericResultsRows = [
   {
@@ -48,254 +38,260 @@ const genericResultsRows = [
   },
 ];
 
-describe('bulkImportError', () => {
-  it('returns an empty string when bulkManagement not run', () => {
-    const result = selectors.bulkImportError({ grades: { bulkManagement: null } });
-    expect(result).toEqual('');
-  });
-
-  it('returns an empty string when bulkManagement runs without error', () => {
-    const result = selectors.bulkImportError({ grades: { bulkManagement: { uploadSuccess: true } } });
-    expect(result).toEqual('');
-  });
-
-  it('returns error string when bulkManagement encounters an error', () => {
-    const errorMessages = ['error1', 'also error2'];
-    const expectedErrorString = `Errors while processing: ${errorMessages[0]}, ${errorMessages[1]}`;
-    const result = selectors.bulkImportError({ grades: { bulkManagement: { errorMessages } } });
-    expect(result).toEqual(expectedErrorString);
-  });
-});
-
-describe('grade formatters', () => {
-  const selectedAssignment = { assignmentId: 'block-v1:edX+type@sequential+block@abcde' };
-
-  describe('formatMinAssignmentGrade', () => {
-    const defaultGrade = '0';
-    const modifiedGrade = '1';
-
-    it('passes numbers through when grade is not default (0) and assignment is supplied', () => {
-      const formattedMinAssignmentGrade = selectors.formatMinAssignmentGrade(modifiedGrade, selectedAssignment);
-      expect(formattedMinAssignmentGrade).toEqual(modifiedGrade);
-    });
-    it('ignores grade when unmodified from default (0)', () => {
-      const formattedMinAssignmentGrade = selectors.formatMinAssignmentGrade(defaultGrade, selectedAssignment);
-      expect(formattedMinAssignmentGrade).toEqual(null);
-    });
-    it('ignores grade when an assignment is not supplied', () => {
-      const formattedMinAssignmentGrade = selectors.formatMinAssignmentGrade(modifiedGrade, {});
-      expect(formattedMinAssignmentGrade).toEqual(null);
-    });
-  });
-
-  describe('formatMaxAssignmentGrade', () => {
-    const defaultGrade = '100';
-    const modifiedGrade = '99';
-
-    it('passes numbers through when grade is not default (100) and assignment is supplied', () => {
-      const formattedMaxAssignmentGrade = selectors.formatMaxAssignmentGrade(modifiedGrade, selectedAssignment);
-      expect(formattedMaxAssignmentGrade).toEqual(modifiedGrade);
-    });
-    it('ignores grade when unmodified from default (100)', () => {
-      const formattedMaxAssignmentGrade = selectors.formatMaxAssignmentGrade(defaultGrade, selectedAssignment);
-      expect(formattedMaxAssignmentGrade).toEqual(null);
-    });
-    it('ignores grade when an assignment is not supplied', () => {
-      const formattedMaxAssignmentGrade = selectors.formatMaxAssignmentGrade(modifiedGrade, {});
-      expect(formattedMaxAssignmentGrade).toEqual(null);
-    });
-  });
-
-  describe('formatMinCourseGrade', () => {
-    const defaultGrade = '0';
-    const modifiedGrade = '37';
-
-    it('passes numbers through when grade is not default (0) and assignment is supplied', () => {
-      const formattedMinGrade = selectors.formatMinCourseGrade(modifiedGrade, selectedAssignment);
-      expect(formattedMinGrade).toEqual(modifiedGrade);
-    });
-    it('ignores grade when unmodified from default (0)', () => {
-      const formattedMinGrade = selectors.formatMinCourseGrade(defaultGrade, selectedAssignment);
-      expect(formattedMinGrade).toEqual(null);
-    });
-  });
-
-  describe('formatMaxCourseGrade', () => {
-    const defaultGrade = '100';
-    const modifiedGrade = '42';
-
-    it('passes numbers through when grade is not default (100) and assignment is supplied', () => {
-      const formattedMaxGrade = selectors.formatMaxCourseGrade(modifiedGrade, selectedAssignment);
-      expect(formattedMaxGrade).toEqual(modifiedGrade);
-    });
-    it('ignores unmodified grades', () => {
-      const formattedMaxGrade = selectors.formatMaxCourseGrade(defaultGrade, selectedAssignment);
-      expect(formattedMaxGrade).toEqual(null);
-    });
-  });
-});
-
-describe('getExampleSectionBreakdown', () => {
-  const gradesData = {
-    next: null,
-    previous: null,
-    results: [
-      {
-        section_breakdown: [
-          {
-            subsection_name: 'Example Week 1: Getting Started',
-            score_earned: 1,
-            score_possible: 1,
-            percent: 1,
-            displayed_value: '1.00',
-            grade_description: '(0.00/0.00)',
-          },
-        ],
-      },
-    ],
-  };
-
-  it('returns an empty array when results are unavailable', () => {
-    const result = selectors.getExampleSectionBreakdown({ grades: { results: [{}] } });
-    expect(result).toEqual([]);
-  });
-
-  it('returns an empty array when breakdowns are unavailable', () => {
-    const result = selectors.getExampleSectionBreakdown({ grades: { results: [{ foo: 'bar' }] } });
-    expect(result).toEqual([]);
-  });
-
-  it('gets section breakdown when available', () => {
-    const result = selectors.getExampleSectionBreakdown({ grades: gradesData });
-    expect(result).toEqual([{
-      subsection_name: 'Example Week 1: Getting Started',
-      score_earned: 1,
-      score_possible: 1,
-      percent: 1,
-      displayed_value: '1.00',
-      grade_description: '(0.00/0.00)',
-    }]);
-  });
-});
-
-describe('headingMapper', () => {
-  const expectedHeaders = (subsectionLabels) => (['Username', 'Email', ...subsectionLabels, 'Total Grade (%)']);
-
-  it('creates headers for all assignments when no filtering is applied', () => {
-    const allSubsectionLabels = ['HW 01', 'HW 02', 'Lab 01'];
-    const headingMapper = selectors.headingMapper('All');
-    const headers = headingMapper(genericResultsRows);
-    expect(headers).toEqual(expectedHeaders(allSubsectionLabels));
-  });
-  it('creates headers for only matching assignment types when type filter is applied', () => {
-    const homeworkHeaders = ['HW 01', 'HW 02'];
-    const headingMapper = selectors.headingMapper('Homework');
-    const headers = headingMapper(genericResultsRows);
-    expect(headers).toEqual(expectedHeaders(homeworkHeaders));
-  });
-  it('creates headers for only matching assignment when label filter is applied', () => {
-    const homeworkHeader = ['HW 02'];
-    const headingMapper = selectors.headingMapper('Homework', 'HW 02');
-    const headers = headingMapper(genericResultsRows);
-    expect(headers).toEqual(expectedHeaders(homeworkHeader));
-  });
-  it('returns an empty array when no entries are passed', () => {
-    const headingMapper = selectors.headingMapper('All');
-    const headers = headingMapper(undefined);
-    expect(headers).toEqual([]);
-  });
-});
-
-describe('simpleSelectors', () => {
-  const simpleSelectorState = {
-    grades: {
-      filteredUsersCount: 9000,
-      totalUsersCount: 9001,
-      gradeFormat: 'percent',
-      showSpinner: false,
-      gradeOverrideCurrentEarnedGradedOverride: null,
-      gradeOverrideHistoryError: null,
-      gradeOriginalEarnedGraded: null,
-      gradeOriginalPossibleGraded: null,
-      showSuccess: false,
-    },
-  };
-
-  it('selects simple data by name from grades state', () => {
-    const expectedFilteredUsers = 9000;
-    const expectedTotalUsers = 9001;
-    const expectedGradeFormat = 'percent';
-
-    // the selector factory is already tested, this just exercises some of these mappings
-    expect(selectors.filteredUsersCount(simpleSelectorState)).toEqual(expectedFilteredUsers);
-    expect(selectors.totalUsersCount(simpleSelectorState)).toEqual(expectedTotalUsers);
-    expect(selectors.gradeFormat(simpleSelectorState)).toEqual(expectedGradeFormat);
-  });
-});
-
-describe('uploadSuccess', () => {
-  it('shows an upload success when bulk management data returned and completed successfully', () => {
-    const uploadSuccess = selectors.uploadSuccess({ grades: { bulkManagement: { uploadSuccess: true } } });
-    expect(uploadSuccess).toEqual(true);
-  });
-  it('returns false when bulk management data not returned', () => {
-    const uploadSuccess = selectors.uploadSuccess({ grades: {} });
-    expect(uploadSuccess).toEqual(false);
-  });
-});
-
-describe('bulkManagementHistoryEntries', () => {
-  it('handles history being as-yet unloaded', () => {
-    const result = selectors.bulkManagementHistoryEntries({ grades: { bulkManagement: {} } });
-    expect(result).toEqual([]);
-  });
-
-  it('formats dates for us', () => {
-    const result = selectors.bulkManagementHistoryEntries({
-      grades: {
-        bulkManagement: {
-          history: [
-            genericHistoryRow,
-          ],
-        },
-      },
-    });
-    const [{ timeUploaded }] = result;
-    expect(timeUploaded).not.toMatch(/Z$/);
-    expect(timeUploaded).toContain(' at ');
-  });
-
-  const exerciseGetRowsProcessed = (input, expectation) => {
-    const result = selectors.bulkManagementHistoryEntries({
-      grades: {
-        bulkManagement: {
-          history: [
-            { ...genericHistoryRow, data: input },
-          ],
-        },
-      },
-    });
-    const [{ summaryOfRowsProcessed }] = result;
-    expect(summaryOfRowsProcessed).toEqual(expect.objectContaining(expectation));
-  };
-
-  it('calculates skipped rows', () => {
-    exerciseGetRowsProcessed({
-      total_rows: 100,
-      processed_rows: 10,
+describe('grades selectors', () => {
+  // Transformers
+  describe('getRowsProcessed', () => {
+    const data = {
+      processed_rows: 20,
       saved_rows: 10,
-    }, {
-      skipped: 90,
+      total_rows: 50,
+    };
+    expect(selectors.getRowsProcessed(data)).toEqual({
+      total: data.total_rows,
+      successfullyProcessed: data.saved_rows,
+      failed: data.processed_rows - data.saved_rows,
+      skipped: data.total_rows - data.processed_rows,
     });
   });
 
-  it('calculates failures', () => {
-    exerciseGetRowsProcessed({
-      total_rows: 10,
-      processed_rows: 100,
-      saved_rows: 10,
-    }, {
-      failed: 90,
+  describe('grade formatters', () => {
+    const selectedAssignment = { assignmentId: 'block-v1:edX+type@sequential+block@abcde' };
+
+    describe('formatMinAssignmentGrade', () => {
+      const modifiedGrade = '1';
+      const selector = selectors.formatMinAssignmentGrade;
+      it('passes grade through when not min (0) and assignment is supplied', () => {
+        expect(selector(modifiedGrade, selectedAssignment)).toEqual(modifiedGrade);
+      });
+      it('returns null for min grade', () => {
+        expect(selector(minGrade, selectedAssignment)).toEqual(null);
+      });
+      it('returns null when assignment is not supplied', () => {
+        expect(selector(modifiedGrade, {})).toEqual(null);
+      });
     });
+
+    describe('formatMaxAssignmentGrade', () => {
+      const modifiedGrade = '99';
+      const selector = selectors.formatMaxAssignmentGrade;
+      it('passes grade through when not max (100) and assignment is supplied', () => {
+        expect(selector(modifiedGrade, selectedAssignment)).toEqual(modifiedGrade);
+      });
+      it('returns null for max grade', () => {
+        expect(selector(maxGrade, selectedAssignment)).toEqual(null);
+      });
+      it('returns null when assignment is not supplied', () => {
+        expect(selector(modifiedGrade, {})).toEqual(null);
+      });
+    });
+
+    describe('formatMinCourseGrade', () => {
+      const modifiedGrade = '37';
+      const selector = selectors.formatMinCourseGrade;
+      it('passes grades through when not min (0) and assignment is supplied', () => {
+        expect(selector(modifiedGrade, selectedAssignment)).toEqual(modifiedGrade);
+      });
+      it('returns null for min grade', () => {
+        expect(selector(minGrade, selectedAssignment)).toEqual(null);
+      });
+    });
+
+    describe('formatMaxCourseGrade', () => {
+      const modifiedGrade = '42';
+      const selector = selectors.formatMaxCourseGrade;
+      it('passes grades through when not max and assignment is supplied', () => {
+        expect(selector(modifiedGrade, selectedAssignment)).toEqual(modifiedGrade);
+      });
+      it('returns null for max grade', () => {
+        expect(selector(maxGrade, selectedAssignment)).toEqual(null);
+      });
+    });
+  });
+
+  describe('headingMapper', () => {
+    const expectedHeaders = (subsectionLabels) => ([
+      USERNAME_HEADING,
+      EMAIL_HEADING,
+      ...subsectionLabels,
+      TOTAL_COURSE_GRADE_HEADING,
+    ]);
+
+    const rows = genericResultsRows;
+    const selector = selectors.headingMapper;
+    it('creates headers for all assignments when no filtering is applied', () => {
+      expect(selector('All')(genericResultsRows)).toEqual(
+        expectedHeaders([rows[0].label, rows[1].label, rows[2].label]),
+      );
+    });
+    it('creates headers for only matching assignment types when type filter is applied', () => {
+      expect(
+        selector('Homework')(genericResultsRows),
+      ).toEqual(
+        expectedHeaders([rows[0].label, rows[1].label]),
+      );
+    });
+    it('creates headers for only matching assignment when label filter is applied', () => {
+      expect(selector('Homework', rows[1].label)(rows)).toEqual(
+        expectedHeaders([rows[1].label]),
+      );
+    });
+    it('returns an empty array when no entries are passed', () => {
+      expect(selector('all')(undefined)).toEqual([]);
+    });
+  });
+
+  describe('transformHistoryEntry', () => {
+    let getRowsProcessed;
+    let output;
+    const rowsProcessed = ['some', 'fake', 'rows'];
+    const rawEntry = {
+      modified: 'Jan 10 2021',
+      original_filename: 'fileName',
+      data: { some: 'data' },
+      also: 'some',
+      other: 'fields',
+    };
+    beforeEach(() => {
+      getRowsProcessed = selectors.getRowsProcessed;
+      selectors.getRowsProcessed = jest.fn(data => ({ data, rowsProcessed }));
+      output = selectors.transformHistoryEntry(rawEntry);
+    });
+    afterEach(() => {
+      selectors.getRowsProcessed = getRowsProcessed;
+    });
+    it('transforms modified into timeUploaded', () => {
+      expect(output.timeUploaded).toEqual(formatDateForDisplay(new Date(rawEntry.modified)));
+    });
+    it('forwards filename', () => {
+      expect(output.originalFilename).toEqual(rawEntry.original_filename);
+    });
+    it('summarizes processed rows', () => {
+      expect(output.summaryOfRowsProcessed).toEqual(selectors.getRowsProcessed(rawEntry.data));
+    });
+  });
+
+  // Selectors
+  describe('allGrades', () => {
+    it('returns the grades results from redux state', () => {
+      const results = ['some', 'fake', 'results'];
+      expect(selectors.allGrades({ grades: { results } })).toEqual(results);
+    });
+  });
+
+  describe('bulkImportError', () => {
+    it('returns an empty string when bulkManagement not run', () => {
+      expect(
+        selectors.bulkImportError({ grades: { bulkManagement: null } }),
+      ).toEqual('');
+    });
+
+    it('returns an empty string when bulkManagement runs without error', () => {
+      expect(
+        selectors.bulkImportError({ grades: { bulkManagement: { uploadSuccess: true } } }),
+      ).toEqual('');
+    });
+
+    it('returns error string when bulkManagement encounters an error', () => {
+      const errorMessages = ['error1', 'also error2'];
+      expect(
+        selectors.bulkImportError({ grades: { bulkManagement: { errorMessages } } }),
+      ).toEqual(
+        `Errors while processing: ${errorMessages[0]}, ${errorMessages[1]}`,
+      );
+    });
+  });
+
+  describe('bulkManagementHistory', () => {
+    const selector = selectors.bulkManagementHistory;
+    it('returns history entries from grades.bulkManagement in redux store', () => {
+      const history = ['a', 'few', 'history', 'entries'];
+      expect(
+        selector({ grades: { bulkManagement: { history } } }),
+      ).toEqual(history);
+    });
+    it('returns an empty list if not set', () => {
+      expect(
+        selector({ grades: { bulkManagement: {} } }),
+      ).toEqual([]);
+    });
+  });
+
+  describe('bulkManagementHistoryEntries', () => {
+    let bulkManagementHistory;
+    let transformHistoryEntry;
+    const listFn = (state) => state.entries;
+    const mapFn = (entry) => ([entry]);
+    const entries = ['some', 'entries', 'for', 'testing'];
+    beforeEach(() => {
+      bulkManagementHistory = selectors.bulkManagementHistory;
+      transformHistoryEntry = selectors.transformHistoryEntry;
+      selectors.bulkManagementHistory = jest.fn(listFn);
+      selectors.transformHistoryEntry = jest.fn(mapFn);
+    });
+    afterEach(() => {
+      selectors.bulkManagementHistory = bulkManagementHistory;
+      selectors.transformHistoryEntry = transformHistoryEntry;
+    });
+    it('returns history entries mapped to transformer', () => {
+      expect(
+        selectors.bulkManagementHistoryEntries({ entries }),
+      ).toEqual(entries.map(mapFn));
+    });
+  });
+
+  describe('getExampleSectionBreakdown', () => {
+    const selector = selectors.getExampleSectionBreakdown;
+    it('returns an empty array when results are unavailable', () => {
+      expect(selector({ grades: { results: [{}] } })).toEqual([]);
+    });
+    it('returns an empty array when breakdowns are unavailable', () => {
+      expect(selector({ grades: { results: [{ foo: 'bar' }] } })).toEqual([]);
+    });
+    it('gets section breakdown when available', () => {
+      const sectionBreakdown = { fake: 'section', breakdown: 'data' };
+      expect(
+        selector({ grades: { results: [{ section_breakdown: sectionBreakdown }] } }),
+      ).toEqual(sectionBreakdown);
+    });
+  });
+
+  describe('gradeOverrides', () => {
+    it('returns grades.gradeOverrideHistoryResults from redux state', () => {
+      const testVal = 'Temp Test VALUE';
+      expect(
+        selectors.gradeOverrides({ grades: { gradeOverrideHistoryResults: testVal } }),
+      ).toEqual(testVal);
+    });
+  });
+
+  describe('uploadSuccess', () => {
+    const selector = selectors.uploadSuccess;
+    it('shows upload success when bulkManagement data returned/completed successfully', () => {
+      expect(selector({ grades: { bulkManagement: { uploadSuccess: true } } })).toEqual(true);
+    });
+    it('returns false when bulk management data not returned', () => {
+      expect(selector({ grades: {} })).toEqual(false);
+    });
+  });
+
+  describe('simpleSelectors', () => {
+    const testVal = 'some TEST value';
+    const testSimpleSelector = (key) => {
+      test(key, () => {
+        expect(
+          exportedSelectors[key]({ grades: { [key]: testVal } }),
+        ).toEqual(testVal);
+      });
+    };
+    testSimpleSelector('courseId');
+    testSimpleSelector('filteredUsersCount');
+    testSimpleSelector('totalUsersCount');
+    testSimpleSelector('gradeFormat');
+    testSimpleSelector('showSpinner');
+    testSimpleSelector('gradeOverrideCurrentEarnedGradedOverride');
+    testSimpleSelector('gradeOverrideHistoryError');
+    testSimpleSelector('gradeOriginalEarnedGraded');
+    testSimpleSelector('gradeOriginalPossibleGraded');
+    testSimpleSelector('showSuccess');
   });
 });
