@@ -11,8 +11,7 @@ const fetching = {
 };
 const gotGradesFrozen = createAction('gotGradesFrozen');
 
-const actions = StrictDict({
+export default StrictDict({
   fetching: StrictDict(fetching),
   gotGradesFrozen,
 });
-export default actions;
