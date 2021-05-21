@@ -1,5 +1,7 @@
-const selectors = {
-  canUserViewGradebook: ({ roles }) => !!roles.canUserViewGradebook,
-};
+import { StrictDict } from 'utils';
 
-export default selectors;
+const canUserViewGradebook = ({ roles }) => !!roles.canUserViewGradebook;
+
+export default StrictDict({
+  canUserViewGradebook,
+});

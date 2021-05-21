@@ -1,4 +1,5 @@
 /* eslint-disable import/no-named-as-default-member, import/no-self-import */
+import { StrictDict } from 'utils';
 import LmsApiService from 'data/services/LmsApiService';
 
 import * as module from '.';
@@ -96,7 +97,7 @@ export const shouldShowSpinner = (state) => (
   && grades.showSpinner(state)
 );
 
-export default {
+export default StrictDict({
   root: {
     getHeadings,
     gradeExportUrl,
@@ -111,4 +112,4 @@ export default {
   roles,
   special,
   tracks,
-};
+});

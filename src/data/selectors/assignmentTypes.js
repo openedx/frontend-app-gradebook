@@ -1,6 +1,9 @@
-const selectors = {
-  areGradesFrozen: ({ assignmentTypes }) => assignmentTypes.areGradesFrozen,
-  allAssignmentTypes: ({ assignmentTypes }) => assignmentTypes.results,
-};
+import { StrictDict } from 'utils';
 
-export default selectors;
+const areGradesFrozen = ({ assignmentTypes }) => assignmentTypes.areGradesFrozen;
+const allAssignmentTypes = ({ assignmentTypes }) => assignmentTypes.results;
+
+export default StrictDict({
+  areGradesFrozen,
+  allAssignmentTypes,
+});

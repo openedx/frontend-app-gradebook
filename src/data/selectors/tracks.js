@@ -1,4 +1,5 @@
 /* eslint-disable import/no-self-import */
+import { StrictDict } from 'utils';
 import * as module from './tracks';
 
 export const mastersKey = 'masters';
@@ -28,10 +29,8 @@ export const allTracks = state => state.tracks.results || [];
  */
 export const stateHasMastersTrack = (state) => module.hasMastersTrack(module.allTracks(state));
 
-const selectors = {
+export default StrictDict({
   allTracks,
   hasMastersTrack,
   stateHasMastersTrack,
-};
-
-export default selectors;
+});

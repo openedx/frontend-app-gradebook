@@ -1,3 +1,4 @@
+import { StrictDict } from 'utils';
 /**
  * allCohorts(state)
  * returns top-level cohorts results data
@@ -26,10 +27,8 @@ const getCohortById = (state, selectedCohortId) => {
  */
 const getCohortNameById = (state, selectedCohortId) => (getCohortById(state, selectedCohortId) || {}).name;
 
-const selectors = {
+export default StrictDict({
   getCohortById,
   getCohortNameById,
   allCohorts,
-};
-
-export default selectors;
+});

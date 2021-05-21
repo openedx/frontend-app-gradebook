@@ -1,4 +1,5 @@
 /* eslint-disable import/no-self-import */
+import { StrictDict } from 'utils';
 import { formatDateForDisplay } from '../actions/utils';
 import simpleSelectorFactory from '../utils';
 import { EMAIL_HEADING, TOTAL_COURSE_GRADE_HEADING, USERNAME_HEADING } from '../constants/grades';
@@ -213,7 +214,7 @@ const simpleSelectors = simpleSelectorFactory(
   ],
 );
 
-const selectors = {
+export default StrictDict({
   bulkImportError,
   formatGradeOverrideForDisplay,
   formatMinAssignmentGrade,
@@ -228,6 +229,4 @@ const selectors = {
   getExampleSectionBreakdown,
   gradeOverrides,
   uploadSuccess,
-};
-
-export default selectors;
+});
