@@ -25,10 +25,10 @@ export class AssignmentGradeFilter extends React.Component {
       assignmentGradeMax,
     } = this.props.filterValues;
 
-    this.props.updateAssignmentLimits(
-      assignmentGradeMin,
-      assignmentGradeMax,
-    );
+    this.props.updateAssignmentLimits({
+      maxGrade: assignmentGradeMax,
+      minGrade: assignmentGradeMin,
+    });
     this.props.getUserGrades(
       this.props.courseId,
       this.props.selectedCohort,

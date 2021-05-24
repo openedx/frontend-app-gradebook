@@ -33,11 +33,11 @@ const reducer = (state = initialState, { type: actionType, payload }) => {
     case actions.update.assignmentType.toString():
       return {
         ...state,
-        assignmentType: payload.filterType,
+        assignmentType: payload,
         assignment: (
           (
-            payload.filterType !== ''
-            && (state.assignment || {}).type !== payload.filterType
+            payload !== ''
+            && (state.assignment || {}).type !== payload
           ) ? '' : state.assignment
         ),
       };

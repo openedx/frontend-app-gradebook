@@ -43,10 +43,12 @@ describe('AssignmentGradeFilter', () => {
           el.instance().handleSubmit();
         });
         it('calls props.updateAssignmentLimits with min and max', () => {
-          expect(props.updateAssignmentLimits).toHaveBeenCalledWith(
-            props.filterValues.assignmentGradeMin,
-            props.filterValues.assignmentGradeMax,
-          );
+          expect(
+            props.updateAssignmentLimits,
+          ).toHaveBeenCalledWith({
+            maxGrade: props.filterValues.assignmentGradeMax,
+            minGrade: props.filterValues.assignmentGradeMin,
+          });
         });
         it('calls getUserGrades w/ selection', () => {
           expect(props.getUserGrades).toHaveBeenCalledWith(

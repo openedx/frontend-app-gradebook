@@ -103,7 +103,7 @@ describe('filter reducer', () => {
       const newType = 'new ASsignment TYpe';
       it('loads assignmentType and clears assignment', () => {
         expect(
-          filter(testingState, action({ filterType: newType })),
+          filter(testingState, action(newType)),
         ).toEqual({
           ...testingState,
           assignmentType: newType,
@@ -114,14 +114,14 @@ describe('filter reducer', () => {
     describe('empty string type', () => {
       it('does not clear assignment if the type is empty', () => {
         expect(
-          filter(testingState, action({ filterType: '' })),
+          filter(testingState, action('')),
         ).toEqual({ ...testingState, assignmentType: '' });
       });
     });
     describe('matching type', () => {
       it('does not clear the assignment if the type still matches the assignment', () => {
         expect(
-          filter(testingState, action({ filterType: testingState.assignment.type })),
+          filter(testingState, action(testingState.assignment.type)),
         ).toEqual({
           ...testingState,
           assignmentType: testingState.assignment.type,
