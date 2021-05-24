@@ -10,12 +10,12 @@ import {
 import queryString from 'query-string';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFilter } from '@fortawesome/free-solid-svg-icons';
-import { configuration } from '../../config';
 import PageButtons from '../PageButtons';
 import Drawer from '../Drawer';
 import initialFilters from '../../data/constants/filters';
 import ConnectedFilterBadges from '../FilterBadges';
 
+import GradebookHeader from './GradebookHeader';
 import BulkManagement from './BulkManagement';
 import BulkManagementControls from './BulkManagementControls';
 import EditModal from './EditModal';
@@ -66,12 +66,9 @@ export default class Gradebook extends React.Component {
     this.setState({ [e.target.name]: e.target.value });
   }
 
-  getActiveTabs = () => {
-    if (this.props.showBulkManagement) {
-      return ['Grades', 'Bulk Management'];
-    }
-    return ['Grades'];
-  };
+  getActiveTabs = () => (
+    this.props.showBulkManagement ? ['Grades', 'BulkManagement'] : ['Grades']
+  );
 
   updateQueryParams = (queryParams) => {
     const parsed = queryString.parse(this.props.location.search);
@@ -84,8 +81,6 @@ export default class Gradebook extends React.Component {
     });
     this.props.history.push(`?${queryString.stringify(parsed)}`);
   };
-
-  lmsInstructorDashboardUrl = courseId => `${configuration.LMS_BASE_URL}/courses/${courseId}/instructor`;
 
   handleFilterBadgeClose = filterNames => () => {
     this.props.resetFilters(filterNames);
@@ -150,38 +145,49 @@ export default class Gradebook extends React.Component {
     courseGradeMax: this.state.courseGradeMax,
   });
 
+  usersLabel = () => {
+    if (!this.props.totalUsersCount) {
+      return null;
+    }
+    const bold = (val) => (<span className="font-weight-bold">{val}</span>);
+    const { filteredUsersCount, totalUsersCount } = this.props;
+    return (
+      <>
+        Showing {bold(filteredUsersCount)} of {bold(totalUsersCount)} total learners
+      </>
+    );
+  };
+
+  scoreViewInput = () => (
+    <InputSelect
+      label="Score View:"
+      name="ScoreView"
+      value="percent"
+      options={[{ label: 'Percent', value: 'percent' }, { label: 'Absolute', value: 'absolute' }]}
+      onChange={this.props.toggleFormat}
+    />
+  );
+
+  spinnerIcon = () => {
+    if (!this.props.showSpinner) {
+      return null;
+    }
+    return (
+      <div className="spinner-overlay">
+        <Icon className="fa fa-spinner fa-spin fa-5x color-black" />
+      </div>
+    );
+  }
+
   render() {
     return (
       <Drawer
         mainContent={toggleFilterDrawer => (
           <div className="px-3 gradebook-content">
-            <a
-              href={this.lmsInstructorDashboardUrl(this.props.courseId)}
-              className="mb-3"
-            >
-              <span aria-hidden="true">{'<< '}</span> Back to Dashboard
-            </a>
-            <h1>Gradebook</h1>
-            <h3> {this.props.courseId}</h3>
-            {this.props.areGradesFrozen
-              && (
-              <div className="alert alert-warning" role="alert">
-                The grades for this course are now frozen. Editing of grades is no longer allowed.
-              </div>
-              )}
-            {(this.props.canUserViewGradebook === false)
-              && (
-              <div className="alert alert-warning" role="alert">
-                You are not authorized to view the gradebook for this course.
-              </div>
-              )}
+            <GradebookHeader courseId={this.props.courseId} />
             <Tabs defaultActiveKey="grades">
               <Tab eventKey="grades" title="Grades">
-                {this.props.showSpinner && (
-                  <div className="spinner-overlay">
-                    <Icon className="fa fa-spinner fa-spin fa-5x color-black" />
-                  </div>
-                )}
+                {this.spinnerIcon()}
                 <SearchControls
                   courseId={this.props.courseId}
                   filterValue={this.state.filterValue}
@@ -196,33 +202,10 @@ export default class Gradebook extends React.Component {
                   isMaxCourseGradeFilterValid={this.state.isMaxCourseGradeFilterValid}
                 />
                 <h4>Step 2: View or Modify Individual Grades</h4>
-                {this.props.totalUsersCount
-                  ? (
-                    <div>
-                      Showing
-                      <span className="font-weight-bold"> {this.props.filteredUsersCount} </span>
-                      of
-                      <span className="font-weight-bold"> {this.props.totalUsersCount} </span>
-                      total learners
-                    </div>
-                  )
-                  : null}
+                {this.usersLabel()}
                 <div className="d-flex justify-content-between align-items-center mb-2">
-                  <InputSelect
-                    label="Score View:"
-                    name="ScoreView"
-                    value="percent"
-                    options={[{ label: 'Percent', value: 'percent' }, { label: 'Absolute', value: 'absolute' }]}
-                    onChange={this.props.toggleFormat}
-                  />
-                  {this.props.showBulkManagement && (
-                    <BulkManagementControls
-                      courseId={this.props.courseId}
-                      gradeExportUrl={this.props.gradeExportUrl}
-                      interventionExportUrl={this.props.interventionExportUrl}
-                      showSpinner={this.props.showSpinner}
-                    />
-                  )}
+                  {this.scoreViewInput()}
+                  <BulkManagementControls courseId={this.props.courseId} />
                 </div>
                 <GradebookTable setGradebookState={this.safeSetState} />
                 {PageButtons(this.props)}
@@ -244,15 +227,11 @@ export default class Gradebook extends React.Component {
                   updateUserId={this.state.updateUserId}
                   updateUserName={this.state.updateUserName}
                 />
-
               </Tab>
               {this.props.showBulkManagement
                 && (
                 <Tab eventKey="bulk_management" title="Bulk Management">
-                  <BulkManagement
-                    courseId={this.props.courseId}
-                    gradeExportUrl={this.props.gradeExportUrl}
-                  />
+                  <BulkManagement courseId={this.props.courseId} />
                 </Tab>
                 )}
             </Tabs>
@@ -277,8 +256,6 @@ export default class Gradebook extends React.Component {
 }
 
 Gradebook.defaultProps = {
-  areGradesFrozen: false,
-  canUserViewGradebook: false,
   courseId: '',
   filteredUsersCount: null,
   location: {
@@ -293,18 +270,14 @@ Gradebook.defaultProps = {
 };
 
 Gradebook.propTypes = {
-  areGradesFrozen: PropTypes.bool,
-  canUserViewGradebook: PropTypes.bool,
   courseId: PropTypes.string,
   filteredUsersCount: PropTypes.number,
   getRoles: PropTypes.func.isRequired,
   getUserGrades: PropTypes.func.isRequired,
-  gradeExportUrl: PropTypes.string.isRequired,
   history: PropTypes.shape({
     push: PropTypes.func,
   }).isRequired,
   initializeFilters: PropTypes.func.isRequired,
-  interventionExportUrl: PropTypes.string.isRequired,
   location: PropTypes.shape({
     search: PropTypes.string,
   }),

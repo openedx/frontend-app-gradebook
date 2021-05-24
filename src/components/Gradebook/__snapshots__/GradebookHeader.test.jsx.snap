@@ -1,0 +1,100 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`GradebookHeader component snapshots default values (grades frozen, cannot view). unauthorized warning, but no grades frozen warning 1`] = `
+<div
+  className="gradebook-header"
+>
+  <a
+    className="mb-3"
+    href="http://localhost:18000/courses/fakeID/instructor"
+  >
+    <span
+      aria-hidden="true"
+    >
+      &lt;&lt; 
+    </span>
+     Back to Dashboard
+  </a>
+  <h1>
+    Gradebook
+  </h1>
+  <h3>
+     
+    fakeID
+  </h3>
+  <div
+    className="alert alert-warning"
+    role="alert"
+  >
+    You are not authorized to view the gradebook for this course.
+  </div>
+</div>
+`;
+
+exports[`GradebookHeader component snapshots grades frozen, can view. grades frozen warning but no unauthorized warning 1`] = `
+<div
+  className="gradebook-header"
+>
+  <a
+    className="mb-3"
+    href="http://localhost:18000/courses/fakeID/instructor"
+  >
+    <span
+      aria-hidden="true"
+    >
+      &lt;&lt; 
+    </span>
+     Back to Dashboard
+  </a>
+  <h1>
+    Gradebook
+  </h1>
+  <h3>
+     
+    fakeID
+  </h3>
+  <div
+    className="alert alert-warning"
+    role="alert"
+  >
+    The grades for this course are now frozen. Editing of grades is no longer allowed.
+  </div>
+</div>
+`;
+
+exports[`GradebookHeader component snapshots grades frozen, cannot view unauthorized warning, and grades frozen warning. 1`] = `
+<div
+  className="gradebook-header"
+>
+  <a
+    className="mb-3"
+    href="http://localhost:18000/courses/fakeID/instructor"
+  >
+    <span
+      aria-hidden="true"
+    >
+      &lt;&lt; 
+    </span>
+     Back to Dashboard
+  </a>
+  <h1>
+    Gradebook
+  </h1>
+  <h3>
+     
+    fakeID
+  </h3>
+  <div
+    className="alert alert-warning"
+    role="alert"
+  >
+    The grades for this course are now frozen. Editing of grades is no longer allowed.
+  </div>
+  <div
+    className="alert alert-warning"
+    role="alert"
+  >
+    You are not authorized to view the gradebook for this course.
+  </div>
+</div>
+`;
