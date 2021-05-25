@@ -4,7 +4,7 @@ import { shallow } from 'enzyme';
 import {
   fetchGrades,
   fetchMatchingUserGrades,
-} from '../../data/actions/grades';
+} from '../../data/thunkActions/grades';
 import { mapDispatchToProps, mapStateToProps, SearchControls } from './SearchControls';
 
 jest.mock('@edx/paragon', () => ({

@@ -4,88 +4,87 @@ import { composeWithDevTools } from 'redux-devtools-extension/logOnlyInProductio
 import { createLogger } from 'redux-logger';
 import { createMiddleware } from 'redux-beacon';
 import Segment, { trackEvent, trackPageView } from '@redux-beacon/segment';
-import { GOT_ROLES } from './constants/actionTypes/roles';
-import {
-  GOT_GRADES, GRADE_UPDATE_SUCCESS, GRADE_UPDATE_FAILURE, UPLOAD_OVERRIDE,
-  UPLOAD_OVERRIDE_ERROR, BULK_GRADE_REPORT_DOWNLOADED, INTERVENTION_REPORT_DOWNLOADED,
-} from './constants/actionTypes/grades';
-import { UPDATE_COURSE_GRADE_LIMITS } from './constants/actionTypes/filters';
 
+import actions from './actions';
 import reducers from './reducers';
 
 const loggerMiddleware = createLogger();
 const trackingCategory = 'gradebook';
 
 const eventsMap = {
-  [GOT_ROLES]: trackPageView(action => ({
+  [actions.roles.fetching.received.toString()]: trackPageView(({ payload }) => ({
     category: trackingCategory,
-    page: action.courseId,
+    page: payload.courseId,
   })),
-  [GOT_GRADES]: trackEvent(action => ({
+  [actions.grades.fetching.received.toString()]: trackEvent(({ payload }) => ({
     name: 'edx.gradebook.grades.displayed',
     properties: {
       category: trackingCategory,
-      label: action.courseId,
-      track: action.track,
-      cohort: action.cohort,
-      assignmentType: action.assignmentType,
-      prev: action.prev,
-      next: action.next,
+      label: payload.courseId,
+      track: payload.track,
+      cohort: payload.cohort,
+      assignmentType: payload.assignmentType,
+      prev: payload.prev,
+      next: payload.next,
     },
   })),
-  [GRADE_UPDATE_SUCCESS]: trackEvent(action => ({
+  [actions.grades.update.success.toString()]: trackEvent(({ payload }) => ({
     name: 'edx.gradebook.grades.grade_override.succeeded',
     properties: {
       category: trackingCategory,
-      label: action.courseId,
-      updatedGrades: action.payload.responseData,
+      label: payload.courseId,
+      updatedGrades: payload.responseData,
     },
   })),
-  [GRADE_UPDATE_FAILURE]: trackEvent(action => ({
+  [actions.grades.update.failure.toString()]: trackEvent(({ payload }) => ({
     name: 'edx.gradebook.grades.grade_override.failed',
     properties: {
       category: trackingCategory,
-      label: action.courseId,
-      error: action.payload.error,
+      label: payload.courseId,
+      error: payload.error,
     },
   })),
-  [UPLOAD_OVERRIDE]: trackEvent(action => ({
+  [actions.grades.uploadOverride.success.toString()]: trackEvent(({ payload }) => ({
     name: 'edx.gradebook.grades.upload.grades_overrides.succeeded',
     properties: {
       category: trackingCategory,
-      label: action.courseId,
+      label: payload.courseId,
     },
   })),
-  [UPLOAD_OVERRIDE_ERROR]: trackEvent(action => ({
+  [actions.grades.uploadOverride.failure.toString()]: trackEvent(({ payload }) => ({
     name: 'edx.gradebook.grades.upload.grades_overrides.failed',
     properties: {
       category: trackingCategory,
-      label: action.courseId,
-      error: action.payload.error,
+      label: payload.courseId,
+      error: payload.error,
     },
   })),
-  [UPDATE_COURSE_GRADE_LIMITS]: trackEvent(action => ({
+  [actions.filters.update.courseGradeLimits]: trackEvent(({ payload }) => ({
     name: 'edx.gradebook.grades.filter_applied',
-    label: action.courseId,
+    label: payload.courseId,
     properties: {
       category: trackingCategory,
-      label: action.courseId,
+      label: payload.courseId,
     },
   })),
-  [BULK_GRADE_REPORT_DOWNLOADED]: trackEvent(action => ({
-    name: 'edx.gradebook.reports.grade_export.downloaded',
-    properties: {
-      category: trackingCategory,
-      label: action.courseId,
-    },
-  })),
-  [INTERVENTION_REPORT_DOWNLOADED]: trackEvent(action => ({
-    name: 'edx.gradebook.reports.intervention.downloaded',
-    properties: {
-      category: trackingCategory,
-      label: action.courseId,
-    },
-  })),
+  [actions.grades.downloadReport.bulkGrades.toString()]: trackEvent(
+    ({ payload }) => ({
+      name: 'edx.gradebook.reports.grade_export.downloaded',
+      properties: {
+        category: trackingCategory,
+        label: payload.courseId,
+      },
+    }),
+  ),
+  [actions.grades.downloadReport.intervention.toString()]: trackEvent(
+    ({ payload }) => ({
+      name: 'edx.gradebook.reports.intervention.downloaded',
+      properties: {
+        category: trackingCategory,
+        label: payload.courseId,
+      },
+    }),
+  ),
 };
 
 const segmentMiddleware = createMiddleware(eventsMap, Segment());

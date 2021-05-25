@@ -1,8 +1,4 @@
-import {
-  STARTED_FETCHING_TRACKS,
-  ERROR_FETCHING_TRACKS,
-  GOT_TRACKS,
-} from '../constants/actionTypes/tracks';
+import actions from '../actions/tracks';
 
 const initialState = {
   results: [],
@@ -12,19 +8,19 @@ const initialState = {
 
 const tracks = (state = initialState, action) => {
   switch (action.type) {
-    case GOT_TRACKS:
-      return {
-        ...state,
-        results: action.tracks,
-        errorFetching: false,
-        finishedFetching: true,
-      };
-    case STARTED_FETCHING_TRACKS:
+    case actions.fetching.started.toString():
       return {
         ...state,
         startedFetching: true,
       };
-    case ERROR_FETCHING_TRACKS:
+    case actions.fetching.received.toString():
+      return {
+        ...state,
+        results: action.payload,
+        errorFetching: false,
+        finishedFetching: true,
+      };
+    case actions.fetching.error.toString():
       return {
         ...state,
         finishedFetching: true,
@@ -35,4 +31,5 @@ const tracks = (state = initialState, action) => {
   }
 };
 
+export { initialState };
 export default tracks;

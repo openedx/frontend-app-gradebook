@@ -1,6 +1,6 @@
 {
   "name": "@edx/frontend-app-gradebook",
-  "version": "1.4.28",
+  "version": "1.4.29",
   "description": "edx editable gradebook-ui to manipulate grade overrides on subsections",
   "repository": {
     "type": "git",
@@ -35,6 +35,7 @@
     "@fortawesome/free-solid-svg-icons": "^5.11.2",
     "@fortawesome/react-fontawesome": "^0.1.5",
     "@redux-beacon/segment": "^1.0.0",
+    "@reduxjs/toolkit": "^1.5.1",
     "classnames": "^2.2.6",
     "core-js": "3.6.5",
     "email-prop-type": "^1.1.7",
@@ -58,6 +59,7 @@
     "redux-logger": "3.0.6",
     "redux-thunk": "2.3.0",
     "regenerator-runtime": "^0.13.7",
+    "util": "^0.12.3",
     "whatwg-fetch": "^2.0.4"
   },
   "devDependencies": {

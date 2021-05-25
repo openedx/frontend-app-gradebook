@@ -12,8 +12,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faDownload } from '@fortawesome/free-solid-svg-icons';
 
 import selectors from 'data/selectors';
-import { configuration } from '../../config';
-import { submitFileUploadFormData } from '../../data/actions/grades';
+import thunkActions from 'data/thunkActions';
+import { configuration } from 'config';
 
 export class BulkManagement extends React.Component {
   constructor(props) {
@@ -193,7 +193,7 @@ export const mapStateToProps = (state) => {
 };
 
 export const mapDispatchToProps = {
-  submitFileUploadFormData,
+  submitFileUploadFormData: thunkActions.grades.submitFileUploadFormData,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(BulkManagement);

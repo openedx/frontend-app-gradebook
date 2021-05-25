@@ -1,15 +1,18 @@
-import GOT_BULK_MANAGEMENT_CONFIG from '../constants/actionTypes/config';
+import actions from '../actions/config';
 
-const reducer = (state = {}, action) => {
+const initialState = {};
+
+const reducer = (state = initialState, action) => {
   switch (action.type) {
-    case GOT_BULK_MANAGEMENT_CONFIG:
+    case actions.gotBulkManagementConfig.toString():
       return {
         ...state,
-        bulkManagementAvailable: action.data,
+        bulkManagementAvailable: action.payload,
       };
     default:
       return state;
   }
 };
 
+export { initialState };
 export default reducer;

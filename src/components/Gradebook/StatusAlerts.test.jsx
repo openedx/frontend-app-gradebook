@@ -1,5 +1,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
+
+import actions from 'data/actions';
 import {
   StatusAlerts,
   mapDispatchToProps,
@@ -7,7 +9,6 @@ import {
   maxCourseGradeInvalidMessage,
   minCourseGradeInvalidMessage,
 } from './StatusAlerts';
-import { closeBanner } from '../../data/actions/grades';
 
 jest.mock('@edx/paragon', () => ({
   StatusAlert: 'StatusAlert',
@@ -92,7 +93,7 @@ describe('StatusAlerts', () => {
       expect(
         mapDispatchToProps.handleCloseSuccessBanner,
       ).toEqual(
-        closeBanner,
+        actions.grades.banner.close,
       );
     });
   });

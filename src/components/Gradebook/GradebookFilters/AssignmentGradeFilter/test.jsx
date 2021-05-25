@@ -1,8 +1,8 @@
 import React from 'react';
 import { mount, shallow } from 'enzyme';
 
-import { updateAssignmentLimits } from 'data/actions/filters';
-import { fetchGrades } from 'data/actions/grades';
+import actions from 'data/actions';
+import { fetchGrades } from 'data/thunkActions/grades';
 
 import {
   AssignmentGradeFilter,
@@ -43,10 +43,12 @@ describe('AssignmentGradeFilter', () => {
           el.instance().handleSubmit();
         });
         it('calls props.updateAssignmentLimits with min and max', () => {
-          expect(props.updateAssignmentLimits).toHaveBeenCalledWith(
-            props.filterValues.assignmentGradeMin,
-            props.filterValues.assignmentGradeMax,
-          );
+          expect(
+            props.updateAssignmentLimits,
+          ).toHaveBeenCalledWith({
+            maxGrade: props.filterValues.assignmentGradeMax,
+            minGrade: props.filterValues.assignmentGradeMin,
+          });
         });
         it('calls getUserGrades w/ selection', () => {
           expect(props.getUserGrades).toHaveBeenCalledWith(
@@ -167,7 +169,7 @@ describe('AssignmentGradeFilter', () => {
       expect(
         mapDispatchToProps.updateAssignmentLimits,
       ).toEqual(
-        updateAssignmentLimits,
+        actions.filters.update.assignmentLimits,
       );
     });
   });

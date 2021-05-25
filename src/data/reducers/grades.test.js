@@ -1,178 +1,248 @@
 import grades, { initialGradesState as initialState } from './grades';
-import {
-  STARTED_FETCHING_GRADES,
-  ERROR_FETCHING_GRADES,
-  GOT_GRADES,
-  TOGGLE_GRADE_FORMAT,
-  FILTER_BY_ASSIGNMENT_TYPE,
-  OPEN_BANNER,
-  ERROR_FETCHING_GRADE_OVERRIDE_HISTORY,
-} from '../constants/actionTypes/grades';
+import actions from '../actions/grades';
+import filterActions from '../actions/filters';
 
-const courseId = 'course-v1:edX+DemoX+Demo_Course';
 const headingsData = [
   { name: 'exam' },
   { name: 'homework2' },
 ];
-const gradesData = [
-  {
-    course_id: courseId,
-    email: 'user1@example.com',
-    username: 'user1',
-    user_id: 1,
-    percent: 0.5,
-    letter_grade: null,
-    section_breakdown: [
-      {
-        subsection_name: 'Demo Course Overview',
-        score_earned: 0,
-        score_possible: 0,
-        percent: 0,
-        displayed_value: '0.00',
-        grade_description: '(0.00/0.00)',
-      },
-      {
-        subsection_name: 'Example Week 1: Getting Started',
-        score_earned: 1,
-        score_possible: 1,
-        percent: 1,
-        displayed_value: '1.00',
-        grade_description: '(0.00/0.00)',
-      },
-    ],
+
+const testingState = {
+  ...initialState,
+  bulkManagement: {
+    errorMessages: 'some error message',
+    uploadSuccess: false,
   },
-  {
-    course_id: courseId,
-    email: 'user22@example.com',
-    username: 'user22',
-    user_id: 22,
-    percent: 0,
-    letter_grade: null,
-    section_breakdown: [
-      {
-        subsection_name: 'Demo Course Overview',
-        score_earned: 0,
-        score_possible: 0,
-        percent: 0,
-        displayed_value: '0.00',
-        grade_description: '(0.00/0.00)',
-      },
-      {
-        subsection_name: 'Example Week 1: Getting Started',
-        score_earned: 1,
-        score_possible: 1,
-        percent: 0,
-        displayed_value: '0.00',
-        grade_description: '(0.00/0.00)',
-      },
-    ],
-  }];
+  arbitraryField: 'abitrary',
+};
 
 describe('grades reducer', () => {
   it('has initial state', () => {
-    expect(grades(undefined, {})).toEqual(initialState);
+    expect(
+      grades(undefined, {}),
+    ).toEqual(initialState);
   });
 
-  it('updates fetch grades request state', () => {
-    const expected = {
-      ...initialState,
-      startedFetching: true,
-      showSpinner: true,
-    };
-    expect(grades(undefined, {
-      type: STARTED_FETCHING_GRADES,
-    })).toEqual(expected);
-  });
+  describe('action handlers', () => {
+    describe('actions.banner.open', () => {
+      it('sets showSuccess to true', () => {
+        expect(
+          grades(undefined, actions.banner.open()),
+        ).toEqual({ ...initialState, showSuccess: true });
+      });
+    });
+    describe('actions.banner.close', () => {
+      it('set showSuccess to false', () => {
+        expect(
+          grades(undefined, actions.banner.close()),
+        ).toEqual({ ...initialState, showSuccess: false });
+      });
+    });
 
-  it('updates fetch grades success state', () => {
-    const expectedPrev = 'testPrevUrl';
-    const expectedNext = 'testNextUrl';
-    const expectedTrack = 'verified';
-    const expectedCohortId = 2;
-    const expected = {
-      ...initialState,
-      results: gradesData,
-      headings: headingsData,
-      errorFetching: false,
-      finishedFetching: true,
-      prevPage: expectedPrev,
-      nextPage: expectedNext,
-      showSpinner: false,
-      courseId,
-      totalUsersCount: 4,
-      filteredUsersCount: 2,
-    };
-    expect(grades(undefined, {
-      type: GOT_GRADES,
-      grades: gradesData,
-      headings: headingsData,
-      prev: expectedPrev,
-      next: expectedNext,
-      track: expectedTrack,
-      cohort: expectedCohortId,
-      showSpinner: true,
-      courseId,
-      totalUsersCount: 4,
-      filteredUsersCount: 2,
-    })).toEqual(expected);
-  });
+    describe('actions.bulkHistory.received', () => {
+      it('loads payload into bulkManagement.history', () => {
+        const history = 'HIstory';
+        expect(
+          grades(testingState, actions.bulkHistory.received(history)),
+        ).toEqual({
+          ...testingState,
+          bulkManagement: { ...testingState.bulkManagement, history },
+        });
+      });
+    });
 
-  it('updates toggle grade format state success', () => {
-    const formatTypeData = 'percent';
-    const expected = {
-      ...initialState,
-      gradeFormat: formatTypeData,
-    };
-    expect(grades(undefined, {
-      type: TOGGLE_GRADE_FORMAT,
-      formatType: formatTypeData,
-    })).toEqual(expected);
-  });
+    describe('actions.csvUpload.started', () => {
+      it(
+        'sets showSpinner=true and removes errorMessages and uploadSuccess from bulkManagement',
+        () => {
+          const {
+            errorMessages,
+            uploadSuccess,
+            ...expectedBulkManagement
+          } = testingState.bulkManagement;
+          expect(
+            grades(testingState, actions.csvUpload.started()),
+          ).toEqual({
+            ...testingState,
+            showSpinner: true,
+            bulkManagement: expectedBulkManagement,
+          });
+        },
+      );
+    });
+    describe('handling actions.csvUpload.finished', () => {
+      it('sets showSpinner=false and sets bulkManagement.uploadSuccess=true', () => {
+        expect(
+          grades(testingState, actions.csvUpload.finished()),
+        ).toEqual({
+          ...testingState,
+          showSpinner: false,
+          bulkManagement: { ...testingState.bulkManagement, uploadSuccess: true },
+        });
+      });
+    });
+    describe('handling actions.csvUpload.error', () => {
+      it('loads errorMessage to bulkManagement from payload and sets showSpinner=false', () => {
+        const errorMessage = 'This is a new error message';
+        expect(
+          grades(testingState, actions.csvUpload.error({
+            errorMessage,
+            uploadSuccess: false,
+          })),
+        ).toEqual({
+          ...testingState,
+          showSpinner: false,
+          bulkManagement: { errorMessage, ...testingState.bulkManagement },
+        });
+      });
+    });
 
-  it('updates filter columns state success', () => {
-    const expectedHeadings = headingsData;
-    const expected = {
-      ...initialState,
-      headings: expectedHeadings,
-    };
-    expect(grades(undefined, {
-      type: FILTER_BY_ASSIGNMENT_TYPE,
-      headings: expectedHeadings,
-    })).toEqual(expected);
-  });
+    describe('actions.doneViewingAssignment', () => {
+      it('removes gradeOverride* and gradeOriginal* from existing state', () => {
+        const {
+          gradeOverrideHistoryResults,
+          gradeOverrideCurrentEarnedAllOverride,
+          gradeOverrideCurrentPossibleAllOverride,
+          gradeOverrideCurrentEarnedGradedOverride,
+          gradeOverrideCurrentPossibleGradedOverride,
+          gradeOriginalEarnedAll,
+          gradeOriginalPossibleAll,
+          gradeOriginalEarnedGraded,
+          gradeOriginalPossibleGraded,
+          ...expected
+        } = testingState;
+        expect(
+          grades(testingState, actions.doneViewingAssignment()),
+        ).toEqual(expected);
+      });
+    });
 
-  it('updates update_banner state success', () => {
-    const expectedShowSuccess = true;
-    const expected = {
-      ...initialState,
-      showSuccess: expectedShowSuccess,
-    };
-    expect(grades(undefined, {
-      type: OPEN_BANNER,
-    })).toEqual(expected);
-  });
+    describe('actions.fetching.started', () => {
+      it('sets startedFetching and showSpinner to true', () => {
+        expect(
+          grades(testingState, actions.fetching.started()),
+        ).toEqual({
+          ...testingState,
+          startedFetching: true,
+          showSpinner: true,
+        });
+      });
+    });
+    describe('actions.fetching.received', () => {
+      it(
+        'loads payload and sets finishedFetching:true, errorFetching:false, showSpinner:false',
+        () => {
+          const payload = {
+            courseId: 'course-v1:edX+DemoX+Demo_Course',
+            headings: 'some Headings',
+            prev: 'testPrevUrl',
+            next: 'testNextUrl',
+            track: 'verified',
+            cohortId: 2,
+            totalUsersCount: 4,
+            filteredUsersCount: 2,
+            assignmentType: 'Homework',
+            grades: { somethingArbitrary: 'some data' },
+          };
+          expect(
+            grades(testingState, actions.fetching.received(payload)),
+          ).toEqual({
+            ...testingState,
+            results: payload.grades,
+            headings: payload.headings,
+            prevPage: payload.prev,
+            nextPage: payload.next,
+            courseId: payload.courseId,
+            totalUsersCount: payload.totalUsersCount,
+            filteredUsersCount: payload.filteredUsersCount,
+            errorFetching: false,
+            finishedFetching: true,
+            showSpinner: false,
+          });
+        },
+      );
+    });
+    describe('actions.fetching.error', () => {
+      it('sets finishedFetching and errorFetching to true', () => {
+        expect(
+          grades(testingState, actions.fetching.error()),
+        ).toEqual({
+          ...testingState,
+          errorFetching: true,
+          finishedFetching: true,
+        });
+      });
+    });
 
-  it('updates fetch grades failure state', () => {
-    const expected = {
-      ...initialState,
-      errorFetching: true,
-      finishedFetching: true,
-    };
-    expect(grades(undefined, {
-      type: ERROR_FETCHING_GRADES,
-    })).toEqual(expected);
-  });
+    describe('actions.overrideHistory.received', () => {
+      it('loads payload and clears overrideHistoryError', () => {
+        const payload = {
+          overrideHistory: true,
+          currentEarnedAllOverride: false,
+          currentPossibleAllOverride: 'red',
+          currentEarnedGradedOverride: 'green',
+          currentPossibleGradedOverride: 'blue',
+          originalGradeEarnedAll: 'other',
+          originalGradePossibleAll: 'sparrow',
+          originalGradeEarnedGraded: 'crow',
+          originalGradePossibleGraded: 'raven',
+        };
+        expect(
+          grades(testingState, actions.overrideHistory.received(payload)),
+        ).toEqual({
+          ...testingState,
+          gradeOverrideHistoryResults: payload.overrideHistory,
+          gradeOverrideCurrentEarnedAllOverride: payload.currentEarnedAllOverride,
+          gradeOverrideCurrentPossibleAllOverride: payload.currentPossibleAllOverride,
+          gradeOverrideCurrentEarnedGradedOverride: payload.currentEarnedGradedOverride,
+          gradeOverrideCurrentPossibleGradedOverride: payload.currentPossibleGradedOverride,
+          gradeOriginalEarnedAll: payload.originalGradeEarnedAll,
+          gradeOriginalPossibleAll: payload.originalGradePossibleAll,
+          gradeOriginalEarnedGraded: payload.originalGradeEarnedGraded,
+          gradeOriginalPossibleGraded: payload.originalGradePossibleGraded,
+          overrideHistoryError: '',
+        });
+      });
+    });
+    describe('actions.overrideHistory.error', () => {
+      it(
+        'sets finishedFetchingOverrideHistory=true and loads overrideHistoryError from payload',
+        () => {
+          const errorMessage = 'This is the error message';
+          expect(
+            grades(testingState, actions.overrideHistory.error(errorMessage)),
+          ).toEqual({
+            ...testingState,
+            finishedFetchingOverrideHistory: true,
+            overrideHistoryError: errorMessage,
+          });
+        },
+      );
+    });
 
-  it('updates fetch grade override history failure state', () => {
-    const errorMessage = 'This is the error message';
-    const expected = {
-      ...initialState,
-      finishedFetchingOverrideHistory: true,
-      overrideHistoryError: errorMessage,
-    };
-    expect(grades(undefined, {
-      type: ERROR_FETCHING_GRADE_OVERRIDE_HISTORY,
-      errorMessage,
-    })).toEqual(expected);
+    describe('handling actions.toggleGradeFormat', () => {
+      it('updates grade format attribute', () => {
+        const formatTypeData = 'percent';
+        expect(
+          grades(undefined, actions.toggleGradeFormat(formatTypeData)),
+        ).toEqual({ ...initialState, gradeFormat: formatTypeData });
+      });
+    });
+
+    describe('handling filterActions.update.assignmentType', () => {
+      it('loads assignmentType and headings from the payload', () => {
+        const expectedSelectedAssignmentType = 'selected assignment type';
+        expect(
+          grades(testingState, filterActions.update.assignmentType({
+            headings: headingsData,
+            filterType: expectedSelectedAssignmentType,
+          })),
+        ).toEqual({
+          ...testingState,
+          selectedAssignmentType: expectedSelectedAssignmentType,
+          headings: headingsData,
+        });
+      });
+    });
   });
 });

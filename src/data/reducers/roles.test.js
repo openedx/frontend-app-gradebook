@@ -1,47 +1,38 @@
-import roles from './roles';
-import {
-  ERROR_FETCHING_ROLES,
-  GOT_ROLES,
-} from '../constants/actionTypes/roles';
+import roles, { initialState } from './roles';
+import actions from '../actions/roles';
 
-const initialState = {
-  canUserViewGradebook: null,
+const testingState = {
+  ...initialState,
+  arbitraryField: 'arbitrary',
 };
 
-describe('tracks reducer', () => {
+describe('roles reducer', () => {
   it('has initial state', () => {
-    expect(roles(undefined, {})).toEqual(initialState);
+    expect(
+      roles(undefined, {}),
+    ).toEqual(initialState);
   });
 
-  it('updates canUserViewGradebook to true', () => {
-    const expected = {
-      ...initialState,
-      canUserViewGradebook: true,
-    };
-    expect(roles(undefined, {
-      type: GOT_ROLES,
-      canUserViewGradebook: true,
-    })).toEqual(expected);
+  describe('handling actions.received', () => {
+    it('updates canUserViewGradebook to the received payload', () => {
+      const expectedCanUserViewGradebook = true;
+      expect(
+        roles(testingState, actions.fetching.received(expectedCanUserViewGradebook)),
+      ).toEqual({
+        ...testingState,
+        canUserViewGradebook: expectedCanUserViewGradebook,
+      });
+    });
   });
 
-  it('updates canUserViewGradebook to false', () => {
-    const expected = {
-      ...initialState,
-      canUserViewGradebook: false,
-    };
-    expect(roles(undefined, {
-      type: GOT_ROLES,
-      canUserViewGradebook: false,
-    })).toEqual(expected);
-  });
-
-  it('updates fetch roles failure state', () => {
-    const expected = {
-      ...initialState,
-      canUserViewGradebook: false,
-    };
-    expect(roles(undefined, {
-      type: ERROR_FETCHING_ROLES,
-    })).toEqual(expected);
+  describe('handling actions.errorFetching', () => {
+    it('sets canUserViewGradebook to false', () => {
+      expect(
+        roles(testingState, actions.fetching.error()),
+      ).toEqual({
+        ...testingState,
+        canUserViewGradebook: false,
+      });
+    });
   });
 });

@@ -7,10 +7,7 @@ import { StatefulButton } from '@edx/paragon';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faDownload, faSpinner } from '@fortawesome/free-solid-svg-icons';
 
-import {
-  downloadBulkGradesReport,
-  downloadInterventionReport,
-} from '../../data/actions/grades';
+import actions from 'data/actions';
 
 export class BulkManagementControls extends React.Component {
   handleClickDownloadInterventions = () => {
@@ -83,8 +80,8 @@ BulkManagementControls.propTypes = {
 export const mapStateToProps = () => ({ });
 
 export const mapDispatchToProps = {
-  downloadBulkGradesReport,
-  downloadInterventionReport,
+  downloadBulkGradesReport: actions.grades.downloadReport.bulkGrades,
+  downloadInterventionReport: actions.grades.downloadReport.intervention,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(BulkManagementControls);

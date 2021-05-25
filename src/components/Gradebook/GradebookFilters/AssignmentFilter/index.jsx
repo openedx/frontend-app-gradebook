@@ -3,11 +3,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
-import * as gradesActions from 'data/actions/grades';
-import * as filterActions from 'data/actions/filters';
 import selectors from 'data/selectors';
+import actions from 'data/actions';
+import thunkActions from 'data/thunkActions';
 
 import SelectGroup from '../SelectGroup';
+
+const { updateGradesIfAssignmentGradeFiltersSet } = thunkActions.grades;
 
 export class AssignmentFilter extends React.Component {
   constructor(props) {
@@ -97,8 +99,8 @@ export const mapStateToProps = (state) => {
 };
 
 export const mapDispatchToProps = {
-  updateAssignmentFilter: filterActions.updateAssignmentFilter,
-  updateGradesIfAssignmentGradeFiltersSet: gradesActions.updateGradesIfAssignmentGradeFiltersSet,
+  updateAssignmentFilter: actions.filters.update.assignment,
+  updateGradesIfAssignmentGradeFiltersSet,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(AssignmentFilter);

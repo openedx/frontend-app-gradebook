@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { StatusAlert } from '@edx/paragon';
 
 import selectors from 'data/selectors';
-import { closeBanner } from '../../data/actions/grades';
+import actions from 'data/actions';
 
 export const maxCourseGradeInvalidMessage = 'Maximum course grade value must be between 0 and 100. ';
 export const minCourseGradeInvalidMessage = 'Minimum course grade value must be between 0 and 100. ';
@@ -66,7 +66,7 @@ export const mapStateToProps = (state) => ({
 });
 
 export const mapDispatchToProps = {
-  handleCloseSuccessBanner: closeBanner,
+  handleCloseSuccessBanner: actions.grades.banner.close,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(StatusAlerts);

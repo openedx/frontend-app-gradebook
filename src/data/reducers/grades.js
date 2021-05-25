@@ -1,19 +1,5 @@
-import {
-  STARTED_FETCHING_GRADES,
-  ERROR_FETCHING_GRADES,
-  GOT_GRADES,
-  TOGGLE_GRADE_FORMAT,
-  FILTER_BY_ASSIGNMENT_TYPE,
-  OPEN_BANNER,
-  CLOSE_BANNER,
-  START_UPLOAD,
-  UPLOAD_COMPLETE,
-  UPLOAD_ERR,
-  GOT_BULK_HISTORY,
-  DONE_VIEWING_ASSIGNMENT,
-  GOT_GRADE_OVERRIDE_HISTORY,
-  ERROR_FETCHING_GRADE_OVERRIDE_HISTORY,
-} from '../constants/actionTypes/grades';
+import actions from '../actions/grades';
+import filterActions from '../actions/filters';
 
 const initialState = {
   results: [],
@@ -41,23 +27,53 @@ const initialState = {
   filteredUsersCount: 0,
 };
 
-const grades = (state = initialState, action) => {
-  switch (action.type) {
-    case GOT_GRADES:
+const grades = (state = initialState, { type, payload }) => {
+  switch (type) {
+    case actions.banner.open.toString():
       return {
         ...state,
-        results: action.grades,
-        headings: action.headings,
-        finishedFetching: true,
-        errorFetching: false,
-        prevPage: action.prev,
-        nextPage: action.next,
-        showSpinner: false,
-        courseId: action.courseId,
-        totalUsersCount: action.totalUsersCount,
-        filteredUsersCount: action.filteredUsersCount,
+        showSuccess: true,
       };
-    case DONE_VIEWING_ASSIGNMENT: {
+    case actions.banner.close.toString():
+      return {
+        ...state,
+        showSuccess: false,
+      };
+    case actions.bulkHistory.received.toString():
+      return {
+        ...state,
+        bulkManagement: {
+          ...state.bulkManagement,
+          history: payload,
+        },
+      };
+    case actions.csvUpload.started.toString(): {
+      const { errorMessages, uploadSuccess, ...rest } = state.bulkManagement;
+      return {
+        ...state,
+        showSpinner: true,
+        bulkManagement: rest,
+      };
+    }
+    case actions.csvUpload.finished.toString():
+      return {
+        ...state,
+        showSpinner: false,
+        bulkManagement: {
+          ...state.bulkManagement,
+          uploadSuccess: true,
+        },
+      };
+    case actions.csvUpload.error.toString():
+      return {
+        ...state,
+        showSpinner: false,
+        bulkManagement: {
+          ...state.bulkManagement,
+          ...payload,
+        },
+      };
+    case actions.doneViewingAssignment.toString(): {
       const {
         gradeOverrideHistoryResults,
         gradeOverrideCurrentEarnedAllOverride,
@@ -72,96 +88,63 @@ const grades = (state = initialState, action) => {
       } = state;
       return rest;
     }
-    case GOT_GRADE_OVERRIDE_HISTORY:
-      return {
-        ...state,
-        gradeOverrideHistoryResults: action.overrideHistory,
-        gradeOverrideCurrentEarnedAllOverride: action.currentEarnedAllOverride,
-        gradeOverrideCurrentPossibleAllOverride: action.currentPossibleAllOverride,
-        gradeOverrideCurrentEarnedGradedOverride: action.currentEarnedGradedOverride,
-        gradeOverrideCurrentPossibleGradedOverride: action.currentPossibleGradedOverride,
-        gradeOriginalEarnedAll: action.originalGradeEarnedAll,
-        gradeOriginalPossibleAll: action.originalGradePossibleAll,
-        gradeOriginalEarnedGraded: action.originalGradeEarnedGraded,
-        gradeOriginalPossibleGraded: action.originalGradePossibleGraded,
-        overrideHistoryError: '',
-      };
-
-    case ERROR_FETCHING_GRADE_OVERRIDE_HISTORY:
-      return {
-        ...state,
-        finishedFetchingOverrideHistory: true,
-        overrideHistoryError: action.errorMessage,
-      };
-
-    case STARTED_FETCHING_GRADES:
+    case actions.fetching.started.toString():
       return {
         ...state,
         startedFetching: true,
         finishedFetching: false,
         showSpinner: true,
       };
-    case ERROR_FETCHING_GRADES:
+    case actions.fetching.error.toString():
       return {
         ...state,
         finishedFetching: true,
         errorFetching: true,
       };
-    case TOGGLE_GRADE_FORMAT:
+    case actions.fetching.received.toString():
       return {
         ...state,
-        gradeFormat: action.formatType,
-      };
-    case FILTER_BY_ASSIGNMENT_TYPE:
-      return {
-        ...state,
-        selectedAssignmentType: action.filterType,
-        headings: action.headings,
-      };
-    case OPEN_BANNER:
-      return {
-        ...state,
-        showSuccess: true,
-      };
-    case CLOSE_BANNER:
-      return {
-        ...state,
-        showSuccess: false,
-      };
-    case START_UPLOAD: {
-      const { errorMessages, uploadSuccess, ...rest } = state.bulkManagement;
-      return {
-        ...state,
-        showSpinner: true,
-        bulkManagement: rest,
-      };
-    }
-    case UPLOAD_COMPLETE: {
-      return {
-        ...state,
+        results: payload.grades,
+        headings: payload.headings,
+        finishedFetching: true,
+        errorFetching: false,
+        prevPage: payload.prev,
+        nextPage: payload.next,
         showSpinner: false,
-        bulkManagement: {
-          ...state.bulkManagement,
-          uploadSuccess: true,
-        },
+        courseId: payload.courseId,
+        totalUsersCount: payload.totalUsersCount,
+        filteredUsersCount: payload.filteredUsersCount,
       };
-    }
-    case UPLOAD_ERR:
+    case actions.overrideHistory.received.toString():
       return {
         ...state,
-        showSpinner: false,
-        bulkManagement: {
-          ...state.bulkManagement,
-          ...action.data,
-        },
+        gradeOverrideHistoryResults: payload.overrideHistory,
+        gradeOverrideCurrentEarnedAllOverride: payload.currentEarnedAllOverride,
+        gradeOverrideCurrentPossibleAllOverride: payload.currentPossibleAllOverride,
+        gradeOverrideCurrentEarnedGradedOverride: payload.currentEarnedGradedOverride,
+        gradeOverrideCurrentPossibleGradedOverride: payload.currentPossibleGradedOverride,
+        gradeOriginalEarnedAll: payload.originalGradeEarnedAll,
+        gradeOriginalPossibleAll: payload.originalGradePossibleAll,
+        gradeOriginalEarnedGraded: payload.originalGradeEarnedGraded,
+        gradeOriginalPossibleGraded: payload.originalGradePossibleGraded,
+        overrideHistoryError: '',
       };
-    case GOT_BULK_HISTORY:
+    case actions.overrideHistory.error.toString():
       return {
         ...state,
-        bulkManagement: {
-          ...state.bulkManagement,
-          history: action.data,
-        },
+        finishedFetchingOverrideHistory: true,
+        overrideHistoryError: payload,
+      };
+    case actions.toggleGradeFormat.toString():
+      return {
+        ...state,
+        gradeFormat: payload,
+      };
+    case filterActions.update.assignmentType.toString():
+      return {
+        ...state,
+        selectedAssignmentType: payload.filterType,
+        headings: payload.headings,
       };
     default:
       return state;

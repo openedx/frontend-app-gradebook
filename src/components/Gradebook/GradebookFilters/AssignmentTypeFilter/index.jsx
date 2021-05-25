@@ -3,9 +3,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
-import * as gradesActions from 'data/actions/grades';
 import selectors from 'data/selectors';
-
+import actions from 'data/actions';
 import SelectGroup from '../SelectGroup';
 
 export class AssignmentTypeFilter extends React.Component {
@@ -72,7 +71,7 @@ export const mapStateToProps = (state) => ({
 });
 
 export const mapDispatchToProps = {
-  filterAssignmentType: gradesActions.filterAssignmentType,
+  filterAssignmentType: actions.filters.update.assignmentType,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(AssignmentTypeFilter);

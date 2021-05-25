@@ -5,9 +5,9 @@ import { connect } from 'react-redux';
 
 import { Button } from '@edx/paragon';
 
-import * as gradesActions from 'data/actions/grades';
-import * as filterActions from 'data/actions/filters';
 import selectors from 'data/selectors';
+import actions from 'data/actions';
+import thunkActions from 'data/thunkActions';
 
 import PercentGroup from '../PercentGroup';
 
@@ -25,10 +25,10 @@ export class AssignmentGradeFilter extends React.Component {
       assignmentGradeMax,
     } = this.props.filterValues;
 
-    this.props.updateAssignmentLimits(
-      assignmentGradeMin,
-      assignmentGradeMax,
-    );
+    this.props.updateAssignmentLimits({
+      maxGrade: assignmentGradeMax,
+      minGrade: assignmentGradeMin,
+    });
     this.props.getUserGrades(
       this.props.courseId,
       this.props.selectedCohort,
@@ -118,8 +118,8 @@ export const mapStateToProps = (state) => {
 };
 
 export const mapDispatchToProps = {
-  getUserGrades: gradesActions.fetchGrades,
-  updateAssignmentLimits: filterActions.updateAssignmentLimits,
+  getUserGrades: thunkActions.grades.fetchGrades,
+  updateAssignmentLimits: actions.filters.update.assignmentLimits,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(AssignmentGradeFilter);

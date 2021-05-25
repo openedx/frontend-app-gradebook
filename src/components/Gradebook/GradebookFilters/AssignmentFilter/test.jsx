@@ -2,13 +2,17 @@ import React from 'react';
 import { mount, shallow } from 'enzyme';
 
 import selectors from 'data/selectors';
-import { updateAssignmentFilter } from 'data/actions/filters';
-import { updateGradesIfAssignmentGradeFiltersSet } from 'data/actions/grades';
+import actions from 'data/actions';
+import { updateGradesIfAssignmentGradeFiltersSet } from 'data/thunkActions/grades';
 import {
   AssignmentFilter,
   mapStateToProps,
   mapDispatchToProps,
 } from '.';
+
+jest.mock('data/thunkActions/grades', () => ({
+  updateGradesIfAssignmentGradeFiltersSet: jest.fn(),
+}));
 
 jest.mock('data/selectors', () => ({
   /** Mocking to use passed state for validation purposes */
@@ -160,7 +164,7 @@ describe('AssignmentFilter', () => {
   describe('mapDispatchToProps', () => {
     test('updateAssignmentFilter', () => {
       expect(mapDispatchToProps.updateAssignmentFilter).toEqual(
-        updateAssignmentFilter,
+        actions.filters.update.assignment,
       );
     });
     test('updateGradesIfAsssignmentGradeFiltersSet', () => {

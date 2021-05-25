@@ -1,8 +1,4 @@
-import {
-  STARTED_FETCHING_COHORTS,
-  ERROR_FETCHING_COHORTS,
-  GOT_COHORTS,
-} from '../constants/actionTypes/cohorts';
+import actions from '../actions/cohorts';
 
 const initialState = {
   results: [],
@@ -12,19 +8,19 @@ const initialState = {
 
 const cohorts = (state = initialState, action) => {
   switch (action.type) {
-    case GOT_COHORTS:
-      return {
-        ...state,
-        results: action.cohorts,
-        finishedFetching: true,
-        errorFetching: false,
-      };
-    case STARTED_FETCHING_COHORTS:
+    case actions.fetching.started.toString():
       return {
         ...state,
         startedFetching: true,
       };
-    case ERROR_FETCHING_COHORTS:
+    case actions.fetching.received.toString():
+      return {
+        ...state,
+        results: action.payload,
+        finishedFetching: true,
+        errorFetching: false,
+      };
+    case actions.fetching.error.toString():
       return {
         ...state,
         finishedFetching: true,
@@ -35,4 +31,5 @@ const cohorts = (state = initialState, action) => {
   }
 };
 
+export { initialState };
 export default cohorts;

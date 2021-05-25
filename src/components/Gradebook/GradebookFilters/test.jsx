@@ -1,7 +1,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 
-import { updateIncludeCourseRoleMembers } from 'data/actions/filters';
+import actions from 'data/actions';
 
 import {
   GradebookFilters,
@@ -98,7 +98,7 @@ describe('GradebookFilters', () => {
   describe('mapDispatchToProps', () => {
     test('updateIncludeCourseRoleMembers', () => {
       expect(mapDispatchToProps.updateIncludeCourseRoleMembers).toEqual(
-        updateIncludeCourseRoleMembers,
+        actions.filters.update.includeCourseRoleMembers,
       );
     });
   });

@@ -1,3 +1,5 @@
+import { createAction } from '@reduxjs/toolkit';
+
 const formatDateForDisplay = (inputDate) => {
   const options = {
     year: 'numeric',
@@ -26,4 +28,12 @@ const sortAlphaAsc = (gradeRowA, gradeRowB) => {
   return 0;
 };
 
-export { sortAlphaAsc, formatDateForDisplay };
+const createActionFactory = (dataKey) => (actionKey, ...args) => (
+  createAction(`${dataKey}/${actionKey}`, ...args)
+);
+
+export {
+  createActionFactory,
+  sortAlphaAsc,
+  formatDateForDisplay,
+};

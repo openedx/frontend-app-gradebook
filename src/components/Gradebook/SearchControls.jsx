@@ -5,10 +5,7 @@ import { connect } from 'react-redux';
 import { Button, Icon, SearchField } from '@edx/paragon';
 
 import selectors from 'data/selectors';
-import {
-  fetchGrades,
-  fetchMatchingUserGrades,
-} from '../../data/actions/grades';
+import thunkActions from 'data/thunkActions';
 
 /**
  * Controls for filtering the GradebookTable. Contains the "Edit Filters" button for opening the filter drawer
@@ -107,8 +104,8 @@ export const mapStateToProps = (state) => {
 };
 
 export const mapDispatchToProps = {
-  getUserGrades: fetchGrades,
-  searchForUser: fetchMatchingUserGrades,
+  getUserGrades: thunkActions.grades.fetchGrades,
+  searchForUser: thunkActions.grades.fetchMatchingUserGrades,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(SearchControls);

@@ -1,88 +1,49 @@
-import selectors from './tracks';
+import * as selectors from './tracks';
 
-const nonMastersTrack = {
-  slug: 'honor',
-  name: 'Honor Code Certificate',
-  min_price: 0,
-  suggested_prices: '',
-  currency: 'usd',
-  expiration_datetime: null,
-  description: null,
-  sku: null,
-  bulk_sku: null,
-};
+const tracksWithMasters = [{ slug: selectors.mastersKey }, { slug: 'other track' }];
+const tracksWithoutMasters = [{ slug: 'fake track' }, { slug: 'other track' }];
 
-const mastersTrack = {
-  slug: 'masters',
-  name: 'Masters track',
-  min_price: 0,
-  suggested_prices: 'a lot',
-  currency: 'usd',
-  expiration_datetime: null,
-  description: null,
-  sku: null,
-  bulk_sku: null,
-};
+describe('tracks selectors', () => {
+  // Transformers
+  describe('hasMastersTrack', () => {
+    const selector = selectors.hasMastersTrack;
+    it('returns true if a masters track is present', () => {
+      expect(selector(tracksWithMasters)).toEqual(true);
+    });
 
-const exampleTracksWithoutMasters = [nonMastersTrack];
-const exampleTracksWithMasters = [nonMastersTrack, mastersTrack];
-
-describe('allTracks', () => {
-  it('returns an empty array if no tracks found', () => {
-    const allTracks = selectors.allTracks({ tracks: {} });
-    expect(allTracks).toEqual([]);
+    it('returns false if a masters track is not present', () => {
+      expect(selector(tracksWithoutMasters)).toEqual(false);
+    });
   });
 
-  it('returns tracks if included in result', () => {
-    const allTracks = selectors.allTracks({ tracks: { results: exampleTracksWithoutMasters } });
-    expect(allTracks).toEqual([
-      {
-        slug: 'honor',
-        name: 'Honor Code Certificate',
-        min_price: 0,
-        suggested_prices: '',
-        currency: 'usd',
-        expiration_datetime: null,
-        description: null,
-        sku: null,
-        bulk_sku: null,
-      },
-    ]);
-  });
-});
+  // Selectors
+  describe('allTracks', () => {
+    const selector = selectors.allTracks;
+    it('returns an empty array if no tracks found', () => {
+      expect(selector({ tracks: {} })).toEqual([]);
+    });
 
-describe('hasMastersTrack', () => {
-  it('returns true if a masters track is present', () => {
-    const hasMastersTrack = selectors.hasMastersTrack(exampleTracksWithMasters);
-    expect(hasMastersTrack).toBeTruthy();
+    it('returns tracks if included in result', () => {
+      const results = [{ some: 'example' }, { track: 'results' }];
+      expect(selector({ tracks: { results } })).toEqual(results);
+    });
   });
 
-  it('returns false if a masters track is not present', () => {
-    const hasMastersTrack = selectors.hasMastersTrack(exampleTracksWithoutMasters);
-    expect(hasMastersTrack).toBeFalsy();
-  });
-});
+  describe('stateHasMastersTrack', () => {
+    it('returns hasMastersTracks called with allTracks as input', () => {
+      const testState = { some: 'fake', state: 'values' };
+      const mocks = {
+        allTracks: selectors.allTracks,
+        hasMastersTrack: selectors.hasMastersTrack,
+      };
+      selectors.allTracks = jest.fn(state => ({ allTracks: state }));
+      selectors.hasMastersTrack = jest.fn((tracks) => ({ hasMastersTrack: tracks }));
 
-describe('stateHasMastersTrack', () => {
-  it('returns true if a masters track is present', () => {
-    const stateHasMastersTrack = selectors.stateHasMastersTrack({ tracks: { results: exampleTracksWithMasters } });
-    expect(stateHasMastersTrack).toBeTruthy();
-  });
-
-  it('returns false if a masters track is not present', () => {
-    const stateHasMastersTrack = selectors.stateHasMastersTrack({ tracks: { results: exampleTracksWithoutMasters } });
-    expect(stateHasMastersTrack).toBeFalsy();
-  });
-});
-
-describe('trackIsMasters', () => {
-  it('returns true if track is a masters track', () => {
-    const trackIsMasters = selectors.trackIsMasters(mastersTrack);
-    expect(trackIsMasters).toBeTruthy();
-  });
-
-  it('returns true if track is not a masters track', () => {
-    const trackIsMasters = selectors.trackIsMasters(nonMastersTrack);
-    expect(trackIsMasters).toBeFalsy();
+      expect(selectors.stateHasMastersTrack(testState)).toEqual({
+        hasMastersTrack: { allTracks: testState },
+      });
+      selectors.allTracks = mocks.allTracks;
+      selectors.hasMastersTrack = mocks.hasMastersTrack;
+    });
   });
 });

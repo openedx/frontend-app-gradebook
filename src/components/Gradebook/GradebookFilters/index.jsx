@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 
 import { Collapsible, Form } from '@edx/paragon';
 
-import * as filterActions from 'data/actions/filters';
+import actions from 'data/actions';
 import selectors from 'data/selectors';
 
 import AssignmentTypeFilter from './AssignmentTypeFilter';
@@ -114,7 +114,7 @@ export const mapStateToProps = (state) => ({
 });
 
 export const mapDispatchToProps = {
-  updateIncludeCourseRoleMembers: filterActions.updateIncludeCourseRoleMembers,
+  updateIncludeCourseRoleMembers: actions.filters.update.includeCourseRoleMembers,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(GradebookFilters);

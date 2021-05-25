@@ -1,31 +1,15 @@
-import {
-  STARTED_FETCHING_COHORTS,
-  GOT_COHORTS,
-  ERROR_FETCHING_COHORTS,
-} from '../constants/actionTypes/cohorts';
-import LmsApiService from '../services/LmsApiService';
+import { StrictDict } from 'utils';
+import { createActionFactory } from './utils';
 
-const startedFetchingCohorts = () => ({ type: STARTED_FETCHING_COHORTS });
-const errorFetchingCohorts = () => ({ type: ERROR_FETCHING_COHORTS });
-const gotCohorts = cohorts => ({ type: GOT_COHORTS, cohorts });
+export const dataKey = 'cohorts';
+const createAction = createActionFactory(dataKey);
 
-const fetchCohorts = courseId => (
-  (dispatch) => {
-    dispatch(startedFetchingCohorts());
-    return LmsApiService.fetchCohorts(courseId)
-      .then(response => response.data)
-      .then((data) => {
-        dispatch(gotCohorts(data.cohorts));
-      })
-      .catch(() => {
-        dispatch(errorFetchingCohorts());
-      });
-  }
-);
-
-export {
-  fetchCohorts,
-  startedFetchingCohorts,
-  gotCohorts,
-  errorFetchingCohorts,
+const fetching = {
+  started: createAction('fetching/started'),
+  error: createAction('fetching/error'),
+  received: createAction('fetching/received'),
 };
+
+export default StrictDict({
+  fetching: StrictDict(fetching),
+});

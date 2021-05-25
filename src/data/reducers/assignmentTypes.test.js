@@ -1,68 +1,71 @@
-import assignmentTypes from './assignmentTypes';
-import {
-  STARTED_FETCHING_ASSIGNMENT_TYPES,
-  ERROR_FETCHING_ASSIGNMENT_TYPES,
-  GOT_ASSIGNMENT_TYPES,
-  GOT_ARE_GRADES_FROZEN,
-} from '../constants/actionTypes/assignmentTypes';
+import assignmentTypes, { initialState } from './assignmentTypes';
+import actions from '../actions/assignmentTypes';
 
-const initialState = {
-  results: [],
-  startedFetching: false,
-  errorFetching: false,
+const testingState = {
+  ...initialState,
+  results: ['Exam', 'Homework'],
+  arbitraryField: 'arbitrary',
 };
-
-const assignmentTypesData = ['Exam', 'Homework'];
 
 describe('assignmentTypes reducer', () => {
   it('has initial state', () => {
-    expect(assignmentTypes(undefined, {})).toEqual(initialState);
+    expect(
+      assignmentTypes(undefined, {}),
+    ).toEqual(initialState);
   });
 
-  it('updates fetch assignmentTypes request state', () => {
-    const expected = {
-      ...initialState,
-      startedFetching: true,
-    };
-    expect(assignmentTypes(undefined, {
-      type: STARTED_FETCHING_ASSIGNMENT_TYPES,
-    })).toEqual(expected);
+  describe('handling actions.fetching.started', () => {
+    it('sets startedFetching=true', () => {
+      const expected = {
+        ...testingState,
+        startedFetching: true,
+      };
+      expect(
+        assignmentTypes(testingState, actions.fetching.started()),
+      ).toEqual(expected);
+    });
   });
 
-  it('updates fetch assignmentTypes success state', () => {
-    const expected = {
-      ...initialState,
-      results: assignmentTypesData,
-      errorFetching: false,
-      finishedFetching: true,
-    };
-    expect(assignmentTypes(undefined, {
-      type: GOT_ASSIGNMENT_TYPES,
-      assignmentTypes: assignmentTypesData,
-    })).toEqual(expected);
+  describe('handling actions.fetching.received', () => {
+    it('loads the results and sets finishedFetching=true and errorFetching=false', () => {
+      const expectedResults = ['Exam'];
+      const expected = {
+        ...testingState,
+        results: expectedResults,
+        errorFetching: false,
+        finishedFetching: true,
+      };
+      expect(
+        assignmentTypes(testingState, actions.fetching.received(expectedResults)),
+      ).toEqual(expected);
+    });
   });
 
-  it('updates fetch assignmentTypes failure state', () => {
-    const expected = {
-      ...initialState,
-      errorFetching: true,
-      finishedFetching: true,
-    };
-    expect(assignmentTypes(undefined, {
-      type: ERROR_FETCHING_ASSIGNMENT_TYPES,
-    })).toEqual(expected);
+  describe('handling actions.fetching.error', () => {
+    it('sets errorFetching=true and finishedFetching=true', () => {
+      const expected = {
+        ...testingState,
+        errorFetching: true,
+        finishedFetching: true,
+      };
+      expect(
+        assignmentTypes(testingState, actions.fetching.error()),
+      ).toEqual(expected);
+    });
   });
 
-  it('updates areGradesFrozen success state', () => {
-    const expected = {
-      ...initialState,
-      errorFetching: false,
-      finishedFetching: true,
-      areGradesFrozen: true,
-    };
-    expect(assignmentTypes(undefined, {
-      type: GOT_ARE_GRADES_FROZEN,
-      areGradesFrozen: true,
-    })).toEqual(expected);
+  describe('handling actions.gotGradesFrozen', () => {
+    it('loads areGradesFrozen and sets errorFetching=false and finishedFetching=true', () => {
+      const expectedAreGradesFrozen = true;
+      const expected = {
+        ...testingState,
+        errorFetching: false,
+        finishedFetching: true,
+        areGradesFrozen: expectedAreGradesFrozen,
+      };
+      expect(
+        assignmentTypes(testingState, actions.gotGradesFrozen(expectedAreGradesFrozen)),
+      ).toEqual(expected);
+    });
   });
 });

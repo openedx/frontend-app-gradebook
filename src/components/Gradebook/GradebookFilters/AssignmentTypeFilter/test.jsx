@@ -2,7 +2,7 @@ import React from 'react';
 import { shallow } from 'enzyme';
 
 import selectors from 'data/selectors';
-import { filterAssignmentType } from 'data/actions/grades';
+import actions from 'data/actions';
 
 import {
   AssignmentTypeFilter,
@@ -128,7 +128,7 @@ describe('AssignmentTypeFilter', () => {
   describe('mapDispatchToProps', () => {
     test('filterAssignmentType', () => {
       expect(mapDispatchToProps.filterAssignmentType).toEqual(
-        filterAssignmentType,
+        actions.filters.update.assignmentType,
       );
     });
   });
