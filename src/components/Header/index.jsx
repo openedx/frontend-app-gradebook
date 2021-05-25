@@ -13,7 +13,7 @@ export default class Header extends React.Component {
     return (
       <div className="mb-3">
         <header className="d-flex justify-content-center align-items-center p-3 border-bottom-blue">
-          <Hyperlink destination="https://www.edx.org">
+          <Hyperlink destination={process.env.LOGO_DESTINATION ?? getConfig().LMS_BASE_URL}>
             {this.renderLogo()}
           </Hyperlink>
           <div />
