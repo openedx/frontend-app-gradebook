@@ -5,9 +5,9 @@ export const dataKey = 'cohorts';
 const createAction = createActionFactory(dataKey);
 
 const fetching = {
-  started: createAction('startedFetching'),
-  error: createAction('errorFetching'),
-  received: createAction('received'),
+  started: createAction('fetching/started'),
+  error: createAction('fetching/error'),
+  received: createAction('fetching/received'),
 };
 
 export default StrictDict({

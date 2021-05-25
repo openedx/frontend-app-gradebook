@@ -34,7 +34,7 @@ const fetching = {
   error: createAction('fetching/error'),
   // for segment tracking
   received: createAction(
-    'received',
+    'fetching/received',
     (data) => ({
       payload: {
         grades: data.grades,

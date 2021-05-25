@@ -50,9 +50,9 @@ const mapDispatchToProps = {
 
   filterAssignmentType: actions.filters.update.assignmentType,
   initializeFilters: actions.filters.initialize,
+  resetFilters: actions.filters.reset,
   updateAssignmentFilter: actions.filters.update.assignment,
   updateAssignmentLimits: actions.filters.update.assignmentLimits,
-  resetFilters: actions.filters.reset,
 
   fetchGradeOverrideHistory: thunkActions.grades.fetchGradeOverrideHistory,
   getAssignmentTypes: thunkActions.assignmentTypes.fetchAssignmentTypes,

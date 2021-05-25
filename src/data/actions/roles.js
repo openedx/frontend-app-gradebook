@@ -5,8 +5,8 @@ export const dataKey = 'roles';
 const createAction = createActionFactory(dataKey);
 
 const fetching = {
-  error: createAction('errorFetching'),
-  received: createAction('received'),
+  error: createAction('fetching/error'),
+  received: createAction('fetching/received'),
 };
 
 export default StrictDict({

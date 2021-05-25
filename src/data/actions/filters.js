@@ -29,7 +29,7 @@ const initialize = createAction('initialize', ({
   },
 }));
 
-const reset = createAction('reset'); // paylaod
+const reset = createAction('reset');
 const update = StrictDict({
   assignment: createAction('update/assignment'),
   assignmentType: createAction('update/assignmentType'),
