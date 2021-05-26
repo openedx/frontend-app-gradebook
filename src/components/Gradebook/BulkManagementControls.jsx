@@ -8,6 +8,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faDownload, faSpinner } from '@fortawesome/free-solid-svg-icons';
 
 import actions from 'data/actions';
+import selectors from 'data/selectors';
 
 export class BulkManagementControls extends React.Component {
   handleClickDownloadInterventions = () => {
@@ -25,7 +26,7 @@ export class BulkManagementControls extends React.Component {
   };
 
   render() {
-    return (
+    return this.props.showBulkManagement && (
       <div>
         <StatefulButton
           variant="outline-primary"
@@ -63,21 +64,31 @@ export class BulkManagementControls extends React.Component {
 
 BulkManagementControls.defaultProps = {
   courseId: '',
+  showBulkManagement: false,
   showSpinner: false,
 };
 
 BulkManagementControls.propTypes = {
   courseId: PropTypes.string,
-  gradeExportUrl: PropTypes.string.isRequired,
-  interventionExportUrl: PropTypes.string.isRequired,
-  showSpinner: PropTypes.bool,
 
   // redux
   downloadBulkGradesReport: PropTypes.func.isRequired,
   downloadInterventionReport: PropTypes.func.isRequired,
+  gradeExportUrl: PropTypes.string.isRequired,
+  interventionExportUrl: PropTypes.string.isRequired,
+  showSpinner: PropTypes.bool,
+  showBulkManagement: PropTypes.bool,
 };
 
-export const mapStateToProps = () => ({ });
+export const mapStateToProps = (state, ownProps) => ({
+  gradeExportUrl: selectors.root.gradeExportUrl(state, { courseId: ownProps.courseId }),
+  interventionExportUrl: selectors.root.interventionExportUrl(
+    state,
+    { courseId: ownProps.courseId },
+  ),
+  showBulkManagement: selectors.root.showBulkManagement(state, { courseId: ownProps.courseId }),
+  showSpinner: selectors.root.shouldShowSpinner(state),
+});
 
 export const mapDispatchToProps = {
   downloadBulkGradesReport: actions.grades.downloadReport.bulkGrades,

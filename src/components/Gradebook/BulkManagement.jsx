@@ -183,11 +183,12 @@ BulkManagement.propTypes = {
   uploadSuccess: PropTypes.bool,
 };
 
-export const mapStateToProps = (state) => {
+export const mapStateToProps = (state, ownProps) => {
   const { grades } = selectors;
   return {
     bulkImportError: grades.bulkImportError(state),
     bulkManagementHistory: grades.bulkManagementHistoryEntries(state),
+    gradeExportUrl: selectors.root.gradeExportUrl(state, { courseId: ownProps.courseId }),
     uploadSuccess: grades.uploadSuccess(state),
   };
 };
