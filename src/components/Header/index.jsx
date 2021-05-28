@@ -3,6 +3,11 @@ import { Hyperlink } from '@edx/paragon';
 import { getConfig } from '@edx/frontend-platform';
 
 export default class Header extends React.Component {
+
+  constructor(props){
+    super(props);
+  }
+
   renderLogo() {
     return (
       <img src={getConfig().LOGO_URL} alt="edX logo" height="30" width="60" />
@@ -10,10 +15,14 @@ export default class Header extends React.Component {
   }
 
   render() {
+    const {
+      logoDestination
+    } = this.props;
+    const logoProps = { destination: logoDestination}
     return (
       <div className="mb-3">
         <header className="d-flex justify-content-center align-items-center p-3 border-bottom-blue">
-          <Hyperlink destination={process.env.LOGO_DESTINATION ?? getConfig().LMS_BASE_URL}>
+          <Hyperlink {...logoProps}>
             {this.renderLogo()}
           </Hyperlink>
           <div />
