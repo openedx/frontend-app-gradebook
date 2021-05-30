@@ -9,7 +9,7 @@ import thunkActions from 'data/thunkActions';
 
 import SelectGroup from '../SelectGroup';
 
-const { updateGradesIfAssignmentGradeFiltersSet } = thunkActions.grades;
+const { fetchGradesIfAssignmentGradeFiltersSet } = thunkActions.grades;
 
 export class AssignmentFilter extends React.Component {
   constructor(props) {
@@ -19,17 +19,14 @@ export class AssignmentFilter extends React.Component {
 
   handleChange(event) {
     const assignment = event.target.value;
-    const selectedFilterOption = this.props.assignmentFilterOptions.find(assig => assig.label === assignment);
+    const selectedFilterOption = this.props.assignmentFilterOptions.find(
+      ({ label }) => label === assignment,
+    );
     const { type, id } = selectedFilterOption || {};
     const typedValue = { label: assignment, type, id };
     this.props.updateAssignmentFilter(typedValue);
     this.props.updateQueryParams({ assignment: id });
-    this.props.updateGradesIfAssignmentGradeFiltersSet(
-      this.props.courseId,
-      this.props.selectedCohort,
-      this.props.selectedTrack,
-      this.props.selectedAssignmentType,
-    );
+    this.props.fetchGradesIfAssignmentGradeFiltersSet();
   }
 
   get options() {
@@ -63,13 +60,9 @@ export class AssignmentFilter extends React.Component {
 AssignmentFilter.defaultProps = {
   assignmentFilterOptions: [],
   selectedAssignment: '',
-  selectedAssignmentType: '',
-  selectedCohort: null,
-  selectedTrack: null,
 };
 
 AssignmentFilter.propTypes = {
-  courseId: PropTypes.string.isRequired,
   updateQueryParams: PropTypes.func.isRequired,
 
   // redux
@@ -79,11 +72,8 @@ AssignmentFilter.propTypes = {
     type: PropTypes.string,
     id: PropTypes.string,
   })),
-  selectedAssignmentType: PropTypes.string,
   selectedAssignment: PropTypes.string,
-  selectedCohort: PropTypes.string,
-  selectedTrack: PropTypes.string,
-  updateGradesIfAssignmentGradeFiltersSet: PropTypes.func.isRequired,
+  fetchGradesIfAssignmentGradeFiltersSet: PropTypes.func.isRequired,
   updateAssignmentFilter: PropTypes.func.isRequired,
 };
 
@@ -100,7 +90,7 @@ export const mapStateToProps = (state) => {
 
 export const mapDispatchToProps = {
   updateAssignmentFilter: actions.filters.update.assignment,
-  updateGradesIfAssignmentGradeFiltersSet,
+  fetchGradesIfAssignmentGradeFiltersSet,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(AssignmentFilter);

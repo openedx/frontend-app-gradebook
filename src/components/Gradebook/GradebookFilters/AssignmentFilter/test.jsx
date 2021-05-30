@@ -3,7 +3,7 @@ import { mount, shallow } from 'enzyme';
 
 import selectors from 'data/selectors';
 import actions from 'data/actions';
-import { updateGradesIfAssignmentGradeFiltersSet } from 'data/thunkActions/grades';
+import { fetchGradesIfAssignmentGradeFiltersSet } from 'data/thunkActions/grades';
 import {
   AssignmentFilter,
   mapStateToProps,
@@ -32,7 +32,6 @@ jest.mock('data/selectors', () => ({
 
 describe('AssignmentFilter', () => {
   let props = {
-    courseId: '12345',
     assignmentFilterOptions: [
       {
         label: 'assgN1',
@@ -47,17 +46,14 @@ describe('AssignmentFilter', () => {
         id: 'assgn_iD2',
       },
     ],
-    selectedAssignmentType: 'assgnFilterLabel1',
     selectedAssignment: 'assgN1',
-    selectedCohort: 'a cohort',
-    selectedTrack: 'a track',
   };
 
   beforeEach(() => {
     props = {
       ...props,
       updateQueryParams: jest.fn(),
-      updateGradesIfAssignmentGradeFiltersSet: jest.fn(),
+      fetchGradesIfAssignmentGradeFiltersSet: jest.fn(),
       updateAssignmentFilter: jest.fn(),
     };
   });
@@ -87,14 +83,9 @@ describe('AssignmentFilter', () => {
               assignment: selected.id,
             });
           });
-        it('calls props.updateGradesIfAssignmentGradeFiltersSet', () => {
-          const method = props.updateGradesIfAssignmentGradeFiltersSet;
-          expect(method).toHaveBeenCalledWith(
-            props.courseId,
-            props.selectedCohort,
-            props.selectedTrack,
-            props.selectedAssignmentType,
-          );
+        it('calls props.fetchGradesIfAssignmentGradeFiltersSet', () => {
+          const method = props.fetchGradesIfAssignmentGradeFiltersSet;
+          expect(method).toHaveBeenCalledWith();
         });
       });
     });
@@ -133,33 +124,6 @@ describe('AssignmentFilter', () => {
         );
       });
     });
-    describe('selectedAssignmentType', () => {
-      it('is selected from filters.assignmentType', () => {
-        expect(
-          mapStateToProps(state).selectedAssignmentType,
-        ).toEqual(
-          selectors.filters.assignmentType(state),
-        );
-      });
-    });
-    describe('selectedCohort', () => {
-      it('is selected from filters.cohort', () => {
-        expect(
-          mapStateToProps(state).selectedCohort,
-        ).toEqual(
-          selectors.filters.cohort(state),
-        );
-      });
-    });
-    describe('selectedTrack', () => {
-      it('is selected from filters.track', () => {
-        expect(
-          mapStateToProps(state).selectedTrack,
-        ).toEqual(
-          selectors.filters.track(state),
-        );
-      });
-    });
   });
   describe('mapDispatchToProps', () => {
     test('updateAssignmentFilter', () => {
@@ -167,9 +131,9 @@ describe('AssignmentFilter', () => {
         actions.filters.update.assignment,
       );
     });
-    test('updateGradesIfAsssignmentGradeFiltersSet', () => {
-      const prop = mapDispatchToProps.updateGradesIfAssignmentGradeFiltersSet;
-      expect(prop).toEqual(updateGradesIfAssignmentGradeFiltersSet);
+    test('fetchGradesIfAsssignmentGradeFiltersSet', () => {
+      const prop = mapDispatchToProps.fetchGradesIfAssignmentGradeFiltersSet;
+      expect(prop).toEqual(fetchGradesIfAssignmentGradeFiltersSet);
     });
   });
 });
