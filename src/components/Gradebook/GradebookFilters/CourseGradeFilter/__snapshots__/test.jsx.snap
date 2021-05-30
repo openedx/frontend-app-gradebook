@@ -6,14 +6,12 @@ exports[`CourseGradeFilter Component snapshots basic snapshot 1`] = `
     className="grade-filter-inputs"
   >
     <PercentGroup
-      disabled={false}
       id="minimum-grade"
       label="Min Grade"
       onChange={[MockFunction handleUpdateMin]}
       value="5"
     />
     <PercentGroup
-      disabled={false}
       id="maximum-grade"
       label="Max Grade"
       onChange={[MockFunction handleUpdateMax]}
