@@ -1,16 +1,31 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 
-import {
-  fetchGrades,
-  fetchMatchingUserGrades,
-} from '../../data/thunkActions/grades';
+import selectors from 'data/selectors';
+import actions from 'data/actions';
+import thunkActions from 'data/thunkActions';
 import { mapDispatchToProps, mapStateToProps, SearchControls } from './SearchControls';
 
 jest.mock('@edx/paragon', () => ({
   Icon: 'Icon',
   Button: 'Button',
   SearchField: 'SearchField',
+}));
+jest.mock('data/selectors', () => ({
+  __esModule: true,
+  default: {
+    app: {
+      searchValue: jest.fn(state => ({ searchValue: state })),
+    },
+  },
+}));
+jest.mock('data/thunkActions', () => ({
+  __esModule: true,
+  default: {
+    grades: {
+      fetchGrades: jest.fn(),
+    },
+  },
 }));
 
 describe('SearchControls', () => {
@@ -19,14 +34,9 @@ describe('SearchControls', () => {
   beforeEach(() => {
     jest.resetAllMocks();
     props = {
-      courseId: 'course-v1:edX+DEV101+T1',
-      filterValue: 'alice',
-      selectedAssignmentType: 'homework',
-      selectedCohort: 'spring term',
-      selectedTrack: 'masters',
-      getUserGrades: jest.fn(),
-      searchForUser: jest.fn(),
-      setFilterValue: jest.fn(),
+      searchValue: 'alice',
+      setSearchValue: jest.fn(),
+      fetchGrades: jest.fn().mockName('fetchGrades'),
       toggleFilterDrawer: jest.fn().mockName('toggleFilterDrawer'),
     };
   });
@@ -37,71 +47,29 @@ describe('SearchControls', () => {
   };
 
   describe('Component', () => {
-    describe('onSubmit', () => {
-      it('calls props.searchForUser with correct data', () => {
-        const wrapper = searchControls();
-        wrapper.instance().onSubmit('bob');
-
-        expect(props.searchForUser).toHaveBeenCalledWith(
-          props.courseId,
-          'bob',
-          props.selectedCohort,
-          props.selectedTrack,
-          props.selectedAssignmentType,
-        );
-      });
-    });
-
     describe('onChange', () => {
       it('saves the changed search value to Gradebook state', () => {
         const wrapper = searchControls();
         wrapper.instance().onChange('bob');
-        expect(props.setFilterValue).toHaveBeenCalledWith('bob');
-      });
-    });
-
-    describe('onClear', () => {
-      it('re-runs search with existing filters', () => {
-        const wrapper = searchControls();
-        wrapper.instance().onClear();
-        expect(props.getUserGrades).toHaveBeenCalledWith(
-          props.courseId,
-          props.selectedCohort,
-          props.selectedTrack,
-          props.selectedAssignmentType,
-        );
+        expect(props.setSearchValue).toHaveBeenCalledWith('bob');
       });
     });
 
     describe('mapStateToProps', () => {
-      const state = {
-        filters: {
-          assignmentType: 'labs',
-          track: 'honor',
-          cohort: 'fall term',
-        },
-      };
-
-      it('maps assignment type filter correctly', () => {
-        expect(mapStateToProps(state).selectedAssignmentType).toEqual(state.filters.assignmentType);
-      });
-
-      it('maps track filter correctly', () => {
-        expect(mapStateToProps(state).selectedTrack).toEqual(state.filters.track);
-      });
-
-      it('maps cohort filter correctly', () => {
-        expect(mapStateToProps(state).selectedCohort).toEqual(state.filters.cohort);
+      const testState = { never: 'gonna', give: 'you up' };
+      test('searchValue from app.searchValue', () => {
+        expect(
+          mapStateToProps(testState).searchValue,
+        ).toEqual(selectors.app.searchValue(testState));
       });
     });
-
     describe('mapDispatchToProps', () => {
-      test('getUserGrades', () => {
-        expect(mapDispatchToProps.getUserGrades).toEqual(fetchGrades);
+      test('fetchGrades from thunkActions.grades.fetchGrades', () => {
+        expect(mapDispatchToProps.fetchGrades).toEqual(thunkActions.grades.fetchGrades);
       });
 
-      test('searchForUser', () => {
-        expect(mapDispatchToProps.searchForUser).toEqual(fetchMatchingUserGrades);
+      test('setSearchValue from actions.app.setSearchValue', () => {
+        expect(mapDispatchToProps.setSearchValue).toEqual(actions.app.setSearchValue);
       });
     });
 
