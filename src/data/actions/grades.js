@@ -10,7 +10,12 @@ const banner = {
 };
 
 const bulkHistory = {
+  /**
+   * bulkHistory.received(history)
+   * @param {object[]} history - bulkHistory fetch results
+   */
   received: createAction('bulkHistory/received'),
+  // this doesn't seem to be consumed anywhere at the moment
   error: createAction('bulkHistory/error'),
 };
 
@@ -84,9 +89,7 @@ const update = {
 
 const uploadOverride = {
   success: createAction('uploadOverride/success'),
-  failure: createAction('uploadOverride/failure', (courseId, error) => ({
-    payload: { courseId, error },
-  })),
+  failure: createAction('uploadOverride/failure'),
 };
 
 export default StrictDict({

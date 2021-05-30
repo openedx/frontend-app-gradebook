@@ -264,6 +264,17 @@ describe('grades selectors', () => {
     });
   });
 
+  describe('hasOverrideErrors', () => {
+    const selector = selectors.hasOverrideErrors;
+    it('returns true iff grades.gradeOverrideHistoryError is truthy', () => {
+      expect(
+        selector({ grades: { gradeOverrideHistoryError: ['some', 'results'] } }),
+      ).toEqual(true);
+      expect(selector({ grades: { gradeOverrideHistoryError: null } })).toEqual(false);
+      expect(selector({ grades: {} })).toEqual(false);
+    });
+  });
+
   describe('uploadSuccess', () => {
     const selector = selectors.uploadSuccess;
     it('shows upload success when bulkManagement data returned/completed successfully', () => {

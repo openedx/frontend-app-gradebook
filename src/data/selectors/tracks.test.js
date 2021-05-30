@@ -46,4 +46,23 @@ describe('tracks selectors', () => {
       selectors.hasMastersTrack = mocks.hasMastersTrack;
     });
   });
+
+  describe('tracksByName', () => {
+    const selector = selectors.tracksByName;
+    it('returns an object of all tracks grouped by name', () => {
+      const oldAllTracks = selectors.allTracks;
+      const tracks = [
+        { name: 't1', slug: 'S-a' },
+        { name: 't2', slug: 'S-b' },
+        { name: 't3', slug: 'S-c' },
+      ];
+      selectors.allTracks = jest.fn((state) => state.tracks);
+      expect(selector({ tracks })).toEqual({
+        [tracks[0].name]: tracks[0],
+        [tracks[1].name]: tracks[1],
+        [tracks[2].name]: tracks[2],
+      });
+      selectors.allTracks = oldAllTracks;
+    });
+  });
 });

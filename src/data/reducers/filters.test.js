@@ -86,13 +86,13 @@ describe('filter reducer', () => {
       const expectedMaxGrade = 100;
       expect(
         filter(testingState, actions.update.assignmentLimits({
-          minGrade: expectedMinGrade,
-          maxGrade: expectedMaxGrade,
+          assignmentGradeMax: expectedMaxGrade,
+          assignmentGradeMin: expectedMinGrade,
         })),
       ).toEqual({
         ...testingState,
-        assignmentGradeMin: expectedMinGrade,
         assignmentGradeMax: expectedMaxGrade,
+        assignmentGradeMin: expectedMinGrade,
       });
     });
   });
@@ -130,6 +130,15 @@ describe('filter reducer', () => {
     });
   });
 
+  describe('handling actions.update.cohort', () => {
+    it('loads cohort from payload', () => {
+      const cohort = 'COHOrt';
+      expect(
+        filter(testingState, actions.update.cohort(cohort)),
+      ).toEqual({ ...testingState, cohort });
+    });
+  });
+
   describe('handling actions.update.courseGradeLimits', () => {
     it('updates courseGrade[Min/Max]', () => {
       const payload = {
@@ -150,6 +159,16 @@ describe('filter reducer', () => {
       ).toEqual({ ...initialState, includeCourseRoleMembers });
     });
   });
+
+  describe('handling actions.update.track', () => {
+    it('loads track from payload', () => {
+      const track = 'traaaaack';
+      expect(
+        filter(testingState, actions.update.track(track)),
+      ).toEqual({ ...testingState, track });
+    });
+  });
+
 
   describe('handling gradeActions.fetching.received', () => {
     const mockSelector = (val) => {

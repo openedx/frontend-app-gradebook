@@ -12,6 +12,8 @@ describe('actions.filters', () => {
       actions.update.assignmentLimits,
       actions.update.courseGradeLimits,
       actions.update.includeCourseRoleMembers,
+      actions.update.cohort,
+      actions.update.track,
     ].map(action => action.toString());
     testActionTypes(actionTypes, dataKey);
   });
@@ -62,6 +64,12 @@ describe('actions.filters', () => {
       ));
       test('update.includeCourseRoleMembers action', () => (
         testAction(actions.update.includeCourseRoleMembers)
+      ));
+      test('update.cohort action', () => (
+        testAction(actions.update.cohort)
+      ));
+      test('update.track action', () => (
+        testAction(actions.update.track)
       ));
     });
   });

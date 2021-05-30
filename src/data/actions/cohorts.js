@@ -7,6 +7,10 @@ const createAction = createActionFactory(dataKey);
 const fetching = {
   started: createAction('fetching/started'),
   error: createAction('fetching/error'),
+  /**
+   * fetching.received(results)
+   * @param {object[]} results - cohorts fetch results
+   */
   received: createAction('fetching/received'),
 };
 

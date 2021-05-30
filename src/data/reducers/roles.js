@@ -1,7 +1,7 @@
 import actions from '../actions/roles';
 
 const initialState = {
-  canUserViewGradebook: null,
+  canUserViewGradebook: true,
 };
 
 const roles = (state = initialState, action) => {

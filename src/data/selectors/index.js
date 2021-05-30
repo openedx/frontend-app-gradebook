@@ -13,6 +13,16 @@ import special from './special';
 import tracks from './tracks';
 
 /**
+ * editModalPossibleGrade(state)
+ * Returns the "possible" grade as shown in the edit modal.
+ * @param {object} state - redux state;
+ * @return {string} - possibleGrade to show on edit modal
+ */
+export const editModalPossibleGrade = (state) => (
+  app.modalState.adjustedGradePossible(state) || grades.gradeOriginalPossibleGraded(state)
+);
+
+/**
  * formattedGradeLimits(state)
  * Returns an object of local grade limits, formatted for fetching.
  * This means only setting any of them if the assignment is set, and only setting an
@@ -39,6 +49,17 @@ export const formattedGradeLimits = (state) => {
     courseGradeMin: courseGradeMin === minGrade ? null : courseGradeMin,
   };
 };
+
+/**
+ * getHeadings(state)
+ * Returns the table headings given the current assignmentType and assignmentLabel filters.
+ * @param {object} state - redux state
+ * @return {string[]} - array of table headings
+ */
+export const getHeadings = (state) => grades.headingMapper(
+  filters.assignmentType(state) || 'All',
+  filters.selectedAssignmentLabel(state) || 'All',
+)(grades.getExampleSectionBreakdown(state));
 
 /**
  * gradeExportUrl(state, options)
@@ -155,6 +176,7 @@ export const showBulkManagement = (state) => (
 
 export default StrictDict({
   root: StrictDict({
+    editModalPossibleGrade,
     getHeadings,
     gradeExportUrl,
     interventionExportUrl,

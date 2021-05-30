@@ -229,6 +229,27 @@ describe('grades reducer', () => {
       });
     });
 
+    describe('handling actions.update.request', () => {
+      it('sets showSpinner: true', () => {
+        expect(
+          grades(testingState, actions.update.request()),
+        ).toEqual({ ...testingState, showSpinner: true });
+      });
+    });
+    describe('actions.update.success', () => {
+      it('sets showSpinner: false', () => {
+        expect(
+          grades({ ...testingState, showSpinner: true }, actions.update.success()),
+        ).toEqual({ ...testingState, showSpinner: false });
+      });
+    });
+    describe('actions.update.failure', () => {
+      it('sets showSpinner: false', () => {
+        expect(
+          grades({ ...testingState, showSpinner: true }, actions.update.failure()),
+        ).toEqual({ ...testingState, showSpinner: false });
+      });
+    });
     describe('handling filterActions.update.assignmentType', () => {
       it('loads assignmentType and headings from the payload', () => {
         const expectedSelectedAssignmentType = 'selected assignment type';

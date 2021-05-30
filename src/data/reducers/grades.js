@@ -140,6 +140,12 @@ const grades = (state = initialState, { type, payload }) => {
         ...state,
         gradeFormat: payload,
       };
+    case actions.update.request.toString():
+      return { ...state, showSpinner: true };
+    case actions.update.success.toString():
+    case actions.update.failure.toString():
+      return { ...state, showSpinner: false };
+
     case filterActions.update.assignmentType.toString():
       return {
         ...state,

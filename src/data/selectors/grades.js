@@ -190,6 +190,14 @@ export const getExampleSectionBreakdown = ({ grades }) => (
 export const gradeOverrides = ({ grades }) => grades.gradeOverrideHistoryResults;
 
 /**
+ * hasOverrideErrors(state)
+ * returns true iff gradeOverrideHistoryErrors are present
+ * @param {object} state - redux state
+ * @return {bool} - are there grade override history errors?
+ */
+export const hasOverrideErrors = ({ grades }) => !!grades.gradeOverrideHistoryError;
+
+/**
  * uploadSuccess(state)
  * @param {object} state - redux state
  * @return {bool} - is bulkManagement.uploadSuccess true?
@@ -225,6 +233,7 @@ export default StrictDict({
   formatMaxAssignmentGrade,
   formatMaxCourseGrade,
   formatMinCourseGrade,
+  hasOverrideErrors,
   headingMapper,
 
   ...simpleSelectors,
