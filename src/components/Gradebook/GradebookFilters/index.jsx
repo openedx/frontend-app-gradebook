@@ -7,6 +7,7 @@ import { Collapsible, Form } from '@edx/paragon';
 
 import actions from 'data/actions';
 import selectors from 'data/selectors';
+import thunkActions from 'data/thunkActions';
 
 import AssignmentTypeFilter from './AssignmentTypeFilter';
 import AssignmentFilter from './AssignmentFilter';
@@ -27,6 +28,7 @@ export class GradebookFilters extends React.Component {
     const includeCourseRoleMembers = event.target.checked;
     this.setState({ includeCourseRoleMembers });
     this.props.updateIncludeCourseRoleMembers(includeCourseRoleMembers);
+    this.props.fetchGrades();
     this.props.updateQueryParams({ includeCourseRoleMembers });
   }
 
@@ -38,47 +40,22 @@ export class GradebookFilters extends React.Component {
 
   render() {
     const {
-      courseId,
-      filterValues,
-      setFilters,
       updateQueryParams,
     } = this.props;
     return (
       <>
         {this.collapsibleGroup('Assignments', (
           <div>
-            <AssignmentTypeFilter
-              updateQueryParams={updateQueryParams}
-            />
-            <AssignmentFilter
-              courseId={courseId}
-              updateQueryParams={updateQueryParams}
-            />
-            <AssignmentGradeFilter
-              {...{
-                courseId,
-                filterValues,
-                setFilters,
-                updateQueryParams,
-              }}
-            />
+            <AssignmentTypeFilter updateQueryParams={updateQueryParams} />
+            <AssignmentFilter updateQueryParams={updateQueryParams} />
+            <AssignmentGradeFilter updateQueryParams={updateQueryParams} />
           </div>
         ))}
         {this.collapsibleGroup('Overall Grade', (
-          <CourseGradeFilter
-            {...{
-              filterValues,
-              setFilters,
-              courseId,
-              updateQueryParams,
-            }}
-          />
+          <CourseGradeFilter updateQueryParams={updateQueryParams} />
         ))}
         {this.collapsibleGroup('Student Groups', (
-          <StudentGroupsFilter
-            courseId={courseId}
-            updateQueryParams={updateQueryParams}
-          />
+          <StudentGroupsFilter updateQueryParams={updateQueryParams} />
         ))}
         {this.collapsibleGroup('Include Course Team Members', (
           <Form.Checkbox
@@ -96,14 +73,7 @@ GradebookFilters.defaultProps = {
   includeCourseRoleMembers: false,
 };
 GradebookFilters.propTypes = {
-  courseId: PropTypes.string.isRequired,
-  filterValues: PropTypes.shape({
-    assignmentGradeMin: PropTypes.string,
-    assignmentGradeMax: PropTypes.string,
-    courseGradeMin: PropTypes.string,
-    courseGradeMax: PropTypes.string,
-  }).isRequired,
-  setFilters: PropTypes.func.isRequired,
+  fetchGrades: PropTypes.func.isRequired,
   includeCourseRoleMembers: PropTypes.bool,
   updateIncludeCourseRoleMembers: PropTypes.func.isRequired,
   updateQueryParams: PropTypes.func.isRequired,
@@ -114,6 +84,7 @@ export const mapStateToProps = (state) => ({
 });
 
 export const mapDispatchToProps = {
+  fetchGrades: thunkActions.grades.fetchGrades,
   updateIncludeCourseRoleMembers: actions.filters.update.includeCourseRoleMembers,
 };
 
