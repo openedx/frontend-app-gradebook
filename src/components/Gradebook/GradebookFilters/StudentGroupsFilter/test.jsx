@@ -4,23 +4,44 @@ import React from 'react';
 import { shallow } from 'enzyme';
 
 import { fetchGrades } from 'data/thunkActions/grades';
+import actions from 'data/actions';
+import selectors from 'data/selectors';
 import {
+  optionFactory,
   StudentGroupsFilter,
   mapStateToProps,
   mapDispatchToProps,
 } from '.';
 
+jest.mock('data/selectors', () => ({
+  __esModule: true,
+  default: {
+    root: {
+      selectedCohortEntry: jest.fn(state => ({ selectedCohortEntry: state })),
+      selectedTrackEntry: jest.fn(state => ({ selectedTrackEntry: state })),
+    },
+    cohorts: {
+      allCohorts: jest.fn(state => ({ allCohorts: state })),
+      cohortsByName: jest.fn(state => ({ cohortsByName: state })),
+    },
+    tracks: {
+      allTracks: jest.fn(state => ({ allTracks: state })),
+      tracksByName: jest.fn(state => ({ tracksByName: state })),
+    },
+  },
+}));
+
+jest.mock('data/thunkActions/grades', () => ({
+  fetchGrades: jest.fn(),
+}));
+
 describe('StudentGroupsFilter', () => {
   let props = {
-    courseId: '12345',
     cohorts: [
       { name: 'cohorT1', id: 8001 },
       { name: 'cohorT2', id: 8002 },
       { name: 'cohorT3', id: 8003 },
     ],
-    selectedAssignmentType: 'assignMent type 1',
-    selectedCohort: '8003',
-    selectedTrack: 'TracK2_slug',
     tracks: [
       { name: 'TracK1', slug: 'TracK1_slug' },
       { name: 'TracK2', slug: 'TracK2_slug' },
@@ -28,15 +49,39 @@ describe('StudentGroupsFilter', () => {
     ],
   };
 
-  beforeEach(() => {
-    props = {
-      ...props,
-      getUserGrades: jest.fn(),
-      updateQueryParams: jest.fn(),
-    };
+  describe('optionFactory', () => {
+    it('returns a list of options with a default first entry', () => {
+      const data = [{ cMark: 'rainbow', name: 'RDash' }, { cMark: 'balloons', name: 'PPie' }];
+      const defaultOption = 'All-Ponies';
+      const key = 'cMark';
+      const options = optionFactory({ data, defaultOption, key });
+      expect(options).toMatchSnapshot();
+    });
   });
 
   describe('Component', () => {
+    beforeEach(() => {
+      props = {
+        ...props,
+        cohortsByName: {
+          [props.cohorts[0].name]: props.cohorts[0],
+          [props.cohorts[1].name]: props.cohorts[1],
+          [props.cohorts[2].name]: props.cohorts[2],
+        },
+        tracksByName: {
+          [props.tracks[0].name]: props.tracks[0],
+          [props.tracks[1].name]: props.tracks[1],
+          [props.tracks[2].name]: props.tracks[2],
+        },
+        fetchGrades: jest.fn(),
+        selectedCohortEntry: props.cohorts[2],
+        selectedTrackEntry: props.tracks[1],
+        updateQueryParams: jest.fn(),
+        updateCohort: jest.fn().mockName('updateCohort'),
+        updateTrack: jest.fn().mockName('updateTrack'),
+      };
+    });
+
     describe('snapshots', () => {
       let el;
       beforeEach(() => {
@@ -71,34 +116,6 @@ describe('StudentGroupsFilter', () => {
       let el;
       beforeEach(() => {
         el = shallow(<StudentGroupsFilter {...props} />);
-      });
-      describe('mapSelectedCohortEntry', () => {
-        it('returns the name of the cohort with the same numerical id', () => {
-          // Because selectedCohort is the id of cohorts[2]
-          expect(el.instance().mapSelectedCohortEntry()).toEqual(
-            props.cohorts[2].name,
-          );
-        });
-        it('returns "Cohorts" if no cohort is found', () => {
-          el.setProps({ selectedCohort: '999' });
-          expect(el.instance().mapSelectedCohortEntry()).toEqual(
-            'Cohorts',
-          );
-        });
-      });
-      describe('mapSelectedTrackEntry', () => {
-        it('returns the name of the track with the selected slug', () => {
-          // Because selectedTrack is the slug of tracks[1]
-          expect(el.instance().mapSelectedTrackEntry()).toEqual(
-            props.tracks[1].name,
-          );
-        });
-        it('returns "Tracks" if no track is found', () => {
-          el.setProps({ selectedTrack: 'FAKE' });
-          expect(el.instance().mapSelectedTrackEntry()).toEqual(
-            'Tracks',
-          );
-        });
       });
       describe('selectedCohortIdFromEvent', () => {
         it('returns the id of the cohort with the name matching the event', () => {
@@ -142,13 +159,11 @@ describe('StudentGroupsFilter', () => {
           ).mockReturnValue(selectedSlug);
           el.instance().updateTracks({ target: {} });
         });
-        it('calls getUserGrades with selection', () => {
-          expect(props.getUserGrades).toHaveBeenCalledWith(
-            props.courseId,
-            props.selectedCohort,
-            selectedSlug,
-            props.selectedAssignmentType,
-          );
+        it('calls updateTrack with new value', () => {
+          expect(props.updateTrack).toHaveBeenCalledWith(selectedSlug);
+        });
+        it('calls fetchGrades', () => {
+          expect(props.fetchGrades).toHaveBeenCalledWith();
         });
         it('updates queryParams with track value', () => {
           expect(props.updateQueryParams).toHaveBeenCalledWith({
@@ -166,13 +181,11 @@ describe('StudentGroupsFilter', () => {
           ).mockReturnValue(selectedId);
           el.instance().updateCohorts({ target: {} });
         });
-        it('calls getUserGrades with selection', () => {
-          expect(props.getUserGrades).toHaveBeenCalledWith(
-            props.courseId,
-            selectedId,
-            props.selectedTrack,
-            props.selectedAssignmentType,
-          );
+        it('calls updateCohort with new value', () => {
+          expect(props.updateCohort).toHaveBeenCalledWith(selectedId);
+        });
+        it('calls fetchGrades', () => {
+          expect(props.fetchGrades).toHaveBeenCalledWith()
         });
         it('updates queryParams with cohort value', () => {
           expect(props.updateQueryParams).toHaveBeenCalledWith({
@@ -183,56 +196,43 @@ describe('StudentGroupsFilter', () => {
     });
   });
   describe('mapStateToProps', () => {
-    const state = {
-      cohorts: { results: ['some', 'cohorts'] },
-      filters: {
-        cohort: 'COHort',
-        track: 'TRacK',
-        assignmentType: 'TYPe',
-      },
-      tracks: { results: ['a', 'few', 'tracks'] },
-    };
-    describe('cohorts', () => {
-      test('drawn from cohorts.results', () => {
-        expect(mapStateToProps(state).cohorts).toEqual(
-          state.cohorts.results,
-        );
-      });
+    const testState = { h: 'e', l: 'l', o: 'oooooooooo' };
+    let mappedProps;
+    beforeAll(() => {
+      mappedProps = mapStateToProps(testState);
     });
-    describe('selectedAssignmentType', () => {
-      test('drawn from filters.assignmentType', () => {
-        expect(mapStateToProps(state).selectedAssignmentType).toEqual(
-          state.filters.assignmentType,
-        );
-      });
+    test('cohorts from selectors.cohorts.allCohorts', () => {
+      expect(mappedProps.cohorts).toEqual(selectors.cohorts.allCohorts(testState));
     });
-    describe('selectedCohort', () => {
-      test('drawn from filters.cohort', () => {
-        expect(mapStateToProps(state).selectedCohort).toEqual(
-          state.filters.cohort,
-        );
-      });
+    test('cohortsByName from selectors.cohorts.cohortsByName', () => {
+      expect(mappedProps.cohortsByName).toEqual(selectors.cohorts.cohortsByName(testState));
     });
-    describe('selectedTrack', () => {
-      test('drawn from filters.track', () => {
-        expect(mapStateToProps(state).selectedTrack).toEqual(
-          state.filters.track,
-        );
-      });
+    test('selectedCohortEntry from selectors.root.selectedCohortEntry', () => {
+      expect(
+        mappedProps.selectedCohortEntry,
+      ).toEqual(selectors.root.selectedCohortEntry(testState));
     });
-    describe('tracks', () => {
-      test('drawn from tracks.results', () => {
-        expect(mapStateToProps(state).tracks).toEqual(
-          state.tracks.results,
-        );
-      });
+    test('selectedTrackEntry from selectors.root.selectedTrackEntry', () => {
+      expect(
+        mappedProps.selectedTrackEntry,
+      ).toEqual(selectors.root.selectedTrackEntry(testState));
+    });
+    test('tracks from selectors.tracks.allTracks', () => {
+      expect(mappedProps.tracks).toEqual(selectors.tracks.allTracks(testState));
+    });
+    test('tracksByName from selectors.tracks.tracksByName', () => {
+      expect(mappedProps.tracksByName).toEqual(selectors.tracks.tracksByName(testState));
     });
   });
   describe('mapDispatchToProps', () => {
-    describe('getUserGrades', () => {
-      test('from fetchGrades', () => {
-        expect(mapDispatchToProps.getUserGrades).toEqual(fetchGrades);
-      });
+    test('fetchGrades from thunkActions.grades.fetchGrades', () => {
+      expect(mapDispatchToProps.fetchGrades).toEqual(fetchGrades);
+    });
+    test('updateCohort from actions.filters.update.cohort', () => {
+      expect(mapDispatchToProps.updateCohort).toEqual(actions.filters.update.cohort);
+    });
+    test('updateTrack from actions.filters.update.track', () => {
+      expect(mapDispatchToProps.updateTrack).toEqual(actions.filters.update.track);
     });
   });
 });

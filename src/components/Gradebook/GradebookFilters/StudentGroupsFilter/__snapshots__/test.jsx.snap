@@ -47,7 +47,7 @@ exports[`StudentGroupsFilter Component snapshots Cohorts group disabled if no co
         </option>,
       ]
     }
-    value="Cohorts"
+    value="cohorT3"
   />
 </React.Fragment>
 `;
@@ -165,6 +165,26 @@ Array [
     value="TRACK3"
   >
     TRACK3
+  </option>,
+]
+`;
+
+exports[`StudentGroupsFilter optionFactory returns a list of options with a default first entry 1`] = `
+Array [
+  <option
+    value="All-Ponies"
+  >
+    All-Ponies
+  </option>,
+  <option
+    value="RDash"
+  >
+    RDash
+  </option>,
+  <option
+    value="PPie"
+  >
+    PPie
   </option>,
 ]
 `;

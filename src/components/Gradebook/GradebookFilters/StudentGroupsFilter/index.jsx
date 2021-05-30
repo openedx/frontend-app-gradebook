@@ -3,86 +3,66 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
+import actions from 'data/actions';
 import selectors from 'data/selectors';
 import thunkActions from 'data/thunkActions';
 
 import SelectGroup from '../SelectGroup';
 
+export const optionFactory = ({ data, defaultOption, key }) => [
+  <option value={defaultOption} key="0">{defaultOption}</option>,
+  ...data.map(
+    entry => (<option key={entry[key]} value={entry.name}>{entry.name}</option>),
+  ),
+];
+
 export class StudentGroupsFilter extends React.Component {
   constructor(props) {
     super(props);
+    this.mapCohortsEntries = this.mapCohortsEntries.bind(this);
+    this.mapTracksEntries = this.mapTracksEntries.bind(this);
     this.updateCohorts = this.updateCohorts.bind(this);
     this.updateTracks = this.updateTracks.bind(this);
   }
 
-  mapCohortsEntries = () => {
-    const mapper = ({ id, name }) => (
-      <option key={id} value={name}>{name}</option>
-    );
-    return [
-      <option value="Cohort-All" key="0">Cohort-All</option>,
-      ...this.props.cohorts.map(mapper),
-    ];
-  };
+  mapCohortsEntries() {
+    return optionFactory({
+      data: this.props.cohorts,
+      defaultOption: 'Cohort-All',
+      key: 'id',
+    });
+  }
 
-  mapTracksEntries = () => {
-    const mapper = ({ slug, name }) => (
-      <option key={slug} value={name}>{name}</option>
-    );
-    return [
-      <option value="Track-All" key="0">Track-All</option>,
-      ...this.props.tracks.map(mapper),
-    ];
-  };
+  mapTracksEntries() {
+    return optionFactory({
+      data: this.props.tracks,
+      defaultOption: 'Track-All',
+      key: 'slug',
+    });
+  }
 
-  mapSelectedCohortEntry = () => {
-    const selectedCohortEntry = this.props.cohorts.find(
-      (x) => x.id === parseInt(this.props.selectedCohort, 10),
-    );
-    return selectedCohortEntry ? selectedCohortEntry.name : 'Cohorts';
-  };
-
-  mapSelectedTrackEntry = () => {
-    const selectedTrackEntry = this.props.tracks.find(
-      ({ slug }) => slug === this.props.selectedTrack,
-    );
-    return selectedTrackEntry ? selectedTrackEntry.name : 'Tracks';
-  };
-
-  selectedTrackSlugFromEvent(event) {
-    const selectedTrackItem = this.props.tracks.find(
-      ({ name }) => name === event.target.value,
-    );
+  selectedTrackSlugFromEvent({ target: { value } }) {
+    const selectedTrackItem = this.props.tracksByName[value];
     return selectedTrackItem ? selectedTrackItem.slug : null;
   }
 
-  selectedCohortIdFromEvent(event) {
-    const selectedCohortItem = this.props.cohorts.find(
-      x => x.name === event.target.value,
-    );
+  selectedCohortIdFromEvent({ target: { value } }) {
+    const selectedCohortItem = this.props.cohortsByName[value];
     return selectedCohortItem ? selectedCohortItem.id.toString() : null;
   }
 
   updateTracks(event) {
-    const selectedTrackSlug = this.selectedTrackSlugFromEvent(event);
-    this.props.getUserGrades(
-      this.props.courseId,
-      this.props.selectedCohort,
-      selectedTrackSlug,
-      this.props.selectedAssignmentType,
-    );
-    this.props.updateQueryParams({ track: selectedTrackSlug });
+    const track = this.selectedTrackSlugFromEvent(event);
+    this.props.updateQueryParams({ track });
+    this.props.updateTrack(track);
+    this.props.fetchGrades();
   }
 
   updateCohorts(event) {
-    const selectedCohortId = this.selectedCohortIdFromEvent(event);
-    this.props.getUserGrades(
-      this.props.courseId,
-      selectedCohortId,
-      this.props.selectedTrack,
-      this.props.selectedAssignmentType,
-    );
-    this.props.updateQueryParams({ cohort: selectedCohortId });
+    const cohort = this.selectedCohortIdFromEvent(event);
+    this.props.updateQueryParams({ cohort });
+    this.props.updateCohort(cohort);
+    this.props.fetchGrades();
   }
 
   render() {
@@ -91,14 +71,14 @@ export class StudentGroupsFilter extends React.Component {
         <SelectGroup
           id="Tracks"
           label="Tracks"
-          value={this.mapSelectedTrackEntry()}
+          value={this.props.selectedTrackEntry.name}
           onChange={this.updateTracks}
           options={this.mapTracksEntries()}
         />
         <SelectGroup
           id="Cohorts"
           label="Cohorts"
-          value={this.mapSelectedCohortEntry()}
+          value={this.props.selectedCohortEntry.name}
           disabled={this.props.cohorts.length === 0}
           onChange={this.updateCohorts}
           options={this.mapCohortsEntries()}
@@ -110,15 +90,14 @@ export class StudentGroupsFilter extends React.Component {
 
 StudentGroupsFilter.defaultProps = {
   cohorts: [],
-  courseId: '',
-  selectedAssignmentType: '',
-  selectedCohort: null,
-  selectedTrack: null,
+  cohortsByName: {},
+  selectedCohortEntry: { name: '' },
+  selectedTrackEntry: { name: '' },
   tracks: [],
+  tracksByName: {},
 };
 
 StudentGroupsFilter.propTypes = {
-  courseId: PropTypes.string,
   updateQueryParams: PropTypes.func.isRequired,
 
   // redux
@@ -126,29 +105,38 @@ StudentGroupsFilter.propTypes = {
     name: PropTypes.string,
     id: PropTypes.number,
   })),
-  getUserGrades: PropTypes.func.isRequired,
-  selectedAssignmentType: PropTypes.string,
-  selectedCohort: PropTypes.string,
-  selectedTrack: PropTypes.string,
+  cohortsByName: PropTypes.objectOf(PropTypes.shape({
+    name: PropTypes.string,
+    id: PropTypes.number,
+  })),
+  fetchGrades: PropTypes.func.isRequired,
+  selectedTrackEntry: PropTypes.shape({ name: PropTypes.string }),
+  selectedCohortEntry: PropTypes.shape({ name: PropTypes.string }),
   tracks: PropTypes.arrayOf(PropTypes.shape({
     name: PropTypes.string,
     slug: PropTypes.string,
   })),
+  tracksByName: PropTypes.objectOf(PropTypes.shape({
+    name: PropTypes.string,
+    slug: PropTypes.string,
+  })),
+  updateCohort: PropTypes.func.isRequired,
+  updateTrack: PropTypes.func.isRequired,
 };
 
-export const mapStateToProps = (state) => {
-  const { filters, cohorts, tracks } = selectors;
-  return {
-    cohorts: cohorts.allCohorts(state),
-    selectedAssignmentType: filters.assignmentType(state),
-    selectedCohort: filters.cohort(state),
-    selectedTrack: filters.track(state),
-    tracks: tracks.allTracks(state),
-  };
-};
+export const mapStateToProps = (state) => ({
+  cohorts: selectors.cohorts.allCohorts(state),
+  cohortsByName: selectors.cohorts.cohortsByName(state),
+  selectedCohortEntry: selectors.root.selectedCohortEntry(state),
+  selectedTrackEntry: selectors.root.selectedTrackEntry(state),
+  tracks: selectors.tracks.allTracks(state),
+  tracksByName: selectors.tracks.tracksByName(state),
+});
 
 export const mapDispatchToProps = {
-  getUserGrades: thunkActions.grades.fetchGrades,
+  fetchGrades: thunkActions.grades.fetchGrades,
+  updateCohort: actions.filters.update.cohort,
+  updateTrack: actions.filters.update.track,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(StudentGroupsFilter);
