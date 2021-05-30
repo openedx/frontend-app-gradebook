@@ -2,8 +2,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-  Icon,
-  InputSelect,
   Tab,
   Tabs,
 } from '@edx/paragon';
@@ -12,7 +10,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFilter } from '@fortawesome/free-solid-svg-icons';
 import PageButtons from '../PageButtons';
 import Drawer from '../Drawer';
-import initialFilters from '../../data/constants/filters';
 import ConnectedFilterBadges from '../FilterBadges';
 
 import GradebookHeader from './GradebookHeader';
@@ -23,47 +20,19 @@ import GradebookFilters from './GradebookFilters';
 import GradebookTable from './GradebookTable';
 import SearchControls from './SearchControls';
 import StatusAlerts from './StatusAlerts';
+import SpinnerIcon from './SpinnerIcon';
+import ScoreViewInput from './ScoreViewInput';
+import UsersLabel from './UsersLabel';
 
 export default class Gradebook extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      adjustedGradePossible: '',
-      adjustedGradeValue: 0,
-      assignmentGradeMin: '0',
-      assignmentGradeMax: '100',
-      assignmentName: '',
-      courseGradeMin: '0',
-      courseGradeMax: '100',
-      filterValue: '',
-      isMinCourseGradeFilterValid: true,
-      isMaxCourseGradeFilterValid: true,
-      modalOpen: false,
-      reasonForChange: '',
-      todaysDate: '',
-      updateModuleId: null,
-      updateUserId: null,
-    };
     this.myRef = React.createRef();
   }
 
   componentDidMount() {
     const urlQuery = queryString.parse(this.props.location.search);
-    this.props.initializeFilters(urlQuery);
-    this.props.getRoles(this.props.courseId);
-
-    const newStateFields = {};
-    ['assignmentGradeMin', 'assignmentGradeMax', 'courseGradeMin', 'courseGradeMax'].forEach((attr) => {
-      if (urlQuery[attr]) {
-        newStateFields[attr] = urlQuery[attr];
-      }
-    });
-
-    this.setState(newStateFields);
-  }
-
-  onChange(e) {
-    this.setState({ [e.target.name]: e.target.value });
+    this.props.initializeApp(this.props.courseId, urlQuery);
   }
 
   getActiveTabs = () => (
@@ -84,66 +53,12 @@ export default class Gradebook extends React.Component {
 
   handleFilterBadgeClose = filterNames => () => {
     this.props.resetFilters(filterNames);
-    const queryParams = {};
-    filterNames.forEach((filterName) => {
-      queryParams[filterName] = false;
-    });
-    this.updateQueryParams(queryParams);
-    const stateUpdate = {};
-    const rangeStateFilters = ['assignmentGradeMin', 'assignmentGradeMax', 'courseGradeMin', 'courseGradeMax'];
-    rangeStateFilters.forEach((filterName) => {
-      if (filterNames.includes(filterName)) {
-        stateUpdate[filterName] = initialFilters[filterName];
-      }
-    });
-    this.setState(stateUpdate);
-    this.props.getUserGrades(
-      this.props.courseId,
-      filterNames.includes('cohort') ? initialFilters.cohort : this.props.selectedCohort,
-      filterNames.includes('track') ? initialFilters.track : this.props.selectedTrack,
-      filterNames.includes('assignmentType') ? initialFilters.assignmentType : this.props.selectedAssignmentType,
-    );
-  }
-
-  createStateFieldSetter = (key) => (value) => this.setState({ [key]: value });
-
-  createStateFieldOnChange = (key) => ({ target }) => this.setState({ [key]: target.value });
-
-  createLimitedSetter = (...keys) => (values) => this.setState(
-    keys.reduce(
-      (obj, key) => (values[key] === undefined ? obj : { ...obj, [key]: values[key] }),
+    this.updateQueryParams(filterNames.reduce(
+      (obj, filterName) => ({ ...obj, [filterName]: false }),
       {},
-    ),
-  )
-
-  safeSetState = this.createLimitedSetter(
-    'adjustedGradePossible',
-    'adjustedGradeValue',
-    'assignmentName',
-    'filterValue',
-    'modalOpen',
-    'reasonForChange',
-    'todaysDate',
-    'updateModuleId',
-    'updateUserId',
-    'updateUserName',
-  );
-
-  setFilters = this.createLimitedSetter(
-    'assignmentGradeMin',
-    'assignmentGradeMax',
-    'courseGradeMin',
-    'courseGradeMax',
-    'isMinCourseGradeFilterValid',
-    'isMaxCourseGradeFilterValid',
-  );
-
-  filterValues = () => ({
-    assignmentGradeMin: this.state.assignmentGradeMin,
-    assignmentGradeMax: this.state.assignmentGradeMax,
-    courseGradeMin: this.state.courseGradeMin,
-    courseGradeMax: this.state.courseGradeMax,
-  });
+    ));
+    this.props.fetchGrades();
+  }
 
   usersLabel = () => {
     if (!this.props.totalUsersCount) {
@@ -184,54 +99,33 @@ export default class Gradebook extends React.Component {
       <Drawer
         mainContent={toggleFilterDrawer => (
           <div className="px-3 gradebook-content">
-            <GradebookHeader courseId={this.props.courseId} />
+            <GradebookHeader />
             <Tabs defaultActiveKey="grades">
               <Tab eventKey="grades" title="Grades">
-                {this.spinnerIcon()}
-                <SearchControls
-                  courseId={this.props.courseId}
-                  filterValue={this.state.filterValue}
-                  setFilterValue={this.createStateFieldSetter('filterValue')}
-                  toggleFilterDrawer={toggleFilterDrawer}
-                />
-                <ConnectedFilterBadges
-                  handleFilterBadgeClose={this.handleFilterBadgeClose}
-                />
-                <StatusAlerts
-                  isMinCourseGradeFilterValid={this.state.isMinCourseGradeFilterValid}
-                  isMaxCourseGradeFilterValid={this.state.isMaxCourseGradeFilterValid}
-                />
+                <SpinnerIcon />
+                <SearchControls toggleFilterDrawer={toggleFilterDrawer} />
+                <ConnectedFilterBadges handleFilterBadgeClose={this.handleFilterBadgeClose} />
+                <StatusAlerts />
+
                 <h4>Step 2: View or Modify Individual Grades</h4>
-                {this.usersLabel()}
+                <UsersLabel />
+
                 <div className="d-flex justify-content-between align-items-center mb-2">
-                  {this.scoreViewInput()}
-                  <BulkManagementControls courseId={this.props.courseId} />
+                  <ScoreViewInput />
+                  <BulkManagementControls />
                 </div>
-                <GradebookTable setGradebookState={this.safeSetState} />
                 <PageButtons {...this.props} />
+
+                <GradebookTable />
+                <PageButtons />
+
                 <p>* available for learners in the Master&apos;s track only</p>
-                <EditModal
-                  assignmentName={this.state.assignmentName}
-                  adjustedGradeValue={this.state.adjustedGradeValue}
-                  adjustedGradePossible={this.state.adjustedGradePossible}
-                  courseId={this.props.courseId}
-                  filterValue={this.state.filterValue}
-                  onChange={this.onChange}
-                  open={this.state.modalOpen}
-                  reasonForChange={this.state.reasonForChange}
-                  setAdjustedGradeValue={this.createStateFieldOnChange('adjustedGradeValue')}
-                  setGradebookState={this.safeSetState}
-                  setReasonForChange={this.createStateFieldOnChange('reasonForChange')}
-                  todaysDate={this.state.todaysDate}
-                  updateModuleId={this.state.updateModuleId}
-                  updateUserId={this.state.updateUserId}
-                  updateUserName={this.state.updateUserName}
-                />
+                <EditModal />
               </Tab>
               {this.props.showBulkManagement
                 && (
                 <Tab eventKey="bulk_management" title="Bulk Management">
-                  <BulkManagement courseId={this.props.courseId} />
+                  <BulkManagement />
                 </Tab>
                 )}
             </Tabs>
@@ -244,12 +138,7 @@ export default class Gradebook extends React.Component {
           </>
         )}
       >
-        <GradebookFilters
-          setFilters={this.setFilters}
-          filterValues={this.filterValues()}
-          updateQueryParams={this.updateQueryParams}
-          courseId={this.props.courseId}
-        />
+        <GradebookFilters updateQueryParams={this.updateQueryParams} />
       </Drawer>
     );
   }
@@ -257,36 +146,22 @@ export default class Gradebook extends React.Component {
 
 Gradebook.defaultProps = {
   courseId: '',
-  filteredUsersCount: null,
   location: {
     search: '',
   },
-  selectedAssignmentType: '',
-  selectedCohort: null,
-  selectedTrack: null,
   showBulkManagement: false,
-  showSpinner: false,
-  totalUsersCount: null,
 };
 
 Gradebook.propTypes = {
   courseId: PropTypes.string,
-  filteredUsersCount: PropTypes.number,
-  getRoles: PropTypes.func.isRequired,
-  getUserGrades: PropTypes.func.isRequired,
+  fetchGrades: PropTypes.func.isRequired,
   history: PropTypes.shape({
     push: PropTypes.func,
   }).isRequired,
-  initializeFilters: PropTypes.func.isRequired,
+  initializeApp: PropTypes.func.isRequired,
   location: PropTypes.shape({
     search: PropTypes.string,
   }),
   resetFilters: PropTypes.func.isRequired,
-  selectedAssignmentType: PropTypes.string,
-  selectedCohort: PropTypes.string,
-  selectedTrack: PropTypes.string,
   showBulkManagement: PropTypes.bool,
-  showSpinner: PropTypes.bool,
-  toggleFormat: PropTypes.func.isRequired,
-  totalUsersCount: PropTypes.number,
 };
