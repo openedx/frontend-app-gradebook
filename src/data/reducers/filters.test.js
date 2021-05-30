@@ -169,7 +169,6 @@ describe('filter reducer', () => {
     });
   });
 
-
   describe('handling gradeActions.fetching.received', () => {
     const mockSelector = (val) => {
       selectors.filters.relevantAssignmentDataFromResults.mockImplementation(

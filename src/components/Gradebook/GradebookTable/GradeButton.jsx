@@ -18,7 +18,6 @@ class GradeButton extends React.Component {
   constructor(props) {
     super(props);
     this.onClick = this.onClick.bind(this);
-    console.log({ GradeButtonProps: this.props });
   }
 
   onClick() {

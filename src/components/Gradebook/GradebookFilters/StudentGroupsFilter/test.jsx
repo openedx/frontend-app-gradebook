@@ -185,7 +185,7 @@ describe('StudentGroupsFilter', () => {
           expect(props.updateCohort).toHaveBeenCalledWith(selectedId);
         });
         it('calls fetchGrades', () => {
-          expect(props.fetchGrades).toHaveBeenCalledWith()
+          expect(props.fetchGrades).toHaveBeenCalledWith();
         });
         it('updates queryParams with cohort value', () => {
           expect(props.updateQueryParams).toHaveBeenCalledWith({

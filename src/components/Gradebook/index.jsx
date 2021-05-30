@@ -60,40 +60,6 @@ export default class Gradebook extends React.Component {
     this.props.fetchGrades();
   }
 
-  usersLabel = () => {
-    if (!this.props.totalUsersCount) {
-      return null;
-    }
-    const bold = (val) => (<span className="font-weight-bold">{val}</span>);
-    const { filteredUsersCount, totalUsersCount } = this.props;
-    return (
-      <>
-        Showing {bold(filteredUsersCount)} of {bold(totalUsersCount)} total learners
-      </>
-    );
-  };
-
-  scoreViewInput = () => (
-    <InputSelect
-      label="Score View:"
-      name="ScoreView"
-      value="percent"
-      options={[{ label: 'Percent', value: 'percent' }, { label: 'Absolute', value: 'absolute' }]}
-      onChange={this.props.toggleFormat}
-    />
-  );
-
-  spinnerIcon = () => {
-    if (!this.props.showSpinner) {
-      return null;
-    }
-    return (
-      <div className="spinner-overlay">
-        <Icon className="fa fa-spinner fa-spin fa-5x color-black" />
-      </div>
-    );
-  }
-
   render() {
     return (
       <Drawer

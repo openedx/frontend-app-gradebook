@@ -1,5 +1,4 @@
 // import * in order to mock in-file references
-import { initialState } from 'data/reducers/app';
 import * as selectors from './app';
 // import default export in order to test simpleSelectors not exported individually
 import exportedSelectors from './app';
