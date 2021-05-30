@@ -1,21 +1,23 @@
 import { combineReducers } from 'redux';
 
-import cohorts from './cohorts';
-import grades from './grades';
-import tracks from './tracks';
+import app from './app';
 import assignmentTypes from './assignmentTypes';
-import roles from './roles';
-import filters from './filters';
+import cohorts from './cohorts';
 import config from './config';
+import filters from './filters';
+import grades from './grades';
+import roles from './roles';
+import tracks from './tracks';
 
 const rootReducer = combineReducers({
-  grades,
-  cohorts,
-  tracks,
+  app,
   assignmentTypes,
-  roles,
-  filters,
+  cohorts,
   config,
+  filters,
+  grades,
+  roles,
+  tracks,
 });
 
 export default rootReducer;

@@ -3,6 +3,7 @@ import { StrictDict } from 'utils';
 import LmsApiService from 'data/services/LmsApiService';
 
 import * as module from '.';
+import app from './app';
 import assignmentTypes from './assignmentTypes';
 import cohorts from './cohorts';
 import filters from './filters';
@@ -97,14 +98,26 @@ export const shouldShowSpinner = (state) => (
   && grades.showSpinner(state)
 );
 
+/**
+ * showBulkManagement(state, options)
+ * Returns true iff the user has special access or bulk management is configured to be available
+ * and the course has a masters track.
+ * @param {object} state - redux state
+ * @return {bool} - should show bulk management controls?
+ */
+export const showBulkManagement = (state) => (
+  special.hasSpecialBulkManagementAccess(app.courseId(state))
+  || (tracks.stateHasMastersTrack(state) && state.config.bulkManagementAvailable)
+);
+
 export default StrictDict({
-  root: {
+  root: StrictDict({
     getHeadings,
     gradeExportUrl,
     interventionExportUrl,
-    showBulkManagement,
     shouldShowSpinner,
-  },
+  }),
+  app,
   assignmentTypes,
   cohorts,
   filters,
