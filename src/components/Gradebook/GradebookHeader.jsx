@@ -38,20 +38,21 @@ export class GradebookHeader extends React.Component {
 }
 
 GradebookHeader.defaultProps = {
-  courseId: '',
   // redux
+  courseId: '',
   areGradesFrozen: false,
   canUserViewGradebook: false,
 };
 
 GradebookHeader.propTypes = {
-  courseId: PropTypes.string,
   // redux
+  courseId: PropTypes.string,
   areGradesFrozen: PropTypes.bool,
   canUserViewGradebook: PropTypes.bool,
 };
 
 export const mapStateToProps = (state) => ({
+  courseId: selectors.app.courseId(state),
   areGradesFrozen: selectors.assignmentTypes.areGradesFrozen(state),
   canUserViewGradebook: selectors.roles.canUserViewGradebook(state),
 });

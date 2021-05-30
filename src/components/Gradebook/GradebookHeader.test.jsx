@@ -7,6 +7,7 @@ import { GradebookHeader, mapStateToProps } from './GradebookHeader';
 jest.mock('data/selectors', () => ({
   __esModule: true,
   default: {
+    app: { courseId: jest.fn(state => ({ courseId: state })) },
     assignmentTypes: { areGradesFrozen: jest.fn(state => ({ areGradesFrozen: state })) },
     roles: { canUserViewGradebook: jest.fn(state => ({ canUserViewGradebook: state })) },
   },
@@ -40,12 +41,15 @@ describe('GradebookHeader component', () => {
     beforeEach(() => {
       mapped = mapStateToProps(testState);
     });
-    it('maps areGradesFrozen from assignmentTypes selector', () => {
+    test('courseId from app.courseId', () => {
+      expect(mapped.courseId).toEqual(selectors.app.courseId(testState));
+    });
+    test('areGradesFrozen from assignmentTypes selector', () => {
       expect(
         mapped.areGradesFrozen,
       ).toEqual(selectors.assignmentTypes.areGradesFrozen(testState));
     });
-    it('maps canUserViewGradebook from roles selector', () => {
+    test('canUserViewGradebook from roles selector', () => {
       expect(
         mapped.canUserViewGradebook,
       ).toEqual(selectors.roles.canUserViewGradebook(testState));
