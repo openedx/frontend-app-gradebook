@@ -17,6 +17,7 @@ jest.mock('../selectors', () => ({
     filters: {
       allFilters: jest.fn(),
     },
+    app: {},
   },
 }));
 jest.mock('../services/LmsApiService', () => ({
@@ -53,12 +54,14 @@ describe('roles thunkActions', () => {
   };
   beforeAll(() => {
     selectors.filters.allFilters.mockReturnValue(filters);
+    selectors.app.courseId = jest.fn(() => courseId);
   });
   describe('fetchRoles', () => {
     const testFetch = createTestFetcher(
       LmsApiService.fetchUserRoles,
       fetchRoles,
-      [courseId],
+      [],
+      () => expect(LmsApiService.fetchUserRoles).toHaveBeenCalledWith(courseId),
     );
     describe('valid response', () => {
       describe('cannot view gradebook (not is_staff, and no allowed roles)', () => {
@@ -66,7 +69,6 @@ describe('roles thunkActions', () => {
           testFetch((resolve) => resolve({ data: responseData }), [
             actions.roles.fetching.received({
               canUserViewGradebook: false,
-              courseId,
             }),
           ])
         ));
@@ -75,20 +77,20 @@ describe('roles thunkActions', () => {
         const testCanUserViewGradebookOutput = (resolveData) => {
           const resolveFn = (resolve) => resolve({ data: resolveData });
           const expectedActions = [
-            'received with canUserViewGradebook=false and the courseId',
-            'fetchGrades thunkAction with courseId and filters(cohort, track, and assignmentType)',
-            'fetchTracks thunkAction with courseId',
-            'fetchCohorts thunkAction with courseId',
-            'fetchAssignmentTypes thunkAction with courseId',
+            'received with canUserViewGradebook=false',
+            'fetchGrades thunkAction with and filters(cohort, track, and assignmentType)',
+            'fetchTracks thunkAction',
+            'fetchCohorts thunkAction',
+            'fetchAssignmentTypes thunkAction',
           ];
           it(`dispatches the appropriate actions:  [\n  ${expectedActions.join('\n  ')}\n]`, () => testFetch(
             resolveFn,
             [
-              actions.roles.fetching.received({ canUserViewGradebook: true, courseId }),
-              fetchGrades(courseId, filters.cohort, filters.track, filters.assignmentType),
-              fetchTracks(courseId),
-              fetchCohorts(courseId),
-              fetchAssignmentTypes(courseId),
+              actions.roles.fetching.received({ canUserViewGradebook: true }),
+              fetchGrades(),
+              fetchTracks(),
+              fetchCohorts(),
+              fetchAssignmentTypes(),
             ],
           ));
         };

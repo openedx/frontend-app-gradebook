@@ -53,6 +53,16 @@ export const relevantAssignmentDataFromResults = (grades, id) => (
 export const allFilters = (state) => state.filters || {};
 
 /**
+ * areAssignmentGradeFiltersSet(state)
+ * Returns true iff either assignmentGradeMax or assignmentGradeMax is set.
+ * @param {object} state - redux state
+ * @return {bool} - are assignmentGrade filters set?
+ */
+export const areAssignmentGradeFiltersSet = ({ filters }) => !!(
+  filters.assignmentGradeMax || filters.assignmentGradeMin
+);
+
+/**
  * selectableAssignments(state)
  * @param {object} state - redux state
  * @return {object[]} - list of selectable assignment objects, filtered if there is an
@@ -116,6 +126,7 @@ export default StrictDict({
   selectableAssignmentLabels,
   selectableAssignments,
   allFilters,
+  areAssignmentGradeFiltersSet,
   chooseRelevantAssignmentData,
   getAssignmentsFromResultsSubstate,
 });

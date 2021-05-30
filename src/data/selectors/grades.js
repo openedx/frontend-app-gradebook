@@ -212,6 +212,8 @@ const simpleSelectors = simpleSelectorFactory(
     'gradeOverrideHistoryError',
     'gradeOriginalEarnedGraded',
     'gradeOriginalPossibleGraded',
+    'nextPage',
+    'prevPage',
     'showSuccess',
   ],
 );

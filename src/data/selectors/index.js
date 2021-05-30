@@ -7,10 +7,65 @@ import app from './app';
 import assignmentTypes from './assignmentTypes';
 import cohorts from './cohorts';
 import filters from './filters';
-import grades from './grades';
+import grades, { minGrade, maxGrade } from './grades';
 import roles from './roles';
 import special from './special';
 import tracks from './tracks';
+
+/**
+ * formattedGradeLimits(state)
+ * Returns an object of local grade limits, formatted for fetching.
+ * This means only setting any of them if the assignment is set, and only setting an
+ * individual min/max if they are not equal to the default min/max.
+ * @param {object} state - redux state
+ * @return {object} - { assignmentGradeMax, assignmentGradeMin, courseGradeMax, courseGradeMin }
+ */
+export const formattedGradeLimits = (state) => {
+  const { assignmentGradeMax, assignmentGradeMin } = app.assignmentGradeLimits(state);
+  const { courseGradeMax, courseGradeMin } = app.courseGradeLimits(state);
+  const hasAssignment = filters.selectedAssignmentId(state) !== undefined;
+  if (!hasAssignment) {
+    return {
+      assignmentGradeMax: null,
+      assignmentGradeMin: null,
+      courseGradeMax: null,
+      courseGradeMin: null,
+    };
+  }
+  return {
+    assignmentGradeMax: assignmentGradeMax === maxGrade ? null : assignmentGradeMax,
+    assignmentGradeMin: assignmentGradeMin === minGrade ? null : assignmentGradeMin,
+    courseGradeMax: courseGradeMax === maxGrade ? null : courseGradeMax,
+    courseGradeMin: courseGradeMin === minGrade ? null : courseGradeMin,
+  };
+};
+
+/**
+ * gradeExportUrl(state, options)
+ * Returns the output of getGradeExportCsvUrl, applying the current includeCourseRoleMembers
+ * filter.
+ * @param {object} state - redux state
+ * @return {string} - generated grade export url
+ */
+export const gradeExportUrl = (state) => (
+  LmsApiService.getGradeExportCsvUrl(app.courseId(state), {
+    ...module.lmsApiServiceArgs(state),
+    excludeCourseRoles: filters.includeCourseRoleMembers(state) ? '' : 'all',
+  })
+);
+
+/**
+ * interventionExportUrl(state, options)
+ * Returns the output of getInterventionExportUrl.
+ * @param {object} state - redux state
+ * @return {string} - generated intervention export url
+ */
+export const interventionExportUrl = (state) => (
+  LmsApiService.getInterventionExportCsvUrl(
+    app.courseId(state),
+    module.lmsApiServiceArgs(state),
+  )
+);
 
 /**
  * lmsApiServiceArgs(state)
@@ -35,56 +90,44 @@ export const lmsApiServiceArgs = (state) => ({
 });
 
 /**
- * gradeExportUrl(state, options)
- * Returns the output of getGradeExportCsvUrl, applying the current includeCourseRoleMembers
- * filter.
+ * localFilters(state)
+ * returns local filter data for fetchGrades call
  * @param {object} state - redux state
- * @param {object} options - options object of the form ({ courseId })
- * @return {string} - generated grade export url
+ * @return {object} - fetch arguments signifying current local filter state
  */
-export const gradeExportUrl = (state, { courseId }) => (
-  LmsApiService.getGradeExportCsvUrl(courseId, {
-    ...module.lmsApiServiceArgs(state),
-    excludeCourseRoles: filters.includeCourseRoleMembers(state) ? '' : 'all',
-  })
-);
+export const localFilters = (state) => {
+  const id = filters.selectedAssignmentId(state);
+  const searchText = app.searchValue(state);
+  return {
+    assignment: id,
+    includeCourseRoleMembers: filters.includeCourseRoleMembers(state),
+    ...module.formattedGradeLimits(state),
+    ...(searchText !== '' && { searchText }),
+  };
+};
 
 /**
- * interventionExportUrl(state, options)
- * Returns the output of getInterventionExportUrl.
+ * selectedCohortEntry(state)
+ * Returns the full entry data for the selected cohort
  * @param {object} state - redux state
- * @param {object} options - options object of the form ({ courseId })
- * @return {string} - generated intervention export url
+ * @return {object} - selected cohort entry object
  */
-export const interventionExportUrl = (state, { courseId }) => (
-  LmsApiService.getInterventionExportCsvUrl(
-    courseId,
-    module.lmsApiServiceArgs(state),
+export const selectedCohortEntry = (state) => (
+  cohorts.allCohorts(state).find(
+    ({ id }) => id === parseInt(filters.cohort(state), 10),
   )
 );
 
 /**
- * getHeadings(state)
- * Returns the table headings given the current assignmentType and assignmentLabel filters.
+ * selectedTrackEntry(state)
+ * Returns the full entry data for the selected track
  * @param {object} state - redux state
- * @return {string[]} - array of table headings
+ * @return {object} - selected track entry object
  */
-export const getHeadings = (state) => grades.headingMapper(
-  filters.assignmentType(state) || 'All',
-  filters.selectedAssignmentLabel(state) || 'All',
-)(grades.getExampleSectionBreakdown(state));
-
-/**
- * showBulkManagement(state, options)
- * Returns true iff the user has special access or bulk management is configured to be available
- * and the course has a masters track.
- * @param {object} state - redux state
- * @param {object} options - options object of the form ({ courseId })
- * @return {bool} - should show bulk management controls?
- */
-export const showBulkManagement = (state, { courseId }) => (
-  special.hasSpecialBulkManagementAccess(courseId)
-  || (tracks.stateHasMastersTrack(state) && state.config.bulkManagementAvailable)
+export const selectedTrackEntry = (state) => (
+  tracks.allTracks(state).find(
+    ({ slug }) => slug === filters.track(state),
+  )
 );
 
 /**
@@ -115,7 +158,11 @@ export default StrictDict({
     getHeadings,
     gradeExportUrl,
     interventionExportUrl,
+    localFilters,
+    selectedCohortEntry,
+    selectedTrackEntry,
     shouldShowSpinner,
+    showBulkManagement,
   }),
   app,
   assignmentTypes,

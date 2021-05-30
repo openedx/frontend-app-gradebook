@@ -294,6 +294,8 @@ describe('grades selectors', () => {
     testSimpleSelector('gradeOverrideHistoryError');
     testSimpleSelector('gradeOriginalEarnedGraded');
     testSimpleSelector('gradeOriginalPossibleGraded');
+    testSimpleSelector('nextPage');
+    testSimpleSelector('prevPage');
     testSimpleSelector('showSuccess');
   });
 });
