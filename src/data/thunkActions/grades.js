@@ -2,90 +2,74 @@
 import { getAuthenticatedHttpClient } from '@edx/frontend-platform/auth';
 
 import { StrictDict } from 'utils';
-import grades from '../actions/grades';
-import { sortAlphaAsc } from '../actions/utils';
 
-import selectors from '../selectors';
+import GRADE_OVERRIDE_HISTORY_ERROR_DEFAULT_MSG from 'data/constants/errors';
 
-import GRADE_OVERRIDE_HISTORY_ERROR_DEFAULT_MSG from '../constants/errors';
+import grades from 'data/actions/grades';
+import { sortAlphaAsc } from 'data/actions/utils';
+import selectors from 'data/selectors';
+import LmsApiService from 'data/services/LmsApiService';
 
-import LmsApiService from '../services/LmsApiService';
 import * as module from './grades';
 
-const {
-  formatMaxAssignmentGrade,
-  formatMinAssignmentGrade,
-  formatMaxCourseGrade,
-  formatMinCourseGrade,
-  formatGradeOverrideForDisplay,
-} = selectors.grades;
+const { formatGradeOverrideForDisplay } = selectors.grades;
 
 export const defaultAssignmentFilter = 'All';
 
-export const fetchBulkUpgradeHistory = courseId => (
+export const fetchBulkUpgradeHistory = () => (dispatch, getState) => {
   // todo add loading effect
-  dispatch => LmsApiService.fetchGradeBulkOperationHistory(courseId).then(
+  const courseId = selectors.app.courseId(getState());
+  return LmsApiService.fetchGradeBulkOperationHistory(courseId).then(
     (response) => { dispatch(grades.bulkHistory.received(response)); },
-  ).catch(() => dispatch(grades.bulkHistory.error()))
-);
+  ).catch(() => dispatch(grades.bulkHistory.error()));
+};
 
-export const fetchGrades = (
-  courseId,
-  cohort,
-  track,
-  assignmentType,
-  options = {},
-) => (
+export const fetchGrades = (overrides = {}) => (
   (dispatch, getState) => {
     dispatch(grades.fetching.started());
-    const {
-      assignment,
-      assignmentGradeMax: assignmentMax,
-      assignmentGradeMin: assignmentMin,
-      courseGradeMin,
-      courseGradeMax,
-      includeCourseRoleMembers,
-    } = selectors.filters.allFilters(getState());
-    const { id: assignmentId } = assignment || {};
-    const assignmentGradeMax = formatMaxAssignmentGrade(assignmentMax, { assignmentId });
-    const assignmentGradeMin = formatMinAssignmentGrade(assignmentMin, { assignmentId });
-    const courseGradeMaxFormatted = formatMaxCourseGrade(courseGradeMax);
-    const courseGradeMinFormatted = formatMinCourseGrade(courseGradeMin);
+    const { assignmentType, options } = overrides;
+    const cohort = selectors.filters.cohort(getState());
+    const track = selectors.filters.track(getState());
+    const courseId = selectors.app.courseId(getState());
+    const fetchOptions = {
+      ...selectors.root.localFilters(getState()),
+      ...options,
+    };
     return LmsApiService.fetchGradebookData(
       courseId,
-      options.searchText || null,
+      fetchOptions.searchText || null,
       cohort,
       track,
-      {
-        assignment: assignmentId,
-        assignmentGradeMax,
-        assignmentGradeMin,
-        courseGradeMax: courseGradeMaxFormatted,
-        courseGradeMin: courseGradeMinFormatted,
-        includeCourseRoleMembers,
-      },
-    )
-      .then(response => response.data)
+      fetchOptions,
+    ).then(response => response.data)
       .then((data) => {
         dispatch(grades.fetching.received({
-          grades: data.results.sort(sortAlphaAsc),
+          assignmentType: (assignmentType || selectors.filters.assignmentType(getState())),
           cohort,
+          courseId,
           track,
-          assignmentType,
+          grades: data.results.sort(sortAlphaAsc),
           prev: data.previous,
           next: data.next,
-          courseId,
           totalUsersCount: data.total_users_count,
           filteredUsersCount: data.filtered_users_count,
         }));
-        dispatch(grades.fetching.finished());
-        if (options.showSuccess) {
+        if (fetchOptions.showSuccess) {
           dispatch(grades.banner.open());
         }
+        dispatch(grades.fetching.finished());
       })
       .catch(() => {
         dispatch(grades.fetching.error());
       });
+  }
+);
+
+export const fetchGradesIfAssignmentGradeFiltersSet = () => (
+  (dispatch, getState) => {
+    if (selectors.filters.areAssignmentGradeFiltersSet(getState())) {
+      dispatch(module.fetchGrades());
+    }
   }
 );
 
@@ -117,35 +101,22 @@ export const fetchGradeOverrideHistory = (subsectionId, userId) => (
     })
 );
 
-export const fetchMatchingUserGrades = (
-  courseId,
-  searchText,
-  cohort,
-  track,
-  assignmentType,
-  showSuccess,
-  options = {},
-) => {
-  const newOptions = { ...options, searchText, showSuccess };
-  return module.fetchGrades(courseId, cohort, track, assignmentType, newOptions);
-};
-
-export const fetchPrevNextGrades = (endpoint, courseId, cohort, track, assignmentType) => (
-  (dispatch) => {
+export const fetchPrevNextGrades = (endpoint) => (
+  (dispatch, getState) => {
     dispatch(grades.fetching.started());
     return getAuthenticatedHttpClient().get(endpoint)
       .then(({ data }) => data)
       .then((data) => {
         dispatch(grades.fetching.received({
+          courseId: selectors.app.courseId(getState()),
+          cohort: selectors.filters.cohort(getState()),
+          track: selectors.filters.track(getState()),
+          assignmentType: selectors.filters.assignmentType(getState()),
           grades: data.results.sort(sortAlphaAsc),
-          cohort,
-          track,
-          assignmentType,
           prev: data.previous,
           next: data.next,
-          courseId,
-          totalUsersCount: data.total_users_count,
           filteredUsersCount: data.filtered_users_count,
+          totalUsersCount: data.total_users_count,
         }));
         dispatch(grades.fetching.finished());
       })
@@ -155,16 +126,17 @@ export const fetchPrevNextGrades = (endpoint, courseId, cohort, track, assignmen
   }
 );
 
-export const submitFileUploadFormData = (courseId, formData) => (
-  (dispatch) => {
+export const submitFileUploadFormData = (formData) => (
+  (dispatch, getState) => {
+    const courseId = selectors.app.courseId(getState());
     dispatch(grades.csvUpload.started());
     return LmsApiService.uploadGradeCsv(courseId, formData).then(() => {
       dispatch(grades.csvUpload.finished());
       dispatch(grades.uploadOverride.success(courseId));
-    }).catch((err) => {
-      dispatch(grades.uploadOverride.failure(courseId, err));
-      if (err.status === 200 && err.data.error_messages.length) {
-        const { error_messages: errorMessages, saved, total } = err.data;
+    }).catch((error) => {
+      dispatch(grades.uploadOverride.failure({ courseId, error }));
+      if (error.status === 200 && error.data.error_messages.length) {
+        const { error_messages: errorMessages, saved, total } = error.data;
         return dispatch(grades.csvUpload.error({ errorMessages, saved, total }));
       }
       return dispatch(grades.csvUpload.error({ errorMessages: ['Unknown error.'] }));
@@ -172,55 +144,32 @@ export const submitFileUploadFormData = (courseId, formData) => (
   }
 );
 
-export const updateGrades = (courseId, updateData, searchText, cohort, track) => (
-  (dispatch) => {
+export const updateGrades = () => (
+  (dispatch, getState) => {
+    const courseId = selectors.app.courseId(getState());
+    const updateData = selectors.app.editUpdateData(getState());
     dispatch(grades.update.request());
     return LmsApiService.updateGradebookData(courseId, updateData)
       .then(response => response.data)
       .then((data) => {
-        dispatch(grades.update.success({ courseId, data }));
-        dispatch(module.fetchMatchingUserGrades(
-          courseId,
-          searchText,
-          cohort,
-          track,
-          defaultAssignmentFilter,
-          true,
-          { searchText },
-        ));
+        dispatch(grades.update.success({ data }));
+        dispatch(module.fetchGrades({
+          assignmentType: defaultAssignmentFilter,
+          options: { showSuccess: true },
+        }));
       })
       .catch((error) => {
-        dispatch(grades.update.failure({ courseId, error }));
+        dispatch(grades.update.failure({ error }));
       });
   }
 );
 
-export const updateGradesIfAssignmentGradeFiltersSet = (
-  courseId,
-  cohort,
-  track,
-  assignmentType,
-) => (dispatch, getState) => {
-  const assignmentGradeMin = selectors.filters.assignmentGradeMin(getState());
-  const assignmentGradeMax = selectors.filters.assignmentGradeMax(getState());
-  const hasAssignmentGradeFiltersSet = assignmentGradeMax || assignmentGradeMin;
-  if (hasAssignmentGradeFiltersSet) {
-    dispatch(module.fetchGrades(
-      courseId,
-      cohort,
-      track,
-      assignmentType,
-    ));
-  }
-};
-
 export default StrictDict({
   fetchBulkUpgradeHistory,
   fetchGrades,
+  fetchGradesIfAssignmentGradeFiltersSet,
   fetchGradeOverrideHistory,
-  fetchMatchingUserGrades,
   fetchPrevNextGrades,
   submitFileUploadFormData,
   updateGrades,
-  updateGradesIfAssignmentGradeFiltersSet,
 });

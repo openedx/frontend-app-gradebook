@@ -14,6 +14,9 @@ import { createTestFetcher } from './testUtils';
 const mockStore = configureMockStore([thunk]);
 
 const courseId = 'course-v1:edX+DemoX+Demo_Course';
+const cohort = 42;
+const track = 'Masters of the universe';
+const assignmentType = 'Potions Practice';
 const sections = [
   {
     subsection_name: 'Demo Course Overview',
@@ -81,27 +84,18 @@ jest.mock('../selectors', () => ({
   __esModule: true,
   default: {
     grades: {
-      formatGradeOverrideForDisplay: (override) => ({
-        formatGradeOverrideForDisplay: { override },
-      }),
-      formatMaxAssignmentGrade: (grade, { assignmentId }) => ({
-        formatMaxAssignmentGrade: { grade, assignmentId },
-      }),
-      formatMinAssignmentGrade: (grade, { assignmentId }) => ({
-        formatMinAssignmentGrade: { grade, assignmentId },
-      }),
-      formatMinCourseGrade: (grade) => ({
-        formatMinCourseGrade: { grade },
-      }),
-      formatMaxCourseGrade: (grade) => ({
-        formatMaxCourseGrade: { grade },
-      }),
+      formatGradeOverrideForDisplay: jest.fn((...args) => ({
+        type: 'formatGradeOverrideForDisplay',
+        args,
+      })),
     },
     filters: {
       allFilters: jest.fn(),
       assignmentGradeMin: jest.fn(),
       assignmentGradeMax: jest.fn(),
     },
+    app: {},
+    root: {},
   },
 }));
 
@@ -114,12 +108,16 @@ describe('grades thunkActions', () => {
     LmsApiService.fetchGradeOverrideHistory.mockClear();
     LmsApiService.fetchPrevNextGrades.mockClear();
     LmsApiService.updateGrades.mockClear();
+    selectors.app.courseId = jest.fn(() => courseId);
+    selectors.filters.cohort = jest.fn(() => cohort);
+    selectors.filters.track = jest.fn(() => track);
+    selectors.filters.assignmentType = jest.fn(() => assignmentType);
   });
   describe('fetchBulkUpgradeHistory', () => {
     const testFetch = createTestFetcher(
       LmsApiService.fetchGradeBulkOperationHistory,
       thunkActions.fetchBulkUpgradeHistory,
-      [courseId],
+      [],
       () => expect(LmsApiService.fetchGradeBulkOperationHistory).toHaveBeenCalledWith(courseId),
     );
     describe('valid response', () => {
@@ -135,6 +133,7 @@ describe('grades thunkActions', () => {
   });
 
   describe('fetchGrades', () => {
+    const localFilters = { there: 'are', four: 'lights' };
     const responseData = {
       previous: 'PREvGrade',
       next: 'nextGRADe',
@@ -143,204 +142,110 @@ describe('grades thunkActions', () => {
       filtered_users_count: 8,
     };
     const expected = {
+      assignmentType,
+      cohort,
+      courseId,
+      track,
       grades: gradesResults.sort(sortAlphaAsc),
-      cohort: 1,
-      track: 'verified',
-      assignmentType: 'Exam',
       prev: responseData.previous,
       next: responseData.next,
-      courseId,
       totalUsersCount: responseData.total_users_count,
       filteredUsersCount: responseData.filtered_users_count,
     };
-    const apiArgs = (options) => {
-      const {
-        assignment,
-        assignmentGradeMax, assignmentGradeMin,
-        courseGradeMax, courseGradeMin,
-        includeCourseRoleMembers,
-      } = selectors.filters.allFilters();
-      const assignmentId = (assignment || {}).id;
-      return [
-        courseId,
-        options.searchText || null,
-        expected.cohort,
-        expected.track,
-        {
-          assignment: assignmentId,
-          assignmentGradeMax: selectors.grades.formatMaxAssignmentGrade(
-            assignmentGradeMax, { assignmentId },
-          ),
-          assignmentGradeMin: selectors.grades.formatMinAssignmentGrade(
-            assignmentGradeMin, { assignmentId },
-          ),
-          courseGradeMax: selectors.grades.formatMaxCourseGrade(
-            courseGradeMax,
-          ),
-          courseGradeMin: selectors.grades.formatMinCourseGrade(
-            courseGradeMin,
-          ),
-          includeCourseRoleMembers,
-        },
-      ];
-    };
-    const testFetchWithOptions = (options = false) => createTestFetcher(
+
+    const testFetch = ({ apiArgs, overrides }) => createTestFetcher(
       LmsApiService.fetchGradebookData,
       thunkActions.fetchGrades,
-      [
-        courseId,
-        expected.cohort,
-        expected.track,
-        expected.assignmentType,
-        options,
-      ],
+      [overrides],
       () => {
-        expect(
-          LmsApiService.fetchGradebookData,
-        ).toHaveBeenCalledWith(...apiArgs(options));
+        if (apiArgs !== undefined) {
+          expect(
+            LmsApiService.fetchGradebookData,
+          ).toHaveBeenCalledWith(...apiArgs);
+        }
       },
     );
-    const testFetch = testFetchWithOptions();
 
-    describe('after valid response', () => {
-      const successActions = [
-        actions.grades.fetching.started(),
-        actions.grades.fetching.received({ ...expected }),
-        actions.grades.fetching.finished(),
-      ];
-      it('dispatches success', () => testFetch(
-        (resolve) => resolve({ data: responseData }),
-        [...successActions],
-      ));
-      it('passes the correct args to the fetchGradebookData query', () => {
-        const assignmentId = allFilters.assignment.id;
-        return testFetch(
-          (resolve) => resolve({ data: responseData }),
-          [...successActions],
-          () => {
-            const {
-              formatMaxAssignmentGrade,
-              formatMinAssignmentGrade,
-              formatMaxCourseGrade,
-              formatMinCourseGrade,
-            } = selectors.grades;
-            expect(LmsApiService.fetchGradebookData).toHaveBeenCalledWith(
-              courseId,
-              null,
-              expected.cohort,
-              expected.track,
-              {
-                assignment: allFilters.assignment.id,
-                assignmentGradeMax: formatMaxAssignmentGrade(
-                  allFilters.assignmentGradeMax,
-                  { assignmentId },
-                ),
-                assignmentGradeMin: formatMinAssignmentGrade(
-                  allFilters.assignmentGradeMin,
-                  { assignmentId },
-                ),
-                courseGradeMax: formatMaxCourseGrade(allFilters.courseGradeMax),
-                courseGradeMin: formatMinCourseGrade(allFilters.courseGradeMin),
-                includeCourseRoleMembers: allFilters.includeCourseRoleMembers,
-              },
-            );
-          },
-        );
-      });
-      describe('no assignment selected', () => {
-        beforeAll(() => {
-          selectors.filters.allFilters.mockReturnValue({
-            ...allFilters,
-            assignment: undefined,
-          });
-        });
-        afterAll(() => {
-          selectors.filters.allFilters.mockReturnValue(allFilters);
-        });
-        it('passes the correct args to the fetchGradebookData query', () => testFetch(
-          (resolve) => resolve({ data: responseData }),
-          undefined,
-          () => {
-            const {
-              formatMaxAssignmentGrade,
-              formatMinAssignmentGrade,
-              formatMaxCourseGrade,
-              formatMinCourseGrade,
-            } = selectors.grades;
-            expect(LmsApiService.fetchGradebookData).toHaveBeenCalledWith(
-              courseId,
-              null,
-              expected.cohort,
-              expected.track,
-              {
-                assignmentGradeMax: formatMaxAssignmentGrade(allFilters.assignmentGradeMax, {}),
-                assignmentGradeMin: formatMinAssignmentGrade(allFilters.assignmentGradeMin, {}),
-                courseGradeMax: formatMaxCourseGrade(allFilters.courseGradeMax),
-                courseGradeMin: formatMinCourseGrade(allFilters.courseGradeMin),
-                includeCourseRoleMembers: allFilters.includeCourseRoleMembers,
-              },
-            );
-          },
+    const {
+      started,
+      received,
+      finished,
+      error,
+    } = actions.grades.fetching;
+    beforeEach(() => {
+      selectors.root.localFilters = jest.fn(() => localFilters);
+    });
+
+    describe('fetchGradebookData args', () => {
+      describe('searchText is not empty', () => {
+        const options = { to: 'be', or: 'not', searchText: '' };
+        test('courseId, searchText, cohort, track, and merged localFilters and options', () => (
+          testFetch({
+            overrides: { options },
+            apiArgs: [courseId, null, cohort, track, { ...localFilters, ...options }],
+          })(resolve => resolve({ data: responseData }))
         ));
       });
-      describe('options', () => {
+      describe('searchText is empty', () => {
+        const options = { to: 'be', or: 'not', searchText: '' };
+        test('null searchText', () => testFetch({
+          overrides: { options },
+          apiArgs: [courseId, null, cohort, track, { ...localFilters, ...options }],
+        })(resolve => resolve({ data: responseData })));
+      });
+    });
+
+    describe('after valid response', () => {
+      it('dispatches success', () => testFetch({})(
+        (resolve) => resolve({ data: responseData }),
+        [
+          started(),
+          received({ ...expected }),
+          finished(),
+        ],
+      ));
+      describe('when passed assignmentType override', () => {
+        const overrides = { assignmentType: 'Polymorph Practice' };
+        it('dispatches success with passed assignmentType', () => testFetch(
+          { overrides },
+        )(
+          (resolve) => resolve({ data: responseData }),
+          [
+            started(),
+            received({ ...expected, assignmentType: overrides.assignmentType }),
+            finished(),
+          ],
+        ));
+      });
+      describe('showSuccess', () => {
         const resolveFn = (resolve) => resolve({ data: responseData });
-        describe('showSuccess', () => {
-          it('dispatches success and opens banner if true', () => (
-            testFetchWithOptions({ showSuccess: true })(
-              resolveFn,
-              [...successActions, actions.grades.banner.open()],
-            )
-          ));
-          it('does not open banner if not true', () => testFetchWithOptions({})(
-            resolveFn, [...successActions],
-          ));
-        });
-        describe('searchText', () => {
-          it('passes searchText to api call if included', () => {
-            const options = { searchText: 'Search Text' };
-            return testFetchWithOptions(options)(
-              resolveFn,
-              [...successActions],
-              () => {
-                expect(
-                  LmsApiService.fetchGradebookData.mock.calls[0][1],
-                ).toEqual(options.searchText);
-              },
-            );
-          });
-          it('passes null to api call for searchText if not included', () => {
-            const options = {};
-            return testFetchWithOptions(options)(
-              resolveFn,
-              [...successActions],
-              () => {
-                expect(
-                  LmsApiService.fetchGradebookData.mock.calls[0][1],
-                ).toEqual(null);
-              },
-            );
-          });
-        });
+        it('dispatches success and opens banner if true', () => (
+          testFetch({ overrides: { options: { showSuccess: true } } })(
+            resolveFn,
+            [
+              started(),
+              received({ ...expected }),
+              actions.grades.banner.open(),
+              finished(),
+            ],
+          )
+        ));
       });
     });
     describe('empty response', () => {
-      it('dispatches success on empty response', () => testFetch(
+      it('dispatches success on empty response', () => testFetch({})(
         (resolve) => resolve({ data: { ...responseData, results: [] } }),
         [
-          actions.grades.fetching.started(),
-          actions.grades.fetching.received({ ...expected, grades: [] }),
-          actions.grades.fetching.finished(),
+          started(),
+          received({ ...expected, grades: [] }),
+          finished(),
         ],
       ));
     });
     describe('after invalid response', () => {
-      it('dispatches error', () => testFetch(
+      it('dispatches error', () => testFetch({})(
         (resolve, reject) => reject(),
-        [
-          actions.grades.fetching.started(),
-          actions.grades.fetching.error(),
-        ],
+        [started(), error()],
       ));
     });
   });
@@ -475,88 +380,47 @@ describe('grades thunkActions', () => {
     afterEach(() => {
       thunkActions.fetchGrades = fetchGrades;
     });
-    describe('fetchMatchingUserGrades', () => {
-      it('calls with added searchText and showSuccess options', () => {
+
+    describe('fetchGradesIfAssignmentGradeFiltersSet', () => {
+      it('dispatches fetchGrades if assignmentGradeFiltersSet', () => {
+        selectors.filters.areAssignmentGradeFiltersSet = jest.fn(() => true);
         const store = mockStore({});
-        const args = {
-          searchText: 'Some SearcH',
-          cohort: 'coHOrt',
-          track: 'TRAck',
-          assignmentType: 'aType',
-          showSuccess: true,
-          options: { some: 'options' },
-        };
-        store.dispatch(thunkActions.fetchMatchingUserGrades(
-          courseId,
-          args.searchText,
-          args.cohort,
-          args.track,
-          args.assignmentType,
-          args.showSuccess,
-          args.options,
-        ));
+        store.dispatch(thunkActions.fetchGradesIfAssignmentGradeFiltersSet());
         expect(store.getActions()).toEqual([
-          {
-            ...fetchGradesAction,
-            args: [
-              courseId,
-              args.cohort,
-              args.track,
-              args.assignmentType,
-              { searchText: args.searchText, showSuccess: args.showSuccess, ...args.options },
-            ],
-          },
+          { ...fetchGradesAction, args: [] },
         ]);
       });
+      it('does not dispatch fetchGrades if assignmentGradeFilters not set', () => {
+        selectors.filters.areAssignmentGradeFiltersSet = jest.fn(() => false);
+        const store = mockStore({});
+        store.dispatch(thunkActions.fetchGradesIfAssignmentGradeFiltersSet());
+        expect(store.getActions()).toEqual([]);
+      });
     });
-    describe('updateGrades', () => {
-      const args = {
-        updateData: { some: 'data' },
-        searchText: 'SEARch TErm',
-        cohort: 'COhoRT',
-        track: 'trACk',
-      };
-      const gradebookData = { data: { OTher: 'DATA' } };
 
+    describe('updateGrades', () => {
+      const updateData = { some: 'data' };
+      const gradebookData = { data: { OTher: 'DATA' } };
       const testFetch = createTestFetcher(
         LmsApiService.updateGradebookData,
         thunkActions.updateGrades,
-        [courseId, args.updateData, args.searchText, args.cohort, args.track],
+        [],
         () => expect(
           LmsApiService.updateGradebookData,
-        ).toHaveBeenCalledWith(courseId, args.updateData),
+        ).toHaveBeenCalledWith(courseId, updateData),
       );
-      let fetchMatchingUserGrades;
-      const fetchMatchingUserGradesAction = { type: 'fetchMatchingUserGrades' };
       beforeEach(() => {
-        fetchMatchingUserGrades = jest.spyOn(
-          thunkActions,
-          'fetchMatchingUserGrades',
-        ).mockImplementation((...actionArgs) => ({
-          ...fetchMatchingUserGradesAction,
-          args: actionArgs,
-        }));
-      });
-      afterEach(() => {
-        fetchMatchingUserGrades.mockRestore();
+        selectors.app.editUpdateData = jest.fn(() => updateData);
       });
       describe('valid response', () => {
         it('sends success event, and fetches matching user grades', () => testFetch(
           (resolve) => resolve(gradebookData),
           [
             actions.grades.update.request(),
-            actions.grades.update.success({ courseId, data: gradebookData.data }),
+            actions.grades.update.success({ data: gradebookData.data }),
             {
-              ...fetchMatchingUserGradesAction,
-              args: [
-                courseId,
-                args.searchText,
-                args.cohort,
-                args.track,
-                thunkActions.defaultAssignmentFilter,
-                true,
-                { searchText: args.searchText },
-              ],
+              ...fetchGradesAction,
+              args: [{ assignmentType: 'All', options: { showSuccess: true } }],
             },
           ],
         ));
@@ -568,78 +432,16 @@ describe('grades thunkActions', () => {
             (resolve, reject) => reject(error),
             [
               actions.grades.update.request(),
-              actions.grades.update.failure({ courseId, error }),
+              actions.grades.update.failure({ error }),
             ],
           );
-        });
-      });
-    });
-
-    describe('updateGradesIfAssignmentGradeFiltersSet', () => {
-      const args = {
-        cohort: 'coHOrt',
-        track: 'trAck',
-        assignmentType: 'bananas',
-      };
-      let assignmentGradeMin;
-      let assignmentGradeMax;
-      const mockFilters = (minValue, maxValue) => {
-        assignmentGradeMax = jest.spyOn(
-          selectors.filters, 'assignmentGradeMax',
-        ).mockReturnValue(maxValue);
-        assignmentGradeMin = jest.spyOn(
-          selectors.filters, 'assignmentGradeMin',
-        ).mockReturnValue(minValue);
-      };
-      const callUpdate = (expectedActions) => {
-        const store = mockStore({});
-        store.dispatch(thunkActions.updateGradesIfAssignmentGradeFiltersSet(
-          courseId,
-          args.cohort,
-          args.track,
-          args.assignmentType,
-        ));
-        expect(store.getActions()).toEqual(expectedActions);
-      };
-      afterEach(() => {
-        assignmentGradeMin.mockRestore();
-        assignmentGradeMax.mockRestore();
-      });
-      describe('if neither assignment grade filter is set', () => {
-        mockFilters(undefined, undefined);
-        it('does not call', () => callUpdate([]));
-      });
-      describe('if either assignment grade filter is set', () => {
-        const assertFetchGradesCalled = () => callUpdate([
-          {
-            ...fetchGradesAction,
-            args: [
-              courseId,
-              args.cohort,
-              args.track,
-              args.assignmentType,
-            ],
-          },
-        ]);
-        it('calls if min is set', () => {
-          mockFilters(21, undefined);
-          return assertFetchGradesCalled();
-        });
-        it('calls if max is set', () => {
-          mockFilters(undefined, 92);
-          return assertFetchGradesCalled();
         });
       });
     });
   });
 
   describe('fetchPrevNextGrades', () => {
-    const args = {
-      endpoint: 'someEndpoint',
-      cohort: 'COhoRT',
-      track: 'TracK',
-      assignmentType: '23',
-    };
+    const endpoint = 'someEndpoint';
     const response = {
       results: gradesResults,
       previous: 'Prev',
@@ -647,9 +449,13 @@ describe('grades thunkActions', () => {
       total_users_count: 23,
       filtered_users_count: 12,
     };
-    const { fetching } = actions.grades;
+    const {
+      started,
+      received,
+      finished,
+      error,
+    } = actions.grades.fetching;
     let getClient;
-
     const mockClient = (resolveFn) => {
       getClient = jest.spyOn(
         auth,
@@ -665,13 +471,7 @@ describe('grades thunkActions', () => {
     ) => {
       const store = mockStore({});
       mockClient(resolveFn);
-      return store.dispatch(thunkActions.fetchPrevNextGrades(
-        args.endpoint,
-        courseId,
-        args.cohort,
-        args.track,
-        args.assignmentType,
-      )).then(() => {
+      return store.dispatch(thunkActions.fetchPrevNextGrades(endpoint)).then(() => {
         expect(store.getActions()).toEqual(expectedActions);
       });
     };
@@ -684,26 +484,26 @@ describe('grades thunkActions', () => {
       it('sends finished action and loads results', () => testFetch(
         (resolve) => resolve({ data: response }),
         [
-          fetching.started(),
-          fetching.received({
+          started(),
+          received({
             grades: gradesResults.sort(sortAlphaAsc),
             prev: response.previous,
             next: response.next,
             totalUsersCount: response.total_users_count,
             filteredUsersCount: response.filtered_users_count,
-            cohort: args.cohort,
-            track: args.track,
-            assignmentType: args.assignmentType,
+            cohort,
+            track,
+            assignmentType,
             courseId,
           }),
-          fetching.finished(),
+          finished(),
         ],
       ));
     });
     describe('error response', () => {
       it('sends error action', () => testFetch(
         (resolve, reject) => reject(),
-        [fetching.started(), fetching.error()],
+        [started(), error()],
       ));
     });
   });
@@ -713,12 +513,12 @@ describe('grades thunkActions', () => {
     const testFetch = createTestFetcher(
       LmsApiService.uploadGradeCsv,
       thunkActions.submitFileUploadFormData,
-      [courseId, formData],
+      [formData],
       () => expect(LmsApiService.uploadGradeCsv).toHaveBeenCalledWith(courseId, formData),
     );
     const { csvUpload, uploadOverride } = actions.grades;
     describe('valid data', () => {
-      it('sends csvUpload finished and uploadOverride success actions', () => {
+      it('sends csvUpload finished and uploadOverride success actions', () => (
         testFetch(
           (resolve) => resolve(),
           [
@@ -726,16 +526,16 @@ describe('grades thunkActions', () => {
             csvUpload.finished(),
             uploadOverride.success(courseId),
           ],
-        );
-      });
+        )
+      ));
     });
     describe('error response', () => {
       describe('non-200 error', () => {
         it('sends uploadOverride failure w/ raw error and csvUploadError with default', () => {
           const error = { some: 'error' };
-          testFetch((resolve, reject) => reject(error), [
+          return testFetch((resolve, reject) => reject(error), [
             csvUpload.started(),
-            uploadOverride.failure(courseId, error),
+            uploadOverride.failure({ courseId, error }),
             csvUpload.error({ errorMessages: ['Unknown error.'] }),
           ]);
         });
@@ -743,9 +543,9 @@ describe('grades thunkActions', () => {
       describe('200 error with no messages', () => {
         it('sends uploadOverride failure w/ raw error and csvUploadError with default', () => {
           const error = { status: 200, data: { error_messages: [] }, some: 'error' };
-          testFetch((resolve, reject) => reject(error), [
+          return testFetch((resolve, reject) => reject(error), [
             csvUpload.started(),
-            uploadOverride.failure(courseId, error),
+            uploadOverride.failure({ courseId, error }),
             csvUpload.error({ errorMessages: ['Unknown error.'] }),
           ]);
         });
@@ -758,9 +558,9 @@ describe('grades thunkActions', () => {
               error_messages: ['some', 'errors'], saved: 21, total: 32,
             },
           };
-          testFetch((resolve, reject) => reject(error), [
+          return testFetch((resolve, reject) => reject(error), [
             csvUpload.started(),
-            uploadOverride.failure(courseId, error),
+            uploadOverride.failure({ courseId, error }),
             csvUpload.error({
               errorMessages: error.data.error_messages,
               saved: error.data.saved,
