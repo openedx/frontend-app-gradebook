@@ -75,7 +75,7 @@ export class BulkManagement extends React.Component {
     const form = this.fileFormRef.current;
     if (file && form) {
       const formData = new FormData(form);
-      this.props.submitFileUploadFormData(this.props.courseId, formData).then(() => {
+      this.props.submitFileUploadFormData(formData).then(() => {
         fileInput.value = null;
       });
     }
@@ -158,12 +158,10 @@ export class BulkManagement extends React.Component {
 BulkManagement.defaultProps = {
   bulkImportError: '',
   bulkManagementHistory: [],
-  courseId: '',
   uploadSuccess: false,
 };
 
 BulkManagement.propTypes = {
-  courseId: PropTypes.string,
   gradeExportUrl: PropTypes.string.isRequired,
 
   // redux
@@ -183,15 +181,12 @@ BulkManagement.propTypes = {
   uploadSuccess: PropTypes.bool,
 };
 
-export const mapStateToProps = (state, ownProps) => {
-  const { grades } = selectors;
-  return {
-    bulkImportError: grades.bulkImportError(state),
-    bulkManagementHistory: grades.bulkManagementHistoryEntries(state),
-    gradeExportUrl: selectors.root.gradeExportUrl(state, { courseId: ownProps.courseId }),
-    uploadSuccess: grades.uploadSuccess(state),
-  };
-};
+export const mapStateToProps = (state) => ({
+  bulkImportError: selectors.grades.bulkImportError(state),
+  bulkManagementHistory: selectors.grades.bulkManagementHistoryEntries(state),
+  gradeExportUrl: selectors.root.gradeExportUrl(state),
+  uploadSuccess: selectors.grades.uploadSuccess(state),
+});
 
 export const mapDispatchToProps = {
   submitFileUploadFormData: thunkActions.grades.submitFileUploadFormData,
