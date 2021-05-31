@@ -55,6 +55,15 @@ describe('SearchControls', () => {
       });
     });
 
+    describe('onChange', () => {
+      it('sets search value to empty string and calls fetchGrades', () => {
+        const wrapper = searchControls();
+        wrapper.instance().onClear();
+        expect(props.setSearchValue).toHaveBeenCalledWith('');
+        expect(props.fetchGrades).toHaveBeenCalled();
+      });
+    });
+
     describe('mapStateToProps', () => {
       const testState = { never: 'gonna', give: 'you up' };
       test('searchValue from app.searchValue', () => {
@@ -78,7 +87,6 @@ describe('SearchControls', () => {
         const wrapper = searchControls();
         wrapper.instance().onChange = jest.fn().mockName('onChange');
         wrapper.instance().onClear = jest.fn().mockName('onClear');
-        wrapper.instance().onSubmit = jest.fn().mockName('onSubmit');
         expect(wrapper.instance().render()).toMatchSnapshot();
       });
     });

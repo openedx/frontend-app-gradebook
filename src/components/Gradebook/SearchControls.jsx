@@ -16,11 +16,17 @@ export class SearchControls extends React.Component {
   constructor(props) {
     super(props);
     this.onChange = this.onChange.bind(this);
+    this.onClear = this.onClear.bind(this);
   }
 
   /** Changing the search value stores the key in Gradebook. Currently unused */
   onChange(searchValue) {
     this.props.setSearchValue(searchValue);
+  }
+
+  onClear() {
+    this.props.setSearchValue('');
+    this.props.fetchGrades();
   }
 
   render() {
@@ -40,7 +46,7 @@ export class SearchControls extends React.Component {
               onSubmit={this.props.fetchGrades}
               inputLabel="Search for a learner"
               onChange={this.onChange}
-              onClear={this.props.fetchGrades}
+              onClear={this.onClear}
               value={this.props.searchValue}
             />
             <small className="form-text text-muted search-help-text">

@@ -22,7 +22,7 @@ exports[`SearchControls Component Snapshots basic snapshot 1`] = `
       <SearchField
         inputLabel="Search for a learner"
         onChange={[MockFunction onChange]}
-        onClear={[MockFunction fetchGrades]}
+        onClear={[MockFunction onClear]}
         onSubmit={[MockFunction fetchGrades]}
         value="alice"
       />
