@@ -60,7 +60,7 @@ const App = () => (
     <Provider store={store}>
       <Router>
         <div>
-          <Header 
+          <Header
             logoDestination={getConfig().LMS_BASE_URL.concat('/dashboard')}
           />
           <main>
