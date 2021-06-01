@@ -33,6 +33,10 @@ let el;
 describe('PageButtons component', () => {
   beforeEach(() => {
     props = {
+      match: { params: { courseId: 'hogwarts-minerva-txmog101' } },
+      selectedAssignmentType: 'Transmogrification Exams',
+      selectedCohort: { name: 'Slytherin' },
+      selectedTrack: { name: 'Death Eater' },
       getPrevNextGrades: jest.fn(),
       nextPage: 'NEXT PAGE',
       prevPage: 'prev PAGE',
@@ -63,13 +67,25 @@ describe('PageButtons component', () => {
     describe('getPrevGrades', () => {
       it('calls props.getPrevNextGrades with props.prevPage', () => {
         el.instance().getPrevGrades();
-        expect(props.getPrevNextGrades).toHaveBeenCalledWith(props.prevPage);
+        expect(props.getPrevNextGrades).toHaveBeenCalledWith(
+          props.prevPage,
+          props.match.params.courseId,
+          props.selectedCohort,
+          props.selectedTrack,
+          props.selectedAssignmentType,
+        );
       });
     });
     describe('getNextGrades', () => {
       it('calls props.getPrevNextGrades with props.nextPage', () => {
         el.instance().getNextGrades();
-        expect(props.getPrevNextGrades).toHaveBeenCalledWith(props.nextPage);
+        expect(props.getPrevNextGrades).toHaveBeenCalledWith(
+          props.nextPage,
+          props.match.params.courseId,
+          props.selectedCohort,
+          props.selectedTrack,
+          props.selectedAssignmentType,
+        );
       });
     });
   });
