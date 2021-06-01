@@ -287,6 +287,8 @@ describe('grades selectors', () => {
     testSimpleSelector('filteredUsersCount');
     testSimpleSelector('totalUsersCount');
     testSimpleSelector('gradeFormat');
+    testSimpleSelector('nextPage');
+    testSimpleSelector('prevPage');
     testSimpleSelector('showSpinner');
     testSimpleSelector('gradeOverrideCurrentEarnedGradedOverride');
     testSimpleSelector('gradeOverrideHistoryError');

@@ -1,75 +1,73 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+
 import { Button } from '@edx/paragon';
 
-export default function PageButtons({
-  prevPage, nextPage, selectedTrack, selectedCohort, selectedAssignmentType,
-  getPrevNextGrades, match,
-}) {
-  return (
-    <div
-      className="d-flex justify-content-center"
-      style={{ paddingBottom: '20px' }}
-    >
-      <Button
-        style={{ margin: '20px' }}
-        variant="outline-primary"
-        disabled={!prevPage}
-        onClick={() => getPrevNextGrades(
-          prevPage,
-          match.params.courseId,
-          selectedCohort,
-          selectedTrack,
-          selectedAssignmentType,
-        )}
+import selectors from 'data/selectors';
+import thunkActions from 'data/thunkActions';
+
+export class PageButtons extends React.Component {
+  constructor(props) {
+    super(props);
+    this.getPrevGrades = this.getPrevGrades.bind(this);
+    this.getNextGrades = this.getNextGrades.bind(this);
+  }
+
+  getPrevGrades() {
+    this.props.getPrevNextGrades(this.props.prevPage);
+  }
+
+  getNextGrades() {
+    this.props.getPrevNextGrades(this.props.nextPage);
+  }
+
+  render() {
+    return (
+      <div
+        className="d-flex justify-content-center"
+        style={{ paddingBottom: '20px' }}
       >
-        Previous Page
-      </Button>
-      <Button
-        style={{ margin: '20px' }}
-        variant="outline-primary"
-        disabled={!nextPage}
-        onClick={() => getPrevNextGrades(
-          nextPage,
-          match.params.courseId,
-          selectedCohort,
-          selectedTrack,
-          selectedAssignmentType,
-        )}
-      >
-        Next Page
-      </Button>
-    </div>
-  );
+        <Button
+          style={{ margin: '20px' }}
+          variant="outline-primary"
+          disabled={!this.props.prevPage}
+          onClick={this.getPrevGrades}
+        >
+          Previous Page
+        </Button>
+        <Button
+          style={{ margin: '20px' }}
+          variant="outline-primary"
+          disabled={!this.props.nextPage}
+          onClick={this.getNextGrades}
+        >
+          Next Page
+        </Button>
+      </div>
+    );
+  }
 }
 
 PageButtons.defaultProps = {
-  match: {
-    params: {
-      courseId: '',
-    },
-  },
   nextPage: '',
   prevPage: '',
-  selectedCohort: null,
-  selectedTrack: null,
-  selectedAssignmentType: null,
 };
 
 PageButtons.propTypes = {
+  // redux
   getPrevNextGrades: PropTypes.func.isRequired,
-  match: PropTypes.shape({
-    params: PropTypes.shape({
-      courseId: PropTypes.string,
-    }),
-  }),
   nextPage: PropTypes.string,
   prevPage: PropTypes.string,
-  selectedAssignmentType: PropTypes.string,
-  selectedCohort: PropTypes.shape({
-    name: PropTypes.string,
-  }),
-  selectedTrack: PropTypes.shape({
-    name: PropTypes.string,
-  }),
 };
+
+export const mapStateToProps = (state) => ({
+  nextPage: selectors.grades.nextPage(state),
+  prevPage: selectors.grades.prevPage(state),
+});
+
+export const mapDispatchToProps = {
+  getPrevNextGrades: thunkActions.grades.fetchPrevNextGrades,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(PageButtons);

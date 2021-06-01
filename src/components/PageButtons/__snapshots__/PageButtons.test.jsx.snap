@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`PageButtons prev not null, next not null 1`] = `
+exports[`PageButtons component snapshots buttons enabled with both endpoints provided 1`] = `
 <div
   className="d-flex justify-content-center"
   style={
@@ -9,8 +9,7 @@ exports[`PageButtons prev not null, next not null 1`] = `
     }
   }
 >
-  <button
-    className="btn btn-outline-primary"
+  <Button
     disabled={false}
     onClick={[Function]}
     style={
@@ -18,12 +17,11 @@ exports[`PageButtons prev not null, next not null 1`] = `
         "margin": "20px",
       }
     }
-    type="button"
+    variant="outline-primary"
   >
     Previous Page
-  </button>
-  <button
-    className="btn btn-outline-primary"
+  </Button>
+  <Button
     disabled={false}
     onClick={[Function]}
     style={
@@ -31,14 +29,14 @@ exports[`PageButtons prev not null, next not null 1`] = `
         "margin": "20px",
       }
     }
-    type="button"
+    variant="outline-primary"
   >
     Next Page
-  </button>
+  </Button>
 </div>
 `;
 
-exports[`PageButtons prev not null, next null 1`] = `
+exports[`PageButtons component snapshots nextPage disabled if not provided 1`] = `
 <div
   className="d-flex justify-content-center"
   style={
@@ -47,8 +45,7 @@ exports[`PageButtons prev not null, next null 1`] = `
     }
   }
 >
-  <button
-    className="btn btn-outline-primary"
+  <Button
     disabled={false}
     onClick={[Function]}
     style={
@@ -56,12 +53,11 @@ exports[`PageButtons prev not null, next null 1`] = `
         "margin": "20px",
       }
     }
-    type="button"
+    variant="outline-primary"
   >
     Previous Page
-  </button>
-  <button
-    className="btn btn-outline-primary"
+  </Button>
+  <Button
     disabled={true}
     onClick={[Function]}
     style={
@@ -69,14 +65,14 @@ exports[`PageButtons prev not null, next null 1`] = `
         "margin": "20px",
       }
     }
-    type="button"
+    variant="outline-primary"
   >
     Next Page
-  </button>
+  </Button>
 </div>
 `;
 
-exports[`PageButtons prev null, next not null 1`] = `
+exports[`PageButtons component snapshots prevPage disabled if not provided 1`] = `
 <div
   className="d-flex justify-content-center"
   style={
@@ -85,8 +81,7 @@ exports[`PageButtons prev null, next not null 1`] = `
     }
   }
 >
-  <button
-    className="btn btn-outline-primary"
+  <Button
     disabled={true}
     onClick={[Function]}
     style={
@@ -94,12 +89,11 @@ exports[`PageButtons prev null, next not null 1`] = `
         "margin": "20px",
       }
     }
-    type="button"
+    variant="outline-primary"
   >
     Previous Page
-  </button>
-  <button
-    className="btn btn-outline-primary"
+  </Button>
+  <Button
     disabled={false}
     onClick={[Function]}
     style={
@@ -107,47 +101,9 @@ exports[`PageButtons prev null, next not null 1`] = `
         "margin": "20px",
       }
     }
-    type="button"
+    variant="outline-primary"
   >
     Next Page
-  </button>
-</div>
-`;
-
-exports[`PageButtons prev null, next null 1`] = `
-<div
-  className="d-flex justify-content-center"
-  style={
-    Object {
-      "paddingBottom": "20px",
-    }
-  }
->
-  <button
-    className="btn btn-outline-primary"
-    disabled={true}
-    onClick={[Function]}
-    style={
-      Object {
-        "margin": "20px",
-      }
-    }
-    type="button"
-  >
-    Previous Page
-  </button>
-  <button
-    className="btn btn-outline-primary"
-    disabled={true}
-    onClick={[Function]}
-    style={
-      Object {
-        "margin": "20px",
-      }
-    }
-    type="button"
-  >
-    Next Page
-  </button>
+  </Button>
 </div>
 `;
