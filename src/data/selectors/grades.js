@@ -205,6 +205,8 @@ const simpleSelectors = simpleSelectorFactory(
     'filteredUsersCount',
     'totalUsersCount',
     'gradeFormat',
+    'nextPage',
+    'prevPage',
     'showSpinner',
     'gradeOverrideCurrentEarnedGradedOverride',
     'gradeOverrideHistoryError',

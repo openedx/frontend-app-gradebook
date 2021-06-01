@@ -208,7 +208,7 @@ export default class Gradebook extends React.Component {
                   <BulkManagementControls courseId={this.props.courseId} />
                 </div>
                 <GradebookTable setGradebookState={this.safeSetState} />
-                {PageButtons(this.props)}
+                <PageButtons {...this.props} />
                 <p>* available for learners in the Master&apos;s track only</p>
                 <EditModal
                   assignmentName={this.state.assignmentName}
