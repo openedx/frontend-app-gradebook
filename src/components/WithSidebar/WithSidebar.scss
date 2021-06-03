@@ -1,45 +1,45 @@
-$drawer-width: 350px;
+$sidebar-width: 350px;
 
-.drawer-contents {
+.sidebar-contents {
     overflow-x: auto;
     transition: margin 300ms cubic-bezier(0.4,0,0.2,1);
     margin-left: 0;
-    .drawer.open + & {
-        margin-left: $drawer-width;
+    .sidebar.open + & {
+        margin-left: $sidebar-width;
     }
-    &.opened {
-        width: calc(100vw - #{$drawer-width});
+    &.opening {
+        width: calc(100vw - #{$sidebar-width});
     }
 }
 
-.drawer-contents {
+.sidebar-contents {
     overflow-x: auto;
     transition: margin 300ms cubic-bezier(0.4,0,0.2,1);
     margin-left: 0;
-    .drawer.open + & {
-        margin-left: $drawer-width;
+    .sidebar.open + & {
+        margin-left: $sidebar-width;
     }
-    &.opened {
-        width: calc(100vw - #{$drawer-width});
+    &.opening {
+        width: calc(100vw - #{$sidebar-width});
     }
 }
 
-.drawer-header {
+.sidebar-header {
     display: flex;
     align-items: flex-start;
     justify-content: space-between;
     padding: 15px;
 }
 
-.drawer-container .collapsible {
+.sidebar-container .collapsible {
     margin-bottom: 1em;
 }
 
-.drawer {
+.sidebar {
     height: 100%;
-    width: $drawer-width;
+    width: $sidebar-width;
     position: absolute;
-    transform: translateX(-$drawer-width);
+    transform: translateX(-$sidebar-width);
     flex-direction: column;
     transition: transform 300ms cubic-bezier(0.4,0,0.2,1);
     &.open {

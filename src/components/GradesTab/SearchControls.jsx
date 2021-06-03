@@ -60,11 +60,11 @@ export class SearchControls extends React.Component {
 }
 
 SearchControls.propTypes = {
-  toggleFilterDrawer: PropTypes.func.isRequired,
   // From Redux
   fetchGrades: PropTypes.func.isRequired,
   searchValue: PropTypes.string.isRequired,
   setSearchValue: PropTypes.func.isRequired,
+  toggleFilterDrawer: PropTypes.func.isRequired,
 };
 
 export const mapStateToProps = (state) => ({
@@ -74,6 +74,7 @@ export const mapStateToProps = (state) => ({
 export const mapDispatchToProps = {
   fetchGrades: thunkActions.grades.fetchGrades,
   setSearchValue: actions.app.setSearchValue,
+  toggleFilterDrawer: thunkActions.app.filterMenu.toggle,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(SearchControls);

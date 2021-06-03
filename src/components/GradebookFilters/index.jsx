@@ -3,7 +3,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
-import { Collapsible, Form } from '@edx/paragon';
+import {
+  Collapsible,
+  Form,
+} from '@edx/paragon';
 
 import actions from 'data/actions';
 import selectors from 'data/selectors';
@@ -73,10 +76,11 @@ GradebookFilters.defaultProps = {
   includeCourseRoleMembers: false,
 };
 GradebookFilters.propTypes = {
+  updateQueryParams: PropTypes.func.isRequired,
+  // redux
   fetchGrades: PropTypes.func.isRequired,
   includeCourseRoleMembers: PropTypes.bool,
   updateIncludeCourseRoleMembers: PropTypes.func.isRequired,
-  updateQueryParams: PropTypes.func.isRequired,
 };
 
 export const mapStateToProps = (state) => ({

@@ -1,3 +1,4 @@
+/* eslint-disable import/no-named-as-default */
 import 'core-js/stable';
 import 'regenerator-runtime/runtime';
 

@@ -22,6 +22,10 @@ const initialState = {
     updateUserId: null,
     updateUserName: null,
   },
+  filterMenu: {
+    open: false,
+    transitioning: false,
+  },
   searchValue: '',
 };
 
@@ -31,6 +35,21 @@ const app = (state = initialState, { type, payload }) => {
       return { ...state, modalState: { ...initialState.modalState } };
     case actions.setCourseId.toString():
       return { ...state, courseId: payload };
+    case actions.filterMenu.startTransition.toString():
+      return {
+        ...state,
+        filterMenu: { ...state.filterMenu, transitioning: true },
+      };
+    case actions.filterMenu.endTransition.toString():
+      return {
+        ...state,
+        filterMenu: { ...state.filterMenu, transitioning: false },
+      };
+    case actions.filterMenu.toggle.toString():
+      return {
+        ...state,
+        filterMenu: { ...state.filterMenu, open: !state.filterMenu.open },
+      };
     case actions.setLocalFilter.toString():
       return {
         ...state,

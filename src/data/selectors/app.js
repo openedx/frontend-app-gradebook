@@ -68,6 +68,14 @@ const areCourseGradeFiltersValid = (state) => {
   return validity.isMinValid && validity.isMaxValid;
 };
 
+const isFilterMenuClosed = ({ app: { filterMenu } }) => (
+  !filterMenu.open && !filterMenu.transitioning
+);
+
+const isFilterMenuOpening = ({ app: { filterMenu } }) => (
+  filterMenu.transitioning && filterMenu.open
+);
+
 const modalSelectors = simpleSelectorFactory(
   ({ app: { modalState } }) => modalState,
   [
@@ -79,6 +87,11 @@ const modalSelectors = simpleSelectorFactory(
     'todaysDate',
     'updateUserName',
   ],
+);
+
+const filterMenuSelectors = simpleSelectorFactory(
+  ({ app: { filterMenu } }) => filterMenu,
+  ['open', 'transitioning'],
 );
 
 const simpleSelectors = simpleSelectorFactory(
@@ -96,6 +109,13 @@ export default StrictDict({
   courseGradeFilterValidity,
   courseGradeLimits,
   editUpdateData,
+  isFilterMenuClosed,
+  isFilterMenuOpening,
   ...simpleSelectors,
   modalState: StrictDict(modalSelectors),
+  filterMenu: StrictDict({
+    ...filterMenuSelectors,
+    isClosed: isFilterMenuClosed,
+    isOpening: isFilterMenuOpening,
+  }),
 });

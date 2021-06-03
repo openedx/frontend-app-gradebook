@@ -23,7 +23,10 @@ jest.mock('data/thunkActions', () => ({
   __esModule: true,
   default: {
     grades: {
-      fetchGrades: jest.fn(),
+      fetchGrades: jest.fn().mockName('thunkActions.grades.fetchGrades'),
+    },
+    app: {
+      filterMenu: { toggle: jest.fn().mockName('thunkActions.app.filterMenu') },
     },
   },
 }));
@@ -47,6 +50,15 @@ describe('SearchControls', () => {
   };
 
   describe('Component', () => {
+    describe('Snapshots', () => {
+      test('basic snapshot', () => {
+        const wrapper = searchControls();
+        wrapper.instance().onChange = jest.fn().mockName('onChange');
+        wrapper.instance().onClear = jest.fn().mockName('onClear');
+        expect(wrapper.instance().render()).toMatchSnapshot();
+      });
+    });
+
     describe('onChange', () => {
       it('saves the changed search value to Gradebook state', () => {
         const wrapper = searchControls();
@@ -80,14 +92,11 @@ describe('SearchControls', () => {
       test('setSearchValue from actions.app.setSearchValue', () => {
         expect(mapDispatchToProps.setSearchValue).toEqual(actions.app.setSearchValue);
       });
-    });
 
-    describe('Snapshots', () => {
-      test('basic snapshot', () => {
-        const wrapper = searchControls();
-        wrapper.instance().onChange = jest.fn().mockName('onChange');
-        wrapper.instance().onClear = jest.fn().mockName('onClear');
-        expect(wrapper.instance().render()).toMatchSnapshot();
+      test('toggleFilterDrawer from thunkActions.app.filterMenu.toggle', () => {
+        expect(
+          mapDispatchToProps.toggleFilterDrawer,
+        ).toEqual(thunkActions.app.filterMenu.toggle);
       });
     });
   });
