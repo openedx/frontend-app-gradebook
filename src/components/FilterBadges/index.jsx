@@ -9,6 +9,11 @@ import selectors from 'data/selectors';
 import RangeFilterBadge from './RangeFilterBadge';
 import SingleValueFilterBadge from './SingleValueFilterBadge';
 
+/**
+ * FilterBadges
+ * Displays a FilterBadge for each filter type in the data model with their current values.
+ * @param {func} handleFilterBadgeClose - event taking a list of filternames to reset
+ */
 export const FilterBadges = ({
   assignment,
   assignmentType,
