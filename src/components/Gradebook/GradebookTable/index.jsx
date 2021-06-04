@@ -12,7 +12,7 @@ import selectors from 'data/selectors';
 
 import Fields from './Fields';
 import LabelReplacements from './LabelReplacements';
-import GradeButton, { VARIANTS as GradeButtonVariants } from './GradeButton';
+import GradeButton from './GradeButton';
 
 export const DECIMAL_PRECISION = 2;
 export const headerLabelReplacements = {
@@ -53,14 +53,10 @@ export class GradebookTable extends React.Component {
   formatter = {
     percent: (entry, subsection) => {
       const entryGrade = this.roundGrade(subsection.percent * 100);
+      const label = `${entryGrade}`;
       return (this.props.areGradesFrozen
-        ? `${entryGrade}%`
-        : (
-          <GradeButton
-            {...{ entry, subsection, label: `${entryGrade}%` }}
-            variant={GradeButtonVariants.percent}
-          />
-        )
+        ? label
+        : (<GradeButton {...{ entry, subsection, label }} />)
       );
     },
 
@@ -70,12 +66,7 @@ export class GradebookTable extends React.Component {
       const label = subsection.attempted ? `${earned}/${possible}` : `${earned}`;
       return (this.props.areGradesFrozen
         ? label
-        : (
-          <GradeButton
-            {...{ entry, subsection, label }}
-            variant={GradeButtonVariants.absolute}
-          />
-        )
+        : (<GradeButton {...{ entry, subsection, label }} />)
       );
     },
   }

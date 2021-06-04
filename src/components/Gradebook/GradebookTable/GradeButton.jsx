@@ -6,13 +6,7 @@ import { connect } from 'react-redux';
 
 import { Button } from '@edx/paragon';
 
-import { StrictDict } from 'utils';
 import thunkActions from 'data/thunkActions';
-
-export const VARIANTS = StrictDict({
-  absolute: 'absolute',
-  percent: 'percent',
-});
 
 class GradeButton extends React.Component {
   constructor(props) {
@@ -33,7 +27,7 @@ class GradeButton extends React.Component {
         variant="link"
         className={classNames(
           'btn-header',
-          { 'grade-button': this.props.variant === VARIANTS.percent },
+          'grade-button',
         )}
         onClick={this.onClick}
       >
@@ -44,10 +38,6 @@ class GradeButton extends React.Component {
 }
 
 GradeButton.propTypes = {
-  variant: PropTypes.oneOf([
-    VARIANTS.absolute,
-    VARIANTS.percent,
-  ]).isRequired,
   label: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.number,
