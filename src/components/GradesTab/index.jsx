@@ -7,7 +7,7 @@ import actions from 'data/actions';
 import thunkActions from 'data/thunkActions';
 
 import PageButtons from '../PageButtons';
-import ConnectedFilterBadges from '../FilterBadges';
+import FilterBadges from '../FilterBadges';
 
 import BulkManagementControls from './BulkManagementControls';
 import EditModal from './EditModal';
@@ -40,7 +40,7 @@ export class GradesTab extends React.Component {
       <>
         <SpinnerIcon />
         <SearchControls />
-        <ConnectedFilterBadges handleFilterBadgeClose={this.handleFilterBadgeClose} />
+        <FilterBadges handleFilterBadgeClose={this.handleFilterBadgeClose} />
         <StatusAlerts />
 
         <h4>Step 2: View or Modify Individual Grades</h4>
