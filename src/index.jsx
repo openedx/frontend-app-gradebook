@@ -13,7 +13,7 @@ import {
 } from '@edx/frontend-platform';
 import { IntlProvider } from 'react-intl';
 
-import Footer from '@edx/frontend-component-footer';
+import Footer, { messages as footerMessages } from '@edx/frontend-component-footer';
 
 import GradebookPage from './containers/GradebookPage';
 import Header from './components/Header';
@@ -43,6 +43,8 @@ subscribe(APP_READY, () => {
 });
 
 initialize({
-  messages: [],
+  messages: [
+    footerMessages,
+  ],
   requireAuthenticatedUser: true,
 });
