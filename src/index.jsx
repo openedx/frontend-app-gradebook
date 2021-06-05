@@ -60,9 +60,7 @@ const App = () => (
     <Provider store={store}>
       <Router>
         <div>
-          <Header
-            logoDestination={getConfig().LMS_BASE_URL.concat('/dashboard')}
-          />
+          <Header />
           <main>
             <Switch>
               <Route exact path={getConfig().PUBLIC_PATH.concat(':courseId')} component={GradebookPage} />
