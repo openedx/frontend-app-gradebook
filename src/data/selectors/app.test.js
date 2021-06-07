@@ -93,6 +93,50 @@ describe('app selectors', () => {
       selectors.courseGradeFilterValidity = old;
     });
   });
+
+  describe('filterMenu', () => {
+    describe('isClosed', () => {
+      const testSelector = (open, transitioning, expected) => {
+        expect(exportedSelectors.filterMenu.isClosed({
+          app: { filterMenu: { open, transitioning } },
+        })).toEqual(expected);
+      };
+      it('returns true if filterMenu is !open and !transitioning', () => {
+        testSelector(false, false, true);
+      });
+      it('returns false if filterMenu is not (!open and !transitioning)', () => {
+        testSelector(true, false, false);
+        testSelector(false, true, false);
+        testSelector(true, true, false);
+      });
+    });
+    describe('isOpening', () => {
+      const testSelector = (open, transitioning, expected) => {
+        expect(exportedSelectors.filterMenu.isOpening({
+          app: { filterMenu: { open, transitioning } },
+        })).toEqual(expected);
+      };
+      it('returns true if filter menu is transitioning AND open', () => {
+        testSelector(true, true, true);
+      });
+      it('returns true if filter menu is not (transitioning AND open)', () => {
+        testSelector(false, false, false);
+        testSelector(true, false, false);
+        testSelector(false, true, false);
+      });
+    });
+    describe('simpleSelectors', () => {
+      const testFilterMenuSelector = (key) => {
+        test(key, () => {
+          expect(
+            exportedSelectors.filterMenu[key]({ app: { filterMenu: { [key]: testVal } } }),
+          ).toEqual(testVal);
+        });
+      };
+      testFilterMenuSelector('open');
+      testFilterMenuSelector('transitioning');
+    });
+  });
   describe('modalSelectors', () => {
     const testModalSelector = (key) => {
       test(key, () => {

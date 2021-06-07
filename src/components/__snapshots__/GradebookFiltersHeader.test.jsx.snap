@@ -1,0 +1,18 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`GradebookFiltersHeader Component snapshots basic snapshot 1`] = `
+<Fragment>
+  <h2>
+    <mockConstructor
+      className="fa fa-filter"
+    />
+  </h2>
+  <IconButton
+    alt="Close Filters"
+    aria-label="Close Filters"
+    className="p-1"
+    iconAs={[MockFunction Paragon.Icon]}
+    onClick={[MockFunction props.closeMenu]}
+  />
+</Fragment>
+`;

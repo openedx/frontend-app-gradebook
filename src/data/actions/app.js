@@ -12,11 +12,19 @@ const closeModal = createAction('closeModal');
  * @param {string} courseId - course ID from app context
  */
 const setCourseId = createAction('setCourseId');
+
+const filterMenu = StrictDict({
+  endTransition: createAction('filterMenu/endTransition'),
+  startTransition: createAction('filterMenu/startTransition'),
+  toggle: createAction('filterMenu/toggle'),
+});
+
 /**
   * setModalStateFromTable({ userEntry, subsection })
   * sets modalState
-  * */
+  */
 const setModalStateFromTable = createAction('setModalStateFromTable');
+
 /**
  * setSearchValue(searchValue)
  * sets searchValue in local state
@@ -48,9 +56,10 @@ const setModalState = createAction('setModalState', (modalState) => ({
 
 export default StrictDict({
   closeModal,
+  filterMenu,
   setCourseId,
   setModalState,
+  setModalStateFromTable,
   setSearchValue,
   setLocalFilter,
-  setModalStateFromTable,
 });
