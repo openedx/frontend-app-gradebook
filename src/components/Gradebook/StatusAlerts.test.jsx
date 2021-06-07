@@ -2,6 +2,7 @@ import React from 'react';
 import { shallow } from 'enzyme';
 
 import actions from 'data/actions';
+import selectors from 'data/selectors';
 import {
   StatusAlerts,
   mapDispatchToProps,
@@ -13,12 +14,25 @@ import {
 jest.mock('@edx/paragon', () => ({
   StatusAlert: 'StatusAlert',
 }));
+jest.mock('data/selectors', () => ({
+  __esModule: true,
+  default: {
+    app: {
+      courseGradeFilterValidity: (state) => ({ courseGradeFilterValidity: state }),
+    },
+    grades: {
+      showSuccess: (state) => ({ showSuccess: state }),
+    },
+  },
+}));
 
 describe('StatusAlerts', () => {
   let props = {
     showSuccessBanner: true,
-    isMaxCourseGradeFilterValid: true,
-    isMinCourseGradeFilterValid: true,
+    limitValidity: {
+      isMaxValid: true,
+      isMinValid: true,
+    },
   };
 
   beforeEach(() => {
@@ -48,26 +62,28 @@ describe('StatusAlerts', () => {
       [false, true],
       [true, false],
       [true, true],
-    ])('min + max course grade validity', (isMinCourseGradeFilterValid, isMaxCourseGradeFilterValid) => {
+    ])('min + max course grade validity', (isMinValid, isMaxValid) => {
       props = {
         ...props,
-        isMinCourseGradeFilterValid,
-        isMaxCourseGradeFilterValid,
+        limitValidity: {
+          isMinValid,
+          isMaxValid,
+        },
       };
       const el = shallow(<StatusAlerts {...props} />);
       expect(
         el.instance().isCourseGradeFilterAlertOpen,
       ).toEqual(
-        !isMinCourseGradeFilterValid || !isMaxCourseGradeFilterValid,
+        !isMinValid || !isMaxValid,
       );
-      if (!isMaxCourseGradeFilterValid) {
+      if (!isMaxValid) {
         expect(
           el.instance().courseGradeFilterAlertDialogText,
         ).toEqual(
           expect.stringContaining(maxCourseGradeInvalidMessage),
         );
       }
-      if (!isMinCourseGradeFilterValid) {
+      if (!isMinValid) {
         expect(
           el.instance().courseGradeFilterAlertDialogText,
         ).toEqual(
@@ -78,23 +94,23 @@ describe('StatusAlerts', () => {
   });
 
   describe('mapStateToProps', () => {
-    it('showSuccessBanner', () => {
-      const arbitraryValue = 'AppleBananaCucumber';
-      const state = {
-        grades: {
-          showSuccess: arbitraryValue,
-        },
-      };
-      expect(mapStateToProps(state).showSuccessBanner).toBe(arbitraryValue);
+    const testState = { A: 'pple', B: 'anana', C: 'ucumber' };
+    let mapped;
+    beforeEach(() => {
+      mapped = mapStateToProps(testState);
+    });
+    test('limitValidity from app.courseGradeFitlerValidity', () => {
+      expect(mapped.limitValidity).toEqual(selectors.app.courseGradeFilterValidity(testState));
+    });
+    test('showSuccessBanner from grades.showSuccess', () => {
+      expect(mapped.showSuccessBanner).toEqual(selectors.grades.showSuccess(testState));
     });
   });
-  describe('handleCloseSuccessBanner', () => {
-    test('handleCloseSuccessBanner', () => {
+  describe('mapDispatchToProps', () => {
+    test('handleCloseSuccessBanner from actions.grades.banner.close', () => {
       expect(
         mapDispatchToProps.handleCloseSuccessBanner,
-      ).toEqual(
-        actions.grades.banner.close,
-      );
+      ).toEqual(actions.grades.banner.close);
     });
   });
 });

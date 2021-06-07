@@ -29,8 +29,20 @@ export const allTracks = state => state.tracks.results || [];
  */
 export const stateHasMastersTrack = (state) => module.hasMastersTrack(module.allTracks(state));
 
+/**
+ * tracksByName(state)
+ * returns an object of all tracks keyed by name
+ * @param {object} state - redux state
+ * @return {object} - all tracks, keyed by name
+ */
+export const tracksByName = (state) => module.allTracks(state).reduce(
+  (obj, track) => ({ ...obj, [track.name]: track }),
+  {},
+);
+
 export default StrictDict({
   allTracks,
   hasMastersTrack,
   stateHasMastersTrack,
+  tracksByName,
 });

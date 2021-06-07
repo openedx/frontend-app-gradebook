@@ -1,6 +1,7 @@
 /* eslint-disable import/no-named-as-default-member */
 import selectors from '.';
 import * as moduleSelectors from '.';
+import { minGrade, maxGrade } from './grades';
 
 jest.mock('../services/LmsApiService', () => ({
   __esModule: true,
@@ -23,7 +24,155 @@ describe('root selectors', () => {
 
   const mockAssignmentType = 'Homework';
   const mockAssignmentLabel = 'HW 42';
-
+  beforeEach(() => {
+    selectors.app.courseId = jest.fn(() => testCourseId);
+  });
+  describe('editModalPossibleGrade', () => {
+    const selector = moduleSelectors.editModalPossibleGrade;
+    const grade1 = '42';
+    const grade2 = '3.14';
+    it('returns app.modalState.adjustedGradePossible if set', () => {
+      selectors.app.modalState.adjustedGradePossible = jest.fn(() => grade1);
+      selectors.grades.gradeOriginalPossibleGraded = jest.fn(() => grade2);
+      expect(selector(testState)).toEqual(grade1);
+    });
+    it('returns grades.gradeOriginalPossibleGraded if not overridden in modal', () => {
+      selectors.app.modalState.adjustedGradePossible = jest.fn(() => null);
+      selectors.grades.gradeOriginalPossibleGraded = jest.fn(() => grade2);
+      expect(selector(testState)).toEqual(grade2);
+    });
+  });
+  describe('formattedGradeLimits', () => {
+    const selector = moduleSelectors.formattedGradeLimits;
+    const mockAssgn = (assignmentGradeMax, assignmentGradeMin) => {
+      selectors.app.assignmentGradeLimits = jest.fn(() => ({
+        assignmentGradeMax,
+        assignmentGradeMin,
+      }));
+    };
+    const mockCourse = (courseGradeMax, courseGradeMin) => {
+      selectors.app.courseGradeLimits = jest.fn(() => ({ courseGradeMax, courseGradeMin }));
+    };
+    const mockId = (id) => {
+      selectors.filters.selectedAssignmentId = jest.fn(() => id);
+    };
+    const grade1 = '42';
+    const grade2 = '3.14';
+    it('returns an object of nulls if assignment is not set', () => {
+      mockId(undefined);
+      mockAssgn(grade1, grade2);
+      mockCourse(grade1, grade2);
+      expect(selector(testState)).toEqual({
+        assignmentGradeMax: null,
+        assignmentGradeMin: null,
+        courseGradeMax: null,
+        courseGradeMin: null,
+      });
+    });
+    it('returns null for each extreme iff they are equal their default', () => {
+      mockId('an ID!');
+      mockAssgn(maxGrade, grade1);
+      mockCourse(grade2, minGrade);
+      expect(selector(testState)).toEqual({
+        assignmentGradeMax: null,
+        assignmentGradeMin: grade1,
+        courseGradeMax: grade2,
+        courseGradeMin: null,
+      });
+      mockAssgn(grade2, minGrade);
+      mockCourse(maxGrade, grade1);
+      expect(selector(testState)).toEqual({
+        assignmentGradeMax: grade2,
+        assignmentGradeMin: null,
+        courseGradeMax: null,
+        courseGradeMin: grade1,
+      });
+    });
+  });
+  describe('getHeadings', () => {
+    const selector = moduleSelectors.getHeadings;
+    beforeEach(() => {
+      selectors.grades.headingMapper = jest.fn(
+        (type, label) => (breakdown) => ({ headingMapper: { type, label, breakdown } }),
+      );
+      selectors.filters.assignmentType = jest.fn();
+      selectors.filters.selectedAssignmentLabel = jest.fn();
+      selectors.grades.getExampleSectionBreakdown = mockFn('getExampleSectionBreakdown');
+    });
+    describe('no assignmentType or label selected', () => {
+      it('maps selected filters into getExampleSectionBreakdown', () => {
+        selectors.filters.assignmentType.mockReturnValue(undefined);
+        selectors.filters.selectedAssignmentLabel.mockReturnValue(undefined);
+        expect(selector(testState)).toEqual({
+          headingMapper: {
+            type: 'All',
+            label: 'All',
+            breakdown: { getExampleSectionBreakdown: testState },
+          },
+        });
+      });
+    });
+    describe('assignmentType and label selected', () => {
+      it('maps selected filters into getExampleSectionBreakdown', () => {
+        selectors.filters.assignmentType.mockReturnValue(mockAssignmentType);
+        selectors.filters.selectedAssignmentLabel.mockReturnValue(mockAssignmentLabel);
+        expect(selector(testState)).toEqual({
+          headingMapper: {
+            type: mockAssignmentType,
+            label: mockAssignmentLabel,
+            breakdown: { getExampleSectionBreakdown: testState },
+          },
+        });
+      });
+    });
+  });
+  describe('gradeExportUrl', () => {
+    const selector = moduleSelectors.gradeExportUrl;
+    let lmsApiServiceArgs;
+    beforeEach(() => {
+      selectors.filters.includeCourseRoleMembers = jest.fn();
+      lmsApiServiceArgs = moduleSelectors.lmsApiServiceArgs;
+      moduleSelectors.lmsApiServiceArgs = jest.fn(state => ({ lmsArgs: state }));
+    });
+    afterEach(() => {
+      moduleSelectors.lmsApiServiceArgs = lmsApiServiceArgs;
+    });
+    describe('without includeCourseRoleMembers filter', () => {
+      it('calls the API service with the right args, excluding all course roles', () => {
+        selectors.filters.includeCourseRoleMembers.mockReturnValue(undefined);
+        expect(selector(testState)).toEqual({
+          getGradeExportCsvUrl: {
+            args: [testCourseId, { lmsArgs: testState, excludeCourseRoles: 'all' }],
+          },
+        });
+      });
+    });
+    describe('with includeCourseRoleMembers filter', () => {
+      it('calls the API service with the right args, including course roles', () => {
+        selectors.filters.includeCourseRoleMembers.mockReturnValue(true);
+        expect(selector(testState)).toEqual({
+          getGradeExportCsvUrl: {
+            args: [testCourseId, { lmsArgs: testState, excludeCourseRoles: '' }],
+          },
+        });
+      });
+    });
+  });
+  describe('interventionExportUrl', () => {
+    it('calls the API service with the right args', () => {
+      const { lmsApiServiceArgs } = moduleSelectors;
+      selectors.filters.includeCourseRoleMembers = jest.fn();
+      moduleSelectors.lmsApiServiceArgs = jest.fn(state => ({ lmsArgs: state }));
+      expect(
+        moduleSelectors.interventionExportUrl(testState),
+      ).toEqual({
+        getInterventionExportCsvUrl: {
+          args: [testCourseId, { lmsArgs: testState }],
+        },
+      });
+      moduleSelectors.lmsApiServiceArgs = lmsApiServiceArgs;
+    });
+  });
   describe('lmsApiServiceArgs', () => {
     it('gathers formatted data from state for various lms api service calls', () => {
       selectors.cohorts.getCohortNameById = mockFn('getCohortNameById');
@@ -62,135 +211,71 @@ describe('root selectors', () => {
       });
     });
   });
-
-  describe('gradeExportUrl', () => {
-    const selector = moduleSelectors.gradeExportUrl;
-    let lmsApiServiceArgs;
+  describe('localFilters', () => {
+    const id = 'assignmentID';
+    const includeCourseRoleMembers = 'Banana';
+    const formattedGradeLimits = ({ some: 'limits' });
+    const oldFormattedGradeLimits = moduleSelectors.formattedGradeLimits;
+    const selector = moduleSelectors.localFilters;
     beforeEach(() => {
-      selectors.filters.includeCourseRoleMembers = jest.fn();
-      lmsApiServiceArgs = moduleSelectors.lmsApiServiceArgs;
-      moduleSelectors.lmsApiServiceArgs = jest.fn(state => ({ lmsArgs: state }));
+      moduleSelectors.formattedGradeLimits = jest.fn(() => formattedGradeLimits);
+      selectors.filters.selectedAssignmentId = jest.fn(() => id);
+      selectors.filters.includeCourseRoleMembers = jest.fn(() => includeCourseRoleMembers);
     });
     afterEach(() => {
-      moduleSelectors.lmsApiServiceArgs = lmsApiServiceArgs;
+      moduleSelectors.formattedGradeLimits = oldFormattedGradeLimits;
     });
-    describe('without includeCourseRoleMembers filter', () => {
-      it('calls the API service with the right args, excluding all course roles', () => {
-        selectors.filters.includeCourseRoleMembers.mockReturnValue(undefined);
-        expect(selector(testState, { courseId: testCourseId })).toEqual({
-          getGradeExportCsvUrl: {
-            args: [testCourseId, { lmsArgs: testState, excludeCourseRoles: 'all' }],
-          },
-        });
-      });
-    });
-    describe('with includeCourseRoleMembers filter', () => {
-      it('calls the API service with the right args, including course roles', () => {
-        selectors.filters.includeCourseRoleMembers.mockReturnValue(true);
-        expect(selector(testState, { courseId: testCourseId })).toEqual({
-          getGradeExportCsvUrl: {
-            args: [testCourseId, { lmsArgs: testState, excludeCourseRoles: '' }],
-          },
-        });
-      });
-    });
-  });
-
-  describe('interventionExportUrl', () => {
-    it('calls the API service with the right args', () => {
-      const { lmsApiServiceArgs } = moduleSelectors;
-      selectors.filters.includeCourseRoleMembers = jest.fn();
-      moduleSelectors.lmsApiServiceArgs = jest.fn(state => ({ lmsArgs: state }));
-      expect(
-        moduleSelectors.interventionExportUrl(testState, { courseId: testCourseId }),
-      ).toEqual({
-        getInterventionExportCsvUrl: {
-          args: [testCourseId, { lmsArgs: testState }],
-        },
-      });
-      moduleSelectors.lmsApiServiceArgs = lmsApiServiceArgs;
-    });
-  });
-
-  describe('getHeadings', () => {
-    const selector = moduleSelectors.getHeadings;
-    beforeEach(() => {
-      selectors.grades.headingMapper = jest.fn(
-        (type, label) => (breakdown) => ({ headingMapper: { type, label, breakdown } }),
-      );
-      selectors.filters.assignmentType = jest.fn();
-      selectors.filters.selectedAssignmentLabel = jest.fn();
-      selectors.grades.getExampleSectionBreakdown = mockFn('getExampleSectionBreakdown');
-    });
-    describe('no assignmentType or label selected', () => {
-      it('maps selected filters into getExampleSectionBreakdown', () => {
-        selectors.filters.assignmentType.mockReturnValue(undefined);
-        selectors.filters.selectedAssignmentLabel.mockReturnValue(undefined);
-        expect(selector(testState)).toEqual({
-          headingMapper: {
-            type: 'All',
-            label: 'All',
-            breakdown: { getExampleSectionBreakdown: testState },
-          },
-        });
-      });
-    });
-    describe('assignmentType and label selected', () => {
-      it('maps selected filters into getExampleSectionBreakdown', () => {
-        selectors.filters.assignmentType.mockReturnValue(mockAssignmentType);
-        selectors.filters.selectedAssignmentLabel.mockReturnValue(mockAssignmentLabel);
-        expect(selector(testState)).toEqual({
-          headingMapper: {
-            type: mockAssignmentType,
-            label: mockAssignmentLabel,
-            breakdown: { getExampleSectionBreakdown: testState },
-          },
-        });
-      });
-    });
-  });
-
-  describe('showBulkManagement', () => {
-    const mockAccess = (val) => {
-      selectors.special.hasSpecialBulkManagementAccess = jest.fn(() => val);
-    };
-    const mockHasMastersTrack = (val) => {
-      selectors.tracks.stateHasMastersTrack = jest.fn(() => val);
-    };
-    const selector = moduleSelectors.showBulkManagement;
-    const mkState = (bulkManagementAvailable) => ({ config: { bulkManagementAvailable } });
-    describe('user has special bulk management access', () => {
-      it('returns true', () => {
-        mockAccess(true);
-        mockHasMastersTrack(false);
-        expect(selector(mkState(true), { courseId: testCourseId })).toEqual(true);
-      });
-    });
-    describe('user does not have special access', () => {
+    describe('searchValue is set', () => {
+      const searchText = 'Who dis?';
       beforeEach(() => {
-        mockAccess(false);
+        selectors.app.searchValue = jest.fn(() => searchText);
       });
-      describe('course has a masters track, but bulkManagement not available', () => {
-        it('returns false', () => {
-          mockHasMastersTrack(true);
-          expect(selector(mkState(false), { courseId: testCourseId })).toEqual(false);
+      it('returns all local filter values, formatted for fetchGrades', () => {
+        expect(selector(testState)).toEqual({
+          assignment: id,
+          includeCourseRoleMembers,
+          ...formattedGradeLimits,
+          searchText,
         });
       });
-      describe('course does not have a masters track, but bulkManagement available', () => {
-        it('returns false', () => {
-          mockHasMastersTrack(false);
-          expect(selector(mkState(true), { courseId: testCourseId })).toEqual(false);
-        });
+    });
+    describe('searchValue is not set (is empty string)', () => {
+      beforeEach(() => {
+        selectors.app.searchValue = jest.fn(() => '');
       });
-      describe('course has a masters track, and bulkManagement is available', () => {
-        it('returns false', () => {
-          mockHasMastersTrack(true);
-          expect(selector(mkState(true), { courseId: testCourseId })).toEqual(true);
+      it('returns all local filter values except searchText, formatted for fetchGrades', () => {
+        expect(selector(testState)).toEqual({
+          assignment: id,
+          includeCourseRoleMembers,
+          ...formattedGradeLimits,
         });
       });
     });
   });
-
+  describe('selectedCohortEntry', () => {
+    it('returns the selected cohort entry object', () => {
+      const cohorts = [
+        { id: 11, name: 'C-a' },
+        { id: 22, name: 'C-b' },
+        { id: 33, name: 'C-c' },
+      ];
+      selectors.cohorts.allCohorts = jest.fn(() => cohorts);
+      selectors.filters.cohort = jest.fn(() => `${cohorts[1].id}`);
+      expect(moduleSelectors.selectedCohortEntry(testState)).toEqual(cohorts[1]);
+    });
+  });
+  describe('selectedTrackEntry', () => {
+    it('returns the selected track entry object', () => {
+      const tracks = [
+        { slug: 'S1', name: 's-a' },
+        { slug: 'S2', name: 's-b' },
+        { slug: 'S3', name: 's-c' },
+      ];
+      selectors.tracks.allTracks = jest.fn(() => tracks);
+      selectors.filters.track = jest.fn(() => tracks[2].slug);
+      expect(moduleSelectors.selectedTrackEntry(testState)).toEqual(tracks[2]);
+    });
+  });
   describe('shouldShowSpinner', () => {
     const selector = moduleSelectors.shouldShowSpinner;
     const testSelector = (canView, showSpinner, expected) => {
@@ -211,6 +296,46 @@ describe('root selectors', () => {
     describe('user can view gradebook, and showSpinner is true', () => {
       it('returns true', () => {
         testSelector(true, true, true);
+      });
+    });
+  });
+  describe('showBulkManagement', () => {
+    const mockAccess = (val) => {
+      selectors.special.hasSpecialBulkManagementAccess = jest.fn(() => val);
+    };
+    const mockHasMastersTrack = (val) => {
+      selectors.tracks.stateHasMastersTrack = jest.fn(() => val);
+    };
+    const selector = moduleSelectors.showBulkManagement;
+    const mkState = (bulkManagementAvailable) => ({ config: { bulkManagementAvailable } });
+    describe('user has special bulk management access', () => {
+      it('returns true', () => {
+        mockAccess(true);
+        mockHasMastersTrack(false);
+        expect(selector(mkState(true))).toEqual(true);
+      });
+    });
+    describe('user does not have special access', () => {
+      beforeEach(() => {
+        mockAccess(false);
+      });
+      describe('course has a masters track, but bulkManagement not available', () => {
+        it('returns false', () => {
+          mockHasMastersTrack(true);
+          expect(selector(mkState(false))).toEqual(false);
+        });
+      });
+      describe('course does not have a masters track, but bulkManagement available', () => {
+        it('returns false', () => {
+          mockHasMastersTrack(false);
+          expect(selector(mkState(true))).toEqual(false);
+        });
+      });
+      describe('course has a masters track, and bulkManagement is available', () => {
+        it('returns false', () => {
+          mockHasMastersTrack(true);
+          expect(selector(mkState(true))).toEqual(true);
+        });
       });
     });
   });

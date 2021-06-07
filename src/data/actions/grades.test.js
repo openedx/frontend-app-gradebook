@@ -102,14 +102,8 @@ describe('actions.grades', () => {
       ));
     });
     describe('uploadOverride', () => {
-      const courseId = 'fake ID';
-      const error = 'Try Again??';
       test('success action', () => testAction(actions.uploadOverride.success));
-      test('failure action', () => testAction(
-        actions.uploadOverride.failure,
-        [courseId, error],
-        { courseId, error },
-      ));
+      test('failure action', () => testAction(actions.uploadOverride.failure));
     });
   });
 });

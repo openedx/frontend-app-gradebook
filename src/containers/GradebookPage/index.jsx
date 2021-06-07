@@ -30,11 +30,11 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = {
   toggleFormat: actions.grades.toggleGradeFormat,
-  initializeFilters: actions.filters.initialize,
   resetFilters: actions.filters.reset,
+  initializeApp: thunkActions.app.initialize,
+  fetchGrades: thunkActions.grades.fetchGrades,
   getRoles: thunkActions.roles.fetchRoles,
   getTracks: thunkActions.tracks.fetchTracks,
-  getUserGrades: thunkActions.grades.fetchGrades,
 };
 
 const GradebookPage = connect(

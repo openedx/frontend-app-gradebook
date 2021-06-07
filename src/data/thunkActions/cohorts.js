@@ -1,19 +1,19 @@
 /* eslint-disable import/prefer-default-export */
 import { StrictDict } from 'utils';
-import cohorts from '../actions/cohorts';
+import actions from 'data/actions';
+import selectors from 'data/selectors';
+import LmsApiService from 'data/services/LmsApiService';
 
-import LmsApiService from '../services/LmsApiService';
-
-export const fetchCohorts = courseId => (
-  (dispatch) => {
-    dispatch(cohorts.fetching.started());
-    return LmsApiService.fetchCohorts(courseId)
+export const fetchCohorts = () => (
+  (dispatch, getState) => {
+    dispatch(actions.cohorts.fetching.started());
+    return LmsApiService.fetchCohorts(selectors.app.courseId(getState()))
       .then(response => response.data)
       .then((data) => {
-        dispatch(cohorts.fetching.received(data.cohorts));
+        dispatch(actions.cohorts.fetching.received(data.cohorts));
       })
       .catch(() => {
-        dispatch(cohorts.fetching.error());
+        dispatch(actions.cohorts.fetching.error());
       });
   }
 );

@@ -1,6 +1,7 @@
 import LmsApiService from '../services/LmsApiService';
 
 import actions from '../actions';
+import selectors from '../selectors';
 import * as thunkActions from './cohorts';
 import { createTestFetcher } from './testUtils';
 
@@ -16,12 +17,16 @@ const responseData = {
 };
 
 describe('cohorts thunkActions', () => {
+  const courseId = 'course-v1:edX+DemoX+Demo_Course';
+  beforeEach(() => {
+    selectors.app.courseId = jest.fn(() => courseId);
+  });
   describe('fetchCohorts', () => {
-    const courseId = 'course-v1:edX+DemoX+Demo_Course';
     const testFetch = createTestFetcher(
       LmsApiService.fetchCohorts,
       thunkActions.fetchCohorts,
-      [courseId],
+      [],
+      () => expect(LmsApiService.fetchCohorts).toHaveBeenCalledWith(courseId),
     );
     describe('actions dispatched on valid response', () => {
       test('fetching.started, fetching.received', () => testFetch(

@@ -14,6 +14,7 @@ jest.mock('../selectors', () => ({
   __esModule: true,
   default: {
     tracks: { hasMastersTrack: jest.fn(() => false) },
+    app: { },
   },
 }));
 jest.mock('./grades', () => ({
@@ -26,11 +27,15 @@ const responseData = {
 };
 
 describe('tracjs thunkActions', () => {
+  beforeEach(() => {
+    selectors.app.courseId = jest.fn(() => courseId);
+  });
   describe('fetchTracks', () => {
     const testFetch = createTestFetcher(
       LmsApiService.fetchTracks,
       fetchTracks,
-      [courseId],
+      [],
+      () => expect(LmsApiService.fetchTracks).toHaveBeenCalledWith(courseId),
     );
     describe('valid response', () => {
       describe('if not hasMastersTrack(data.course_modes)', () => {

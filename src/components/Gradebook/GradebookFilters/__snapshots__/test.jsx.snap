@@ -12,20 +12,9 @@ exports[`GradebookFilters Component snapshots basic snapshot 1`] = `
         updateQueryParams={[MockFunction]}
       />
       <Connect(AssignmentFilter)
-        courseId="12345"
         updateQueryParams={[MockFunction]}
       />
       <Connect(AssignmentGradeFilter)
-        courseId="12345"
-        filterValues={
-          Object {
-            "assignmentGradeMax": "90",
-            "assignmentGradeMin": "10",
-            "courseGradeMax": "80",
-            "courseGradeMin": "20",
-          }
-        }
-        setFilters={[MockFunction]}
         updateQueryParams={[MockFunction]}
       />
     </div>
@@ -36,16 +25,6 @@ exports[`GradebookFilters Component snapshots basic snapshot 1`] = `
     title="Overall Grade"
   >
     <Connect(CourseGradeFilter)
-      courseId="12345"
-      filterValues={
-        Object {
-          "assignmentGradeMax": "90",
-          "assignmentGradeMin": "10",
-          "courseGradeMax": "80",
-          "courseGradeMin": "20",
-        }
-      }
-      setFilters={[MockFunction]}
       updateQueryParams={[MockFunction]}
     />
   </Collapsible>
@@ -55,7 +34,6 @@ exports[`GradebookFilters Component snapshots basic snapshot 1`] = `
     title="Student Groups"
   >
     <Connect(StudentGroupsFilter)
-      courseId="12345"
       updateQueryParams={[MockFunction]}
     />
   </Collapsible>

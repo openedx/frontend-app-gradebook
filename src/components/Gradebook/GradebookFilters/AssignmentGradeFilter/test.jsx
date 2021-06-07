@@ -2,6 +2,7 @@ import React from 'react';
 import { mount, shallow } from 'enzyme';
 
 import actions from 'data/actions';
+import selectors from 'data/selectors';
 import { fetchGrades } from 'data/thunkActions/grades';
 
 import {
@@ -10,67 +11,61 @@ import {
   mapDispatchToProps,
 } from '.';
 
+jest.mock('data/selectors', () => ({
+  __esModule: true,
+  default: {
+    app: {},
+    filters: {},
+    grades: {},
+  },
+}));
+
+jest.mock('data/thunkActions/grades', () => ({
+  fetchGrades: jest.fn(),
+}));
+
 describe('AssignmentGradeFilter', () => {
-  let props = {
-    filterValues: {
-      assignmentGradeMin: '1',
-      assignmentGradeMax: '100',
-    },
-    courseId: '12345',
-
-    selectedAssignmentType: 'assgnFilterLabel1',
-    selectedAssignment: 'assgN1',
-    selectedCohort: 'a cohort',
-    selectedTrack: 'a track',
-  };
-
+  let props = {};
   beforeEach(() => {
     props = {
       ...props,
-      setFilters: jest.fn(),
       updateQueryParams: jest.fn(),
-      getUserGrades: jest.fn(),
+      fetchGrades: jest.fn(),
+      localAssignmentLimits: {
+        assignmentGradeMax: '98',
+        assignmentGradeMin: '2',
+      },
+      selectedAssignment: 'Potions 101.5',
+      setFilter: jest.fn(),
       updateAssignmentLimits: jest.fn(),
     };
   });
 
   describe('Component', () => {
     describe('behavior', () => {
+      let el;
+      beforeEach(() => {
+        el = mount(<AssignmentGradeFilter {...props} />);
+      });
       describe('handleSubmit', () => {
-        let el;
         beforeEach(() => {
-          el = mount(<AssignmentGradeFilter {...props} />);
           el.instance().handleSubmit();
         });
-        it('calls props.updateAssignmentLimits with min and max', () => {
-          expect(
-            props.updateAssignmentLimits,
-          ).toHaveBeenCalledWith({
-            maxGrade: props.filterValues.assignmentGradeMax,
-            minGrade: props.filterValues.assignmentGradeMin,
-          });
+        it('calls props.updateAssignmentLimits with local assignment limits', () => {
+          expect(props.updateAssignmentLimits).toHaveBeenCalledWith(props.localAssignmentLimits);
         });
-        it('calls getUserGrades w/ selection', () => {
-          expect(props.getUserGrades).toHaveBeenCalledWith(
-            props.courseId,
-            props.selectedCohort,
-            props.selectedTrack,
-            props.selectedAssignmentType,
-          );
+        it('calls fetchUserGrades', () => {
+          expect(props.fetchGrades).toHaveBeenCalledWith();
         });
         it('updates queryParams with assignment grade min and max', () => {
-          expect(props.updateQueryParams).toHaveBeenCalledWith({
-            assignmentGradeMin: props.filterValues.assignmentGradeMin,
-            assignmentGradeMax: props.filterValues.assignmentGradeMax,
-          });
+          expect(props.updateQueryParams).toHaveBeenCalledWith(props.localAssignmentLimits);
         });
       });
       describe('handleSetMin', () => {
         it('calls setFilters for assignmentGradeMin', () => {
           const testVal = 23;
-          const el = mount(<AssignmentGradeFilter {...props} />);
           el.instance().handleSetMin({ target: { value: testVal } });
-          expect(props.setFilters).toHaveBeenCalledWith({
+          expect(props.setFilter).toHaveBeenCalledWith({
             assignmentGradeMin: testVal,
           });
         });
@@ -78,9 +73,8 @@ describe('AssignmentGradeFilter', () => {
       describe('handleSetMax', () => {
         it('calls setFilters for assignmentGradeMax', () => {
           const testVal = 92;
-          const el = mount(<AssignmentGradeFilter {...props} />);
           el.instance().handleSetMax({ target: { value: testVal } });
-          expect(props.setFilters).toHaveBeenCalledWith({
+          expect(props.setFilter).toHaveBeenCalledWith({
             assignmentGradeMax: testVal,
           });
         });
@@ -109,61 +103,34 @@ describe('AssignmentGradeFilter', () => {
     });
   });
   describe('mapStateToProps', () => {
-    const state = {
-      filters: {
-        assignment: { label: 'assigNment' },
-        assignmentType: 'assignMentType',
-        cohort: 'COhort',
-        track: 'traCK',
-      },
-    };
+    const testState = { belle: 'in', the: 'castle' };
+    let mappedProps;
+    beforeEach(() => {
+      selectors.app.assignmentGradeLimits = jest.fn((state) => ({ gradeLimits: state }));
+      selectors.filters.selectedAssignmentLabel = jest.fn((state) => ({ assignmentLabel: state }));
+      mappedProps = mapStateToProps(testState);
+    });
+    describe('localAssignmentLimits', () => {
+      it('returns selectors.app.assignmentGradeLimits', () => {
+        expect(
+          mappedProps.localAssignmentLimits,
+        ).toEqual(selectors.app.assignmentGradeLimits(testState));
+      });
+    });
     describe('selectedAsssignment', () => {
-      it('is undefined if no assignment is passed', () => {
+      it('returns selectors.filters.selectedAssignmentLabel', () => {
         expect(
-          mapStateToProps({ filters: {} }).selectedAssignment,
-        ).toEqual(undefined);
-      });
-      it('returns the label of selected assignment if there is one', () => {
-        expect(
-          mapStateToProps(state).selectedAssignment,
-        ).toEqual(
-          state.filters.assignment.label,
-        );
-      });
-    });
-    describe('selectedAssignmentType', () => {
-      it('is drawn from state.filters.assignmentType', () => {
-        expect(
-          mapStateToProps(state).selectedAssignmentType,
-        ).toEqual(
-          state.filters.assignmentType,
-        );
-      });
-    });
-    describe('selectedCohort', () => {
-      it('is drawn from state.filters.cohort', () => {
-        expect(
-          mapStateToProps(state).selectedCohort,
-        ).toEqual(
-          state.filters.cohort,
-        );
-      });
-    });
-    describe('selectedTrack', () => {
-      it('is drawn from state.filters.track', () => {
-        expect(
-          mapStateToProps(state).selectedTrack,
-        ).toEqual(
-          state.filters.track,
-        );
+          mappedProps.selectedAssignment,
+        ).toEqual(selectors.filters.selectedAssignmentLabel(testState));
       });
     });
   });
   describe('mapDispatchToProps', () => {
-    test('getUserGrades', () => {
-      expect(mapDispatchToProps.getUserGrades).toEqual(
-        fetchGrades,
-      );
+    test('fetchGrades', () => {
+      expect(mapDispatchToProps.fetchGrades).toEqual(fetchGrades);
+    });
+    test('setFilters', () => {
+      expect(mapDispatchToProps.setFilter).toEqual(actions.app.setLocalFilter);
     });
     test('updateAssignmentLimits', () => {
       expect(

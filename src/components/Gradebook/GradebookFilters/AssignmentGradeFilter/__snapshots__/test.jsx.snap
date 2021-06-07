@@ -9,14 +9,14 @@ exports[`AssignmentGradeFilter Component snapshots buttons and groups disabled i
     id="assignmentGradeMin"
     label="Min Grade"
     onChange={[MockFunction handleSetMin]}
-    value="1"
+    value="2"
   />
   <PercentGroup
     disabled={true}
     id="assignmentGradeMax"
     label="Max Grade"
     onChange={[MockFunction handleSetMax]}
-    value="100"
+    value="98"
   />
   <div
     className="grade-filter-action"
@@ -44,14 +44,14 @@ exports[`AssignmentGradeFilter Component snapshots smoke test 1`] = `
     id="assignmentGradeMin"
     label="Min Grade"
     onChange={[MockFunction handleSetMin]}
-    value="1"
+    value="2"
   />
   <PercentGroup
     disabled={false}
     id="assignmentGradeMax"
     label="Max Grade"
     onChange={[MockFunction handleSetMax]}
-    value="100"
+    value="98"
   />
   <div
     className="grade-filter-action"

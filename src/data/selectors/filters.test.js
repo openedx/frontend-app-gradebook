@@ -119,6 +119,14 @@ describe('filters selectors', () => {
     });
   });
 
+  describe('areAssignmentGradeFiltersSet', () => {
+    it('returns true iff either assignmentGradeMax or assignmentGradeMin is set', () => {
+      expect(selectors.areAssignmentGradeFiltersSet({ filters: { assignmentGradeMax: '23' } })).toEqual(true);
+      expect(selectors.areAssignmentGradeFiltersSet({ filters: { assignmentGradeMin: '42' } })).toEqual(true);
+      expect(selectors.areAssignmentGradeFiltersSet({ filters: {} })).toEqual(false);
+    });
+  });
+
   describe('selectedAssignmentId', () => {
     it('gets filtered assignment ID when available', () => {
       const assignmentId = selectors.selectedAssignmentId(testState);

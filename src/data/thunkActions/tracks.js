@@ -8,8 +8,9 @@ import { fetchBulkUpgradeHistory } from './grades';
 
 import LmsApiService from '../services/LmsApiService';
 
-export const fetchTracks = courseId => (
-  (dispatch) => {
+export const fetchTracks = () => (
+  (dispatch, getState) => {
+    const courseId = selectors.app.courseId(getState());
     dispatch(tracks.fetching.started());
     return LmsApiService.fetchTracks(courseId)
       .then(response => response.data)

@@ -27,8 +27,8 @@ const reducer = (state = initialState, { type: actionType, payload }) => {
     case actions.update.assignmentLimits.toString():
       return {
         ...state,
-        assignmentGradeMin: payload.minGrade,
-        assignmentGradeMax: payload.maxGrade,
+        assignmentGradeMax: payload.assignmentGradeMax,
+        assignmentGradeMin: payload.assignmentGradeMin,
       };
     case actions.update.assignmentType.toString():
       return {
@@ -41,17 +41,18 @@ const reducer = (state = initialState, { type: actionType, payload }) => {
           ) ? '' : state.assignment
         ),
       };
+    case actions.update.cohort.toString():
+      return { ...state, cohort: payload };
     case actions.update.courseGradeLimits.toString():
       return {
         ...state,
-        courseGradeMin: payload.courseGradeMin,
         courseGradeMax: payload.courseGradeMax,
+        courseGradeMin: payload.courseGradeMin,
       };
     case actions.update.includeCourseRoleMembers.toString():
-      return {
-        ...state,
-        includeCourseRoleMembers: payload,
-      };
+      return { ...state, includeCourseRoleMembers: payload };
+    case actions.update.track.toString():
+      return { ...state, track: payload };
     case gradeActions.fetching.received.toString(): {
       const { assignment } = state;
       const { id, type } = assignment || {};

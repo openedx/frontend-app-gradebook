@@ -20,49 +20,34 @@ export class AssignmentGradeFilter extends React.Component {
   }
 
   handleSubmit() {
-    const {
-      assignmentGradeMin,
-      assignmentGradeMax,
-    } = this.props.filterValues;
-
-    this.props.updateAssignmentLimits({
-      maxGrade: assignmentGradeMax,
-      minGrade: assignmentGradeMin,
-    });
-    this.props.getUserGrades(
-      this.props.courseId,
-      this.props.selectedCohort,
-      this.props.selectedTrack,
-      this.props.selectedAssignmentType,
-    );
-    this.props.updateQueryParams({
-      assignmentGradeMin,
-      assignmentGradeMax,
-    });
+    this.props.updateAssignmentLimits(this.props.localAssignmentLimits);
+    this.props.fetchGrades();
+    this.props.updateQueryParams(this.props.localAssignmentLimits);
   }
 
-  handleSetMax(event) {
-    this.props.setFilters({ assignmentGradeMax: event.target.value });
+  handleSetMax({ target: { value } }) {
+    this.props.setFilter({ assignmentGradeMax: value });
   }
 
-  handleSetMin(event) {
-    this.props.setFilters({ assignmentGradeMin: event.target.value });
+  handleSetMin({ target: { value } }) {
+    this.props.setFilter({ assignmentGradeMin: value });
   }
 
   render() {
+    const { assignmentGradeMin, assignmentGradeMax } = this.props.localAssignmentLimits;
     return (
       <div className="grade-filter-inputs">
         <PercentGroup
           id="assignmentGradeMin"
           label="Min Grade"
-          value={this.props.filterValues.assignmentGradeMin}
+          value={assignmentGradeMin}
           disabled={!this.props.selectedAssignment}
           onChange={this.handleSetMin}
         />
         <PercentGroup
           id="assignmentGradeMax"
           label="Max Grade"
-          value={this.props.filterValues.assignmentGradeMax}
+          value={assignmentGradeMax}
           disabled={!this.props.selectedAssignment}
           onChange={this.handleSetMax}
         />
@@ -84,41 +69,30 @@ export class AssignmentGradeFilter extends React.Component {
 
 AssignmentGradeFilter.defaultProps = {
   selectedAssignment: '',
-  selectedAssignmentType: '',
-  selectedCohort: null,
-  selectedTrack: null,
 };
 
 AssignmentGradeFilter.propTypes = {
-  courseId: PropTypes.string.isRequired,
-  filterValues: PropTypes.shape({
-    assignmentGradeMin: PropTypes.string.isRequired,
-    assignmentGradeMax: PropTypes.string.isRequired,
-  }).isRequired,
-  setFilters: PropTypes.func.isRequired,
   updateQueryParams: PropTypes.func.isRequired,
 
   // redux
-  getUserGrades: PropTypes.func.isRequired,
-  selectedAssignmentType: PropTypes.string,
+  fetchGrades: PropTypes.func.isRequired,
+  localAssignmentLimits: PropTypes.shape({
+    assignmentGradeMax: PropTypes.string,
+    assignmentGradeMin: PropTypes.string,
+  }).isRequired,
   selectedAssignment: PropTypes.string,
-  selectedCohort: PropTypes.string,
-  selectedTrack: PropTypes.string,
+  setFilter: PropTypes.func.isRequired,
   updateAssignmentLimits: PropTypes.func.isRequired,
 };
 
-export const mapStateToProps = (state) => {
-  const { filters } = selectors;
-  return {
-    selectedAssignment: filters.selectedAssignmentLabel(state),
-    selectedAssignmentType: filters.assignmentType(state),
-    selectedCohort: filters.cohort(state),
-    selectedTrack: filters.track(state),
-  };
-};
+export const mapStateToProps = (state) => ({
+  localAssignmentLimits: selectors.app.assignmentGradeLimits(state),
+  selectedAssignment: selectors.filters.selectedAssignmentLabel(state),
+});
 
 export const mapDispatchToProps = {
-  getUserGrades: thunkActions.grades.fetchGrades,
+  fetchGrades: thunkActions.grades.fetchGrades,
+  setFilter: actions.app.setLocalFilter,
   updateAssignmentLimits: actions.filters.update.assignmentLimits,
 };
 

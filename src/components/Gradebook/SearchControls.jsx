@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 
 import { Button, Icon, SearchField } from '@edx/paragon';
 
+import actions from 'data/actions';
 import selectors from 'data/selectors';
 import thunkActions from 'data/thunkActions';
 
@@ -14,35 +15,18 @@ import thunkActions from 'data/thunkActions';
 export class SearchControls extends React.Component {
   constructor(props) {
     super(props);
-    this.onSubmit = this.onSubmit.bind(this);
     this.onChange = this.onChange.bind(this);
     this.onClear = this.onClear.bind(this);
   }
 
-  /** Submitting searches for user matching the username/email in `value` */
-  onSubmit(value) {
-    this.props.searchForUser(
-      this.props.courseId,
-      value,
-      this.props.selectedCohort,
-      this.props.selectedTrack,
-      this.props.selectedAssignmentType,
-    );
-  }
-
   /** Changing the search value stores the key in Gradebook. Currently unused */
-  onChange(filterValue) {
-    this.props.setFilterValue(filterValue);
+  onChange(searchValue) {
+    this.props.setSearchValue(searchValue);
   }
 
-  /** Clearing the search box falls back to showing students with already applied filters */
   onClear() {
-    this.props.getUserGrades(
-      this.props.courseId,
-      this.props.selectedCohort,
-      this.props.selectedTrack,
-      this.props.selectedAssignmentType,
-    );
+    this.props.setSearchValue('');
+    this.props.fetchGrades();
   }
 
   render() {
@@ -59,13 +43,15 @@ export class SearchControls extends React.Component {
           </Button>
           <div>
             <SearchField
-              onSubmit={this.onSubmit}
+              onSubmit={this.props.fetchGrades}
               inputLabel="Search for a learner"
               onChange={this.onChange}
               onClear={this.onClear}
-              value={this.props.filterValue}
+              value={this.props.searchValue}
             />
-            <small className="form-text text-muted search-help-text">Search by username, email, or student key</small>
+            <small className="form-text text-muted search-help-text">
+              Search by username, email, or student key
+            </small>
           </div>
         </div>
       </>
@@ -73,39 +59,21 @@ export class SearchControls extends React.Component {
   }
 }
 
-SearchControls.defaultProps = {
-  courseId: '',
-  filterValue: '',
-  selectedAssignmentType: '',
-  selectedCohort: null,
-  selectedTrack: null,
-};
-
 SearchControls.propTypes = {
-  courseId: PropTypes.string,
-  filterValue: PropTypes.string,
-  setFilterValue: PropTypes.func.isRequired,
   toggleFilterDrawer: PropTypes.func.isRequired,
   // From Redux
-  getUserGrades: PropTypes.func.isRequired,
-  searchForUser: PropTypes.func.isRequired,
-  selectedAssignmentType: PropTypes.string,
-  selectedCohort: PropTypes.string,
-  selectedTrack: PropTypes.string,
+  fetchGrades: PropTypes.func.isRequired,
+  searchValue: PropTypes.string.isRequired,
+  setSearchValue: PropTypes.func.isRequired,
 };
 
-export const mapStateToProps = (state) => {
-  const { filters } = selectors;
-  return {
-    selectedAssignmentType: filters.assignmentType(state),
-    selectedTrack: filters.track(state),
-    selectedCohort: filters.cohort(state),
-  };
-};
+export const mapStateToProps = (state) => ({
+  searchValue: selectors.app.searchValue(state),
+});
 
 export const mapDispatchToProps = {
-  getUserGrades: thunkActions.grades.fetchGrades,
-  searchForUser: thunkActions.grades.fetchMatchingUserGrades,
+  fetchGrades: thunkActions.grades.fetchGrades,
+  setSearchValue: actions.app.setSearchValue,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(SearchControls);

@@ -15,23 +15,11 @@ export class PageButtons extends React.Component {
   }
 
   getPrevGrades() {
-    this.props.getPrevNextGrades(
-      this.props.prevPage,
-      this.props.match.params.courseId,
-      this.props.selectedCohort,
-      this.props.selectedTrack,
-      this.props.selectedAssignmentType,
-    );
+    this.props.getPrevNextGrades(this.props.prevPage);
   }
 
   getNextGrades() {
-    this.props.getPrevNextGrades(
-      this.props.nextPage,
-      this.props.match.params.courseId,
-      this.props.selectedCohort,
-      this.props.selectedTrack,
-      this.props.selectedAssignmentType,
-    );
+    this.props.getPrevNextGrades(this.props.nextPage);
   }
 
   render() {
@@ -62,25 +50,11 @@ export class PageButtons extends React.Component {
 }
 
 PageButtons.defaultProps = {
-  match: {
-    params: { courseId: '' },
-  },
-  selectedAssignmentType: null,
-  selectedCohort: null,
-  selectedTrack: null,
   nextPage: '',
   prevPage: '',
 };
 
 PageButtons.propTypes = {
-  match: PropTypes.shape({
-    params: PropTypes.shape({
-      courseId: PropTypes.string,
-    }),
-  }),
-  selectedAssignmentType: PropTypes.string,
-  selectedCohort: PropTypes.shape({ name: PropTypes.string }),
-  selectedTrack: PropTypes.shape({ name: PropTypes.string }),
   // redux
   getPrevNextGrades: PropTypes.func.isRequired,
   nextPage: PropTypes.string,

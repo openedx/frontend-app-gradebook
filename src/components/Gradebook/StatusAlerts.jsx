@@ -12,17 +12,18 @@ export const minCourseGradeInvalidMessage = 'Minimum course grade value must be 
 
 export class StatusAlerts extends React.Component {
   get isCourseGradeFilterAlertOpen() {
-    const r = !this.props.isMinCourseGradeFilterValid
-    || !this.props.isMaxCourseGradeFilterValid;
-    return r;
+    return (
+      !this.props.limitValidity.isMinValid
+      || !this.props.limitValidity.isMaxValid
+    );
   }
 
   get courseGradeFilterAlertDialogText() {
     let dialogText = '';
-    if (!this.props.isMinCourseGradeFilterValid) {
+    if (!this.props.limitValidity.isMinValid) {
       dialogText += minCourseGradeInvalidMessage;
     }
-    if (!this.props.isMaxCourseGradeFilterValid) {
+    if (!this.props.limitValidity.isMaxValid) {
       dialogText += maxCourseGradeInvalidMessage;
     }
     return dialogText;
@@ -49,19 +50,20 @@ export class StatusAlerts extends React.Component {
 }
 
 StatusAlerts.defaultProps = {
-  isMinCourseGradeFilterValid: true,
-  isMaxCourseGradeFilterValid: true,
 };
 
 StatusAlerts.propTypes = {
-  isMinCourseGradeFilterValid: PropTypes.bool,
-  isMaxCourseGradeFilterValid: PropTypes.bool,
   // redux
   handleCloseSuccessBanner: PropTypes.func.isRequired,
+  limitValidity: PropTypes.shape({
+    isMaxValid: PropTypes.bool,
+    isMinValid: PropTypes.bool,
+  }).isRequired,
   showSuccessBanner: PropTypes.bool.isRequired,
 };
 
 export const mapStateToProps = (state) => ({
+  limitValidity: selectors.app.courseGradeFilterValidity(state),
   showSuccessBanner: selectors.grades.showSuccess(state),
 });
 

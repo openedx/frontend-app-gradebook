@@ -6,21 +6,22 @@ import { createMiddleware } from 'redux-beacon';
 import Segment, { trackEvent, trackPageView } from '@redux-beacon/segment';
 
 import actions from './actions';
+import selectors from './selectors';
 import reducers from './reducers';
 
 const loggerMiddleware = createLogger();
 const trackingCategory = 'gradebook';
 
 const eventsMap = {
-  [actions.roles.fetching.received.toString()]: trackPageView(({ payload }) => ({
+  [actions.roles.fetching.received.toString()]: trackPageView((action, prevState) => ({
     category: trackingCategory,
-    page: payload.courseId,
+    page: selectors.app.courseId(prevState),
   })),
-  [actions.grades.fetching.received.toString()]: trackEvent(({ payload }) => ({
+  [actions.grades.fetching.received.toString()]: trackEvent(({ payload }, prevState) => ({
     name: 'edx.gradebook.grades.displayed',
     properties: {
       category: trackingCategory,
-      label: payload.courseId,
+      label: selectors.app.courseId(prevState),
       track: payload.track,
       cohort: payload.cohort,
       assignmentType: payload.assignmentType,
@@ -28,60 +29,60 @@ const eventsMap = {
       next: payload.next,
     },
   })),
-  [actions.grades.update.success.toString()]: trackEvent(({ payload }) => ({
+  [actions.grades.update.success.toString()]: trackEvent(({ payload }, prevState) => ({
     name: 'edx.gradebook.grades.grade_override.succeeded',
     properties: {
       category: trackingCategory,
-      label: payload.courseId,
+      label: selectors.app.courseId(prevState),
       updatedGrades: payload.responseData,
     },
   })),
-  [actions.grades.update.failure.toString()]: trackEvent(({ payload }) => ({
+  [actions.grades.update.failure.toString()]: trackEvent(({ payload }, prevState) => ({
     name: 'edx.gradebook.grades.grade_override.failed',
     properties: {
       category: trackingCategory,
-      label: payload.courseId,
+      label: selectors.app.courseId(prevState),
       error: payload.error,
     },
   })),
-  [actions.grades.uploadOverride.success.toString()]: trackEvent(({ payload }) => ({
+  [actions.grades.uploadOverride.success.toString()]: trackEvent((action, prevState) => ({
     name: 'edx.gradebook.grades.upload.grades_overrides.succeeded',
     properties: {
       category: trackingCategory,
-      label: payload.courseId,
+      label: selectors.app.courseId(prevState),
     },
   })),
-  [actions.grades.uploadOverride.failure.toString()]: trackEvent(({ payload }) => ({
+  [actions.grades.uploadOverride.failure.toString()]: trackEvent(({ payload }, prevState) => ({
     name: 'edx.gradebook.grades.upload.grades_overrides.failed',
     properties: {
       category: trackingCategory,
-      label: payload.courseId,
+      label: selectors.app.courseId(prevState),
       error: payload.error,
     },
   })),
-  [actions.filters.update.courseGradeLimits]: trackEvent(({ payload }) => ({
+  [actions.filters.update.courseGradeLimits]: trackEvent((action, prevState) => ({
     name: 'edx.gradebook.grades.filter_applied',
-    label: payload.courseId,
+    label: selectors.app.courseId(prevState),
     properties: {
       category: trackingCategory,
-      label: payload.courseId,
+      label: selectors.app.courseId(prevState),
     },
   })),
   [actions.grades.downloadReport.bulkGrades.toString()]: trackEvent(
-    ({ payload }) => ({
+    (action, prevState) => ({
       name: 'edx.gradebook.reports.grade_export.downloaded',
       properties: {
         category: trackingCategory,
-        label: payload.courseId,
+        label: selectors.app.courseId(prevState),
       },
     }),
   ),
   [actions.grades.downloadReport.intervention.toString()]: trackEvent(
-    ({ payload }) => ({
+    (action, prevState) => ({
       name: 'edx.gradebook.reports.intervention.downloaded',
       properties: {
         category: trackingCategory,
-        label: payload.courseId,
+        label: selectors.app.courseId(prevState),
       },
     }),
   ),
@@ -93,6 +94,11 @@ const store = createStore(
   reducers,
   composeWithDevTools(applyMiddleware(thunkMiddleware, loggerMiddleware, segmentMiddleware)),
 );
+
+// TODO debug only
+window.store = store;
+window.actions = actions;
+window.selectors = selectors;
 
 export { trackingCategory };
 export default store;
