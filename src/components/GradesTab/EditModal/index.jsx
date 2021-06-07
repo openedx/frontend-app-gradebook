@@ -16,6 +16,15 @@ import thunkActions from 'data/thunkActions';
 import OverrideTable from './OverrideTable';
 import ModalHeaders from './ModalHeaders';
 
+/**
+ * <EditModal />
+ * Wrapper component for the modal that allows editing the grade for an individual
+ * unit, for a given student.
+ * Provides a StatusAlert with override fetch errors if any are found, an OverrideTable
+ * (with appropriate headers) for managing the actual override, and a submit button for
+ * adjusting the grade.
+ * (also provides a close button that clears the modal state)
+ */
 export class EditModal extends React.Component {
   constructor(props) {
     super(props);

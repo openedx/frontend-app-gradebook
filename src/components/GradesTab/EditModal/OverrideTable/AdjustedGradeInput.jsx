@@ -8,6 +8,11 @@ import { Form } from '@edx/paragon';
 import selectors from 'data/selectors';
 import actions from 'data/actions';
 
+/**
+ * <AdjustedGradeInput />
+ * Input control for adjusting the grade of a unit
+ * displays an "/ ${possibleGrade} if there is one in the data model.
+ */
 export class AdjustedGradeInput extends React.Component {
   constructor(props) {
     super(props);

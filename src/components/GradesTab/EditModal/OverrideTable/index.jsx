@@ -16,6 +16,11 @@ const GRADE_OVERRIDE_HISTORY_COLUMNS = [
   { label: 'Adjusted grade', key: 'adjustedGrade' },
 ];
 
+/**
+ * <OverrideTable />
+ * Table containing previous grade override entries, and an "edit" row
+ * withi todays date, an AdjustedGradeInput and a ReasonInput
+ */
 export const OverrideTable = ({
   hide,
   gradeOverrides,
@@ -42,6 +47,7 @@ OverrideTable.defaultProps = {
   gradeOverrides: [],
 };
 OverrideTable.propTypes = {
+  // redux
   gradeOverrides: PropTypes.arrayOf(PropTypes.shape({
     date: PropTypes.string,
     grader: PropTypes.string,

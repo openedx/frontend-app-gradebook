@@ -1,0 +1,51 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ModalHeaders Component snapshots gradeOverrideHistoryError is and empty and open is true modal open and StatusAlert showing 1`] = `
+<div>
+  <HistoryHeader
+    id="assignment"
+    label="Assignment"
+    value="Qwerty"
+  />
+  <HistoryHeader
+    id="student"
+    label="Student"
+    value="Uiop"
+  />
+  <HistoryHeader
+    id="original-grade"
+    label="Original Grade"
+    value={20}
+  />
+  <HistoryHeader
+    id="current-grade"
+    label="Current Grade"
+    value={2}
+  />
+</div>
+`;
+
+exports[`ModalHeaders Component snapshots gradeOverrideHistoryError is empty and open is false modal closed and StatusAlert closed 1`] = `
+<div>
+  <HistoryHeader
+    id="assignment"
+    label="Assignment"
+    value="Qwerty"
+  />
+  <HistoryHeader
+    id="student"
+    label="Student"
+    value="Uiop"
+  />
+  <HistoryHeader
+    id="original-grade"
+    label="Original Grade"
+    value={20}
+  />
+  <HistoryHeader
+    id="current-grade"
+    label="Current Grade"
+    value={2}
+  />
+</div>
+`;

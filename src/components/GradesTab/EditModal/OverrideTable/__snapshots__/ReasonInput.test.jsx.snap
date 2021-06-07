@@ -1,0 +1,10 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ReasonInput Component snapshots displays reason for change input control 1`] = `
+<Control
+  name="reasonForChange"
+  onChange={[MockFunction this.onChange]}
+  type="text"
+  value="did not answer the question"
+/>
+`;
