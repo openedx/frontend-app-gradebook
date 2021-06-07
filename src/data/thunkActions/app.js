@@ -21,16 +21,14 @@ export const filterMenu = StrictDict({
   },
   handleTransitionEnd: (event) => (dispatch) => {
     if (event.currentTarget === event.target) {
-      dispatch(actions.app.filterMenu.endTransition);
+      dispatch(actions.app.filterMenu.endTransition());
     }
   },
   toggle: () => (dispatch) => {
     dispatch(actions.app.filterMenu.startTransition());
-    window.requestAnimationFrame(
-      () => window.setTimeout(() => {
-        dispatch(actions.app.filterMenu.toggle());
-      }),
-    );
+    const toggleMenu = () => dispatch(actions.app.filterMenu.toggle());
+    const animationCb = () => window.setTimeout(toggleMenu);
+    window.requestAnimationFrame(animationCb);
   },
 });
 

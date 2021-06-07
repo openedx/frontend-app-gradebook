@@ -109,8 +109,6 @@ export default StrictDict({
   courseGradeFilterValidity,
   courseGradeLimits,
   editUpdateData,
-  isFilterMenuClosed,
-  isFilterMenuOpening,
   ...simpleSelectors,
   modalState: StrictDict(modalSelectors),
   filterMenu: StrictDict({
