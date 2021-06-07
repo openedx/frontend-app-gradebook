@@ -19,7 +19,7 @@ const GRADE_OVERRIDE_HISTORY_COLUMNS = [
 /**
  * <OverrideTable />
  * Table containing previous grade override entries, and an "edit" row
- * withi todays date, an AdjustedGradeInput and a ReasonInput
+ * with todays date, an AdjustedGradeInput and a ReasonInput
  */
 export const OverrideTable = ({
   hide,

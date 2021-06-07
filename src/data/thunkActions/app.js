@@ -26,6 +26,7 @@ export const filterMenu = StrictDict({
   },
   toggle: () => (dispatch) => {
     dispatch(actions.app.filterMenu.startTransition());
+    const toggleMenu = () => dispatch(actions.app.filterMenu.toggle());
     const animationCb = () => window.setTimeout(toggleMenu);
     window.requestAnimationFrame(animationCb);
   },
