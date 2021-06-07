@@ -6,6 +6,20 @@ import classNames from 'classnames';
 import selectors from 'data/selectors';
 import thunkActions from 'data/thunkActions';
 
+/**
+ * WithSidebar
+ * Simple wrapper around a content component, with a collapsible sidebar, whose open/closed
+ * state is drawn from redux.
+ *
+ * Wraps child react content in a container to enable the sidebar behavior.
+ *
+ *  @param {JSX} children - page content
+ *  @param {JSX} sidebar - sidebar content
+ *  @param {JSX} sidebarHeader - sidebar header content
+ *
+ * Ex Usage:
+ *   <WithSidebar sidebar={sidebarContent} sidebarHeader={sidebarHeader}>{children}</WithSidebar>
+ */
 export class WithSidebar extends React.Component {
   get sidebarClassNames() {
     return classNames('sidebar', { open: this.props.open, 'd-none': this.props.isClosed });
