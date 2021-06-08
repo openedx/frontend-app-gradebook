@@ -1,0 +1,56 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`LabelReplacements TotalGradeLabelReplacement displays overlay tooltip 1`] = `
+<Tooltip
+  id="course-grade-tooltip"
+>
+  Total Grade values are always displayed as a percentage.
+</Tooltip>
+`;
+
+exports[`LabelReplacements TotalGradeLabelReplacement snapshot 1`] = `
+<div>
+  <OverlayTrigger
+    key="left-basic"
+    overlay={
+      <Tooltip
+        id="course-grade-tooltip"
+      >
+        Total Grade values are always displayed as a percentage.
+      </Tooltip>
+    }
+    placement="left"
+    trigger={
+      Array [
+        "hover",
+        "focus",
+      ]
+    }
+  >
+    <div>
+      Total Grade (%)
+      <div
+        id="courseGradeTooltipIcon"
+      >
+        <Icon
+          className="fa fa-info-circle"
+          screenReaderText="Total Grade values are always displayed as a percentage."
+        />
+      </div>
+    </div>
+  </OverlayTrigger>
+</div>
+`;
+
+exports[`LabelReplacements UsernameLabelReplacement snapshot 1`] = `
+<div>
+  <div>
+    Username
+  </div>
+  <div
+    className="font-weight-normal student-key"
+  >
+    Student Key*
+  </div>
+</div>
+`;

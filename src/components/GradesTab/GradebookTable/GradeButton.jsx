@@ -1,17 +1,31 @@
 /* eslint-disable react/sort-comp, react/button-has-type */
 import React from 'react';
 import PropTypes from 'prop-types';
-import classNames from 'classnames';
 import { connect } from 'react-redux';
 
 import { Button } from '@edx/paragon';
 
+import selectors from 'data/selectors';
 import thunkActions from 'data/thunkActions';
 
-class GradeButton extends React.Component {
+const { subsectionGrade } = selectors.grades;
+
+/**
+ * GradeButton
+ * The button link for a user's grade for a given subseciton.
+ * load formatting based on selected grade format, and on click, opens
+ * the editModal, loading in the current entry and subsection.
+ * @param {object} entry - user's grade entry
+ * @param {object} subsection - user's subsection grade from subsection_breakdown
+ */
+export class GradeButton extends React.Component {
   constructor(props) {
     super(props);
     this.onClick = this.onClick.bind(this);
+  }
+
+  get label() {
+    return subsectionGrade[this.props.format](this.props.subsection);
   }
 
   onClick() {
@@ -22,26 +36,21 @@ class GradeButton extends React.Component {
   }
 
   render() {
-    return (
-      <Button
-        variant="link"
-        className={classNames(
-          'btn-header',
-          'grade-button',
-        )}
-        onClick={this.onClick}
-      >
-        {this.props.label}
-      </Button>
-    );
+    return this.props.areGradesFrozen
+      ? this.label
+      : (
+        <Button
+          variant="link"
+          className="btn-header grade-button"
+          onClick={this.onClick}
+        >
+          {this.label}
+        </Button>
+      );
   }
 }
 
 GradeButton.propTypes = {
-  label: PropTypes.oneOfType([
-    PropTypes.string,
-    PropTypes.number,
-  ]).isRequired,
   subsection: PropTypes.shape({
     attempted: PropTypes.bool,
     percent: PropTypes.number,
@@ -54,11 +63,18 @@ GradeButton.propTypes = {
     username: PropTypes.string,
   }).isRequired,
   // redux
+  areGradesFrozen: PropTypes.bool.isRequired,
+  format: PropTypes.string.isRequired,
   setModalState: PropTypes.func.isRequired,
 };
+
+export const mapStateToProps = (state) => ({
+  areGradesFrozen: selectors.assignmentTypes.areGradesFrozen(state),
+  format: selectors.grades.gradeFormat(state),
+});
 
 export const mapDispatchToProps = {
   setModalState: thunkActions.app.setModalStateFromTable,
 };
 
-export default connect(() => ({}), mapDispatchToProps)(GradeButton);
+export default connect(mapStateToProps, mapDispatchToProps)(GradeButton);

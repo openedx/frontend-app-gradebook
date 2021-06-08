@@ -3,30 +3,41 @@ import PropTypes from 'prop-types';
 
 import { StrictDict } from 'utils';
 
-const Username = ({ entry }) => (
+/**
+ * Fields.Username
+ * simple label field for username, that optionally also displays external_user_key (userKey)
+ * if it is provided.
+ * @param {string} username - username for display
+ * @param {userKey} userKey - external_user_key for display
+ */
+const Username = ({ username, userKey }) => (
   <div>
     <span className="wrap-text-in-cell">
       <div>
-        <div>{entry.username}</div>
-        {entry.external_user_key && <div className="student-key">{entry.external_user_key}</div>}
+        <div>{username}</div>
+        {userKey && <div className="student-key">{userKey}</div>}
       </div>
     </span>
   </div>
 );
+Username.defaultProps = {
+  userKey: null,
+};
 Username.propTypes = {
-  entry: PropTypes.shape({
-    username: PropTypes.string,
-    external_user_key: PropTypes.string,
-  }).isRequired,
+  username: PropTypes.string.isRequired,
+  userKey: PropTypes.string,
 };
 
-const Email = ({ entry }) => (
-  <span className="wrap-text-in-cell">{entry.email}</span>
+/**
+ * Fields.Email
+ * Simple label field for email value.
+ * @param {string} email - email for display
+ */
+const Email = ({ email }) => (
+  <span className="wrap-text-in-cell">{email}</span>
 );
 Email.propTypes = {
-  entry: PropTypes.shape({
-    email: PropTypes.string,
-  }).isRequired,
+  email: PropTypes.string.isRequired,
 };
 
 export default StrictDict({

@@ -1,0 +1,68 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Gradebook Table Fields Email snapshot 1`] = `
+<span
+  className="wrap-text-in-cell"
+>
+  myTag@place.com
+</span>
+`;
+
+exports[`Gradebook Table Fields Username with external_user_key snapshot 1`] = `
+<div>
+  <span
+    className="wrap-text-in-cell"
+  >
+    <div>
+      <div>
+        MyNameFromHere
+      </div>
+      <div
+        className="student-key"
+      >
+        My name from another land
+      </div>
+    </div>
+  </span>
+</div>
+`;
+
+exports[`Gradebook Table Fields Username with external_user_key wraps external user key and username 1`] = `
+<div>
+  <div>
+    MyNameFromHere
+  </div>
+  <div
+    className="student-key"
+  >
+    My name from another land
+  </div>
+</div>
+`;
+
+exports[`Gradebook Table Fields Username with external_user_key wraps external user key and username 2`] = `
+<div>
+  <div>
+    MyNameFromHere
+  </div>
+  <div
+    className="student-key"
+  >
+    My name from another land
+  </div>
+</div>
+`;
+
+exports[`Gradebook Table Fields Username without external_user_key snapshot 1`] = `
+<div>
+  <span
+    className="wrap-text-in-cell"
+  >
+    <div>
+      <div>
+        MyNameFromHere
+      </div>
+    </div>
+  </span>
+</div>
+`;
