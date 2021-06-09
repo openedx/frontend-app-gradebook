@@ -1,0 +1,15 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`HistoryHeader Component snapshot 1`] = `
+<div>
+  <div
+    className="grade-history-header grade-history-water"
+  >
+    Brita
+    : 
+  </div>
+  <div>
+    hydration
+  </div>
+</div>
+`;

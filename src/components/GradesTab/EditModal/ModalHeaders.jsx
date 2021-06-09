@@ -3,22 +3,13 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 import selectors from 'data/selectors';
+import HistoryHeader from './HistoryHeader';
 
-const HistoryHeader = ({ id, label, value }) => (
-  <div>
-    <div className={`grade-history-header grade-history-${id}`}>{label}: </div>
-    <div>{value}</div>
-  </div>
-);
-HistoryHeader.defaultProps = {
-  value: null,
-};
-HistoryHeader.propTypes = {
-  id: PropTypes.string.isRequired,
-  label: PropTypes.string.isRequired,
-  value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-};
-
+/**
+ * <ModalHeaders />
+ * Provides a list of HistoryHeaders for the student name, assignment,
+ * original grade, and current override grade.
+ */
 export const ModalHeaders = ({
   modalState,
   originalGrade,
@@ -62,7 +53,6 @@ ModalHeaders.propTypes = {
 };
 
 export const mapStateToProps = (state) => ({
-  editUpdateData: selectors.app.editUpdateData(state),
   modalState: {
     assignmentName: selectors.app.modalState.assignmentName(state),
     updateUserName: selectors.app.modalState.updateUserName(state),

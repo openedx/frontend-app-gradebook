@@ -7,6 +7,10 @@ import { Form } from '@edx/paragon';
 import selectors from 'data/selectors';
 import actions from 'data/actions';
 
+/**
+ * <ReasonInput />
+ * Input control for the "reason for change" field in the Edit modal.
+ */
 export class ReasonInput extends React.Component {
   constructor(props) {
     super(props);

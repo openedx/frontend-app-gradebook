@@ -1,0 +1,47 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`OverrideTable Component snapshots basic snapshot shows a row for each entry and one editable row 1`] = `
+<Table
+  columns={
+    Array [
+      Object {
+        "key": "date",
+        "label": "Date",
+      },
+      Object {
+        "key": "grader",
+        "label": "Grader",
+      },
+      Object {
+        "key": "reason",
+        "label": "Reason",
+      },
+      Object {
+        "key": "adjustedGrade",
+        "label": "Adjusted grade",
+      },
+    ]
+  }
+  data={
+    Array [
+      Object {
+        "adjustedGrade": 0,
+        "date": "yesterday",
+        "grader": "me",
+        "reason": "you ate my sandwich",
+      },
+      Object {
+        "adjustedGrade": 20,
+        "date": "today",
+        "grader": "me",
+        "reason": "you brought me a new sandwich",
+      },
+      Object {
+        "adjustedGrade": <AdjustedGradeInput />,
+        "date": "todaaaaaay",
+        "reason": <ReasonInput />,
+      },
+    ]
+  }
+/>
+`;
