@@ -1,74 +1,57 @@
-/* eslint-disable react/sort-comp, react/button-has-type */
+/* eslint-disable react/sort-comp, react/button-has-type, import/no-named-as-default */
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
-import {
-  Table,
-} from '@edx/paragon';
+import { Table } from '@edx/paragon';
 
-import { EMAIL_HEADING, TOTAL_COURSE_GRADE_HEADING, USERNAME_HEADING } from 'data/constants/grades';
+import { Headings } from 'data/constants/grades';
 import selectors from 'data/selectors';
 
 import Fields from './Fields';
 import LabelReplacements from './LabelReplacements';
 import GradeButton from './GradeButton';
 
-export const DECIMAL_PRECISION = 2;
-export const headerLabelReplacements = {
-  [TOTAL_COURSE_GRADE_HEADING]: <LabelReplacements.TotalGradeLabelReplacement />,
-  [USERNAME_HEADING]: <LabelReplacements.UsernameLabelReplacement />,
-};
+const { roundGrade } = selectors.grades;
 
+/**
+ * <GraebookTable />
+ * This is the wrapper component for the Grades tab gradebook table, holding
+ * a row for each user, with a column for their username, email, and total grade,
+ * along with one for each subsection in their grade entry.
+ */
 export class GradebookTable extends React.Component {
-  replaceHeader = (heading) => {
-    const replacement = headerLabelReplacements[heading];
+  constructor(props) {
+    super(props);
+    this.mapHeaders = this.mapHeaders.bind(this);
+    this.mapRows = this.mapRows.bind(this);
+  }
+
+  mapHeaders(heading) {
+    const replacement = {
+      [Headings.totalGrade]: <LabelReplacements.TotalGradeLabelReplacement />,
+      [Headings.username]: <LabelReplacements.UsernameLabelReplacement />,
+    }[heading];
     return {
       label: replacement !== undefined ? replacement : heading,
       key: heading,
     };
   }
 
-  formatHeadings = () => (
-    this.props.headings.length
-      ? this.props.headings.map(this.replaceHeader)
-      : this.props.headings
-  )
-
-  roundGrade = percent => parseFloat((percent || 0).toFixed(DECIMAL_PRECISION));
-
-  data = () => this.props.grades.map(entry => ({
-    [USERNAME_HEADING]: (<Fields.Username entry={entry} />),
-    [EMAIL_HEADING]: (<Fields.Email entry={entry} />),
-    ...entry.section_breakdown.reduce(
-      (obj, subsection) => ({
-        ...obj,
-        [subsection.label]: this.formatter[this.props.format](entry, subsection),
-      }),
-      {},
-    ),
-    [TOTAL_COURSE_GRADE_HEADING]: `${this.roundGrade(entry.percent * 100)}%`,
-  }));
-
-  formatter = {
-    percent: (entry, subsection) => {
-      const entryGrade = this.roundGrade(subsection.percent * 100);
-      const label = `${entryGrade}`;
-      return (this.props.areGradesFrozen
-        ? label
-        : (<GradeButton {...{ entry, subsection, label }} />)
+  mapRows(entry) {
+    const dataRow = {
+      [Headings.username]: (
+        <Fields.Username username={entry.username} userKey={entry.external_user_key} />
+      ),
+      [Headings.email]: (<Fields.Email email={entry.email} />),
+      [Headings.totalGrade]: `${roundGrade(entry.percent * 100)}%`,
+    };
+    entry.section_breakdown.forEach(subsection => {
+      dataRow[subsection.label] = (
+        <GradeButton {...{ entry, subsection }} />
       );
-    },
-
-    absolute: (entry, subsection) => {
-      const earned = this.roundGrade(subsection.score_earned);
-      const possible = this.roundGrade(subsection.score_possible);
-      const label = subsection.attempted ? `${earned}/${possible}` : `${earned}`;
-      return (this.props.areGradesFrozen
-        ? label
-        : (<GradeButton {...{ entry, subsection, label }} />)
-      );
-    },
+    });
+    return dataRow;
   }
 
   render() {
@@ -76,8 +59,8 @@ export class GradebookTable extends React.Component {
       <div className="gradebook-container">
         <div className="gbook">
           <Table
-            columns={this.formatHeadings()}
-            data={this.data()}
+            columns={this.props.headings.map(this.mapHeaders)}
+            data={this.props.grades.map(this.mapRows)}
             rowHeaderColumnKey="username"
             hasFixedColumnWidths
           />
@@ -88,14 +71,11 @@ export class GradebookTable extends React.Component {
 }
 
 GradebookTable.defaultProps = {
-  areGradesFrozen: false,
   grades: [],
 };
 
 GradebookTable.propTypes = {
   // redux
-  areGradesFrozen: PropTypes.bool,
-  format: PropTypes.string.isRequired,
   grades: PropTypes.arrayOf(PropTypes.shape({
     percent: PropTypes.number,
     section_breakdown: PropTypes.arrayOf(PropTypes.shape({
@@ -115,8 +95,6 @@ GradebookTable.propTypes = {
 };
 
 export const mapStateToProps = (state) => ({
-  areGradesFrozen: selectors.assignmentTypes.areGradesFrozen(state),
-  format: selectors.grades.gradeFormat(state),
   grades: selectors.grades.allGrades(state),
   headings: selectors.root.getHeadings(state),
 });

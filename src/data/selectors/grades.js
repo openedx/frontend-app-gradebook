@@ -1,8 +1,9 @@
 /* eslint-disable import/no-self-import */
 import { StrictDict } from 'utils';
-import { formatDateForDisplay } from '../actions/utils';
+
+import { Headings, GradeFormats } from 'data/constants/grades';
+import { formatDateForDisplay } from 'data/actions/utils';
 import simpleSelectorFactory from '../utils';
-import { EMAIL_HEADING, TOTAL_COURSE_GRADE_HEADING, USERNAME_HEADING } from '../constants/grades';
 import * as module from './grades';
 
 export const getRowsProcessed = ({
@@ -96,18 +97,14 @@ export const headingMapper = (category, label = 'All') => {
   } else {
     filter = filters.byLabel;
   }
+  const { username, email, totalGrade } = Headings;
+  const fillerLabels = (entry) => entry.filter(filter).map(s => s.label);
 
-  return (entry) => {
-    if (entry) {
-      return [
-        USERNAME_HEADING,
-        EMAIL_HEADING,
-        ...entry.filter(filter).map(s => s.label),
-        TOTAL_COURSE_GRADE_HEADING,
-      ];
-    }
-    return [];
-  };
+  return (entry) => (
+    entry
+      ? [username, email, ...fillerLabels(entry), totalGrade]
+      : []
+  );
 };
 
 /**
@@ -127,6 +124,37 @@ export const transformHistoryEntry = ({
   originalFilename,
   summaryOfRowsProcessed: module.getRowsProcessed(data),
   ...rest,
+});
+
+/**
+ * roundGrade(val)
+ * Takes a number and rounds it to 2 decimal places
+ * defaults to 0
+ * @param {number=0} val - value to round.
+ * @return {number} - rounded number
+ */
+export const roundGrade = val => parseFloat((val || 0).toFixed(2));
+export const subsectionGrade = StrictDict({
+  /**
+   * subsectionGrade.absolute(subsection)
+   * returns rounded {earned}/{possible} if attempted, else ${earned}
+   * @param {object} subsection - grade subsection entry
+   * @return {string} - absolute-formatted subsection grade string
+   */
+  [GradeFormats.absolute]: (subsection) => {
+    const earned = module.roundGrade(subsection.score_earned);
+    const possible = module.roundGrade(subsection.score_possible);
+    return subsection.attempted ? `${earned}/${possible}` : `${earned}`;
+  },
+  /**
+   * subsectionGrade.percent(subsection)
+   * returns rounded percent times 100
+   * @param {object} subsection - grade subsection entry
+   * @return {string} - percent-formatted subsection grade string
+   */
+  [GradeFormats.percent]: (subsection) => (
+    module.roundGrade(subsection.percent * 100)
+  ),
 });
 
 // Selectors
@@ -235,6 +263,9 @@ export default StrictDict({
   formatMinCourseGrade,
   hasOverrideErrors,
   headingMapper,
+
+  roundGrade,
+  subsectionGrade,
 
   ...simpleSelectors,
   allGrades,

@@ -170,6 +170,50 @@ describe('grades selectors', () => {
     });
   });
 
+  describe('roundGrade', () => {
+    it('rounds values to 2 places', () => {
+      expect(selectors.roundGrade(23.124)).toEqual(23.12);
+    });
+    it('defaults to 0 if no value is passed', () => {
+      expect(selectors.roundGrade()).toEqual(0);
+    });
+  });
+
+  describe('subsectionGrade', () => {
+    const { roundGrade } = selectors;
+    beforeEach(() => {
+      selectors.roundGrade = jest.fn(grade => ({ roundGrade: grade }));
+    });
+    afterEach(() => {
+      selectors.roundGrade = roundGrade;
+    });
+    describe('absolute', () => {
+      const subsection = { score_earned: 2, score_possible: 5 };
+      describe('attempted', () => {
+        it('returns rounded {earned}/{possible}', () => {
+          const earned = selectors.roundGrade(subsection.score_earned);
+          const possible = selectors.roundGrade(subsection.score_possible);
+          expect(
+            selectors.subsectionGrade.absolute({ ...subsection, attempted: true }),
+          ).toEqual(`${earned}/${possible}`);
+        });
+      });
+      describe('not attempted', () => {
+        it('returns rounded {earned}', () => {
+          const earned = selectors.roundGrade(subsection.score_earned);
+          expect(selectors.subsectionGrade.absolute(subsection)).toEqual(`${earned}`);
+        });
+      });
+    });
+    describe('percent', () => {
+      it('returns rounded grade.percent * 100', () => {
+        const percent = 42;
+        const expected = selectors.roundGrade(percent * 100);
+        expect(selectors.subsectionGrade.percent({ percent })).toEqual(expected);
+      });
+    });
+  });
+
   // Selectors
   describe('allGrades', () => {
     it('returns the grades results from redux state', () => {
