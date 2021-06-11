@@ -1,9 +1,23 @@
 /* eslint-disable import/no-self-import */
 import { StrictDict } from 'utils';
-import * as module from './filters';
+
+import initialFilters from 'data/constants/filters';
 import simpleSelectorFactory from '../utils';
+import * as module from './filters';
 
 // Transformers
+/**
+ * isDefault(name, value)
+ * returns true iff the value is equal to the initial filter value
+ * associated with the given name
+ * @param {string} name - api filter name
+ * @param {string/number/bool} value - filter value
+ * @return {bool} - is this the default value for the given filter?
+ */
+export const isDefault = (name, value) => (
+  value === initialFilters[name]
+);
+
 /**
  * chooseRelevantAssignmentData(assignment)
  * formats the assignment api data for an assignment object for consumption
@@ -120,6 +134,7 @@ export const selectedAssignmentLabel = (state) => (simpleSelectors.assignment(st
 
 export default StrictDict({
   ...simpleSelectors,
+  isDefault,
   relevantAssignmentDataFromResults,
   selectedAssignmentId,
   selectedAssignmentLabel,

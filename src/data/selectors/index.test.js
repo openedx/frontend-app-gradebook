@@ -1,4 +1,5 @@
 /* eslint-disable import/no-named-as-default-member */
+import * as filterConstants from '../constants/filters';
 import selectors from '.';
 import * as moduleSelectors from '.';
 import { minGrade, maxGrade } from './grades';
@@ -18,6 +19,7 @@ jest.mock('../services/LmsApiService', () => ({
 const mockFn = (key) => jest.fn((state) => ({ [key]: state }));
 const mockMetaFn = (key) => jest.fn((...args) => ({ [key]: { args } }));
 const testState = { a: 'test', state: 'of', random: 'data' };
+const testVal = 'bananas';
 
 describe('root selectors', () => {
   const testCourseId = 'OxfordX+Time+Travel';
@@ -40,6 +42,207 @@ describe('root selectors', () => {
       selectors.app.modalState.adjustedGradePossible = jest.fn(() => null);
       selectors.grades.gradeOriginalPossibleGraded = jest.fn(() => grade2);
       expect(selector(testState)).toEqual(grade2);
+    });
+  });
+  describe('filterBadgeConfig', () => {
+    let config;
+    const filterName = 'seasoning';
+    const filters = ['withSalt', 'withGarlic'];
+
+    const badgeValues = moduleSelectors.filterBadgeValues;
+    const { isDefault } = selectors.filters;
+    const oldConfig = filterConstants.filterConfig;
+
+    beforeEach(() => {
+      selectors.filters.isDefault = jest.fn();
+    });
+    afterEach(() => {
+      moduleSelectors.filterBadgeValues = badgeValues;
+      selectors.filters.isDefault = isDefault;
+      filterConstants.filterConfig = oldConfig;
+    });
+    describe('range filter (filterOrder in config)', () => {
+      const values = [3.14, 42];
+      const valueFn = () => values;
+      const testConfig = {
+        fake: 'config',
+        fields: 'for tests',
+        filterOrder: filters,
+      };
+      beforeEach(() => {
+        moduleSelectors.filterBadgeValues = { [filterName]: valueFn };
+      });
+      describe('if both are default values', () => {
+        beforeEach(() => {
+          filterConstants.filterConfig[filterName] = testConfig;
+          selectors.filters.isDefault.mockReturnValue(true);
+          config = selectors.root.filterBadgeConfig(testState, filterName);
+        });
+        it('returns isDefault: true, string value, and remaining filterConfig', () => {
+          const { filterOrder, ...rest } = testConfig;
+          expect(config).toEqual({
+            isDefault: true,
+            value: `${values[0]} - ${values[1]}`,
+            ...rest,
+          });
+        });
+      });
+      describe('if neither/only 1 are default values', () => {
+        beforeEach(() => {
+          filterConstants.filterConfig[filterName] = testConfig;
+          config = selectors.root.filterBadgeConfig(testState, filterName);
+        });
+        describe.each([
+          ['neither', () => false],
+          ['only filter1', (v) => v === filters[0]],
+          ['only filter2', (v) => v === filters[1]],
+        ], '%1 is default', (label, isDefaultFn) => {
+          it('returns isDefault: false, string value, and remaining filterConfig', () => {
+            selectors.filters.isDefault.mockImplementation(isDefaultFn);
+            const { filterOrder, ...rest } = testConfig;
+            expect(config).toEqual({
+              isDefault: false,
+              value: `${values[0]} - ${values[1]}`,
+              ...rest,
+            });
+          });
+        });
+      });
+    });
+    describe('single-value filter', () => {
+      const value = 3.14;
+      const valueFn = () => value;
+      const testConfig = {
+        fake: 'config',
+        fields: 'for tests',
+      };
+      beforeEach(() => {
+        filterConstants.filterConfig[filterName] = testConfig;
+        moduleSelectors.filterBadgeValues = { [filterName]: valueFn };
+      });
+      describe('if is default', () => {
+        beforeEach(() => {
+          selectors.filters.isDefault.mockReturnValue(true);
+          config = selectors.root.filterBadgeConfig(testState, filterName);
+        });
+        it('returns isDefault: true, string value, and filterConfig values', () => {
+          expect(config).toEqual({
+            isDefault: true,
+            value,
+            ...testConfig,
+          });
+        });
+      });
+      describe('if is not default', () => {
+        beforeEach(() => {
+          selectors.filters.isDefault.mockReturnValue(false);
+          config = selectors.root.filterBadgeConfig(testState, filterName);
+        });
+        it('returns isDefault: true, string value, and filterConfig values', () => {
+          expect(config).toEqual({
+            isDefault: false,
+            value,
+            ...testConfig,
+          });
+        });
+      });
+    });
+  });
+  describe('filterBadgeValues', () => {
+    const mockSelector = (obj, name, key) => (
+      jest.spyOn(obj, name).mockImplementation(state => state[key])
+    );
+    describe('assignment', () => {
+      let mock;
+      const selector = moduleSelectors.filterBadgeValues.assignment;
+      beforeEach(() => {
+        mock = mockSelector(selectors.filters, 'selectedAssignmentLabel', 'value');
+      });
+      afterEach(() => {
+        mock.mockRestore();
+      });
+      it('returns selectedAssignmentLabel if there is one selected', () => {
+        expect(selector({ value: testVal })).toEqual(testVal);
+      });
+      it('returns empty string if no assignment is selected', () => {
+        expect(selector({ value: null })).toEqual('');
+      });
+    });
+    describe('assignmentType', () => {
+      it('returns assignmentType filter', () => {
+        expect(
+          moduleSelectors.filterBadgeValues.assignmentType,
+        ).toEqual(selectors.filters.assignmentType);
+      });
+    });
+    describe('includeCourseRoleMembers', () => {
+      it('returns includeCourseRoleMembers filter', () => {
+        expect(
+          moduleSelectors.filterBadgeValues.includeCourseRoleMembers,
+        ).toEqual(selectors.filters.includeCourseRoleMembers);
+      });
+    });
+    describe('cohort', () => {
+      let mock;
+      const selector = moduleSelectors.filterBadgeValues.cohort;
+      beforeEach(() => {
+        mock = mockSelector(moduleSelectors, 'selectedCohortEntry', 'entry');
+      });
+      afterEach(() => {
+        mock.mockRestore();
+      });
+      it('returns selectedCohortEntry name if one is selected', () => {
+        expect(selector({ entry: { name: testVal } })).toEqual(testVal);
+      });
+      it('returns empty string if no cohort selected', () => {
+        expect(selector({ entry: undefined })).toEqual('');
+      });
+    });
+    describe('track', () => {
+      let mock;
+      const selector = moduleSelectors.filterBadgeValues.track;
+      beforeEach(() => {
+        mock = mockSelector(moduleSelectors, 'selectedTrackEntry', 'entry');
+      });
+      afterEach(() => {
+        mock.mockRestore();
+      });
+      it('returns selectedTrackEntry name if one is selected', () => {
+        expect(selector({ entry: { name: testVal } })).toEqual(testVal);
+      });
+      it('returns empty string if no track selected', () => {
+        expect(selector({ entry: undefined })).toEqual('');
+      });
+    });
+    describe('assignmentGrade', () => {
+      const selector = moduleSelectors.filterBadgeValues.assignmentGrade;
+      it('returns [filters.assignmentGradeMin, filters.assignmentGradeMax]', () => {
+        jest.spyOn(selectors.filters, 'assignmentGradeMin').mockImplementation(
+          state => ({ assignmentGradeMin: state }),
+        );
+        jest.spyOn(selectors.filters, 'assignmentGradeMax').mockImplementation(
+          state => ({ assignmentGradeMax: state }),
+        );
+        expect(selector(testState)).toEqual([
+          selectors.filters.assignmentGradeMin(testState),
+          selectors.filters.assignmentGradeMax(testState),
+        ]);
+      });
+    });
+    describe('courseGrade', () => {
+      const selector = moduleSelectors.filterBadgeValues.courseGrade;
+      it('returns [filters.courseGradeMin, filters.courseGradeMax]', () => {
+        jest.spyOn(selectors.filters, 'courseGradeMin').mockImplementation(
+          state => ({ courseGradeMin: state }),
+        );
+        jest.spyOn(selectors.filters, 'courseGradeMax').mockImplementation(
+          state => ({ courseGradeMax: state }),
+        );
+        expect(selector(testState)).toEqual([
+          selectors.filters.courseGradeMin(testState),
+          selectors.filters.courseGradeMax(testState),
+        ]);
+      });
     });
   });
   describe('formattedGradeLimits', () => {

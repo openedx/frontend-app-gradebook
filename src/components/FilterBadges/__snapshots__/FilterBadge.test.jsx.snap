@@ -1,0 +1,66 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`FilterBadge component with default value snapshot - empty 1`] = `""`;
+
+exports[`FilterBadge component with non-default value (active) if hideValue is false (default) snapshot 1`] = `
+<div>
+  <span
+    className="badge badge-info"
+  >
+    <span>
+      a common name
+      : a common value
+    </span>
+    <Button
+      aria-label="close"
+      className="btn-info"
+      onClick={
+        Object {
+          "handleClose": Array [
+            "some",
+            "filters",
+          ],
+        }
+      }
+    >
+      <span
+        aria-hidden="true"
+      >
+        ×
+      </span>
+    </Button>
+  </span>
+  <br />
+</div>
+`;
+
+exports[`FilterBadge component with non-default value (active) if hideValue is true snapshot - shows displayName but not value in span 1`] = `
+<div>
+  <span
+    className="badge badge-info"
+  >
+    <span>
+      a common name
+    </span>
+    <Button
+      aria-label="close"
+      className="btn-info"
+      onClick={
+        Object {
+          "handleClose": Array [
+            "some",
+            "filters",
+          ],
+        }
+      }
+    >
+      <span
+        aria-hidden="true"
+      >
+        ×
+      </span>
+    </Button>
+  </span>
+  <br />
+</div>
+`;

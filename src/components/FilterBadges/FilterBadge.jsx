@@ -1,29 +1,38 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
 import { Button } from '@edx/paragon';
+
+import selectors from 'data/selectors';
 
 /**
  * FilterBadge
  * Base filter badge component, that displays a name and a close button.
  * If showValue is true, it will also display the included value.
- * @param {string} name - filter name
- * @param {bool/string} value - filter value
- * @param {func} onClick - close/dismiss filter event
- * @param {bool} showValue - should the Value be displayed instead of just name?
+ * @param {func} handleClose - close/dismiss filter event, taking a list of filternames
+ *   to reset when the filter badge closes.
+ * @param {string} filterName - api filter name (for redux connector)
  */
-const FilterBadge = ({
-  name, value, onClick, showValue,
-}) => (
+export const FilterBadge = ({
+  handleClose,
+  config: {
+    displayName,
+    isDefault,
+    hideValue,
+    value,
+    connectedFilters,
+  },
+}) => !isDefault && (
   <div>
     <span className="badge badge-info">
       <span>
-        {name}{showValue && `: ${value}`}
+        {displayName}{!hideValue && `: ${value}`}
       </span>
       <Button
         className="btn-info"
         aria-label="close"
-        onClick={onClick}
+        onClick={handleClose(connectedFilters)}
       >
         <span aria-hidden="true">&times;</span>
       </Button>
@@ -31,17 +40,26 @@ const FilterBadge = ({
     <br />
   </div>
 );
-FilterBadge.defaultProps = {
-  showValue: true,
-};
+
 FilterBadge.propTypes = {
-  name: PropTypes.string.isRequired,
-  value: PropTypes.oneOfType([
-    PropTypes.string,
-    PropTypes.bool,
-  ]).isRequired,
-  onClick: PropTypes.func.isRequired,
-  showValue: PropTypes.bool,
+  handleClose: PropTypes.func.isRequired,
+  // eslint-disable-next-line
+  filterName: PropTypes.string.isRequired,
+  // redux
+  config: PropTypes.shape({
+    connectedFilters: PropTypes.arrayOf(PropTypes.string),
+    displayName: PropTypes.string.isRequired,
+    isDefault: PropTypes.bool.isRequired,
+    hideValue: PropTypes.bool,
+    value: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.bool,
+    ]),
+  }).isRequired,
 };
 
-export default FilterBadge;
+export const mapStateToProps = (state, ownProps) => ({
+  config: selectors.root.filterBadgeConfig(state, ownProps.filterName),
+});
+
+export default connect(mapStateToProps)(FilterBadge);

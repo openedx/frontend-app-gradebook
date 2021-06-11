@@ -1,3 +1,4 @@
+import initialFilters, { filters as filterNames } from 'data/constants/filters';
 // import * in order to mock in-file references
 import * as selectors from './filters';
 // import default export in order to test simpleSelectors not exported individually
@@ -11,27 +12,27 @@ const selectedAssignmentInfo = {
 };
 
 const filters = {
-  assignment: selectedAssignmentInfo,
-  assignmentGradeMax: '100',
-  assignmentGradeMin: '0',
-  assignmentType: 'Homework',
-  cohort: 'Spring Term',
-  courseGradeMax: '100',
-  courseGradeMin: '0',
-  includeCourseRoleMembers: false,
-  track: 'masters',
+  [filterNames.assignment]: selectedAssignmentInfo,
+  [filterNames.assignmentGradeMax]: '100',
+  [filterNames.assignmentGradeMin]: '0',
+  [filterNames.assignmentType]: 'Homework',
+  [filterNames.cohort]: 'Spring Term',
+  [filterNames.courseGradeMax]: '100',
+  [filterNames.courseGradeMin]: '0',
+  [filterNames.includeCourseRoleMembers]: false,
+  [filterNames.track]: 'masters',
 };
 
 const noFilters = {
-  assignment: undefined,
-  assignmentGradeMax: '100',
-  assignmentGradeMin: '0',
-  assignmentType: 'All',
-  cohort: '',
-  courseGradeMax: '100',
-  courseGradeMin: '0',
-  includeCourseRoleMembers: false,
-  track: '',
+  [filterNames.assignment]: undefined,
+  [filterNames.assignmentGradeMax]: '100',
+  [filterNames.assignmentGradeMin]: '0',
+  [filterNames.assignmentType]: 'All',
+  [filterNames.cohort]: '',
+  [filterNames.courseGradeMax]: '100',
+  [filterNames.courseGradeMin]: '0',
+  [filterNames.includeCourseRoleMembers]: false,
+  [filterNames.track]: '',
 };
 
 const sectionBreakdowns = [
@@ -71,6 +72,17 @@ describe('filters selectors', () => {
     it('maps label, subsection, category, and ID from assignment data', () => {
       const assignmentData = selectors.chooseRelevantAssignmentData(sectionBreakdowns[0]);
       expect(assignmentData).toEqual(selectedAssignmentInfo);
+    });
+  });
+
+  describe('isDefault', () => {
+    it('returns true iff value is equal to initialFilters[name]', () => {
+      expect(
+        selectors.isDefault(filterNames.assignment, initialFilters[filterNames.assignment]),
+      ).toEqual(true);
+      expect(
+        selectors.isDefault(filterNames.assignment, 'bananas'),
+      ).toEqual(false);
     });
   });
 

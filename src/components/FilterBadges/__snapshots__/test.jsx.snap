@@ -1,0 +1,21 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`FilterBadges component snapshot - has a filterbadge with handleClose for each filter in badgeOrder 1`] = `
+<div>
+  <FilterBadge
+    filterName="filter1"
+    handleClose={[MockFunction this.props.handleClose]}
+    key="filter1"
+  />
+  <FilterBadge
+    filterName="filter2"
+    handleClose={[MockFunction this.props.handleClose]}
+    key="filter2"
+  />
+  <FilterBadge
+    filterName="filter3"
+    handleClose={[MockFunction this.props.handleClose]}
+    key="filter3"
+  />
+</div>
+`;
