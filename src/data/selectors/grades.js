@@ -10,12 +10,14 @@ export const getRowsProcessed = ({
   processed_rows: processed,
   saved_rows: saved,
   total_rows: total,
-}) => ({
-  total,
-  successfullyProcessed: saved,
-  failed: processed - saved,
-  skipped: total - processed,
-});
+}) => {
+  const failed = processed - saved;
+  const skipped = total - processed;
+  const summaryEntries = [`${total} Students: ${saved} processed`];
+  if (skipped > 0) { summaryEntries.push(`${skipped} skipped`); }
+  if (failed > 0) { summaryEntries.push(`${failed} failed`); }
+  return summaryEntries.join(', ');
+};
 
 /**
  * formatGradeOverrideForDisplay(historyArray)
@@ -118,11 +120,17 @@ export const transformHistoryEntry = ({
   modified,
   original_filename: originalFilename,
   data,
+  unique_id: courseId,
+  id,
   ...rest
 }) => ({
   timeUploaded: formatDateForDisplay(new Date(modified)),
   originalFilename,
-  summaryOfRowsProcessed: module.getRowsProcessed(data),
+  resultsSummary: {
+    rowId: id,
+    courseId,
+    text: module.getRowsProcessed(data),
+  },
   ...rest,
 });
 
