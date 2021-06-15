@@ -6,6 +6,11 @@ import { formatDateForDisplay } from 'data/actions/utils';
 import simpleSelectorFactory from '../utils';
 import * as module from './grades';
 
+/**
+ * getRowsProcessed(historyEntryData)
+ * @param {object} historyEntryData - the data param from a bulk management history entry
+ * @return {string} - user-facing summary of total/skipped/failed rows.
+ */
 export const getRowsProcessed = ({
   processed_rows: processed,
   saved_rows: saved,
@@ -114,7 +119,7 @@ export const headingMapper = (category, label = 'All') => {
  * Takes a raw bulkManagementHistory entry and formats it for consumption
  * @param {object} rawEntry - raw history entry to transform
  * @return {object} - transformed history entry
- *  ({ timeUploaded, originalFilename, summaryOfRowsProcessed, ... })
+ *  ({ timeUploaded, originalFilename, resultsSummary, ... })
  */
 export const transformHistoryEntry = ({
   modified,

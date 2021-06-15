@@ -1,0 +1,117 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`BulkManagementTab component snapshot history table data (from bulkManagementHistory.map(this.formatHistoryRow) snapshot: maps resultsSummay to ResultsSummary, wraps filename and user, forwards the rest 1`] = `
+Array [
+  Object {
+    "filename": <span
+      className="wrap-text-in-cell"
+    >
+      blue.png
+    </span>,
+    "resultsSummary": <ResultsSummary
+      courseId="Da Bu Dee"
+      rowId={12}
+      text="Da ba daa"
+    />,
+    "timeUploaded": "65",
+    "user": <span
+      className="wrap-text-in-cell"
+    >
+      Eifel
+    </span>,
+  },
+  Object {
+    "filename": <span
+      className="wrap-text-in-cell"
+    >
+      allStar.jpg
+    </span>,
+    "resultsSummary": <ResultsSummary
+      courseId="rockstar"
+      rowId={2}
+      text="all that glitters is gold"
+    />,
+    "timeUploaded": "2000s?",
+    "user": <span
+      className="wrap-text-in-cell"
+    >
+      Smashmouth
+    </span>,
+  },
+]
+`;
+
+exports[`BulkManagementTab component snapshot snapshot - loads heading, export form w/ alerts and file input, import btn, hints display, formatted table 1`] = `
+<div>
+  <h4>
+    Use this feature by downloading a CSV for bulk management, overriding grades locally and coming back here to upload
+  </h4>
+  <form
+    action="fakeURL"
+    method="post"
+  >
+    <BulkManagementAlerts />
+    <Group
+      controlId="csv"
+    >
+      <Label>
+        Upload Grade CSV
+      </Label>
+      <Control
+        className="d-none"
+        onChange={[MockFunction this.handleFileInputChange]}
+        type="file"
+      />
+    </Group>
+  </form>
+  <Button
+    onClick={[MockFunction this.handleClickImportGrades]}
+    variant="primary"
+  >
+    Import Grades
+  </Button>
+  <p>
+    Results appear in the table below
+    <br />
+    Grade processing may take a few seconds
+  </p>
+  <Table
+    className="table-striped"
+    columns={
+      Array [
+        Object {
+          "columnSortable": false,
+          "key": "filename",
+          "label": "Gradebook",
+          "width": "col-5",
+        },
+        Object {
+          "columnSortable": false,
+          "key": "resultsSummary",
+          "label": "Download Summary",
+          "width": "col",
+        },
+        Object {
+          "columnSortable": false,
+          "key": "user",
+          "label": "Who",
+          "width": "col-1",
+        },
+        Object {
+          "columnSortable": false,
+          "key": "timeUploaded",
+          "label": "When",
+          "width": "col",
+        },
+      ]
+    }
+    data={
+      Array [
+        "blue.png",
+        "allStar.jpg",
+      ]
+    }
+    hasFixedColumnWidths={true}
+  />
+</div>
+`;
