@@ -21,7 +21,7 @@ jest.mock('data/constants/api', () => ({
 describe('ResultsSummary component', () => {
   const props = {
     courseId: 'classy',
-    rowId: 'rowdy',
+    rowId: 42,
     text: 'texty',
   };
   let el;

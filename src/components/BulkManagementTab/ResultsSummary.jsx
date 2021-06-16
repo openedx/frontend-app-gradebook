@@ -7,6 +7,13 @@ import { Download } from '@edx/paragon/icons';
 
 import { bulkGradesUrlByCourseAndRow } from 'data/constants/api';
 
+/**
+ * <ResultsSummary {...{ courseId, rowId, text }} />
+ * displays a result summary cell for a single bulk management upgrade history entry.
+ * @param {string} courseId - course identifier
+ * @param {number} rowId - row/error identifier
+ * @param {string} text - summary string
+ */
 const ResultsSummary = ({
   courseId,
   rowId,

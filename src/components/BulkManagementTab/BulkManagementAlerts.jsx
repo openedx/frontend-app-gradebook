@@ -10,6 +10,10 @@ import selectors from 'data/selectors';
 
 const { messages: { BulkManagementTab: messages } } = appConstants;
 
+/**
+ * <BulkManagementAlerts />
+ * Alerts to display at the top of the BulkManagement tab
+ */
 export const BulkManagementAlerts = ({ bulkImportError, uploadSuccess }) => (
   <>
     <Alert
