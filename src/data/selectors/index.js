@@ -1,6 +1,8 @@
 /* eslint-disable import/no-named-as-default-member, import/no-self-import */
 import { StrictDict } from 'utils';
+
 import LmsApiService from 'data/services/LmsApiService';
+import * as filterConstants from 'data/constants/filters';
 
 import * as module from '.';
 import app from './app';
@@ -12,6 +14,11 @@ import roles from './roles';
 import special from './special';
 import tracks from './tracks';
 
+const {
+  filterConfig,
+  filters: filterNames,
+} = filterConstants;
+
 /**
  * editModalPossibleGrade(state)
  * Returns the "possible" grade as shown in the edit modal.
@@ -21,6 +28,58 @@ import tracks from './tracks';
 export const editModalPossibleGrade = (state) => (
   app.modalState.adjustedGradePossible(state) || grades.gradeOriginalPossibleGraded(state)
 );
+
+/**
+ * filterBadgeConfig(state, name)
+ * Takes a filter name and returns the appropriate badge config, with value and isDefault.
+ * Determines if it should return a range or single-value config based on the presence of
+ * a filterOrder prop in the filter config associated with the passed name.
+ * @param {object} state - redux state
+ * @param {string} name - api filter name
+ */
+export const filterBadgeConfig = (state, name) => {
+  const filterValue = module.filterBadgeValues[name](state);
+  const { filterOrder, ...config } = filterConfig[name];
+  const isRange = !!filterOrder;
+  const value = isRange ? `${filterValue[0]} - ${filterValue[1]}` : filterValue;
+  const isDefault = (isRange
+    ? (
+      filters.isDefault(filterOrder[0], filterValue[0])
+      && filters.isDefault(filterOrder[1], filterValue[1])
+    )
+    : filters.isDefault(name, filterValue)
+  );
+  return { ...config, value, isDefault };
+};
+
+/**
+ * filterBadgeValues methods
+ * For each filter type with an associated badge, provides a selector that returns the
+ * content of that badge
+ */
+export const filterBadgeValues = StrictDict({
+  [filterNames.assignment]: (state) => (
+    filters.selectedAssignmentLabel(state) || ''
+  ),
+  [filterNames.assignmentType]: filters.assignmentType,
+  [filterNames.includeCourseRoleMembers]: filters.includeCourseRoleMembers,
+  [filterNames.cohort]: (state) => {
+    const entry = module.selectedCohortEntry(state);
+    return entry ? entry.name : '';
+  },
+  [filterNames.track]: (state) => {
+    const entry = module.selectedTrackEntry(state);
+    return entry ? entry.name : '';
+  },
+  [filterNames.assignmentGrade]: (state) => ([
+    filters.assignmentGradeMin(state),
+    filters.assignmentGradeMax(state),
+  ]),
+  [filterNames.courseGrade]: (state) => ([
+    filters.courseGradeMin(state),
+    filters.courseGradeMax(state),
+  ]),
+});
 
 /**
  * formattedGradeLimits(state)
@@ -177,6 +236,7 @@ export const showBulkManagement = (state) => (
 export default StrictDict({
   root: StrictDict({
     editModalPossibleGrade,
+    filterBadgeConfig,
     getHeadings,
     gradeExportUrl,
     interventionExportUrl,

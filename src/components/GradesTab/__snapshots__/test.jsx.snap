@@ -5,7 +5,7 @@ exports[`GradesTab Component snapshots basic snapshot 1`] = `
   <SpinnerIcon />
   <SearchControls />
   <FilterBadges
-    handleFilterBadgeClose={[MockFunction this.handleFilterBadgeClose]}
+    handleClose={[MockFunction this.handleFilterBadgeClose]}
   />
   <StatusAlerts />
   <h4>

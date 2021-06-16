@@ -40,7 +40,7 @@ export class GradesTab extends React.Component {
       <>
         <SpinnerIcon />
         <SearchControls />
-        <FilterBadges handleFilterBadgeClose={this.handleFilterBadgeClose} />
+        <FilterBadges handleClose={this.handleFilterBadgeClose} />
         <StatusAlerts />
 
         <h4>Step 2: View or Modify Individual Grades</h4>
