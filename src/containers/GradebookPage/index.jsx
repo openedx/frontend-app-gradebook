@@ -36,6 +36,7 @@ export class GradebookPage extends React.Component {
         delete parsed[key];
       }
     });
+    this.props.history.push(`?${queryString.stringify(parsed)}`);
   }
 
   render() {
@@ -66,6 +67,9 @@ GradebookPage.defaultProps = {
   showBulkManagement: false,
 };
 GradebookPage.propTypes = {
+  history: PropTypes.shape({
+    push: PropTypes.func,
+  }).isRequired,
   location: PropTypes.shape({ search: PropTypes.string }),
   courseId: PropTypes.string.isRequired,
   initializeApp: PropTypes.func.isRequired,
