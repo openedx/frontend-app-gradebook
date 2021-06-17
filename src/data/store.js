@@ -100,10 +100,14 @@ const store = createStore(
   composeWithDevTools(applyMiddleware(...middleware)),
 );
 
-// TODO debug only
-window.store = store;
-window.actions = actions;
-window.selectors = selectors;
+/**
+ * Dev tools for redux work
+ */
+if (process.env.NODE_ENV === 'development') {
+  window.store = store;
+  window.actions = actions;
+  window.selectors = selectors;
+}
 
 export { trackingCategory };
 export default store;
