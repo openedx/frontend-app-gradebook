@@ -1,0 +1,13 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SpinnerIcon component snapshot - displays spinner overlay with spinner icon 1`] = `
+<div
+  className="spinner-overlay"
+>
+  <Icon
+    className="fa fa-spinner fa-spin fa-5x color-black"
+  />
+</div>
+`;
+
+exports[`SpinnerIcon component snapshot - does not render if show: false 1`] = `""`;

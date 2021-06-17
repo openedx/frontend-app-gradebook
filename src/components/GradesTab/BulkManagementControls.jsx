@@ -3,59 +3,72 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
-import { StatefulButton } from '@edx/paragon';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faDownload, faSpinner } from '@fortawesome/free-solid-svg-icons';
+import { StatefulButton, Icon } from '@edx/paragon';
 
+import { StrictDict } from 'utils';
 import actions from 'data/actions';
 import selectors from 'data/selectors';
 
+export const basicButtonProps = () => ({
+  variant: 'outline-primary',
+  icons: {
+    default: <Icon className="fa fa-download mr-2" />,
+    pending: <Icon className="fa fa-spinner fa-spin mr-2" />,
+  },
+  disabledStates: ['pending'],
+  className: 'ml-2',
+});
+
+export const buttonStates = StrictDict({
+  pending: 'pending',
+  default: 'default',
+});
+
+/**
+ * <BulkManagementControls />
+ * Provides download buttons for Bulk Management and Intervention reports, only if
+ * showBulkManagement is set in redus.
+ */
 export class BulkManagementControls extends React.Component {
-  handleClickDownloadInterventions = () => {
-    this.props.downloadInterventionReport(this.props.courseId);
-    window.location = this.props.interventionExportUrl;
-  };
+  constructor(props) {
+    super(props);
+    this.buttonProps = this.buttonProps.bind(this);
+    this.handleClickDownloadInterventions = this.handleClickDownloadInterventions.bind(this);
+    this.handleClickExportGrades = this.handleClickExportGrades.bind(this);
+  }
+
+  buttonProps(label) {
+    return {
+      labels: { default: label, pending: label },
+      state: this.props.showSpinner ? 'pending' : 'default',
+      ...basicButtonProps(),
+    };
+  }
+
+  handleClickDownloadInterventions() {
+    this.props.downloadInterventionReport();
+    window.location.assign(this.props.interventionExportUrl);
+  }
 
   // At present, we don't store label and value in google analytics. By setting the label
   // property of the below events, I want to verify that we can set the label of google anlatyics
   // The following properties of a google analytics event are:
-  // category (used), name(used), lavel(not used), value(not used)
-  handleClickExportGrades = () => {
-    this.props.downloadBulkGradesReport(this.props.courseId);
-    window.location = this.props.gradeExportUrl;
-  };
+  // category (used), name(used), label(not used), value(not used)
+  handleClickExportGrades() {
+    this.props.downloadBulkGradesReport();
+    window.location.assign(this.props.gradeExportUrl);
+  }
 
   render() {
     return this.props.showBulkManagement && (
       <div>
         <StatefulButton
-          variant="outline-primary"
+          {...this.buttonProps('Bulk Management')}
           onClick={this.handleClickExportGrades}
-          state={this.props.showSpinner ? 'pending' : 'default'}
-          labels={{
-            default: 'Bulk Management',
-            pending: 'Bulk Management',
-          }}
-          icons={{
-            default: <FontAwesomeIcon className="mr-2" icon={faDownload} />,
-            pending: <FontAwesomeIcon className="fa-spin mr-2" icon={faSpinner} />,
-          }}
-          disabledStates={['pending']}
         />
         <StatefulButton
-          variant="outline-primary"
+          {...this.buttonProps('Interventions')}
           onClick={this.handleClickDownloadInterventions}
-          state={this.props.showSpinner ? 'pending' : 'default'}
-          className="ml-2"
-          labels={{
-            default: 'Interventions*',
-            pending: 'Interventions*',
-          }}
-          icons={{
-            default: <FontAwesomeIcon className="mr-2" icon={faDownload} />,
-            pending: <FontAwesomeIcon className="fa-spin mr-2" icon={faSpinner} />,
-          }}
-          disabledStates={['pending']}
         />
       </div>
     );
@@ -63,14 +76,11 @@ export class BulkManagementControls extends React.Component {
 }
 
 BulkManagementControls.defaultProps = {
-  courseId: '',
   showBulkManagement: false,
   showSpinner: false,
 };
 
 BulkManagementControls.propTypes = {
-  courseId: PropTypes.string,
-
   // redux
   downloadBulkGradesReport: PropTypes.func.isRequired,
   downloadInterventionReport: PropTypes.func.isRequired,
@@ -80,13 +90,10 @@ BulkManagementControls.propTypes = {
   showBulkManagement: PropTypes.bool,
 };
 
-export const mapStateToProps = (state, ownProps) => ({
-  gradeExportUrl: selectors.root.gradeExportUrl(state, { courseId: ownProps.courseId }),
-  interventionExportUrl: selectors.root.interventionExportUrl(
-    state,
-    { courseId: ownProps.courseId },
-  ),
-  showBulkManagement: selectors.root.showBulkManagement(state, { courseId: ownProps.courseId }),
+export const mapStateToProps = (state) => ({
+  gradeExportUrl: selectors.root.gradeExportUrl(state),
+  interventionExportUrl: selectors.root.interventionExportUrl(state),
+  showBulkManagement: selectors.root.showBulkManagement(state),
   showSpinner: selectors.root.shouldShowSpinner(state),
 });
 

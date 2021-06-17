@@ -1,0 +1,27 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ScoreViewInput component snapshot - select box with percent and absolute options and onClick from props.toggleFormat 1`] = `
+<FormGroup
+  controlId="ScoreView"
+>
+  <FormLabel>
+    Score View:
+  </FormLabel>
+  <FormControl
+    as="select"
+    onChange={[MockFunction]}
+    value="percent"
+  >
+    <option
+      value="percent"
+    >
+      Percent
+    </option>
+    <option
+      value="absolute"
+    >
+      Absolute
+    </option>
+  </FormControl>
+</FormGroup>
+`;

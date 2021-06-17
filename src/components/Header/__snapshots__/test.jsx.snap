@@ -1,0 +1,23 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Header snapshot - has edx link with logo url 1`] = `
+<div
+  className="mb-3"
+>
+  <header
+    className="d-flex justify-content-center align-items-center p-3 border-bottom-blue"
+  >
+    <Hyperlink
+      destination="undefined/dashboard"
+    >
+      <img
+        alt="edX logo"
+        height="30"
+        src="www.ourLogo.url"
+        width="60"
+      />
+    </Hyperlink>
+    <div />
+  </header>
+</div>
+`;

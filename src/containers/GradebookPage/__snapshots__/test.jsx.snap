@@ -1,0 +1,65 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`GradebookPage component snapshot - shows BulkManagementTab if showBulkManagement 1`] = `
+<WithSidebar
+  sidebar={
+    <GradebookFilters
+      updateQueryParams={[MockFunction updateQueryParams]}
+    />
+  }
+  sidebarHeader={<GradebookFiltersHeader />}
+>
+  <div
+    className="px-3 gradebook-content"
+  >
+    <GradebookHeader />
+    <Tabs
+      defaultActiveKey="grades"
+    >
+      <Tab
+        eventKey="grades"
+        title="Grades"
+      >
+        <GradesTab
+          updateQueryParams={[MockFunction updateQueryParams]}
+        />
+      </Tab>
+      <Tab
+        eventKey="bulk_management"
+        title="Bulk Management"
+      >
+        <BulkManagementTab />
+      </Tab>
+    </Tabs>
+  </div>
+</WithSidebar>
+`;
+
+exports[`GradebookPage component snapshot - shows only GradesTab if showBulkManagement=false 1`] = `
+<WithSidebar
+  sidebar={
+    <GradebookFilters
+      updateQueryParams={[MockFunction updateQueryParams]}
+    />
+  }
+  sidebarHeader={<GradebookFiltersHeader />}
+>
+  <div
+    className="px-3 gradebook-content"
+  >
+    <GradebookHeader />
+    <Tabs
+      defaultActiveKey="grades"
+    >
+      <Tab
+        eventKey="grades"
+        title="Grades"
+      >
+        <GradesTab
+          updateQueryParams={[MockFunction updateQueryParams]}
+        />
+      </Tab>
+    </Tabs>
+  </div>
+</WithSidebar>
+`;
