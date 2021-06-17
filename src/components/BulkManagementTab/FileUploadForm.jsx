@@ -7,7 +7,6 @@ import {
   Button,
   Form,
   FormControl,
-  FormLabel,
   FormGroup,
 } from '@edx/paragon';
 
@@ -61,10 +60,10 @@ export class FileUploadForm extends React.Component {
       <>
         <Form action={this.props.gradeExportUrl} method="post">
           <FormGroup controlId="csv">
-            <FormLabel>{csvUploadLabel}</FormLabel>
             <FormControl
               className="d-none"
               type="file"
+              label={csvUploadLabel}
               onChange={this.handleFileInputChange}
               ref={this.fileInputRef}
             />

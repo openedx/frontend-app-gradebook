@@ -12,7 +12,7 @@ exports[`BulkManagementAlerts component no errer, no upload success snapshot - b
     show={false}
     variant="success"
   >
-    CSV processing. File uploads may take several minutes to complets
+    CSV processing. File uploads may take several minutes to complets.
   </Alert>
 </Fragment>
 `;
@@ -31,7 +31,7 @@ exports[`BulkManagementAlerts component no errer, no upload success snapshot - d
     show={true}
     variant="success"
   >
-    CSV processing. File uploads may take several minutes to complets
+    CSV processing. File uploads may take several minutes to complets.
   </Alert>
 </Fragment>
 `;

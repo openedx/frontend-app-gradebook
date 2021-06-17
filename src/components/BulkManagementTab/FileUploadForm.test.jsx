@@ -6,7 +6,6 @@ import {
   Form,
   FormControl,
   FormGroup,
-  FormLabel,
 } from '@edx/paragon';
 
 import selectors from 'data/selectors';
@@ -61,7 +60,6 @@ describe('FileUploadForm', () => {
           Form: () => 'Form',
           FormControl: () => 'FormControl',
           FormGroup: () => 'FormGroup',
-          FormLabel: () => 'FormLabel',
         }));
         el = shallow(<FileUploadForm {...props} />);
         el.instance().handleFileInputChange = jest.fn().mockName('this.handleFileInputChange');
@@ -91,12 +89,6 @@ describe('FileUploadForm', () => {
           });
           test('group with controlId="csv"', () => {
             expect(formGroup.props().controlId).toEqual('csv');
-          });
-          test('label with csvUploadLabel message', () => {
-            const label = el.find(FormLabel);
-            expect(
-              label.childAt(0).text(),
-            ).toEqual(messages.csvUploadLabel);
           });
           test('file control with onChange from handleFileInputChange', () => {
             const control = el.find(FormControl);

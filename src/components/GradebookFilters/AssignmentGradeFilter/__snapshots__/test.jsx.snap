@@ -21,7 +21,7 @@ exports[`AssignmentGradeFilter Component snapshots buttons and groups disabled i
   <div
     className="grade-filter-action"
   >
-    <Button
+    <ForwardRef
       active={false}
       disabled={true}
       name="assignmentGradeMinMax"
@@ -30,7 +30,7 @@ exports[`AssignmentGradeFilter Component snapshots buttons and groups disabled i
       variant="outline-secondary"
     >
       Apply
-    </Button>
+    </ForwardRef>
   </div>
 </div>
 `;
@@ -56,7 +56,7 @@ exports[`AssignmentGradeFilter Component snapshots smoke test 1`] = `
   <div
     className="grade-filter-action"
   >
-    <Button
+    <ForwardRef
       active={false}
       disabled={false}
       name="assignmentGradeMinMax"
@@ -65,7 +65,7 @@ exports[`AssignmentGradeFilter Component snapshots smoke test 1`] = `
       variant="outline-secondary"
     >
       Apply
-    </Button>
+    </ForwardRef>
   </div>
 </div>
 `;

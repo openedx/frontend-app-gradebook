@@ -57,12 +57,12 @@ export const bulkManagementColumns = [
 export const messages = StrictDict({
   BulkManagementTab: StrictDict({
     csvUploadLabel: 'Upload Grade CSV',
-    heading: 'Use this feature by downloading a CSV for bulk management, overriding grades locally and coming back here to upload',
+    heading: 'Use this feature by downloading a CSV for bulk management, overriding grades locally and coming back here to upload.',
     importBtnText: 'Import Grades',
-    successDialog: 'CSV processing. File uploads may take several minutes to complets',
+    successDialog: 'CSV processing. File uploads may take several minutes to complets.',
     hints: [
-      'Results appear in the table below',
-      'Grade processing may take a few seconds',
+      'Results appear in the table below.',
+      'Grade processing may take a few seconds.',
     ],
   }),
 });

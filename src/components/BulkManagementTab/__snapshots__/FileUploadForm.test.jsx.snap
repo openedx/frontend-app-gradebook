@@ -13,27 +13,23 @@ exports[`FileUploadForm component snapshot snapshot - loads export form w/ alert
       isInvalid={false}
       isValid={false}
     >
-      <FormLabel
-        isInline={false}
-      >
-        Upload Grade CSV
-      </FormLabel>
       <ForwardRef
         as="input"
         className="d-none"
+        label="Upload Grade CSV"
         onChange={[MockFunction this.handleFileInputChange]}
         plaintext={false}
         type="file"
       />
     </FormGroup>
   </Form>
-  <Button
+  <ForwardRef
     active={false}
     disabled={false}
     onClick={[MockFunction this.handleClickImportGrades]}
     variant="primary"
   >
     Import Grades
-  </Button>
+  </ForwardRef>
 </React.Fragment>
 `;

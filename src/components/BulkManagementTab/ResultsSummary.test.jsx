@@ -46,7 +46,7 @@ describe('ResultsSummary component', () => {
   test('displays Download Icon and text', () => {
     const icon = el.childAt(0);
     expect(icon.is(Icon)).toEqual(true);
-    expect(icon.props().icon).toEqual(Download);
+    expect(icon.props().src).toEqual(Download);
     expect(el.childAt(1).text()).toEqual(props.text);
   });
 });

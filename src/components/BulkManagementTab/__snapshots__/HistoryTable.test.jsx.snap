@@ -44,9 +44,9 @@ Array [
 exports[`HistoryTable component snapshot snapshot - loads hints display, formatted table 1`] = `
 <Fragment>
   <p>
-    Results appear in the table below
+    Results appear in the table below.
     <br />
-    Grade processing may take a few seconds
+    Grade processing may take a few seconds.
   </p>
   <Table
     className="table-striped"

@@ -24,8 +24,9 @@ const ResultsSummary = ({
     destination="www.edx.org"
     target="_blank"
     rel="noopener noreferrer"
+    showLaunchIcon={false}
   >
-    <Icon icon={Download} />
+    <Icon src={Download} className="d-inline-block" />
     {text}
   </Hyperlink>
 );
