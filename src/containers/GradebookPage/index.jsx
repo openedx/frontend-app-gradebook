@@ -14,7 +14,7 @@ import GradebookHeader from 'components/GradebookHeader';
 import GradesTab from 'components/GradesTab';
 import GradebookFilters from 'components/GradebookFilters';
 import GradebookFiltersHeader from 'components/GradebookFiltersHeader';
-import BulkManagement from 'components/BulkManagement';
+import BulkManagementTab from 'components/BulkManagementTab';
 
 export class GradebookPage extends React.Component {
   constructor(props) {
@@ -36,6 +36,7 @@ export class GradebookPage extends React.Component {
         delete parsed[key];
       }
     });
+    this.props.history.push(`?${queryString.stringify(parsed)}`);
   }
 
   render() {
@@ -52,7 +53,7 @@ export class GradebookPage extends React.Component {
             </Tab>
             {this.props.showBulkManagement && (
               <Tab eventKey="bulk_management" title="Bulk Management">
-                <BulkManagement />
+                <BulkManagementTab />
               </Tab>
             )}
           </Tabs>
@@ -63,12 +64,16 @@ export class GradebookPage extends React.Component {
 }
 GradebookPage.defaultProps = {
   location: { search: '' },
+  showBulkManagement: false,
 };
 GradebookPage.propTypes = {
+  history: PropTypes.shape({
+    push: PropTypes.func,
+  }).isRequired,
   location: PropTypes.shape({ search: PropTypes.string }),
   courseId: PropTypes.string.isRequired,
   initializeApp: PropTypes.func.isRequired,
-  showBulkManagement: PropTypes.bool.isRequired,
+  showBulkManagement: PropTypes.bool,
 };
 
 export const mapStateToProps = (state, ownProps) => ({

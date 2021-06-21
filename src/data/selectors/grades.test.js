@@ -41,16 +41,46 @@ const genericResultsRows = [
 describe('grades selectors', () => {
   // Transformers
   describe('getRowsProcessed', () => {
-    const data = {
-      processed_rows: 20,
-      saved_rows: 10,
-      total_rows: 50,
-    };
-    expect(selectors.getRowsProcessed(data)).toEqual({
-      total: data.total_rows,
-      successfullyProcessed: data.saved_rows,
-      failed: data.processed_rows - data.saved_rows,
-      skipped: data.total_rows - data.processed_rows,
+    test('returns appropriate breakdown of processed rows given some saved and skipped', () => {
+      const data = {
+        processed_rows: 20,
+        saved_rows: 10,
+        total_rows: 50,
+      };
+      const failed = data.processed_rows - data.saved_rows;
+      const skipped = data.total_rows - data.processed_rows;
+      const expected = [
+        `${data.total_rows} Students: ${data.saved_rows} processed`,
+        `${skipped} skipped`,
+        `${failed} failed`,
+      ].join(', ');
+      expect(selectors.getRowsProcessed(data)).toEqual(expected);
+    });
+    test('excludes skipped if all rows were processed', () => {
+      const data = {
+        processed_rows: 50,
+        saved_rows: 20,
+        total_rows: 50,
+      };
+      const failed = data.processed_rows - data.saved_rows;
+      const expected = [
+        `${data.total_rows} Students: ${data.saved_rows} processed`,
+        `${failed} failed`,
+      ].join(', ');
+      expect(selectors.getRowsProcessed(data)).toEqual(expected);
+    });
+    test('excludes failed if all processed rows were saved', () => {
+      const data = {
+        processed_rows: 20,
+        saved_rows: 20,
+        total_rows: 50,
+      };
+      const skipped = data.total_rows - data.processed_rows;
+      const expected = [
+        `${data.total_rows} Students: ${data.saved_rows} processed`,
+        `${skipped} skipped`,
+      ].join(', ');
+      expect(selectors.getRowsProcessed(data)).toEqual(expected);
     });
   });
 
@@ -147,6 +177,8 @@ describe('grades selectors', () => {
     const rawEntry = {
       modified: 'Jan 10 2021',
       original_filename: 'fileName',
+      unique_id: 'I exist',
+      id: 'a row/entry id, I guess',
       data: { some: 'data' },
       also: 'some',
       other: 'fields',
@@ -166,7 +198,11 @@ describe('grades selectors', () => {
       expect(output.originalFilename).toEqual(rawEntry.original_filename);
     });
     it('summarizes processed rows', () => {
-      expect(output.summaryOfRowsProcessed).toEqual(selectors.getRowsProcessed(rawEntry.data));
+      expect(output.resultsSummary).toEqual({
+        text: selectors.getRowsProcessed(rawEntry.data),
+        courseId: rawEntry.unique_id,
+        rowId: rawEntry.id,
+      });
     });
   });
 

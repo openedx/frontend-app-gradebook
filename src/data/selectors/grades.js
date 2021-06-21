@@ -6,16 +6,23 @@ import { formatDateForDisplay } from 'data/actions/utils';
 import simpleSelectorFactory from '../utils';
 import * as module from './grades';
 
+/**
+ * getRowsProcessed(historyEntryData)
+ * @param {object} historyEntryData - the data param from a bulk management history entry
+ * @return {string} - user-facing summary of total/skipped/failed rows.
+ */
 export const getRowsProcessed = ({
   processed_rows: processed,
   saved_rows: saved,
   total_rows: total,
-}) => ({
-  total,
-  successfullyProcessed: saved,
-  failed: processed - saved,
-  skipped: total - processed,
-});
+}) => {
+  const failed = processed - saved;
+  const skipped = total - processed;
+  const summaryEntries = [`${total} Students: ${saved} processed`];
+  if (skipped > 0) { summaryEntries.push(`${skipped} skipped`); }
+  if (failed > 0) { summaryEntries.push(`${failed} failed`); }
+  return summaryEntries.join(', ');
+};
 
 /**
  * formatGradeOverrideForDisplay(historyArray)
@@ -112,17 +119,23 @@ export const headingMapper = (category, label = 'All') => {
  * Takes a raw bulkManagementHistory entry and formats it for consumption
  * @param {object} rawEntry - raw history entry to transform
  * @return {object} - transformed history entry
- *  ({ timeUploaded, originalFilename, summaryOfRowsProcessed, ... })
+ *  ({ timeUploaded, originalFilename, resultsSummary, ... })
  */
 export const transformHistoryEntry = ({
   modified,
   original_filename: originalFilename,
   data,
+  unique_id: courseId,
+  id,
   ...rest
 }) => ({
   timeUploaded: formatDateForDisplay(new Date(modified)),
   originalFilename,
-  summaryOfRowsProcessed: module.getRowsProcessed(data),
+  resultsSummary: {
+    rowId: id,
+    courseId,
+    text: module.getRowsProcessed(data),
+  },
   ...rest,
 });
 

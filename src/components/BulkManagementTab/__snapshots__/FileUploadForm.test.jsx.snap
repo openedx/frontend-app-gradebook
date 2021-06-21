@@ -1,0 +1,35 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`FileUploadForm component snapshot snapshot - loads export form w/ alerts and file input, import btn 1`] = `
+<React.Fragment>
+  <Form
+    action="fakeUrl"
+    inline={false}
+    method="post"
+  >
+    <FormGroup
+      as="div"
+      controlId="csv"
+      isInvalid={false}
+      isValid={false}
+    >
+      <ForwardRef
+        as="input"
+        className="d-none"
+        label="Upload Grade CSV"
+        onChange={[MockFunction this.handleFileInputChange]}
+        plaintext={false}
+        type="file"
+      />
+    </FormGroup>
+  </Form>
+  <ForwardRef
+    active={false}
+    disabled={false}
+    onClick={[MockFunction this.handleClickImportGrades]}
+    variant="primary"
+  >
+    Import Grades
+  </ForwardRef>
+</React.Fragment>
+`;

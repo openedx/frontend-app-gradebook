@@ -1,0 +1,24 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ResultsSummary component snapshot - safe hyperlink with bulkGradesUrl with course and row id, download icon, results text 1`] = `
+<Hyperlink
+  destination="www.edx.org"
+  href={
+    Object {
+      "url": Object {
+        "courseId": "classy",
+        "rowId": 42,
+      },
+    }
+  }
+  rel="noopener noreferrer"
+  showLaunchIcon={false}
+  target="_blank"
+>
+  <Icon
+    className="d-inline-block"
+    src="DownloadIcon"
+  />
+  texty
+</Hyperlink>
+`;

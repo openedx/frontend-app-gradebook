@@ -1,0 +1,12 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`BulkManagementTab component snapshot snapshot - loads heading from messages.BulkManagementTab.heading, <BulkManagementAlerts />, <FileUploadForm />, <HistoryTable /> 1`] = `
+<div>
+  <h4>
+    Use this feature by downloading a CSV for bulk management, overriding grades locally, and coming back here to upload.
+  </h4>
+  <BulkManagementAlerts />
+  <FileUploadForm />
+  <HistoryTable />
+</div>
+`;
