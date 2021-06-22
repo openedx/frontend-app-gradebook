@@ -16,6 +16,12 @@ import GradebookFilters from 'components/GradebookFilters';
 import GradebookFiltersHeader from 'components/GradebookFiltersHeader';
 import BulkManagementTab from 'components/BulkManagementTab';
 
+/**
+ * <GradebookPage />
+ * Top-level view for the Gradebook MFE.
+ * Organizes a header and a pair of tabs (Grades and BulkManagement) with a toggle-able
+ * filter sidebar.
+ */
 export class GradebookPage extends React.Component {
   constructor(props) {
     super(props);
@@ -24,7 +30,7 @@ export class GradebookPage extends React.Component {
 
   componentDidMount() {
     const urlQuery = queryString.parse(this.props.location.search);
-    this.props.initializeApp(this.props.courseId, urlQuery);
+    this.props.initializeApp(this.props.match.params.courseId, urlQuery);
   }
 
   updateQueryParams(queryParams) {
@@ -63,21 +69,24 @@ export class GradebookPage extends React.Component {
   }
 }
 GradebookPage.defaultProps = {
-  location: { search: '' },
   showBulkManagement: false,
+  location: { search: '' },
 };
 GradebookPage.propTypes = {
   history: PropTypes.shape({
     push: PropTypes.func,
   }).isRequired,
   location: PropTypes.shape({ search: PropTypes.string }),
-  courseId: PropTypes.string.isRequired,
   initializeApp: PropTypes.func.isRequired,
   showBulkManagement: PropTypes.bool,
+  match: PropTypes.shape({
+    params: PropTypes.shape({
+      courseId: PropTypes.string,
+    }),
+  }).isRequired,
 };
 
-export const mapStateToProps = (state, ownProps) => ({
-  courseId: ownProps.match.params.courseId,
+export const mapStateToProps = (state) => ({
   showBulkManagement: selectors.root.showBulkManagement(state),
 });
 

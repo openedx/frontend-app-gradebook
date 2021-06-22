@@ -5,7 +5,11 @@ import { connect } from 'react-redux';
 
 import selectors from 'data/selectors';
 
-const UsersLabel = ({
+/**
+ * <UsersLabel />
+ * Simple label component displaying the filtered and total users shown
+ */
+export const UsersLabel = ({
   filteredUsersCount,
   totalUsersCount,
 }) => {

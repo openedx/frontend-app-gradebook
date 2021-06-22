@@ -2,18 +2,26 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
-import { InputSelect } from '@edx/paragon';
+import { FormControl, FormGroup, FormLabel } from '@edx/paragon';
 
 import actions from 'data/actions';
 
-const ScoreViewInput = ({ toggleFormat }) => (
-  <InputSelect
-    label="Score View:"
-    name="ScoreView"
-    value="percent"
-    options={[{ label: 'Percent', value: 'percent' }, { label: 'Absolute', value: 'absolute' }]}
-    onChange={toggleFormat}
-  />
+/**
+ * <ScoreViewInput />
+ * redux-connected select control for grade format (percent vs absolute)
+ */
+export const ScoreViewInput = ({ toggleFormat }) => (
+  <FormGroup controlId="ScoreView">
+    <FormLabel>Score View:</FormLabel>
+    <FormControl
+      as="select"
+      value="percent"
+      onChange={toggleFormat}
+    >
+      <option value="percent">Percent</option>
+      <option value="absolute">Absolute</option>
+    </FormControl>
+  </FormGroup>
 );
 ScoreViewInput.propTypes = {
   toggleFormat: PropTypes.func.isRequired,
