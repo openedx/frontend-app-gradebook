@@ -5,8 +5,11 @@ import { connect } from 'react-redux';
 
 import {
   Collapsible,
+  Icon,
+  IconButton,
   Form,
 } from '@edx/paragon';
+import { Close } from '@edx/paragon/icons';
 
 import actions from 'data/actions';
 import selectors from 'data/selectors';
@@ -47,6 +50,18 @@ export class GradebookFilters extends React.Component {
     } = this.props;
     return (
       <>
+        <div className="filter-sidebar-header">
+          <h2><Icon className="fa fa-filter" /></h2>
+          <IconButton
+            className="p-1"
+            onClick={this.props.closeMenu}
+            iconAs={Icon}
+            src={Close}
+            alt="Close Filters"
+            aria-label="Close Filters"
+          />
+        </div>
+
         {this.collapsibleGroup('Assignments', (
           <div>
             <AssignmentTypeFilter updateQueryParams={updateQueryParams} />
@@ -54,12 +69,15 @@ export class GradebookFilters extends React.Component {
             <AssignmentGradeFilter updateQueryParams={updateQueryParams} />
           </div>
         ))}
+
         {this.collapsibleGroup('Overall Grade', (
           <CourseGradeFilter updateQueryParams={updateQueryParams} />
         ))}
+
         {this.collapsibleGroup('Student Groups', (
           <StudentGroupsFilter updateQueryParams={updateQueryParams} />
         ))}
+
         {this.collapsibleGroup('Include Course Team Members', (
           <Form.Checkbox
             checked={this.state.includeCourseRoleMembers}
@@ -78,6 +96,7 @@ GradebookFilters.defaultProps = {
 GradebookFilters.propTypes = {
   updateQueryParams: PropTypes.func.isRequired,
   // redux
+  closeMenu: PropTypes.func.isRequired,
   fetchGrades: PropTypes.func.isRequired,
   includeCourseRoleMembers: PropTypes.bool,
   updateIncludeCourseRoleMembers: PropTypes.func.isRequired,
@@ -88,6 +107,7 @@ export const mapStateToProps = (state) => ({
 });
 
 export const mapDispatchToProps = {
+  closeMenu: thunkActions.app.filterMenu.close,
   fetchGrades: thunkActions.grades.fetchGrades,
   updateIncludeCourseRoleMembers: actions.filters.update.includeCourseRoleMembers,
 };

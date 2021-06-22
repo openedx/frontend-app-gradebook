@@ -36,7 +36,6 @@ jest.mock('data/thunkActions', () => ({
 describe('WithSidebar', () => {
   let props = {
     sidebar: (<div>Some Sidebar Content</div>),
-    sidebarHeader: (<div>A really nice sidebar header</div>),
     children: (<b>aby in a bi</b>),
     isClosed: true,
     isOpening: false,

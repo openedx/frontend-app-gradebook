@@ -6,8 +6,8 @@ import { connect } from 'react-redux';
 import actions from 'data/actions';
 import thunkActions from 'data/thunkActions';
 
-import PageButtons from '../PageButtons';
-import FilterBadges from '../FilterBadges';
+import PageButtons from './PageButtons';
+import FilterBadges from './FilterBadges';
 
 import BulkManagementControls from './BulkManagementControls';
 import EditModal from './EditModal';

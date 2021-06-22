@@ -9,7 +9,6 @@ import thunkActions from 'data/thunkActions';
 import { Tab, Tabs } from '@edx/paragon';
 
 import GradebookFilters from 'components/GradebookFilters';
-import GradebookFiltersHeader from 'components/GradebookFiltersHeader';
 import GradebookHeader from 'components/GradebookHeader';
 import GradesTab from 'components/GradesTab';
 import BulkManagementTab from 'components/BulkManagementTab';
@@ -44,7 +43,6 @@ jest.mock('components/WithSidebar', () => 'WithSidebar');
 jest.mock('components/GradebookHeader', () => 'GradebookHeader');
 jest.mock('components/GradesTab', () => 'GradesTab');
 jest.mock('components/GradebookFilters', () => 'GradebookFilters');
-jest.mock('components/GradebookFiltersHeader', () => 'GradebookFiltersHeader');
 jest.mock('components/BulkManagementTab', () => 'BulkManagementTab');
 
 describe('GradebookPage', () => {
@@ -81,10 +79,6 @@ describe('GradebookPage', () => {
           expect(sidebar).toEqual(
             <GradebookFilters updateQueryParams={el.instance().updateQueryParams} />,
           );
-        });
-        test('sidebarHeader from GradebookFiltersHeader', () => {
-          const { sidebarHeader } = el.props();
-          expect(sidebarHeader).toEqual(<GradebookFiltersHeader />);
         });
       });
       describe('gradebook-content', () => {

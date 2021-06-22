@@ -2,7 +2,7 @@ import React from 'react';
 import { shallow } from 'enzyme';
 
 import selectors from 'data/selectors';
-import { GradebookHeader, mapStateToProps } from './GradebookHeader';
+import { GradebookHeader, mapStateToProps } from '.';
 
 jest.mock('data/selectors', () => ({
   __esModule: true,

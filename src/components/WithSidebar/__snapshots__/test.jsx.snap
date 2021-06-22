@@ -8,13 +8,6 @@ exports[`WithSidebar Component snapshots basic snapshot 1`] = `
     className="sidebar-class-names"
     onTransitionEnd={[MockFunction handleSlideDone]}
   >
-    <div
-      className="sidebar-header"
-    >
-      <div>
-        A really nice sidebar header
-      </div>
-    </div>
     <div>
       Some Sidebar Content
     </div>
