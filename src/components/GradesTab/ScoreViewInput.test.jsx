@@ -2,8 +2,13 @@ import React from 'react';
 import { shallow } from 'enzyme';
 
 import actions from 'data/actions';
+import selectors from 'data/selectors';
 
-import { ScoreViewInput, mapDispatchToProps } from './ScoreViewInput';
+import {
+  ScoreViewInput,
+  mapDispatchToProps,
+  mapStateToProps,
+} from './ScoreViewInput';
 
 jest.mock('@edx/paragon', () => ({
   FormControl: () => 'FormControl',
@@ -17,13 +22,19 @@ jest.mock('data/actions', () => ({
     grades: { toggleGradeFormat: jest.fn() },
   },
 }));
+jest.mock('data/selectors', () => ({
+  __esModule: true,
+  default: {
+    grades: { gradeFormat: (state) => ({ gradeFormat: state }) },
+  },
+}));
 
 describe('ScoreViewInput', () => {
   describe('component', () => {
-    let props;
+    const props = { format: 'percent' };
     let el;
     beforeEach(() => {
-      props = { toggleFormat: jest.fn() };
+      props.toggleFormat = jest.fn();
       el = shallow(<ScoreViewInput {...props} />);
     });
     const assertions = [
@@ -32,6 +43,12 @@ describe('ScoreViewInput', () => {
     ];
     test(`snapshot - ${assertions.join(' and ')}`, () => {
       expect(el).toMatchSnapshot();
+    });
+  });
+  describe('mapStateToProps', () => {
+    test('format from grades.gradeFormat', () => {
+      const testState = { some: 'state' };
+      expect(mapStateToProps(testState).format).toEqual(selectors.grades.gradeFormat(testState));
     });
   });
   describe('mapDispatchToProps', () => {

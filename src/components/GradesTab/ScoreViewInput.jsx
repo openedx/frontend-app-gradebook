@@ -5,17 +5,18 @@ import { connect } from 'react-redux';
 import { FormControl, FormGroup, FormLabel } from '@edx/paragon';
 
 import actions from 'data/actions';
+import selectors from 'data/selectors';
 
 /**
  * <ScoreViewInput />
  * redux-connected select control for grade format (percent vs absolute)
  */
-export const ScoreViewInput = ({ toggleFormat }) => (
+export const ScoreViewInput = ({ format, toggleFormat }) => (
   <FormGroup controlId="ScoreView">
     <FormLabel>Score View:</FormLabel>
     <FormControl
       as="select"
-      value="percent"
+      value={format}
       onChange={toggleFormat}
     >
       <option value="percent">Percent</option>
@@ -24,8 +25,13 @@ export const ScoreViewInput = ({ toggleFormat }) => (
   </FormGroup>
 );
 ScoreViewInput.propTypes = {
+  format: PropTypes.string.isRequired,
   toggleFormat: PropTypes.func.isRequired,
 };
+
+export const mapStateToProps = (state) => ({
+  format: selectors.grades.gradeFormat(state),
+});
 
 export const mapDispatchToProps = {
   toggleFormat: actions.grades.toggleGradeFormat,
