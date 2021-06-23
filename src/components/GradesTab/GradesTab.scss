@@ -194,3 +194,7 @@
     overflow-wrap: break-word;
     word-wrap: break-word;
 }
+
+select#ScoreView.form-control {
+  padding-right: 26px;
+}
