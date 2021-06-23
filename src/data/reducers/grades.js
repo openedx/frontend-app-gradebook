@@ -138,7 +138,7 @@ const grades = (state = initialState, { type, payload }) => {
     case actions.toggleGradeFormat.toString():
       return {
         ...state,
-        gradeFormat: payload,
+        gradeFormat: payload.target.value,
       };
     case actions.update.request.toString():
       return { ...state, showSpinner: true };

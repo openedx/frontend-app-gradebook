@@ -7,7 +7,6 @@ exports[`GradebookPage component snapshot - shows BulkManagementTab if showBulkM
       updateQueryParams={[MockFunction updateQueryParams]}
     />
   }
-  sidebarHeader={<GradebookFiltersHeader />}
 >
   <div
     className="px-3 gradebook-content"
@@ -42,7 +41,6 @@ exports[`GradebookPage component snapshot - shows only GradesTab if showBulkMana
       updateQueryParams={[MockFunction updateQueryParams]}
     />
   }
-  sidebarHeader={<GradebookFiltersHeader />}
 >
   <div
     className="px-3 gradebook-content"

@@ -17,7 +17,7 @@ import { IntlProvider } from 'react-intl';
 import Footer, { messages as footerMessages } from '@edx/frontend-component-footer';
 
 import GradebookPage from './containers/GradebookPage';
-import Header from './components/Header';
+import EdxHeader from './components/EdxHeader';
 import store from './data/store';
 import './App.scss';
 
@@ -26,7 +26,7 @@ const App = () => (
     <Provider store={store}>
       <Router>
         <div>
-          <Header />
+          <EdxHeader />
           <main>
             <Switch>
               <Route exact path={getConfig().PUBLIC_PATH.concat(':courseId')} component={GradebookPage} />

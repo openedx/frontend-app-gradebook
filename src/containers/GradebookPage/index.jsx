@@ -13,7 +13,6 @@ import WithSidebar from 'components/WithSidebar';
 import GradebookHeader from 'components/GradebookHeader';
 import GradesTab from 'components/GradesTab';
 import GradebookFilters from 'components/GradebookFilters';
-import GradebookFiltersHeader from 'components/GradebookFiltersHeader';
 import BulkManagementTab from 'components/BulkManagementTab';
 
 /**
@@ -49,7 +48,6 @@ export class GradebookPage extends React.Component {
     return (
       <WithSidebar
         sidebar={<GradebookFilters updateQueryParams={this.updateQueryParams} />}
-        sidebarHeader={<GradebookFiltersHeader />}
       >
         <div className="px-3 gradebook-content">
           <GradebookHeader />

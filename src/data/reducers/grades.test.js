@@ -224,7 +224,7 @@ describe('grades reducer', () => {
       it('updates grade format attribute', () => {
         const formatTypeData = 'percent';
         expect(
-          grades(undefined, actions.toggleGradeFormat(formatTypeData)),
+          grades(undefined, actions.toggleGradeFormat({ target: { value: formatTypeData } })),
         ).toEqual({ ...initialState, gradeFormat: formatTypeData });
       });
     });

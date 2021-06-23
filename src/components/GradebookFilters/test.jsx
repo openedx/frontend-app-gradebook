@@ -16,6 +16,11 @@ jest.mock('@edx/paragon', () => ({
   Form: {
     Checkbox: 'Checkbox',
   },
+  Icon: 'Icon',
+  IconButton: 'IconButton',
+}));
+jest.mock('@edx/paragon/icons', () => ({
+  Close: 'paragon.icons.Close',
 }));
 jest.mock('data/selectors', () => ({
   __esModule: true,
@@ -28,9 +33,8 @@ jest.mock('data/selectors', () => ({
 jest.mock('data/thunkActions', () => ({
   __esModule: true,
   default: {
-    grades: {
-      fetchGrades: jest.fn(),
-    },
+    app: { filterMenu: { close: jest.fn() } },
+    grades: { fetchGrades: jest.fn() },
   },
 }));
 
@@ -42,9 +46,10 @@ describe('GradebookFilters', () => {
   beforeEach(() => {
     props = {
       ...props,
-      updateQueryParams: jest.fn(),
-      updateIncludeCourseRoleMembers: jest.fn(),
+      closeMenu: jest.fn().mockName('this.props.closeMenu'),
       fetchGrades: jest.fn(),
+      updateIncludeCourseRoleMembers: jest.fn(),
+      updateQueryParams: jest.fn(),
     };
   });
 

@@ -15,7 +15,6 @@ import thunkActions from 'data/thunkActions';
  *
  *  @param {JSX} children - page content
  *  @param {JSX} sidebar - sidebar content
- *  @param {JSX} sidebarHeader - sidebar header content
  *
  * Ex Usage:
  *   <WithSidebar sidebar={sidebarContent} sidebarHeader={sidebarHeader}>{children}</WithSidebar>
@@ -35,9 +34,6 @@ export class WithSidebar extends React.Component {
     return (
       <div className="d-flex sidebar-container">
         <aside className={this.sidebarClassNames} onTransitionEnd={this.props.handleSlideDone}>
-          <div className="sidebar-header">
-            { this.props.sidebarHeader }
-          </div>
           { this.props.sidebar }
         </aside>
         <div className={this.contentClassNames}>
@@ -51,7 +47,6 @@ export class WithSidebar extends React.Component {
 WithSidebar.propTypes = {
   children: PropTypes.node.isRequired,
   sidebar: PropTypes.node.isRequired,
-  sidebarHeader: PropTypes.node.isRequired,
   // redux
   isClosed: PropTypes.bool.isRequired,
   isOpening: PropTypes.bool.isRequired,

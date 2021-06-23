@@ -2,6 +2,23 @@
 
 exports[`GradebookFilters Component snapshots basic snapshot 1`] = `
 <React.Fragment>
+  <div
+    className="filter-sidebar-header"
+  >
+    <h2>
+      <Icon
+        className="fa fa-filter"
+      />
+    </h2>
+    <IconButton
+      alt="Close Filters"
+      aria-label="Close Filters"
+      className="p-1"
+      iconAs="Icon"
+      onClick={[MockFunction this.props.closeMenu]}
+      src="paragon.icons.Close"
+    />
+  </div>
   <Collapsible
     className="filter-group mb-3"
     defaultOpen={true}

@@ -22,8 +22,8 @@ jest.mock('data/thunkActions', () => ({
   },
 }));
 
-jest.mock('../PageButtons', () => 'PageButtons');
-jest.mock('../FilterBadges', () => 'FilterBadges');
+jest.mock('./PageButtons', () => 'PageButtons');
+jest.mock('./FilterBadges', () => 'FilterBadges');
 jest.mock('./BulkManagementControls', () => 'BulkManagementControls');
 jest.mock('./EditModal', () => 'EditModal');
 jest.mock('./GradebookTable', () => 'GradebookTable');
