@@ -46,9 +46,10 @@ describe('GradebookFilters', () => {
   beforeEach(() => {
     props = {
       ...props,
-      updateQueryParams: jest.fn(),
-      updateIncludeCourseRoleMembers: jest.fn(),
+      closeMenu: jest.fn().mockName('this.props.closeMenu'),
       fetchGrades: jest.fn(),
+      updateIncludeCourseRoleMembers: jest.fn(),
+      updateQueryParams: jest.fn(),
     };
   });
 

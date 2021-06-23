@@ -15,6 +15,7 @@ exports[`GradebookFilters Component snapshots basic snapshot 1`] = `
       aria-label="Close Filters"
       className="p-1"
       iconAs="Icon"
+      onClick={[MockFunction this.props.closeMenu]}
       src="paragon.icons.Close"
     />
   </div>
