@@ -24,8 +24,11 @@ export const ScoreViewInput = ({ format, toggleFormat }) => (
     </FormControl>
   </FormGroup>
 );
+ScoreViewInput.defaultProps = {
+  format: 'percent',
+};
 ScoreViewInput.propTypes = {
-  format: PropTypes.string.isRequired,
+  format: PropTypes.string,
   toggleFormat: PropTypes.func.isRequired,
 };
 
