@@ -1,13 +1,12 @@
 /* eslint-disable import/prefer-default-export */
 import { StrictDict } from 'utils';
 import actions from 'data/actions';
-import selectors from 'data/selectors';
-import LmsApiService from 'data/services/LmsApiService';
+import lms from 'data/services/lms';
 
 export const fetchCohorts = () => (
-  (dispatch, getState) => {
+  (dispatch) => {
     dispatch(actions.cohorts.fetching.started());
-    return LmsApiService.fetchCohorts(selectors.app.courseId(getState()))
+    return lms.api.fetch.cohorts()
       .then(response => response.data)
       .then((data) => {
         dispatch(actions.cohorts.fetching.received(data.cohorts));

@@ -6,7 +6,6 @@ exports[`ResultsSummary component snapshot - safe hyperlink with bulkGradesUrl w
   href={
     Object {
       "url": Object {
-        "courseId": "classy",
         "rowId": 42,
       },
     }

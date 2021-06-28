@@ -1,7 +1,6 @@
-/* eslint-disable import/no-named-as-default-member, import/no-self-import */
 import { StrictDict } from 'utils';
 
-import LmsApiService from 'data/services/LmsApiService';
+import lms from 'data/services/lms';
 import * as filterConstants from 'data/constants/filters';
 
 import * as module from '.';
@@ -122,13 +121,13 @@ export const getHeadings = (state) => grades.headingMapper(
 
 /**
  * gradeExportUrl(state, options)
- * Returns the output of getGradeExportCsvUrl, applying the current includeCourseRoleMembers
+ * Returns the output of getGradeCsvUrl, applying the current includeCourseRoleMembers
  * filter.
  * @param {object} state - redux state
  * @return {string} - generated grade export url
  */
 export const gradeExportUrl = (state) => (
-  LmsApiService.getGradeExportCsvUrl(app.courseId(state), {
+  lms.urls.gradeCsvUrl({
     ...module.lmsApiServiceArgs(state),
     excludeCourseRoles: filters.includeCourseRoleMembers(state) ? '' : 'all',
   })
@@ -141,8 +140,7 @@ export const gradeExportUrl = (state) => (
  * @return {string} - generated intervention export url
  */
 export const interventionExportUrl = (state) => (
-  LmsApiService.getInterventionExportCsvUrl(
-    app.courseId(state),
+  lms.urls.interventionExportCsvUrl(
     module.lmsApiServiceArgs(state),
   )
 );

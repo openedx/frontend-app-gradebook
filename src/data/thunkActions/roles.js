@@ -3,19 +3,19 @@ import { StrictDict } from 'utils';
 import roles from 'data/actions/roles';
 import selectors from 'data/selectors';
 
+import lms from 'data/services/lms';
+
 import { fetchCohorts } from './cohorts';
 import { fetchGrades } from './grades';
 import { fetchTracks } from './tracks';
 import { fetchAssignmentTypes } from './assignmentTypes';
-
-import LmsApiService from '../services/LmsApiService';
 
 export const allowedRoles = ['staff', 'instructor', 'support'];
 
 export const fetchRoles = () => (
   (dispatch, getState) => {
     const courseId = selectors.app.courseId(getState());
-    return LmsApiService.fetchUserRoles(courseId)
+    return lms.api.fetch.roles()
       .then(response => response.data)
       .then((response) => {
         const isAllowedRole = (role) => (

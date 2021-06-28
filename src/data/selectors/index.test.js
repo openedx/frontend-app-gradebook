@@ -1,17 +1,16 @@
-/* eslint-disable import/no-named-as-default-member */
+/* eslint-disable import/no-named-as-default-member, import/no-named-as-default */
 import * as filterConstants from '../constants/filters';
 import selectors from '.';
 import * as moduleSelectors from '.';
 import { minGrade, maxGrade } from './grades';
 
-jest.mock('../services/LmsApiService', () => ({
-  __esModule: true,
-  default: {
-    getGradeExportCsvUrl: jest.fn(
-      (...args) => ({ getGradeExportCsvUrl: { args } }),
+jest.mock('data/services/lms', () => ({
+  urls: {
+    gradeCsvUrl: jest.fn(
+      (...args) => ({ gradeCsvUrl: { args } }),
     ),
-    getInterventionExportCsvUrl: jest.fn(
-      (...args) => ({ getInterventionExportCsvUrl: { args } }),
+    interventionExportCsvUrl: jest.fn(
+      (...args) => ({ interventionExportCsvUrl: { args } }),
     ),
   },
 }));
@@ -344,8 +343,8 @@ describe('root selectors', () => {
       it('calls the API service with the right args, excluding all course roles', () => {
         selectors.filters.includeCourseRoleMembers.mockReturnValue(undefined);
         expect(selector(testState)).toEqual({
-          getGradeExportCsvUrl: {
-            args: [testCourseId, { lmsArgs: testState, excludeCourseRoles: 'all' }],
+          gradeCsvUrl: {
+            args: [{ lmsArgs: testState, excludeCourseRoles: 'all' }],
           },
         });
       });
@@ -354,8 +353,8 @@ describe('root selectors', () => {
       it('calls the API service with the right args, including course roles', () => {
         selectors.filters.includeCourseRoleMembers.mockReturnValue(true);
         expect(selector(testState)).toEqual({
-          getGradeExportCsvUrl: {
-            args: [testCourseId, { lmsArgs: testState, excludeCourseRoles: '' }],
+          gradeCsvUrl: {
+            args: [{ lmsArgs: testState, excludeCourseRoles: '' }],
           },
         });
       });
@@ -369,8 +368,8 @@ describe('root selectors', () => {
       expect(
         moduleSelectors.interventionExportUrl(testState),
       ).toEqual({
-        getInterventionExportCsvUrl: {
-          args: [testCourseId, { lmsArgs: testState }],
+        interventionExportCsvUrl: {
+          args: [{ lmsArgs: testState }],
         },
       });
       moduleSelectors.lmsApiServiceArgs = lmsApiServiceArgs;

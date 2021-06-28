@@ -55,7 +55,6 @@ HistoryTable.propTypes = {
     timeUploaded: PropTypes.string.isRequired,
     resultsSummary: PropTypes.shape({
       rowId: PropTypes.number.isRequired,
-      courseId: PropTypes.string.isRequired,
       text: PropTypes.string.isRequired,
     }),
   })),

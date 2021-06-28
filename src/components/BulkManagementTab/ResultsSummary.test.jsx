@@ -4,7 +4,7 @@ import { shallow } from 'enzyme';
 import { Icon } from '@edx/paragon';
 import { Download } from '@edx/paragon/icons';
 
-import * as api from 'data/constants/api';
+import lms from 'data/services/lms';
 import ResultsSummary from './ResultsSummary';
 
 jest.mock('@edx/paragon', () => ({
@@ -14,13 +14,14 @@ jest.mock('@edx/paragon', () => ({
 jest.mock('@edx/paragon/icons', () => ({
   Download: 'DownloadIcon',
 }));
-jest.mock('data/constants/api', () => ({
-  bulkGradesUrlByCourseAndRow: jest.fn((courseId, rowId) => ({ url: { courseId, rowId } })),
+jest.mock('data/services/lms', () => ({
+  urls: {
+    bulkGradesUrlByRow: jest.fn((rowId) => ({ url: { rowId } })),
+  },
 }));
 
 describe('ResultsSummary component', () => {
   const props = {
-    courseId: 'classy',
     rowId: 42,
     text: 'texty',
   };
@@ -41,7 +42,7 @@ describe('ResultsSummary component', () => {
     expect(el.props().rel).toEqual('noopener noreferrer');
   });
   test('Hyperlink has href to bulkGradesUrl', () => {
-    expect(el.props().href).toEqual(api.bulkGradesUrlByCourseAndRow(props.courseId, props.rowId));
+    expect(el.props().href).toEqual(lms.urls.bulkGradesUrlByRow(props.rowId));
   });
   test('displays Download Icon and text', () => {
     const icon = el.childAt(0);

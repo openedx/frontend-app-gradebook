@@ -1,12 +1,15 @@
-import LmsApiService from '../services/LmsApiService';
+import lms from '../services/lms';
 
 import actions from '../actions';
-import selectors from '../selectors';
 import * as thunkActions from './assignmentTypes';
 import { createTestFetcher } from './testUtils';
 
-jest.mock('../services/LmsApiService', () => ({
-  fetchAssignmentTypes: jest.fn(),
+jest.mock('data/services/lms', () => ({
+  api: {
+    fetch: {
+      assignmentTypes: jest.fn(),
+    },
+  },
 }));
 
 const responseData = {
@@ -19,16 +22,12 @@ const responseData = {
 };
 
 describe('assignmentType thunkActions', () => {
-  const courseId = 'course-v1:edX+DemoX+Demo_Course';
-  beforeEach(() => {
-    selectors.app.courseId = jest.fn(() => courseId);
-  });
   describe('fetchAssignmentTypes', () => {
     const testFetch = createTestFetcher(
-      LmsApiService.fetchAssignmentTypes,
+      lms.api.fetch.assignmentTypes,
       thunkActions.fetchAssignmentTypes,
       [],
-      () => expect(LmsApiService.fetchAssignmentTypes).toHaveBeenCalledWith(courseId),
+      () => expect(lms.api.fetch.assignmentTypes).toHaveBeenCalledWith(),
     );
     describe('actions dispatched on valid response', () => {
       const actionNames = [
