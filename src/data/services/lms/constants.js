@@ -9,9 +9,9 @@ export const paramKeys = StrictDict({
   userContains: 'user_contains',
   enrollmentMode: 'enrollment_mode',
   assignment: 'assignment',
-  assignmentGradeMin: 'assignmentGradeMin',
-  assignmentGradeMax: 'assignmentGradeMax',
-  courseGradeMin: 'courseGradeMin',
-  courseGradeMax: 'courseGradeMax',
+  assignmentGradeMin: 'assignment_grade_min',
+  assignmentGradeMax: 'assignment_grade_max',
+  courseGradeMin: 'course_grade_min',
+  courseGradeMax: 'course_grade_max',
   excludedCourseRoles: 'excluded_course_roles',
 });

@@ -8,12 +8,11 @@ const baseUrl = `${configuration.LMS_BASE_URL}`;
 const courseId = window.location.pathname.slice(1);
 
 const api = `${baseUrl}/api/`;
-const courses = `${baseUrl}courses/`;
 const bulkGrades = `${api}bulk_grades/course/${courseId}/`;
 const enrollment = `${api}enrollment/v1/`;
 const grades = `${api}grades/v1/`;
 const gradebook = `${grades}gradebook/${courseId}/`;
-const bulkUpdate = `${gradebook}bulk-update/`;
+const bulkUpdate = `${gradebook}bulk-update`;
 const intervention = `${bulkGrades}intervention/`;
 
 const cohorts = `${baseUrl}courses/${courseId}/cohorts/`;
@@ -48,7 +47,6 @@ export default StrictDict({
   bulkHistory,
   bulkUpdate,
   cohorts,
-  courses,
   enrollment,
   grades,
   gradebook,
