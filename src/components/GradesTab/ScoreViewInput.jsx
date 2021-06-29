@@ -40,4 +40,4 @@ export const mapDispatchToProps = {
   toggleFormat: actions.grades.toggleGradeFormat,
 };
 
-export default connect(() => ({}), mapDispatchToProps)(ScoreViewInput);
+export default connect(mapStateToProps, mapDispatchToProps)(ScoreViewInput);
