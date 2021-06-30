@@ -200,7 +200,6 @@ describe('grades selectors', () => {
     it('summarizes processed rows', () => {
       expect(output.resultsSummary).toEqual({
         text: selectors.getRowsProcessed(rawEntry.data),
-        courseId: rawEntry.unique_id,
         rowId: rawEntry.id,
       });
     });

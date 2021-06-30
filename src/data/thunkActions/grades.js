@@ -1,4 +1,4 @@
-/* eslint-disable import/no-self-import */
+/* eslint-disable import/no-self-import, import/no-named-as-default-member */
 import { getAuthenticatedHttpClient } from '@edx/frontend-platform/auth';
 
 import { StrictDict } from 'utils';
@@ -8,7 +8,7 @@ import GRADE_OVERRIDE_HISTORY_ERROR_DEFAULT_MSG from 'data/constants/errors';
 import grades from 'data/actions/grades';
 import { sortAlphaAsc } from 'data/actions/utils';
 import selectors from 'data/selectors';
-import LmsApiService from 'data/services/LmsApiService';
+import lms from 'data/services/lms';
 
 import * as module from './grades';
 
@@ -16,13 +16,12 @@ const { formatGradeOverrideForDisplay } = selectors.grades;
 
 export const defaultAssignmentFilter = 'All';
 
-export const fetchBulkUpgradeHistory = () => (dispatch, getState) => {
+export const fetchBulkUpgradeHistory = () => (dispatch) => (
   // todo add loading effect
-  const courseId = selectors.app.courseId(getState());
-  return LmsApiService.fetchGradeBulkOperationHistory(courseId).then(
+  lms.api.fetch.gradeBulkOperationHistory().then(
     (response) => { dispatch(grades.bulkHistory.received(response)); },
-  ).catch(() => dispatch(grades.bulkHistory.error()));
-};
+  ).catch(() => dispatch(grades.bulkHistory.error()))
+);
 
 export const fetchGrades = (overrides = {}) => (
   (dispatch, getState) => {
@@ -35,8 +34,7 @@ export const fetchGrades = (overrides = {}) => (
       ...selectors.root.localFilters(getState()),
       ...options,
     };
-    return LmsApiService.fetchGradebookData(
-      courseId,
+    return lms.api.fetch.gradebookData(
       fetchOptions.searchText || null,
       cohort,
       track,
@@ -74,7 +72,7 @@ export const fetchGradesIfAssignmentGradeFiltersSet = () => (
 );
 
 export const fetchGradeOverrideHistory = (subsectionId, userId) => (
-  dispatch => LmsApiService.fetchGradeOverrideHistory(subsectionId, userId)
+  dispatch => lms.api.fetch.gradeOverrideHistory(subsectionId, userId)
     .then(response => response.data)
     .then((data) => {
       if (data.success) {
@@ -130,7 +128,7 @@ export const submitFileUploadFormData = (formData) => (
   (dispatch, getState) => {
     const courseId = selectors.app.courseId(getState());
     dispatch(grades.csvUpload.started());
-    return LmsApiService.uploadGradeCsv(courseId, formData).then(() => {
+    return lms.api.uploadGradeCsv(formData).then(() => {
       dispatch(grades.csvUpload.finished());
       dispatch(grades.uploadOverride.success(courseId));
     }).catch((error) => {
@@ -146,10 +144,9 @@ export const submitFileUploadFormData = (formData) => (
 
 export const updateGrades = () => (
   (dispatch, getState) => {
-    const courseId = selectors.app.courseId(getState());
     const updateData = selectors.app.editUpdateData(getState());
     dispatch(grades.update.request());
-    return LmsApiService.updateGradebookData(courseId, updateData)
+    return lms.api.updateGradebookData(updateData)
       .then(response => response.data)
       .then((data) => {
         dispatch(grades.update.success({ data }));

@@ -24,8 +24,11 @@ export const ScoreViewInput = ({ format, toggleFormat }) => (
     </FormControl>
   </FormGroup>
 );
+ScoreViewInput.defaultProps = {
+  format: 'percent',
+};
 ScoreViewInput.propTypes = {
-  format: PropTypes.string.isRequired,
+  format: PropTypes.string,
   toggleFormat: PropTypes.func.isRequired,
 };
 
@@ -37,4 +40,4 @@ export const mapDispatchToProps = {
   toggleFormat: actions.grades.toggleGradeFormat,
 };
 
-export default connect(() => ({}), mapDispatchToProps)(ScoreViewInput);
+export default connect(mapStateToProps, mapDispatchToProps)(ScoreViewInput);

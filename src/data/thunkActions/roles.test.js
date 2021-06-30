@@ -1,17 +1,15 @@
-import { createTestFetcher } from './testUtils';
-
-import LmsApiService from '../services/LmsApiService';
-import actions from '../actions';
-import selectors from '../selectors';
+import lms from 'data/services/lms';
+import actions from 'data/actions';
+import selectors from 'data/selectors';
 
 import { fetchAssignmentTypes } from './assignmentTypes';
 import { fetchCohorts } from './cohorts';
 import { fetchGrades } from './grades';
 import { fetchTracks } from './tracks';
-
 import { allowedRoles, fetchRoles } from './roles';
+import { createTestFetcher } from './testUtils';
 
-jest.mock('../selectors', () => ({
+jest.mock('data/selectors', () => ({
   __esModule: true,
   default: {
     filters: {
@@ -20,8 +18,10 @@ jest.mock('../selectors', () => ({
     app: {},
   },
 }));
-jest.mock('../services/LmsApiService', () => ({
-  fetchUserRoles: jest.fn(),
+jest.mock('data/services/lms', () => ({
+  api: {
+    fetch: { roles: jest.fn() },
+  },
 }));
 jest.mock('./assignmentTypes', () => ({
   fetchAssignmentTypes: jest.fn((...args) => ({ type: 'fetchAssignmentTypes', args })),
@@ -58,10 +58,10 @@ describe('roles thunkActions', () => {
   });
   describe('fetchRoles', () => {
     const testFetch = createTestFetcher(
-      LmsApiService.fetchUserRoles,
+      lms.api.fetch.roles,
       fetchRoles,
       [],
-      () => expect(LmsApiService.fetchUserRoles).toHaveBeenCalledWith(courseId),
+      () => expect(lms.api.fetch.roles).toHaveBeenCalledWith(),
     );
     describe('valid response', () => {
       describe('cannot view gradebook (not is_staff, and no allowed roles)', () => {

@@ -2,12 +2,13 @@ import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 
 import * as auth from '@edx/frontend-platform/auth';
+
+import GRADE_OVERRIDE_HISTORY_ERROR_DEFAULT_MSG from 'data/constants/errors';
+import actions from 'data/actions';
+import { sortAlphaAsc } from 'data/actions/utils';
+import lms from 'data/services/lms';
+import selectors from 'data/selectors';
 import * as thunkActions from './grades';
-import actions from '../actions';
-import GRADE_OVERRIDE_HISTORY_ERROR_DEFAULT_MSG from '../constants/errors';
-import { sortAlphaAsc } from '../actions/utils';
-import LmsApiService from '../services/LmsApiService';
-import selectors from '../selectors';
 
 import { createTestFetcher } from './testUtils';
 
@@ -68,19 +69,25 @@ const allFilters = {
 
 const testVal = 'A Test VALue';
 
-jest.mock('../services/LmsApiService', () => ({
-  fetchGradebookData: jest.fn(),
-  fetchGradeBulkOperationHistory: jest.fn(),
-  fetchGradeOverrideHistory: jest.fn(),
-  fetchPrevNextGrades: jest.fn(),
-  updateGradebookData: jest.fn(),
-  updateGrades: jest.fn(),
-  uploadGradeCsv: jest.fn(),
+jest.mock('data/services/lms', () => ({
+  __esModule: true,
+  default: {
+    api: {
+      fetch: {
+        gradebookData: jest.fn(),
+        gradeBulkOperationHistory: jest.fn(),
+        gradeOverrideHistory: jest.fn(),
+        prevNextGrades: jest.fn(),
+      },
+      updateGradebookData: jest.fn(),
+      uploadGradeCsv: jest.fn(),
+    },
+  },
 }));
 jest.mock('@edx/frontend-platform/auth', () => ({
   getAuthenticatedHttpClient: jest.fn(),
 }));
-jest.mock('../selectors', () => ({
+jest.mock('data/selectors', () => ({
   __esModule: true,
   default: {
     grades: {
@@ -94,7 +101,9 @@ jest.mock('../selectors', () => ({
       assignmentGradeMin: jest.fn(),
       assignmentGradeMax: jest.fn(),
     },
-    app: {},
+    app: {
+      courseId: jest.fn(),
+    },
     root: {},
   },
 }));
@@ -103,11 +112,10 @@ selectors.filters.allFilters.mockReturnValue(allFilters);
 
 describe('grades thunkActions', () => {
   beforeEach(() => {
-    LmsApiService.fetchGradebookData.mockClear();
-    LmsApiService.fetchGradeBulkOperationHistory.mockClear();
-    LmsApiService.fetchGradeOverrideHistory.mockClear();
-    LmsApiService.fetchPrevNextGrades.mockClear();
-    LmsApiService.updateGrades.mockClear();
+    lms.api.fetch.gradebookData.mockClear();
+    lms.api.fetch.gradeBulkOperationHistory.mockClear();
+    lms.api.fetch.gradeOverrideHistory.mockClear();
+    lms.api.fetch.prevNextGrades.mockClear();
     selectors.app.courseId = jest.fn(() => courseId);
     selectors.filters.cohort = jest.fn(() => cohort);
     selectors.filters.track = jest.fn(() => track);
@@ -115,10 +123,10 @@ describe('grades thunkActions', () => {
   });
   describe('fetchBulkUpgradeHistory', () => {
     const testFetch = createTestFetcher(
-      LmsApiService.fetchGradeBulkOperationHistory,
+      lms.api.fetch.gradeBulkOperationHistory,
       thunkActions.fetchBulkUpgradeHistory,
       [],
-      () => expect(LmsApiService.fetchGradeBulkOperationHistory).toHaveBeenCalledWith(courseId),
+      () => expect(lms.api.fetch.gradeBulkOperationHistory).toHaveBeenCalledWith(),
     );
     describe('valid response', () => {
       it('dispatches bulkHistory.received with response', () => {
@@ -154,13 +162,13 @@ describe('grades thunkActions', () => {
     };
 
     const testFetch = ({ apiArgs, overrides }) => createTestFetcher(
-      LmsApiService.fetchGradebookData,
+      lms.api.fetch.gradebookData,
       thunkActions.fetchGrades,
       [overrides],
       () => {
         if (apiArgs !== undefined) {
           expect(
-            LmsApiService.fetchGradebookData,
+            lms.api.fetch.gradebookData,
           ).toHaveBeenCalledWith(...apiArgs);
         }
       },
@@ -179,10 +187,10 @@ describe('grades thunkActions', () => {
     describe('fetchGradebookData args', () => {
       describe('searchText is not empty', () => {
         const options = { to: 'be', or: 'not', searchText: '' };
-        test('courseId, searchText, cohort, track, and merged localFilters and options', () => (
+        test('searchText, cohort, track, and merged localFilters and options', () => (
           testFetch({
             overrides: { options },
-            apiArgs: [courseId, null, cohort, track, { ...localFilters, ...options }],
+            apiArgs: [null, cohort, track, { ...localFilters, ...options }],
           })(resolve => resolve({ data: responseData }))
         ));
       });
@@ -190,7 +198,7 @@ describe('grades thunkActions', () => {
         const options = { to: 'be', or: 'not', searchText: '' };
         test('null searchText', () => testFetch({
           overrides: { options },
-          apiArgs: [courseId, null, cohort, track, { ...localFilters, ...options }],
+          apiArgs: [null, cohort, track, { ...localFilters, ...options }],
         })(resolve => resolve({ data: responseData })));
       });
     });
@@ -270,12 +278,12 @@ describe('grades thunkActions', () => {
     const history = { some: 'history' };
 
     const testFetch = createTestFetcher(
-      LmsApiService.fetchGradeOverrideHistory,
+      lms.api.fetch.gradeOverrideHistory,
       thunkActions.fetchGradeOverrideHistory,
       [subsectionId, userId],
       () => {
         expect(
-          LmsApiService.fetchGradeOverrideHistory,
+          lms.api.fetch.gradeOverrideHistory,
         ).toHaveBeenCalledWith(subsectionId, userId);
       },
     );
@@ -402,12 +410,12 @@ describe('grades thunkActions', () => {
       const updateData = { some: 'data' };
       const gradebookData = { data: { OTher: 'DATA' } };
       const testFetch = createTestFetcher(
-        LmsApiService.updateGradebookData,
+        lms.api.updateGradebookData,
         thunkActions.updateGrades,
         [],
         () => expect(
-          LmsApiService.updateGradebookData,
-        ).toHaveBeenCalledWith(courseId, updateData),
+          lms.api.updateGradebookData,
+        ).toHaveBeenCalledWith(updateData),
       );
       beforeEach(() => {
         selectors.app.editUpdateData = jest.fn(() => updateData);
@@ -511,10 +519,10 @@ describe('grades thunkActions', () => {
   describe('submitFileUploadFormData', () => {
     const formData = { form: 'data' };
     const testFetch = createTestFetcher(
-      LmsApiService.uploadGradeCsv,
+      lms.api.uploadGradeCsv,
       thunkActions.submitFileUploadFormData,
       [formData],
-      () => expect(LmsApiService.uploadGradeCsv).toHaveBeenCalledWith(courseId, formData),
+      () => expect(lms.api.uploadGradeCsv).toHaveBeenCalledWith(formData),
     );
     const { csvUpload, uploadOverride } = actions.grades;
     describe('valid data', () => {

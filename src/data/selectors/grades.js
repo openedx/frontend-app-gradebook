@@ -133,7 +133,6 @@ export const transformHistoryEntry = ({
   originalFilename,
   resultsSummary: {
     rowId: id,
-    courseId,
     text: module.getRowsProcessed(data),
   },
   ...rest,

@@ -1,16 +1,15 @@
 /* eslint-disable import/prefer-default-export */
 import { StrictDict } from 'utils';
 import actions from 'data/actions';
-import selectors from 'data/selectors';
-import LmsApiService from 'data/services/LmsApiService';
+import lms from 'data/services/lms';
 
 const { fetching, gotGradesFrozen } = actions.assignmentTypes;
 const { gotBulkManagementConfig } = actions.config;
 
 export const fetchAssignmentTypes = () => (
-  (dispatch, getState) => {
+  (dispatch) => {
     dispatch(fetching.started());
-    return LmsApiService.fetchAssignmentTypes(selectors.app.courseId(getState()))
+    return lms.api.fetch.assignmentTypes()
       .then(response => response.data)
       .then((data) => {
         dispatch(fetching.received(Object.keys(data.assignment_types)));

@@ -1,41 +1,38 @@
-import { createTestFetcher } from './testUtils';
+import lms from 'data/services/lms';
+import actions from 'data/actions';
+import selectors from 'data/selectors';
 
-import LmsApiService from '../services/LmsApiService';
-import actions from '../actions';
-import selectors from '../selectors';
+import { createTestFetcher } from './testUtils';
 
 import { fetchBulkUpgradeHistory } from './grades';
 import { fetchTracks } from './tracks';
 
-jest.mock('../services/LmsApiService', () => ({
-  fetchTracks: jest.fn(),
+jest.mock('data/services/lms', () => ({
+  api: {
+    fetch: { tracks: jest.fn() },
+  },
 }));
-jest.mock('../selectors', () => ({
+jest.mock('data/selectors', () => ({
   __esModule: true,
   default: {
     tracks: { hasMastersTrack: jest.fn(() => false) },
-    app: { },
   },
 }));
 jest.mock('./grades', () => ({
   fetchBulkUpgradeHistory: jest.fn((...args) => ({ type: 'fetchBulkUpgradeHistory', args })),
 }));
 
-const courseId = 'course-v1:edX+DemoX+Demo_Course';
 const responseData = {
   couse_modes: ['some', 'course', 'modes'],
 };
 
-describe('tracjs thunkActions', () => {
-  beforeEach(() => {
-    selectors.app.courseId = jest.fn(() => courseId);
-  });
+describe('tracks thunkActions', () => {
   describe('fetchTracks', () => {
     const testFetch = createTestFetcher(
-      LmsApiService.fetchTracks,
+      lms.api.fetch.tracks,
       fetchTracks,
       [],
-      () => expect(LmsApiService.fetchTracks).toHaveBeenCalledWith(courseId),
+      () => expect(lms.api.fetch.tracks).toHaveBeenCalledWith(),
     );
     describe('valid response', () => {
       describe('if not hasMastersTrack(data.course_modes)', () => {
@@ -64,14 +61,14 @@ describe('tracjs thunkActions', () => {
           const expectedActions = [
             'fetching.started',
             'fetching.received with course_modes',
-            'fetchBulkUpgradeHistory thunkAction with courseId',
+            'fetchBulkUpgradeHistory thunkAction',
           ];
           test(`[${expectedActions.join(', ')}]`, () => testFetch(
             (resolve) => resolve({ data: responseData }),
             [
               actions.tracks.fetching.started(),
               actions.tracks.fetching.received(responseData.course_modes),
-              fetchBulkUpgradeHistory(courseId),
+              fetchBulkUpgradeHistory(),
             ],
           ));
         });

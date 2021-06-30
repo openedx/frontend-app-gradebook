@@ -37,8 +37,8 @@ export const filterConfig = StrictDict({
   },
   [filters.assignmentGrade]: {
     displayName: 'Assignment Grade',
-    filterOrder: ['courseGradeMin', 'courseGradeMax'],
-    connectedFilters: ['courseGradeMax', 'courseGradeMin'],
+    filterOrder: ['assignmentGradeMin', 'assignmentGradeMax'],
+    connectedFilters: ['assignmentGradeMax', 'assignmentGradeMin'],
   },
   [filters.cohort]: {
     displayName: 'Cohort',

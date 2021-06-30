@@ -1,12 +1,13 @@
-import LmsApiService from '../services/LmsApiService';
+import lms from 'data/services/lms';
 
-import actions from '../actions';
-import selectors from '../selectors';
+import actions from 'data/actions';
 import * as thunkActions from './cohorts';
 import { createTestFetcher } from './testUtils';
 
-jest.mock('../services/LmsApiService', () => ({
-  fetchCohorts: jest.fn(),
+jest.mock('data/services/lms', () => ({
+  api: {
+    fetch: { cohorts: jest.fn() },
+  },
 }));
 
 const responseData = {
@@ -17,16 +18,12 @@ const responseData = {
 };
 
 describe('cohorts thunkActions', () => {
-  const courseId = 'course-v1:edX+DemoX+Demo_Course';
-  beforeEach(() => {
-    selectors.app.courseId = jest.fn(() => courseId);
-  });
   describe('fetchCohorts', () => {
     const testFetch = createTestFetcher(
-      LmsApiService.fetchCohorts,
+      lms.api.fetch.cohorts,
       thunkActions.fetchCohorts,
       [],
-      () => expect(LmsApiService.fetchCohorts).toHaveBeenCalledWith(courseId),
+      () => expect(lms.api.fetch.cohorts).toHaveBeenCalledWith(),
     );
     describe('actions dispatched on valid response', () => {
       test('fetching.started, fetching.received', () => testFetch(
