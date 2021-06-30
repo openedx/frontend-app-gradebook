@@ -502,43 +502,13 @@ describe('root selectors', () => {
     });
   });
   describe('showBulkManagement', () => {
-    const mockAccess = (val) => {
-      selectors.special.hasSpecialBulkManagementAccess = jest.fn(() => val);
-    };
-    const mockHasMastersTrack = (val) => {
-      selectors.tracks.stateHasMastersTrack = jest.fn(() => val);
-    };
     const selector = moduleSelectors.showBulkManagement;
     const mkState = (bulkManagementAvailable) => ({ config: { bulkManagementAvailable } });
-    describe('user has special bulk management access', () => {
-      it('returns true', () => {
-        mockAccess(true);
-        mockHasMastersTrack(false);
-        expect(selector(mkState(true))).toEqual(true);
-      });
+    it('returns true when bulk management is enabled for the course', () => {
+      expect(selector(mkState(true))).toEqual(true);
     });
-    describe('user does not have special access', () => {
-      beforeEach(() => {
-        mockAccess(false);
-      });
-      describe('course has a masters track, but bulkManagement not available', () => {
-        it('returns false', () => {
-          mockHasMastersTrack(true);
-          expect(selector(mkState(false))).toEqual(false);
-        });
-      });
-      describe('course does not have a masters track, but bulkManagement available', () => {
-        it('returns false', () => {
-          mockHasMastersTrack(false);
-          expect(selector(mkState(true))).toEqual(false);
-        });
-      });
-      describe('course has a masters track, and bulkManagement is available', () => {
-        it('returns false', () => {
-          mockHasMastersTrack(true);
-          expect(selector(mkState(true))).toEqual(true);
-        });
-      });
+    it('returns false when bulk management is not enabled for the course', () => {
+      expect(selector(mkState(false))).toEqual(false);
     });
   });
 });

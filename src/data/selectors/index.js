@@ -10,7 +10,6 @@ import cohorts from './cohorts';
 import filters from './filters';
 import grades, { minGrade, maxGrade } from './grades';
 import roles from './roles';
-import special from './special';
 import tracks from './tracks';
 
 const {
@@ -221,15 +220,11 @@ export const shouldShowSpinner = (state) => (
 
 /**
  * showBulkManagement(state, options)
- * Returns true iff the user has special access or bulk management is configured to be available
- * and the course has a masters track.
+ * Returns true iff the course has bulk management enabled
  * @param {object} state - redux state
  * @return {bool} - should show bulk management controls?
  */
-export const showBulkManagement = (state) => (
-  special.hasSpecialBulkManagementAccess(app.courseId(state))
-  || (tracks.stateHasMastersTrack(state) && state.config.bulkManagementAvailable)
-);
+export const showBulkManagement = (state) => (state.config.bulkManagementAvailable);
 
 export default StrictDict({
   root: StrictDict({
@@ -250,6 +245,5 @@ export default StrictDict({
   filters,
   grades,
   roles,
-  special,
   tracks,
 });
