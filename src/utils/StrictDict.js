@@ -1,11 +1,8 @@
 /* eslint-disable no-console */
-import util from 'util';
-
 const staticReturnOptions = [
   'dict',
   'inspect',
   Symbol.toStringTag,
-  util.inspect.custom,
   Symbol.for('nodejs.util.inspect.custom'),
 ];
 
