@@ -114,6 +114,14 @@ describe('FileUploadForm', () => {
         });
       });
     });
+    describe('fileInput helper', () => {
+      test('links to fileInputRef.current', () => {
+        el = mount(<FileUploadForm {...props} />);
+        const ref = 'a-fake-ref';
+        el.instance().fileInputRef = { current: ref };
+        expect(el.instance().fileInput).toEqual(ref);
+      });
+    });
     describe('behavior', () => {
       let fileInput;
       beforeEach(() => {
