@@ -35,15 +35,13 @@ export const createTestFetcher = (
 ) => (
   resolveFn,
   expectedActions,
-  verifyFn,
 ) => {
   const store = mockStore({});
   mockedMethod.mockReturnValue(new Promise(resolve => {
     resolve(new Promise(resolveFn));
   }));
   return store.dispatch(thunkAction(...args)).then(() => {
-    if (onDispatch) { onDispatch(); }
-    if (verifyFn) { verifyFn(); }
+    onDispatch();
     if (expectedActions !== undefined) {
       expect(store.getActions()).toEqual(expectedActions);
     }
