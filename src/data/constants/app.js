@@ -1,4 +1,7 @@
 import { StrictDict } from 'utils';
+import { getConfig } from '@edx/frontend-platform';
+
+export const routePath = `${getConfig().PUBLIC_PATH}:courseId`;
 
 export const modalFieldKeys = StrictDict({
   adjustedGradePossible: 'adjustedGradePossible',
