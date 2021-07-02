@@ -69,7 +69,6 @@ describe('AssignmentFilter', () => {
           el = mount(<AssignmentFilter {...props} />);
           el.instance().handleChange(event);
         });
-
         it('calls props.updateAssignmentFilter with selection', () => {
           expect(props.updateAssignmentFilter).toHaveBeenCalledWith({
             label: newAssgn,
@@ -86,6 +85,30 @@ describe('AssignmentFilter', () => {
         it('calls props.fetchGradesIfAssignmentGradeFiltersSet', () => {
           const method = props.fetchGradesIfAssignmentGradeFiltersSet;
           expect(method).toHaveBeenCalledWith();
+        });
+        describe('no selected option', () => {
+          const value = 'fake';
+          beforeEach(() => {
+            el = mount(<AssignmentFilter {...props} />);
+            el.instance().handleChange({ target: { value } });
+          });
+          it('calls props.updateAssignmentFilter with selection', () => {
+            expect(props.updateAssignmentFilter).toHaveBeenCalledWith({
+              label: value,
+              type: undefined,
+              id: undefined,
+            });
+          });
+          it('calls props.updateQueryParams with selected assignment id',
+            () => {
+              expect(props.updateQueryParams).toHaveBeenCalledWith({
+                assignment: undefined,
+              });
+            });
+          it('calls props.fetchGradesIfAssignmentGradeFiltersSet', () => {
+            const method = props.fetchGradesIfAssignmentGradeFiltersSet;
+            expect(method).toHaveBeenCalledWith();
+          });
         });
       });
     });
