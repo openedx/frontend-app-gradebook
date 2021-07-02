@@ -71,11 +71,9 @@ GradesTab.propTypes = {
   resetFilters: PropTypes.func.isRequired,
 };
 
-export const mapStateToProps = () => ({});
-
 export const mapDispatchToProps = {
   fetchGrades: thunkActions.grades.fetchGrades,
   resetFilters: actions.filters.reset,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(GradesTab);
+export default connect(() => ({}), mapDispatchToProps)(GradesTab);
