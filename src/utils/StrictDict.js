@@ -1,26 +1,7 @@
 /* eslint-disable no-console */
-import util from 'util';
-
-const staticReturnOptions = [
-  'dict',
-  'inspect',
-  Symbol.toStringTag,
-  util.inspect.custom,
-  Symbol.for('nodejs.util.inspect.custom'),
-];
-
 const strictGet = (target, name) => {
   if (name === Symbol.toStringTag) {
     return target;
-  }
-  if (name === 'length') {
-    return target.length;
-  }
-  if (staticReturnOptions.indexOf(name) >= 0) {
-    return target;
-  }
-  if (name === Symbol.iterator) {
-    return { ...target };
   }
 
   if (name in target || name === '_reactFragment') {
