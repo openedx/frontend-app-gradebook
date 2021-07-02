@@ -9,15 +9,19 @@ jest.spyOn(window, 'Error').mockImplementation(error => ({ stack: error }));
 
 describe('StrictDict', () => {
   let consoleError;
+  let consoleLog;
   let windowError;
   beforeEach(() => {
     consoleError = window.console.error;
+    consoleLog = window.console.lot;
     windowError = window.Error;
     window.console.error = jest.fn();
+    window.console.log = jest.fn();
     window.Error = jest.fn(error => ({ stack: error }));
   });
   afterAll(() => {
     window.console.error = consoleError;
+    window.console.log = consoleLog;
     window.Error = windowError;
   });
   const rawDict = {
