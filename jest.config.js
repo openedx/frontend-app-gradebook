@@ -8,4 +8,8 @@ module.exports = createConfig('jest', {
   snapshotSerializers: [
     'enzyme-to-json/serializer',
   ],
+  coveragePathIgnorePatterns: [
+    'src/segment.js',
+    'src/postcss.config.js',
+  ],
 });

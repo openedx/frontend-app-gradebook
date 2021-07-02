@@ -30,17 +30,13 @@ const reducer = (state = initialState, { type: actionType, payload }) => {
         assignmentGradeMax: payload.assignmentGradeMax,
         assignmentGradeMin: payload.assignmentGradeMin,
       };
-    case actions.update.assignmentType.toString():
-      return {
-        ...state,
-        assignmentType: payload,
-        assignment: (
-          (
-            payload !== ''
-            && (state.assignment || {}).type !== payload
-          ) ? '' : state.assignment
-        ),
-      };
+    case actions.update.assignmentType.toString(): {
+      const newState = { ...state, assignmentType: payload };
+      if (payload !== '' && state.assignment && payload !== state.assignment.type) {
+        newState.assignment = '';
+      }
+      return newState;
+    }
     case actions.update.cohort.toString():
       return { ...state, cohort: payload };
     case actions.update.courseGradeLimits.toString():

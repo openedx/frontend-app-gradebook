@@ -9,6 +9,7 @@ import grades from './grades';
 import roles from './roles';
 import tracks from './tracks';
 
+/* istanbul ignore next */
 const rootReducer = combineReducers({
   app,
   assignmentTypes,

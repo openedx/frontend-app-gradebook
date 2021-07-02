@@ -6,6 +6,7 @@ import thunkActions from 'data/thunkActions';
 
 import {
   GradesTab,
+  mapStateToProps,
   mapDispatchToProps,
 } from '.';
 
@@ -77,6 +78,9 @@ describe('GradesTab', () => {
         expect(el.instance().render()).toMatchSnapshot();
       });
     });
+  });
+  test('mapStateToProps is empty', () => {
+    expect(mapStateToProps({ some: 'state' })).toEqual({});
   });
   describe('mapDispatchToProps', () => {
     describe('fetchGrades', () => {

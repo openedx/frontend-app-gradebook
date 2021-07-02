@@ -42,6 +42,37 @@ describe('app reducer', () => {
         ).toEqual({ ...testingState, courseId: testValue });
       });
     });
+    describe('appActions.filterMenu.startTransition', () => {
+      it('sets filterMenu.transitioning to true', () => {
+        expect(
+          app(testingState, appActions.filterMenu.startTransition()),
+        ).toEqual({
+          ...testingState,
+          filterMenu: { ...testingState.filterMenu, transitioning: true },
+        });
+      });
+    });
+    describe('appActions.filterMenu.endTransition', () => {
+      it('sets filterMenu.transitioning to false', () => {
+        const transitioningState = {
+          ...testingState,
+          filterMenu: { ...testingState.filterMenu, transitioning: true },
+        };
+        expect(
+          app(transitioningState, appActions.filterMenu.endTransition()),
+        ).toEqual(testingState);
+      });
+    });
+    describe('appActions.filterMenu.toggle', () => {
+      it('toggles filterMenu.open', () => {
+        const openState = {
+          ...testingState,
+          filterMenu: { ...testingState.filterMenu, open: true },
+        };
+        expect(app(testingState, appActions.filterMenu.toggle())).toEqual(openState);
+        expect(app(openState, appActions.filterMenu.toggle())).toEqual(testingState);
+      });
+    });
     describe('appActions.setLocalFilter', () => {
       it('loads filter values from the payload', () => {
         expect(
