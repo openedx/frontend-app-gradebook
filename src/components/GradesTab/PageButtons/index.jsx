@@ -5,9 +5,9 @@ import { connect } from 'react-redux';
 import { Button } from '@edx/paragon';
 import { FormattedMessage } from '@edx/frontend-platform/i18n';
 
-import messages from './messages';
 import selectors from 'data/selectors';
 import thunkActions from 'data/thunkActions';
+import messages from './messages';
 
 export class PageButtons extends React.Component {
   constructor(props) {

@@ -51,4 +51,4 @@ export const mapStateToProps = (state) => ({
   uploadSuccess: selectors.grades.uploadSuccess(state),
 });
 
-export default connect(mapStateToProps)(BulkManagementAlerts)
+export default connect(mapStateToProps)(BulkManagementAlerts);

@@ -96,7 +96,7 @@ describe('GradebookTable', () => {
       test('email sets key and label from header', () => {
         const heading = headings[1];
         expect(heading.key).toEqual(Headings.email);
-        expect(heading.label).toEqual(<FormattedMessage {...messages.emailHeading} />)
+        expect(heading.label).toEqual(<FormattedMessage {...messages.emailHeading} />);
       });
       test('subsections set key and label from header', () => {
         expect(headings[2]).toEqual({ key: fields.field1, label: fields.field1 });

@@ -1,6 +1,6 @@
 /* eslint-disable import/no-named-as-default */
 import React from 'react';
-import { shallow, mount } from 'enzyme';
+import { shallow } from 'enzyme';
 import TestRenderer from 'react-test-renderer';
 import {
   Button,
