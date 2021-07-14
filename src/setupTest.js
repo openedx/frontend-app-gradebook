@@ -8,3 +8,8 @@ Enzyme.configure({ adapter: new Adapter() });
 // These configuration values are usually set in webpack's EnvironmentPlugin however
 // Jest does not use webpack so we need to set these so for testing
 process.env.LMS_BASE_URL = 'http://localhost:18000';
+
+jest.mock('@edx/frontend-platform/i18n', () => ({
+  defineMessages: m => m,
+  FormattedMessage: () => 'FormattedMessage',
+}));
