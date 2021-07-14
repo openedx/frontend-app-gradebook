@@ -1,5 +1,7 @@
 import { StrictDict } from 'utils';
 
+import messages from './filters.messages';
+
 export const filters = StrictDict({
   assignment: 'assignment',
   assignmentGrade: 'assignmentGrade',
@@ -28,34 +30,34 @@ const initialFilters = {
 
 export const filterConfig = StrictDict({
   [filters.assignment]: {
-    displayName: 'Assignment',
+    displayName: messages[filters.assignment],
     connectedFilters: ['assignment', 'assignmentGradeMax', 'assignmentGradeMax'],
   },
   [filters.assignmentType]: {
-    displayName: 'Assignment Type',
+    displayName: messages[filters.assignmentType],
     connectedFilters: ['assignmentType'],
   },
   [filters.assignmentGrade]: {
-    displayName: 'Assignment Grade',
+    displayName: messages[filters.assignmentGrade],
     filterOrder: ['assignmentGradeMin', 'assignmentGradeMax'],
     connectedFilters: ['assignmentGradeMax', 'assignmentGradeMin'],
   },
   [filters.cohort]: {
-    displayName: 'Cohort',
+    displayName: messages[filters.cohort],
     connectedFilters: ['cohort'],
   },
   [filters.courseGrade]: {
-    displayName: 'Course Grade',
+    displayName: messages[filters.courseGrade],
     filterOrder: ['courseGradeMin', 'courseGradeMax'],
     connectedFilters: ['courseGradeMax', 'courseGradeMin'],
   },
   [filters.includeCourseRoleMembers]: {
-    displayName: 'Includeing Course Team Members',
+    displayName: messages[filters.includeCourseRoleMembers],
     connectedFilters: ['includeCourseRoleMembers'],
     hideValue: true,
   },
   [filters.track]: {
-    displayName: 'Track',
+    displayName: messages[filters.track],
     connectedFilters: ['track'],
   },
 });

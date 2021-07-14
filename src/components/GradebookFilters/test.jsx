@@ -46,6 +46,7 @@ describe('GradebookFilters', () => {
   beforeEach(() => {
     props = {
       ...props,
+      intl: { formatMessage: (msg) => msg.defaultMessage },
       closeMenu: jest.fn().mockName('this.props.closeMenu'),
       fetchGrades: jest.fn(),
       updateIncludeCourseRoleMembers: jest.fn(),

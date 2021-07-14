@@ -7,13 +7,25 @@ exports[`CourseGradeFilter Component snapshots basic snapshot 1`] = `
   >
     <PercentGroup
       id="minimum-grade"
-      label="Min Grade"
+      label={
+        <FormattedMessage
+          defaultMessage="Min Grade"
+          description="Min-grade filter select label in Gradebook Filters"
+          id="gradebook.GradebookFilters.minGradeFilterLabel"
+        />
+      }
       onChange={[MockFunction handleUpdateMin]}
       value="5"
     />
     <PercentGroup
       id="maximum-grade"
-      label="Max Grade"
+      label={
+        <FormattedMessage
+          defaultMessage="Max Grade"
+          description="Max-grade filter select label in Gradebook Filters"
+          id="gradebook.GradebookFilters.maxGradeFilterLabel"
+        />
+      }
       onChange={[MockFunction handleUpdateMax]}
       value="92"
     />

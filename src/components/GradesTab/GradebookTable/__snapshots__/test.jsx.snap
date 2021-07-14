@@ -16,7 +16,11 @@ exports[`GradebookTable component snapshot - fields1 and 2 between email and tot
           },
           Object {
             "key": "Email",
-            "label": "Email",
+            "label": <FormattedMessage
+              defaultMessage="Email"
+              description="Gradebook table email column header"
+              id="gradebook.GradesTab.table.headings.email"
+            />,
           },
           Object {
             "key": "field1",

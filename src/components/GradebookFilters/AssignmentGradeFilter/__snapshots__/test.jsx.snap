@@ -7,14 +7,26 @@ exports[`AssignmentGradeFilter Component snapshots buttons and groups disabled i
   <PercentGroup
     disabled={true}
     id="assignmentGradeMin"
-    label="Min Grade"
+    label={
+      <FormattedMessage
+        defaultMessage="Min Grade"
+        description="Min-grade filter select label in Gradebook Filters"
+        id="gradebook.GradebookFilters.minGradeFilterLabel"
+      />
+    }
     onChange={[MockFunction handleSetMin]}
     value="2"
   />
   <PercentGroup
     disabled={true}
     id="assignmentGradeMax"
-    label="Max Grade"
+    label={
+      <FormattedMessage
+        defaultMessage="Max Grade"
+        description="Max-grade filter select label in Gradebook Filters"
+        id="gradebook.GradebookFilters.maxGradeFilterLabel"
+      />
+    }
     onChange={[MockFunction handleSetMax]}
     value="98"
   />
@@ -42,14 +54,26 @@ exports[`AssignmentGradeFilter Component snapshots smoke test 1`] = `
   <PercentGroup
     disabled={false}
     id="assignmentGradeMin"
-    label="Min Grade"
+    label={
+      <FormattedMessage
+        defaultMessage="Min Grade"
+        description="Min-grade filter select label in Gradebook Filters"
+        id="gradebook.GradebookFilters.minGradeFilterLabel"
+      />
+    }
     onChange={[MockFunction handleSetMin]}
     value="2"
   />
   <PercentGroup
     disabled={false}
     id="assignmentGradeMax"
-    label="Max Grade"
+    label={
+      <FormattedMessage
+        defaultMessage="Max Grade"
+        description="Max-grade filter select label in Gradebook Filters"
+        id="gradebook.GradebookFilters.maxGradeFilterLabel"
+      />
+    }
     onChange={[MockFunction handleSetMax]}
     value="98"
   />

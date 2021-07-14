@@ -3,9 +3,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
+import { FormattedMessage } from '@edx/frontend-platform/i18n';
+
 import selectors from 'data/selectors';
 import actions from 'data/actions';
+
 import SelectGroup from '../SelectGroup';
+import messages from '../messages';
 
 export class AssignmentTypeFilter extends React.Component {
   constructor(props) {
@@ -34,7 +38,7 @@ export class AssignmentTypeFilter extends React.Component {
       <div className="student-filters">
         <SelectGroup
           id="assignment-types"
-          label="Assignment Types"
+          label={<FormattedMessage {...messages.assignmentTypes} />}
           value={this.props.selectedAssignmentType}
           onChange={this.handleChange}
           disabled={this.props.assignmentFilterOptions.length === 0}

@@ -3,7 +3,9 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 import { Button } from '@edx/paragon';
+import { FormattedMessage } from '@edx/frontend-platform/i18n';
 
+import messages from './messages';
 import selectors from 'data/selectors';
 import thunkActions from 'data/thunkActions';
 
@@ -34,7 +36,7 @@ export class PageButtons extends React.Component {
           disabled={!this.props.prevPage}
           onClick={this.getPrevGrades}
         >
-          Previous Page
+          <FormattedMessage {...messages.prevPage} />
         </Button>
         <Button
           style={{ margin: '20px' }}
@@ -42,7 +44,7 @@ export class PageButtons extends React.Component {
           disabled={!this.props.nextPage}
           onClick={this.getNextGrades}
         >
-          Next Page
+          <FormattedMessage {...messages.nextPage} />
         </Button>
       </div>
     );

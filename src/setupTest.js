@@ -9,7 +9,15 @@ Enzyme.configure({ adapter: new Adapter() });
 // Jest does not use webpack so we need to set these so for testing
 process.env.LMS_BASE_URL = 'http://localhost:18000';
 
-jest.mock('@edx/frontend-platform/i18n', () => ({
-  defineMessages: m => m,
-  FormattedMessage: () => 'FormattedMessage',
-}));
+jest.mock('@edx/frontend-platform/i18n', () => {
+  const i18n = jest.requireActual('@edx/frontend-platform/i18n');
+  const PropTypes = jest.requireActual('prop-types');
+  return {
+    ...i18n,
+    intlShape: PropTypes.shape({
+      formatMessage: jest.fn(msg => msg.defaultMessage),
+    }),
+    defineMessages: m => m,
+    FormattedMessage: () => 'FormattedMessage',
+  };
+});

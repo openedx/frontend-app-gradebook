@@ -52,6 +52,13 @@ export const bulkManagementColumns = [
   },
 ];
 
+export const gradeOverrideHistoryColumns = StrictDict({
+  adjustedGrade: 'adjustedGrade',
+  date: 'date',
+  grader: 'grader',
+  reason: 'reason',
+});
+
 /**
  * Display strings for various app components.
  * Note: this is a temporary storage location for these strings, before we put them in

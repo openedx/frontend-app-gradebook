@@ -22,7 +22,13 @@ exports[`GradebookFilters Component snapshots basic snapshot 1`] = `
   <Collapsible
     className="filter-group mb-3"
     defaultOpen={true}
-    title="Assignments"
+    title={
+      <FormattedMessage
+        defaultMessage="Assignments"
+        description="Assignment filter group label in Gradebook Filters"
+        id="gradebook.GradebookFilters.assignmentsFilterLabel"
+      />
+    }
   >
     <div>
       <Connect(AssignmentTypeFilter)
@@ -39,7 +45,13 @@ exports[`GradebookFilters Component snapshots basic snapshot 1`] = `
   <Collapsible
     className="filter-group mb-3"
     defaultOpen={true}
-    title="Overall Grade"
+    title={
+      <FormattedMessage
+        defaultMessage="Overall Grade"
+        description="Overall Grade filter group label in Gradebook Filters"
+        id="gradebook.GradebookFilters.overallGradeFilterLabel"
+      />
+    }
   >
     <Connect(CourseGradeFilter)
       updateQueryParams={[MockFunction]}
@@ -48,22 +60,38 @@ exports[`GradebookFilters Component snapshots basic snapshot 1`] = `
   <Collapsible
     className="filter-group mb-3"
     defaultOpen={true}
-    title="Student Groups"
+    title={
+      <FormattedMessage
+        defaultMessage="Student Groups"
+        description="Student Groups filter group label in Gradebook Filters"
+        id="gradebook.GradebookFilters.studentGroupsFilterLabel"
+      />
+    }
   >
-    <Connect(StudentGroupsFilter)
+    <InjectIntl(ShimmedIntlComponent)
       updateQueryParams={[MockFunction]}
     />
   </Collapsible>
   <Collapsible
     className="filter-group mb-3"
     defaultOpen={true}
-    title="Include Course Team Members"
+    title={
+      <FormattedMessage
+        defaultMessage="Include Course Team Members"
+        description="Include Course Team Members filter label in Gradebook Filters"
+        id="gradebook.GradebookFilters.includeCourseTeamMembersFilterLabel"
+      />
+    }
   >
     <Checkbox
       checked={true}
       onChange={[MockFunction handleIncludeTeamMembersChange]}
     >
-      Include Course Team Members
+      <FormattedMessage
+        defaultMessage="Include Course Team Members"
+        description="Include Course Team Members filter label in Gradebook Filters"
+        id="gradebook.GradebookFilters.includeCourseTeamMembersFilterLabel"
+      />
     </Checkbox>
   </Collapsible>
 </React.Fragment>

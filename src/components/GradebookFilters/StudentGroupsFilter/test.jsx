@@ -63,6 +63,7 @@ describe('StudentGroupsFilter', () => {
     beforeEach(() => {
       props = {
         ...props,
+        intl: { formatMessage: (msg) => msg.defaultMessage },
         cohortsByName: {
           [props.cohorts[0].name]: props.cohorts[0],
           [props.cohorts[1].name]: props.cohorts[1],

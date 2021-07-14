@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
 import { Button } from '@edx/paragon';
+import { FormattedMessage } from '@edx/frontend-platform/i18n';
 
 import selectors from 'data/selectors';
 
@@ -15,7 +16,6 @@ import selectors from 'data/selectors';
  * @param {string} filterName - api filter name (for redux connector)
  */
 export const FilterBadge = ({
-  handleClose,
   config: {
     displayName,
     isDefault,
@@ -23,11 +23,15 @@ export const FilterBadge = ({
     value,
     connectedFilters,
   },
+  handleClose,
 }) => !isDefault && (
   <div>
     <span className="badge badge-info">
       <span>
-        {displayName}{!hideValue && `: ${value}`}
+        <FormattedMessage {...displayName} />
+      </span>
+      <span>
+        {!hideValue ? `: ${value}` : ''}
       </span>
       <Button
         className="btn-info"
@@ -48,7 +52,9 @@ FilterBadge.propTypes = {
   // redux
   config: PropTypes.shape({
     connectedFilters: PropTypes.arrayOf(PropTypes.string),
-    displayName: PropTypes.string.isRequired,
+    displayName: PropTypes.shape({
+      defaultMessage: PropTypes.string,
+    }).isRequired,
     isDefault: PropTypes.bool.isRequired,
     hideValue: PropTypes.bool,
     value: PropTypes.oneOfType([

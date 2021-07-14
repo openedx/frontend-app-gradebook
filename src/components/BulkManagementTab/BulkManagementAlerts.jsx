@@ -1,20 +1,22 @@
 /* eslint-disable react/sort-comp, react/button-has-type */
 import React from 'react';
 import PropTypes from 'prop-types';
+import { FormattedMessage } from '@edx/frontend-platform/i18n';
 import { connect } from 'react-redux';
 
 import { Alert } from '@edx/paragon';
 
-import * as appConstants from 'data/constants/app';
 import selectors from 'data/selectors';
-
-const { messages: { BulkManagementTab: messages } } = appConstants;
+import messages from './messages';
 
 /**
  * <BulkManagementAlerts />
  * Alerts to display at the top of the BulkManagement tab
  */
-export const BulkManagementAlerts = ({ bulkImportError, uploadSuccess }) => (
+export const BulkManagementAlerts = ({
+  bulkImportError,
+  uploadSuccess,
+}) => (
   <>
     <Alert
       variant="danger"
@@ -28,7 +30,7 @@ export const BulkManagementAlerts = ({ bulkImportError, uploadSuccess }) => (
       show={uploadSuccess}
       dismissible={false}
     >
-      {messages.successDialog}
+      <FormattedMessage {...messages.successDialog} />
     </Alert>
   </>
 );
@@ -49,4 +51,4 @@ export const mapStateToProps = (state) => ({
   uploadSuccess: selectors.grades.uploadSuccess(state),
 });
 
-export default connect(mapStateToProps)(BulkManagementAlerts);
+export default connect(mapStateToProps)(BulkManagementAlerts)

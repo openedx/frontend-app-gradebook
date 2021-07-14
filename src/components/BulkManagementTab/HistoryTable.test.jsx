@@ -2,13 +2,19 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import { Table } from '@edx/paragon';
+import { FormattedMessage } from '@edx/frontend-platform/i18n';
 
 import selectors from 'data/selectors';
-import { bulkManagementColumns, messages } from 'data/constants/app';
+import { bulkManagementColumns } from 'data/constants/app';
 
 import ResultsSummary from './ResultsSummary';
 import { HistoryTable, mapStateToProps } from './HistoryTable';
+import messages from './messages';
 
+jest.mock('@edx/frontend-platform/i18n', () => ({
+  defineMessages: m => m,
+  FormattedMessage: () => 'FormattedMessage',
+}));
 jest.mock('@edx/paragon', () => ({
   Table: () => 'Table',
 }));
@@ -61,9 +67,9 @@ describe('HistoryTable', () => {
       });
       test('hints with break in between', () => {
         const hints = el.find('p');
-        expect(hints.childAt(0).text()).toEqual(messages.BulkManagementTab.hints[0]);
+        expect(hints.childAt(0).getElement()).toEqual(<FormattedMessage {...messages.hint1} />);
         expect(hints.childAt(1).is('br')).toEqual(true);
-        expect(hints.childAt(2).text()).toEqual(messages.BulkManagementTab.hints[1]);
+        expect(hints.childAt(2).getElement()).toEqual(<FormattedMessage {...messages.hint2} />);
       });
       describe('history table', () => {
         let table;

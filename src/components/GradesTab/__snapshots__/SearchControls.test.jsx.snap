@@ -3,7 +3,11 @@
 exports[`SearchControls Component Snapshots basic snapshot 1`] = `
 <React.Fragment>
   <h4>
-    Step 1: Filter the Grade Report
+    <FormattedMessage
+      defaultMessage="Step 1: Filter the Grade Report"
+      description="Filter controls container heading string"
+      id="gradebook.GradesTab.filterHeading"
+    />
   </h4>
   <div
     className="d-flex justify-content-between"
@@ -16,11 +20,22 @@ exports[`SearchControls Component Snapshots basic snapshot 1`] = `
       <Icon
         className="fa fa-filter"
       />
-       Edit Filters
+       
+      <FormattedMessage
+        defaultMessage="Edit Filters"
+        description="Button text on Grades tab to open/close the Filters tab"
+        id="gradebook.GradesTab.editFilterLabel"
+      />
     </Button>
     <div>
       <SearchField
-        inputLabel="Search for a learner"
+        inputLabel={
+          <FormattedMessage
+            defaultMessage="Search for a learner"
+            description="Search description label"
+            id="gradebook.GradesTab.search.label"
+          />
+        }
         onChange={[MockFunction onChange]}
         onClear={[MockFunction onClear]}
         onSubmit={[MockFunction fetchGrades]}
@@ -29,7 +44,11 @@ exports[`SearchControls Component Snapshots basic snapshot 1`] = `
       <small
         className="form-text text-muted search-help-text"
       >
-        Search by username, email, or student key
+        <FormattedMessage
+          defaultMessage="Search by username, email, or student key"
+          description="Search hint label"
+          id="gradebook.GradesTab.search.hint"
+        />
       </small>
     </div>
   </div>

@@ -1,7 +1,8 @@
 /* eslint-disable react/button-has-type, import/no-named-as-default */
 import React from 'react';
+import { FormattedMessage } from '@edx/frontend-platform/i18n';
 
-import { messages } from 'data/constants/app';
+import messages from './messages';
 import BulkManagementAlerts from './BulkManagementAlerts';
 import FileUploadForm from './FileUploadForm';
 import HistoryTable from './HistoryTable';
@@ -12,7 +13,7 @@ import HistoryTable from './HistoryTable';
  */
 export const BulkManagementTab = () => (
   <div>
-    <h4>{messages.BulkManagementTab.heading}</h4>
+    <h4><FormattedMessage {...(messages.heading)} /></h4>
     <BulkManagementAlerts />
     <FileUploadForm />
     <HistoryTable />

@@ -8,11 +8,13 @@ import {
   Modal,
   StatusAlert,
 } from '@edx/paragon';
+import { FormattedMessage } from '@edx/frontend-platform/i18n';
 
 import selectors from 'data/selectors';
 import actions from 'data/actions';
 import thunkActions from 'data/thunkActions';
 
+import messages from './messages';
 import OverrideTable from './OverrideTable';
 import ModalHeaders from './ModalHeaders';
 
@@ -46,8 +48,8 @@ export class EditModal extends React.Component {
     return (
       <Modal
         open={this.props.open}
-        title="Edit Grades"
-        closeText="Cancel"
+        title={<FormattedMessage {...messages.title} />}
+        closeText={<FormattedMessage {...messages.closeText} />}
         body={(
           <div>
             <ModalHeaders />
@@ -58,15 +60,13 @@ export class EditModal extends React.Component {
               dismissible={false}
             />
             <OverrideTable />
-            <div>Showing most recent actions (max 5). To see more, please contact
-              support.
-            </div>
-            <div>Note: Once you save, your changes will be visible to students.</div>
+            <div><FormattedMessage {...messages.visibility} /></div>
+            <div><FormattedMessage {...messages.saveVisibility} /></div>
           </div>
         )}
         buttons={[
           <Button variant="primary" onClick={this.handleAdjustedGradeClick}>
-            Save Grade
+            <FormattedMessage {...messages.saveGrade} />
           </Button>,
         ]}
         onClose={this.closeAssignmentModal}

@@ -4,17 +4,14 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 import { Table } from '@edx/paragon';
+import { FormattedMessage } from '@edx/frontend-platform/i18n';
 
+import { gradeOverrideHistoryColumns as columns } from 'data/constants/app';
 import selectors from 'data/selectors';
+
+import messages from './messages';
 import ReasonInput from './ReasonInput';
 import AdjustedGradeInput from './AdjustedGradeInput';
-
-const GRADE_OVERRIDE_HISTORY_COLUMNS = [
-  { label: 'Date', key: 'date' },
-  { label: 'Grader', key: 'grader' },
-  { label: 'Reason', key: 'reason' },
-  { label: 'Adjusted grade', key: 'adjustedGrade' },
-];
 
 /**
  * <OverrideTable />
@@ -31,7 +28,15 @@ export const OverrideTable = ({
   }
   return (
     <Table
-      columns={GRADE_OVERRIDE_HISTORY_COLUMNS}
+      columns={[
+        { label: <FormattedMessage {...messages.dateHeader} />, key: columns.date },
+        { label: <FormattedMessage {...messages.graderHeader} />, key: columns.grader },
+        { label: <FormattedMessage {...messages.reasonHeader} />, key: columns.reason },
+        {
+          label: <FormattedMessage {...messages.adjustedGradeHeader} />,
+          key: columns.adjustedGrade,
+        },
+      ]}
       data={[
         ...gradeOverrides,
         {

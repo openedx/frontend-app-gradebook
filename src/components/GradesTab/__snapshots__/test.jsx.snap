@@ -9,7 +9,11 @@ exports[`GradesTab Component snapshots basic snapshot 1`] = `
   />
   <StatusAlerts />
   <h4>
-    Step 2: View or Modify Individual Grades
+    <FormattedMessage
+      defaultMessage="Step 2: View or Modify Individual Grades"
+      description="Alert text for invalid minimum course grade"
+      id="gradebook.GradesTab.gradebookStepHeading"
+    />
   </h4>
   <UsersLabel />
   <div
@@ -21,7 +25,12 @@ exports[`GradesTab Component snapshots basic snapshot 1`] = `
   <GradebookTable />
   <PageButtons />
   <p>
-    * available for learners in the Master's track only
+    * 
+    <FormattedMessage
+      defaultMessage="available for learners in the Master&abos;s track only"
+      description="Masters feature availability hint on Grades Tab"
+      id="gradebook.GradesTab.mastersHint"
+    />
   </p>
   <EditModal />
 </React.Fragment>
