@@ -16,14 +16,6 @@ import { FileUploadForm, mapStateToProps, mapDispatchToProps } from './FileUploa
 
 import messages from './messages';
 
-/*
-jest.mock('@edx/paragon', () => ({
-  Button: () => 'Button',
-  Form: () => 'Form',
-  FormControl: () => 'FormControl',
-  FormGroup: () => 'FormGroup',
-}));
-*/
 jest.mock('@edx/frontend-platform/i18n', () => ({
   defineMessages: m => m,
   FormattedMessage: () => 'FormattedMessage',
