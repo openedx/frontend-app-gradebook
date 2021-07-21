@@ -38,12 +38,12 @@ const messages = defineMessages({
   },
   saveVisibility: {
     id: 'gradebook.GradesTab.EditModal.saveVisibility',
-    defaultMessage: 'Note: Once you save your changes will be visible to students.',
+    defaultMessage: 'Note: Once you save, your changes will be visible to students.',
     description: 'Edit Modal saved changes effect hint',
   },
   saveGrade: {
     id: 'gradebook.GradesTab.EditModal.saveGrade',
-    defaultMessage: 'Save Gradse',
+    defaultMessage: 'Save Grades',
     description: 'Edit Modal Save button label',
   },
 });

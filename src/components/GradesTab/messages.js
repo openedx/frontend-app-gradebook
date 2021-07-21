@@ -68,7 +68,7 @@ const messages = defineMessages({
   },
   mastersHint: {
     id: 'gradebook.GradesTab.mastersHint',
-    defaultMessage: 'available for learners in the Master&abos;s track only',
+    defaultMessage: 'available for learners in the Master&apos;s track only',
     description: 'Masters feature availability hint on Grades Tab',
   },
 });
