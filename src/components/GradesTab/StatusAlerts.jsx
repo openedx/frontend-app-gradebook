@@ -3,12 +3,11 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 import { StatusAlert } from '@edx/paragon';
+import { FormattedMessage } from '@edx/frontend-platform/i18n';
 
 import selectors from 'data/selectors';
 import actions from 'data/actions';
-
-export const maxCourseGradeInvalidMessage = 'Maximum course grade value must be between 0 and 100. ';
-export const minCourseGradeInvalidMessage = 'Minimum course grade value must be between 0 and 100. ';
+import messages from './messages';
 
 export class StatusAlerts extends React.Component {
   get isCourseGradeFilterAlertOpen() {
@@ -18,15 +17,24 @@ export class StatusAlerts extends React.Component {
     );
   }
 
+  get minValidityMessage() {
+    return (this.props.limitValidity.isMinValid)
+      ? ''
+      : <FormattedMessage {...messages.minGradeInvalid} />;
+  }
+
+  get maxValidityMessage() {
+    return (this.props.limitValidity.isMaxValid)
+      ? ''
+      : <FormattedMessage {...messages.maxGradeInvalid} />;
+  }
+
   get courseGradeFilterAlertDialogText() {
-    let dialogText = '';
-    if (!this.props.limitValidity.isMinValid) {
-      dialogText += minCourseGradeInvalidMessage;
-    }
-    if (!this.props.limitValidity.isMaxValid) {
-      dialogText += maxCourseGradeInvalidMessage;
-    }
-    return dialogText;
+    return (
+      <>
+        {this.minValidityMessage}{this.maxValidityMessage}
+      </>
+    );
   }
 
   render() {
@@ -34,7 +42,7 @@ export class StatusAlerts extends React.Component {
       <>
         <StatusAlert
           alertType="success"
-          dialog="The grade has been successfully edited. You may see a slight delay before updates appear in the Gradebook."
+          dialog={<FormattedMessage {...messages.editSuccessAlert} />}
           onClose={this.props.handleCloseSuccessBanner}
           open={this.props.showSuccessBanner}
         />

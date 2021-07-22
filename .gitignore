@@ -17,3 +17,7 @@ dist/
 ### Development environments ###
 .idea
 .vscode
+
+### transifex ###
+src/i18n/transifex_input.json
+temp

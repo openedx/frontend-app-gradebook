@@ -3,6 +3,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
+import { FormattedMessage } from '@edx/frontend-platform/i18n';
+
 import selectors from 'data/selectors';
 
 /**
@@ -18,9 +20,15 @@ export const UsersLabel = ({
   }
   const bold = (val) => (<span className="font-weight-bold">{val}</span>);
   return (
-    <>
-      Showing {bold(filteredUsersCount)} of {bold(totalUsersCount)} total learners
-    </>
+    <FormattedMessage
+      id="gradebook.GradesTab.usersVisibilityLabel'"
+      defaultMessage="Showing {filteredUsers} of {totalUsers} total learners"
+      description="Users visibility label"
+      values={{
+        filteredUsers: bold(filteredUsersCount),
+        totalUsers: bold(totalUsersCount),
+      }}
+    />
   );
 };
 UsersLabel.propTypes = {

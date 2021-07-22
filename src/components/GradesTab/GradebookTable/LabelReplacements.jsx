@@ -7,8 +7,9 @@ import {
   OverlayTrigger,
   Tooltip,
 } from '@edx/paragon';
+import { FormattedMessage } from '@edx/frontend-platform/i18n';
 
-import { Headings } from 'data/constants/grades';
+import messages from './messages';
 
 export const totalGradePercentageMessage = 'Total Grade values are always displayed as a percentage.';
 
@@ -23,12 +24,21 @@ const TotalGradeLabelReplacement = () => (
       trigger={['hover', 'focus']}
       key="left-basic"
       placement="left"
-      overlay={(<Tooltip id="course-grade-tooltip">{totalGradePercentageMessage}</Tooltip>)}
+      overlay={(
+        <Tooltip id="course-grade-tooltip">
+          <FormattedMessage {...messages.totalGradePercentage} />
+        </Tooltip>
+      )}
     >
       <div>
-        {Headings.totalGrade}
+        <FormattedMessage {...messages.totalGradeHeading} />
         <div id="courseGradeTooltipIcon">
-          <Icon className="fa fa-info-circle" screenReaderText={totalGradePercentageMessage} />
+          <Icon
+            className="fa fa-info-circle"
+            screenReaderText={(
+              <FormattedMessage {...messages.totalGradePercentage} />
+            )}
+          />
         </div>
       </div>
     </OverlayTrigger>
@@ -41,8 +51,12 @@ const TotalGradeLabelReplacement = () => (
  */
 const UsernameLabelReplacement = () => (
   <div>
-    <div>Username</div>
-    <div className="font-weight-normal student-key">Student Key*</div>
+    <div>
+      <FormattedMessage {...messages.usernameHeading} />
+    </div>
+    <div className="font-weight-normal student-key">
+      <FormattedMessage {...messages.studentKeyLabel} />
+    </div>
   </div>
 );
 

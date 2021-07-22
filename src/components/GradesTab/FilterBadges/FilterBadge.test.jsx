@@ -1,5 +1,6 @@
 import React from 'react';
 import { shallow } from 'enzyme';
+import { FormattedMessage } from '@edx/frontend-platform/i18n';
 
 import { Button } from '@edx/paragon';
 import selectors from 'data/selectors';
@@ -20,7 +21,9 @@ jest.mock('data/selectors', () => ({
 describe('FilterBadge', () => {
   describe('component', () => {
     const config = {
-      displayName: 'a common name',
+      displayName: {
+        defaultMessage: 'a common name',
+      },
       isDefault: false,
       hideValue: false,
       value: 'a common value',
@@ -58,7 +61,11 @@ describe('FilterBadge', () => {
           expect(el).toMatchSnapshot();
         });
         it('shows displayName but not value in span', () => {
-          expect(el.find('span.badge').childAt(0).text()).toEqual(config.displayName);
+          expect(el.find('span.badge').childAt(0).getElement()).toEqual(
+            <span>
+              <FormattedMessage {...config.displayName} />
+            </span>,
+          );
         });
         it('calls a handleClose event for connected filters on button click', () => {
           expect(el.find(Button).props().onClick).toEqual(handleClose(config.connectedFilters));
@@ -72,8 +79,15 @@ describe('FilterBadge', () => {
           expect(el).toMatchSnapshot();
         });
         it('shows displayName and value in span', () => {
-          expect(el.find('span.badge').childAt(0).text()).toEqual(
-            `${config.displayName}: ${config.value}`,
+          expect(el.find('span.badge').childAt(0).getElement()).toEqual(
+            <span>
+              <FormattedMessage {...config.displayName} />
+            </span>,
+          );
+          expect(el.find('span.badge').childAt(1).getElement()).toEqual(
+            <span>
+              {`: ${config.value}`}
+            </span>,
           );
         });
         it('calls a handleClose event for connected filters on button click', () => {

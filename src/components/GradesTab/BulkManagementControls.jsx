@@ -4,10 +4,13 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 import { StatefulButton, Icon } from '@edx/paragon';
+import { FormattedMessage } from '@edx/frontend-platform/i18n';
 
 import { StrictDict } from 'utils';
 import actions from 'data/actions';
 import selectors from 'data/selectors';
+
+import messages from './messages';
 
 export const basicButtonProps = () => ({
   variant: 'outline-primary',
@@ -63,11 +66,11 @@ export class BulkManagementControls extends React.Component {
     return this.props.showBulkManagement && (
       <div>
         <StatefulButton
-          {...this.buttonProps('Bulk Management')}
+          {...this.buttonProps(<FormattedMessage {...messages.bulkManagement} />)}
           onClick={this.handleClickExportGrades}
         />
         <StatefulButton
-          {...this.buttonProps('Interventions')}
+          {...this.buttonProps(<FormattedMessage {...messages.interventions} />)}
           onClick={this.handleClickDownloadInterventions}
         />
       </div>

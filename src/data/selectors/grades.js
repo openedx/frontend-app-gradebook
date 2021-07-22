@@ -105,11 +105,11 @@ export const headingMapper = (category, label = 'All') => {
     filter = filters.byLabel;
   }
   const { username, email, totalGrade } = Headings;
-  const fillerLabels = (entry) => entry.filter(filter).map(s => s.label);
+  const filteredLabels = (entry) => entry.filter(filter).map(s => s.label);
 
   return (entry) => (
     entry
-      ? [username, email, ...fillerLabels(entry), totalGrade]
+      ? [username, email, ...filteredLabels(entry), totalGrade]
       : []
   );
 };

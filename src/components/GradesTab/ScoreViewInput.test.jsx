@@ -35,6 +35,7 @@ describe('ScoreViewInput', () => {
     let el;
     beforeEach(() => {
       props.toggleFormat = jest.fn();
+      props.intl = { formatMessage: (msg) => msg.defaultMessage };
       el = shallow(<ScoreViewInput {...props} />);
     });
     const assertions = [

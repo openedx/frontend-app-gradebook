@@ -1,19 +1,23 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`UsersLabel component snapshot - displays label with number of filtered users out of total 1`] = `
-<Fragment>
-  Showing 
-  <span
-    className="font-weight-bold"
-  >
-    23
-  </span>
-   of 
-  <span
-    className="font-weight-bold"
-  >
-    140
-  </span>
-   total learners
-</Fragment>
+<FormattedMessage
+  defaultMessage="Showing {filteredUsers} of {totalUsers} total learners"
+  description="Users visibility label"
+  id="gradebook.GradesTab.usersVisibilityLabel'"
+  values={
+    Object {
+      "filteredUsers": <span
+        className="font-weight-bold"
+      >
+        23
+      </span>,
+      "totalUsers": <span
+        className="font-weight-bold"
+      >
+        140
+      </span>,
+    }
+  }
+/>
 `;

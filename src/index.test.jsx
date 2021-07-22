@@ -8,6 +8,7 @@ import {
 } from '@edx/frontend-platform';
 import { messages as footerMessages } from '@edx/frontend-component-footer';
 
+import appMessages from './i18n';
 import App from './App';
 import '.';
 
@@ -43,7 +44,7 @@ describe('app registry', () => {
   });
   test('initialize is called with footerMessages and requireAuthenticatedUser', () => {
     expect(initialize).toHaveBeenCalledWith({
-      messages: [footerMessages],
+      messages: [appMessages, footerMessages],
       requireAuthenticatedUser: true,
     });
   });

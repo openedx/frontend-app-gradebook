@@ -3,6 +3,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
+import { FormattedMessage } from '@edx/frontend-platform/i18n';
+
 import actions from 'data/actions';
 import thunkActions from 'data/thunkActions';
 
@@ -17,6 +19,7 @@ import StatusAlerts from './StatusAlerts';
 import SpinnerIcon from './SpinnerIcon';
 import ScoreViewInput from './ScoreViewInput';
 import UsersLabel from './UsersLabel';
+import messages from './messages';
 
 export class GradesTab extends React.Component {
   constructor(props) {
@@ -43,7 +46,7 @@ export class GradesTab extends React.Component {
         <FilterBadges handleClose={this.handleFilterBadgeClose} />
         <StatusAlerts />
 
-        <h4>Step 2: View or Modify Individual Grades</h4>
+        <h4><FormattedMessage {...messages.gradebookStepHeading} /></h4>
         <UsersLabel />
 
         <div className="d-flex justify-content-between align-items-center mb-2">
@@ -54,7 +57,7 @@ export class GradesTab extends React.Component {
         <GradebookTable />
 
         <PageButtons />
-        <p>* available for learners in the Master&apos;s track only</p>
+        <p>* <FormattedMessage {...messages.mastersHint} /></p>
         <EditModal />
       </>
     );

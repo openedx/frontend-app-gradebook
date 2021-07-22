@@ -4,6 +4,11 @@ import { shallow } from 'enzyme';
 import selectors from 'data/selectors';
 import { GradebookHeader, mapStateToProps } from '.';
 
+jest.mock('@edx/frontend-platform/i18n', () => ({
+  defineMessages: messages => messages,
+  FormattedMessage: 'FormattedMessage',
+}));
+
 jest.mock('data/selectors', () => ({
   __esModule: true,
   default: {
