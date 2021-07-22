@@ -187,7 +187,7 @@ export const allGrades = ({ grades: { results } }) => results;
  */
 export const bulkImportError = ({ grades: { bulkManagement } }) => (
   (!!bulkManagement && bulkManagement.errorMessages)
-    ? `Errors while processing: ${bulkManagement.errorMessages.join(', ')}`
+    ? `Errors while processing: ${bulkManagement.errorMessages.join('; ')};`
     : ''
 );
 
