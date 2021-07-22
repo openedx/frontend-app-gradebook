@@ -313,7 +313,7 @@ describe('grades selectors', () => {
       expect(
         selectors.bulkImportError({ grades: { bulkManagement: { errorMessages } } }),
       ).toEqual(
-        `Errors while processing: ${errorMessages[0]}, ${errorMessages[1]}`,
+        `Errors while processing: ${errorMessages[0]}; ${errorMessages[1]};`,
       );
     });
   });
