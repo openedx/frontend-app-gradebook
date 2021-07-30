@@ -26,9 +26,13 @@ exports[`GradebookHeader component snapshots default values (grades frozen, cann
       id="gradebook.GradebookHeader.appLabel"
     />
   </h1>
-  <h3>
-    fakeID
-  </h3>
+  <div
+    className="subtitle-row d-flex justify-content-between align-items-center"
+  >
+    <h3>
+      fakeID
+    </h3>
+  </div>
   <div
     className="alert alert-warning"
     role="alert"
@@ -68,9 +72,13 @@ exports[`GradebookHeader component snapshots grades frozen, can view. grades fro
       id="gradebook.GradebookHeader.appLabel"
     />
   </h1>
-  <h3>
-    fakeID
-  </h3>
+  <div
+    className="subtitle-row d-flex justify-content-between align-items-center"
+  >
+    <h3>
+      fakeID
+    </h3>
+  </div>
   <div
     className="alert alert-warning"
     role="alert"
@@ -110,9 +118,13 @@ exports[`GradebookHeader component snapshots grades frozen, cannot view unauthor
       id="gradebook.GradebookHeader.appLabel"
     />
   </h1>
-  <h3>
-    fakeID
-  </h3>
+  <div
+    className="subtitle-row d-flex justify-content-between align-items-center"
+  >
+    <h3>
+      fakeID
+    </h3>
+  </div>
   <div
     className="alert alert-warning"
     role="alert"
@@ -122,6 +134,118 @@ exports[`GradebookHeader component snapshots grades frozen, cannot view unauthor
       description="Warning message in Gradebook Header for frozen messages"
       id="gradebook.GradebookHeader.frozenWarning"
     />
+  </div>
+  <div
+    className="alert alert-warning"
+    role="alert"
+  >
+    <FormattedMessage
+      defaultMessage="You are not authorized to view the gradebook for this course."
+      description="Warning message in Gradebook Header when user is not allowed to view the app"
+      id="gradebook.GradebookHeader.unauthorizedWarning"
+    />
+  </div>
+</div>
+`;
+
+exports[`GradebookHeader component snapshots show bulk management, active view is activity view toggle view button to grades 1`] = `
+<div
+  className="gradebook-header"
+>
+  <a
+    className="mb-3"
+    href="http://localhost:18000/courses/fakeID/instructor"
+  >
+    <span
+      aria-hidden="true"
+    >
+      &lt;&lt; 
+    </span>
+    <FormattedMessage
+      defaultMessage="Back to Dashboard"
+      description="Button text to take user back to LMS dashboard in Gradebook Header"
+      id="gradebook.GradebookHeader.backButton"
+    />
+  </a>
+  <h1>
+    <FormattedMessage
+      defaultMessage="Gradebook"
+      description="Top-level app title in Gradebook Header component"
+      id="gradebook.GradebookHeader.appLabel"
+    />
+  </h1>
+  <div
+    className="subtitle-row d-flex justify-content-between align-items-center"
+  >
+    <h3>
+      fakeID
+    </h3>
+    <Button
+      onClick={[MockFunction this.handleToggleViewClick]}
+      variant="tertiary"
+    >
+      <FormattedMessage
+        defaultMessage="Return to Gradebook"
+        description="Button text for button navigating to Grades view."
+        id="gradebook.GradebookHeader.toGradesView"
+      />
+    </Button>
+  </div>
+  <div
+    className="alert alert-warning"
+    role="alert"
+  >
+    <FormattedMessage
+      defaultMessage="You are not authorized to view the gradebook for this course."
+      description="Warning message in Gradebook Header when user is not allowed to view the app"
+      id="gradebook.GradebookHeader.unauthorizedWarning"
+    />
+  </div>
+</div>
+`;
+
+exports[`GradebookHeader component snapshots show bulk management, active view is grades view toggle view button to activity log 1`] = `
+<div
+  className="gradebook-header"
+>
+  <a
+    className="mb-3"
+    href="http://localhost:18000/courses/fakeID/instructor"
+  >
+    <span
+      aria-hidden="true"
+    >
+      &lt;&lt; 
+    </span>
+    <FormattedMessage
+      defaultMessage="Back to Dashboard"
+      description="Button text to take user back to LMS dashboard in Gradebook Header"
+      id="gradebook.GradebookHeader.backButton"
+    />
+  </a>
+  <h1>
+    <FormattedMessage
+      defaultMessage="Gradebook"
+      description="Top-level app title in Gradebook Header component"
+      id="gradebook.GradebookHeader.appLabel"
+    />
+  </h1>
+  <div
+    className="subtitle-row d-flex justify-content-between align-items-center"
+  >
+    <h3>
+      fakeID
+    </h3>
+    <Button
+      onClick={[MockFunction this.handleToggleViewClick]}
+      variant="tertiary"
+    >
+      <FormattedMessage
+        defaultMessage="View Bulk Management History"
+        description="Button text for button navigating to Bulk Managment Activity Log"
+        id="gradebook.GradebookHeader.toActivityLogButton"
+      />
+    </Button>
   </div>
   <div
     className="alert alert-warning"
