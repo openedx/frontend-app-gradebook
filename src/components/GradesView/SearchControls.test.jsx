@@ -40,7 +40,6 @@ describe('SearchControls', () => {
       searchValue: 'alice',
       setSearchValue: jest.fn(),
       fetchGrades: jest.fn().mockName('fetchGrades'),
-      toggleFilterDrawer: jest.fn().mockName('toggleFilterDrawer'),
     };
   });
 
@@ -91,12 +90,6 @@ describe('SearchControls', () => {
 
       test('setSearchValue from actions.app.setSearchValue', () => {
         expect(mapDispatchToProps.setSearchValue).toEqual(actions.app.setSearchValue);
-      });
-
-      test('toggleFilterDrawer from thunkActions.app.filterMenu.toggle', () => {
-        expect(
-          mapDispatchToProps.toggleFilterDrawer,
-        ).toEqual(thunkActions.app.filterMenu.toggle);
       });
     });
   });
