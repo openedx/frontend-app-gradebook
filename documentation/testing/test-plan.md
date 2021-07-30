@@ -70,31 +70,38 @@ Confirm the following workflows:
 
 - [ ] *Master's (or selectively-enabled) only*: "Bulk Management" allows overriding grades in bulk.
     - Open a non-masters-track course.
-    - [ ] Verify that the "Bulk Management" tab does not appear.
     - [ ] Verify that the "Bulk Management" button does not appear.
+    - [ ] Verify that the "Download Interventions" interface does not appear.
     - Open a masters-track course.
-    - [ ] Verify that the "Bulk Management" tab appears to the right of the "Grades" tab.
-    - [ ] Verify that the "Bulk Management" button appears.
-    - Click the "Bulk Management" button. This downloads existing student/assignment info.
+    - [ ] Verify that the "Bulk Management History" button appears at the right of the header.
+    - [ ] Verify that the "Download Interventions" interface appears.
+    - [ ] Verify that the "Download Grades" button appears.
+    - [ ] Verify that the "Import Grades" button appears.
+    - Click the "Download Grades" button. This downloads existing student/assignment info.
     - [ ] Open the downloaded CSV and verify that students and assignments in the file match applied filters/searches.
-    - Add values in the "new_override-{subsection-short-id}" columns for student grades to be overridden and save the CSV file.
-    - [ ] Clicking the "Bulk Management" tab shows the Bulk Management page.
+    - Navigate to Bulk Management History tab.
+    - [ ] Clicking the "ViewBulk Management History" tab shows the Bulk Management History view.
     - [ ] The bulk management history table appears with columns: "Gradebook", "Download Summary", "Who", "When".
     - [ ] Previous bulk management imports (if applicable) appear in the table.
+    - Add values in the "new_override-{subsection-short-id}" columns for student grades to be overridden and save the CSV file.
+    - Navigate back to Gradebook view
     - Click the "Import Grades" button and select the modified CSV file.
     - [ ] Verify that the "CSV processing" banner appears.
     - Wait for processing to complete and reload the page. (Can take seconds to minutes depending on environment and size of the override.)
-    - Navigate back to the "Bulk Management" tab.
+    - [ ] Verify that Import Grades Success toast appears (and disappears after 5 seconds)
+    - Navigate back to the "Bulk Management History" view.
     - [ ] Verify that a new entry appears in the results table indicating how many students were affected by the bulk grade change.
     - Click the "Download Summary" link to see the summary of changes from the bulk grade changes.
     - [ ] Verify that students are shown with modified subsections and actions: "No Action" for unchanged users, "Success" for successful overrides.
 
 - [ ] *Masters only*: Interventions report shows student activity in the course.
     - Open a non-masters-track course.
-    - [ ] Verify that the "Interventions" tab does not appear.
-    - [ ] Verify that the "Interventions" button does not appear.
+    - [ ] Verify that the "View Bulk Management History" button does not appear.
+    - [ ] Verify that the "Interventions" interface does not appear.
+    - [ ] Verify that the "Download Grades" and "Import Grades" buttons do not appear.
     - Open a masters-track course.
-    - [ ] Verify that the "Interventions" tab appears to the right of the "Grades" tab.
-    - [ ] Verify that the "Interventions" button appears.
-    - Click on the "Interventions" button to generate a CSV students and activity info.
+    - [ ] Verify that the "View Bulk Management History" button appears at the right of the header.
+    - [ ] Verify that the "Interventions" interface appears.
+    - [ ] Verify that the "Download Grades" and "Import Grades" buttons appear.
+    - Click on the "Download Interventions" button to generate a CSV students and activity info.
     - Open the interventions report and verify student info and activity info appear.
