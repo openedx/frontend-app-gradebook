@@ -6,12 +6,11 @@ import queryString from 'query-string';
 import selectors from 'data/selectors';
 import thunkActions from 'data/thunkActions';
 
-import { Tab, Tabs } from '@edx/paragon';
-
 import GradebookFilters from 'components/GradebookFilters';
 import GradebookHeader from 'components/GradebookHeader';
-import GradesTab from 'components/GradesTab';
-import BulkManagementTab from 'components/BulkManagementTab';
+import GradesView from 'components/GradesView';
+import BulkManagementHistoryView from 'components/BulkManagementHistoryView';
+import { views } from 'data/constants/app';
 
 import { GradebookPage, mapStateToProps, mapDispatchToProps } from '.';
 
@@ -27,8 +26,8 @@ jest.mock('@edx/paragon', () => ({
 jest.mock('data/selectors', () => ({
   __esModule: true,
   default: {
-    root: {
-      showBulkManagement: (state) => ({ showBulkManagement: state }),
+    app: {
+      activeView: (state) => ({ activeView: state }),
     },
   },
 }));
@@ -41,9 +40,9 @@ jest.mock('data/thunkActions', () => ({
 
 jest.mock('components/WithSidebar', () => 'WithSidebar');
 jest.mock('components/GradebookHeader', () => 'GradebookHeader');
-jest.mock('components/GradesTab', () => 'GradesTab');
+jest.mock('components/GradesView', () => 'GradesView');
 jest.mock('components/GradebookFilters', () => 'GradebookFilters');
-jest.mock('components/BulkManagementTab', () => 'BulkManagementTab');
+jest.mock('components/BulkManagementHistoryView', () => 'BulkManagementHistoryView');
 
 describe('GradebookPage', () => {
   describe('component', () => {
@@ -54,17 +53,18 @@ describe('GradebookPage', () => {
         search: 'searchString',
       },
       match: { params: { courseId } },
+      activeView: views.grades,
     };
     beforeEach(() => {
       props.initializeApp = jest.fn();
       props.history = { push: jest.fn() };
     });
-    test('snapshot - shows BulkManagementTab if showBulkManagement', () => {
-      el = shallow(<GradebookPage {...props} showBulkManagement />);
+    test('snapshot - shows BulkManagementHistoryView if activeView === views.activity', () => {
+      el = shallow(<GradebookPage {...props} activeView={views.activity} />);
       el.instance().updateQueryParams = jest.fn().mockName('updateQueryParams');
       expect(el.instance().render()).toMatchSnapshot();
     });
-    test('snapshot - shows only GradesTab if showBulkManagement=false', () => {
+    test('snapshot - shows GradesView if aciveView === views.grades', () => {
       el = shallow(<GradebookPage {...props} />);
       el.instance().updateQueryParams = jest.fn().mockName('updateQueryParams');
       expect(el.instance().render()).toMatchSnapshot();
@@ -95,28 +95,17 @@ describe('GradebookPage', () => {
         it('displays Gradebook header and then tabs', () => {
           expect(children[0]).toEqual(<GradebookHeader />);
         });
-        it('displays tabs with only GradesTab if not showBulkManagement', () => {
-          expect(shallow(children[1])).toEqual(shallow(
-            <Tabs defaultActiveKey="grades">
-              <Tab eventKey="grades" title="Grades">
-                <GradesTab updateQueryParams={el.instance().updateQueryParams} />
-              </Tab>
-            </Tabs>,
-          ));
+        it('displays GradesView if activeView === views.grades', () => {
+          expect(shallow(children[1])).toEqual(shallow((
+            <GradesView updateQueryParams={el.instance().updateQueryParams} />
+          )));
         });
-        it('displays tabs with grades and BulkManagement if showBulkManagement', () => {
-          el = shallow(<GradebookPage {...props} showBulkManagement />);
-          const tabs = el.props().children.props.children[1];
-          expect(tabs).toEqual(
-            <Tabs defaultActiveKey="grades">
-              <Tab eventKey="grades" title="Grades">
-                <GradesTab updateQueryParams={el.instance().updateQueryParams} />
-              </Tab>
-              <Tab eventKey="bulk_management" title="Bulk Management">
-                <BulkManagementTab />
-              </Tab>
-            </Tabs>,
-          );
+        it('displays Bulk Management History View if activeView === views.activity', () => {
+          el = shallow(<GradebookPage {...props} activeView={views.activity} />);
+          const mainView = el.props().children.props.children[1];
+          expect(mainView).toEqual((
+            <BulkManagementHistoryView />
+          ));
         });
       });
     });
@@ -163,8 +152,8 @@ describe('GradebookPage', () => {
     beforeEach(() => {
       mapped = mapStateToProps(testState);
     });
-    test('showBulkManagement from root.showBulkManagement', () => {
-      expect(mapped.showBulkManagement).toEqual(selectors.root.showBulkManagement(testState));
+    test('activeView from app.activeView', () => {
+      expect(mapped.activeView).toEqual(selectors.app.activeView(testState));
     });
   });
   describe('mapDispatchToProps', () => {
