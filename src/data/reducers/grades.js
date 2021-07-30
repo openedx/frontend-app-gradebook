@@ -25,6 +25,9 @@ const initialState = {
   bulkManagement: {},
   totalUsersCount: 0,
   filteredUsersCount: 0,
+  isImportGradesActive: false,
+  isDownloadInterventionsActive: false,
+  isDownloadGradesActive: false,
 };
 
 const grades = (state = initialState, { type, payload }) => {

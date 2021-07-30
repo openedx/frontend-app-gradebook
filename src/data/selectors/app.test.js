@@ -159,8 +159,10 @@ describe('app selectors', () => {
         expect(exportedSelectors[key]({ app: { [key]: testVal } })).toEqual(testVal);
       });
     };
+    testSimpleSelector('activeView');
     testSimpleSelector('courseId');
     testSimpleSelector('filters');
     testSimpleSelector('searchValue');
+    testSimpleSelector('showImportSuccessToast');
   });
 });
