@@ -3,15 +3,16 @@ import { shallow } from 'enzyme';
 
 import actions from 'data/actions';
 import selectors from 'data/selectors';
+import { views } from 'data/constants/app';
 
 import {
   BulkManagementControls,
-  basicButtonProps,
-  buttonStates,
   mapStateToProps,
   mapDispatchToProps,
 } from './BulkManagementControls';
 
+jest.mock('./ImportGradesButton', () => 'ImportGradesButton');
+jest.mock('components/NetworkButton', () => 'NetworkButton');
 jest.mock('data/selectors', () => ({
   __esModule: true,
   default: {
@@ -19,13 +20,13 @@ jest.mock('data/selectors', () => ({
       gradeExportUrl: (state) => ({ gradeExportUrl: state }),
       interventionExportUrl: (state) => ({ interventionExportUrl: state }),
       showBulkManagement: (state) => ({ showBulkManagement: state }),
-      shouldShowSpinner: (state) => ({ showSpinner: state }),
     },
   },
 }));
 jest.mock('data/actions', () => ({
   __esModule: true,
   default: {
+    app: { setView: jest.fn() },
     grades: {
       downloadReport: {
         bulkGrades: jest.fn(),
@@ -47,21 +48,11 @@ describe('BulkManagementControls', () => {
         ...props,
         downloadBulkGradesReport: jest.fn(),
         downloadInterventionReport: jest.fn(),
+        setView: jest.fn(),
       };
     });
     test('snapshot - empty if showBulkManagement is not truthy', () => {
       expect(shallow(<BulkManagementControls {...props} />)).toEqual({});
-    });
-    test('snapshot - buttonProps for each button ("Bulk Management" and "Interventions")', () => {
-      el = shallow(<BulkManagementControls {...props} showBulkManagement />);
-      jest.spyOn(el.instance(), 'buttonProps').mockImplementation(
-        value => ({ buttonProps: value }),
-      );
-      jest.spyOn(el.instance(), 'handleClickExportGrades').mockName('this.handleClickExportGrades');
-      jest.spyOn(
-        el.instance(),
-        'handleClickDownloadInterventions',
-      ).mockName('this.handleClickDownloadInterventions');
     });
     describe('behavior', () => {
       const oldWindowLocation = window.location;
@@ -87,37 +78,10 @@ describe('BulkManagementControls', () => {
         // restore `window.location` to the `jsdom` `Location` object
         window.location = oldWindowLocation;
       });
-
-      describe('buttonProps', () => {
-        test('loads default and pending labels based on passed string', () => {
-          const label = 'Fake Label';
-          const { labels, state, ...rest } = el.instance().buttonProps(label);
-          expect(rest).toEqual(basicButtonProps());
-          expect(labels).toEqual({ default: label, pending: label });
-        });
-        test('loads pending state if props.showSpinner', () => {
-          const label = 'Fake Label';
-          el.setProps({ showSpinner: true });
-          const { labels, state, ...rest } = el.instance().buttonProps(label);
-          expect(state).toEqual(buttonStates.pending);
-          expect(rest).toEqual(basicButtonProps());
-        });
-        test('loads default state if not props.showSpinner', () => {
-          const label = 'Fake Label';
-          const { labels, state, ...rest } = el.instance().buttonProps(label);
-          expect(state).toEqual(buttonStates.default);
-          expect(rest).toEqual(basicButtonProps());
-        });
-      });
-      describe('handleClickDownloadInterventions', () => {
-        const assertions = [
-          'calls props.downloadInterventionReport',
-          'sets location to props.interventionsExportUrl',
-        ];
-        it(assertions.join(' and '), () => {
-          el.instance().handleClickDownloadInterventions();
-          expect(props.downloadInterventionReport).toHaveBeenCalled();
-          expect(window.location.assign).toHaveBeenCalledWith(props.interventionExportUrl);
+      describe('handleViewActivityLog', () => {
+        it('calls props.setView(views.activity)', () => {
+          el.instance().handleViewActivityLog();
+          expect(props.setView).toHaveBeenCalledWith(views.activity);
         });
       });
       describe('handleClickExportGrades', () => {
@@ -143,14 +107,8 @@ describe('BulkManagementControls', () => {
     test('gradeExportUrl from root.gradeExportUrl', () => {
       expect(mapped.gradeExportUrl).toEqual(selectors.root.gradeExportUrl(testState));
     });
-    test('interventionExportUrl from root.interventionExportUrl', () => {
-      expect(mapped.interventionExportUrl).toEqual(selectors.root.interventionExportUrl(testState));
-    });
     test('showBulkManagement from root.showBulkManagement', () => {
       expect(mapped.showBulkManagement).toEqual(selectors.root.showBulkManagement(testState));
-    });
-    test('showSpinner from root.shouldShowSpinner', () => {
-      expect(mapped.showSpinner).toEqual(selectors.root.shouldShowSpinner(testState));
     });
   });
   describe('mapDispatchToProps', () => {
@@ -159,10 +117,8 @@ describe('BulkManagementControls', () => {
         mapDispatchToProps.downloadBulkGradesReport,
       ).toEqual(actions.grades.downloadReport.bulkGrades);
     });
-    test('downloadInterventionReport from actions.grades.downloadReport.invervention', () => {
-      expect(
-        mapDispatchToProps.downloadInterventionReport,
-      ).toEqual(actions.grades.downloadReport.intervention);
+    test('setView from actions.app.setView', () => {
+      expect(mapDispatchToProps.setView).toEqual(actions.app.setView);
     });
   });
 });

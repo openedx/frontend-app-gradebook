@@ -6,7 +6,6 @@ import { connect } from 'react-redux';
 import { FormattedMessage } from '@edx/frontend-platform/i18n';
 
 import {
-  Button,
   Form,
   FormControl,
   FormGroup,
@@ -14,14 +13,15 @@ import {
 
 import selectors from 'data/selectors';
 import thunkActions from 'data/thunkActions';
-import messages from './messages';
+import NetworkButton from 'components/NetworkButton';
+import messages from './ImportGradesButton.messages';
 
 /**
- * <FileUploadForm />
+ * <ImportGradesButton />
  * File-type input wrapped with hidden control such that when a valid file is
  * added, it is automattically uploaded.
  */
-export class FileUploadForm extends React.Component {
+export class ImportGradesButton extends React.Component {
   constructor(props) {
     super(props);
     this.fileInputRef = React.createRef();
@@ -49,7 +49,7 @@ export class FileUploadForm extends React.Component {
 
   handleFileInputChange() {
     return this.hasFile && (
-      this.props.submitFileUploadFormData(this.formData).then(
+      this.props.submitImportGradesButtonData(this.formData).then(
         () => { this.fileInput.value = null; },
       )
     );
@@ -71,17 +71,20 @@ export class FileUploadForm extends React.Component {
           </FormGroup>
         </Form>
 
-        <Button variant="primary" onClick={this.handleClickImportGrades}>
-          <FormattedMessage {...messages.importBtnText} />
-        </Button>
+        <NetworkButton
+          className="import-grades-btn"
+          label={messages.importGradesBtnText}
+          onClick={this.handleClickImportGrades}
+          import
+        />
       </>
     );
   }
 }
-FileUploadForm.propTypes = {
+ImportGradesButton.propTypes = {
   // redux
   gradeExportUrl: PropTypes.string.isRequired,
-  submitFileUploadFormData: PropTypes.func.isRequired,
+  submitImportGradesButtonData: PropTypes.func.isRequired,
 };
 
 export const mapStateToProps = (state) => ({
@@ -89,7 +92,7 @@ export const mapStateToProps = (state) => ({
 });
 
 export const mapDispatchToProps = {
-  submitFileUploadFormData: thunkActions.grades.submitFileUploadFormData,
+  submitImportGradesButtonData: thunkActions.grades.submitImportGradesButtonData,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(FileUploadForm);
+export default connect(mapStateToProps, mapDispatchToProps)(ImportGradesButton);

@@ -3,23 +3,24 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import TestRenderer from 'react-test-renderer';
 import {
-  Button,
   Form,
   FormControl,
   FormGroup,
 } from '@edx/paragon';
-import { FormattedMessage } from '@edx/frontend-platform/i18n';
+
+import NetworkButton from 'components/NetworkButton';
 
 import selectors from 'data/selectors';
 import thunkActions from 'data/thunkActions';
-import { FileUploadForm, mapStateToProps, mapDispatchToProps } from './FileUploadForm';
+import { ImportGradesButton, mapStateToProps, mapDispatchToProps } from './ImportGradesButton';
 
-import messages from './messages';
+import messages from './ImportGradesButton.messages';
 
 jest.mock('@edx/frontend-platform/i18n', () => ({
   defineMessages: m => m,
   FormattedMessage: () => 'FormattedMessage',
 }));
+jest.mock('components/NetworkButton', () => 'NetworkButton');
 jest.mock('data/selectors', () => ({
   __esModule: true,
   default: {
@@ -34,16 +35,14 @@ jest.mock('data/selectors', () => ({
 jest.mock('data/thunkActions', () => ({
   __esModule: true,
   default: {
-    grades: { submitFileUploadFormData: jest.fn() },
+    grades: { submitImportGradesButtonData: jest.fn() },
   },
 
 }));
-jest.mock('./BulkManagementAlerts', () => 'BulkManagementAlerts');
-jest.mock('./ResultsSummary', () => 'ResultsSummary');
 
 const mockRef = { click: jest.fn(), files: [] };
 
-describe('FileUploadForm', () => {
+describe('ImportGradesButton', () => {
   beforeEach(() => {
     mockRef.click.mockClear();
   });
@@ -54,7 +53,7 @@ describe('FileUploadForm', () => {
     beforeEach(() => {
       props = {
         gradeExportUrl: 'fakeUrl',
-        submitFileUploadFormData: jest.fn(),
+        submitImportGradesButtonData: jest.fn(),
       };
     });
     describe('snapshot', () => {
@@ -64,12 +63,11 @@ describe('FileUploadForm', () => {
       ];
       test(`snapshot - loads ${snapshotSegments.join(', ')}`, () => {
         jest.mock('@edx/paragon', () => ({
-          Button: () => 'Button',
           Form: () => 'Form',
           FormControl: () => 'FormControl',
           FormGroup: () => 'FormGroup',
         }));
-        el = shallow(<FileUploadForm {...props} />);
+        el = shallow(<ImportGradesButton {...props} />);
         el.instance().handleFileInputChange = jest.fn().mockName('this.handleFileInputChange');
         el.instance().fileInputRef = jest.fn().mockName('this.fileInputRef');
         el.instance().handleClickImportGrades = jest.fn().mockName('this.handleClickImportGrades');
@@ -80,7 +78,7 @@ describe('FileUploadForm', () => {
     describe('render', () => {
       beforeEach(() => {
         el = TestRenderer.create(
-          <FileUploadForm {...props} />,
+          <ImportGradesButton {...props} />,
           { createNodeMock: () => mockRef },
         );
         inst = el.root;
@@ -119,21 +117,21 @@ describe('FileUploadForm', () => {
       describe('import button', () => {
         let btn;
         beforeEach(() => {
-          btn = inst.findByType(Button);
+          btn = inst.findByType(NetworkButton);
         });
         test('handleClickImportGrade on click', () => {
           expect(btn.props.onClick).toEqual(el.getInstance().handleClickImportGrades);
         });
-        test('text from messages.importBtn', () => {
-          const messageEl = btn.findByType(FormattedMessage);
-          expect(messageEl.props).toEqual(messages.importBtnText);
+        test('label from messages.importGradesBtnText and import true', () => {
+          expect(btn.props.label).toEqual(messages.importGradesBtnText);
+          expect(btn.props.import).toEqual(true);
         });
       });
     });
     describe('fileInput helper', () => {
       test('links to fileInputRef.current', () => {
         el = TestRenderer.create(
-          <FileUploadForm {...props} />,
+          <ImportGradesButton {...props} />,
           { createNodeMock: () => mockRef },
         );
         expect(el.getInstance().fileInput).not.toEqual(undefined);
@@ -144,7 +142,7 @@ describe('FileUploadForm', () => {
       let fileInput;
       beforeEach(() => {
         el = TestRenderer.create(
-          <FileUploadForm {...props} />,
+          <ImportGradesButton {...props} />,
           { createNodeMock: () => mockRef },
         );
         fileInput = jest.spyOn(el.getInstance(), 'fileInput', 'get');
@@ -164,17 +162,17 @@ describe('FileUploadForm', () => {
         it('does nothing if file input has not loaded with files', () => {
           fileInput.mockReturnValue(null);
           el.getInstance().handleFileInputChange();
-          expect(props.submitFileUploadFormData).not.toHaveBeenCalled();
+          expect(props.submitImportGradesButtonData).not.toHaveBeenCalled();
           fileInput.mockReturnValue({ files: [] });
           el.getInstance().handleFileInputChange();
-          expect(props.submitFileUploadFormData).not.toHaveBeenCalled();
+          expect(props.submitImportGradesButtonData).not.toHaveBeenCalled();
         });
-        it('calls submitFileUploadFormData and then clears fileInput if has files', () => {
+        it('calls submitImportGradesButtonData and then clears fileInput if has files', () => {
           fileInput.mockReturnValue({ files: ['some', 'files'], value: 'a value' });
           const formData = { fake: 'form data' };
           jest.spyOn(el.getInstance(), 'formData', 'get').mockReturnValue(formData);
           const submit = jest.fn(() => ({ then: (thenCB) => { thenCB(); } }));
-          el.update(<FileUploadForm {...props} submitFileUploadFormData={submit} />);
+          el.update(<ImportGradesButton {...props} submitImportGradesButtonData={submit} />);
           el.getInstance().handleFileInputChange();
           expect(submit).toHaveBeenCalledWith(formData);
           expect(el.getInstance().fileInput.value).toEqual(null);
@@ -205,10 +203,10 @@ describe('FileUploadForm', () => {
   });
 
   describe('mapDispatchToProps', () => {
-    test('submitFileUploadFormData from thunkActions.grades', () => {
+    test('submitImportGradesButtonData from thunkActions.grades', () => {
       expect(
-        mapDispatchToProps.submitFileUploadFormData,
-      ).toEqual(thunkActions.grades.submitFileUploadFormData);
+        mapDispatchToProps.submitImportGradesButtonData,
+      ).toEqual(thunkActions.grades.submitImportGradesButtonData);
     });
   });
 });
