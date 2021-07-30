@@ -153,6 +153,7 @@ export const interventionExportUrl = (state) => (
  */
 export const lmsApiServiceArgs = (state) => ({
   cohort: cohorts.getCohortNameById(state, filters.cohort(state)),
+  track: filters.track(state),
   assignment: filters.selectedAssignmentId(state),
   assignmentType: filters.assignmentType(state),
   assignmentGradeMin: grades.formatMinAssignmentGrade(
