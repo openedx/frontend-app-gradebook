@@ -5,7 +5,7 @@ import actions from 'data/actions';
 import thunkActions from 'data/thunkActions';
 
 import {
-  GradesTab,
+  GradesView,
   mapStateToProps,
   mapDispatchToProps,
 } from '.';
@@ -13,6 +13,7 @@ import {
 jest.mock('data/actions', () => ({
   __esModule: true,
   default: {
+    app: { setView: jest.fn() },
     filters: { resetFilters: jest.fn() },
   },
 }));
@@ -23,18 +24,21 @@ jest.mock('data/thunkActions', () => ({
   },
 }));
 
-jest.mock('./PageButtons', () => 'PageButtons');
-jest.mock('./FilterBadges', () => 'FilterBadges');
 jest.mock('./BulkManagementControls', () => 'BulkManagementControls');
 jest.mock('./EditModal', () => 'EditModal');
+jest.mock('./FilterBadges', () => 'FilterBadges');
+jest.mock('./FilteredUsersLabel', () => 'FilteredUsersLabel');
+jest.mock('./FilterMenuToggle', () => 'FilterMenuToggle');
 jest.mock('./GradebookTable', () => 'GradebookTable');
-jest.mock('./SearchControls', () => 'SearchControls');
-jest.mock('./StatusAlerts', () => 'StatusAlerts');
-jest.mock('./SpinnerIcon', () => 'SpinnerIcon');
+jest.mock('./ImportSuccessToast', () => 'ImportSuccessToast');
+jest.mock('./InterventionsReport', () => 'InterventionsReport');
+jest.mock('./PageButtons', () => 'PageButtons');
 jest.mock('./ScoreViewInput', () => 'ScoreViewInput');
-jest.mock('./UsersLabel', () => 'UsersLabel');
+jest.mock('./SearchControls', () => 'SearchControls');
+jest.mock('./SpinnerIcon', () => 'SpinnerIcon');
+jest.mock('./StatusAlerts', () => 'StatusAlerts');
 
-describe('GradesTab', () => {
+describe('GradesView', () => {
   let props;
   beforeEach(() => {
     props = {
@@ -49,7 +53,7 @@ describe('GradesTab', () => {
     describe('behavior', () => {
       let el;
       beforeEach(() => {
-        el = shallow(<GradesTab {...props} />);
+        el = shallow(<GradesView {...props} />);
       });
       describe('handleFilterBadgeClose', () => {
         beforeEach(() => {
@@ -73,7 +77,7 @@ describe('GradesTab', () => {
     });
     describe('snapshots', () => {
       test('basic snapshot', () => {
-        const el = shallow(<GradesTab {...props} />);
+        const el = shallow(<GradesView {...props} />);
         el.instance().handleFilterBadgeClose = jest.fn().mockName('this.handleFilterBadgeClose');
         expect(el.instance().render()).toMatchSnapshot();
       });

@@ -8,20 +8,22 @@ import { FormattedMessage } from '@edx/frontend-platform/i18n';
 import actions from 'data/actions';
 import thunkActions from 'data/thunkActions';
 
-import PageButtons from './PageButtons';
-import FilterBadges from './FilterBadges';
-
 import BulkManagementControls from './BulkManagementControls';
 import EditModal from './EditModal';
+import FilterBadges from './FilterBadges';
+import FilteredUsersLabel from './FilteredUsersLabel';
+import FilterMenuToggle from './FilterMenuToggle';
 import GradebookTable from './GradebookTable';
-import SearchControls from './SearchControls';
-import StatusAlerts from './StatusAlerts';
-import SpinnerIcon from './SpinnerIcon';
+import ImportSuccessToast from './ImportSuccessToast';
+import InterventionsReport from './InterventionsReport';
+import PageButtons from './PageButtons';
 import ScoreViewInput from './ScoreViewInput';
-import UsersLabel from './UsersLabel';
+import SearchControls from './SearchControls';
+import SpinnerIcon from './SpinnerIcon';
+import StatusAlerts from './StatusAlerts';
 import messages from './messages';
 
-export class GradesTab extends React.Component {
+export class GradesView extends React.Component {
   constructor(props) {
     super(props);
     this.handleFilterBadgeClose = this.handleFilterBadgeClose.bind(this);
@@ -42,31 +44,44 @@ export class GradesTab extends React.Component {
     return (
       <>
         <SpinnerIcon />
-        <SearchControls />
+
+        <InterventionsReport />
+        <h4 className="step-message-1">
+          <FormattedMessage {...messages.filterStepHeading} />
+        </h4>
+
+        <div className="d-flex justify-content-between">
+          <FilterMenuToggle />
+          <SearchControls />
+        </div>
+
         <FilterBadges handleClose={this.handleFilterBadgeClose} />
         <StatusAlerts />
 
         <h4><FormattedMessage {...messages.gradebookStepHeading} /></h4>
-        <UsersLabel />
 
         <div className="d-flex justify-content-between align-items-center mb-2">
           <ScoreViewInput />
           <BulkManagementControls />
         </div>
 
+        <FilteredUsersLabel />
+
         <GradebookTable />
 
         <PageButtons />
         <p>* <FormattedMessage {...messages.mastersHint} /></p>
         <EditModal />
+
+        <ImportSuccessToast />
       </>
     );
   }
 }
 
-GradesTab.defaultProps = {};
+GradesView.defaultProps = {};
 
-GradesTab.propTypes = {
+GradesView.propTypes = {
   updateQueryParams: PropTypes.func.isRequired,
 
   // redux
@@ -81,4 +96,4 @@ export const mapDispatchToProps = {
   resetFilters: actions.filters.reset,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(GradesTab);
+export default connect(mapStateToProps, mapDispatchToProps)(GradesView);
