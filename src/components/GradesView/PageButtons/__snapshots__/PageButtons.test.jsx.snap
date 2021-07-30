@@ -22,7 +22,7 @@ exports[`PageButtons component snapshots buttons enabled with both endpoints pro
     <FormattedMessage
       defaultMessage="Previous Page"
       description="Grades tab Previous Page button text"
-      id="gradebook.GradesTab.PageButtons.prevPage"
+      id="gradebook.GradesView.PageButtons.prevPage"
     />
   </Button>
   <Button
@@ -38,7 +38,7 @@ exports[`PageButtons component snapshots buttons enabled with both endpoints pro
     <FormattedMessage
       defaultMessage="Next Page"
       description="Grades tab Next Page button text"
-      id="gradebook.GradesTab.PageButtons.nextPage"
+      id="gradebook.GradesView.PageButtons.nextPage"
     />
   </Button>
 </div>
@@ -66,7 +66,7 @@ exports[`PageButtons component snapshots nextPage disabled if not provided 1`] =
     <FormattedMessage
       defaultMessage="Previous Page"
       description="Grades tab Previous Page button text"
-      id="gradebook.GradesTab.PageButtons.prevPage"
+      id="gradebook.GradesView.PageButtons.prevPage"
     />
   </Button>
   <Button
@@ -82,7 +82,7 @@ exports[`PageButtons component snapshots nextPage disabled if not provided 1`] =
     <FormattedMessage
       defaultMessage="Next Page"
       description="Grades tab Next Page button text"
-      id="gradebook.GradesTab.PageButtons.nextPage"
+      id="gradebook.GradesView.PageButtons.nextPage"
     />
   </Button>
 </div>
@@ -110,7 +110,7 @@ exports[`PageButtons component snapshots prevPage disabled if not provided 1`] =
     <FormattedMessage
       defaultMessage="Previous Page"
       description="Grades tab Previous Page button text"
-      id="gradebook.GradesTab.PageButtons.prevPage"
+      id="gradebook.GradesView.PageButtons.prevPage"
     />
   </Button>
   <Button
@@ -126,7 +126,7 @@ exports[`PageButtons component snapshots prevPage disabled if not provided 1`] =
     <FormattedMessage
       defaultMessage="Next Page"
       description="Grades tab Next Page button text"
-      id="gradebook.GradesTab.PageButtons.nextPage"
+      id="gradebook.GradesView.PageButtons.nextPage"
     />
   </Button>
 </div>

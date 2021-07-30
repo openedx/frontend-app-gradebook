@@ -8,7 +8,7 @@ exports[`ScoreViewInput component snapshot - select box with percent and absolut
     <FormattedMessage
       defaultMessage="Score View"
       description="Score format select dropdown label"
-      id="gradebook.GradesTab.scoreViewLabel"
+      id="gradebook.GradesView.scoreViewLabel"
     />
     :
   </FormLabel>

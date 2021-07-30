@@ -1,56 +1,28 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`SearchControls Component Snapshots basic snapshot 1`] = `
-<React.Fragment>
-  <h4>
-    <FormattedMessage
-      defaultMessage="Step 1: Filter the Grade Report"
-      description="Filter controls container heading string"
-      id="gradebook.GradesTab.filterHeading"
-    />
-  </h4>
-  <div
-    className="d-flex justify-content-between"
-  >
-    <Button
-      className="btn-primary align-self-start"
-      id="edit-filters-btn"
-      onClick={[MockFunction toggleFilterDrawer]}
-    >
-      <Icon
-        className="fa fa-filter"
-      />
-       
+<div>
+  <SearchField
+    inputLabel={
       <FormattedMessage
-        defaultMessage="Edit Filters"
-        description="Button text on Grades tab to open/close the Filters tab"
-        id="gradebook.GradesTab.editFilterLabel"
+        defaultMessage="Search for a learner"
+        description="Search description label"
+        id="gradebook.GradesView.search.label"
       />
-    </Button>
-    <div>
-      <SearchField
-        inputLabel={
-          <FormattedMessage
-            defaultMessage="Search for a learner"
-            description="Search description label"
-            id="gradebook.GradesTab.search.label"
-          />
-        }
-        onChange={[MockFunction onChange]}
-        onClear={[MockFunction onClear]}
-        onSubmit={[MockFunction fetchGrades]}
-        value="alice"
-      />
-      <small
-        className="form-text text-muted search-help-text"
-      >
-        <FormattedMessage
-          defaultMessage="Search by username, email, or student key"
-          description="Search hint label"
-          id="gradebook.GradesTab.search.hint"
-        />
-      </small>
-    </div>
-  </div>
-</React.Fragment>
+    }
+    onChange={[MockFunction onChange]}
+    onClear={[MockFunction onClear]}
+    onSubmit={[MockFunction fetchGrades]}
+    value="alice"
+  />
+  <small
+    className="form-text text-muted search-help-text"
+  >
+    <FormattedMessage
+      defaultMessage="Search by username, email, or student key"
+      description="Search hint label"
+      id="gradebook.GradesView.search.hint"
+    />
+  </small>
+</div>
 `;

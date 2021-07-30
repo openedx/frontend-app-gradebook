@@ -7,7 +7,7 @@ import { FormattedMessage, injectIntl, intlShape } from '@edx/frontend-platform/
 
 import actions from 'data/actions';
 import selectors from 'data/selectors';
-import messages from './messages';
+import messages from './ScoreViewInput.messages';
 
 /**
  * <ScoreViewInput />

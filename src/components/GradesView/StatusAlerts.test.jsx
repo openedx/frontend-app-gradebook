@@ -5,7 +5,7 @@ import { FormattedMessage } from '@edx/frontend-platform/i18n';
 
 import actions from 'data/actions';
 import selectors from 'data/selectors';
-import messages from './messages';
+import messages from './StatusAlerts.messages';
 import {
   StatusAlerts,
   mapDispatchToProps,

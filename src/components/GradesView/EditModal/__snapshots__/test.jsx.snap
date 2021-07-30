@@ -16,14 +16,14 @@ exports[`EditMoal Component snapshots gradeOverrideHistoryError is and empty and
         <FormattedMessage
           defaultMessage="Showing most recent actions (max 5). To see more, please contact support"
           description="Edit Modal visibility hint message"
-          id="gradebook.GradesTab.EditModal.contactSupport"
+          id="gradebook.GradesView.EditModal.contactSupport"
         />
       </div>
       <div>
         <FormattedMessage
           defaultMessage="Note: Once you save, your changes will be visible to students."
           description="Edit Modal saved changes effect hint"
-          id="gradebook.GradesTab.EditModal.saveVisibility"
+          id="gradebook.GradesView.EditModal.saveVisibility"
         />
       </div>
     </div>
@@ -37,7 +37,7 @@ exports[`EditMoal Component snapshots gradeOverrideHistoryError is and empty and
         <FormattedMessage
           defaultMessage="Save Grades"
           description="Edit Modal Save button label"
-          id="gradebook.GradesTab.EditModal.saveGrade"
+          id="gradebook.GradesView.EditModal.saveGrade"
         />
       </Button>,
     ]
@@ -46,7 +46,7 @@ exports[`EditMoal Component snapshots gradeOverrideHistoryError is and empty and
     <FormattedMessage
       defaultMessage="Cancel"
       description="Edit Modal close button text"
-      id="gradebook.GradesTab.EditModal.closeText"
+      id="gradebook.GradesView.EditModal.closeText"
     />
   }
   onClose={[MockFunction this.closeAssignmentModal]}
@@ -55,7 +55,7 @@ exports[`EditMoal Component snapshots gradeOverrideHistoryError is and empty and
     <FormattedMessage
       defaultMessage="Edit Grades"
       description="Edit Modal title"
-      id="gradebook.GradesTab.EditModal.title"
+      id="gradebook.GradesView.EditModal.title"
     />
   }
 />
@@ -77,14 +77,14 @@ exports[`EditMoal Component snapshots gradeOverrideHistoryError is empty and ope
         <FormattedMessage
           defaultMessage="Showing most recent actions (max 5). To see more, please contact support"
           description="Edit Modal visibility hint message"
-          id="gradebook.GradesTab.EditModal.contactSupport"
+          id="gradebook.GradesView.EditModal.contactSupport"
         />
       </div>
       <div>
         <FormattedMessage
           defaultMessage="Note: Once you save, your changes will be visible to students."
           description="Edit Modal saved changes effect hint"
-          id="gradebook.GradesTab.EditModal.saveVisibility"
+          id="gradebook.GradesView.EditModal.saveVisibility"
         />
       </div>
     </div>
@@ -98,7 +98,7 @@ exports[`EditMoal Component snapshots gradeOverrideHistoryError is empty and ope
         <FormattedMessage
           defaultMessage="Save Grades"
           description="Edit Modal Save button label"
-          id="gradebook.GradesTab.EditModal.saveGrade"
+          id="gradebook.GradesView.EditModal.saveGrade"
         />
       </Button>,
     ]
@@ -107,7 +107,7 @@ exports[`EditMoal Component snapshots gradeOverrideHistoryError is empty and ope
     <FormattedMessage
       defaultMessage="Cancel"
       description="Edit Modal close button text"
-      id="gradebook.GradesTab.EditModal.closeText"
+      id="gradebook.GradesView.EditModal.closeText"
     />
   }
   onClose={[MockFunction this.closeAssignmentModal]}
@@ -116,7 +116,7 @@ exports[`EditMoal Component snapshots gradeOverrideHistoryError is empty and ope
     <FormattedMessage
       defaultMessage="Edit Grades"
       description="Edit Modal title"
-      id="gradebook.GradesTab.EditModal.title"
+      id="gradebook.GradesView.EditModal.title"
     />
   }
 />

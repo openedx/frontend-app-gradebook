@@ -7,7 +7,7 @@ exports[`LabelReplacements TotalGradeLabelReplacement displays overlay tooltip 1
   <FormattedMessage
     defaultMessage="Total Grade values are always displayed as a percentage"
     description="Gradebook table message that total grades are displayed in percent format"
-    id="gradebook.GradesTab.table.totalGradePercentage"
+    id="gradebook.GradesView.table.totalGradePercentage"
   />
 </Tooltip>
 `;
@@ -23,7 +23,7 @@ exports[`LabelReplacements TotalGradeLabelReplacement snapshot 1`] = `
         <FormattedMessage
           defaultMessage="Total Grade values are always displayed as a percentage"
           description="Gradebook table message that total grades are displayed in percent format"
-          id="gradebook.GradesTab.table.totalGradePercentage"
+          id="gradebook.GradesView.table.totalGradePercentage"
         />
       </Tooltip>
     }
@@ -39,7 +39,7 @@ exports[`LabelReplacements TotalGradeLabelReplacement snapshot 1`] = `
       <FormattedMessage
         defaultMessage="Total Grade (%)"
         description="Gradebook table total grade column header"
-        id="gradebook.GradesTab.table.headings.totalGrade"
+        id="gradebook.GradesView.table.headings.totalGrade"
       />
       <div
         id="courseGradeTooltipIcon"
@@ -50,7 +50,7 @@ exports[`LabelReplacements TotalGradeLabelReplacement snapshot 1`] = `
             <FormattedMessage
               defaultMessage="Total Grade values are always displayed as a percentage"
               description="Gradebook table message that total grades are displayed in percent format"
-              id="gradebook.GradesTab.table.totalGradePercentage"
+              id="gradebook.GradesView.table.totalGradePercentage"
             />
           }
         />
@@ -66,7 +66,7 @@ exports[`LabelReplacements UsernameLabelReplacement snapshot 1`] = `
     <FormattedMessage
       defaultMessage="Username"
       description="Gradebook table username column header"
-      id="gradebook.GradesTab.table.headings.username"
+      id="gradebook.GradesView.table.headings.username"
     />
   </div>
   <div
@@ -75,7 +75,7 @@ exports[`LabelReplacements UsernameLabelReplacement snapshot 1`] = `
     <FormattedMessage
       defaultMessage="Student Key*"
       description="Gradebook table Student Key label"
-      id="gradebook.GradesTab.table.labels.studentKey"
+      id="gradebook.GradesView.table.labels.studentKey"
     />
   </div>
 </div>
