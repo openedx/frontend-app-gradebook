@@ -381,6 +381,7 @@ describe('root selectors', () => {
       selectors.filters.selectedAssignmentId = mockFn('selectedAssignmentId');
       selectors.filters.assignmentType = mockFn('assignmentType');
       selectors.filters.cohort = mockFn('cohort');
+      selectors.filters.track = mockFn('track');
       selectors.filters.assignmentGradeMax = mockFn('assignmentGradeMax');
       selectors.filters.assignmentGradeMin = mockFn('assignmentGradeMin');
       selectors.filters.courseGradeMax = mockFn('courseGradeMax');
@@ -392,6 +393,7 @@ describe('root selectors', () => {
       const assignmentId = { selectedAssignmentId: testState };
       expect(moduleSelectors.lmsApiServiceArgs(testState)).toEqual({
         cohort: { getCohortNameById: testState },
+        track: { track: testState },
         assignment: assignmentId,
         assignmentType: { assignmentType: testState },
         assignmentGradeMin: {
