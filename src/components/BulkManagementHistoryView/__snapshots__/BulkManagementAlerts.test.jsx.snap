@@ -15,7 +15,7 @@ exports[`BulkManagementAlerts component no errer, no upload success snapshot - b
     <FormattedMessage
       defaultMessage="CSV processing. File uploads may take several minutes to complete."
       description="Success Dialog message in BulkManagement Tab File Upload Form"
-      id="gradebook.BulkManagementTab.successDialog"
+      id="gradebook.BulkManagementHistoryView.successDialog"
     />
   </Alert>
 </Fragment>
@@ -38,7 +38,7 @@ exports[`BulkManagementAlerts component no errer, no upload success snapshot - d
     <FormattedMessage
       defaultMessage="CSV processing. File uploads may take several minutes to complete."
       description="Success Dialog message in BulkManagement Tab File Upload Form"
-      id="gradebook.BulkManagementTab.successDialog"
+      id="gradebook.BulkManagementHistoryView.successDialog"
     />
   </Alert>
 </Fragment>

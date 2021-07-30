@@ -3,14 +3,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
-import { FormattedMessage } from '@edx/frontend-platform/i18n';
 import { Table } from '@edx/paragon';
 
 import { bulkManagementColumns } from 'data/constants/app';
 import selectors from 'data/selectors';
 
 import ResultsSummary from './ResultsSummary';
-import messages from './messages';
 
 export const mapHistoryRows = ({
   resultsSummary,
@@ -33,12 +31,6 @@ export const HistoryTable = ({
   bulkManagementHistory,
 }) => (
   <>
-    <p>
-      <FormattedMessage {...messages.hint1} />
-      <br />
-      <FormattedMessage {...messages.hint2} />
-    </p>
-
     <Table
       data={bulkManagementHistory.map(mapHistoryRows)}
       hasFixedColumnWidths
