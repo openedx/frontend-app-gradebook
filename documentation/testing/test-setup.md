@@ -14,7 +14,7 @@ Suggested resources:
 - [Adding Exercises and Tools](https://edx.readthedocs.io/projects/edx-partner-course-staff/en/latest/grading/index.html)
 - [Set the Assignment Type and Due Date for a Subsection](https://edx.readthedocs.io/projects/edx-partner-course-staff/en/latest/developing_course/course_subsections.html#set-the-assignment-type-and-due-date-for-a-subsection)
 
-## Enable Gradebook and feature toggles for course
+## Enable Gradebook for course
 
 See README.md #Quickstart for more detailed instructions.
 
@@ -25,7 +25,13 @@ As an admin user, visit Django Admin (`{lms-url}/admin`) to modify features.
     - [ ] Set name to `grades.assume_zero_grade_if_absent`, select "Active", and click "Save"
 - In Waffle_Utils > Waffle flag course overrides:
     - [ ] Add a new flag called `grades.writeable_gradebook`, select "Force On", and enable it for your course
-    - [ ] Add a new flag called `grades.bulk_management`, select "Force On", and enable it for your course
+
+## Enable Bulk Management
+
+Bulk Management is an added feature to allow modifying grades in bulk via CSV upload. Bulk Management is default enabled for Master's track courses but can be selectively enabled for other courses with a waffle flag following the steps below.
+
+- In Waffle_Utils > Waffle flag course overrides:
+    - [ ] Add a new flag called `grades.bulk_management`, select "Force On", and enable it for your course.
 
 ## Create a Master's track for testing Master's-only features
 
