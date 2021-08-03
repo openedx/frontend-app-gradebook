@@ -15,7 +15,7 @@ const gradebook = `${grades}gradebook/${courseId}/`;
 const bulkUpdate = `${gradebook}bulk-update`;
 const intervention = `${bulkGrades}intervention/`;
 
-const cohorts = `${baseUrl}courses/${courseId}/cohorts/`;
+const cohorts = `${baseUrl}/courses/${courseId}/cohorts/`;
 const tracks = `${enrollment}course/${courseId}?include_expired=1`;
 const bulkHistory = `${bulkGrades}history/`;
 
