@@ -12,6 +12,7 @@ export const filters = StrictDict({
   courseGrade: 'courseGrade',
   courseGradeMax: 'courseGradeMax',
   courseGradeMin: 'courseGradeMin',
+  excludedCourseRoles: 'excludedCourseRoles',
   includeCourseRoleMembers: 'includeCourseRoleMembers',
   track: 'track',
 });
