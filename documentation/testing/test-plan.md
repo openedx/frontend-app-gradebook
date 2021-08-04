@@ -68,7 +68,7 @@ Confirm the following workflows:
     - [ ] Clicking "Save Grade" applies the override, shows the successful "grade has been edited" banner and updates score in grades table (may take a few seconds).
     - [ ] Opening back up the "Edit Grades" modal shows the change as an entry in the override history table.
 
-- [ ] *Masters only*: "Bulk Management" allows overriding grades in bulk.
+- [ ] *Master's (or selectively-enabled) only*: "Bulk Management" allows overriding grades in bulk.
     - Open a non-masters-track course.
     - [ ] Verify that the "Bulk Management" tab does not appear.
     - [ ] Verify that the "Bulk Management" button does not appear.
