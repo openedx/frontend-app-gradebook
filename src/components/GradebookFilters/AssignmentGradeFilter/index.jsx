@@ -3,12 +3,14 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
+import { FormattedMessage } from '@edx/frontend-platform/i18n';
 import { Button } from '@edx/paragon';
 
 import selectors from 'data/selectors';
 import actions from 'data/actions';
 import thunkActions from 'data/thunkActions';
 
+import messages from '../messages';
 import PercentGroup from '../PercentGroup';
 
 export class AssignmentGradeFilter extends React.Component {
@@ -34,19 +36,21 @@ export class AssignmentGradeFilter extends React.Component {
   }
 
   render() {
-    const { assignmentGradeMin, assignmentGradeMax } = this.props.localAssignmentLimits;
+    const {
+      localAssignmentLimits: { assignmentGradeMax, assignmentGradeMin },
+    } = this.props;
     return (
       <div className="grade-filter-inputs">
         <PercentGroup
           id="assignmentGradeMin"
-          label="Min Grade"
+          label={<FormattedMessage {...messages.minGrade} />}
           value={assignmentGradeMin}
           disabled={!this.props.selectedAssignment}
           onChange={this.handleSetMin}
         />
         <PercentGroup
           id="assignmentGradeMax"
-          label="Max Grade"
+          label={<FormattedMessage {...messages.maxGrade} />}
           value={assignmentGradeMax}
           disabled={!this.props.selectedAssignment}
           onChange={this.handleSetMax}

@@ -5,7 +5,12 @@ exports[`ScoreViewInput component snapshot - select box with percent and absolut
   controlId="ScoreView"
 >
   <FormLabel>
-    Score View:
+    <FormattedMessage
+      defaultMessage="Score View"
+      description="Score format select dropdown label"
+      id="gradebook.GradesTab.scoreViewLabel"
+    />
+    :
   </FormLabel>
   <FormControl
     as="select"

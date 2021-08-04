@@ -16,7 +16,13 @@ exports[`FileUploadForm component snapshot snapshot - loads export form w/ alert
       <ForwardRef
         as="input"
         className="d-none"
-        label="Upload Grade CSV"
+        label={
+          <FormattedMessage
+            defaultMessage="Upload Grade CSV"
+            description="Button in BulkManagementTab Alerts"
+            id="gradebook.BulkManagementTab.csvUploadLabel"
+          />
+        }
         onChange={[MockFunction this.handleFileInputChange]}
         plaintext={false}
         type="file"
@@ -29,7 +35,11 @@ exports[`FileUploadForm component snapshot snapshot - loads export form w/ alert
     onClick={[MockFunction this.handleClickImportGrades]}
     variant="primary"
   >
-    Import Grades
+    <FormattedMessage
+      defaultMessage="Import Grades"
+      description="Button in BulkManagement Tab File Upload Form"
+      id="gradebook.BulkManagementTab.importBtnText"
+    />
   </ForwardRef>
 </React.Fragment>
 `;

@@ -13,20 +13,31 @@ exports[`GradebookHeader component snapshots default values (grades frozen, cann
     >
       &lt;&lt; 
     </span>
-     Back to Dashboard
+    <FormattedMessage
+      defaultMessage="Back to Dashboard"
+      description="Button text to take user back to LMS dashboard in Gradebook Header"
+      id="gradebook.GradebookHeader.backButton"
+    />
   </a>
   <h1>
-    Gradebook
+    <FormattedMessage
+      defaultMessage="Gradebook"
+      description="Top-level app title in Gradebook Header component"
+      id="gradebook.GradebookHeader.appLabel"
+    />
   </h1>
   <h3>
-     
     fakeID
   </h3>
   <div
     className="alert alert-warning"
     role="alert"
   >
-    You are not authorized to view the gradebook for this course.
+    <FormattedMessage
+      defaultMessage="You are not authorized to view the gradebook for this course."
+      description="Warning message in Gradebook Header when user is not allowed to view the app"
+      id="gradebook.GradebookHeader.unauthorizedWarning"
+    />
   </div>
 </div>
 `;
@@ -44,20 +55,31 @@ exports[`GradebookHeader component snapshots grades frozen, can view. grades fro
     >
       &lt;&lt; 
     </span>
-     Back to Dashboard
+    <FormattedMessage
+      defaultMessage="Back to Dashboard"
+      description="Button text to take user back to LMS dashboard in Gradebook Header"
+      id="gradebook.GradebookHeader.backButton"
+    />
   </a>
   <h1>
-    Gradebook
+    <FormattedMessage
+      defaultMessage="Gradebook"
+      description="Top-level app title in Gradebook Header component"
+      id="gradebook.GradebookHeader.appLabel"
+    />
   </h1>
   <h3>
-     
     fakeID
   </h3>
   <div
     className="alert alert-warning"
     role="alert"
   >
-    The grades for this course are now frozen. Editing of grades is no longer allowed.
+    <FormattedMessage
+      defaultMessage="The grades for this course are now frozen. Editing of grades is no longer allowed."
+      description="Warning message in Gradebook Header for frozen messages"
+      id="gradebook.GradebookHeader.frozenWarning"
+    />
   </div>
 </div>
 `;
@@ -75,26 +97,41 @@ exports[`GradebookHeader component snapshots grades frozen, cannot view unauthor
     >
       &lt;&lt; 
     </span>
-     Back to Dashboard
+    <FormattedMessage
+      defaultMessage="Back to Dashboard"
+      description="Button text to take user back to LMS dashboard in Gradebook Header"
+      id="gradebook.GradebookHeader.backButton"
+    />
   </a>
   <h1>
-    Gradebook
+    <FormattedMessage
+      defaultMessage="Gradebook"
+      description="Top-level app title in Gradebook Header component"
+      id="gradebook.GradebookHeader.appLabel"
+    />
   </h1>
   <h3>
-     
     fakeID
   </h3>
   <div
     className="alert alert-warning"
     role="alert"
   >
-    The grades for this course are now frozen. Editing of grades is no longer allowed.
+    <FormattedMessage
+      defaultMessage="The grades for this course are now frozen. Editing of grades is no longer allowed."
+      description="Warning message in Gradebook Header for frozen messages"
+      id="gradebook.GradebookHeader.frozenWarning"
+    />
   </div>
   <div
     className="alert alert-warning"
     role="alert"
   >
-    You are not authorized to view the gradebook for this course.
+    <FormattedMessage
+      defaultMessage="You are not authorized to view the gradebook for this course."
+      description="Warning message in Gradebook Header when user is not allowed to view the app"
+      id="gradebook.GradebookHeader.unauthorizedWarning"
+    />
   </div>
 </div>
 `;

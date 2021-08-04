@@ -87,6 +87,44 @@ describe('grades selectors', () => {
   describe('grade formatters', () => {
     const selectedAssignment = { assignmentId: 'block-v1:edX+type@sequential+block@abcde' };
 
+    describe('formatGradeOverrideForDisplay', () => {
+      it('maps history entries with formatted date, grader, reason, and adjusted grade', () => {
+        const historyArray = [
+          {
+            history_date: 'Jan 01 2021',
+            history_user: 'Grog',
+            override_reason: 'rage',
+            earned_graded_override: 0,
+          },
+          {
+            history_date: 'Jan 02 2021',
+            history_user: 'Keyleth',
+            override_reason: 'nature',
+            earned_graded_override: 10,
+          },
+          {
+            history_date: 'Jan 03 2021',
+            history_user: 'Pike',
+            override_reason: 'Sarenrae',
+            earned_graded_override: 9001,
+          },
+        ];
+        const mapped = selectors.formatGradeOverrideForDisplay(historyArray);
+        const testEntry = (index) => {
+          const entry = historyArray[index];
+          expect(mapped[index]).toEqual({
+            date: formatDateForDisplay(new Date(entry.history_date)),
+            grader: entry.history_user,
+            reason: entry.override_reason,
+            adjustedGrade: entry.earned_graded_override,
+          });
+        };
+        testEntry(0);
+        testEntry(1);
+        testEntry(2);
+      });
+    });
+
     describe('formatMinAssignmentGrade', () => {
       const modifiedGrade = '1';
       const selector = selectors.formatMinAssignmentGrade;
@@ -275,7 +313,7 @@ describe('grades selectors', () => {
       expect(
         selectors.bulkImportError({ grades: { bulkManagement: { errorMessages } } }),
       ).toEqual(
-        `Errors while processing: ${errorMessages[0]}, ${errorMessages[1]}`,
+        `Errors while processing: ${errorMessages[0]}; ${errorMessages[1]};`,
       );
     });
   });

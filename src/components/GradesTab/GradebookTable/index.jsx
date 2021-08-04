@@ -4,10 +4,12 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 import { Table } from '@edx/paragon';
+import { FormattedMessage } from '@edx/frontend-platform/i18n';
 
-import { Headings } from 'data/constants/grades';
 import selectors from 'data/selectors';
+import { Headings } from 'data/constants/grades';
 
+import messages from './messages';
 import Fields from './Fields';
 import LabelReplacements from './LabelReplacements';
 import GradeButton from './GradeButton';
@@ -28,14 +30,17 @@ export class GradebookTable extends React.Component {
   }
 
   mapHeaders(heading) {
-    const replacement = {
-      [Headings.totalGrade]: <LabelReplacements.TotalGradeLabelReplacement />,
-      [Headings.username]: <LabelReplacements.UsernameLabelReplacement />,
-    }[heading];
-    return {
-      label: replacement !== undefined ? replacement : heading,
-      key: heading,
-    };
+    let label;
+    if (heading === Headings.totalGrade) {
+      label = <LabelReplacements.TotalGradeLabelReplacement />;
+    } else if (heading === Headings.username) {
+      label = <LabelReplacements.UsernameLabelReplacement />;
+    } else if (heading === Headings.email) {
+      label = <FormattedMessage {...messages.emailHeading} />;
+    } else {
+      label = heading;
+    }
+    return { label, key: heading };
   }
 
   mapRows(entry) {

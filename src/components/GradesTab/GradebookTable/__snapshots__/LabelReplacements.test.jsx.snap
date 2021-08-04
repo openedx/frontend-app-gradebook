@@ -4,7 +4,11 @@ exports[`LabelReplacements TotalGradeLabelReplacement displays overlay tooltip 1
 <Tooltip
   id="course-grade-tooltip"
 >
-  Total Grade values are always displayed as a percentage.
+  <FormattedMessage
+    defaultMessage="Total Grade values are always displayed as a percentage"
+    description="Gradebook table message that total grades are displayed in percent format"
+    id="gradebook.GradesTab.table.totalGradePercentage"
+  />
 </Tooltip>
 `;
 
@@ -16,7 +20,11 @@ exports[`LabelReplacements TotalGradeLabelReplacement snapshot 1`] = `
       <Tooltip
         id="course-grade-tooltip"
       >
-        Total Grade values are always displayed as a percentage.
+        <FormattedMessage
+          defaultMessage="Total Grade values are always displayed as a percentage"
+          description="Gradebook table message that total grades are displayed in percent format"
+          id="gradebook.GradesTab.table.totalGradePercentage"
+        />
       </Tooltip>
     }
     placement="left"
@@ -28,13 +36,23 @@ exports[`LabelReplacements TotalGradeLabelReplacement snapshot 1`] = `
     }
   >
     <div>
-      Total Grade (%)
+      <FormattedMessage
+        defaultMessage="Total Grade (%)"
+        description="Gradebook table total grade column header"
+        id="gradebook.GradesTab.table.headings.totalGrade"
+      />
       <div
         id="courseGradeTooltipIcon"
       >
         <Icon
           className="fa fa-info-circle"
-          screenReaderText="Total Grade values are always displayed as a percentage."
+          screenReaderText={
+            <FormattedMessage
+              defaultMessage="Total Grade values are always displayed as a percentage"
+              description="Gradebook table message that total grades are displayed in percent format"
+              id="gradebook.GradesTab.table.totalGradePercentage"
+            />
+          }
         />
       </div>
     </div>
@@ -45,12 +63,20 @@ exports[`LabelReplacements TotalGradeLabelReplacement snapshot 1`] = `
 exports[`LabelReplacements UsernameLabelReplacement snapshot 1`] = `
 <div>
   <div>
-    Username
+    <FormattedMessage
+      defaultMessage="Username"
+      description="Gradebook table username column header"
+      id="gradebook.GradesTab.table.headings.username"
+    />
   </div>
   <div
     className="font-weight-normal student-key"
   >
-    Student Key*
+    <FormattedMessage
+      defaultMessage="Student Key*"
+      description="Gradebook table Student Key label"
+      id="gradebook.GradesTab.table.labels.studentKey"
+    />
   </div>
 </div>
 `;

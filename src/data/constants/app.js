@@ -1,4 +1,7 @@
 import { StrictDict } from 'utils';
+import { getConfig } from '@edx/frontend-platform';
+
+export const routePath = `${getConfig().PUBLIC_PATH}:courseId`;
 
 export const modalFieldKeys = StrictDict({
   adjustedGradePossible: 'adjustedGradePossible',
@@ -48,6 +51,13 @@ export const bulkManagementColumns = [
     width: 'col',
   },
 ];
+
+export const gradeOverrideHistoryColumns = StrictDict({
+  adjustedGrade: 'adjustedGrade',
+  date: 'date',
+  grader: 'grader',
+  reason: 'reason',
+});
 
 /**
  * Display strings for various app components.

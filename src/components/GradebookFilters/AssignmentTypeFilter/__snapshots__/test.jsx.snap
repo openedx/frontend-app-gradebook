@@ -7,7 +7,13 @@ exports[`AssignmentTypeFilter Component snapshots SelectGroup disabled if no ass
   <SelectGroup
     disabled={true}
     id="assignment-types"
-    label="Assignment Types"
+    label={
+      <FormattedMessage
+        defaultMessage="Assignment Types"
+        description="Assignment Types filter select label in Gradebook Filters"
+        id="gradebook.GradebookFilters.assignmentTypesLabel"
+      />
+    }
     onChange={[MockFunction handleChange]}
     options={
       Array [
@@ -40,7 +46,13 @@ exports[`AssignmentTypeFilter Component snapshots smoke test 1`] = `
   <SelectGroup
     disabled={false}
     id="assignment-types"
-    label="Assignment Types"
+    label={
+      <FormattedMessage
+        defaultMessage="Assignment Types"
+        description="Assignment Types filter select label in Gradebook Filters"
+        id="gradebook.GradebookFilters.assignmentTypesLabel"
+      />
+    }
     onChange={[MockFunction handleChange]}
     options={
       Array [

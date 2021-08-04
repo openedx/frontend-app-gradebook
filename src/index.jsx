@@ -1,43 +1,18 @@
-/* eslint-disable import/no-named-as-default */
 import 'core-js/stable';
 import 'regenerator-runtime/runtime';
 
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import { Provider } from 'react-redux';
+
 import {
   APP_READY,
-  getConfig,
   initialize,
   subscribe,
 } from '@edx/frontend-platform';
-import { IntlProvider } from 'react-intl';
+import { messages as footerMessages } from '@edx/frontend-component-footer';
 
-import Footer, { messages as footerMessages } from '@edx/frontend-component-footer';
-
-import GradebookPage from './containers/GradebookPage';
-import EdxHeader from './components/EdxHeader';
-import store from './data/store';
-import './App.scss';
-
-const App = () => (
-  <IntlProvider locale="en">
-    <Provider store={store}>
-      <Router>
-        <div>
-          <EdxHeader />
-          <main>
-            <Switch>
-              <Route exact path={getConfig().PUBLIC_PATH.concat(':courseId')} component={GradebookPage} />
-            </Switch>
-          </main>
-          <Footer logo={process.env.LOGO_POWERED_BY_OPEN_EDX_URL_SVG} />
-        </div>
-      </Router>
-    </Provider>
-  </IntlProvider>
-);
+import appMessages from './i18n';
+import App from './App';
 
 subscribe(APP_READY, () => {
   ReactDOM.render(<App />, document.getElementById('root'));
@@ -45,6 +20,7 @@ subscribe(APP_READY, () => {
 
 initialize({
   messages: [
+    appMessages,
     footerMessages,
   ],
   requireAuthenticatedUser: true,

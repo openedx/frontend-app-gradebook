@@ -1,14 +1,15 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 
+import { FormattedMessage } from '@edx/frontend-platform/i18n';
+
 import actions from 'data/actions';
 import selectors from 'data/selectors';
+import messages from './messages';
 import {
   StatusAlerts,
   mapDispatchToProps,
   mapStateToProps,
-  maxCourseGradeInvalidMessage,
-  minCourseGradeInvalidMessage,
 } from './StatusAlerts';
 
 jest.mock('@edx/paragon', () => ({
@@ -77,18 +78,24 @@ describe('StatusAlerts', () => {
         !isMinValid || !isMaxValid,
       );
       if (!isMaxValid) {
+        if (!isMinValid) {
+          expect(el.instance().courseGradeFilterAlertDialogText).toEqual(
+            <>
+              <FormattedMessage {...messages.minGradeInvalid} />
+              <FormattedMessage {...messages.maxGradeInvalid} />
+            </>,
+          );
+        } else {
+          expect(
+            el.instance().courseGradeFilterAlertDialogText,
+          // eslint-disable-next-line react/jsx-curly-brace-presence
+          ).toEqual(<>{''}<FormattedMessage {...messages.maxGradeInvalid} /></>);
+        }
+      } else if (!isMinValid) {
         expect(
           el.instance().courseGradeFilterAlertDialogText,
-        ).toEqual(
-          expect.stringContaining(maxCourseGradeInvalidMessage),
-        );
-      }
-      if (!isMinValid) {
-        expect(
-          el.instance().courseGradeFilterAlertDialogText,
-        ).toEqual(
-          expect.stringContaining(minCourseGradeInvalidMessage),
-        );
+        // eslint-disable-next-line react/jsx-curly-brace-presence
+        ).toEqual(<><FormattedMessage {...messages.minGradeInvalid} />{''}</>);
       }
     });
   });

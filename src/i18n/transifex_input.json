@@ -1,0 +1,8 @@
+{
+  "gradebook.BulkManagementTab.csvUploadLabel": "Upload Grade CSV",
+  "gradebook.BulkManagementTab.heading": "Use this feature by downloading a CSV for bulk management, overriding grades locally, and coming back here to upload.",
+  "gradebook.BulkManagementTab.hint1": "Results appear in the table below.",
+  "gradebook.BulkManagementTab.hint2": "Grade processing may take a few seconds.",
+  "gradebook.BulkManagementTab.importBtnText": "Import Grades",
+  "gradebook.BulkManagementTab.successDialog": "CSV processing. File uploads may take several minutes to complete."
+}

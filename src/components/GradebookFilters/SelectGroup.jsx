@@ -23,7 +23,7 @@ const SelectGroup = ({
 );
 SelectGroup.propTypes = {
   id: PropTypes.string.isRequired,
-  label: PropTypes.string.isRequired,
+  label: PropTypes.node.isRequired,
   value: PropTypes.string.isRequired,
   onChange: PropTypes.func.isRequired,
   disabled: PropTypes.bool,

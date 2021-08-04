@@ -19,7 +19,7 @@ HistoryHeader.defaultProps = {
 };
 HistoryHeader.propTypes = {
   id: PropTypes.string.isRequired,
-  label: PropTypes.string.isRequired,
+  label: PropTypes.node.isRequired,
   value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
 };
 

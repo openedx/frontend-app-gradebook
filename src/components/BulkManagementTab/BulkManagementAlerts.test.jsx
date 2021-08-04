@@ -1,12 +1,17 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import { Alert } from '@edx/paragon';
+import { FormattedMessage } from '@edx/frontend-platform/i18n';
 
 import selectors from 'data/selectors';
-import * as appConstants from 'data/constants/app';
+import messages from './messages';
 
 import { BulkManagementAlerts, mapStateToProps } from './BulkManagementAlerts';
 
+jest.mock('@edx/frontend-platform/i18n', () => ({
+  defineMessages: m => m,
+  FormattedMessage: () => 'FormattedMessage',
+}));
 jest.mock('@edx/paragon', () => ({
   Alert: () => 'Alert',
 }));
@@ -61,8 +66,8 @@ describe('BulkManagementAlerts', () => {
       });
       test('open success alert with messages.successDialog content', () => {
         expect(el.childAt(1).is(Alert)).toEqual(true);
-        expect(el.childAt(1).children().text()).toEqual(
-          appConstants.messages.BulkManagementTab.successDialog,
+        expect(el.childAt(1).children().getElement()).toEqual(
+          <FormattedMessage {...messages.successDialog} />,
         );
         expect(el.childAt(1).props().show).toEqual(true);
       });

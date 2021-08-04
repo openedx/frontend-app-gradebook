@@ -2,7 +2,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
+import { FormattedMessage } from '@edx/frontend-platform/i18n';
+
 import selectors from 'data/selectors';
+
+import messages from './messages';
 import HistoryHeader from './HistoryHeader';
 
 /**
@@ -18,22 +22,22 @@ export const ModalHeaders = ({
   <div>
     <HistoryHeader
       id="assignment"
-      label="Assignment"
+      label={<FormattedMessage {...messages.assignmentHeader} />}
       value={modalState.assignmentName}
     />
     <HistoryHeader
       id="student"
-      label="Student"
+      label={<FormattedMessage {...messages.studentHeader} />}
       value={modalState.updateUserName}
     />
     <HistoryHeader
       id="original-grade"
-      label="Original Grade"
+      label={<FormattedMessage {...messages.originalGradeHeader} />}
       value={originalGrade}
     />
     <HistoryHeader
       id="current-grade"
-      label="Current Grade"
+      label={<FormattedMessage {...messages.currentGradeHeader} />}
       value={currentGrade}
     />
   </div>

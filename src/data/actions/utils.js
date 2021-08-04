@@ -1,19 +1,22 @@
 import { createAction } from '@reduxjs/toolkit';
 
+export const options = {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+  timeZone: 'UTC',
+};
+export const timeOptions = {
+  hour: '2-digit',
+  minute: '2-digit',
+  timeZone: 'UTC',
+  timeZoneName: 'short',
+};
+
 const formatDateForDisplay = (inputDate) => {
-  const options = {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
-    timeZone: 'UTC',
-  };
-  const timeOptions = {
-    hour: '2-digit',
-    minute: '2-digit',
-    timeZone: 'UTC',
-    timeZoneName: 'short',
-  };
-  return `${inputDate.toLocaleDateString('en-US', options)} at ${inputDate.toLocaleTimeString('en-US', timeOptions)}`;
+  const date = inputDate.toLocaleDateString('en-US', options);
+  const time = inputDate.toLocaleTimeString('en-US', timeOptions);
+  return `${date} at ${time}`;
 };
 
 const sortAlphaAsc = (gradeRowA, gradeRowB) => {

@@ -1,12 +1,13 @@
 /* eslint-disable import/no-named-as-default */
 import React from 'react';
 import { shallow } from 'enzyme';
+import { FormattedMessage } from '@edx/frontend-platform/i18n';
 
-import { messages } from 'data/constants/app';
 import { BulkManagementTab } from '.';
 import BulkManagementAlerts from './BulkManagementAlerts';
 import FileUploadForm from './FileUploadForm';
 import HistoryTable from './HistoryTable';
+import messages from './messages';
 
 jest.mock('./BulkManagementAlerts', () => 'BulkManagementAlerts');
 jest.mock('./FileUploadForm', () => 'FileUploadForm');
@@ -30,7 +31,11 @@ describe('BulkManagementTab', () => {
       });
       test('heading - h4 loaded from messages', () => {
         const heading = el.find('h4');
-        expect(heading.text()).toEqual(messages.BulkManagementTab.heading);
+        expect(heading.getElement()).toEqual((
+          <h4>
+            <FormattedMessage {...messages.heading} />
+          </h4>
+        ));
       });
       test('heading, then alerts, then upload form, then table', () => {
         expect(el.childAt(0).is('h4')).toEqual(true);

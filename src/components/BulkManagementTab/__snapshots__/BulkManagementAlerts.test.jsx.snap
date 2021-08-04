@@ -12,7 +12,11 @@ exports[`BulkManagementAlerts component no errer, no upload success snapshot - b
     show={false}
     variant="success"
   >
-    CSV processing. File uploads may take several minutes to complete.
+    <FormattedMessage
+      defaultMessage="CSV processing. File uploads may take several minutes to complete."
+      description="Success Dialog message in BulkManagement Tab File Upload Form"
+      id="gradebook.BulkManagementTab.successDialog"
+    />
   </Alert>
 </Fragment>
 `;
@@ -31,7 +35,11 @@ exports[`BulkManagementAlerts component no errer, no upload success snapshot - d
     show={true}
     variant="success"
   >
-    CSV processing. File uploads may take several minutes to complete.
+    <FormattedMessage
+      defaultMessage="CSV processing. File uploads may take several minutes to complete."
+      description="Success Dialog message in BulkManagement Tab File Upload Form"
+      id="gradebook.BulkManagementTab.successDialog"
+    />
   </Alert>
 </Fragment>
 `;

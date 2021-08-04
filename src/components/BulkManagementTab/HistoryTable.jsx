@@ -3,11 +3,14 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
+import { FormattedMessage } from '@edx/frontend-platform/i18n';
 import { Table } from '@edx/paragon';
 
-import { bulkManagementColumns, messages } from 'data/constants/app';
+import { bulkManagementColumns } from 'data/constants/app';
 import selectors from 'data/selectors';
+
 import ResultsSummary from './ResultsSummary';
+import messages from './messages';
 
 export const mapHistoryRows = ({
   resultsSummary,
@@ -21,19 +24,19 @@ export const mapHistoryRows = ({
   ...rest,
 });
 
-const { hints } = messages.BulkManagementTab;
-
 /**
  * <HistoryTable />
  * Table with history of bulk management uploads, including a results summary which
  * displays total, skipped, and failed uploads
  */
-export const HistoryTable = ({ bulkManagementHistory }) => (
+export const HistoryTable = ({
+  bulkManagementHistory,
+}) => (
   <>
     <p>
-      {hints[0]}
+      <FormattedMessage {...messages.hint1} />
       <br />
-      {hints[1]}
+      <FormattedMessage {...messages.hint2} />
     </p>
 
     <Table

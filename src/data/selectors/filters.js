@@ -132,6 +132,16 @@ export const selectedAssignmentId = (state) => (simpleSelectors.assignment(state
  */
 export const selectedAssignmentLabel = (state) => (simpleSelectors.assignment(state) || {}).label;
 
+/**
+ * Returns the api value for excludedCourseRoles based on the
+ * internal Bool value for includeCourseRoleMembers.
+ * @param {object} state - redux state
+ * @return {string} - '' if to be included, else 'all'
+ */
+export const excludedCourseRoles = (state) => (
+  simpleSelectors.includeCourseRoleMembers(state) ? '' : 'all'
+);
+
 export default StrictDict({
   ...simpleSelectors,
   isDefault,
@@ -143,5 +153,6 @@ export default StrictDict({
   allFilters,
   areAssignmentGradeFiltersSet,
   chooseRelevantAssignmentData,
+  excludedCourseRoles,
   getAssignmentsFromResultsSubstate,
 });

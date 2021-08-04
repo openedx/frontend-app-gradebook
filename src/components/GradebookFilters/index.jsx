@@ -10,11 +10,13 @@ import {
   Form,
 } from '@edx/paragon';
 import { Close } from '@edx/paragon/icons';
+import { FormattedMessage, injectIntl, intlShape } from '@edx/frontend-platform/i18n';
 
 import actions from 'data/actions';
 import selectors from 'data/selectors';
 import thunkActions from 'data/thunkActions';
 
+import messages from './messages';
 import AssignmentTypeFilter from './AssignmentTypeFilter';
 import AssignmentFilter from './AssignmentFilter';
 import AssignmentGradeFilter from './AssignmentGradeFilter';
@@ -39,13 +41,18 @@ export class GradebookFilters extends React.Component {
   }
 
   collapsibleGroup = (title, content) => (
-    <Collapsible title={title} defaultOpen className="filter-group mb-3">
+    <Collapsible
+      title={<FormattedMessage {...title} />}
+      defaultOpen
+      className="filter-group mb-3"
+    >
       {content}
     </Collapsible>
   );
 
   render() {
     const {
+      intl,
       updateQueryParams,
     } = this.props;
     return (
@@ -57,12 +64,12 @@ export class GradebookFilters extends React.Component {
             onClick={this.props.closeMenu}
             iconAs={Icon}
             src={Close}
-            alt="Close Filters"
-            aria-label="Close Filters"
+            alt={intl.formatMessage(messages.closeFilters)}
+            aria-label={intl.formatMessage(messages.closeFilters)}
           />
         </div>
 
-        {this.collapsibleGroup('Assignments', (
+        {this.collapsibleGroup(messages.assignments, (
           <div>
             <AssignmentTypeFilter updateQueryParams={updateQueryParams} />
             <AssignmentFilter updateQueryParams={updateQueryParams} />
@@ -70,20 +77,20 @@ export class GradebookFilters extends React.Component {
           </div>
         ))}
 
-        {this.collapsibleGroup('Overall Grade', (
+        {this.collapsibleGroup(messages.overallGrade, (
           <CourseGradeFilter updateQueryParams={updateQueryParams} />
         ))}
 
-        {this.collapsibleGroup('Student Groups', (
+        {this.collapsibleGroup(messages.studentGroups, (
           <StudentGroupsFilter updateQueryParams={updateQueryParams} />
         ))}
 
-        {this.collapsibleGroup('Include Course Team Members', (
+        {this.collapsibleGroup(messages.includeCourseTeamMembers, (
           <Form.Checkbox
             checked={this.state.includeCourseRoleMembers}
             onChange={this.handleIncludeTeamMembersChange}
           >
-            Include Course Team Members
+            <FormattedMessage {...messages.includeCourseTeamMembers} />
           </Form.Checkbox>
         ))}
       </>
@@ -95,6 +102,8 @@ GradebookFilters.defaultProps = {
 };
 GradebookFilters.propTypes = {
   updateQueryParams: PropTypes.func.isRequired,
+  // injected
+  intl: intlShape.isRequired,
   // redux
   closeMenu: PropTypes.func.isRequired,
   fetchGrades: PropTypes.func.isRequired,
@@ -112,4 +121,4 @@ export const mapDispatchToProps = {
   updateIncludeCourseRoleMembers: actions.filters.update.includeCourseRoleMembers,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(GradebookFilters);
+export default injectIntl(connect(mapStateToProps, mapDispatchToProps)(GradebookFilters));

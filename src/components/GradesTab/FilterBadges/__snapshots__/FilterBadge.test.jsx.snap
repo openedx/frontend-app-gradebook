@@ -8,7 +8,11 @@ exports[`FilterBadge component with non-default value (active) if hideValue is f
     className="badge badge-info"
   >
     <span>
-      a common name
+      <FormattedMessage
+        defaultMessage="a common name"
+      />
+    </span>
+    <span>
       : a common value
     </span>
     <Button
@@ -40,8 +44,11 @@ exports[`FilterBadge component with non-default value (active) if hideValue is t
     className="badge badge-info"
   >
     <span>
-      a common name
+      <FormattedMessage
+        defaultMessage="a common name"
+      />
     </span>
+    <span />
     <Button
       aria-label="close"
       className="btn-info"

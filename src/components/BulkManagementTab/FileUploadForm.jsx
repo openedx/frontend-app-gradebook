@@ -3,6 +3,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
+import { FormattedMessage } from '@edx/frontend-platform/i18n';
+
 import {
   Button,
   Form,
@@ -10,11 +12,9 @@ import {
   FormGroup,
 } from '@edx/paragon';
 
-import { messages } from 'data/constants/app';
 import selectors from 'data/selectors';
 import thunkActions from 'data/thunkActions';
-
-const { csvUploadLabel, importBtnText } = messages.BulkManagementTab;
+import messages from './messages';
 
 /**
  * <FileUploadForm />
@@ -56,14 +56,15 @@ export class FileUploadForm extends React.Component {
   }
 
   render() {
+    const { gradeExportUrl } = this.props;
     return (
       <>
-        <Form action={this.props.gradeExportUrl} method="post">
+        <Form action={gradeExportUrl} method="post">
           <FormGroup controlId="csv">
             <FormControl
               className="d-none"
               type="file"
-              label={csvUploadLabel}
+              label={<FormattedMessage {...messages.csvUploadLabel} />}
               onChange={this.handleFileInputChange}
               ref={this.fileInputRef}
             />
@@ -71,7 +72,7 @@ export class FileUploadForm extends React.Component {
         </Form>
 
         <Button variant="primary" onClick={this.handleClickImportGrades}>
-          {importBtnText}
+          <FormattedMessage {...messages.importBtnText} />
         </Button>
       </>
     );

@@ -3,10 +3,13 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
+import { injectIntl, intlShape } from '@edx/frontend-platform/i18n';
+
 import actions from 'data/actions';
 import selectors from 'data/selectors';
 import thunkActions from 'data/thunkActions';
 
+import messages from '../messages';
 import SelectGroup from '../SelectGroup';
 
 export const optionFactory = ({ data, defaultOption, key }) => [
@@ -28,7 +31,7 @@ export class StudentGroupsFilter extends React.Component {
   mapCohortsEntries() {
     return optionFactory({
       data: this.props.cohorts,
-      defaultOption: 'Cohort-All',
+      defaultOption: this.translate(messages.cohortAll),
       key: 'id',
     });
   }
@@ -36,7 +39,7 @@ export class StudentGroupsFilter extends React.Component {
   mapTracksEntries() {
     return optionFactory({
       data: this.props.tracks,
-      defaultOption: 'Track-All',
+      defaultOption: this.translate(messages.trackAll),
       key: 'slug',
     });
   }
@@ -65,19 +68,23 @@ export class StudentGroupsFilter extends React.Component {
     this.props.fetchGrades();
   }
 
+  translate(message) {
+    return this.props.intl.formatMessage(message);
+  }
+
   render() {
     return (
       <>
         <SelectGroup
           id="Tracks"
-          label="Tracks"
+          label={this.translate(messages.tracks)}
           value={this.props.selectedTrackEntry.name}
           onChange={this.updateTracks}
           options={this.mapTracksEntries()}
         />
         <SelectGroup
           id="Cohorts"
-          label="Cohorts"
+          label={this.translate(messages.cohorts)}
           value={this.props.selectedCohortEntry.name}
           disabled={this.props.cohorts.length === 0}
           onChange={this.updateCohorts}
@@ -99,6 +106,9 @@ StudentGroupsFilter.defaultProps = {
 
 StudentGroupsFilter.propTypes = {
   updateQueryParams: PropTypes.func.isRequired,
+
+  // injected
+  intl: intlShape.isRequired,
 
   // redux
   cohorts: PropTypes.arrayOf(PropTypes.shape({
@@ -139,4 +149,4 @@ export const mapDispatchToProps = {
   updateTrack: actions.filters.update.track,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(StudentGroupsFilter);
+export default injectIntl(connect(mapStateToProps, mapDispatchToProps)(StudentGroupsFilter));

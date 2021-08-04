@@ -105,11 +105,11 @@ export const headingMapper = (category, label = 'All') => {
     filter = filters.byLabel;
   }
   const { username, email, totalGrade } = Headings;
-  const fillerLabels = (entry) => entry.filter(filter).map(s => s.label);
+  const filteredLabels = (entry) => entry.filter(filter).map(s => s.label);
 
   return (entry) => (
     entry
-      ? [username, email, ...fillerLabels(entry), totalGrade]
+      ? [username, email, ...filteredLabels(entry), totalGrade]
       : []
   );
 };
@@ -187,7 +187,7 @@ export const allGrades = ({ grades: { results } }) => results;
  */
 export const bulkImportError = ({ grades: { bulkManagement } }) => (
   (!!bulkManagement && bulkManagement.errorMessages)
-    ? `Errors while processing: ${bulkManagement.errorMessages.join(', ')}`
+    ? `Errors while processing: ${bulkManagement.errorMessages.join('; ')};`
     : ''
 );
 

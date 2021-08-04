@@ -3,10 +3,13 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 import { Button, Icon, SearchField } from '@edx/paragon';
+import { FormattedMessage } from '@edx/frontend-platform/i18n';
 
 import actions from 'data/actions';
 import selectors from 'data/selectors';
 import thunkActions from 'data/thunkActions';
+
+import messages from './messages';
 
 /**
  * Controls for filtering the GradebookTable. Contains the "Edit Filters" button for opening the filter drawer
@@ -32,25 +35,25 @@ export class SearchControls extends React.Component {
   render() {
     return (
       <>
-        <h4>Step 1: Filter the Grade Report</h4>
+        <h4><FormattedMessage {...messages.filterStepHeading} /></h4>
         <div className="d-flex justify-content-between">
           <Button
             id="edit-filters-btn"
             className="btn-primary align-self-start"
             onClick={this.props.toggleFilterDrawer}
           >
-            <Icon className="fa fa-filter" /> Edit Filters
+            <Icon className="fa fa-filter" /> <FormattedMessage {...messages.editFilters} />
           </Button>
           <div>
             <SearchField
               onSubmit={this.props.fetchGrades}
-              inputLabel="Search for a learner"
+              inputLabel={<FormattedMessage {...messages.searchLabel} />}
               onChange={this.onChange}
               onClear={this.onClear}
               value={this.props.searchValue}
             />
             <small className="form-text text-muted search-help-text">
-              Search by username, email, or student key
+              <FormattedMessage {...messages.searchHint} />
             </small>
           </div>
         </div>

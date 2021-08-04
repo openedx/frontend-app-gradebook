@@ -19,7 +19,11 @@ exports[`PageButtons component snapshots buttons enabled with both endpoints pro
     }
     variant="outline-primary"
   >
-    Previous Page
+    <FormattedMessage
+      defaultMessage="Previous Page"
+      description="Grades tab Previous Page button text"
+      id="gradebook.GradesTab.PageButtons.prevPage"
+    />
   </Button>
   <Button
     disabled={false}
@@ -31,7 +35,11 @@ exports[`PageButtons component snapshots buttons enabled with both endpoints pro
     }
     variant="outline-primary"
   >
-    Next Page
+    <FormattedMessage
+      defaultMessage="Next Page"
+      description="Grades tab Next Page button text"
+      id="gradebook.GradesTab.PageButtons.nextPage"
+    />
   </Button>
 </div>
 `;
@@ -55,7 +63,11 @@ exports[`PageButtons component snapshots nextPage disabled if not provided 1`] =
     }
     variant="outline-primary"
   >
-    Previous Page
+    <FormattedMessage
+      defaultMessage="Previous Page"
+      description="Grades tab Previous Page button text"
+      id="gradebook.GradesTab.PageButtons.prevPage"
+    />
   </Button>
   <Button
     disabled={true}
@@ -67,7 +79,11 @@ exports[`PageButtons component snapshots nextPage disabled if not provided 1`] =
     }
     variant="outline-primary"
   >
-    Next Page
+    <FormattedMessage
+      defaultMessage="Next Page"
+      description="Grades tab Next Page button text"
+      id="gradebook.GradesTab.PageButtons.nextPage"
+    />
   </Button>
 </div>
 `;
@@ -91,7 +107,11 @@ exports[`PageButtons component snapshots prevPage disabled if not provided 1`] =
     }
     variant="outline-primary"
   >
-    Previous Page
+    <FormattedMessage
+      defaultMessage="Previous Page"
+      description="Grades tab Previous Page button text"
+      id="gradebook.GradesTab.PageButtons.prevPage"
+    />
   </Button>
   <Button
     disabled={false}
@@ -103,7 +123,11 @@ exports[`PageButtons component snapshots prevPage disabled if not provided 1`] =
     }
     variant="outline-primary"
   >
-    Next Page
+    <FormattedMessage
+      defaultMessage="Next Page"
+      description="Grades tab Next Page button text"
+      id="gradebook.GradesTab.PageButtons.nextPage"
+    />
   </Button>
 </div>
 `;

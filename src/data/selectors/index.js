@@ -126,10 +126,7 @@ export const getHeadings = (state) => grades.headingMapper(
  * @return {string} - generated grade export url
  */
 export const gradeExportUrl = (state) => (
-  lms.urls.gradeCsvUrl({
-    ...module.lmsApiServiceArgs(state),
-    excludeCourseRoles: filters.includeCourseRoleMembers(state) ? '' : 'all',
-  })
+  lms.urls.gradeCsvUrl(module.lmsApiServiceArgs(state))
 );
 
 /**
@@ -139,9 +136,7 @@ export const gradeExportUrl = (state) => (
  * @return {string} - generated intervention export url
  */
 export const interventionExportUrl = (state) => (
-  lms.urls.interventionExportCsvUrl(
-    module.lmsApiServiceArgs(state),
-  )
+  lms.urls.interventionExportCsvUrl(module.lmsApiServiceArgs(state))
 );
 
 /**
@@ -152,6 +147,7 @@ export const interventionExportUrl = (state) => (
  */
 export const lmsApiServiceArgs = (state) => ({
   cohort: cohorts.getCohortNameById(state, filters.cohort(state)),
+  track: filters.track(state),
   assignment: filters.selectedAssignmentId(state),
   assignmentType: filters.assignmentType(state),
   assignmentGradeMin: grades.formatMinAssignmentGrade(
@@ -164,6 +160,7 @@ export const lmsApiServiceArgs = (state) => ({
   ),
   courseGradeMin: grades.formatMinCourseGrade(filters.courseGradeMin(state)),
   courseGradeMax: grades.formatMaxCourseGrade(filters.courseGradeMax(state)),
+  excludedCourseRoles: filters.excludedCourseRoles(state),
 });
 
 /**

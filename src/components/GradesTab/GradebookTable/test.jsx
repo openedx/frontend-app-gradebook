@@ -2,11 +2,13 @@ import React from 'react';
 import { shallow } from 'enzyme';
 
 import { Table } from '@edx/paragon';
+import { FormattedMessage } from '@edx/frontend-platform/i18n';
 
 import selectors from 'data/selectors';
 import { Headings } from 'data/constants/grades';
 import LabelReplacements from './LabelReplacements';
 import Fields from './Fields';
+import messages from './messages';
 import { GradebookTable, mapStateToProps } from '.';
 
 jest.mock('@edx/paragon', () => ({
@@ -94,7 +96,7 @@ describe('GradebookTable', () => {
       test('email sets key and label from header', () => {
         const heading = headings[1];
         expect(heading.key).toEqual(Headings.email);
-        expect(heading.label).toEqual(Headings.email);
+        expect(heading.label).toEqual(<FormattedMessage {...messages.emailHeading} />);
       });
       test('subsections set key and label from header', () => {
         expect(headings[2]).toEqual({ key: fields.field1, label: fields.field1 });

@@ -339,24 +339,11 @@ describe('root selectors', () => {
     afterEach(() => {
       moduleSelectors.lmsApiServiceArgs = lmsApiServiceArgs;
     });
-    describe('without includeCourseRoleMembers filter', () => {
-      it('calls the API service with the right args, excluding all course roles', () => {
-        selectors.filters.includeCourseRoleMembers.mockReturnValue(undefined);
-        expect(selector(testState)).toEqual({
-          gradeCsvUrl: {
-            args: [{ lmsArgs: testState, excludeCourseRoles: 'all' }],
-          },
-        });
-      });
-    });
-    describe('with includeCourseRoleMembers filter', () => {
-      it('calls the API service with the right args, including course roles', () => {
-        selectors.filters.includeCourseRoleMembers.mockReturnValue(true);
-        expect(selector(testState)).toEqual({
-          gradeCsvUrl: {
-            args: [{ lmsArgs: testState, excludeCourseRoles: '' }],
-          },
-        });
+    it('calls the API service with the right args', () => {
+      expect(selector(testState)).toEqual({
+        gradeCsvUrl: {
+          args: [{ lmsArgs: testState }],
+        },
       });
     });
   });
@@ -381,10 +368,12 @@ describe('root selectors', () => {
       selectors.filters.selectedAssignmentId = mockFn('selectedAssignmentId');
       selectors.filters.assignmentType = mockFn('assignmentType');
       selectors.filters.cohort = mockFn('cohort');
+      selectors.filters.track = mockFn('track');
       selectors.filters.assignmentGradeMax = mockFn('assignmentGradeMax');
       selectors.filters.assignmentGradeMin = mockFn('assignmentGradeMin');
       selectors.filters.courseGradeMax = mockFn('courseGradeMax');
       selectors.filters.courseGradeMin = mockFn('courseGradeMin');
+      selectors.filters.excludedCourseRoles = mockFn('excludedCourseRoles');
       selectors.grades.formatMaxAssignmentGrade = mockMetaFn('formatMaxAssignmentGrade');
       selectors.grades.formatMinAssignmentGrade = mockMetaFn('formatMinAssignmentGrade');
       selectors.grades.formatMinCourseGrade = mockFn('formatMinCourseGrade');
@@ -392,6 +381,7 @@ describe('root selectors', () => {
       const assignmentId = { selectedAssignmentId: testState };
       expect(moduleSelectors.lmsApiServiceArgs(testState)).toEqual({
         cohort: { getCohortNameById: testState },
+        track: { track: testState },
         assignment: assignmentId,
         assignmentType: { assignmentType: testState },
         assignmentGradeMin: {
@@ -410,6 +400,7 @@ describe('root selectors', () => {
         courseGradeMax: {
           formatMaxCourseGrade: { courseGradeMax: testState },
         },
+        excludedCourseRoles: { excludedCourseRoles: testState },
       });
     });
   });
