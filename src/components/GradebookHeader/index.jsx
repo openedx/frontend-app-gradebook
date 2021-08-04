@@ -29,7 +29,7 @@ export class GradebookHeader extends React.Component {
   );
 
   handleToggleViewClick() {
-    const newView = this.props.activeView === views.grades ? views.activity : views.grades;
+    const newView = this.props.activeView === views.grades ? views.bulkManagementHistory : views.grades;
     this.props.setView(newView);
   }
 

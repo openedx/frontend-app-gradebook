@@ -79,9 +79,9 @@ describe('BulkManagementControls', () => {
         window.location = oldWindowLocation;
       });
       describe('handleViewActivityLog', () => {
-        it('calls props.setView(views.activity)', () => {
+        it('calls props.setView(views.bulkManagementHistory)', () => {
           el.instance().handleViewActivityLog();
-          expect(props.setView).toHaveBeenCalledWith(views.activity);
+          expect(props.setView).toHaveBeenCalledWith(views.bulkManagementHistory);
         });
       });
       describe('handleClickExportGrades', () => {

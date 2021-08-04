@@ -30,7 +30,7 @@ export class BulkManagementControls extends React.Component {
   }
 
   handleViewActivityLog() {
-    this.props.setView(views.activity);
+    this.props.setView(views.bulkManagementHistory);
   }
 
   render() {

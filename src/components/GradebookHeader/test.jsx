@@ -85,9 +85,9 @@ describe('GradebookHeader component', () => {
         expect(el.instance().render()).toMatchSnapshot();
       });
     });
-    describe('show bulk management, active view is activity view', () => {
+    describe('show bulk management, active view is bulkManagementHistory view', () => {
       test('toggle view button to grades', () => {
-        el.setProps({ showBulkManagement: true, activeView: views.activity });
+        el.setProps({ showBulkManagement: true, activeView: views.bulkManagementHistory });
         expect(el.find(Button).getElement()).toEqual((
           <Button
             variant="tertiary"
@@ -108,10 +108,10 @@ describe('GradebookHeader component', () => {
     describe('handleToggleViewClick', () => {
       test('calls setView with activity view if activeView is grades', () => {
         el.instance().handleToggleViewClick();
-        expect(props.setView).toHaveBeenCalledWith(views.activity);
+        expect(props.setView).toHaveBeenCalledWith(views.bulkManagementHistory);
       });
-      test('calls setView with grades view if activeView is activity', () => {
-        el.setProps({ activeView: views.activity });
+      test('calls setView with grades view if activeView is bulkManagementHistory', () => {
+        el.setProps({ activeView: views.bulkManagementHistory });
         el.instance().handleToggleViewClick();
         expect(props.setView).toHaveBeenCalledWith(views.grades);
       });

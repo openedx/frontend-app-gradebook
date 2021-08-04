@@ -59,8 +59,8 @@ describe('GradebookPage', () => {
       props.initializeApp = jest.fn();
       props.history = { push: jest.fn() };
     });
-    test('snapshot - shows BulkManagementHistoryView if activeView === views.activity', () => {
-      el = shallow(<GradebookPage {...props} activeView={views.activity} />);
+    test('snapshot - shows BulkManagementHistoryView if activeView === views.bulkManagementHistory', () => {
+      el = shallow(<GradebookPage {...props} activeView={views.bulkManagementHistory} />);
       el.instance().updateQueryParams = jest.fn().mockName('updateQueryParams');
       expect(el.instance().render()).toMatchSnapshot();
     });
@@ -100,8 +100,8 @@ describe('GradebookPage', () => {
             <GradesView updateQueryParams={el.instance().updateQueryParams} />
           )));
         });
-        it('displays Bulk Management History View if activeView === views.activity', () => {
-          el = shallow(<GradebookPage {...props} activeView={views.activity} />);
+        it('displays Bulk Management History View if activeView === views.bulkManagementHistory', () => {
+          el = shallow(<GradebookPage {...props} activeView={views.bulkManagementHistory} />);
           const mainView = el.props().children.props.children[1];
           expect(mainView).toEqual((
             <BulkManagementHistoryView />

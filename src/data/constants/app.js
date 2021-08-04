@@ -5,7 +5,7 @@ export const routePath = `${getConfig().PUBLIC_PATH}:courseId`;
 
 export const views = StrictDict({
   grades: 'grades',
-  activity: 'activity',
+  bulkManagementHistory: 'bulkManagementHistory',
 });
 
 export const modalFieldKeys = StrictDict({

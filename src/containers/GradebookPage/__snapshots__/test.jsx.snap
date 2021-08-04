@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`GradebookPage component snapshot - shows BulkManagementHistoryView if activeView === views.activity 1`] = `
+exports[`GradebookPage component snapshot - shows BulkManagementHistoryView if activeView === views.bulkManagementHistory 1`] = `
 <WithSidebar
   sidebar={
     <GradebookFilters

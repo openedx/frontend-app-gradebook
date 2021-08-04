@@ -50,7 +50,7 @@ export class GradebookPage extends React.Component {
       >
         <div className="px-3 gradebook-content">
           <GradebookHeader />
-          {(this.props.activeView === views.activity
+          {(this.props.activeView === views.bulkManagementHistory
             ? <BulkManagementHistoryView />
             : <GradesView updateQueryParams={this.updateQueryParams} />
           )}

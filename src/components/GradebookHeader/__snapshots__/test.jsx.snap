@@ -148,7 +148,7 @@ exports[`GradebookHeader component snapshots grades frozen, cannot view unauthor
 </div>
 `;
 
-exports[`GradebookHeader component snapshots show bulk management, active view is activity view toggle view button to grades 1`] = `
+exports[`GradebookHeader component snapshots show bulk management, active view is bulkManagementHistory view toggle view button to grades 1`] = `
 <div
   className="gradebook-header"
 >

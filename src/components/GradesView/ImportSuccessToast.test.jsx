@@ -80,10 +80,10 @@ describe('ImportSuccessToast component', () => {
       });
     });
     describe('handleShowHistoryView', () => {
-      it('calls setAppView with views.activity and this.onClose', () => {
+      it('calls setAppView with views.bulkManagementHistory and this.onClose', () => {
         el.instance().onClose = jest.fn();
         el.instance().handleShowHistoryView();
-        expect(props.setAppView).toHaveBeenCalledWith(views.activity);
+        expect(props.setAppView).toHaveBeenCalledWith(views.bulkManagementHistory);
         expect(el.instance().onClose).toHaveBeenCalled();
       });
     });

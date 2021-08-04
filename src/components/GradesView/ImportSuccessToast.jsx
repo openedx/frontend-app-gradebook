@@ -14,6 +14,11 @@ import actions from 'data/actions';
 import { views } from 'data/constants/app';
 import messages from './ImportSuccessToast.messages';
 
+/**
+ * <ImportSuccessToast />
+ * Toast component triggered by successful grade upload.
+ * Provides a link to view the Bulk Management History tab.
+ */
 export class ImportSuccessToast extends React.Component {
   constructor(props) {
     super(props);
@@ -26,7 +31,7 @@ export class ImportSuccessToast extends React.Component {
   }
 
   handleShowHistoryView() {
-    this.props.setAppView(views.activity);
+    this.props.setAppView(views.bulkManagementHistory);
     this.onClose();
   }
 
