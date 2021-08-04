@@ -139,15 +139,6 @@ describe('filters selectors', () => {
     });
   });
 
-  describe('excludedCourseRoles', () => {
-    it('returns empty string if includeCourseRoleMembers', () => {
-      expect(selectors.excludedCourseRoles({ filters: { includeCourseRoleMembers: true } })).toEqual('');
-    });
-    it('returns "all" string if not includeCourseRoleMembers', () => {
-      expect(selectors.excludedCourseRoles({ filters: { includeCourseRoleMembers: false } })).toEqual('all');
-    });
-  });
-
   describe('selectedAssignmentId', () => {
     it('gets filtered assignment ID when available', () => {
       const assignmentId = selectors.selectedAssignmentId(testState);
