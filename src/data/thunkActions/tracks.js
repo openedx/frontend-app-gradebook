@@ -14,7 +14,7 @@ export const fetchTracks = () => (
       .then(response => response.data)
       .then((data) => {
         dispatch(actions.tracks.fetching.received(data.course_modes));
-        if (selectors.tracks.hasMastersTrack(data.course_modes)) {
+        if (selectors.root.showBulkManagement(data.course_modes)) {
           dispatch(fetchBulkUpgradeHistory());
         }
       })

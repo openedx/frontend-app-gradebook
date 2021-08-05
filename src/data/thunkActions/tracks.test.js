@@ -15,7 +15,7 @@ jest.mock('data/services/lms', () => ({
 jest.mock('data/selectors', () => ({
   __esModule: true,
   default: {
-    tracks: { hasMastersTrack: jest.fn(() => false) },
+    root: { showBulkManagement: jest.fn(() => false) },
   },
 }));
 jest.mock('./grades', () => ({
@@ -35,10 +35,10 @@ describe('tracks thunkActions', () => {
       () => expect(lms.api.fetch.tracks).toHaveBeenCalledWith(),
     );
     describe('valid response', () => {
-      describe('if not hasMastersTrack(data.course_modes)', () => {
+      describe('if not showBulkManagement(data.course_modes)', () => {
         describe('dispatched actions', () => {
           beforeEach(() => {
-            selectors.tracks.hasMastersTrack.mockReturnValue(false);
+            selectors.root.showBulkManagement.mockReturnValue(false);
           });
           const expectedActions = [
             'tracks.fetching.started',
@@ -53,10 +53,10 @@ describe('tracks thunkActions', () => {
           ));
         });
       });
-      describe('if hasMastersTrack(data.course_modes)', () => {
+      describe('if showBulkManagement(data.course_modes)', () => {
         describe('dispatched actions', () => {
           beforeEach(() => {
-            selectors.tracks.hasMastersTrack.mockReturnValue(true);
+            selectors.root.showBulkManagement.mockReturnValue(true);
           });
           const expectedActions = [
             'fetching.started',
