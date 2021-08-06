@@ -3,9 +3,6 @@ import { StrictDict } from 'utils';
 
 import lms from 'data/services/lms';
 import actions from 'data/actions';
-import selectors from 'data/selectors';
-
-import { fetchBulkUpgradeHistory } from './grades';
 
 export const fetchTracks = () => (
   (dispatch) => {
@@ -14,9 +11,6 @@ export const fetchTracks = () => (
       .then(response => response.data)
       .then((data) => {
         dispatch(actions.tracks.fetching.received(data.course_modes));
-        if (selectors.root.showBulkManagement(data.course_modes)) {
-          dispatch(fetchBulkUpgradeHistory());
-        }
       })
       .catch(() => {
         dispatch(actions.tracks.fetching.error());
