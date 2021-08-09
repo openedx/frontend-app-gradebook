@@ -3,6 +3,7 @@ import lms from '../services/lms';
 import actions from '../actions';
 import * as thunkActions from './assignmentTypes';
 import { createTestFetcher } from './testUtils';
+import { fetchBulkUpgradeHistory } from './grades';
 
 jest.mock('data/services/lms', () => ({
   api: {
@@ -11,6 +12,9 @@ jest.mock('data/services/lms', () => ({
     },
   },
 }));
+jest.mock('data/thunkActions/grades', () => ({
+  fetchBulkUpgradeHistory: () => ({ type: 'fetchBulkUpgradeHistory' }),
+}));
 
 const responseData = {
   assignment_types: {
@@ -18,7 +22,7 @@ const responseData = {
     other: 'TYpeS',
   },
   grades_frozen: 'bOOl',
-  can_see_bulk_management: 'BooL',
+  can_see_bulk_management: true,
 };
 
 describe('assignmentType thunkActions', () => {
@@ -36,15 +40,29 @@ describe('assignmentType thunkActions', () => {
         'gotGradesFrozen with data.grades_frozen',
         'config.gotBulkManagement with data.can_see_bulk_management',
       ];
-      test(actionNames.join(', '), () => testFetch(
-        (resolve) => resolve({ data: responseData }),
-        [
-          actions.assignmentTypes.fetching.started(),
-          actions.assignmentTypes.fetching.received(Object.keys(responseData.assignment_types)),
-          actions.assignmentTypes.gotGradesFrozen(responseData.grades_frozen),
-          actions.config.gotBulkManagementConfig(responseData.can_see_bulk_management),
-        ],
-      ));
+      describe('if data.can_see_bulk_management', () => {
+        test([...actionNames, 'fetchBulkUpgradeHistory'].join(', '), () => testFetch(
+          (resolve) => resolve({ data: responseData }),
+          [
+            actions.assignmentTypes.fetching.started(),
+            actions.assignmentTypes.fetching.received(Object.keys(responseData.assignment_types)),
+            actions.assignmentTypes.gotGradesFrozen(responseData.grades_frozen),
+            actions.config.gotBulkManagementConfig(responseData.can_see_bulk_management),
+            fetchBulkUpgradeHistory(),
+          ],
+        ));
+      });
+      describe('if not data.can_see_bulk_management', () => {
+        test(actionNames.join(', '), () => testFetch(
+          (resolve) => resolve({ data: { ...responseData, can_see_bulk_management: false } }),
+          [
+            actions.assignmentTypes.fetching.started(),
+            actions.assignmentTypes.fetching.received(Object.keys(responseData.assignment_types)),
+            actions.assignmentTypes.gotGradesFrozen(responseData.grades_frozen),
+            actions.config.gotBulkManagementConfig(false),
+          ],
+        ));
+      });
     });
     describe('actions dispatched on api error', () => {
       test('fetching.started, fetching.error', () => testFetch(

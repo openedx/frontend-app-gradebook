@@ -15,6 +15,7 @@ jest.mock('data/selectors', () => ({
     filters: {
       allFilters: jest.fn(),
     },
+    root: {},
     app: {},
   },
 }));
@@ -31,6 +32,7 @@ jest.mock('./cohorts', () => ({
 }));
 jest.mock('./grades', () => ({
   fetchGrades: jest.fn((...args) => ({ type: 'fetchGrades', args })),
+  fetchBulkUpgradeHistory: jest.fn((...args) => ({ type: 'fetchBulkUpgradeHistory', args })),
 }));
 jest.mock('./tracks', () => ({
   fetchTracks: jest.fn((...args) => ({ type: 'fetchTracks', args })),
