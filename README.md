@@ -22,18 +22,12 @@ For existing documentation see:
 
 ### What does this offer over the legacy gradebook?
 
-![A screenshot of the grade listings](documentation/screenshots/grade-listings.png)
-
 The micro-frontend offers a great deal more granularity when searching for problems, an easy interface for editing grades, an 
 audit trail for seeing who edited what grade and what reason they gave (if any) for doing so.
-
-![Screenshot of the grade editing interface](documentation/screenshots/grade-editing.png)
 
 UsageProblems can be filtered by student as in the traditional gradebook, but can also be filtered by scores to see who
 scored within a certain range, and by assignment types (note: Not problem types, but categories like ‘Exams’ or
 ‘Homework’).
-
-![Screenshot of the filtering options](documentation/screenshots/grade-filtering.png)
 
 ### What does the legacy gradebook offer that this project does not?
 
