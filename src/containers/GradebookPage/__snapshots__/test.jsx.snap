@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`GradebookPage component snapshot - shows BulkManagementTab if showBulkManagement 1`] = `
+exports[`GradebookPage component snapshot - shows BulkManagementHistoryView if activeView === views.bulkManagementHistory 1`] = `
 <WithSidebar
   sidebar={
     <GradebookFilters
@@ -12,29 +12,12 @@ exports[`GradebookPage component snapshot - shows BulkManagementTab if showBulkM
     className="px-3 gradebook-content"
   >
     <GradebookHeader />
-    <Tabs
-      defaultActiveKey="grades"
-    >
-      <Tab
-        eventKey="grades"
-        title="Grades"
-      >
-        <GradesTab
-          updateQueryParams={[MockFunction updateQueryParams]}
-        />
-      </Tab>
-      <Tab
-        eventKey="bulk_management"
-        title="Bulk Management"
-      >
-        <BulkManagementTab />
-      </Tab>
-    </Tabs>
+    <BulkManagementHistoryView />
   </div>
 </WithSidebar>
 `;
 
-exports[`GradebookPage component snapshot - shows only GradesTab if showBulkManagement=false 1`] = `
+exports[`GradebookPage component snapshot - shows GradesView if aciveView === views.grades 1`] = `
 <WithSidebar
   sidebar={
     <GradebookFilters
@@ -46,18 +29,9 @@ exports[`GradebookPage component snapshot - shows only GradesTab if showBulkMana
     className="px-3 gradebook-content"
   >
     <GradebookHeader />
-    <Tabs
-      defaultActiveKey="grades"
-    >
-      <Tab
-        eventKey="grades"
-        title="Grades"
-      >
-        <GradesTab
-          updateQueryParams={[MockFunction updateQueryParams]}
-        />
-      </Tab>
-    </Tabs>
+    <GradesView
+      updateQueryParams={[MockFunction updateQueryParams]}
+    />
   </div>
 </WithSidebar>
 `;

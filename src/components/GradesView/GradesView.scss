@@ -1,0 +1,209 @@
+.spinner-overlay {
+    position: fixed;
+    height: 100%;
+    width: 100%;
+    top: 0;
+    left: 0;
+    background-color: #999;
+    opacity: 0.5;
+    z-index: 99999;
+    display:flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 200px;
+}
+
+.color-black {
+    color: black;
+}
+
+.gradebook-content {
+    // note that this width isn't well-abstracted from Drawer code.
+    // if we need to change it we may need to dig into those styles as well
+    width: 100vw;
+    .search-help-text {
+        margin-left: 20px;
+    }
+    h4 {
+        font-weight: bold;
+        margin-top: 0rem;
+    }
+    .import-grades-btn {
+      margin-left: 20px;
+    }
+    .intervention-report-description: {
+      margin-right: 40px;
+    }
+    h4.step-message-1 {
+      margin-top: 40px;
+    }
+}
+
+.student-filters{
+    .label{
+        padding-top: 30px;
+    }
+}
+.grade-history-header{
+    float: left;
+}
+
+.grade-history-assignment{
+    padding-right: 49px;
+}
+.grade-history-student{
+    padding-right: 75px;
+}
+
+.grade-history-original-grade{
+    padding-right: 25px;
+}
+
+.grade-history-current-grade{
+    padding-right: 25px;
+}
+.gradebook-container {
+    width: 100%;
+    overflow-x: auto;
+    height: 600px;
+    overflow-y: auto;
+    word-break: break-word;
+    position: relative;
+}
+
+.gbook { 
+    width: 100%;
+
+    .grade-button {
+        text-decoration: underline;
+    }
+
+    .student-key {
+        font-size: 14px;
+    }
+
+    #courseGradeTooltipIcon {
+      float: right;
+    }
+
+    .table thead tr {
+        min-height: 60px;
+        &:nth-child(1) {
+          position: sticky;
+          top: 0;
+          z-index: 10;
+          background-color: white;
+          th {
+            background-color: white;
+            border-bottom: 1px solid $gray_200;
+          }
+        }
+    }
+
+    thead, tbody, tr, td, th {
+      display: block;
+      word-break: break-word;
+    }
+
+    .table tr th:first-child {
+        border-bottom: none;
+    }
+    .table tr th:first-child,
+    .table tr td:first-child {
+        position: sticky;
+        left: 0;
+        z-index: 1; // to float over the following children in the side-scrolling case
+        background: white;
+    }
+
+    .table tr {
+      th:nth-child(1),
+      td:nth-child(1),
+      th:nth-child(2),
+      td:nth-child(2) {
+        width: 240px;
+      }
+      th:nth-last-of-type(1) {
+        width: 150px;
+      }
+      th, td {
+        width: 120px;
+      }
+    }
+    .table tbody th {
+        font-weight: normal;
+    }
+
+    .table {
+      overflow-x: hidden;
+
+      height: 100%;
+
+      tbody {
+        overflow-y: auto;
+        display: block;
+      }
+
+      thead, tbody tr {
+        display: table;
+        table-layout: fixed;
+      }
+
+      th {
+          vertical-align: top;
+          font-size: 14px;
+      }
+    }
+
+    .link-style {
+        color: #0075b4;
+        &:hover, &:focus {
+            color: #004368;
+            text-decoration: underline;
+        }
+    }
+
+}
+
+.form-group, .pgn__form-group {
+  label {
+    font-weight: bold;
+  }
+}
+
+.filter-group {
+  .grade-filter-inputs {
+    .percent-group {
+      display: inline-block;
+      .form-group, .pgn__form-group {
+        width: 115px;
+        display: inline-block;
+      }
+      .input-percent-label {
+          margin-top: 22px;
+          margin-left: 5px;
+          margin-right: 5px;
+      }
+    }
+  }
+  .grade-filter-action {
+    text-align: right;
+  }
+}
+
+.mb-85 {
+    margin-bottom: 85px;
+}
+
+.modal-dialog {
+    max-width: 1000px;
+}
+
+.wrap-text-in-cell {
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+}
+
+select#ScoreView.form-control {
+  padding-right: 26px;
+}

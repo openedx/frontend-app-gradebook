@@ -11,6 +11,8 @@ describe('actions', () => {
       actions.setSearchValue,
       actions.setLocalFilter,
       actions.setModalStateFromTable,
+      actions.setShowImportSuccessToast,
+      actions.setView,
     ].map(action => action.toString());
     testActionTypes(actionTypes, dataKey);
   });
@@ -19,6 +21,10 @@ describe('actions', () => {
     test('setCourseId action', () => testAction(actions.setCourseId));
     test('setModalStateFromTable action', () => testAction(actions.setModalStateFromTable));
     test('setSearchValue action', () => testAction(actions.setSearchValue));
+    test('setView action', () => testAction(actions.setView));
+    test('setShowImportSuccessToast action', () => (
+      testAction(actions.setShowImportSuccessToast)
+    ));
     describe('setLocalFilter', () => {
       it('forwards all values with filter field keys and no others', () => {
         const extra = {

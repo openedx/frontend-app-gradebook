@@ -1,0 +1,26 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`BulkManagementHistoryView component snapshot snapshot - loads heading from messages.BulkManagementHistoryView.heading, <BulkManagementAlerts />, <HistoryTable /> 1`] = `
+<div
+  className="bulk-management-history-view"
+>
+  <h4>
+    <FormattedMessage
+      defaultMessage="Bulk Management History"
+      description="Heading text for BulkManagement History Tab"
+      id="gradebook.BulkManagementHistoryView.heading"
+    />
+  </h4>
+  <p
+    className="help-text"
+  >
+    <FormattedMessage
+      defaultMessage="Below is a log of previous grade imports.  To download a CSV of your gradebook and import grades for override, return to the Gradebook.  Please note, after importing grades, it may take a few seconds to process the override."
+      description="Bulk Management History View help text"
+      id="gradebook.BulkManagementHistoryView"
+    />
+  </p>
+  <BulkManagementAlerts />
+  <HistoryTable />
+</div>
+`;

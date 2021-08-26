@@ -1,0 +1,41 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`NetworkButton component snapshots snapshot 1`] = `
+<StatefulButton
+  className="ml-2 test-class"
+  disabledStates={
+    Array [
+      "pending",
+    ]
+  }
+  icons={
+    Object {
+      "default": <Icon
+        className="fa mr-2 fa-download"
+      />,
+      "pending": <Icon
+        className="fa mr-2 fa-spinner fa-spin"
+      />,
+    }
+  }
+  labels={
+    Object {
+      "default": <FormattedMessage
+        defaultMessage="test button label"
+        description="test button label description"
+        id="label-id"
+        showSpinner={false}
+      />,
+      "pending": <FormattedMessage
+        defaultMessage="test button label"
+        description="test button label description"
+        id="label-id"
+        showSpinner={false}
+      />,
+    }
+  }
+  onClick={[MockFunction]}
+  state="default"
+  variant="outline-primary"
+/>
+`;

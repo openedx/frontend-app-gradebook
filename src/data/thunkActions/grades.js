@@ -124,7 +124,7 @@ export const fetchPrevNextGrades = (endpoint) => (
   }
 );
 
-export const submitFileUploadFormData = (formData) => (
+export const submitImportGradesButtonData = (formData) => (
   (dispatch, getState) => {
     const courseId = selectors.app.courseId(getState());
     dispatch(grades.csvUpload.started());
@@ -167,6 +167,6 @@ export default StrictDict({
   fetchGradesIfAssignmentGradeFiltersSet,
   fetchGradeOverrideHistory,
   fetchPrevNextGrades,
-  submitFileUploadFormData,
+  submitImportGradesButtonData,
   updateGrades,
 });

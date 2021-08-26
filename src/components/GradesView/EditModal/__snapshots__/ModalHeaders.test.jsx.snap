@@ -1,0 +1,99 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ModalHeaders Component snapshots gradeOverrideHistoryError is and empty and open is true modal open and StatusAlert showing 1`] = `
+<div>
+  <HistoryHeader
+    id="assignment"
+    label={
+      <FormattedMessage
+        defaultMessage="Assignment"
+        description="Edit Modal Assignment header"
+        id="gradebook.GradesView.EditModal.headers.assignment"
+      />
+    }
+    value="Qwerty"
+  />
+  <HistoryHeader
+    id="student"
+    label={
+      <FormattedMessage
+        defaultMessage="Student"
+        description="Edit Modal Student header"
+        id="gradebook.GradesView.EditModal.headers.student"
+      />
+    }
+    value="Uiop"
+  />
+  <HistoryHeader
+    id="original-grade"
+    label={
+      <FormattedMessage
+        defaultMessage="Original Grade"
+        description="Edit Modal Original Grade header"
+        id="gradebook.GradesView.EditModal.headers.originalGrade"
+      />
+    }
+    value={20}
+  />
+  <HistoryHeader
+    id="current-grade"
+    label={
+      <FormattedMessage
+        defaultMessage="Current Grade"
+        description="Edit Modal Current Grade header"
+        id="gradebook.GradesView.EditModal.headers.currentGrade"
+      />
+    }
+    value={2}
+  />
+</div>
+`;
+
+exports[`ModalHeaders Component snapshots gradeOverrideHistoryError is empty and open is false modal closed and StatusAlert closed 1`] = `
+<div>
+  <HistoryHeader
+    id="assignment"
+    label={
+      <FormattedMessage
+        defaultMessage="Assignment"
+        description="Edit Modal Assignment header"
+        id="gradebook.GradesView.EditModal.headers.assignment"
+      />
+    }
+    value="Qwerty"
+  />
+  <HistoryHeader
+    id="student"
+    label={
+      <FormattedMessage
+        defaultMessage="Student"
+        description="Edit Modal Student header"
+        id="gradebook.GradesView.EditModal.headers.student"
+      />
+    }
+    value="Uiop"
+  />
+  <HistoryHeader
+    id="original-grade"
+    label={
+      <FormattedMessage
+        defaultMessage="Original Grade"
+        description="Edit Modal Original Grade header"
+        id="gradebook.GradesView.EditModal.headers.originalGrade"
+      />
+    }
+    value={20}
+  />
+  <HistoryHeader
+    id="current-grade"
+    label={
+      <FormattedMessage
+        defaultMessage="Current Grade"
+        description="Edit Modal Current Grade header"
+        id="gradebook.GradesView.EditModal.headers.currentGrade"
+      />
+    }
+    value={2}
+  />
+</div>
+`;

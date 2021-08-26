@@ -1,0 +1,45 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`BulkManagementAlerts component no errer, no upload success snapshot - bulkImportError closed, success closed 1`] = `
+<Fragment>
+  <Alert
+    dismissible={false}
+    show={false}
+    variant="danger"
+  />
+  <Alert
+    dismissible={false}
+    show={false}
+    variant="success"
+  >
+    <FormattedMessage
+      defaultMessage="CSV processing. File uploads may take several minutes to complete."
+      description="Success Dialog message in BulkManagement Tab File Upload Form"
+      id="gradebook.BulkManagementHistoryView.successDialog"
+    />
+  </Alert>
+</Fragment>
+`;
+
+exports[`BulkManagementAlerts component no errer, no upload success snapshot - danger alert open with bulkImportError, success alert open with messages.successDialog 1`] = `
+<Fragment>
+  <Alert
+    dismissible={false}
+    show={true}
+    variant="danger"
+  >
+    Oh noooooo
+  </Alert>
+  <Alert
+    dismissible={false}
+    show={true}
+    variant="success"
+  >
+    <FormattedMessage
+      defaultMessage="CSV processing. File uploads may take several minutes to complete."
+      description="Success Dialog message in BulkManagement Tab File Upload Form"
+      id="gradebook.BulkManagementHistoryView.successDialog"
+    />
+  </Alert>
+</Fragment>
+`;

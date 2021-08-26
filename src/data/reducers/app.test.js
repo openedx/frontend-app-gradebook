@@ -1,5 +1,6 @@
 import appActions from 'data/actions/app';
 import filterActions from 'data/actions/filters';
+import gradesActions from 'data/actions/grades';
 import { formatDateForDisplay } from 'data/actions/utils';
 import app, { initialState } from './app';
 
@@ -177,6 +178,20 @@ describe('app reducer', () => {
         ).toEqual({ ...testingState, searchValue: testValue });
       });
     });
+    describe('appActions.setShowImportSuccessToast', () => {
+      it('loads showImportSuccessToast from payload', () => {
+        expect(
+          app(testingState, appActions.setShowImportSuccessToast(testValue)),
+        ).toEqual({ ...testingState, showImportSuccessToast: testValue });
+      });
+    });
+    describe('appActions.setView', () => {
+      it('loads activeView from payload', () => {
+        expect(
+          app(testingState, appActions.setView(testValue)),
+        ).toEqual({ ...testingState, activeView: testValue });
+      });
+    });
     describe('filterActions.initialize', () => {
       it('loads relevant filter values', () => {
         expect(
@@ -214,6 +229,13 @@ describe('app reducer', () => {
             courseGradeMin: initialState.filters.courseGradeMin,
           },
         });
+      });
+    });
+    describe('grade actions csvUpload.finished', () => {
+      it('sets showImportSuccessToast to true', () => {
+        expect(
+          app(testingState, gradesActions.csvUpload.finished()),
+        ).toEqual({ ...testingState, showImportSuccessToast: true });
       });
     });
   });

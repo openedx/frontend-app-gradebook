@@ -1,0 +1,123 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`EditMoal Component snapshots gradeOverrideHistoryError is and empty and open is true modal open and StatusAlert showing 1`] = `
+<Modal
+  body={
+    <div>
+      <ModalHeaders />
+      <StatusAlert
+        alertType="danger"
+        dialog="Weve been trying to contact you regarding..."
+        dismissible={false}
+        open={true}
+      />
+      <OverrideTable />
+      <div>
+        <FormattedMessage
+          defaultMessage="Showing most recent actions (max 5). To see more, please contact support"
+          description="Edit Modal visibility hint message"
+          id="gradebook.GradesView.EditModal.contactSupport"
+        />
+      </div>
+      <div>
+        <FormattedMessage
+          defaultMessage="Note: Once you save, your changes will be visible to students."
+          description="Edit Modal saved changes effect hint"
+          id="gradebook.GradesView.EditModal.saveVisibility"
+        />
+      </div>
+    </div>
+  }
+  buttons={
+    Array [
+      <Button
+        onClick={[MockFunction this.handleAdjustedGradeClick]}
+        variant="primary"
+      >
+        <FormattedMessage
+          defaultMessage="Save Grades"
+          description="Edit Modal Save button label"
+          id="gradebook.GradesView.EditModal.saveGrade"
+        />
+      </Button>,
+    ]
+  }
+  closeText={
+    <FormattedMessage
+      defaultMessage="Cancel"
+      description="Edit Modal close button text"
+      id="gradebook.GradesView.EditModal.closeText"
+    />
+  }
+  onClose={[MockFunction this.closeAssignmentModal]}
+  open={true}
+  title={
+    <FormattedMessage
+      defaultMessage="Edit Grades"
+      description="Edit Modal title"
+      id="gradebook.GradesView.EditModal.title"
+    />
+  }
+/>
+`;
+
+exports[`EditMoal Component snapshots gradeOverrideHistoryError is empty and open is false modal closed and StatusAlert closed 1`] = `
+<Modal
+  body={
+    <div>
+      <ModalHeaders />
+      <StatusAlert
+        alertType="danger"
+        dialog=""
+        dismissible={false}
+        open={false}
+      />
+      <OverrideTable />
+      <div>
+        <FormattedMessage
+          defaultMessage="Showing most recent actions (max 5). To see more, please contact support"
+          description="Edit Modal visibility hint message"
+          id="gradebook.GradesView.EditModal.contactSupport"
+        />
+      </div>
+      <div>
+        <FormattedMessage
+          defaultMessage="Note: Once you save, your changes will be visible to students."
+          description="Edit Modal saved changes effect hint"
+          id="gradebook.GradesView.EditModal.saveVisibility"
+        />
+      </div>
+    </div>
+  }
+  buttons={
+    Array [
+      <Button
+        onClick={[MockFunction this.handleAdjustedGradeClick]}
+        variant="primary"
+      >
+        <FormattedMessage
+          defaultMessage="Save Grades"
+          description="Edit Modal Save button label"
+          id="gradebook.GradesView.EditModal.saveGrade"
+        />
+      </Button>,
+    ]
+  }
+  closeText={
+    <FormattedMessage
+      defaultMessage="Cancel"
+      description="Edit Modal close button text"
+      id="gradebook.GradesView.EditModal.closeText"
+    />
+  }
+  onClose={[MockFunction this.closeAssignmentModal]}
+  open={false}
+  title={
+    <FormattedMessage
+      defaultMessage="Edit Grades"
+      description="Edit Modal title"
+      id="gradebook.GradesView.EditModal.title"
+    />
+  }
+/>
+`;

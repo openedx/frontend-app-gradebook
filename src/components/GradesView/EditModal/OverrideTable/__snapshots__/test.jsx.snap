@@ -1,0 +1,63 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`OverrideTable Component snapshots basic snapshot shows a row for each entry and one editable row 1`] = `
+<Table
+  columns={
+    Array [
+      Object {
+        "key": "date",
+        "label": <FormattedMessage
+          defaultMessage="Date"
+          description="Edit Modal Override Table Date column header"
+          id="gradebook.GradesView.EditModal.Overrides.dateHeader"
+        />,
+      },
+      Object {
+        "key": "grader",
+        "label": <FormattedMessage
+          defaultMessage="Grader"
+          description="Edit Modal Override Table Grader column header"
+          id="gradebook.GradesView.EditModal.Overrides.graderHeader"
+        />,
+      },
+      Object {
+        "key": "reason",
+        "label": <FormattedMessage
+          defaultMessage="Reason"
+          description="Edit Modal Override Table Reason column header"
+          id="gradebook.GradesView.EditModal.Overrides.reasonHeader"
+        />,
+      },
+      Object {
+        "key": "adjustedGrade",
+        "label": <FormattedMessage
+          defaultMessage="Adjusted grade"
+          description="Edit Modal Override Table Adjusted grade column header"
+          id="gradebook.GradesView.EditModal.Overrides.adjustedGradeHeader"
+        />,
+      },
+    ]
+  }
+  data={
+    Array [
+      Object {
+        "adjustedGrade": 0,
+        "date": "yesterday",
+        "grader": "me",
+        "reason": "you ate my sandwich",
+      },
+      Object {
+        "adjustedGrade": 20,
+        "date": "today",
+        "grader": "me",
+        "reason": "you brought me a new sandwich",
+      },
+      Object {
+        "adjustedGrade": <AdjustedGradeInput />,
+        "date": "todaaaaaay",
+        "reason": <ReasonInput />,
+      },
+    ]
+  }
+/>
+`;

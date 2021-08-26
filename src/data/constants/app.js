@@ -3,6 +3,11 @@ import { getConfig } from '@edx/frontend-platform';
 
 export const routePath = `${getConfig().PUBLIC_PATH}:courseId`;
 
+export const views = StrictDict({
+  grades: 'grades',
+  bulkManagementHistory: 'bulkManagementHistory',
+});
+
 export const modalFieldKeys = StrictDict({
   adjustedGradePossible: 'adjustedGradePossible',
   adjustedGradeValue: 'adjustedGradeValue',

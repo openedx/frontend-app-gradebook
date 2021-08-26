@@ -1,0 +1,24 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`StatusAlerts snapshots basic snapshot 1`] = `
+<React.Fragment>
+  <StatusAlert
+    alertType="success"
+    dialog={
+      <FormattedMessage
+        defaultMessage="The grade has been successfully edited.  You may see a slight delay before updates appear in the Gradebook."
+        description="Alert text for successful edit action"
+        id="gradebook.GradesView.editSuccessAlert"
+      />
+    }
+    onClose={[MockFunction handleCloseSuccessBanner]}
+    open={true}
+  />
+  <StatusAlert
+    alertType="danger"
+    dialog="the quiCk brown does somEthing or other"
+    dismissible={false}
+    open={false}
+  />
+</React.Fragment>
+`;

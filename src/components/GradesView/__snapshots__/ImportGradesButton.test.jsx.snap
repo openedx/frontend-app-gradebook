@@ -1,0 +1,45 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ImportGradesButton component snapshot snapshot - loads export form w/ alerts and file input, import btn 1`] = `
+<React.Fragment>
+  <Form
+    action="fakeUrl"
+    inline={false}
+    method="post"
+  >
+    <FormGroup
+      as="div"
+      controlId="csv"
+      isInvalid={false}
+      isValid={false}
+    >
+      <ForwardRef
+        as="input"
+        className="d-none"
+        label={
+          <FormattedMessage
+            defaultMessage="Upload Grade CSV"
+            description="Button in BulkManagementHistoryView Alerts"
+            id="gradebook.BulkManagementHistoryView.csvUploadLabel"
+          />
+        }
+        onChange={[MockFunction this.handleFileInputChange]}
+        plaintext={false}
+        type="file"
+      />
+    </FormGroup>
+  </Form>
+  <NetworkButton
+    className="import-grades-btn"
+    import={true}
+    label={
+      Object {
+        "defaultMessage": "Import Grades",
+        "description": "Button in BulkManagement Tab File Upload Form",
+        "id": "gradebook.GradesView.importGradesBtnText",
+      }
+    }
+    onClick={[MockFunction this.handleClickImportGrades]}
+  />
+</React.Fragment>
+`;

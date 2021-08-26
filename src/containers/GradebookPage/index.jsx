@@ -4,21 +4,20 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import queryString from 'query-string';
 
-import { Tab, Tabs } from '@edx/paragon';
-
 import selectors from 'data/selectors';
 import thunkActions from 'data/thunkActions';
+import { views } from 'data/constants/app';
 
 import WithSidebar from 'components/WithSidebar';
 import GradebookHeader from 'components/GradebookHeader';
-import GradesTab from 'components/GradesTab';
+import GradesView from 'components/GradesView';
 import GradebookFilters from 'components/GradebookFilters';
-import BulkManagementTab from 'components/BulkManagementTab';
+import BulkManagementHistoryView from 'components/BulkManagementHistoryView';
 
 /**
  * <GradebookPage />
  * Top-level view for the Gradebook MFE.
- * Organizes a header and a pair of tabs (Grades and BulkManagement) with a toggle-able
+ * Organizes a header and a pair of views (Grades and BulkManagement) with a toggle-able
  * filter sidebar.
  */
 export class GradebookPage extends React.Component {
@@ -51,23 +50,16 @@ export class GradebookPage extends React.Component {
       >
         <div className="px-3 gradebook-content">
           <GradebookHeader />
-          <Tabs defaultActiveKey="grades">
-            <Tab eventKey="grades" title="Grades">
-              <GradesTab updateQueryParams={this.updateQueryParams} />
-            </Tab>
-            {this.props.showBulkManagement && (
-              <Tab eventKey="bulk_management" title="Bulk Management">
-                <BulkManagementTab />
-              </Tab>
-            )}
-          </Tabs>
+          {(this.props.activeView === views.bulkManagementHistory
+            ? <BulkManagementHistoryView />
+            : <GradesView updateQueryParams={this.updateQueryParams} />
+          )}
         </div>
       </WithSidebar>
     );
   }
 }
 GradebookPage.defaultProps = {
-  showBulkManagement: false,
   location: { search: '' },
 };
 GradebookPage.propTypes = {
@@ -75,17 +67,18 @@ GradebookPage.propTypes = {
     push: PropTypes.func,
   }).isRequired,
   location: PropTypes.shape({ search: PropTypes.string }),
-  initializeApp: PropTypes.func.isRequired,
-  showBulkManagement: PropTypes.bool,
   match: PropTypes.shape({
     params: PropTypes.shape({
       courseId: PropTypes.string,
     }),
   }).isRequired,
+  // redux
+  activeView: PropTypes.string.isRequired,
+  initializeApp: PropTypes.func.isRequired,
 };
 
 export const mapStateToProps = (state) => ({
-  showBulkManagement: selectors.root.showBulkManagement(state),
+  activeView: selectors.app.activeView(state),
 });
 
 export const mapDispatchToProps = {

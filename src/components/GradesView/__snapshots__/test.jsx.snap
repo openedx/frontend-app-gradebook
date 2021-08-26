@@ -1,0 +1,53 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`GradesView Component snapshots basic snapshot 1`] = `
+<React.Fragment>
+  <SpinnerIcon />
+  <InterventionsReport />
+  <h4
+    className="step-message-1"
+  >
+    <FormattedMessage
+      defaultMessage="Step 1: Filter the Grade Report"
+      description="Filter controls container heading string"
+      id="gradebook.GradesView.filterHeading"
+    />
+  </h4>
+  <div
+    className="d-flex justify-content-between"
+  >
+    <FilterMenuToggle />
+    <SearchControls />
+  </div>
+  <FilterBadges
+    handleClose={[MockFunction this.handleFilterBadgeClose]}
+  />
+  <StatusAlerts />
+  <h4>
+    <FormattedMessage
+      defaultMessage="Step 2: View or Modify Individual Grades"
+      description="Alert text for invalid minimum course grade"
+      id="gradebook.GradesView.gradebookStepHeading"
+    />
+  </h4>
+  <div
+    className="d-flex justify-content-between align-items-center mb-2"
+  >
+    <ScoreViewInput />
+    <BulkManagementControls />
+  </div>
+  <FilteredUsersLabel />
+  <GradebookTable />
+  <PageButtons />
+  <p>
+    * 
+    <FormattedMessage
+      defaultMessage="available for learners in the Master's track only"
+      description="Masters feature availability hint on Grades Tab"
+      id="gradebook.GradesView.mastersHint"
+    />
+  </p>
+  <EditModal />
+  <ImportSuccessToast />
+</React.Fragment>
+`;

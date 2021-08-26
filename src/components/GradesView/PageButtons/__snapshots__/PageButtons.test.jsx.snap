@@ -1,0 +1,133 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`PageButtons component snapshots buttons enabled with both endpoints provided 1`] = `
+<div
+  className="d-flex justify-content-center"
+  style={
+    Object {
+      "paddingBottom": "20px",
+    }
+  }
+>
+  <Button
+    disabled={false}
+    onClick={[Function]}
+    style={
+      Object {
+        "margin": "20px",
+      }
+    }
+    variant="outline-primary"
+  >
+    <FormattedMessage
+      defaultMessage="Previous Page"
+      description="Grades tab Previous Page button text"
+      id="gradebook.GradesView.PageButtons.prevPage"
+    />
+  </Button>
+  <Button
+    disabled={false}
+    onClick={[Function]}
+    style={
+      Object {
+        "margin": "20px",
+      }
+    }
+    variant="outline-primary"
+  >
+    <FormattedMessage
+      defaultMessage="Next Page"
+      description="Grades tab Next Page button text"
+      id="gradebook.GradesView.PageButtons.nextPage"
+    />
+  </Button>
+</div>
+`;
+
+exports[`PageButtons component snapshots nextPage disabled if not provided 1`] = `
+<div
+  className="d-flex justify-content-center"
+  style={
+    Object {
+      "paddingBottom": "20px",
+    }
+  }
+>
+  <Button
+    disabled={false}
+    onClick={[Function]}
+    style={
+      Object {
+        "margin": "20px",
+      }
+    }
+    variant="outline-primary"
+  >
+    <FormattedMessage
+      defaultMessage="Previous Page"
+      description="Grades tab Previous Page button text"
+      id="gradebook.GradesView.PageButtons.prevPage"
+    />
+  </Button>
+  <Button
+    disabled={true}
+    onClick={[Function]}
+    style={
+      Object {
+        "margin": "20px",
+      }
+    }
+    variant="outline-primary"
+  >
+    <FormattedMessage
+      defaultMessage="Next Page"
+      description="Grades tab Next Page button text"
+      id="gradebook.GradesView.PageButtons.nextPage"
+    />
+  </Button>
+</div>
+`;
+
+exports[`PageButtons component snapshots prevPage disabled if not provided 1`] = `
+<div
+  className="d-flex justify-content-center"
+  style={
+    Object {
+      "paddingBottom": "20px",
+    }
+  }
+>
+  <Button
+    disabled={true}
+    onClick={[Function]}
+    style={
+      Object {
+        "margin": "20px",
+      }
+    }
+    variant="outline-primary"
+  >
+    <FormattedMessage
+      defaultMessage="Previous Page"
+      description="Grades tab Previous Page button text"
+      id="gradebook.GradesView.PageButtons.prevPage"
+    />
+  </Button>
+  <Button
+    disabled={false}
+    onClick={[Function]}
+    style={
+      Object {
+        "margin": "20px",
+      }
+    }
+    variant="outline-primary"
+  >
+    <FormattedMessage
+      defaultMessage="Next Page"
+      description="Grades tab Next Page button text"
+      id="gradebook.GradesView.PageButtons.nextPage"
+    />
+  </Button>
+</div>
+`;

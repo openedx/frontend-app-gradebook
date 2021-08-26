@@ -516,11 +516,11 @@ describe('grades thunkActions', () => {
     });
   });
 
-  describe('submitFileUploadFormData', () => {
+  describe('submitImportGradesButtonData', () => {
     const formData = { form: 'data' };
     const testFetch = createTestFetcher(
       lms.api.uploadGradeCsv,
-      thunkActions.submitFileUploadFormData,
+      thunkActions.submitImportGradesButtonData,
       [formData],
       () => expect(lms.api.uploadGradeCsv).toHaveBeenCalledWith(formData),
     );

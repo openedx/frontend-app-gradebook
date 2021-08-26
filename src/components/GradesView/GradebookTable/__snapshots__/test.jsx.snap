@@ -1,0 +1,51 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`GradebookTable component snapshot - fields1 and 2 between email and totalGrade, mocked rows 1`] = `
+<div
+  className="gradebook-container"
+>
+  <div
+    className="gbook"
+  >
+    <Table
+      columns={
+        Array [
+          Object {
+            "key": "Username",
+            "label": <UsernameLabelReplacement />,
+          },
+          Object {
+            "key": "Email",
+            "label": <FormattedMessage
+              defaultMessage="Email"
+              description="Gradebook table email column header"
+              id="gradebook.GradesView.table.headings.email"
+            />,
+          },
+          Object {
+            "key": "field1",
+            "label": "field1",
+          },
+          Object {
+            "key": "field2",
+            "label": "field2",
+          },
+          Object {
+            "key": "Total Grade (%)",
+            "label": <TotalGradeLabelReplacement />,
+          },
+        ]
+      }
+      data={
+        Array [
+          "mappedRow: 1",
+          "mappedRow: 2",
+          "mappedRow: 3",
+        ]
+      }
+      hasFixedColumnWidths={true}
+      rowHeaderColumnKey="username"
+    />
+  </div>
+</div>
+`;

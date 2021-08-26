@@ -1,10 +1,13 @@
 import initialFilters from '../constants/filters';
+import { views } from '../constants/app';
 import { formatDateForDisplay } from '../actions/utils';
 import actions from '../actions/app';
 import filterActions from '../actions/filters';
+import gradesActions from '../actions/grades';
 
 const initialState = {
   courseId: '',
+  activeView: views.grades,
   filters: {
     assignmentGradeMax: initialFilters.assignmentGradeMax,
     assignmentGradeMin: initialFilters.assignmentGradeMin,
@@ -26,6 +29,7 @@ const initialState = {
     open: false,
     transitioning: false,
   },
+  showImportSuccessToast: false,
   searchValue: '',
 };
 
@@ -80,6 +84,10 @@ const app = (state = initialState, { type, payload }) => {
     }
     case actions.setSearchValue.toString():
       return { ...state, searchValue: payload };
+    case actions.setShowImportSuccessToast.toString():
+      return { ...state, showImportSuccessToast: payload };
+    case actions.setView.toString():
+      return { ...state, activeView: payload };
     // initialize the filter fields that are locally stored
     case filterActions.initialize.toString():
       return {
@@ -103,6 +111,8 @@ const app = (state = initialState, { type, payload }) => {
         },
       }), { ...state });
     }
+    case gradesActions.csvUpload.finished.toString():
+      return { ...state, showImportSuccessToast: true };
     default:
       return state;
   }

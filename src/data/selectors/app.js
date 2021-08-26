@@ -97,9 +97,11 @@ const filterMenuSelectors = simpleSelectorFactory(
 const simpleSelectors = simpleSelectorFactory(
   ({ app }) => app,
   [
+    'activeView',
     'courseId',
     'filters',
     'searchValue',
+    'showImportSuccessToast',
   ],
 );
 

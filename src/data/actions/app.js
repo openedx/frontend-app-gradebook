@@ -54,12 +54,28 @@ const setModalState = createAction('setModalState', (modalState) => ({
   payload: Object.keys(modalFieldKeys).reduce(filterReducer(modalState), {}),
 }));
 
+/**
+ * setShowImportSuccessToast(shouldShow)
+ * Set whether or not to show the Import Grades success toast
+ * @param {bool} sholdShow - should show the toast?
+ */
+const setShowImportSuccessToast = createAction('setShowImportSuccessToast');
+
+/**
+ * setView(viewId)
+ * sets the UI to display the tab indcated by the passed view id
+ * @param {string} viewId - view id as set in app constants
+ */
+const setView = createAction('setView');
+
 export default StrictDict({
   closeModal,
   filterMenu,
   setCourseId,
+  setLocalFilter,
   setModalState,
   setModalStateFromTable,
   setSearchValue,
-  setLocalFilter,
+  setShowImportSuccessToast,
+  setView,
 });

@@ -1,0 +1,16 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ImportSuccessToast component snapshots snapshot 1`] = `
+<Toast
+  action={
+    Object {
+      "label": "View Activity Log",
+      "onClick": [Function],
+    }
+  }
+  onClose={[Function]}
+  show={true}
+>
+  Import Successful! Grades will be updated momentarily.
+</Toast>
+`;

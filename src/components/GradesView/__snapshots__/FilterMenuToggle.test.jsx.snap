@@ -1,0 +1,19 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`FilterMenuToggle component snapshots basic snapshot 1`] = `
+<Button
+  className="btn-primary align-self-start"
+  id="edit-filters-btn"
+  onClick={[MockFunction this.props.toggleFilterDrawer]}
+>
+  <Icon
+    className="fa fa-filter"
+  />
+   
+  <FormattedMessage
+    defaultMessage="Edit Filters"
+    description="Button text on Grades tab to open/close the Filters tab"
+    id="gradebook.GradesView.editFilterLabel"
+  />
+</Button>
+`;

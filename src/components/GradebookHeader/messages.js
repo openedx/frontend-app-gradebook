@@ -21,6 +21,16 @@ const messages = defineMessages({
     defaultMessage: 'You are not authorized to view the gradebook for this course.',
     description: 'Warning message in Gradebook Header when user is not allowed to view the app',
   },
+  toActivityLog: {
+    id: 'gradebook.GradebookHeader.toActivityLogButton',
+    defaultMessage: 'View Bulk Management History',
+    description: 'Button text for button navigating to Bulk Managment Activity Log',
+  },
+  toGradesView: {
+    id: 'gradebook.GradebookHeader.toGradesView',
+    defaultMessage: 'Return to Gradebook',
+    description: 'Button text for button navigating to Grades view.',
+  },
 });
 
 export default messages;
