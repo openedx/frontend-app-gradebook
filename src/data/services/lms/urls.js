@@ -5,7 +5,7 @@ import { filterQuery, stringifyUrl } from './utils';
 
 const baseUrl = `${configuration.LMS_BASE_URL}`;
 
-const courseId = window.location.pathname.slice(1);
+const courseId = window.location.pathname.split('/').filter(Boolean).pop() || '';
 
 const api = `${baseUrl}/api/`;
 const bulkGrades = `${api}bulk_grades/course/${courseId}/`;
