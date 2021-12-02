@@ -2,15 +2,14 @@ import React from 'react';
 import { shallow } from 'enzyme';
 
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import { Provider } from 'react-redux';
-import { IntlProvider } from 'react-intl';
+import { AppProvider } from '@edx/frontend-platform/react';
 
 import Footer from '@edx/frontend-component-footer';
+import Header from '@edx/frontend-component-header';
 
 import { routePath } from 'data/constants/app';
 import store from 'data/store';
 import GradebookPage from 'containers/GradebookPage';
-import EdxHeader from 'components/EdxHeader';
 
 import App from './App';
 
@@ -19,11 +18,8 @@ jest.mock('react-router-dom', () => ({
   Route: () => 'Route',
   Switch: () => 'Switch',
 }));
-jest.mock('react-redux', () => ({
-  Provider: () => 'Provider',
-}));
-jest.mock('react-intl', () => ({
-  IntlProvider: () => 'IntlProvider',
+jest.mock('@edx/frontend-platform/react', () => ({
+  AppProvider: () => 'AppProvider',
 }));
 jest.mock('data/constants/app', () => ({
   routePath: '/:courseId',
@@ -31,7 +27,7 @@ jest.mock('data/constants/app', () => ({
 jest.mock('@edx/frontend-component-footer', () => 'Footer');
 jest.mock('data/store', () => 'testStore');
 jest.mock('containers/GradebookPage', () => 'GradebookPage');
-jest.mock('components/EdxHeader', () => 'EdxHeader');
+jest.mock('@edx/frontend-component-header', () => 'Header');
 
 const logo = 'fakeLogo.png';
 let el;
@@ -45,28 +41,20 @@ describe('App router component', () => {
     beforeEach(() => {
       process.env.LOGO_POWERED_BY_OPEN_EDX_URL_SVG = logo;
       el = shallow(<App />);
-      router = el.childAt(0).childAt(0);
+      router = el.childAt(0);
     });
-    describe('IntlProvider', () => {
-      test('outer-wrapper component', () => {
-        expect(el.type()).toBe(IntlProvider);
-      });
-      test('"en" locale', () => {
-        expect(el.props().locale).toEqual('en');
-      });
-    });
-    describe('Provider, inside IntlProvider', () => {
-      test('first child, passed the redux store props', () => {
-        expect(el.childAt(0).type()).toBe(Provider);
-        expect(el.childAt(0).props().store).toEqual(store);
+    describe('AppProvider', () => {
+      test('AppProvider is the parent component, passed the redux store props', () => {
+        expect(el.type()).toBe(AppProvider);
+        expect(el.props().store).toEqual(store);
       });
     });
     describe('Router', () => {
-      test('first child of Provider', () => {
+      test('first child of AppProvider', () => {
         expect(router.type()).toBe(Router);
       });
-      test('EdxHeader is above/outside-of the routing', () => {
-        expect(router.childAt(0).childAt(0).type()).toBe(EdxHeader);
+      test('Header is above/outside-of the routing', () => {
+        expect(router.childAt(0).childAt(0).type()).toBe(Header);
         expect(router.childAt(0).childAt(1).type()).toBe('main');
       });
       test('Routing - GradebookPage is only route', () => {
