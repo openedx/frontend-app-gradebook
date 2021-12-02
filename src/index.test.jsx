@@ -6,6 +6,7 @@ import {
   initialize,
   subscribe,
 } from '@edx/frontend-platform';
+import { messages as headerMessages } from '@edx/frontend-component-header';
 import { messages as footerMessages } from '@edx/frontend-component-footer';
 
 import appMessages from './i18n';
@@ -19,6 +20,9 @@ jest.mock('@edx/frontend-platform', () => ({
   APP_READY: 'app-is-ready-key',
   initialize: jest.fn(),
   subscribe: jest.fn(),
+}));
+jest.mock('@edx/frontend-component-header', () => ({
+  messages: ['some', 'messages'],
 }));
 jest.mock('@edx/frontend-component-footer', () => ({
   messages: ['some', 'messages'],
@@ -44,7 +48,7 @@ describe('app registry', () => {
   });
   test('initialize is called with footerMessages and requireAuthenticatedUser', () => {
     expect(initialize).toHaveBeenCalledWith({
-      messages: [appMessages, footerMessages],
+      messages: [appMessages, headerMessages, footerMessages],
       requireAuthenticatedUser: true,
     });
   });
