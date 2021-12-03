@@ -4,7 +4,7 @@ const messages = defineMessages({
   editFilters: {
     id: 'gradebook.GradesView.editFilterLabel',
     defaultMessage: 'Edit Filters',
-    description: 'Button text on Grades tab to open/close the Filters tab',
+    description: 'A labeled button in the Grades tab that opens/closes the Filters tab, allowing the grades to be filtered',
   },
 });
 

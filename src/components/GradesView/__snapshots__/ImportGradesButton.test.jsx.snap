@@ -19,7 +19,7 @@ exports[`ImportGradesButton component snapshot snapshot - loads export form w/ a
         label={
           <FormattedMessage
             defaultMessage="Upload Grade CSV"
-            description="Button in BulkManagementHistoryView Alerts"
+            description="A labeled button to upload a CSV containing course grades."
             id="gradebook.BulkManagementHistoryView.csvUploadLabel"
           />
         }
@@ -35,7 +35,7 @@ exports[`ImportGradesButton component snapshot snapshot - loads export form w/ a
     label={
       Object {
         "defaultMessage": "Import Grades",
-        "description": "Button in BulkManagement Tab File Upload Form",
+        "description": "A labeled button to import grades in the BulkManagement Tab File Upload Form",
         "id": "gradebook.GradesView.importGradesBtnText",
       }
     }

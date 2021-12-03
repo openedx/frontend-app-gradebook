@@ -12,7 +12,7 @@ exports[`FilterMenuToggle component snapshots basic snapshot 1`] = `
    
   <FormattedMessage
     defaultMessage="Edit Filters"
-    description="Button text on Grades tab to open/close the Filters tab"
+    description="A labeled button in the Grades tab that opens/closes the Filters tab, allowing the grades to be filtered"
     id="gradebook.GradesView.editFilterLabel"
   />
 </Button>

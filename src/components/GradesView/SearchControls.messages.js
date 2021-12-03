@@ -4,12 +4,12 @@ const messages = defineMessages({
   label: {
     id: 'gradebook.GradesView.search.label',
     defaultMessage: 'Search for a learner',
-    description: 'Search description label',
+    description: 'Text prompting a user to use this functionality to search for a learner',
   },
   hint: {
     id: 'gradebook.GradesView.search.hint',
     defaultMessage: 'Search by username, email, or student key',
-    description: 'Search hint label',
+    description: 'A hint explaining the ways a user can search',
   },
 });
 

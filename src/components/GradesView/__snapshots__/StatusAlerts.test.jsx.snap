@@ -7,7 +7,7 @@ exports[`StatusAlerts snapshots basic snapshot 1`] = `
     dialog={
       <FormattedMessage
         defaultMessage="The grade has been successfully edited.  You may see a slight delay before updates appear in the Gradebook."
-        description="Alert text for successful edit action"
+        description="An alert text for successfully editing  a grade"
         id="gradebook.GradesView.editSuccessAlert"
       />
     }

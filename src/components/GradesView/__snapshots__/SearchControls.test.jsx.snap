@@ -6,7 +6,7 @@ exports[`SearchControls Component Snapshots basic snapshot 1`] = `
     inputLabel={
       <FormattedMessage
         defaultMessage="Search for a learner"
-        description="Search description label"
+        description="Text prompting a user to use this functionality to search for a learner"
         id="gradebook.GradesView.search.label"
       />
     }
@@ -20,7 +20,7 @@ exports[`SearchControls Component Snapshots basic snapshot 1`] = `
   >
     <FormattedMessage
       defaultMessage="Search by username, email, or student key"
-      description="Search hint label"
+      description="A hint explaining the ways a user can search"
       id="gradebook.GradesView.search.hint"
     />
   </small>
