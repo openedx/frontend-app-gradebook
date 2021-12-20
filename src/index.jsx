@@ -9,6 +9,7 @@ import {
   initialize,
   subscribe,
 } from '@edx/frontend-platform';
+import { messages as headerMessages } from '@edx/frontend-component-header';
 import { messages as footerMessages } from '@edx/frontend-component-footer';
 
 import appMessages from './i18n';
@@ -21,6 +22,7 @@ subscribe(APP_READY, () => {
 initialize({
   messages: [
     appMessages,
+    headerMessages,
     footerMessages,
   ],
   requireAuthenticatedUser: true,

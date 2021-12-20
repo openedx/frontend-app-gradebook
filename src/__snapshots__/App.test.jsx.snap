@@ -1,27 +1,23 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`App router component snapshot 1`] = `
-<IntlProvider
-  locale="en"
+<AppProvider
+  store="testStore"
 >
-  <Provider
-    store="testStore"
-  >
-    <BrowserRouter>
-      <div>
-        <EdxHeader />
-        <main>
-          <Switch>
-            <Route
-              component="GradebookPage"
-              exact={true}
-              path="/:courseId"
-            />
-          </Switch>
-        </main>
-        <Footer />
-      </div>
-    </BrowserRouter>
-  </Provider>
-</IntlProvider>
+  <BrowserRouter>
+    <div>
+      <Header />
+      <main>
+        <Switch>
+          <Route
+            component="GradebookPage"
+            exact={true}
+            path="/:courseId"
+          />
+        </Switch>
+      </main>
+      <Footer />
+    </div>
+  </BrowserRouter>
+</AppProvider>
 `;
