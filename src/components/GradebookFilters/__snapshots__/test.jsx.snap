@@ -31,14 +31,14 @@ exports[`GradebookFilters Component snapshots basic snapshot 1`] = `
     }
   >
     <div>
-      <Connect(AssignmentTypeFilter)
-        updateQueryParams={[MockFunction]}
+      <AssignmentTypeFilter
+        updateQueryParams={[MockFunction this.props.updateQueryParams]}
       />
-      <Connect(AssignmentFilter)
-        updateQueryParams={[MockFunction]}
+      <AssignmentFilter
+        updateQueryParams={[MockFunction this.props.updateQueryParams]}
       />
-      <Connect(AssignmentGradeFilter)
-        updateQueryParams={[MockFunction]}
+      <AssignmentGradeFilter
+        updateQueryParams={[MockFunction this.props.updateQueryParams]}
       />
     </div>
   </Collapsible>
@@ -53,8 +53,8 @@ exports[`GradebookFilters Component snapshots basic snapshot 1`] = `
       />
     }
   >
-    <Connect(CourseGradeFilter)
-      updateQueryParams={[MockFunction]}
+    <CourseGradeFilter
+      updateQueryParams={[MockFunction this.props.updateQueryParams]}
     />
   </Collapsible>
   <Collapsible
@@ -68,8 +68,8 @@ exports[`GradebookFilters Component snapshots basic snapshot 1`] = `
       />
     }
   >
-    <InjectIntl(ShimmedIntlComponent)
-      updateQueryParams={[MockFunction]}
+    <StudentGroupsFilter
+      updateQueryParams={[MockFunction this.props.updateQueryParams]}
     />
   </Collapsible>
   <Collapsible

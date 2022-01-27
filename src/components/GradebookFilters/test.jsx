@@ -22,6 +22,11 @@ jest.mock('@edx/paragon', () => ({
 jest.mock('@edx/paragon/icons', () => ({
   Close: 'paragon.icons.Close',
 }));
+jest.mock('./AssignmentTypeFilter', () => 'AssignmentTypeFilter');
+jest.mock('./AssignmentFilter', () => 'AssignmentFilter');
+jest.mock('./AssignmentGradeFilter', () => 'AssignmentGradeFilter');
+jest.mock('./CourseGradeFilter', () => 'CourseGradeFilter');
+jest.mock('./StudentGroupsFilter', () => 'StudentGroupsFilter');
 jest.mock('data/selectors', () => ({
   __esModule: true,
   default: {
@@ -50,7 +55,7 @@ describe('GradebookFilters', () => {
       closeMenu: jest.fn().mockName('this.props.closeMenu'),
       fetchGrades: jest.fn(),
       updateIncludeCourseRoleMembers: jest.fn(),
-      updateQueryParams: jest.fn(),
+      updateQueryParams: jest.fn().mockName('this.props.updateQueryParams'),
     };
   });
 
