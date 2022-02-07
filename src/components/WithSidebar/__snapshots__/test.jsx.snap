@@ -2,7 +2,7 @@
 
 exports[`WithSidebar Component snapshots basic snapshot 1`] = `
 <div
-  className="d-flex sidebar-container"
+  className="d-flex sidebar-container page-gradebook"
 >
   <aside
     className="sidebar-class-names"
