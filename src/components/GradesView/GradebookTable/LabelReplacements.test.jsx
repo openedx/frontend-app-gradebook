@@ -1,5 +1,6 @@
 import React from 'react';
 import { shallow } from 'enzyme';
+import { configure as configureI18n } from '@edx/frontend-platform/i18n';
 
 import { OverlayTrigger } from '@edx/paragon';
 
@@ -15,6 +16,32 @@ jest.mock('@edx/paragon', () => ({
   OverlayTrigger: () => 'OverlayTrigger',
   Tooltip: () => 'Tooltip',
 }));
+
+configureI18n({
+  config: {
+    ENVIRONMENT: 'production',
+    LANGUAGE_PREFERENCE_COOKIE_NAME: 'yum',
+  },
+  loggingService: {
+    logError: jest.fn(),
+    logInfo: jest.fn(),
+  },
+  messages: {
+    uk: {},
+    th: {},
+    ru: {},
+    'pt-br': {},
+    pl: {},
+    'ko-kr': {},
+    id: {},
+    he: {},
+    ca: {},
+    'zh-cn': {},
+    fr: {},
+    'es-419': {},
+    ar: {},
+  },
+});
 
 describe('LabelReplacements', () => {
   describe('TotalGradeLabelReplacement', () => {
