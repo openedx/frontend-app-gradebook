@@ -26,4 +26,4 @@ Collectively, these should be completed by reviewers of this PR:
 - [ ] I've tested the new functionality
 
 
-FYI: @edx/masters-devs-gta
+FYI: @openedx/content-aurora
