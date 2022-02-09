@@ -32,7 +32,7 @@ export class WithSidebar extends React.Component {
 
   render() {
     return (
-      <div className="d-flex sidebar-container">
+      <div className="d-flex sidebar-container page-gradebook">
         <aside className={this.sidebarClassNames} onTransitionEnd={this.props.handleSlideDone}>
           { this.props.sidebar }
         </aside>
