@@ -7,7 +7,7 @@ import {
   OverlayTrigger,
   Tooltip,
 } from '@edx/paragon';
-import { FormattedMessage } from '@edx/frontend-platform/i18n';
+import { FormattedMessage, getLocale, isRtl } from '@edx/frontend-platform/i18n';
 
 import messages from './messages';
 
@@ -23,7 +23,7 @@ const TotalGradeLabelReplacement = () => (
     <OverlayTrigger
       trigger={['hover', 'focus']}
       key="left-basic"
-      placement="left"
+      placement={isRtl(getLocale()) ? 'right' : 'left'}
       overlay={(
         <Tooltip id="course-grade-tooltip">
           <FormattedMessage {...messages.totalGradePercentage} />
