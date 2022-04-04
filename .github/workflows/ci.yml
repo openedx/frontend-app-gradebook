@@ -3,10 +3,10 @@ name: node_js CI
 on:
   push:
     branches:
-      - master
+    - master
   pull_request:
     branches:
-      - "**"
+    - '**'
 
 jobs:
   test:
@@ -56,4 +56,5 @@ jobs:
         subject: CI workflow failed in ${{github.repository}}
         to: masters-grades@edx.org
         from: github-actions <github-actions@edx.org>
-        body: CI workflow in ${{github.repository}} failed! For details see "github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+        body: CI workflow in ${{github.repository}} failed! For details see "github.com/${{
+          github.repository }}/actions/runs/${{ github.run_id }}"
