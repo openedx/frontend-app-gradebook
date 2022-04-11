@@ -131,7 +131,7 @@ describe('app reducer', () => {
       const mockDate = new Date(8675309);
       let dateSpy;
       beforeEach(() => {
-        dateSpy = jest.spyOn(global, 'Date').mockReturnValue(mockDate);
+        dateSpy = jest.spyOn(global, 'Date').mockImplementation(() => mockDate);
       });
       afterEach(() => {
         dateSpy.mockRestore();
