@@ -3,7 +3,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
-import { Table } from '@edx/paragon';
+import { DataTable } from '@edx/paragon';
 
 import { bulkManagementColumns } from 'data/constants/app';
 import selectors from 'data/selectors';
@@ -30,14 +30,13 @@ export const mapHistoryRows = ({
 export const HistoryTable = ({
   bulkManagementHistory,
 }) => (
-  <>
-    <Table
-      data={bulkManagementHistory.map(mapHistoryRows)}
-      hasFixedColumnWidths
-      columns={bulkManagementColumns}
-      className="table-striped"
-    />
-  </>
+  <DataTable
+    data={bulkManagementHistory.map(mapHistoryRows)}
+    hasFixedColumnWidths
+    columns={bulkManagementColumns}
+    className="table-striped"
+    itemCount={bulkManagementHistory.length}
+  />
 );
 HistoryTable.defaultProps = {
   bulkManagementHistory: [],

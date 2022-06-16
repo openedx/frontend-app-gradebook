@@ -32,26 +32,26 @@ export const localFilterKeys = StrictDict({
  */
 export const bulkManagementColumns = [
   {
-    key: 'filename',
-    label: 'Gradebook',
+    accessor: 'filename',
+    Header: 'Gradebook',
     columnSortable: false,
     width: 'col-5',
   },
   {
-    key: 'resultsSummary',
-    label: 'Download Summary',
+    accessor: 'resultsSummary',
+    Header: 'Download Summary',
     columnSortable: false,
     width: 'col',
   },
   {
-    key: 'user',
-    label: 'Who',
+    accessor: 'user',
+    Header: 'Who',
     columnSortable: false,
     width: 'col-1',
   },
   {
-    key: 'timeUploaded',
-    label: 'When',
+    accessor: 'timeUploaded',
+    Header: 'When',
     columnSortable: false,
     width: 'col',
   },
