@@ -1,7 +1,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 
-import { Table } from '@edx/paragon';
+import { DataTable } from '@edx/paragon';
 import { FormattedMessage } from '@edx/frontend-platform/i18n';
 
 import selectors from 'data/selectors';
@@ -11,9 +11,6 @@ import Fields from './Fields';
 import messages from './messages';
 import { GradebookTable, mapStateToProps } from '.';
 
-jest.mock('@edx/paragon', () => ({
-  Table: () => 'Table',
-}));
 jest.mock('./Fields', () => ({
   __esModule: true,
   default: {
@@ -86,33 +83,33 @@ describe('GradebookTable', () => {
       let headings;
       beforeEach(() => {
         el = shallow(<GradebookTable {...props} />);
-        headings = el.find(Table).props().columns;
+        headings = el.find(DataTable).props().columns;
       });
-      test('username sets key and replaces label with component', () => {
+      test('username sets key and replaces Header with component', () => {
         const heading = headings[0];
-        expect(heading.key).toEqual(Headings.username);
-        expect(heading.label.type).toEqual(LabelReplacements.UsernameLabelReplacement);
+        expect(heading.accessor).toEqual(Headings.username);
+        expect(heading.Header.type).toEqual(LabelReplacements.UsernameLabelReplacement);
       });
-      test('email sets key and label from header', () => {
+      test('email sets key and Header from header', () => {
         const heading = headings[1];
-        expect(heading.key).toEqual(Headings.email);
-        expect(heading.label).toEqual(<FormattedMessage {...messages.emailHeading} />);
+        expect(heading.accessor).toEqual(Headings.email);
+        expect(heading.Header).toEqual(<FormattedMessage {...messages.emailHeading} />);
       });
-      test('subsections set key and label from header', () => {
-        expect(headings[2]).toEqual({ key: fields.field1, label: fields.field1 });
-        expect(headings[3]).toEqual({ key: fields.field2, label: fields.field2 });
+      test('subsections set key and Header from header', () => {
+        expect(headings[2]).toEqual({ accessor: fields.field1, Header: fields.field1 });
+        expect(headings[3]).toEqual({ accessor: fields.field2, Header: fields.field2 });
       });
-      test('totalGrade sets key and replaces label with component', () => {
+      test('totalGrade sets key and replaces Header with component', () => {
         const heading = headings[4];
-        expect(heading.key).toEqual(Headings.totalGrade);
-        expect(heading.label.type).toEqual(LabelReplacements.TotalGradeLabelReplacement);
+        expect(heading.accessor).toEqual(Headings.totalGrade);
+        expect(heading.Header.type).toEqual(LabelReplacements.TotalGradeLabelReplacement);
       });
     });
     describe('table data (mapRows)', () => {
       let rows;
       beforeEach(() => {
         el = shallow(<GradebookTable {...props} />);
-        rows = el.find(Table).props().data;
+        rows = el.find(DataTable).props().data;
       });
       describe.each([0, 1, 2])('gradeEntry($percent)', (gradeIndex) => {
         let row;
