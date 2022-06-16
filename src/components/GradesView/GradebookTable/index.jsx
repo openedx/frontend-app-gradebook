@@ -3,7 +3,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
-import { Table } from '@edx/paragon';
+import { DataTable } from '@edx/paragon';
 import { FormattedMessage } from '@edx/frontend-platform/i18n';
 
 import selectors from 'data/selectors';
@@ -40,7 +40,7 @@ export class GradebookTable extends React.Component {
     } else {
       label = heading;
     }
-    return { label, key: heading };
+    return { Header: label, accessor: heading };
   }
 
   mapRows(entry) {
@@ -63,7 +63,7 @@ export class GradebookTable extends React.Component {
     return (
       <div className="gradebook-container">
         <div className="gbook">
-          <Table
+          <DataTable
             columns={this.props.headings.map(this.mapHeaders)}
             data={this.props.grades.map(this.mapRows)}
             rowHeaderColumnKey="username"
