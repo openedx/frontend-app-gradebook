@@ -13,7 +13,7 @@ import {
 } from './StatusAlerts';
 
 jest.mock('@edx/paragon', () => ({
-  StatusAlert: 'StatusAlert',
+  Alert: 'Alert',
 }));
 jest.mock('data/selectors', () => ({
   __esModule: true,
