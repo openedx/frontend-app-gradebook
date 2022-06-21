@@ -2,23 +2,23 @@
 
 exports[`StatusAlerts snapshots basic snapshot 1`] = `
 <React.Fragment>
-  <StatusAlert
-    alertType="success"
-    dialog={
-      <FormattedMessage
-        defaultMessage="The grade has been successfully edited.  You may see a slight delay before updates appear in the Gradebook."
-        description="An alert text for successfully editing  a grade"
-        id="gradebook.GradesView.editSuccessAlert"
-      />
-    }
+  <Alert
     onClose={[MockFunction handleCloseSuccessBanner]}
-    open={true}
-  />
-  <StatusAlert
-    alertType="danger"
-    dialog="the quiCk brown does somEthing or other"
+    show={true}
+    variant="success"
+  >
+    <FormattedMessage
+      defaultMessage="The grade has been successfully edited.  You may see a slight delay before updates appear in the Gradebook."
+      description="An alert text for successfully editing  a grade"
+      id="gradebook.GradesView.editSuccessAlert"
+    />
+  </Alert>
+  <Alert
     dismissible={false}
-    open={false}
-  />
+    show={false}
+    variant="danger"
+  >
+    the quiCk brown does somEthing or other
+  </Alert>
 </React.Fragment>
 `;

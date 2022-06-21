@@ -16,7 +16,7 @@ jest.mock('./ModalHeaders', () => 'ModalHeaders');
 jest.mock('@edx/paragon', () => ({
   Button: () => 'Button',
   Modal: () => 'Modal',
-  StatusAlert: () => 'StatusAlert',
+  Alert: () => 'Alert',
 }));
 jest.mock('data/actions', () => ({
   __esModule: true,
