@@ -8,7 +8,7 @@ import {
   mapStateToProps,
 } from '.';
 
-jest.mock('@edx/paragon', () => ({ Table: () => 'Table' }));
+jest.mock('@edx/paragon', () => ({ DataTable: () => 'DataTable' }));
 jest.mock('./ReasonInput', () => 'ReasonInput');
 jest.mock('./AdjustedGradeInput', () => 'AdjustedGradeInput');
 

@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`OverrideTable Component snapshots basic snapshot shows a row for each entry and one editable row 1`] = `
-<Component
+<DataTable
   columns={
     Array [
       Object {
@@ -59,5 +59,6 @@ exports[`OverrideTable Component snapshots basic snapshot shows a row for each e
       },
     ]
   }
+  itemCount={2}
 />
 `;

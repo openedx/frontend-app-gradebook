@@ -4,78 +4,45 @@ exports[`GradebookTable component snapshot - fields1 and 2 between email and tot
 <div
   className="gradebook-container"
 >
-  <div
-    className="gbook"
-  >
-    <DataTable
-      EmptyTableComponent={[Function]}
-      FilterStatusComponent={[Function]}
-      RowStatusComponent={[Function]}
-      SelectionStatusComponent={[Function]}
-      additionalColumns={Array []}
-      bulkActions={Array []}
-      columns={
-        Array [
-          Object {
-            "Header": <UsernameLabelReplacement />,
-            "accessor": "Username",
-          },
-          Object {
-            "Header": <FormattedMessage
-              defaultMessage="Email"
-              description="Gradebook table email column header"
-              id="gradebook.GradesView.table.headings.email"
-            />,
-            "accessor": "Email",
-          },
-          Object {
-            "Header": "field1",
-            "accessor": "field1",
-          },
-          Object {
-            "Header": "field2",
-            "accessor": "field2",
-          },
-          Object {
-            "Header": <TotalGradeLabelReplacement />,
-            "accessor": "Total Grade (%)",
-          },
-        ]
-      }
-      data={
-        Array [
-          "mappedRow: 1",
-          "mappedRow: 2",
-          "mappedRow: 3",
-        ]
-      }
-      dataViewToggleOptions={
+  <DataTable
+    columns={
+      Array [
         Object {
-          "defaultActiveStateValue": "card",
-          "isDataViewToggleEnabled": false,
-          "onDataViewToggle": [Function],
-          "togglePlacement": "left",
-        }
-      }
-      defaultColumnValues={Object {}}
-      fetchData={null}
-      hasFixedColumnWidths={true}
-      initialState={Object {}}
-      initialTableOptions={Object {}}
-      isExpandable={false}
-      isFilterable={false}
-      isLoading={false}
-      isPaginated={false}
-      isSelectable={false}
-      isSortable={false}
-      manualFilters={false}
-      manualPagination={false}
-      manualSortBy={false}
-      numBreakoutFilters={1}
-      rowHeaderColumnKey="username"
-      showFiltersInSidebar={false}
-      tableActions={Array []}
-    />
-  </div>
+          "Header": <UsernameLabelReplacement />,
+          "accessor": "Username",
+        },
+        Object {
+          "Header": <FormattedMessage
+            defaultMessage="Email"
+            description="Gradebook table email column header"
+            id="gradebook.GradesView.table.headings.email"
+          />,
+          "accessor": "Email",
+        },
+        Object {
+          "Header": "field1",
+          "accessor": "field1",
+        },
+        Object {
+          "Header": "field2",
+          "accessor": "field2",
+        },
+        Object {
+          "Header": <TotalGradeLabelReplacement />,
+          "accessor": "Total Grade (%)",
+        },
+      ]
+    }
+    data={
+      Array [
+        "mappedRow: 1",
+        "mappedRow: 2",
+        "mappedRow: 3",
+      ]
+    }
+    hasFixedColumnWidths={true}
+    itemCount={3}
+    rowHeaderColumnKey="username"
+  />
 </div>
 `;

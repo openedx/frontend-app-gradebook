@@ -11,6 +11,7 @@ import Fields from './Fields';
 import messages from './messages';
 import { GradebookTable, mapStateToProps } from '.';
 
+jest.mock('@edx/paragon', () => ({ DataTable: () => 'DataTable' }));
 jest.mock('./Fields', () => ({
   __esModule: true,
   default: {
