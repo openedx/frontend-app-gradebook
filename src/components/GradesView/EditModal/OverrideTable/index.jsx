@@ -45,6 +45,7 @@ export const OverrideTable = ({
           reason: <ReasonInput />,
         },
       ]}
+      itemCount={gradeOverrides.length}
     />
   );
 };

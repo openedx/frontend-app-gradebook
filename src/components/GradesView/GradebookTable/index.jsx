@@ -62,14 +62,13 @@ export class GradebookTable extends React.Component {
   render() {
     return (
       <div className="gradebook-container">
-        <div className="gbook">
-          <DataTable
-            columns={this.props.headings.map(this.mapHeaders)}
-            data={this.props.grades.map(this.mapRows)}
-            rowHeaderColumnKey="username"
-            hasFixedColumnWidths
-          />
-        </div>
+        <DataTable
+          columns={this.props.headings.map(this.mapHeaders)}
+          data={this.props.grades.map(this.mapRows)}
+          rowHeaderColumnKey="username"
+          hasFixedColumnWidths
+          itemCount={this.props.grades.length}
+        />
       </div>
     );
   }
