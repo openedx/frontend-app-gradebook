@@ -11,7 +11,13 @@ import Fields from './Fields';
 import messages from './messages';
 import { GradebookTable, mapStateToProps } from '.';
 
-jest.mock('@edx/paragon', () => ({ DataTable: () => 'DataTable' }));
+jest.mock('@edx/paragon', () => jest.requireActual('testUtils').mockNestedComponents({
+  DataTable: {
+    Table: 'DataTable.Table',
+    TableControlBar: 'DataTable.TableControlBar',
+    EmptyTable: 'DataTable.EmptyTable',
+  },
+}));
 jest.mock('./Fields', () => ({
   __esModule: true,
   default: {
@@ -77,6 +83,7 @@ describe('GradebookTable', () => {
     };
     test('snapshot - fields1 and 2 between email and totalGrade, mocked rows', () => {
       el = shallow(<GradebookTable {...props} />);
+      el.instance().nullMethod = jest.fn().mockName('this.nullMethod');
       el.instance().mapRows = (entry) => `mappedRow: ${entry.percent}`;
       expect(el.instance().render()).toMatchSnapshot();
     });

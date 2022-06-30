@@ -9,6 +9,8 @@ import { bulkManagementColumns } from 'data/constants/app';
 import ResultsSummary from './ResultsSummary';
 import { HistoryTable, mapStateToProps } from './HistoryTable';
 
+jest.mock('@edx/paragon', () => ({ DataTable: () => 'DataTable' }));
+
 jest.mock('@edx/frontend-platform/i18n', () => ({
   defineMessages: m => m,
   FormattedMessage: () => 'FormattedMessage',

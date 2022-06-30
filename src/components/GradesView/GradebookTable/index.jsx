@@ -27,6 +27,7 @@ export class GradebookTable extends React.Component {
     super(props);
     this.mapHeaders = this.mapHeaders.bind(this);
     this.mapRows = this.mapRows.bind(this);
+    this.nullMethod = this.nullMethod.bind(this);
   }
 
   mapHeaders(heading) {
@@ -59,6 +60,10 @@ export class GradebookTable extends React.Component {
     return dataRow;
   }
 
+  nullMethod() {
+    return null;
+  }
+
   render() {
     return (
       <div className="gradebook-container">
@@ -68,7 +73,12 @@ export class GradebookTable extends React.Component {
           rowHeaderColumnKey="username"
           hasFixedColumnWidths
           itemCount={this.props.grades.length}
-        />
+          RowStatusComponent={this.nullMethod}
+        >
+          <DataTable.TableControlBar />
+          <DataTable.Table />
+          <DataTable.EmptyTable content={<FormattedMessage {...messages.noResultsFound} />} />
+        </DataTable>
       </div>
     );
   }

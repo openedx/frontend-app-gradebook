@@ -43,12 +43,6 @@ Array [
 
 exports[`HistoryTable component snapshot snapshot - loads formatted table 1`] = `
 <DataTable
-  EmptyTableComponent={[Function]}
-  FilterStatusComponent={[Function]}
-  RowStatusComponent={[Function]}
-  SelectionStatusComponent={[Function]}
-  additionalColumns={Array []}
-  bulkActions={Array []}
   className="table-striped"
   columns={
     Array [
@@ -118,31 +112,7 @@ exports[`HistoryTable component snapshot snapshot - loads formatted table 1`] = 
       },
     ]
   }
-  dataViewToggleOptions={
-    Object {
-      "defaultActiveStateValue": "card",
-      "isDataViewToggleEnabled": false,
-      "onDataViewToggle": [Function],
-      "togglePlacement": "left",
-    }
-  }
-  defaultColumnValues={Object {}}
-  fetchData={null}
   hasFixedColumnWidths={true}
-  initialState={Object {}}
-  initialTableOptions={Object {}}
-  isExpandable={false}
-  isFilterable={false}
-  isLoading={false}
-  isPaginated={false}
-  isSelectable={false}
-  isSortable={false}
   itemCount={2}
-  manualFilters={false}
-  manualPagination={false}
-  manualSortBy={false}
-  numBreakoutFilters={1}
-  showFiltersInSidebar={false}
-  tableActions={Array []}
 />
 `;

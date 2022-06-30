@@ -5,6 +5,7 @@ exports[`GradebookTable component snapshot - fields1 and 2 between email and tot
   className="gradebook-container"
 >
   <DataTable
+    RowStatusComponent={[MockFunction this.nullMethod]}
     columns={
       Array [
         Object {
@@ -43,6 +44,18 @@ exports[`GradebookTable component snapshot - fields1 and 2 between email and tot
     hasFixedColumnWidths={true}
     itemCount={3}
     rowHeaderColumnKey="username"
-  />
+  >
+    <DataTable.TableControlBar />
+    <DataTable.Table />
+    <DataTable.EmptyTable
+      content={
+        <FormattedMessage
+          defaultMessage="No results found"
+          description="Gradebook table message when no learner results were found"
+          id="gradebook.GradesView.table.noResultsFound"
+        />
+      }
+    />
+  </DataTable>
 </div>
 `;
