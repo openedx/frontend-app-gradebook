@@ -42,78 +42,77 @@ Array [
 `;
 
 exports[`HistoryTable component snapshot snapshot - loads formatted table 1`] = `
-<Fragment>
-  <Table
-    className="table-striped"
-    columns={
-      Array [
-        Object {
-          "columnSortable": false,
-          "key": "filename",
-          "label": "Gradebook",
-          "width": "col-5",
-        },
-        Object {
-          "columnSortable": false,
-          "key": "resultsSummary",
-          "label": "Download Summary",
-          "width": "col",
-        },
-        Object {
-          "columnSortable": false,
-          "key": "user",
-          "label": "Who",
-          "width": "col-1",
-        },
-        Object {
-          "columnSortable": false,
-          "key": "timeUploaded",
-          "label": "When",
-          "width": "col",
-        },
-      ]
-    }
-    data={
-      Array [
-        Object {
-          "filename": <span
-            className="wrap-text-in-cell"
-          >
-            blue.png
-          </span>,
-          "resultsSummary": <ResultsSummary
-            courseId="Da Bu Dee"
-            rowId={12}
-            text="Da ba daa"
-          />,
-          "timeUploaded": "65",
-          "user": <span
-            className="wrap-text-in-cell"
-          >
-            Eifel
-          </span>,
-        },
-        Object {
-          "filename": <span
-            className="wrap-text-in-cell"
-          >
-            allStar.jpg
-          </span>,
-          "resultsSummary": <ResultsSummary
-            courseId="rockstar"
-            rowId={2}
-            text="all that glitters is gold"
-          />,
-          "timeUploaded": "2000s?",
-          "user": <span
-            className="wrap-text-in-cell"
-          >
-            Smashmouth
-          </span>,
-        },
-      ]
-    }
-    hasFixedColumnWidths={true}
-  />
-</Fragment>
+<DataTable
+  className="table-striped"
+  columns={
+    Array [
+      Object {
+        "Header": "Gradebook",
+        "accessor": "filename",
+        "columnSortable": false,
+        "width": "col-5",
+      },
+      Object {
+        "Header": "Download Summary",
+        "accessor": "resultsSummary",
+        "columnSortable": false,
+        "width": "col",
+      },
+      Object {
+        "Header": "Who",
+        "accessor": "user",
+        "columnSortable": false,
+        "width": "col-1",
+      },
+      Object {
+        "Header": "When",
+        "accessor": "timeUploaded",
+        "columnSortable": false,
+        "width": "col",
+      },
+    ]
+  }
+  data={
+    Array [
+      Object {
+        "filename": <span
+          className="wrap-text-in-cell"
+        >
+          blue.png
+        </span>,
+        "resultsSummary": <ResultsSummary
+          courseId="Da Bu Dee"
+          rowId={12}
+          text="Da ba daa"
+        />,
+        "timeUploaded": "65",
+        "user": <span
+          className="wrap-text-in-cell"
+        >
+          Eifel
+        </span>,
+      },
+      Object {
+        "filename": <span
+          className="wrap-text-in-cell"
+        >
+          allStar.jpg
+        </span>,
+        "resultsSummary": <ResultsSummary
+          courseId="rockstar"
+          rowId={2}
+          text="all that glitters is gold"
+        />,
+        "timeUploaded": "2000s?",
+        "user": <span
+          className="wrap-text-in-cell"
+        >
+          Smashmouth
+        </span>,
+      },
+    ]
+  }
+  hasFixedColumnWidths={true}
+  itemCount={2}
+/>
 `;

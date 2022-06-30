@@ -4,48 +4,58 @@ exports[`GradebookTable component snapshot - fields1 and 2 between email and tot
 <div
   className="gradebook-container"
 >
-  <div
-    className="gbook"
+  <DataTable
+    RowStatusComponent={[MockFunction this.nullMethod]}
+    columns={
+      Array [
+        Object {
+          "Header": <UsernameLabelReplacement />,
+          "accessor": "Username",
+        },
+        Object {
+          "Header": <FormattedMessage
+            defaultMessage="Email"
+            description="Gradebook table email column header"
+            id="gradebook.GradesView.table.headings.email"
+          />,
+          "accessor": "Email",
+        },
+        Object {
+          "Header": "field1",
+          "accessor": "field1",
+        },
+        Object {
+          "Header": "field2",
+          "accessor": "field2",
+        },
+        Object {
+          "Header": <TotalGradeLabelReplacement />,
+          "accessor": "Total Grade (%)",
+        },
+      ]
+    }
+    data={
+      Array [
+        "mappedRow: 1",
+        "mappedRow: 2",
+        "mappedRow: 3",
+      ]
+    }
+    hasFixedColumnWidths={true}
+    itemCount={3}
+    rowHeaderColumnKey="username"
   >
-    <Table
-      columns={
-        Array [
-          Object {
-            "key": "Username",
-            "label": <UsernameLabelReplacement />,
-          },
-          Object {
-            "key": "Email",
-            "label": <FormattedMessage
-              defaultMessage="Email"
-              description="Gradebook table email column header"
-              id="gradebook.GradesView.table.headings.email"
-            />,
-          },
-          Object {
-            "key": "field1",
-            "label": "field1",
-          },
-          Object {
-            "key": "field2",
-            "label": "field2",
-          },
-          Object {
-            "key": "Total Grade (%)",
-            "label": <TotalGradeLabelReplacement />,
-          },
-        ]
+    <DataTable.TableControlBar />
+    <DataTable.Table />
+    <DataTable.EmptyTable
+      content={
+        <FormattedMessage
+          defaultMessage="No results found"
+          description="Gradebook table message when no learner results were found"
+          id="gradebook.GradesView.table.noResultsFound"
+        />
       }
-      data={
-        Array [
-          "mappedRow: 1",
-          "mappedRow: 2",
-          "mappedRow: 3",
-        ]
-      }
-      hasFixedColumnWidths={true}
-      rowHeaderColumnKey="username"
     />
-  </div>
+  </DataTable>
 </div>
 `;

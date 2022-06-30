@@ -1,7 +1,7 @@
 /* eslint-disable import/no-named-as-default */
 import React from 'react';
 import { shallow } from 'enzyme';
-import { Table } from '@edx/paragon';
+import { DataTable } from '@edx/paragon';
 
 import selectors from 'data/selectors';
 import { bulkManagementColumns } from 'data/constants/app';
@@ -9,12 +9,11 @@ import { bulkManagementColumns } from 'data/constants/app';
 import ResultsSummary from './ResultsSummary';
 import { HistoryTable, mapStateToProps } from './HistoryTable';
 
+jest.mock('@edx/paragon', () => ({ DataTable: () => 'DataTable' }));
+
 jest.mock('@edx/frontend-platform/i18n', () => ({
   defineMessages: m => m,
   FormattedMessage: () => 'FormattedMessage',
-}));
-jest.mock('@edx/paragon', () => ({
-  Table: () => 'Table',
 }));
 jest.mock('data/selectors', () => ({
   __esModule: true,
@@ -62,7 +61,7 @@ describe('HistoryTable', () => {
       describe('history table', () => {
         let table;
         beforeEach(() => {
-          table = el.find(Table);
+          table = el.find(DataTable);
         });
         describe('data (from bulkManagementHistory.map(this.formatHistoryRow)', () => {
           const fieldAssertions = [
