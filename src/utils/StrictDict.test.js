@@ -45,6 +45,9 @@ describe('StrictDict', () => {
   it('allows entry listing', () => {
     expect(Object.entries(dict)).toEqual(Object.entries(rawDict));
   });
+  it('allows $$typeof access', () => {
+    expect(dict.$$typeof).toEqual(typeof rawDict);
+  });
   describe('missing key', () => {
     it('logs error with target, name, and error stack', () => {
       // eslint-ignore-next-line no-unused-vars

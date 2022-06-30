@@ -87,6 +87,10 @@ describe('GradebookTable', () => {
       el.instance().mapRows = (entry) => `mappedRow: ${entry.percent}`;
       expect(el.instance().render()).toMatchSnapshot();
     });
+    test('null method returns null for stub component', () => {
+      el = shallow(<GradebookTable {...props} />);
+      expect(el.instance().nullMethod()).toEqual(null);
+    });
     describe('table columns (mapHeaders)', () => {
       let headings;
       beforeEach(() => {

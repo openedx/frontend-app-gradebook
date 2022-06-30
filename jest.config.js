@@ -11,5 +11,6 @@ module.exports = createConfig('jest', {
   coveragePathIgnorePatterns: [
     'src/segment.js',
     'src/postcss.config.js',
+    'testUtils', // don't unit test jest mocking tools
   ],
 });
