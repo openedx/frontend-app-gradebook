@@ -4,7 +4,11 @@ import { shallow } from 'enzyme';
 import selectors from 'data/selectors';
 import actions from 'data/actions';
 import thunkActions from 'data/thunkActions';
-import { mapDispatchToProps, mapStateToProps, SearchControls } from './SearchControls';
+import {
+  mapDispatchToProps,
+  mapStateToProps,
+  SearchControls,
+} from './SearchControls';
 
 jest.mock('@edx/paragon', () => ({
   Icon: 'Icon',
@@ -15,7 +19,7 @@ jest.mock('data/selectors', () => ({
   __esModule: true,
   default: {
     app: {
-      searchValue: jest.fn(state => ({ searchValue: state })),
+      searchValue: jest.fn((state) => ({ searchValue: state })),
     },
   },
 }));
@@ -52,26 +56,45 @@ describe('SearchControls', () => {
     describe('Snapshots', () => {
       test('basic snapshot', () => {
         const wrapper = searchControls();
-        wrapper.instance().onChange = jest.fn().mockName('onChange');
+        wrapper.instance().onBlur = jest.fn().mockName('onBlur');
         wrapper.instance().onClear = jest.fn().mockName('onClear');
+        wrapper.instance().onSubmit = jest.fn().mockName('onSubmit');
         expect(wrapper.instance().render()).toMatchSnapshot();
       });
     });
 
-    describe('onChange', () => {
-      it('saves the changed search value to Gradebook state', () => {
-        const wrapper = searchControls();
-        wrapper.instance().onChange('bob');
-        expect(props.setSearchValue).toHaveBeenCalledWith('bob');
+    describe('Behavior', () => {
+      describe('onBlur', () => {
+        it('saves the search value to Gradebook state but do not fetch grade', () => {
+          const wrapper = searchControls();
+          const event = {
+            target: {
+              value: 'bob',
+            },
+          };
+          wrapper.instance().onBlur(event);
+          expect(props.setSearchValue).toHaveBeenCalledWith('bob');
+          expect(props.fetchGrades).not.toHaveBeenCalled();
+        });
       });
-    });
 
-    describe('onChange', () => {
-      it('sets search value to empty string and calls fetchGrades', () => {
-        const wrapper = searchControls();
-        wrapper.instance().onClear();
-        expect(props.setSearchValue).toHaveBeenCalledWith('');
-        expect(props.fetchGrades).toHaveBeenCalled();
+      describe('onClear', () => {
+        it('sets search value to empty string and calls fetchGrades', () => {
+          const wrapper = searchControls();
+          wrapper.instance().onClear();
+          expect(props.setSearchValue).toHaveBeenCalledWith('');
+          expect(props.fetchGrades).toHaveBeenCalled();
+        });
+      });
+
+      describe('onSubmit', () => {
+        it('sets search value to input and calls fetchGrades', () => {
+          const wrapper = searchControls();
+
+          wrapper.instance().onSubmit('John');
+          expect(props.setSearchValue).toHaveBeenCalledWith('John');
+          expect(props.fetchGrades).toHaveBeenCalled();
+        });
       });
     });
 
