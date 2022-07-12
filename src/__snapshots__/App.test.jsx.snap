@@ -19,5 +19,6 @@ exports[`App router component snapshot 1`] = `
       <Footer />
     </div>
   </BrowserRouter>
+  <injectIntl(ShimmedIntlComponent) />
 </AppProvider>
 `;

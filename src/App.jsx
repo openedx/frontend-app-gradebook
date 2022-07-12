@@ -10,6 +10,7 @@ import { routePath } from 'data/constants/app';
 import store from 'data/store';
 import GradebookPage from 'containers/GradebookPage';
 import './App.scss';
+import Head from './head/Head';
 
 const App = () => (
   <AppProvider store={store}>
@@ -28,6 +29,7 @@ const App = () => (
         <Footer logo={process.env.LOGO_POWERED_BY_OPEN_EDX_URL_SVG} />
       </div>
     </Router>
+    <Head />
   </AppProvider>
 );
 
