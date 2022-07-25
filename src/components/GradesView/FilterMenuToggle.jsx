@@ -13,15 +13,17 @@ import messages from './FilterMenuToggle.messages';
  * Controls for filtering the GradebookTable. Contains the "Edit Filters" button for opening the filter drawer
  * as well as the search box for searching by username/email.
  */
-export const FilterMenuToggle = ({ toggleFilterDrawer }) => (
-  <Button
-    id="edit-filters-btn"
-    className="btn-primary align-self-start"
-    onClick={toggleFilterDrawer}
-  >
-    <Icon className="fa fa-filter" /> <FormattedMessage {...messages.editFilters} />
-  </Button>
-);
+export function FilterMenuToggle({ toggleFilterDrawer }) {
+  return (
+    <Button
+      id="edit-filters-btn"
+      className="btn-primary align-self-start"
+      onClick={toggleFilterDrawer}
+    >
+      <Icon className="fa fa-filter" /> <FormattedMessage {...messages.editFilters} />
+    </Button>
+  );
+}
 
 FilterMenuToggle.propTypes = {
   // From Redux

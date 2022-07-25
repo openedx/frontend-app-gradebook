@@ -13,27 +13,29 @@ import messages from './messages';
  * <BulkManagementAlerts />
  * Alerts to display at the top of the BulkManagement tab
  */
-export const BulkManagementAlerts = ({
+export function BulkManagementAlerts({
   bulkImportError,
   uploadSuccess,
-}) => (
-  <>
-    <Alert
-      variant="danger"
-      show={!!bulkImportError}
-      dismissible={false}
-    >
-      {bulkImportError}
-    </Alert>
-    <Alert
-      variant="success"
-      show={uploadSuccess}
-      dismissible={false}
-    >
-      <FormattedMessage {...messages.successDialog} />
-    </Alert>
-  </>
-);
+}) {
+  return (
+    <>
+      <Alert
+        variant="danger"
+        show={!!bulkImportError}
+        dismissible={false}
+      >
+        {bulkImportError}
+      </Alert>
+      <Alert
+        variant="success"
+        show={uploadSuccess}
+        dismissible={false}
+      >
+        <FormattedMessage {...messages.successDialog} />
+      </Alert>
+    </>
+  );
+}
 
 BulkManagementAlerts.defaultProps = {
   bulkImportError: '',

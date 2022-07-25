@@ -12,11 +12,13 @@ import selectors from 'data/selectors';
  * Simmple redux-connected icon component that shows a spinner overlay only if
  * redux state says it should.
  */
-export const SpinnerIcon = ({ show }) => show && (
+export function SpinnerIcon({ show }) {
+  return show && (
   <div className="spinner-overlay">
     <Icon className="fa fa-spinner fa-spin fa-5x color-black" />
   </div>
-);
+  );
+}
 SpinnerIcon.defaultProps = {
   show: false,
 };

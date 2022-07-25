@@ -11,10 +11,10 @@ import selectors from 'data/selectors';
  * <FilteredUsersLabel />
  * Simple label component displaying the filtered and total users shown
  */
-export const FilteredUsersLabel = ({
+export function FilteredUsersLabel({
   filteredUsersCount,
   totalUsersCount,
-}) => {
+}) {
   if (!totalUsersCount) {
     return null;
   }
@@ -30,7 +30,7 @@ export const FilteredUsersLabel = ({
       }}
     />
   );
-};
+}
 FilteredUsersLabel.propTypes = {
   filteredUsersCount: PropTypes.number.isRequired,
   totalUsersCount: PropTypes.number.isRequired,

@@ -76,12 +76,14 @@ describe('AssignmentFilter', () => {
             id: selected.id,
           });
         });
-        it('calls props.updateQueryParams with selected assignment id',
+        it(
+          'calls props.updateQueryParams with selected assignment id',
           () => {
             expect(props.updateQueryParams).toHaveBeenCalledWith({
               assignment: selected.id,
             });
-          });
+          },
+        );
         it('calls props.fetchGradesIfAssignmentGradeFiltersSet', () => {
           const method = props.fetchGradesIfAssignmentGradeFiltersSet;
           expect(method).toHaveBeenCalledWith();
@@ -99,12 +101,14 @@ describe('AssignmentFilter', () => {
               id: undefined,
             });
           });
-          it('calls props.updateQueryParams with selected assignment id',
+          it(
+            'calls props.updateQueryParams with selected assignment id',
             () => {
               expect(props.updateQueryParams).toHaveBeenCalledWith({
                 assignment: undefined,
               });
-            });
+            },
+          );
           it('calls props.fetchGradesIfAssignmentGradeFiltersSet', () => {
             const method = props.fetchGradesIfAssignmentGradeFiltersSet;
             expect(method).toHaveBeenCalledWith();

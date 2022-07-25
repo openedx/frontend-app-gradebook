@@ -69,30 +69,38 @@ export class GradebookFilters extends React.Component {
           />
         </div>
 
-        {this.collapsibleGroup(messages.assignments, (
-          <div>
-            <AssignmentTypeFilter updateQueryParams={updateQueryParams} />
-            <AssignmentFilter updateQueryParams={updateQueryParams} />
-            <AssignmentGradeFilter updateQueryParams={updateQueryParams} />
-          </div>
-        ))}
+        {this.collapsibleGroup(
+          messages.assignments, (
+            <div>
+              <AssignmentTypeFilter updateQueryParams={updateQueryParams} />
+              <AssignmentFilter updateQueryParams={updateQueryParams} />
+              <AssignmentGradeFilter updateQueryParams={updateQueryParams} />
+            </div>
+          ),
+        )}
 
-        {this.collapsibleGroup(messages.overallGrade, (
-          <CourseGradeFilter updateQueryParams={updateQueryParams} />
-        ))}
+        {this.collapsibleGroup(
+          messages.overallGrade, (
+            <CourseGradeFilter updateQueryParams={updateQueryParams} />
+          ),
+        )}
 
-        {this.collapsibleGroup(messages.studentGroups, (
-          <StudentGroupsFilter updateQueryParams={updateQueryParams} />
-        ))}
+        {this.collapsibleGroup(
+          messages.studentGroups, (
+            <StudentGroupsFilter updateQueryParams={updateQueryParams} />
+          ),
+        )}
 
-        {this.collapsibleGroup(messages.includeCourseTeamMembers, (
-          <Form.Checkbox
-            checked={this.state.includeCourseRoleMembers}
-            onChange={this.handleIncludeTeamMembersChange}
-          >
-            <FormattedMessage {...messages.includeCourseTeamMembers} />
-          </Form.Checkbox>
-        ))}
+        {this.collapsibleGroup(
+          messages.includeCourseTeamMembers, (
+            <Form.Checkbox
+              checked={this.state.includeCourseRoleMembers}
+              onChange={this.handleIncludeTeamMembersChange}
+            >
+              <FormattedMessage {...messages.includeCourseTeamMembers} />
+            </Form.Checkbox>
+          ),
+        )}
       </>
     );
   }

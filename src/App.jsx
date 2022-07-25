@@ -11,24 +11,26 @@ import store from 'data/store';
 import GradebookPage from 'containers/GradebookPage';
 import './App.scss';
 
-const App = () => (
-  <AppProvider store={store}>
-    <Router>
-      <div>
-        <Header />
-        <main>
-          <Switch>
-            <Route
-              exact
-              path={routePath}
-              component={GradebookPage}
-            />
-          </Switch>
-        </main>
-        <Footer logo={process.env.LOGO_POWERED_BY_OPEN_EDX_URL_SVG} />
-      </div>
-    </Router>
-  </AppProvider>
-);
+function App() {
+  return (
+    <AppProvider store={store}>
+      <Router>
+        <div>
+          <Header />
+          <main>
+            <Switch>
+              <Route
+                exact
+                path={routePath}
+                component={GradebookPage}
+              />
+            </Switch>
+          </main>
+          <Footer logo={process.env.LOGO_POWERED_BY_OPEN_EDX_URL_SVG} />
+        </div>
+      </Router>
+    </AppProvider>
+  );
+}
 
 export default App;
