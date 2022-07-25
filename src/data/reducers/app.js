@@ -33,7 +33,7 @@ const initialState = {
   searchValue: '',
 };
 
-const app = (state = initialState, { type, payload }) => {
+const app = (state = initialState, { type, payload } = {}) => {
   switch (type) {
     case actions.closeModal.toString():
       return { ...state, modalState: { ...initialState.modalState } };

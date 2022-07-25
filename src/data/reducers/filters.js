@@ -5,7 +5,7 @@ import initialFilters from '../constants/filters';
 
 const initialState = {};
 
-const reducer = (state = initialState, { type: actionType, payload }) => {
+const reducer = (state = initialState, { type: actionType, payload } = {}) => {
   switch (actionType) {
     case actions.initialize.toString():
       return {

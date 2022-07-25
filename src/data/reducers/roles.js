@@ -4,7 +4,7 @@ const initialState = {
   canUserViewGradebook: true,
 };
 
-const roles = (state = initialState, action) => {
+const roles = (state = initialState, action = {}) => {
   switch (action.type) {
     case actions.fetching.received.toString():
       return {

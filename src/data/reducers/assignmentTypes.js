@@ -6,7 +6,7 @@ const initialState = {
   errorFetching: false,
 };
 
-const assignmentTypes = (state = initialState, { type, payload }) => {
+const assignmentTypes = (state = initialState, { type, payload } = {}) => {
   switch (type) {
     case actions.fetching.started.toString():
       return {

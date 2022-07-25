@@ -18,6 +18,11 @@ export class GradebookHeader extends React.Component {
     this.handleToggleViewClick = this.handleToggleViewClick.bind(this);
   }
 
+  handleToggleViewClick() {
+    const newView = this.props.activeView === views.grades ? views.bulkManagementHistory : views.grades;
+    this.props.setView(newView);
+  }
+
   get toggleViewMessage() {
     return this.props.activeView === views.grades
       ? messages.toActivityLog
@@ -27,11 +32,6 @@ export class GradebookHeader extends React.Component {
   lmsInstructorDashboardUrl = courseId => (
     `${configuration.LMS_BASE_URL}/courses/${courseId}/instructor`
   );
-
-  handleToggleViewClick() {
-    const newView = this.props.activeView === views.grades ? views.bulkManagementHistory : views.grades;
-    this.props.setView(newView);
-  }
 
   render() {
     return (

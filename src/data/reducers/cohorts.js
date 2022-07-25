@@ -6,7 +6,7 @@ const initialState = {
   errorFetching: false,
 };
 
-const cohorts = (state = initialState, action) => {
+const cohorts = (state = initialState, action = {}) => {
   switch (action.type) {
     case actions.fetching.started.toString():
       return {

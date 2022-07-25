@@ -30,7 +30,7 @@ const initialState = {
   isDownloadGradesActive: false,
 };
 
-const grades = (state = initialState, { type, payload }) => {
+const grades = (state = initialState, { type, payload } = {}) => {
   switch (type) {
     case actions.banner.open.toString():
       return {
