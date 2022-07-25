@@ -1,3 +1,4 @@
+// eslint-disable-next-line import/no-extraneous-dependencies
 const { createConfig } = require('@edx/frontend-build');
 
 const config = createConfig('eslint', {
@@ -6,6 +7,8 @@ const config = createConfig('eslint', {
     'import/no-named-as-default-member': 'off',
     'import/no-self-import': 'off',
     'spaced-comment': ['error', 'always', { block: { exceptions: ['*'] } }],
+    'no-import-assign': 'off',
+    'import/no-import-module-exports': 'off',
   },
 });
 
