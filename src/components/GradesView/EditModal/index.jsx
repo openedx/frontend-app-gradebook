@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import {
   Button,
   Modal,
-  StatusAlert,
+  Alert,
 } from '@edx/paragon';
 import { FormattedMessage } from '@edx/frontend-platform/i18n';
 
@@ -53,12 +53,13 @@ export class EditModal extends React.Component {
         body={(
           <div>
             <ModalHeaders />
-            <StatusAlert
-              alertType="danger"
-              dialog={this.props.gradeOverrideHistoryError}
-              open={!!this.props.gradeOverrideHistoryError}
+            <Alert
+              variant="danger"
+              show={!!this.props.gradeOverrideHistoryError}
               dismissible={false}
-            />
+            >
+              {this.props.gradeOverrideHistoryError}
+            </Alert>
             <OverrideTable />
             <div><FormattedMessage {...messages.visibility} /></div>
             <div><FormattedMessage {...messages.saveVisibility} /></div>

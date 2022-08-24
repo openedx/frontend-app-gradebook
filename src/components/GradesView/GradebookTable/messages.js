@@ -31,6 +31,11 @@ const messages = defineMessages({
     defaultMessage: 'Total Grade values are always displayed as a percentage',
     description: 'Gradebook table message that total grades are displayed in percent format',
   },
+  noResultsFound: {
+    id: 'gradebook.GradesView.table.noResultsFound',
+    defaultMessage: 'No results found',
+    description: 'Gradebook table message when no learner results were found',
+  },
 });
 
 export default messages;

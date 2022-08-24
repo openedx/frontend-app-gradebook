@@ -5,12 +5,13 @@ exports[`EditMoal Component snapshots gradeOverrideHistoryError is and empty and
   body={
     <div>
       <ModalHeaders />
-      <StatusAlert
-        alertType="danger"
-        dialog="Weve been trying to contact you regarding..."
+      <Alert
         dismissible={false}
-        open={true}
-      />
+        show={true}
+        variant="danger"
+      >
+        Weve been trying to contact you regarding...
+      </Alert>
       <OverrideTable />
       <div>
         <FormattedMessage
@@ -66,12 +67,13 @@ exports[`EditMoal Component snapshots gradeOverrideHistoryError is empty and ope
   body={
     <div>
       <ModalHeaders />
-      <StatusAlert
-        alertType="danger"
-        dialog=""
+      <Alert
         dismissible={false}
-        open={false}
-      />
+        show={false}
+        variant="danger"
+      >
+        
+      </Alert>
       <OverrideTable />
       <div>
         <FormattedMessage

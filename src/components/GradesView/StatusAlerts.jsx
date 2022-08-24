@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
-import { StatusAlert } from '@edx/paragon';
+import { Alert } from '@edx/paragon';
 import { FormattedMessage } from '@edx/frontend-platform/i18n';
 
 import selectors from 'data/selectors';
@@ -40,18 +40,20 @@ export class StatusAlerts extends React.Component {
   render() {
     return (
       <>
-        <StatusAlert
-          alertType="success"
-          dialog={<FormattedMessage {...messages.editSuccessAlert} />}
+        <Alert
+          variant="success"
           onClose={this.props.handleCloseSuccessBanner}
-          open={this.props.showSuccessBanner}
-        />
-        <StatusAlert
-          alertType="danger"
-          dialog={this.courseGradeFilterAlertDialogText}
+          show={this.props.showSuccessBanner}
+        >
+          <FormattedMessage {...messages.editSuccessAlert} />
+        </Alert>
+        <Alert
+          variant="danger"
           dismissible={false}
-          open={this.isCourseGradeFilterAlertOpen}
-        />
+          show={this.isCourseGradeFilterAlertOpen}
+        >
+          {this.courseGradeFilterAlertDialogText}
+        </Alert>
       </>
     );
   }

@@ -31,7 +31,7 @@
     .import-grades-btn {
       margin-left: 20px;
     }
-    .intervention-report-description: {
+    .intervention-report-description {
       margin-right: 40px;
     }
     h4.step-message-1 {
@@ -67,102 +67,7 @@
     overflow-x: auto;
     height: 600px;
     overflow-y: auto;
-    word-break: break-word;
     position: relative;
-}
-
-.gbook { 
-    width: 100%;
-
-    .grade-button {
-        text-decoration: underline;
-    }
-
-    .student-key {
-        font-size: 14px;
-    }
-
-    #courseGradeTooltipIcon {
-      float: right;
-    }
-
-    .table thead tr {
-        min-height: 60px;
-        &:nth-child(1) {
-          position: sticky;
-          top: 0;
-          z-index: 10;
-          background-color: white;
-          th {
-            background-color: white;
-            border-bottom: 1px solid $gray_200;
-          }
-        }
-    }
-
-    thead, tbody, tr, td, th {
-      display: block;
-      word-break: break-word;
-    }
-
-    .table tr th:first-child {
-        border-bottom: none;
-    }
-    .table tr th:first-child,
-    .table tr td:first-child {
-        position: sticky;
-        left: 0;
-        z-index: 1; // to float over the following children in the side-scrolling case
-        background: white;
-    }
-
-    .table tr {
-      th:nth-child(1),
-      td:nth-child(1),
-      th:nth-child(2),
-      td:nth-child(2) {
-        width: 240px;
-      }
-      th:nth-last-of-type(1) {
-        width: 150px;
-      }
-      th, td {
-        width: 120px;
-      }
-    }
-    .table tbody th {
-        font-weight: normal;
-    }
-
-    .table {
-      overflow-x: hidden;
-
-      height: 100%;
-
-      tbody {
-        overflow-y: auto;
-        display: block;
-      }
-
-      thead, tbody tr {
-        display: table;
-        table-layout: fixed;
-      }
-
-      th {
-          vertical-align: top;
-          font-size: 14px;
-      }
-    }
-
-    .link-style {
-        color: #0075b4;
-        &:hover, &:focus {
-            color: #004368;
-            text-decoration: underline;
-        }
-    }
-
 }
 
 .form-group, .pgn__form-group {

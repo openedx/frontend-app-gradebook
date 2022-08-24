@@ -3,7 +3,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
-import { Table } from '@edx/paragon';
+import { DataTable } from '@edx/paragon';
 import { FormattedMessage } from '@edx/frontend-platform/i18n';
 
 import { gradeOverrideHistoryColumns as columns } from 'data/constants/app';
@@ -27,14 +27,14 @@ export const OverrideTable = ({
     return null;
   }
   return (
-    <Table
+    <DataTable
       columns={[
-        { label: <FormattedMessage {...messages.dateHeader} />, key: columns.date },
-        { label: <FormattedMessage {...messages.graderHeader} />, key: columns.grader },
-        { label: <FormattedMessage {...messages.reasonHeader} />, key: columns.reason },
+        { Header: <FormattedMessage {...messages.dateHeader} />, accessor: columns.date },
+        { Header: <FormattedMessage {...messages.graderHeader} />, accessor: columns.grader },
+        { Header: <FormattedMessage {...messages.reasonHeader} />, accessor: columns.reason },
         {
-          label: <FormattedMessage {...messages.adjustedGradeHeader} />,
-          key: columns.adjustedGrade,
+          Header: <FormattedMessage {...messages.adjustedGradeHeader} />,
+          accessor: columns.adjustedGrade,
         },
       ]}
       data={[
@@ -45,6 +45,7 @@ export const OverrideTable = ({
           reason: <ReasonInput />,
         },
       ]}
+      itemCount={gradeOverrides.length}
     />
   );
 };

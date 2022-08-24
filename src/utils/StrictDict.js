@@ -4,6 +4,10 @@ const strictGet = (target, name) => {
     return target;
   }
 
+  if (name === '$$typeof') {
+    return typeof target;
+  }
+
   if (name in target || name === '_reactFragment') {
     return target[name];
   }

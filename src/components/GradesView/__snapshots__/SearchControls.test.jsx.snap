@@ -10,9 +10,9 @@ exports[`SearchControls Component Snapshots basic snapshot 1`] = `
         id="gradebook.GradesView.search.label"
       />
     }
-    onChange={[MockFunction onChange]}
+    onBlur={[MockFunction onBlur]}
     onClear={[MockFunction onClear]}
-    onSubmit={[MockFunction fetchGrades]}
+    onSubmit={[MockFunction onSubmit]}
     value="alice"
   />
   <small

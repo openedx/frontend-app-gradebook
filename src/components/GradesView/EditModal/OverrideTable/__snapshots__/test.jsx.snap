@@ -1,40 +1,40 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`OverrideTable Component snapshots basic snapshot shows a row for each entry and one editable row 1`] = `
-<Table
+<DataTable
   columns={
     Array [
       Object {
-        "key": "date",
-        "label": <FormattedMessage
+        "Header": <FormattedMessage
           defaultMessage="Date"
           description="Edit Modal Override Table Date column header"
           id="gradebook.GradesView.EditModal.Overrides.dateHeader"
         />,
+        "accessor": "date",
       },
       Object {
-        "key": "grader",
-        "label": <FormattedMessage
+        "Header": <FormattedMessage
           defaultMessage="Grader"
           description="Edit Modal Override Table Grader column header"
           id="gradebook.GradesView.EditModal.Overrides.graderHeader"
         />,
+        "accessor": "grader",
       },
       Object {
-        "key": "reason",
-        "label": <FormattedMessage
+        "Header": <FormattedMessage
           defaultMessage="Reason"
           description="Edit Modal Override Table Reason column header"
           id="gradebook.GradesView.EditModal.Overrides.reasonHeader"
         />,
+        "accessor": "reason",
       },
       Object {
-        "key": "adjustedGrade",
-        "label": <FormattedMessage
+        "Header": <FormattedMessage
           defaultMessage="Adjusted grade"
           description="Edit Modal Override Table Adjusted grade column header"
           id="gradebook.GradesView.EditModal.Overrides.adjustedGradeHeader"
         />,
+        "accessor": "adjustedGrade",
       },
     ]
   }
@@ -59,5 +59,6 @@ exports[`OverrideTable Component snapshots basic snapshot shows a row for each e
       },
     ]
   }
+  itemCount={2}
 />
 `;
