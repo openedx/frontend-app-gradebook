@@ -22,7 +22,7 @@ const PercentGroup = ({
         {...{ value, disabled, onChange }}
       />
     </Form.Group>
-    <span className="mr-2 mb-4 align-self-end">%</span>
+    <span className="mr-1 mb-4 align-self-end">%</span>
   </div>
 );
 PercentGroup.defaultProps = {

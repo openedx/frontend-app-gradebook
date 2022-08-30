@@ -40,9 +40,9 @@ export class AssignmentGradeFilter extends React.Component {
       localAssignmentLimits: { assignmentGradeMax, assignmentGradeMin },
     } = this.props;
     return (
-      <div className="d-inline-block">
+      <>
         <div className="row">
-          <div className="col-5">
+          <div className="col-5 pr-0">
             <PercentGroup
               id="assignmentGradeMin"
               label={<FormattedMessage {...messages.minGrade} />}
@@ -51,7 +51,7 @@ export class AssignmentGradeFilter extends React.Component {
               onChange={this.handleSetMin}
             />
           </div>
-          <div className="col-5">
+          <div className="col-5 pr-0">
             <PercentGroup
               id="assignmentGradeMax"
               label={<FormattedMessage {...messages.maxGrade} />}
@@ -72,7 +72,7 @@ export class AssignmentGradeFilter extends React.Component {
             Apply
           </Button>
         </div>
-      </div>
+      </>
     );
   }
 }

@@ -49,7 +49,7 @@ export class CourseGradeFilter extends React.Component {
     return (
       <>
         <div className="row">
-          <div className="col-5">
+          <div className="col-5 pr-0">
             <PercentGroup
               id="minimum-grade"
               label={<FormattedMessage {...messages.minGrade} />}
@@ -57,7 +57,7 @@ export class CourseGradeFilter extends React.Component {
               onChange={this.handleUpdateMin}
             />
           </div>
-          <div className="col-5">
+          <div className="col-5 pr-0">
             <PercentGroup
               id="maximum-grade"
               label={<FormattedMessage {...messages.maxGrade} />}
