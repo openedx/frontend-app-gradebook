@@ -17,7 +17,8 @@
     "semantic-release": "semantic-release",
     "start": "fedx-scripts webpack-dev-server --progress",
     "test": "TZ=GMT fedx-scripts jest --coverage --passWithNoTests",
-    "watch-tests": "jest --watch"
+    "watch-tests": "jest --watch",
+    "update-snapshots": "jest --updateSnapshot"
   },
   "author": "edX",
   "license": "AGPL-3.0",
