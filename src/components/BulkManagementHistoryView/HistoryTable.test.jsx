@@ -75,15 +75,15 @@ describe('HistoryTable', () => {
           test(fieldAssertions.join(', '), () => {
             const rows = table.props().data;
             expect(rows[0].resultsSummary).toEqual(<ResultsSummary {...entry1.resultsSummary} />);
-            expect(rows[0].user).toEqual(<span className="wrap-text-in-cell">{entry1.user}</span>);
+            expect(rows[0].user).toEqual(<span className="text-wrap">{entry1.user}</span>);
             expect(
               rows[0].filename,
-            ).toEqual(<span className="wrap-text-in-cell">{entry1.originalFilename}</span>);
+            ).toEqual(<span className="text-wrap">{entry1.originalFilename}</span>);
             expect(rows[1].resultsSummary).toEqual(<ResultsSummary {...entry2.resultsSummary} />);
-            expect(rows[1].user).toEqual(<span className="wrap-text-in-cell">{entry2.user}</span>);
+            expect(rows[1].user).toEqual(<span className="text-wrap">{entry2.user}</span>);
             expect(
               rows[1].filename,
-            ).toEqual(<span className="wrap-text-in-cell">{entry2.originalFilename}</span>);
+            ).toEqual(<span className="text-wrap">{entry2.originalFilename}</span>);
           });
         });
         test('columns from bulkManagementColumns', () => {

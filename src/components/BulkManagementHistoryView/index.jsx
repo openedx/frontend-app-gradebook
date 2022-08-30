@@ -12,8 +12,8 @@ import HistoryTable from './HistoryTable';
  */
 export const BulkManagementHistoryView = () => (
   <div className="bulk-management-history-view">
-    <h4><FormattedMessage {...messages.heading} /></h4>
-    <p className="help-text">
+    <h4 className="font-weight-bold mt-0"><FormattedMessage {...messages.heading} /></h4>
+    <p className="pb-5 w-75">
       <FormattedMessage {...messages.helpText} />
     </p>
     <BulkManagementAlerts />
