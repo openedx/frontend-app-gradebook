@@ -3,7 +3,7 @@
 exports[`GradebookFilters Component snapshots basic snapshot 1`] = `
 <React.Fragment>
   <div
-    className="filter-sidebar-header"
+    className="d-flex align-items-start justify-content-between p-3"
   >
     <h2>
       <Icon

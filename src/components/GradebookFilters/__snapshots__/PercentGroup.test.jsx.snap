@@ -2,7 +2,7 @@
 
 exports[`PercentGroup Component snapshots basic snapshot 1`] = `
 <div
-  className="percent-group"
+  className="d-flex"
 >
   <FormGroup
     as="div"
@@ -28,7 +28,7 @@ exports[`PercentGroup Component snapshots basic snapshot 1`] = `
     />
   </FormGroup>
   <span
-    className="input-percent-label"
+    className="mr-1 mb-4 align-self-end"
   >
     %
   </span>
@@ -37,7 +37,7 @@ exports[`PercentGroup Component snapshots basic snapshot 1`] = `
 
 exports[`PercentGroup Component snapshots disabled 1`] = `
 <div
-  className="percent-group"
+  className="d-flex"
 >
   <FormGroup
     as="div"
@@ -63,7 +63,7 @@ exports[`PercentGroup Component snapshots disabled 1`] = `
     />
   </FormGroup>
   <span
-    className="input-percent-label"
+    className="mr-1 mb-4 align-self-end"
   >
     %
   </span>

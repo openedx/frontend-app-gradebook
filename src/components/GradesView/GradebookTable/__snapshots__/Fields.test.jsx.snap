@@ -2,7 +2,7 @@
 
 exports[`Gradebook Table Fields Email snapshot 1`] = `
 <span
-  className="wrap-text-in-cell"
+  className="text-wrap"
 >
   myTag@place.com
 </span>
@@ -11,7 +11,7 @@ exports[`Gradebook Table Fields Email snapshot 1`] = `
 exports[`Gradebook Table Fields Username with external_user_key snapshot 1`] = `
 <div>
   <span
-    className="wrap-text-in-cell"
+    className="text-wrap"
   >
     <div>
       <div>
@@ -56,7 +56,7 @@ exports[`Gradebook Table Fields Username with external_user_key wraps external u
 exports[`Gradebook Table Fields Username without external_user_key snapshot 1`] = `
 <div>
   <span
-    className="wrap-text-in-cell"
+    className="text-wrap"
   >
     <div>
       <div>

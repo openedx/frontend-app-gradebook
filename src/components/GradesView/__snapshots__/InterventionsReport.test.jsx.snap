@@ -15,7 +15,7 @@ exports[`InterventionsReport component snapshots snapshot 1`] = `
     className="d-flex justify-content-between align-items-center"
   >
     <div
-      className="intervention-report-description"
+      className="mr-5"
     >
       <FormattedMessage
         defaultMessage="Need to find students who may be falling behind?  Download the interventions report to obtain engagement metrics such as section attempts and visits."

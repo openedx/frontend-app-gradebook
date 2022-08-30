@@ -29,7 +29,7 @@ describe('BulkManagementHistoryView', () => {
       test('heading - h4 loaded from messages', () => {
         const heading = el.find('h4');
         expect(heading.getElement()).toEqual((
-          <h4>
+          <h4 className="font-weight-bold mt-0">
             <FormattedMessage {...messages.heading} />
           </h4>
         ));

@@ -4,7 +4,9 @@ exports[`BulkManagementHistoryView component snapshot snapshot - loads heading f
 <div
   className="bulk-management-history-view"
 >
-  <h4>
+  <h4
+    className="font-weight-bold mt-0"
+  >
     <FormattedMessage
       defaultMessage="Bulk Management History"
       description="Heading text for BulkManagement History Tab"
@@ -12,7 +14,7 @@ exports[`BulkManagementHistoryView component snapshot snapshot - loads heading f
     />
   </h4>
   <p
-    className="help-text"
+    className="pb-5 w-75"
   >
     <FormattedMessage
       defaultMessage="Below is a log of previous grade imports.  To download a CSV of your gradebook and import grades for override, return to the Gradebook.  Please note, after importing grades, it may take a few seconds to process the override."

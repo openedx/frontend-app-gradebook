@@ -30,7 +30,7 @@ exports[`ImportGradesButton component snapshot snapshot - loads export form w/ a
     </FormGroup>
   </Form>
   <NetworkButton
-    className="import-grades-btn"
+    className="ml-4"
     import={true}
     label={
       Object {

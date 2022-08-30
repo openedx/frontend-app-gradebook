@@ -1,37 +1,47 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`AssignmentGradeFilter Component snapshots buttons and groups disabled if no selected assignment 1`] = `
-<div
-  className="grade-filter-inputs"
->
-  <PercentGroup
-    disabled={true}
-    id="assignmentGradeMin"
-    label={
-      <FormattedMessage
-        defaultMessage="Min Grade"
-        description="Min-grade filter select label in Gradebook Filters"
-        id="gradebook.GradebookFilters.minGradeFilterLabel"
-      />
-    }
-    onChange={[MockFunction handleSetMin]}
-    value="2"
-  />
-  <PercentGroup
-    disabled={true}
-    id="assignmentGradeMax"
-    label={
-      <FormattedMessage
-        defaultMessage="Max Grade"
-        description="Max-grade filter select label in Gradebook Filters"
-        id="gradebook.GradebookFilters.maxGradeFilterLabel"
-      />
-    }
-    onChange={[MockFunction handleSetMax]}
-    value="98"
-  />
+<React.Fragment>
   <div
-    className="grade-filter-action"
+    className="row"
+  >
+    <div
+      className="col-5 pr-0"
+    >
+      <PercentGroup
+        disabled={true}
+        id="assignmentGradeMin"
+        label={
+          <FormattedMessage
+            defaultMessage="Min Grade"
+            description="Min-grade filter select label in Gradebook Filters"
+            id="gradebook.GradebookFilters.minGradeFilterLabel"
+          />
+        }
+        onChange={[MockFunction handleSetMin]}
+        value="2"
+      />
+    </div>
+    <div
+      className="col-5 pr-0"
+    >
+      <PercentGroup
+        disabled={true}
+        id="assignmentGradeMax"
+        label={
+          <FormattedMessage
+            defaultMessage="Max Grade"
+            description="Max-grade filter select label in Gradebook Filters"
+            id="gradebook.GradebookFilters.maxGradeFilterLabel"
+          />
+        }
+        onChange={[MockFunction handleSetMax]}
+        value="98"
+      />
+    </div>
+  </div>
+  <div
+    className="text-right"
   >
     <ForwardRef
       active={false}
@@ -44,41 +54,51 @@ exports[`AssignmentGradeFilter Component snapshots buttons and groups disabled i
       Apply
     </ForwardRef>
   </div>
-</div>
+</React.Fragment>
 `;
 
 exports[`AssignmentGradeFilter Component snapshots smoke test 1`] = `
-<div
-  className="grade-filter-inputs"
->
-  <PercentGroup
-    disabled={false}
-    id="assignmentGradeMin"
-    label={
-      <FormattedMessage
-        defaultMessage="Min Grade"
-        description="Min-grade filter select label in Gradebook Filters"
-        id="gradebook.GradebookFilters.minGradeFilterLabel"
-      />
-    }
-    onChange={[MockFunction handleSetMin]}
-    value="2"
-  />
-  <PercentGroup
-    disabled={false}
-    id="assignmentGradeMax"
-    label={
-      <FormattedMessage
-        defaultMessage="Max Grade"
-        description="Max-grade filter select label in Gradebook Filters"
-        id="gradebook.GradebookFilters.maxGradeFilterLabel"
-      />
-    }
-    onChange={[MockFunction handleSetMax]}
-    value="98"
-  />
+<React.Fragment>
   <div
-    className="grade-filter-action"
+    className="row"
+  >
+    <div
+      className="col-5 pr-0"
+    >
+      <PercentGroup
+        disabled={false}
+        id="assignmentGradeMin"
+        label={
+          <FormattedMessage
+            defaultMessage="Min Grade"
+            description="Min-grade filter select label in Gradebook Filters"
+            id="gradebook.GradebookFilters.minGradeFilterLabel"
+          />
+        }
+        onChange={[MockFunction handleSetMin]}
+        value="2"
+      />
+    </div>
+    <div
+      className="col-5 pr-0"
+    >
+      <PercentGroup
+        disabled={false}
+        id="assignmentGradeMax"
+        label={
+          <FormattedMessage
+            defaultMessage="Max Grade"
+            description="Max-grade filter select label in Gradebook Filters"
+            id="gradebook.GradebookFilters.maxGradeFilterLabel"
+          />
+        }
+        onChange={[MockFunction handleSetMax]}
+        value="98"
+      />
+    </div>
+  </div>
+  <div
+    className="text-right"
   >
     <ForwardRef
       active={false}
@@ -91,5 +111,5 @@ exports[`AssignmentGradeFilter Component snapshots smoke test 1`] = `
       Apply
     </ForwardRef>
   </div>
-</div>
+</React.Fragment>
 `;

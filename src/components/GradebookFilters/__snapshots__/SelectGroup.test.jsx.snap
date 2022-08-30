@@ -1,9 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`SelectGroup Component snapshots basic snapshot 1`] = `
-<div
-  className="student-filters"
->
+<div>
   <FormGroup
     as="div"
     controlId="group id"
@@ -46,9 +44,7 @@ exports[`SelectGroup Component snapshots basic snapshot 1`] = `
 `;
 
 exports[`SelectGroup Component snapshots disabled 1`] = `
-<div
-  className="student-filters"
->
+<div>
   <FormGroup
     as="div"
     controlId="group id"

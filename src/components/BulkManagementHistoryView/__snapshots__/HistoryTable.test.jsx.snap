@@ -4,7 +4,7 @@ exports[`HistoryTable component snapshot history table data (from bulkManagement
 Array [
   Object {
     "filename": <span
-      className="wrap-text-in-cell"
+      className="text-wrap"
     >
       blue.png
     </span>,
@@ -15,14 +15,14 @@ Array [
     />,
     "timeUploaded": "65",
     "user": <span
-      className="wrap-text-in-cell"
+      className="text-wrap"
     >
       Eifel
     </span>,
   },
   Object {
     "filename": <span
-      className="wrap-text-in-cell"
+      className="text-wrap"
     >
       allStar.jpg
     </span>,
@@ -33,7 +33,7 @@ Array [
     />,
     "timeUploaded": "2000s?",
     "user": <span
-      className="wrap-text-in-cell"
+      className="text-wrap"
     >
       Smashmouth
     </span>,
@@ -76,7 +76,7 @@ exports[`HistoryTable component snapshot snapshot - loads formatted table 1`] = 
     Array [
       Object {
         "filename": <span
-          className="wrap-text-in-cell"
+          className="text-wrap"
         >
           blue.png
         </span>,
@@ -87,14 +87,14 @@ exports[`HistoryTable component snapshot snapshot - loads formatted table 1`] = 
         />,
         "timeUploaded": "65",
         "user": <span
-          className="wrap-text-in-cell"
+          className="text-wrap"
         >
           Eifel
         </span>,
       },
       Object {
         "filename": <span
-          className="wrap-text-in-cell"
+          className="text-wrap"
         >
           allStar.jpg
         </span>,
@@ -105,7 +105,7 @@ exports[`HistoryTable component snapshot snapshot - loads formatted table 1`] = 
         />,
         "timeUploaded": "2000s?",
         "user": <span
-          className="wrap-text-in-cell"
+          className="text-wrap"
         >
           Smashmouth
         </span>,

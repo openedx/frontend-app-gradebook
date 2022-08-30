@@ -5,7 +5,7 @@ exports[`GradesView Component snapshots basic snapshot 1`] = `
   <SpinnerIcon />
   <InterventionsReport />
   <h4
-    className="step-message-1"
+    className="mt-5 font-weight-bold"
   >
     <FormattedMessage
       defaultMessage="Step 1: Filter the Grade Report"
@@ -23,7 +23,9 @@ exports[`GradesView Component snapshots basic snapshot 1`] = `
     handleClose={[MockFunction this.handleFilterBadgeClose]}
   />
   <StatusAlerts />
-  <h4>
+  <h4
+    className="font-weight-bold mt-0"
+  >
     <FormattedMessage
       defaultMessage="Step 2: View or Modify Individual Grades"
       description="Alert text for invalid minimum course grade"

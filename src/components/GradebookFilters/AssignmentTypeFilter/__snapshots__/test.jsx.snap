@@ -1,9 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`AssignmentTypeFilter Component snapshots SelectGroup disabled if no assignmentFilterOptions 1`] = `
-<div
-  className="student-filters"
->
+<div>
   <SelectGroup
     disabled={true}
     id="assignment-types"
@@ -40,9 +38,7 @@ exports[`AssignmentTypeFilter Component snapshots SelectGroup disabled if no ass
 `;
 
 exports[`AssignmentTypeFilter Component snapshots smoke test 1`] = `
-<div
-  className="student-filters"
->
+<div>
   <SelectGroup
     disabled={false}
     id="assignment-types"
