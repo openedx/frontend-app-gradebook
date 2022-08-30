@@ -40,22 +40,28 @@ export class AssignmentGradeFilter extends React.Component {
       localAssignmentLimits: { assignmentGradeMax, assignmentGradeMin },
     } = this.props;
     return (
-      <div className="grade-filter-inputs">
-        <PercentGroup
-          id="assignmentGradeMin"
-          label={<FormattedMessage {...messages.minGrade} />}
-          value={assignmentGradeMin}
-          disabled={!this.props.selectedAssignment}
-          onChange={this.handleSetMin}
-        />
-        <PercentGroup
-          id="assignmentGradeMax"
-          label={<FormattedMessage {...messages.maxGrade} />}
-          value={assignmentGradeMax}
-          disabled={!this.props.selectedAssignment}
-          onChange={this.handleSetMax}
-        />
-        <div className="grade-filter-action">
+      <div className="d-inline-block">
+        <div className="row">
+          <div className="col-5">
+            <PercentGroup
+              id="assignmentGradeMin"
+              label={<FormattedMessage {...messages.minGrade} />}
+              value={assignmentGradeMin}
+              disabled={!this.props.selectedAssignment}
+              onChange={this.handleSetMin}
+            />
+          </div>
+          <div className="col-5">
+            <PercentGroup
+              id="assignmentGradeMax"
+              label={<FormattedMessage {...messages.maxGrade} />}
+              value={assignmentGradeMax}
+              disabled={!this.props.selectedAssignment}
+              onChange={this.handleSetMax}
+            />
+          </div>
+        </div>
+        <div className="text-right">
           <Button
             type="submit"
             variant="outline-secondary"

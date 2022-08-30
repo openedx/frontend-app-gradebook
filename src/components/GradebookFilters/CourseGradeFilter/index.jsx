@@ -48,21 +48,25 @@ export class CourseGradeFilter extends React.Component {
     } = this.props;
     return (
       <>
-        <div className="grade-filter-inputs">
-          <PercentGroup
-            id="minimum-grade"
-            label={<FormattedMessage {...messages.minGrade} />}
-            value={courseGradeMin}
-            onChange={this.handleUpdateMin}
-          />
-          <PercentGroup
-            id="maximum-grade"
-            label={<FormattedMessage {...messages.maxGrade} />}
-            value={courseGradeMax}
-            onChange={this.handleUpdateMax}
-          />
+        <div className="row">
+          <div className="col-5">
+            <PercentGroup
+              id="minimum-grade"
+              label={<FormattedMessage {...messages.minGrade} />}
+              value={courseGradeMin}
+              onChange={this.handleUpdateMin}
+            />
+          </div>
+          <div className="col-5">
+            <PercentGroup
+              id="maximum-grade"
+              label={<FormattedMessage {...messages.maxGrade} />}
+              value={courseGradeMax}
+              onChange={this.handleUpdateMax}
+            />
+          </div>
         </div>
-        <div className="grade-filter-action">
+        <div className="text-right">
           <Button
             variant="outline-secondary"
             onClick={this.handleApplyClick}

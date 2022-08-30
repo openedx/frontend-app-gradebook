@@ -11,7 +11,7 @@ const PercentGroup = ({
   disabled,
   onChange,
 }) => (
-  <div className="percent-group">
+  <div className="d-flex">
     <Form.Group controlId={id}>
       <Form.Label>{label}</Form.Label>
       <Form.Control
@@ -22,7 +22,7 @@ const PercentGroup = ({
         {...{ value, disabled, onChange }}
       />
     </Form.Group>
-    <span className="input-percent-label">%</span>
+    <span className="mr-2 mb-4 align-self-end">%</span>
   </div>
 );
 PercentGroup.defaultProps = {

@@ -46,7 +46,7 @@ export class AssignmentFilter extends React.Component {
 
   render() {
     return (
-      <div className="student-filters">
+      <div>
         <SelectGroup
           id="assignment"
           label={<FormattedMessage {...messages.assignment} />}

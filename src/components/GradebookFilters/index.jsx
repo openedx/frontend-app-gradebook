@@ -57,7 +57,7 @@ export class GradebookFilters extends React.Component {
     } = this.props;
     return (
       <>
-        <div className="filter-sidebar-header">
+        <div className="d-flex align-items-start justify-content-between p-3">
           <h2><Icon className="fa fa-filter" /></h2>
           <IconButton
             className="p-1"

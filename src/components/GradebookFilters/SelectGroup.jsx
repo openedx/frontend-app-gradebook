@@ -12,7 +12,7 @@ const SelectGroup = ({
   disabled,
   options,
 }) => (
-  <div className="student-filters">
+  <div>
     <Form.Group controlId={id}>
       <Form.Label>{label}</Form.Label>
       <Form.Control as="select" {...{ value, onChange, disabled }}>
