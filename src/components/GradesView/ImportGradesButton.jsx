@@ -72,7 +72,7 @@ export class ImportGradesButton extends React.Component {
         </Form>
 
         <NetworkButton
-          className="import-grades-btn"
+          className="ml-4"
           label={messages.importGradesBtnText}
           onClick={this.handleClickImportGrades}
           import

@@ -13,8 +13,8 @@ import selectors from 'data/selectors';
  * redux state says it should.
  */
 export const SpinnerIcon = ({ show }) => show && (
-  <div className="spinner-overlay">
-    <Icon className="fa fa-spinner fa-spin fa-5x color-black" />
+  <div className="spinner-overlay w-100 h-100 d-flex justify-content-center align-items-start fixed-top">
+    <Icon className="fa fa-spinner fa-spin fa-5x text-dark" />
   </div>
 );
 SpinnerIcon.defaultProps = {

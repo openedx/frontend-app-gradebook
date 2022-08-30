@@ -48,7 +48,7 @@ export class SearchControls extends React.Component {
           onClear={this.onClear}
           value={this.props.searchValue}
         />
-        <small className="form-text text-muted search-help-text">
+        <small className="form-text text-muted ml-4">
           <FormattedMessage {...messages.hint} />
         </small>
       </div>

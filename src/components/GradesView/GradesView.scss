@@ -1,56 +1,20 @@
 .spinner-overlay {
-    position: fixed;
-    height: 100%;
-    width: 100%;
-    top: 0;
-    left: 0;
     background-color: #999;
     opacity: 0.5;
     z-index: 99999;
-    display:flex;
-    align-items: flex-start;
-    justify-content: center;
     padding: 200px;
-}
-
-.color-black {
-    color: black;
 }
 
 .gradebook-content {
     // note that this width isn't well-abstracted from Drawer code.
     // if we need to change it we may need to dig into those styles as well
     width: 100vw;
-    .search-help-text {
-        margin-left: 20px;
-    }
-    h4 {
-        font-weight: bold;
-        margin-top: 0rem;
-    }
-    .import-grades-btn {
-      margin-left: 20px;
-    }
-    .intervention-report-description {
-      margin-right: 40px;
-    }
-    h4.step-message-1 {
-      margin-top: 40px;
-    }
-}
-
-.student-filters{
-    .label{
-        padding-top: 30px;
-    }
-}
-.grade-history-header{
-    float: left;
 }
 
 .grade-history-assignment{
     padding-right: 49px;
 }
+
 .grade-history-student{
     padding-right: 75px;
 }
@@ -62,12 +26,9 @@
 .grade-history-current-grade{
     padding-right: 25px;
 }
+
 .gradebook-container {
-    width: 100%;
-    overflow-x: auto;
-    height: 600px;
-    overflow-y: auto;
-    position: relative;
+    max-height: 600px;
 }
 
 .form-group, .pgn__form-group {
@@ -76,37 +37,8 @@
   }
 }
 
-.filter-group {
-  .grade-filter-inputs {
-    .percent-group {
-      display: inline-block;
-      .form-group, .pgn__form-group {
-        width: 115px;
-        display: inline-block;
-      }
-      .input-percent-label {
-          margin-top: 22px;
-          margin-left: 5px;
-          margin-right: 5px;
-      }
-    }
-  }
-  .grade-filter-action {
-    text-align: right;
-  }
-}
-
-.mb-85 {
-    margin-bottom: 85px;
-}
-
 .modal-dialog {
     max-width: 1000px;
-}
-
-.wrap-text-in-cell {
-    overflow-wrap: break-word;
-    word-wrap: break-word;
 }
 
 select#ScoreView.form-control {
@@ -116,9 +48,10 @@ select#ScoreView.form-control {
 [dir=rtl] #course-grade-tooltip .arrow {
     right: initial;
     left: 0;
-    
+
     &:before {
         border-width: 0.4rem 0.4rem 0.4rem 0;
-        border-right-color: $black;
+        border-right-color: black;
+        border-right-color: var(--black);
     }
 }

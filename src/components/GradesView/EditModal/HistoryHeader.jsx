@@ -10,7 +10,7 @@ import PropTypes from 'prop-types';
  */
 const HistoryHeader = ({ id, label, value }) => (
   <div>
-    <div className={`grade-history-header grade-history-${id}`}>{label}: </div>
+    <div className={`float-left grade-history-${id}`}>{label}: </div>
     <div>{value}</div>
   </div>
 );

@@ -36,7 +36,7 @@ export class InterventionsReport extends React.Component {
         <div
           className="d-flex justify-content-between align-items-center"
         >
-          <div className="intervention-report-description">
+          <div className="mr-5">
             <FormattedMessage {...messages.description} />
           </div>
           <NetworkButton

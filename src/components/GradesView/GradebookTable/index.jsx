@@ -66,7 +66,7 @@ export class GradebookTable extends React.Component {
 
   render() {
     return (
-      <div className="gradebook-container">
+      <div className="gradebook-container w-100 position-relative overflow-auto">
         <DataTable
           columns={this.props.headings.map(this.mapHeaders)}
           data={this.props.grades.map(this.mapRows)}

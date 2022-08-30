@@ -13,6 +13,4 @@ $input-focus-box-shadow: $input-box-shadow; // hack to get upgrade to paragon 4.
 @import "~@edx/frontend-component-footer/dist/_footer";
 
 @import "./components/GradesView/GradesView";
-@import "./components/BulkManagementHistoryView/BulkManagementHistoryView";
 @import "./components/WithSidebar/WithSidebar";
-@import "./components/GradebookFilters/GradebookFilters";
