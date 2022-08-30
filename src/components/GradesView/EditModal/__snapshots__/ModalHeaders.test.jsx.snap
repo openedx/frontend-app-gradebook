@@ -3,7 +3,6 @@
 exports[`ModalHeaders Component snapshots gradeOverrideHistoryError is and empty and open is true modal open and StatusAlert showing 1`] = `
 <div>
   <HistoryHeader
-    id="assignment"
     label={
       <FormattedMessage
         defaultMessage="Assignment"
@@ -14,7 +13,6 @@ exports[`ModalHeaders Component snapshots gradeOverrideHistoryError is and empty
     value="Qwerty"
   />
   <HistoryHeader
-    id="student"
     label={
       <FormattedMessage
         defaultMessage="Student"
@@ -25,7 +23,6 @@ exports[`ModalHeaders Component snapshots gradeOverrideHistoryError is and empty
     value="Uiop"
   />
   <HistoryHeader
-    id="original-grade"
     label={
       <FormattedMessage
         defaultMessage="Original Grade"
@@ -36,7 +33,6 @@ exports[`ModalHeaders Component snapshots gradeOverrideHistoryError is and empty
     value={20}
   />
   <HistoryHeader
-    id="current-grade"
     label={
       <FormattedMessage
         defaultMessage="Current Grade"
@@ -52,7 +48,6 @@ exports[`ModalHeaders Component snapshots gradeOverrideHistoryError is and empty
 exports[`ModalHeaders Component snapshots gradeOverrideHistoryError is empty and open is false modal closed and StatusAlert closed 1`] = `
 <div>
   <HistoryHeader
-    id="assignment"
     label={
       <FormattedMessage
         defaultMessage="Assignment"
@@ -63,7 +58,6 @@ exports[`ModalHeaders Component snapshots gradeOverrideHistoryError is empty and
     value="Qwerty"
   />
   <HistoryHeader
-    id="student"
     label={
       <FormattedMessage
         defaultMessage="Student"
@@ -74,7 +68,6 @@ exports[`ModalHeaders Component snapshots gradeOverrideHistoryError is empty and
     value="Uiop"
   />
   <HistoryHeader
-    id="original-grade"
     label={
       <FormattedMessage
         defaultMessage="Original Grade"
@@ -85,7 +78,6 @@ exports[`ModalHeaders Component snapshots gradeOverrideHistoryError is empty and
     value={20}
   />
   <HistoryHeader
-    id="current-grade"
     label={
       <FormattedMessage
         defaultMessage="Current Grade"

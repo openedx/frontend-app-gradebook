@@ -1,9 +1,11 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`HistoryHeader Component snapshot 1`] = `
-<div>
+<div
+  className="row"
+>
   <div
-    className="float-left grade-history-water"
+    className="col-2"
   >
     Brita
     : 

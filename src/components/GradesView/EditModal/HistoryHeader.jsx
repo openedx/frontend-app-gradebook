@@ -8,9 +8,9 @@ import PropTypes from 'prop-types';
  * @param {string} label - header label
  * @param {string} value - header value
  */
-const HistoryHeader = ({ id, label, value }) => (
-  <div>
-    <div className={`float-left grade-history-${id}`}>{label}: </div>
+const HistoryHeader = ({ label, value }) => (
+  <div className="row">
+    <div className="col-2">{label}: </div>
     <div>{value}</div>
   </div>
 );
@@ -18,7 +18,6 @@ HistoryHeader.defaultProps = {
   value: null,
 };
 HistoryHeader.propTypes = {
-  id: PropTypes.string.isRequired,
   label: PropTypes.node.isRequired,
   value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
 };
