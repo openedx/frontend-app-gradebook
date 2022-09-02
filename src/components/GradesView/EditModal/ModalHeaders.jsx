@@ -21,18 +21,22 @@ export const ModalHeaders = ({
 }) => (
   <div>
     <HistoryHeader
+      id="assignment"
       label={<FormattedMessage {...messages.assignmentHeader} />}
       value={modalState.assignmentName}
     />
     <HistoryHeader
+      id="student"
       label={<FormattedMessage {...messages.studentHeader} />}
       value={modalState.updateUserName}
     />
     <HistoryHeader
+      id="original-grade"
       label={<FormattedMessage {...messages.originalGradeHeader} />}
       value={originalGrade}
     />
     <HistoryHeader
+      id="current-grade"
       label={<FormattedMessage {...messages.currentGradeHeader} />}
       value={currentGrade}
     />

@@ -5,6 +5,7 @@ import HistoryHeader from './HistoryHeader';
 
 describe('HistoryHeader', () => {
   const props = {
+    id: 'water',
     label: 'Brita',
     value: 'hydration',
   };
