@@ -12,7 +12,7 @@ import { StrictDict } from 'utils';
  */
 const Username = ({ username, userKey }) => (
   <div>
-    <span className="text-wrap">
+    <span className="text-break">
       <div>
         <div>{username}</div>
         {userKey && <div className="student-key">{userKey}</div>}
@@ -34,7 +34,7 @@ Username.propTypes = {
  * @param {string} email - email for display
  */
 const Email = ({ email }) => (
-  <span className="text-wrap">{email}</span>
+  <span className="text-break">{email}</span>
 );
 Email.propTypes = {
   email: PropTypes.string.isRequired,

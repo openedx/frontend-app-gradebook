@@ -17,8 +17,8 @@ export const mapHistoryRows = ({
   ...rest
 }) => ({
   resultsSummary: (<ResultsSummary {...resultsSummary} />),
-  filename: (<span className="text-wrap">{originalFilename}</span>),
-  user: (<span className="text-wrap">{user}</span>),
+  filename: (<span className="text-break">{originalFilename}</span>),
+  user: (<span className="text-break">{user}</span>),
   ...rest,
 });
 
