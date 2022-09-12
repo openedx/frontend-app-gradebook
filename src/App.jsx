@@ -14,6 +14,7 @@ import Head from './head/Head';
 
 const App = () => (
   <AppProvider store={store}>
+    <Head />
     <Router>
       <div>
         <Header />
@@ -29,7 +30,6 @@ const App = () => (
         <Footer logo={process.env.LOGO_POWERED_BY_OPEN_EDX_URL_SVG} />
       </div>
     </Router>
-    <Head />
   </AppProvider>
 );
 
