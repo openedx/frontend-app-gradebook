@@ -54,9 +54,34 @@ describe('AdjustedGradeInput', () => {
     });
     describe('behavior', () => {
       describe('onChange', () => {
-        it('calls props.setModalState event target value', () => {
+        it('calls props.setModalState event target value with correct value', () => {
+          const value = 3;
+          el.instance().onChange({ target: { value } });
+          expect(props.setModalState).toHaveBeenCalledWith({
+            adjustedGradeValue: value,
+          });
+        });
+
+        it('calls props.setModalState event target value with a value more then the possibleGrade value', () => {
           const value = 42;
           el.instance().onChange({ target: { value } });
+          expect(props.setModalState).toHaveBeenCalledWith({
+            adjustedGradeValue: props.possibleGrade,
+          });
+        });
+
+        it('calls props.setModalState event target value with less then 0', () => {
+          const value = -5;
+          el.instance().onChange({ target: { value } });
+          expect(props.setModalState).toHaveBeenCalledWith({
+            adjustedGradeValue: 0,
+          });
+        });
+
+        it('calls props.setModalState event target value without possibleGrade value', () => {
+          const value = 100;
+          const newEl = shallow(<AdjustedGradeInput {...props} possibleGrade={null} />);
+          newEl.instance().onChange({ target: { value } });
           expect(props.setModalState).toHaveBeenCalledWith({
             adjustedGradeValue: value,
           });
