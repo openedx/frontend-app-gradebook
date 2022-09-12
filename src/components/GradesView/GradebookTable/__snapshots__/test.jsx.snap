@@ -2,7 +2,7 @@
 
 exports[`GradebookTable component snapshot - fields1 and 2 between email and totalGrade, mocked rows 1`] = `
 <div
-  className="gradebook-container w-100 position-relative overflow-auto"
+  className="gradebook-container shadow-sm w-100 position-relative overflow-auto"
 >
   <DataTable
     RowStatusComponent={[MockFunction this.nullMethod]}
