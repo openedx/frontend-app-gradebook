@@ -3,7 +3,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
-import { Button } from '@edx/paragon';
+import { ActionRow, Col, Button, Row } from '@edx/paragon';
 import { FormattedMessage } from '@edx/frontend-platform/i18n';
 
 import selectors from 'data/selectors';
@@ -48,32 +48,32 @@ export class CourseGradeFilter extends React.Component {
     } = this.props;
     return (
       <>
-        <div className="row">
-          <div className="col-5 pr-0">
+        <Row>
+          <Col xs={5} className="pr-0">
             <PercentGroup
               id="minimum-grade"
               label={<FormattedMessage {...messages.minGrade} />}
               value={courseGradeMin}
               onChange={this.handleUpdateMin}
             />
-          </div>
-          <div className="col-5 pr-0">
+          </Col>
+          <Col xs={5} className="pr-0">
             <PercentGroup
               id="maximum-grade"
               label={<FormattedMessage {...messages.maxGrade} />}
               value={courseGradeMax}
               onChange={this.handleUpdateMax}
             />
-          </div>
-        </div>
-        <div className="text-right">
+          </Col>
+        </Row>
+        <ActionRow>
           <Button
             variant="outline-secondary"
             onClick={this.handleApplyClick}
           >
             Apply
           </Button>
-        </div>
+        </ActionRow>
       </>
     );
   }

@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 import { FormattedMessage } from '@edx/frontend-platform/i18n';
-import { Button } from '@edx/paragon';
+import { ActionRow, Col, Button, Row } from '@edx/paragon';
 
 import selectors from 'data/selectors';
 import actions from 'data/actions';
@@ -41,8 +41,8 @@ export class AssignmentGradeFilter extends React.Component {
     } = this.props;
     return (
       <>
-        <div className="row">
-          <div className="col-5 pr-0">
+        <Row>
+          <Col xs={5} className="pr-0">
             <PercentGroup
               id="assignmentGradeMin"
               label={<FormattedMessage {...messages.minGrade} />}
@@ -50,8 +50,8 @@ export class AssignmentGradeFilter extends React.Component {
               disabled={!this.props.selectedAssignment}
               onChange={this.handleSetMin}
             />
-          </div>
-          <div className="col-5 pr-0">
+          </Col>
+          <Col xs={5} className="pr-0">
             <PercentGroup
               id="assignmentGradeMax"
               label={<FormattedMessage {...messages.maxGrade} />}
@@ -59,9 +59,9 @@ export class AssignmentGradeFilter extends React.Component {
               disabled={!this.props.selectedAssignment}
               onChange={this.handleSetMax}
             />
-          </div>
-        </div>
-        <div className="text-right">
+          </Col>
+        </Row>
+        <ActionRow>
           <Button
             type="submit"
             variant="outline-secondary"
@@ -71,7 +71,7 @@ export class AssignmentGradeFilter extends React.Component {
           >
             Apply
           </Button>
-        </div>
+        </ActionRow>
       </>
     );
   }
