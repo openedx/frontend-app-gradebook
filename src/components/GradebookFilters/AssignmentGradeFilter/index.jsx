@@ -4,7 +4,9 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 import { FormattedMessage } from '@edx/frontend-platform/i18n';
-import { ActionRow, Col, Button, Row } from '@edx/paragon';
+import {
+  ActionRow, Col, Button, Row,
+} from '@edx/paragon';
 
 import selectors from 'data/selectors';
 import actions from 'data/actions';

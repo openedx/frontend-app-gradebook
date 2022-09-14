@@ -2,11 +2,10 @@
 
 exports[`CourseGradeFilter Component snapshots basic snapshot 1`] = `
 <React.Fragment>
-  <div
-    className="row"
-  >
-    <div
-      className="col-5 pr-0"
+  <Row>
+    <Col
+      className="pr-0"
+      xs={5}
     >
       <PercentGroup
         id="minimum-grade"
@@ -20,9 +19,10 @@ exports[`CourseGradeFilter Component snapshots basic snapshot 1`] = `
         onChange={[MockFunction handleUpdateMin]}
         value="5"
       />
-    </div>
-    <div
-      className="col-5 pr-0"
+    </Col>
+    <Col
+      className="pr-0"
+      xs={5}
     >
       <PercentGroup
         id="maximum-grade"
@@ -36,17 +36,15 @@ exports[`CourseGradeFilter Component snapshots basic snapshot 1`] = `
         onChange={[MockFunction handleUpdateMax]}
         value="92"
       />
-    </div>
-  </div>
-  <div
-    className="text-right"
-  >
+    </Col>
+  </Row>
+  <ActionRow>
     <Button
       onClick={[MockFunction handleApplyClick]}
       variant="outline-secondary"
     >
       Apply
     </Button>
-  </div>
+  </ActionRow>
 </React.Fragment>
 `;

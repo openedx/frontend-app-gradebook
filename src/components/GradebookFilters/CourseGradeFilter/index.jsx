@@ -3,8 +3,10 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
-import { ActionRow, Col, Button, Row } from '@edx/paragon';
 import { FormattedMessage } from '@edx/frontend-platform/i18n';
+import {
+  ActionRow, Col, Button, Row,
+} from '@edx/paragon';
 
 import selectors from 'data/selectors';
 import actions from 'data/actions';

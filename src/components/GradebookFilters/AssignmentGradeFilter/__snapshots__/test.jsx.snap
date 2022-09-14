@@ -2,11 +2,12 @@
 
 exports[`AssignmentGradeFilter Component snapshots buttons and groups disabled if no selected assignment 1`] = `
 <React.Fragment>
-  <div
-    className="row"
+  <Row
+    noGutters={false}
   >
-    <div
-      className="col-5 pr-0"
+    <Col
+      className="pr-0"
+      xs={5}
     >
       <PercentGroup
         disabled={true}
@@ -21,9 +22,10 @@ exports[`AssignmentGradeFilter Component snapshots buttons and groups disabled i
         onChange={[MockFunction handleSetMin]}
         value="2"
       />
-    </div>
-    <div
-      className="col-5 pr-0"
+    </Col>
+    <Col
+      className="pr-0"
+      xs={5}
     >
       <PercentGroup
         disabled={true}
@@ -38,10 +40,11 @@ exports[`AssignmentGradeFilter Component snapshots buttons and groups disabled i
         onChange={[MockFunction handleSetMax]}
         value="98"
       />
-    </div>
-  </div>
-  <div
-    className="text-right"
+    </Col>
+  </Row>
+  <ActionRow
+    as="div"
+    isStacked={false}
   >
     <ForwardRef
       active={false}
@@ -53,17 +56,18 @@ exports[`AssignmentGradeFilter Component snapshots buttons and groups disabled i
     >
       Apply
     </ForwardRef>
-  </div>
+  </ActionRow>
 </React.Fragment>
 `;
 
 exports[`AssignmentGradeFilter Component snapshots smoke test 1`] = `
 <React.Fragment>
-  <div
-    className="row"
+  <Row
+    noGutters={false}
   >
-    <div
-      className="col-5 pr-0"
+    <Col
+      className="pr-0"
+      xs={5}
     >
       <PercentGroup
         disabled={false}
@@ -78,9 +82,10 @@ exports[`AssignmentGradeFilter Component snapshots smoke test 1`] = `
         onChange={[MockFunction handleSetMin]}
         value="2"
       />
-    </div>
-    <div
-      className="col-5 pr-0"
+    </Col>
+    <Col
+      className="pr-0"
+      xs={5}
     >
       <PercentGroup
         disabled={false}
@@ -95,10 +100,11 @@ exports[`AssignmentGradeFilter Component snapshots smoke test 1`] = `
         onChange={[MockFunction handleSetMax]}
         value="98"
       />
-    </div>
-  </div>
-  <div
-    className="text-right"
+    </Col>
+  </Row>
+  <ActionRow
+    as="div"
+    isStacked={false}
   >
     <ForwardRef
       active={false}
@@ -110,6 +116,6 @@ exports[`AssignmentGradeFilter Component snapshots smoke test 1`] = `
     >
       Apply
     </ForwardRef>
-  </div>
+  </ActionRow>
 </React.Fragment>
 `;

@@ -13,7 +13,10 @@ import {
 } from '.';
 
 jest.mock('@edx/paragon', () => ({
+  ActionRow: () => 'ActionRow',
+  Col: () => 'Col',
   Button: () => 'Button',
+  Row: () => 'Row',
 }));
 jest.mock('../PercentGroup', () => 'PercentGroup');
 
