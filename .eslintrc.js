@@ -7,9 +7,11 @@ const config = createConfig('eslint', {
     'import/no-named-as-default-member': 'off',
     'import/no-self-import': 'off',
     'spaced-comment': ['error', 'always', { block: { exceptions: ['*'] } }],
-    'no-import-assign': 'off',
-    'import/no-import-module-exports': 'off',
+    'import/no-import-module-exports': ['error', { exceptions: ['**/selectors/**', '**/thunkActions/**'] }],
   },
+  overrides: [{
+    files: ['*.test.js'], rules: { 'no-import-assign': 'off' },
+  }],
 });
 
 config.settings = {

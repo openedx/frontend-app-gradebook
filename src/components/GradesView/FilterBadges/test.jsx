@@ -2,20 +2,23 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 
-import * as constants from 'data/constants/filters';
 import FilterBadges from '.';
 import FilterBadge from './FilterBadge';
 
 jest.mock('./FilterBadge', () => 'FilterBadge');
 
+const order = ['filter1', 'filter2', 'filter3'];
+jest.mock('data/constants/filters', () => ({
+  ...jest.requireActual('data/constants/filters'),
+  badgeOrder: order,
+}));
+
 describe('FilterBadges', () => {
   describe('component', () => {
     let el;
     let handleClose;
-    const order = ['filter1', 'filter2', 'filter3'];
     beforeEach(() => {
       handleClose = jest.fn().mockName('this.props.handleClose');
-      constants.badgeOrder = order;
       el = shallow(<FilterBadges handleClose={handleClose} />);
     });
     test('snapshot - has a filterbadge with handleClose for each filter in badgeOrder', () => {
