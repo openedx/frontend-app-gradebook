@@ -70,7 +70,7 @@
   },
   "devDependencies": {
     "@edx/frontend-build": "9.1.1",
-    "axios": "0.21.1",
+    "axios": "0.21.2",
     "axios-mock-adapter": "^1.17.0",
     "enzyme-adapter-react-16": "^1.14.0",
     "es-check": "^2.3.0",
