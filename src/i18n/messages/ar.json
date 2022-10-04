@@ -37,7 +37,7 @@
   "gradebook.GradesView.EditModal.Overrides.reasonHeader": "Reason",
   "gradebook.GradesTab.usersVisibilityLabel'": "Showing {filteredUsers} of {totalUsers} total learners",
   "gradebook.GradesView.editFilterLabel": "Edit Filters",
-  "gradebook.GradesView.table.headings.email": "Email",
+  "gradebook.GradesView.table.headings.email": "Email*",
   "gradebook.GradesView.table.headings.totalGrade": "Total Grade (%)",
   "gradebook.GradesView.table.headings.username": "Username",
   "gradebook.GradesView.table.labels.studentKey": "Student Key*",
