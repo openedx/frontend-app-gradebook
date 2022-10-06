@@ -9,7 +9,9 @@ import {
   EditModal,
   mapDispatchToProps,
   mapStateToProps,
-} from '.';
+}
+from '.';
+
 jest.mock('./OverrideTable', () => 'OverrideTable');
 jest.mock('./ModalHeaders', () => 'ModalHeaders');
 jest.mock('data/actions', () => ({
