@@ -5,8 +5,9 @@ import { connect } from 'react-redux';
 
 import {
   Button,
-  Modal,
   Alert,
+  ModalDialog,
+  ActionRow,
 } from '@edx/paragon';
 import { FormattedMessage } from '@edx/frontend-platform/i18n';
 
@@ -46,11 +47,20 @@ export class EditModal extends React.Component {
 
   render() {
     return (
-      <Modal
-        open={this.props.open}
-        title={<FormattedMessage {...messages.title} />}
-        closeText={<FormattedMessage {...messages.closeText} />}
-        body={(
+
+      <ModalDialog
+        isOpen
+        onClose={this.closeAssignmentModal}
+        size="xl"
+        hasCloseButton
+        isFullscreenOnMobile
+      >
+        <ModalDialog.Header>
+          <ModalDialog.Title>
+            <FormattedMessage {...messages.title} />
+          </ModalDialog.Title>
+        </ModalDialog.Header>
+        <ModalDialog.Body>
           <div>
             <ModalHeaders />
             <Alert
@@ -64,14 +74,18 @@ export class EditModal extends React.Component {
             <div><FormattedMessage {...messages.visibility} /></div>
             <div><FormattedMessage {...messages.saveVisibility} /></div>
           </div>
-        )}
-        buttons={[
-          <Button variant="primary" onClick={this.handleAdjustedGradeClick}>
-            <FormattedMessage {...messages.saveGrade} />
-          </Button>,
-        ]}
-        onClose={this.closeAssignmentModal}
-      />
+        </ModalDialog.Body>
+        <ModalDialog.Footer>
+          <ActionRow>
+            <ModalDialog.CloseButton variant="tertiary">
+              <FormattedMessage {...messages.closeText} />
+            </ModalDialog.CloseButton>
+            <Button variant="primary" onClick={this.handleAdjustedGradeClick}>
+              <FormattedMessage {...messages.saveGrade} />
+            </Button>
+          </ActionRow>
+        </ModalDialog.Footer>
+      </ModalDialog>
     );
   }
 }
