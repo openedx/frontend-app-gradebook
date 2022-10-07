@@ -4,12 +4,11 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 import { DataTable } from '@edx/paragon';
-import {
-  FormattedMessage, getLocale, isRtl, injectIntl, intlShape,
-} from '@edx/frontend-platform/i18n';
+import { FormattedMessage, injectIntl, intlShape } from '@edx/frontend-platform/i18n';
 
 import selectors from 'data/selectors';
 import { Headings } from 'data/constants/grades';
+import { getLocalizedPercentSign } from 'i18n';
 
 import messages from './messages';
 import Fields from './Fields';
@@ -51,7 +50,7 @@ export class GradebookTable extends React.Component {
       <Fields.Username username={entry.username} userKey={entry.external_user_key} />
     ),
     [Headings.email]: (<Fields.Email email={entry.email} />),
-    [Headings.totalGrade]: `${roundGrade(entry.percent * 100)}${isRtl(getLocale()) ? '\u200f' : ''}%`,
+    [Headings.totalGrade]: `${roundGrade(entry.percent * 100)}${getLocalizedPercentSign()}`,
     ...entry.section_breakdown.reduce((acc, subsection) => ({
       ...acc,
       [subsection.label]: <GradeButton {...{ entry, subsection }} />,
