@@ -260,15 +260,15 @@ describe('root selectors', () => {
     };
     const grade1 = '42';
     const grade2 = '3.14';
-    it('returns an object of nulls if assignment is not set', () => {
+    it('returns an object of nullable assignmentGrades if assignment is not set', () => {
       mockId(undefined);
       mockAssgn(grade1, grade2);
       mockCourse(grade1, grade2);
       expect(selector(testState)).toEqual({
         assignmentGradeMax: null,
         assignmentGradeMin: null,
-        courseGradeMax: null,
-        courseGradeMin: null,
+        courseGradeMax: '42',
+        courseGradeMin: '3.14',
       });
     });
     it('returns null for each extreme iff they are equal their default', () => {
