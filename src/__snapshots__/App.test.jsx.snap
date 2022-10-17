@@ -4,6 +4,7 @@ exports[`App router component snapshot 1`] = `
 <AppProvider
   store="testStore"
 >
+  <injectIntl(ShimmedIntlComponent) />
   <BrowserRouter>
     <div>
       <Header />
