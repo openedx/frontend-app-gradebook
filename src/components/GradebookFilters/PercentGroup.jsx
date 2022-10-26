@@ -4,29 +4,27 @@ import PropTypes from 'prop-types';
 
 import { Form } from '@edx/paragon';
 
-function PercentGroup({
+const PercentGroup = ({
   id,
   label,
   value,
   disabled,
   onChange,
-}) {
-  return (
-    <div className="percent-group">
-      <Form.Group controlId={id}>
-        <Form.Label>{label}</Form.Label>
-        <Form.Control
-          type="number"
-          min={0}
-          max={100}
-          step={1}
-          {...{ value, disabled, onChange }}
-        />
-      </Form.Group>
-      <span className="input-percent-label">%</span>
-    </div>
-  );
-}
+}) => (
+  <div className="percent-group">
+    <Form.Group controlId={id}>
+      <Form.Label>{label}</Form.Label>
+      <Form.Control
+        type="number"
+        min={0}
+        max={100}
+        step={1}
+        {...{ value, disabled, onChange }}
+      />
+    </Form.Group>
+    <span className="input-percent-label">%</span>
+  </div>
+);
 PercentGroup.defaultProps = {
   disabled: false,
 };

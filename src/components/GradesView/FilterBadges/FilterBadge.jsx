@@ -15,7 +15,7 @@ import selectors from 'data/selectors';
  *   to reset when the filter badge closes.
  * @param {string} filterName - api filter name (for redux connector)
  */
-export function FilterBadge({
+export const FilterBadge = ({
   config: {
     displayName,
     isDefault,
@@ -24,8 +24,7 @@ export function FilterBadge({
     connectedFilters,
   },
   handleClose,
-}) {
-  return !isDefault && (
+}) => !isDefault && (
   <div>
     <span className="badge badge-info">
       <span>
@@ -44,8 +43,7 @@ export function FilterBadge({
     </span>
     <br />
   </div>
-  );
-}
+);
 
 FilterBadge.propTypes = {
   handleClose: PropTypes.func.isRequired,

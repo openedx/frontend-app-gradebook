@@ -13,21 +13,19 @@ import messages from './ScoreViewInput.messages';
  * <ScoreViewInput />
  * redux-connected select control for grade format (percent vs absolute)
  */
-export function ScoreViewInput({ format, intl, toggleFormat }) {
-  return (
-    <FormGroup controlId="ScoreView">
-      <FormLabel><FormattedMessage {...messages.scoreView} />:</FormLabel>
-      <FormControl
-        as="select"
-        value={format}
-        onChange={toggleFormat}
-      >
-        <option value="percent">{intl.formatMessage(messages.percent)}</option>
-        <option value="absolute">{intl.formatMessage(messages.absolute)}</option>
-      </FormControl>
-    </FormGroup>
-  );
-}
+export const ScoreViewInput = ({ format, intl, toggleFormat }) => (
+  <FormGroup controlId="ScoreView">
+    <FormLabel><FormattedMessage {...messages.scoreView} />:</FormLabel>
+    <FormControl
+      as="select"
+      value={format}
+      onChange={toggleFormat}
+    >
+      <option value="percent">{intl.formatMessage(messages.percent)}</option>
+      <option value="absolute">{intl.formatMessage(messages.absolute)}</option>
+    </FormControl>
+  </FormGroup>
+);
 ScoreViewInput.defaultProps = {
   format: 'percent',
 };

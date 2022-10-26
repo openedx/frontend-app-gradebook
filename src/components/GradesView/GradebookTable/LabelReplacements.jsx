@@ -18,51 +18,47 @@ export const totalGradePercentageMessage = 'Total Grade values are always displa
  * Total Grade column header.
  * displays an overlay tooltip with screen-reader text to indicate total grade percentage
  */
-function TotalGradeLabelReplacement() {
-  return (
-    <div>
-      <OverlayTrigger
-        trigger={['hover', 'focus']}
-        key="left-basic"
-        placement={isRtl(getLocale()) ? 'right' : 'left'}
-        overlay={(
-          <Tooltip id="course-grade-tooltip">
-            <FormattedMessage {...messages.totalGradePercentage} />
-          </Tooltip>
+const TotalGradeLabelReplacement = () => (
+  <div>
+    <OverlayTrigger
+      trigger={['hover', 'focus']}
+      key="left-basic"
+      placement={isRtl(getLocale()) ? 'right' : 'left'}
+      overlay={(
+        <Tooltip id="course-grade-tooltip">
+          <FormattedMessage {...messages.totalGradePercentage} />
+        </Tooltip>
       )}
-      >
-        <div>
-          <FormattedMessage {...messages.totalGradeHeading} />
-          <div id="courseGradeTooltipIcon">
-            <Icon
-              className="fa fa-info-circle"
-              screenReaderText={(
-                <FormattedMessage {...messages.totalGradePercentage} />
+    >
+      <div>
+        <FormattedMessage {...messages.totalGradeHeading} />
+        <div id="courseGradeTooltipIcon">
+          <Icon
+            className="fa fa-info-circle"
+            screenReaderText={(
+              <FormattedMessage {...messages.totalGradePercentage} />
             )}
-            />
-          </div>
+          />
         </div>
-      </OverlayTrigger>
-    </div>
-  );
-}
+      </div>
+    </OverlayTrigger>
+  </div>
+);
 
 /**
  * <UsernameLabelReplacement />
  * Username column header.  Lists that Student Key is possibly available
  */
-function UsernameLabelReplacement() {
-  return (
+const UsernameLabelReplacement = () => (
+  <div>
     <div>
-      <div>
-        <FormattedMessage {...messages.usernameHeading} />
-      </div>
-      <div className="font-weight-normal student-key">
-        <FormattedMessage {...messages.studentKeyLabel} />
-      </div>
+      <FormattedMessage {...messages.usernameHeading} />
     </div>
-  );
-}
+    <div className="font-weight-normal student-key">
+      <FormattedMessage {...messages.studentKeyLabel} />
+    </div>
+  </div>
+);
 
 export default StrictDict({
   TotalGradeLabelReplacement,

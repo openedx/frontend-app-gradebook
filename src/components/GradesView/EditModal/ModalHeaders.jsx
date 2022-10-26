@@ -14,36 +14,34 @@ import HistoryHeader from './HistoryHeader';
  * Provides a list of HistoryHeaders for the student name, assignment,
  * original grade, and current override grade.
  */
-export function ModalHeaders({
+export const ModalHeaders = ({
   modalState,
   originalGrade,
   currentGrade,
-}) {
-  return (
-    <div>
-      <HistoryHeader
-        id="assignment"
-        label={<FormattedMessage {...messages.assignmentHeader} />}
-        value={modalState.assignmentName}
-      />
-      <HistoryHeader
-        id="student"
-        label={<FormattedMessage {...messages.studentHeader} />}
-        value={modalState.updateUserName}
-      />
-      <HistoryHeader
-        id="original-grade"
-        label={<FormattedMessage {...messages.originalGradeHeader} />}
-        value={originalGrade}
-      />
-      <HistoryHeader
-        id="current-grade"
-        label={<FormattedMessage {...messages.currentGradeHeader} />}
-        value={currentGrade}
-      />
-    </div>
-  );
-}
+}) => (
+  <div>
+    <HistoryHeader
+      id="assignment"
+      label={<FormattedMessage {...messages.assignmentHeader} />}
+      value={modalState.assignmentName}
+    />
+    <HistoryHeader
+      id="student"
+      label={<FormattedMessage {...messages.studentHeader} />}
+      value={modalState.updateUserName}
+    />
+    <HistoryHeader
+      id="original-grade"
+      label={<FormattedMessage {...messages.originalGradeHeader} />}
+      value={originalGrade}
+    />
+    <HistoryHeader
+      id="current-grade"
+      label={<FormattedMessage {...messages.currentGradeHeader} />}
+      value={currentGrade}
+    />
+  </div>
+);
 ModalHeaders.defaultProps = {
   currentGrade: null,
   originalGrade: null,

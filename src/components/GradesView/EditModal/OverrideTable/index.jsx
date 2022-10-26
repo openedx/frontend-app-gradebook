@@ -18,11 +18,11 @@ import AdjustedGradeInput from './AdjustedGradeInput';
  * Table containing previous grade override entries, and an "edit" row
  * with todays date, an AdjustedGradeInput and a ReasonInput
  */
-export function OverrideTable({
+export const OverrideTable = ({
   hide,
   gradeOverrides,
   todaysDate,
-}) {
+}) => {
   if (hide) {
     return null;
   }
@@ -48,7 +48,7 @@ export function OverrideTable({
       itemCount={gradeOverrides.length}
     />
   );
-}
+};
 OverrideTable.defaultProps = {
   gradeOverrides: [],
 };

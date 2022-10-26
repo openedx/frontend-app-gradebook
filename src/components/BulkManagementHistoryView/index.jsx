@@ -10,17 +10,15 @@ import HistoryTable from './HistoryTable';
  * <BulkManagementHistoryView />
  * top-level view for managing uploads of bulk management override csvs.
  */
-export function BulkManagementHistoryView() {
-  return (
-    <div className="bulk-management-history-view">
-      <h4><FormattedMessage {...messages.heading} /></h4>
-      <p className="help-text">
-        <FormattedMessage {...messages.helpText} />
-      </p>
-      <BulkManagementAlerts />
-      <HistoryTable />
-    </div>
-  );
-}
+export const BulkManagementHistoryView = () => (
+  <div className="bulk-management-history-view">
+    <h4><FormattedMessage {...messages.heading} /></h4>
+    <p className="help-text">
+      <FormattedMessage {...messages.helpText} />
+    </p>
+    <BulkManagementAlerts />
+    <HistoryTable />
+  </div>
+);
 
 export default BulkManagementHistoryView;

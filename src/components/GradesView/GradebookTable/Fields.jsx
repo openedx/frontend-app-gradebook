@@ -10,18 +10,16 @@ import { StrictDict } from 'utils';
  * @param {string} username - username for display
  * @param {userKey} userKey - external_user_key for display
  */
-function Username({ username, userKey }) {
-  return (
-    <div>
-      <span className="wrap-text-in-cell">
-        <div>
-          <div>{username}</div>
-          {userKey && <div className="student-key">{userKey}</div>}
-        </div>
-      </span>
-    </div>
-  );
-}
+const Username = ({ username, userKey }) => (
+  <div>
+    <span className="wrap-text-in-cell">
+      <div>
+        <div>{username}</div>
+        {userKey && <div className="student-key">{userKey}</div>}
+      </div>
+    </span>
+  </div>
+);
 Username.defaultProps = {
   userKey: null,
 };
@@ -35,9 +33,7 @@ Username.propTypes = {
  * Simple label field for email value.
  * @param {string} email - email for display
  */
-function Email({ email }) {
-  return <span className="wrap-text-in-cell">{email}</span>;
-}
+const Email = ({ email }) => <span className="wrap-text-in-cell">{email}</span>;
 Email.propTypes = {
   email: PropTypes.string.isRequired,
 };

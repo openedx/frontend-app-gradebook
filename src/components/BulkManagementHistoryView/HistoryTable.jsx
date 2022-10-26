@@ -27,19 +27,17 @@ export const mapHistoryRows = ({
  * Table with history of bulk management uploads, including a results summary which
  * displays total, skipped, and failed uploads
  */
-export function HistoryTable({
+export const HistoryTable = ({
   bulkManagementHistory,
-}) {
-  return (
-    <DataTable
-      data={bulkManagementHistory.map(mapHistoryRows)}
-      hasFixedColumnWidths
-      columns={bulkManagementColumns}
-      className="table-striped"
-      itemCount={bulkManagementHistory.length}
-    />
-  );
-}
+}) => (
+  <DataTable
+    data={bulkManagementHistory.map(mapHistoryRows)}
+    hasFixedColumnWidths
+    columns={bulkManagementColumns}
+    className="table-striped"
+    itemCount={bulkManagementHistory.length}
+  />
+);
 HistoryTable.defaultProps = {
   bulkManagementHistory: [],
 };

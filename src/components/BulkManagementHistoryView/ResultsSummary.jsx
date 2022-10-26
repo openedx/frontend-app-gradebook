@@ -14,23 +14,21 @@ import lms from 'data/services/lms';
  * @param {number} rowId - row/error identifier
  * @param {string} text - summary string
  */
-function ResultsSummary({
+const ResultsSummary = ({
   rowId,
   text,
-}) {
-  return (
-    <Hyperlink
-      href={lms.urls.bulkGradesUrlByRow(rowId)}
-      destination="www.edx.org"
-      target="_blank"
-      rel="noopener noreferrer"
-      showLaunchIcon={false}
-    >
-      <Icon src={Download} className="d-inline-block" />
-      {text}
-    </Hyperlink>
-  );
-}
+}) => (
+  <Hyperlink
+    href={lms.urls.bulkGradesUrlByRow(rowId)}
+    destination="www.edx.org"
+    target="_blank"
+    rel="noopener noreferrer"
+    showLaunchIcon={false}
+  >
+    <Icon src={Download} className="d-inline-block" />
+    {text}
+  </Hyperlink>
+);
 
 ResultsSummary.propTypes = {
   rowId: PropTypes.number.isRequired,

@@ -11,15 +11,13 @@ import FilterBadge from './FilterBadge';
  * Displays a FilterBadge for each filter type in the data model with their current values.
  * @param {func} handleClose - event taking a list of filternames to reset
  */
-export function FilterBadges({ handleClose }) {
-  return (
-    <div>
-      {badgeOrder.map(filterName => (
-        <FilterBadge key={filterName} {...{ handleClose, filterName }} />
-      ))}
-    </div>
-  );
-}
+export const FilterBadges = ({ handleClose }) => (
+  <div>
+    {badgeOrder.map(filterName => (
+      <FilterBadge key={filterName} {...{ handleClose, filterName }} />
+    ))}
+  </div>
+);
 FilterBadges.propTypes = {
   handleClose: PropTypes.func.isRequired,
 };
