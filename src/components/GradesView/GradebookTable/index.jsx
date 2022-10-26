@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 import { DataTable } from '@edx/paragon';
-import { FormattedMessage } from '@edx/frontend-platform/i18n';
+import { FormattedMessage, getLocale, isRtl } from '@edx/frontend-platform/i18n';
 
 import selectors from 'data/selectors';
 import { Headings } from 'data/constants/grades';
@@ -50,7 +50,7 @@ export class GradebookTable extends React.Component {
         <Fields.Username username={entry.username} userKey={entry.external_user_key} />
       ),
       [Headings.email]: (<Fields.Email email={entry.email} />),
-      [Headings.totalGrade]: `${roundGrade(entry.percent * 100)}%`,
+      [Headings.totalGrade]: `${roundGrade(entry.percent * 100)}${isRtl(getLocale()) ? '\u200f' : ''}%`,
     };
     entry.section_breakdown.forEach(subsection => {
       dataRow[subsection.label] = (
