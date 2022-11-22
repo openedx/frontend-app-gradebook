@@ -17,6 +17,7 @@ exports[`SelectGroup Component snapshots basic snapshot 1`] = `
     </FormLabel>
     <ForwardRef
       as="select"
+      autoResize={false}
       disabled={false}
       onChange={[MockFunction props.onChange]}
       plaintext={false}
@@ -62,6 +63,7 @@ exports[`SelectGroup Component snapshots disabled 1`] = `
     </FormLabel>
     <ForwardRef
       as="select"
+      autoResize={false}
       disabled={true}
       onChange={[MockFunction props.onChange]}
       plaintext={false}

@@ -15,6 +15,7 @@ exports[`ImportGradesButton component snapshot snapshot - loads export form w/ a
     >
       <ForwardRef
         as="input"
+        autoResize={false}
         className="d-none"
         label={
           <FormattedMessage
