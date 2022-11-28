@@ -46,10 +46,13 @@ describe('app registry', () => {
       ReactDOM.render(<App />, document.getElementById('root')),
     );
   });
-  test('initialize is called with footerMessages and requireAuthenticatedUser', () => {
+  test('initialize is called with requireAuthenticatedUser, messages, and a config handler', () => {
     expect(initialize).toHaveBeenCalledWith({
       messages: [appMessages, headerMessages, footerMessages],
       requireAuthenticatedUser: true,
+      handlers: {
+        config: expect.any(Function),
+      },
     });
   });
 });
