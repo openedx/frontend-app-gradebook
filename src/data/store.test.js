@@ -23,9 +23,9 @@ jest.mock('redux-logger', () => ({
 }));
 jest.mock('redux-thunk', () => 'thunkMiddleware');
 jest.mock('@edx/frontend-platform', () => ({
-  getConfig: () => ({
+  getConfig: jest.fn(() => ({
     SEGMENT_KEY: 'a-fake-segment-key',
-  }),
+  })),
 }));
 jest.mock('redux-beacon', () => ({
   createMiddleware: jest.fn((map, model) => ({ map, model })),
@@ -62,7 +62,7 @@ describe('store aggregator module', () => {
       describe('if no SEGMENT_KEY', () => {
         const key = getConfig().SEGMENT_KEY;
         beforeEach(() => {
-          getConfig().SEGMENT_KEY = false;
+          getConfig.mockImplementation(() => ({ SEGMENT_KEY: false }));
         });
         it('exports thunk and logger middleware, composed and applied with dev tools', () => {
           expect(createStore().middleware).toEqual(
@@ -70,7 +70,7 @@ describe('store aggregator module', () => {
           );
         });
         afterEach(() => {
-          getConfig().SEGMENT_KEY = key;
+          getConfig.mockImplementation(() => ({ SEGMENT_KEY: key }));
         });
       });
     });
