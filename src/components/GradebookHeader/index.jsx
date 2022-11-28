@@ -2,10 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
+import { getConfig } from '@edx/frontend-platform';
 import { FormattedMessage } from '@edx/frontend-platform/i18n';
 import { Button } from '@edx/paragon';
 
-import { configuration } from 'config';
 import { views } from 'data/constants/app';
 import actions from 'data/actions';
 import selectors from 'data/selectors';
@@ -25,7 +25,7 @@ export class GradebookHeader extends React.Component {
   }
 
   lmsInstructorDashboardUrl = courseId => (
-    `${configuration.LMS_BASE_URL}/courses/${courseId}/instructor`
+    `${getConfig().LMS_BASE_URL}/courses/${courseId}/instructor`
   );
 
   handleToggleViewClick() {
