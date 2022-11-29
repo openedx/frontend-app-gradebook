@@ -35,28 +35,28 @@ describe('lms service api', () => {
     describe('fetch.assignmentTypes', () => {
       testSimpleFetch(
         api.fetch.assignmentTypes,
-        urls.assignmentTypes,
+        urls.getAssignmentTypesUrl(),
         'fetches from urls.assignmentTypes',
       );
     });
     describe('fetch.cohorts', () => {
       testSimpleFetch(
         api.fetch.cohorts,
-        urls.cohorts,
+        urls.getCohortsUrl(),
         'fetches from urls.cohorts',
       );
     });
     describe('fetch.roles', () => {
       testSimpleFetch(
         api.fetch.roles,
-        urls.roles,
+        urls.getRolesUrl(),
         'fetches from urls.roles',
       );
     });
     describe('fetch.tracks', () => {
       testSimpleFetch(
         api.fetch.tracks,
-        urls.tracks,
+        urls.getTracksUrl(),
         'fetches from urls.tracks',
       );
     });
@@ -98,7 +98,7 @@ describe('lms service api', () => {
         });
         test('loads only passed values if options is empty', () => (
           api.fetch.gradebookData(searchText, cohort, track).then(({ data }) => {
-            expect(data).toEqual(utils.stringifyUrl(urls.gradebook, {
+            expect(data).toEqual(utils.stringifyUrl(urls.getGradebookUrl(), {
               [paramKeys.pageSize]: pageSize,
               [paramKeys.userContains]: searchText,
               [paramKeys.cohortId]: cohort,
@@ -114,7 +114,7 @@ describe('lms service api', () => {
         ));
         test('loads ["all"] for excludedCorseRoles if not includeCourseRoles', () => (
           api.fetch.gradebookData(searchText, cohort, track, options).then(({ data }) => {
-            expect(data).toEqual(utils.stringifyUrl(urls.gradebook, {
+            expect(data).toEqual(utils.stringifyUrl(urls.getGradebookUrl(), {
               [paramKeys.pageSize]: pageSize,
               [paramKeys.userContains]: searchText,
               [paramKeys.cohortId]: cohort,
@@ -130,7 +130,7 @@ describe('lms service api', () => {
         ));
         test('loads null for excludedCorseRoles if includeCourseRoles', () => (
           api.fetch.gradebookData(searchText, cohort, track, options).then(({ data }) => {
-            expect(data).toEqual(utils.stringifyUrl(urls.gradebook, {
+            expect(data).toEqual(utils.stringifyUrl(urls.getGradebookUrl(), {
               [paramKeys.pageSize]: pageSize,
               [paramKeys.userContains]: searchText,
               [paramKeys.cohortId]: cohort,
@@ -153,7 +153,7 @@ describe('lms service api', () => {
         });
         it('fetches from urls.bulkHistory and returns the data', () => (
           api.fetch.gradeBulkOperationHistory().then(url => {
-            expect(url).toEqual(urls.bulkHistory);
+            expect(url).toEqual(urls.getBulkHistoryUrl());
           })
         ));
       });
@@ -195,7 +195,7 @@ describe('lms service api', () => {
       });
       test('posts to urls.bulkUpdate with passed data', () => (
         api.updateGradebookData(updateData).then(({ data }) => {
-          expect(data).toEqual({ url: urls.bulkUpdate, data: updateData });
+          expect(data).toEqual({ url: urls.getBulkUpdateUrl(), data: updateData });
         })
       ));
     });

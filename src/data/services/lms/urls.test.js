@@ -17,7 +17,7 @@ describe('lms api url methods', () => {
     it('returns bulkGrades url with error_id', () => {
       const id = 'heyo';
       expect(bulkGradesUrlByRow(id)).toEqual(
-        utils.stringifyUrl(urls.bulkGrades, { error_id: id }),
+        utils.stringifyUrl(urls.getBulkGradesUrl(), { error_id: id }),
       );
     });
   });
@@ -25,12 +25,12 @@ describe('lms api url methods', () => {
     it('returns bulkGrades with filterQuery-loaded options as query', () => {
       const options = { some: 'fun', query: 'options' };
       expect(gradeCsvUrl(options)).toEqual(
-        utils.stringifyUrl(urls.bulkGrades, utils.filterQuery(options)),
+        utils.stringifyUrl(urls.getBulkGradesUrl(), utils.filterQuery(options)),
       );
     });
     it('defaults options to empty object', () => {
       expect(gradeCsvUrl()).toEqual(
-        utils.stringifyUrl(urls.bulkGrades, utils.filterQuery({})),
+        utils.stringifyUrl(urls.getBulkGradesUrl(), utils.filterQuery({})),
       );
     });
   });
@@ -38,12 +38,12 @@ describe('lms api url methods', () => {
     it('returns intervention url with filterQuery-loaded options as query', () => {
       const options = { some: 'fun', query: 'options' };
       expect(interventionExportCsvUrl(options)).toEqual(
-        utils.stringifyUrl(urls.intervention, utils.filterQuery(options)),
+        utils.stringifyUrl(urls.getInterventionUrl(), utils.filterQuery(options)),
       );
     });
     it('defaults options to empty object', () => {
       expect(interventionExportCsvUrl()).toEqual(
-        utils.stringifyUrl(urls.intervention, utils.filterQuery({})),
+        utils.stringifyUrl(urls.getInterventionUrl(), utils.filterQuery({})),
       );
     });
   });
@@ -53,7 +53,7 @@ describe('lms api url methods', () => {
       const userId = 'Tom';
       expect(sectionOverrideHistoryUrl(subsectionId, userId)).toEqual(
         utils.stringifyUrl(
-          `${urls.grades}subsection/${subsectionId}/`,
+          `${urls.getGradesUrl()}subsection/${subsectionId}/`,
           { user_id: userId, history_record_limit: historyRecordLimit },
         ),
       );
