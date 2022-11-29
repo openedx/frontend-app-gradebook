@@ -14,10 +14,10 @@ const { get, post, stringifyUrl } = utils;
 /*********************************************************************************
  * GET Actions
  *********************************************************************************/
-const assignmentTypes = () => get(urls.assignmentTypes);
-const cohorts = () => get(urls.cohorts);
-const roles = () => get(urls.roles);
-const tracks = () => get(urls.tracks);
+const assignmentTypes = () => get(urls.getAssignmentTypesUrl());
+const cohorts = () => get(urls.getCohortsUrl());
+const roles = () => get(urls.getRolesUrl());
+const tracks = () => get(urls.getTracksUrl());
 
 /**
  * fetch.gradebookData(searchText, cohort, track, options)
@@ -45,7 +45,7 @@ const gradebookData = (searchText, cohort, track, options = {}) => {
     [paramKeys.assignmentGradeMax]: options.assignmentGradeMax,
     [paramKeys.assignmentGradeMin]: options.assignmentGradeMin,
   };
-  return get(stringifyUrl(urls.gradebook, queryParams));
+  return get(stringifyUrl(urls.getGradebookUrl(), queryParams));
 };
 
 /**
@@ -53,7 +53,7 @@ const gradebookData = (searchText, cohort, track, options = {}) => {
  * fetches bulk operation history and raises an error if the operation fails
  * @return {Promise} - get response
  */
-const gradeBulkOperationHistory = () => get(urls.bulkHistory)
+const gradeBulkOperationHistory = () => get(urls.getBulkHistoryUrl())
   .then(response => response.data)
   .catch(() => Promise.reject(Error(messages.errors.unhandledResponse)));
 
@@ -87,7 +87,7 @@ const gradeOverrideHistory = (subsectionId, userId) => (
  *  }
  * @return {Promise} - post response
  */
-const updateGradebookData = (updateData) => post(urls.bulkUpdate, updateData);
+const updateGradebookData = (updateData) => post(urls.getBulkUpdateUrl(), updateData);
 
 /**
  * uploadGradeCsv(formData)
