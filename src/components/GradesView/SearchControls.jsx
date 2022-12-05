@@ -18,13 +18,17 @@ import messages from './SearchControls.messages';
 export class SearchControls extends React.Component {
   constructor(props) {
     super(props);
-    this.onChange = this.onChange.bind(this);
+    this.onBlur = this.onBlur.bind(this);
     this.onClear = this.onClear.bind(this);
+    this.onSubmit = this.onSubmit.bind(this);
   }
 
   /** Changing the search value stores the key in Gradebook. Currently unused */
-  onChange(searchValue) {
-    this.props.setSearchValue(searchValue);
+  onBlur(e) {
+    const { value } = e.target;
+    if (this.props.searchValue !== value) {
+      this.props.setSearchValue(value);
+    }
   }
 
   onClear() {
@@ -32,13 +36,20 @@ export class SearchControls extends React.Component {
     this.props.fetchGrades();
   }
 
+  onSubmit(value) {
+    if (this.props.searchValue !== value) {
+      this.props.setSearchValue(value);
+    }
+    this.props.fetchGrades();
+  }
+
   render() {
     return (
       <div>
         <SearchField
-          onSubmit={this.props.fetchGrades}
+          onSubmit={this.onSubmit}
           inputLabel={<FormattedMessage {...messages.label} />}
-          onChange={this.onChange}
+          onBlur={this.onBlur}
           onClear={this.onClear}
           value={this.props.searchValue}
         />
