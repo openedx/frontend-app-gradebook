@@ -1,9 +1,9 @@
+import { getConfig } from '@edx/frontend-platform';
 import { StrictDict } from 'utils';
-import { configuration } from 'config';
 import { historyRecordLimit } from './constants';
 import { filterQuery, stringifyUrl } from './utils';
 
-const baseUrl = `${configuration.LMS_BASE_URL}`;
+const baseUrl = `${getConfig().LMS_BASE_URL}`;
 
 const courseId = window.location.pathname.split('/').filter(Boolean).pop() || '';
 

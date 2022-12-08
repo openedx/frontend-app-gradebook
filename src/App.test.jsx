@@ -12,6 +12,7 @@ import store from 'data/store';
 import GradebookPage from 'containers/GradebookPage';
 
 import App from './App';
+import Head from './head/Head';
 
 jest.mock('react-router-dom', () => ({
   BrowserRouter: () => 'BrowserRouter',
@@ -41,7 +42,7 @@ describe('App router component', () => {
     beforeEach(() => {
       process.env.LOGO_POWERED_BY_OPEN_EDX_URL_SVG = logo;
       el = shallow(<App />);
-      router = el.childAt(0);
+      router = el.childAt(1);
     });
     describe('AppProvider', () => {
       test('AppProvider is the parent component, passed the redux store props', () => {
@@ -49,8 +50,13 @@ describe('App router component', () => {
         expect(el.props().store).toEqual(store);
       });
     });
-    describe('Router', () => {
+    describe('Head', () => {
       test('first child of AppProvider', () => {
+        expect(el.childAt(0).type()).toBe(Head);
+      });
+    });
+    describe('Router', () => {
+      test('second child of AppProvider', () => {
         expect(router.type()).toBe(Router);
       });
       test('Header is above/outside-of the routing', () => {

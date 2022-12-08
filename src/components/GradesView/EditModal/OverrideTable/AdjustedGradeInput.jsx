@@ -7,6 +7,7 @@ import { Form } from '@edx/paragon';
 
 import selectors from 'data/selectors';
 import actions from 'data/actions';
+import { getLocale, isRtl } from '@edx/frontend-platform/i18n';
 
 /**
  * <AdjustedGradeInput />
@@ -32,7 +33,7 @@ export class AdjustedGradeInput extends React.Component {
           value={this.props.value}
           onChange={this.onChange}
         />
-        {this.props.possibleGrade && ` / ${this.props.possibleGrade}`}
+        {this.props.possibleGrade && ` ${isRtl(getLocale()) ? '\\' : '/'} ${this.props.possibleGrade}`}
       </span>
     );
   }

@@ -14,7 +14,7 @@ exports[`GradebookTable component snapshot - fields1 and 2 between email and tot
         },
         Object {
           "Header": <FormattedMessage
-            defaultMessage="Email"
+            defaultMessage="Email*"
             description="Gradebook table email column header"
             id="gradebook.GradesView.table.headings.email"
           />,

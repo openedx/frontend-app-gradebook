@@ -3,6 +3,7 @@ import { StrictDict } from 'utils';
 
 import { Headings, GradeFormats } from 'data/constants/grades';
 import { formatDateForDisplay } from 'data/actions/utils';
+import { getLocale, isRtl } from '@edx/frontend-platform/i18n';
 import simpleSelectorFactory from '../utils';
 import * as module from './grades';
 
@@ -156,7 +157,7 @@ export const subsectionGrade = StrictDict({
   [GradeFormats.absolute]: (subsection) => {
     const earned = module.roundGrade(subsection.score_earned);
     const possible = module.roundGrade(subsection.score_possible);
-    return subsection.attempted ? `${earned}/${possible}` : `${earned}`;
+    return subsection.attempted ? `${earned}${isRtl(getLocale()) ? '\\' : '/'}${possible}` : `${earned}`;
   },
   /**
    * subsectionGrade.percent(subsection)
