@@ -31,7 +31,6 @@ exports[`EditModal Component snapshots gradeOverrideHistoryError is and empty an
     <div>
       <ModalHeaders />
       <ForwardRef
-        closeLabel="Dismiss"
         dismissible={false}
         onClose={[Function]}
         show={true}
@@ -157,7 +156,6 @@ exports[`EditModal Component snapshots gradeOverrideHistoryError is empty and op
     <div>
       <ModalHeaders />
       <ForwardRef
-        closeLabel="Dismiss"
         dismissible={false}
         onClose={[Function]}
         show={false}
