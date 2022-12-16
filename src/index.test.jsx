@@ -9,7 +9,7 @@ import {
 } from '@edx/frontend-platform';
 import { messages as headerMessages } from '@edx/frontend-component-header';
 import { messages as footerMessages } from '@edx/frontend-component-footer';
-
+import { messages as paragonMessages } from '@edx/paragon';
 import appMessages from './i18n';
 import App from './App';
 import '.';
@@ -50,7 +50,7 @@ describe('app registry', () => {
   });
   test('initialize is called with requireAuthenticatedUser, messages, and a config handler', () => {
     expect(initialize).toHaveBeenCalledWith({
-      messages: [appMessages, headerMessages, footerMessages],
+      messages: [appMessages, headerMessages, footerMessages, paragonMessages],
       requireAuthenticatedUser: true,
       handlers: {
         config: expect.any(Function),
