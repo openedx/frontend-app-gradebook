@@ -4,12 +4,12 @@ import { composeWithDevTools } from 'redux-devtools-extension/logOnlyInProductio
 import { createLogger } from 'redux-logger';
 import { createMiddleware } from 'redux-beacon';
 import Segment from '@redux-beacon/segment';
+import { getConfig } from '@edx/frontend-platform';
 
 import actions from './actions';
 import selectors from './selectors';
 import reducers from './reducers';
 import eventsMap from './services/segment/mapping';
-import { configuration } from '../config';
 
 import exportedStore, { createStore } from './store';
 
@@ -22,10 +22,10 @@ jest.mock('redux-logger', () => ({
   createLogger: () => 'logger',
 }));
 jest.mock('redux-thunk', () => 'thunkMiddleware');
-jest.mock('../config', () => ({
-  configuration: {
+jest.mock('@edx/frontend-platform', () => ({
+  getConfig: jest.fn(() => ({
     SEGMENT_KEY: 'a-fake-segment-key',
-  },
+  })),
 }));
 jest.mock('redux-beacon', () => ({
   createMiddleware: jest.fn((map, model) => ({ map, model })),
@@ -60,9 +60,9 @@ describe('store aggregator module', () => {
         });
       });
       describe('if no SEGMENT_KEY', () => {
-        const key = configuration.SEGMENT_KEY;
+        const key = getConfig().SEGMENT_KEY;
         beforeEach(() => {
-          configuration.SEGMENT_KEY = false;
+          getConfig.mockImplementation(() => ({ SEGMENT_KEY: false }));
         });
         it('exports thunk and logger middleware, composed and applied with dev tools', () => {
           expect(createStore().middleware).toEqual(
@@ -70,7 +70,7 @@ describe('store aggregator module', () => {
           );
         });
         afterEach(() => {
-          configuration.SEGMENT_KEY = key;
+          getConfig.mockImplementation(() => ({ SEGMENT_KEY: key }));
         });
       });
     });
