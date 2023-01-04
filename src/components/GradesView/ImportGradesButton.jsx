@@ -29,6 +29,18 @@ export class ImportGradesButton extends React.Component {
     this.handleFileInputChange = this.handleFileInputChange.bind(this);
   }
 
+  handleClickImportGrades() {
+    if (this.fileInput) { this.fileInput.click(); }
+  }
+
+  handleFileInputChange() {
+    return this.hasFile && (
+      this.props.submitImportGradesButtonData(this.formData).then(
+        () => { this.fileInput.value = null; },
+      )
+    );
+  }
+
   get fileInput() {
     return this.fileInputRef.current;
   }
@@ -41,18 +53,6 @@ export class ImportGradesButton extends React.Component {
 
   get hasFile() {
     return this.fileInput && this.fileInput.files[0];
-  }
-
-  handleClickImportGrades() {
-    if (this.fileInput) { this.fileInput.click(); }
-  }
-
-  handleFileInputChange() {
-    return this.hasFile && (
-      this.props.submitImportGradesButtonData(this.formData).then(
-        () => { this.fileInput.value = null; },
-      )
-    );
   }
 
   render() {

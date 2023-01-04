@@ -11,9 +11,9 @@ import * as utils from './utils';
 
 const { get, post, stringifyUrl } = utils;
 
-/*********************************************************************************
+/** *******************************************************************************
  * GET Actions
- *********************************************************************************/
+ ******************************************************************************** */
 const assignmentTypes = () => get(urls.getAssignmentTypesUrl());
 const cohorts = () => get(urls.getCohortsUrl());
 const roles = () => get(urls.getRolesUrl());
@@ -68,9 +68,9 @@ const gradeOverrideHistory = (subsectionId, userId) => (
   get(sectionOverrideHistoryUrl(subsectionId, userId))
 );
 
-/*********************************************************************************
+/** *******************************************************************************
  * POST Actions
- *********************************************************************************/
+ ******************************************************************************** */
 /**
  * updateGradebookData(updateData)
  * sends an update message with new grades overrides
