@@ -6,6 +6,11 @@ const config = createConfig('eslint', {
     'import/no-named-as-default-member': 'off',
     'import/no-self-import': 'off',
     'spaced-comment': ['error', 'always', { 'block': { 'exceptions': ['*'] } }],
+    
+    // TOD: Remove this rule once we have a better way to handle this.
+    'import/no-import-module-exports': 'off',
+    'no-import-assign': 'off',
+    'default-param-last': 'off',
   },
 });
 
