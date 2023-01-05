@@ -48,13 +48,7 @@ exports[`GradebookTable component snapshot - fields1 and 2 between email and tot
     <DataTable.TableControlBar />
     <DataTable.Table />
     <DataTable.EmptyTable
-      content={
-        <FormattedMessage
-          defaultMessage="No results found"
-          description="Gradebook table message when no learner results were found"
-          id="gradebook.GradesView.table.noResultsFound"
-        />
-      }
+      content="No results found"
     />
   </DataTable>
 </div>
