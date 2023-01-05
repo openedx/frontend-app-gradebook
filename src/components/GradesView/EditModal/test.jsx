@@ -49,6 +49,8 @@ describe('EditModal', () => {
       closeModal: jest.fn(),
       doneViewingAssignment: jest.fn(),
       updateGrades: jest.fn(),
+
+      intl: { formatMessage: (msg) => msg.defaultMessage },
     };
   });
 
