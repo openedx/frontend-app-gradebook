@@ -9,7 +9,7 @@ import {
   ModalDialog,
   ActionRow,
 } from '@edx/paragon';
-import { FormattedMessage } from '@edx/frontend-platform/i18n';
+import { FormattedMessage, injectIntl, intlShape } from '@edx/frontend-platform/i18n';
 
 import selectors from 'data/selectors';
 import actions from 'data/actions';
@@ -47,19 +47,14 @@ export class EditModal extends React.Component {
 
   render() {
     return (
-
       <ModalDialog
-        isOpen
+        title={this.props.intl.formatMessage(messages.title)}
+        isOpen={this.props.open}
         onClose={this.closeAssignmentModal}
         size="xl"
         hasCloseButton
         isFullscreenOnMobile
       >
-        <ModalDialog.Header>
-          <ModalDialog.Title>
-            <FormattedMessage {...messages.title} />
-          </ModalDialog.Title>
-        </ModalDialog.Header>
         <ModalDialog.Body>
           <div>
             <ModalHeaders />
@@ -101,6 +96,8 @@ EditModal.propTypes = {
   closeModal: PropTypes.func.isRequired,
   doneViewingAssignment: PropTypes.func.isRequired,
   updateGrades: PropTypes.func.isRequired,
+  // injected
+  intl: intlShape.isRequired,
 };
 
 export const mapStateToProps = (state) => ({
@@ -114,4 +111,4 @@ export const mapDispatchToProps = {
   updateGrades: thunkActions.grades.updateGrades,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(EditModal);
+export default injectIntl(connect(mapStateToProps, mapDispatchToProps)(EditModal));

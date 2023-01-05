@@ -10,21 +10,9 @@ exports[`EditModal Component snapshots gradeOverrideHistoryError is and empty an
   isOpen={true}
   onClose={[MockFunction this.closeAssignmentModal]}
   size="xl"
+  title="Edit Grades"
   variant="default"
 >
-  <ModalDialogHeader
-    as="div"
-  >
-    <ModalDialogTitle
-      as="h2"
-    >
-      <FormattedMessage
-        defaultMessage="Edit Grades"
-        description="Edit Modal title"
-        id="gradebook.GradesView.EditModal.title"
-      />
-    </ModalDialogTitle>
-  </ModalDialogHeader>
   <ModalDialogBody
     as="div"
   >
@@ -133,24 +121,12 @@ exports[`EditModal Component snapshots gradeOverrideHistoryError is empty and op
   isBlocking={false}
   isFullscreenOnMobile={true}
   isFullscreenScroll={false}
-  isOpen={true}
+  isOpen={false}
   onClose={[MockFunction this.closeAssignmentModal]}
   size="xl"
+  title="Edit Grades"
   variant="default"
 >
-  <ModalDialogHeader
-    as="div"
-  >
-    <ModalDialogTitle
-      as="h2"
-    >
-      <FormattedMessage
-        defaultMessage="Edit Grades"
-        description="Edit Modal title"
-        id="gradebook.GradesView.EditModal.title"
-      />
-    </ModalDialogTitle>
-  </ModalDialogHeader>
   <ModalDialogBody
     as="div"
   >
