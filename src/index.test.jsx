@@ -7,7 +7,6 @@ import {
   mergeConfig,
   subscribe,
 } from '@edx/frontend-platform';
-
 import messages from './i18n';
 import App from './App';
 import '.';
