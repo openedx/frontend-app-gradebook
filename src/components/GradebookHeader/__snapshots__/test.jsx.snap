@@ -29,9 +29,9 @@ exports[`GradebookHeader component snapshots default values (grades frozen, cann
   <div
     className="subtitle-row d-flex justify-content-between align-items-center"
   >
-    <h3>
+    <h2>
       fakeID
-    </h3>
+    </h2>
   </div>
   <div
     className="alert alert-warning"
@@ -75,9 +75,9 @@ exports[`GradebookHeader component snapshots grades frozen, can view. grades fro
   <div
     className="subtitle-row d-flex justify-content-between align-items-center"
   >
-    <h3>
+    <h2>
       fakeID
-    </h3>
+    </h2>
   </div>
   <div
     className="alert alert-warning"
@@ -121,9 +121,9 @@ exports[`GradebookHeader component snapshots grades frozen, cannot view unauthor
   <div
     className="subtitle-row d-flex justify-content-between align-items-center"
   >
-    <h3>
+    <h2>
       fakeID
-    </h3>
+    </h2>
   </div>
   <div
     className="alert alert-warning"
@@ -177,9 +177,9 @@ exports[`GradebookHeader component snapshots show bulk management, active view i
   <div
     className="subtitle-row d-flex justify-content-between align-items-center"
   >
-    <h3>
+    <h2>
       fakeID
-    </h3>
+    </h2>
     <Button
       onClick={[MockFunction this.handleToggleViewClick]}
       variant="tertiary"
@@ -233,9 +233,9 @@ exports[`GradebookHeader component snapshots show bulk management, active view i
   <div
     className="subtitle-row d-flex justify-content-between align-items-center"
   >
-    <h3>
+    <h2>
       fakeID
-    </h3>
+    </h2>
     <Button
       onClick={[MockFunction this.handleToggleViewClick]}
       variant="tertiary"
