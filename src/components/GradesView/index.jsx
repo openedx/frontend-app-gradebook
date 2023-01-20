@@ -46,9 +46,9 @@ export class GradesView extends React.Component {
         <SpinnerIcon />
 
         <InterventionsReport />
-        <h4 className="step-message-1">
+        <h3 className="step-message-1">
           <FormattedMessage {...messages.filterStepHeading} />
-        </h4>
+        </h3>
 
         <div className="d-flex justify-content-between">
           <FilterMenuToggle />
@@ -58,7 +58,7 @@ export class GradesView extends React.Component {
         <FilterBadges handleClose={this.handleFilterBadgeClose} />
         <StatusAlerts />
 
-        <h4><FormattedMessage {...messages.gradebookStepHeading} /></h4>
+        <h3><FormattedMessage {...messages.gradebookStepHeading} /></h3>
 
         <div className="d-flex justify-content-between align-items-center mb-2">
           <ScoreViewInput />
