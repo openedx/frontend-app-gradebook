@@ -14,13 +14,19 @@ process.env.FAVICON_URL = 'http://localhost:18000/favicon.ico';
 jest.mock('@edx/frontend-platform/i18n', () => {
   const i18n = jest.requireActual('@edx/frontend-platform/i18n');
   const PropTypes = jest.requireActual('prop-types');
+  const { formatMessage } = jest.requireActual('./testUtils');
+  const formatDate = jest.fn(date => new Date(date).toLocaleDateString()).mockName('useIntl.formatDate');
   return {
     ...i18n,
     intlShape: PropTypes.shape({
-      formatMessage: jest.fn(msg => msg.defaultMessage),
+      formatMessage: PropTypes.func,
     }),
+    useIntl: jest.fn(() => ({
+      formatMessage,
+      formatDate,
+    })),
+    IntlProvider: () => 'IntlProvider',
     defineMessages: m => m,
     FormattedMessage: () => 'FormattedMessage',
-    getLocale: jest.fn(),
   };
 });
