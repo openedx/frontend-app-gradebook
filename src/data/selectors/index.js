@@ -91,17 +91,10 @@ export const formattedGradeLimits = (state) => {
   const { assignmentGradeMax, assignmentGradeMin } = app.assignmentGradeLimits(state);
   const { courseGradeMax, courseGradeMin } = app.courseGradeLimits(state);
   const hasAssignment = filters.selectedAssignmentId(state) !== undefined;
-  if (!hasAssignment) {
-    return {
-      assignmentGradeMax: null,
-      assignmentGradeMin: null,
-      courseGradeMax: null,
-      courseGradeMin: null,
-    };
-  }
+
   return {
-    assignmentGradeMax: assignmentGradeMax === maxGrade ? null : assignmentGradeMax,
-    assignmentGradeMin: assignmentGradeMin === minGrade ? null : assignmentGradeMin,
+    assignmentGradeMax: (assignmentGradeMax === maxGrade || !hasAssignment) ? null : assignmentGradeMax,
+    assignmentGradeMin: (assignmentGradeMin === minGrade || !hasAssignment) ? null : assignmentGradeMin,
     courseGradeMax: courseGradeMax === maxGrade ? null : courseGradeMax,
     courseGradeMin: courseGradeMin === minGrade ? null : courseGradeMin,
   };
