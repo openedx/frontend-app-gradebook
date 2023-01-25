@@ -28,5 +28,6 @@ jest.mock('@edx/frontend-platform/i18n', () => {
     IntlProvider: () => 'IntlProvider',
     defineMessages: m => m,
     FormattedMessage: () => 'FormattedMessage',
+    getLocale: jest.fn(),
   };
 });
