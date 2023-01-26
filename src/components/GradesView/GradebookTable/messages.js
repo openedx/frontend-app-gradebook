@@ -3,7 +3,7 @@ import { defineMessages } from '@edx/frontend-platform/i18n';
 const messages = defineMessages({
   emailHeading: {
     id: 'gradebook.GradesView.table.headings.email',
-    defaultMessage: 'Email',
+    defaultMessage: 'Email*',
     description: 'Gradebook table email column header',
   },
   totalGradeHeading: {

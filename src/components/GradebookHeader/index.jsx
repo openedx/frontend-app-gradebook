@@ -2,10 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
+import { getConfig } from '@edx/frontend-platform';
 import { FormattedMessage } from '@edx/frontend-platform/i18n';
 import { Button } from '@edx/paragon';
 
-import { configuration } from 'config';
 import { views } from 'data/constants/app';
 import actions from 'data/actions';
 import selectors from 'data/selectors';
@@ -30,7 +30,7 @@ export class GradebookHeader extends React.Component {
   }
 
   lmsInstructorDashboardUrl = courseId => (
-    `${configuration.LMS_BASE_URL}/courses/${courseId}/instructor`
+    `${getConfig().LMS_BASE_URL}/courses/${courseId}/instructor`
   );
 
   render() {
@@ -47,7 +47,7 @@ export class GradebookHeader extends React.Component {
           <FormattedMessage {...messages.gradebook} />
         </h1>
         <div className="subtitle-row d-flex justify-content-between align-items-center">
-          <h3>{this.props.courseId}</h3>
+          <h2>{this.props.courseId}</h2>
           { this.props.showBulkManagement && (
             <Button
               variant="tertiary"

@@ -5,10 +5,11 @@ import { connect } from 'react-redux';
 
 import {
   Button,
-  Modal,
   Alert,
+  ModalDialog,
+  ActionRow,
 } from '@edx/paragon';
-import { FormattedMessage } from '@edx/frontend-platform/i18n';
+import { FormattedMessage, injectIntl, intlShape } from '@edx/frontend-platform/i18n';
 
 import selectors from 'data/selectors';
 import actions from 'data/actions';
@@ -46,11 +47,15 @@ export class EditModal extends React.Component {
 
   render() {
     return (
-      <Modal
-        open={this.props.open}
-        title={<FormattedMessage {...messages.title} />}
-        closeText={<FormattedMessage {...messages.closeText} />}
-        body={(
+      <ModalDialog
+        title={this.props.intl.formatMessage(messages.title)}
+        isOpen={this.props.open}
+        onClose={this.closeAssignmentModal}
+        size="xl"
+        hasCloseButton
+        isFullscreenOnMobile
+      >
+        <ModalDialog.Body>
           <div>
             <ModalHeaders />
             <Alert
@@ -64,14 +69,18 @@ export class EditModal extends React.Component {
             <div><FormattedMessage {...messages.visibility} /></div>
             <div><FormattedMessage {...messages.saveVisibility} /></div>
           </div>
-        )}
-        buttons={[
-          <Button variant="primary" onClick={this.handleAdjustedGradeClick}>
-            <FormattedMessage {...messages.saveGrade} />
-          </Button>,
-        ]}
-        onClose={this.closeAssignmentModal}
-      />
+        </ModalDialog.Body>
+        <ModalDialog.Footer>
+          <ActionRow>
+            <ModalDialog.CloseButton variant="tertiary">
+              <FormattedMessage {...messages.closeText} />
+            </ModalDialog.CloseButton>
+            <Button variant="primary" onClick={this.handleAdjustedGradeClick}>
+              <FormattedMessage {...messages.saveGrade} />
+            </Button>
+          </ActionRow>
+        </ModalDialog.Footer>
+      </ModalDialog>
     );
   }
 }
@@ -87,6 +96,8 @@ EditModal.propTypes = {
   closeModal: PropTypes.func.isRequired,
   doneViewingAssignment: PropTypes.func.isRequired,
   updateGrades: PropTypes.func.isRequired,
+  // injected
+  intl: intlShape.isRequired,
 };
 
 export const mapStateToProps = (state) => ({
@@ -100,4 +111,4 @@ export const mapDispatchToProps = {
   updateGrades: thunkActions.grades.updateGrades,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(EditModal);
+export default injectIntl(connect(mapStateToProps, mapDispatchToProps)(EditModal));

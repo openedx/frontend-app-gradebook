@@ -1,6 +1,6 @@
 // The code in this file is from Segment's website:
 // https://segment.com/docs/sources/website/analytics.js/quickstart/
-import { configuration } from './config';
+import { getConfig } from '@edx/frontend-platform';
 
 (function () {
   // Create a queue, but don't obliterate an existing one!
@@ -81,5 +81,5 @@ import { configuration } from './config';
 
   // Load Analytics.js with your key, which will automatically
   // load the tools you've enabled for your account. Boosh!
-  analytics.load(configuration.SEGMENT_KEY);
+  analytics.load(getConfig().SEGMENT_KEY);
 }());

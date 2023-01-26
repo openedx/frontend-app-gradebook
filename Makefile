@@ -3,7 +3,7 @@ npm-install-%: ## install specified % npm package
 	git add package.json
 
 transifex_resource = frontend-app-gradebook
-transifex_langs = "ar,fr,es_419,zh_CN"
+transifex_langs = "ar,de,es_419,fa_IR,fr,fr_CA,hi,it,pt,ru,uk,zh_CN"
 
 transifex_utils = ./node_modules/.bin/transifex-utils.js
 i18n = ./src/i18n
@@ -57,7 +57,7 @@ push_translations:
 
 # Pulls translations from Transifex.
 pull_translations:
-	tx pull -f --mode reviewed --languages=$(transifex_langs)
+	tx pull -t -f --mode reviewed --languages=$(transifex_langs)
 
 # This target is used by CI.
 validate-no-uncommitted-package-lock-changes:

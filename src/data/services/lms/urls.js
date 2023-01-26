@@ -1,59 +1,54 @@
+import { getConfig } from '@edx/frontend-platform';
 import { StrictDict } from 'utils';
-import { configuration } from 'config';
 import { historyRecordLimit } from './constants';
 import { filterQuery, stringifyUrl } from './utils';
 
-const baseUrl = `${configuration.LMS_BASE_URL}`;
-
 const courseId = window.location.pathname.split('/').filter(Boolean).pop() || '';
 
-const api = `${baseUrl}/api/`;
-const bulkGrades = `${api}bulk_grades/course/${courseId}/`;
-const enrollment = `${api}enrollment/v1/`;
-const grades = `${api}grades/v1/`;
-const gradebook = `${grades}gradebook/${courseId}/`;
-const bulkUpdate = `${gradebook}bulk-update`;
-const intervention = `${bulkGrades}intervention/`;
-
-const cohorts = `${baseUrl}/courses/${courseId}/cohorts/`;
-const tracks = `${enrollment}course/${courseId}?include_expired=1`;
-const bulkHistory = `${bulkGrades}history/`;
-
-const assignmentTypes = stringifyUrl(`${gradebook}grading-info`, { graded_only: true });
-const roles = stringifyUrl(`${enrollment}roles/`, { courseId });
-
+export const getUrlPrefix = () => `${getConfig().LMS_BASE_URL}/api/`;
+export const getBulkGradesUrl = () => `${getUrlPrefix()}bulk_grades/course/${courseId}/`;
+export const getEnrollmentUrl = () => `${getUrlPrefix()}enrollment/v1/`;
+export const getGradesUrl = () => `${getUrlPrefix()}grades/v1/`;
+export const getGradebookUrl = () => `${getGradesUrl()}gradebook/${courseId}/`;
+export const getBulkUpdateUrl = () => `${getGradebookUrl()}bulk-update`;
+export const getInterventionUrl = () => `${getBulkGradesUrl()}intervention/`;
+export const getCohortsUrl = () => `${getUrlPrefix()}courses/${courseId}/cohorts/`;
+export const getTracksUrl = () => `${getEnrollmentUrl()}course/${courseId}?include_expired=1`;
+export const getBulkHistoryUrl = () => `${getBulkUpdateUrl()}history/`;
+export const getAssignmentTypesUrl = () => stringifyUrl(`${getGradebookUrl()}grading-info`, { graded_only: true });
+export const getRolesUrl = () => stringifyUrl(`${getEnrollmentUrl()}roles/`, { courseId });
 /**
  * bulkGradesUrlByCourseAndRow(courseId, rowId)
  * returns the bulkGrades url with the given rowId.
  * @param {string} rowId - row/error identifier
  * @return {string} - bulk grades fetch url
  */
-export const bulkGradesUrlByRow = (rowId) => stringifyUrl(bulkGrades, { error_id: rowId });
+export const bulkGradesUrlByRow = (rowId) => stringifyUrl(getBulkGradesUrl(), { error_id: rowId });
 
-export const gradeCsvUrl = (options = {}) => stringifyUrl(bulkGrades, filterQuery(options));
+export const gradeCsvUrl = (options = {}) => stringifyUrl(getBulkGradesUrl(), filterQuery(options));
 
 export const interventionExportCsvUrl = (options = {}) => (
-  stringifyUrl(intervention, filterQuery(options))
+  stringifyUrl(getInterventionUrl(), filterQuery(options))
 );
 
 export const sectionOverrideHistoryUrl = (subsectionId, userId) => stringifyUrl(
-  `${grades}subsection/${subsectionId}/`,
+  `${getGradesUrl()}subsection/${subsectionId}/`,
   { user_id: userId, history_record_limit: historyRecordLimit },
 );
 
 export default StrictDict({
-  assignmentTypes,
-  bulkGrades,
-  bulkHistory,
-  bulkUpdate,
-  cohorts,
-  enrollment,
-  grades,
-  gradebook,
-  intervention,
-  roles,
-  tracks,
-
+  getUrlPrefix,
+  getBulkGradesUrl,
+  getEnrollmentUrl,
+  getGradesUrl,
+  getGradebookUrl,
+  getBulkUpdateUrl,
+  getInterventionUrl,
+  getCohortsUrl,
+  getTracksUrl,
+  getBulkHistoryUrl,
+  getAssignmentTypesUrl,
+  getRolesUrl,
   bulkGradesUrlByRow,
   gradeCsvUrl,
   interventionExportCsvUrl,

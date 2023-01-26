@@ -57,7 +57,7 @@ npm i --save @edx/frontend-app-gradebook
 
 ## Running the UI Standalone
 
-To install the project please refer to the [`edX Developer Stack`](https://github.com/edx/devstack) instructions.
+To install the project please refer to the [`edX Developer Stack`](https://github.com/openedx/devstack) instructions.
 
 The web application runs on port **1994**, so when you go to `http://localhost:1994/course-v1:edX+DemoX+Demo_Course` you should see the UI (assuming you have such a Demo Course in your devstack).  Note that you always have to provide a course id to actually see a gradebook.
 
@@ -117,4 +117,4 @@ running gradebook container.
 
 ## Authentication with backend API services
 
-See the [`@edx/frontend-auth`](https://github.com/edx/frontend-auth) repo for information about securing routes in your application that require user authentication.
+See the [`@edx/frontend-auth`](https://github.com/edx-unsupported/frontend-auth) repo for information about securing routes in your application that require user authentication.

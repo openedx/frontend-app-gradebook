@@ -4,10 +4,11 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 import { DataTable } from '@edx/paragon';
-import { FormattedMessage, getLocale, isRtl } from '@edx/frontend-platform/i18n';
+import { FormattedMessage, injectIntl, intlShape } from '@edx/frontend-platform/i18n';
 
 import selectors from 'data/selectors';
 import { Headings } from 'data/constants/grades';
+import { getLocalizedPercentSign } from 'i18n';
 
 import messages from './messages';
 import Fields from './Fields';
@@ -44,21 +45,17 @@ export class GradebookTable extends React.Component {
     return { Header: label, accessor: heading };
   }
 
-  mapRows(entry) {
-    const dataRow = {
-      [Headings.username]: (
-        <Fields.Username username={entry.username} userKey={entry.external_user_key} />
-      ),
-      [Headings.email]: (<Fields.Email email={entry.email} />),
-      [Headings.totalGrade]: `${roundGrade(entry.percent * 100)}${isRtl(getLocale()) ? '\u200f' : ''}%`,
-    };
-    entry.section_breakdown.forEach(subsection => {
-      dataRow[subsection.label] = (
-        <GradeButton {...{ entry, subsection }} />
-      );
-    });
-    return dataRow;
-  }
+  mapRows = entry => ({
+    [Headings.username]: (
+      <Fields.Username username={entry.username} userKey={entry.external_user_key} />
+    ),
+    [Headings.email]: (<Fields.Email email={entry.email} />),
+    [Headings.totalGrade]: `${roundGrade(entry.percent * 100)}${getLocalizedPercentSign()}`,
+    ...entry.section_breakdown.reduce((acc, subsection) => ({
+      ...acc,
+      [subsection.label]: <GradeButton {...{ entry, subsection }} />,
+    }), {}),
+  });
 
   nullMethod() {
     return null;
@@ -77,7 +74,7 @@ export class GradebookTable extends React.Component {
         >
           <DataTable.TableControlBar />
           <DataTable.Table />
-          <DataTable.EmptyTable content={<FormattedMessage {...messages.noResultsFound} />} />
+          <DataTable.EmptyTable content={this.props.intl.formatMessage(messages.noResultsFound)} />
         </DataTable>
       </div>
     );
@@ -106,6 +103,8 @@ GradebookTable.propTypes = {
     user_name: PropTypes.string,
   })),
   headings: PropTypes.arrayOf(PropTypes.string).isRequired,
+  // injected
+  intl: intlShape.isRequired,
 };
 
 export const mapStateToProps = (state) => ({
@@ -113,4 +112,4 @@ export const mapStateToProps = (state) => ({
   headings: selectors.root.getHeadings(state),
 });
 
-export default connect(mapStateToProps)(GradebookTable);
+export default injectIntl(connect(mapStateToProps)(GradebookTable));

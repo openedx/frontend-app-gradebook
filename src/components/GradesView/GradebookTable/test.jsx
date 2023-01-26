@@ -80,6 +80,8 @@ describe('GradebookTable', () => {
         fields.field2,
         Headings.totalGrade,
       ],
+
+      intl: { formatMessage: (msg) => msg.defaultMessage },
     };
     test('snapshot - fields1 and 2 between email and totalGrade, mocked rows', () => {
       el = shallow(<GradebookTable {...props} />);

@@ -5,7 +5,7 @@ Context
 =======
 
 The LMS Grades API exposes a set of Gradebook-related endpoints:
-https://github.com/edx/edx-platform/blob/master/lms/djangoapps/grades/api/v1/gradebook_views.py
+https://github.com/openedx/edx-platform/blob/master/lms/djangoapps/grades/api/v1/gradebook_views.py
 The ``bulk-update`` endpoint defined therein allows for the creation/modification of subsection
 grades for multiple users and sections in a single request.  This allows clients of the API to limit
 the number of network requests made and to more easily manage client-side data.  Moreover,
@@ -13,7 +13,7 @@ the course grade updates that occur during calls to this API are synchronous - t
 is completed before a response is given to the client.
 
 For decisions made about the implementation of this API, see:
-https://github.com/edx/edx-platform/blob/master/lms/djangoapps/grades/docs/decisions/0001-gradebook-api.rst
+https://github.com/openedx/edx-platform/blob/master/lms/djangoapps/grades/docs/decisions/0001-gradebook-api.rst
 
 Decision
 ========

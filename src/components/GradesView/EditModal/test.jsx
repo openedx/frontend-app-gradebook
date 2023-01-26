@@ -9,15 +9,11 @@ import {
   EditModal,
   mapDispatchToProps,
   mapStateToProps,
-} from '.';
+}
+  from '.';
 
 jest.mock('./OverrideTable', () => 'OverrideTable');
 jest.mock('./ModalHeaders', () => 'ModalHeaders');
-jest.mock('@edx/paragon', () => ({
-  Button: () => 'Button',
-  Modal: () => 'Modal',
-  Alert: () => 'Alert',
-}));
 jest.mock('data/actions', () => ({
   __esModule: true,
   default: {
@@ -44,7 +40,7 @@ jest.mock('data/selectors', () => ({
     },
   },
 }));
-describe('EditMoal', () => {
+describe('EditModal', () => {
   let props;
   beforeEach(() => {
     props = {
@@ -53,6 +49,8 @@ describe('EditMoal', () => {
       closeModal: jest.fn(),
       doneViewingAssignment: jest.fn(),
       updateGrades: jest.fn(),
+
+      intl: { formatMessage: (msg) => msg.defaultMessage },
     };
   });
 
