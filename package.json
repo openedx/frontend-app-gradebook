@@ -68,6 +68,7 @@
   "devDependencies": {
     "@edx/browserslist-config": "^1.1.1",
     "@edx/frontend-build": "^12.4.15",
+    "@testing-library/react": "^12.1.0",
     "axios": "0.21.2",
     "axios-mock-adapter": "^1.17.0",
     "enzyme-adapter-react-16": "^1.14.0",

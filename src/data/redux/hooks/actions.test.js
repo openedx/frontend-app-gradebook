@@ -1,10 +1,18 @@
+import { keyStore } from 'utils';
 import actions from 'data/actions';
+
 import { actionHook } from './utils';
 import actionHooks from './actions';
 
 jest.mock('data/actions', () => ({
+  app: {
+    setLocalFilter: jest.fn(),
+  },
   filters: {
-    update: { assignment: jest.fn() },
+    update: {
+      assignment: jest.fn(),
+      assignmentLimits: jest.fn(),
+    },
   },
 }));
 jest.mock('./utils', () => ({
@@ -13,11 +21,22 @@ jest.mock('./utils', () => ({
 
 let hooks;
 
+const testActionHook = (hookKey, action) => {
+  test(hookKey, () => {
+    expect(hooks[hookKey]).toEqual(actionHook(action));
+  });
+};
+
 describe('action hooks', () => {
+  describe('app', () => {
+    const hookKeys = keyStore(actionHooks.app);
+    beforeEach(() => { hooks = actionHooks.app; });
+    testActionHook(hookKeys.useSetLocalFilter, actions.app.setLocalFilter);
+  });
   describe('filters', () => {
-    hooks = actionHooks.filters;
-    test('useUpdateAssignment', () => {
-      expect(hooks.useUpdateAssignment).toEqual(actionHook(actions.filters.update.assignment));
-    });
+    const hookKeys = keyStore(actionHooks.filters);
+    beforeEach(() => { hooks = actionHooks.filters; });
+    testActionHook(hookKeys.useUpdateAssignment, actions.filters.update.assignment);
+    testActionHook(hookKeys.useUpdateAssignmentLimits, actions.filters.update.assignmentLimits);
   });
 });

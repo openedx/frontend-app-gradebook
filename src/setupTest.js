@@ -31,3 +31,66 @@ jest.mock('@edx/frontend-platform/i18n', () => {
     getLocale: jest.fn(),
   };
 });
+
+jest.mock('@edx/paragon', () => jest.requireActual('testUtils').mockNestedComponents({
+  Alert: 'Alert',
+  ActionRow: 'ActionRow',
+  Badge: 'Badge',
+  Button: 'Button',
+  Collapsible: {
+    Advanced: 'Collapsible.Advanced',
+    Body: 'Collapsible.Body',
+    Trigger: 'Collapsible.Trigger',
+    Visible: 'Collapsible.Visible',
+  },
+  DataTable: {
+    EmptyTable: 'DataTable.EmptyTable',
+    Table: 'DataTable.Table',
+    TableControlBar: 'DataTable.TableControlBar',
+    TableController: 'DataTable.TableController',
+    TableFooter: 'DataTable.TableFooter',
+  },
+  Form: {
+    Checkbox: 'Form.Checkbox',
+    CheckboxSet: 'Form.CheckboxSet',
+    Control: {
+      Feedback: 'Form.Control.Feedback',
+    },
+    Group: 'Form.Group',
+    Label: 'Form.Label',
+    Radio: 'Form.Radio',
+    RadioSet: 'Form.RadioSet',
+    Switch: 'Form.Switch',
+  },
+  FormControl: 'FormControl',
+  FormGroup: 'FormGroup',
+  FormLabel: 'FormLabel',
+  Hyperlink: 'Hyperlink',
+  Icon: 'Icon',
+  IconButton: 'IconButton',
+  ModalDialog: {
+    Body: 'ModalDialog.Body',
+    CloseButton: 'ModalDialog.CloseButton',
+    Header: 'ModalDialog.Header',
+    Hero: 'ModalDialog.Hero',
+    Footer: 'ModalDialog.Footer',
+  },
+  OverlayTrigger: 'OverlayTrigger',
+  Row: 'Row',
+  StatefulButton: 'StatefulButton',
+  Spinner: 'Spinner',
+
+  useCheckboxSetValues: () => jest.fn().mockImplementation((values) => ([values, {
+    add: jest.fn().mockName('useCheckboxSetValues.add'),
+    remove: jest.fn().mockName('useCheckboxSetValues.remove'),
+  }])),
+}));
+
+jest.mock('react', () => ({
+  ...jest.requireActual('react'),
+  useRef: jest.fn((val) => ({ current: val, useRef: true })),
+  useCallback: jest.fn((cb, prereqs) => ({ useCallback: { cb, prereqs } })),
+  useEffect: jest.fn((cb, prereqs) => ({ useEffect: { cb, prereqs } })),
+  useMemo: jest.fn((cb, prereqs) => cb(prereqs)),
+  useContext: jest.fn(context => context),
+}));

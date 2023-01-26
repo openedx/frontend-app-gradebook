@@ -8,6 +8,9 @@ jest.mock('react-redux', () => ({
 }));
 
 jest.mock('data/selectors', () => ({
+  app: {
+    assignmentGradeLimits: jest.fn(),
+  },
   filters: {
     allFilters: jest.fn(),
     selectableAssignmentLabels: jest.fn(),
@@ -17,26 +20,30 @@ jest.mock('data/selectors', () => ({
 }));
 
 let hooks;
-let hookKeys;
+const testSelectorHook = (hookKey, selector) => {
+  test(hookKey, () => {
+    expect(hooks[hookKey]()).toEqual(useSelector(selector));
+  });
+};
 describe('selector hooks', () => {
+  describe('app', () => {
+    const hookKeys = keyStore(selectorHooks.app);
+    beforeEach(() => { hooks = selectorHooks.app; });
+    testSelectorHook(hookKeys.useAssignmentGradeLimits, selectors.app.assignmentGradeLimits);
+  });
   describe('filters', () => {
-    hooks = selectorHooks.filters;
-    hookKeys = keyStore(hooks);
-    const testFilterSelector = (hookKey, selector) => {
-      test(hookKey, () => {
-        expect(hooks[hookKey]()).toEqual(useSelector(selector));
-      });
-    };
-    testFilterSelector(hookKeys.useData, selectors.filters.allFilters);
-    testFilterSelector(
+    const hookKeys = keyStore(selectorHooks.filters);
+    beforeEach(() => { hooks = selectorHooks.filters; });
+    testSelectorHook(hookKeys.useData, selectors.filters.allFilters);
+    testSelectorHook(
       hookKeys.useSelectableAssignmentLabels,
       selectors.filters.selectableAssignmentLabels,
     );
-    testFilterSelector(
+    testSelectorHook(
       hookKeys.useSelectedAssignmentLabel,
       selectors.filters.selectedAssignmentLabel,
     );
-    testFilterSelector(
+    testSelectorHook(
       hookKeys.useSelectedAssignmentType,
       selectors.filters.selectedAssignmentType,
     );
