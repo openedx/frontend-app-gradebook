@@ -33,9 +33,7 @@ Username.propTypes = {
  * Simple label field for email value.
  * @param {string} email - email for display
  */
-const Email = ({ email }) => (
-  <span className="wrap-text-in-cell">{email}</span>
-);
+const Email = ({ email }) => <span className="wrap-text-in-cell">{email}</span>;
 Email.propTypes = {
   email: PropTypes.string.isRequired,
 };

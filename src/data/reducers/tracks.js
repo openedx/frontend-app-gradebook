@@ -6,7 +6,7 @@ const initialState = {
   errorFetching: false,
 };
 
-const tracks = (state = initialState, action) => {
+const tracks = (state = initialState, action = {}) => {
   switch (action.type) {
     case actions.fetching.started.toString():
       return {
