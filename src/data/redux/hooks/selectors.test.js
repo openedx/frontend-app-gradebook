@@ -20,37 +20,48 @@ jest.mock('data/selectors', () => ({
 }));
 
 let hooks;
-const testSelectorHook = (hookKey, selector) => {
+const testHook = (hookKey, selector) => {
   test(hookKey, () => {
     expect(hooks[hookKey]()).toEqual(useSelector(selector));
   });
 };
 describe('selector hooks', () => {
+  describe('root selectors', () => {
+    const hookKeys = keyStore(selectorHooks.root);
+    const selGroup = selectors.root;
+    beforeEach(() => { hooks = selectorHooks.root; });
+    testHook(hookKeys.useGradeExportUrl, selGroup.gradeExportUrl);
+    testHook(hookKeys.useSelectedCohortEntry, selGroup.selectedCohortEntry);
+    testHook(hookKeys.useSelectedTrackEntry, selGroup.selectedTrackEntry);
+  });
   describe('app', () => {
     const hookKeys = keyStore(selectorHooks.app);
+    const selGroup = selectors.app;
     beforeEach(() => { hooks = selectorHooks.app; });
-    testSelectorHook(hookKeys.useAssignmentGradeLimits, selectors.app.assignmentGradeLimits);
-    testSelectorHook(
-      hookKeys.useAreCourseGradeFiltersValid,
-      selectors.app.areCourseGradeFiltersValid,
-    );
-    testSelectorHook(hookKeys.useCourseGradeLimits, selectors.app.courseGradeLimits);
+    testHook(hookKeys.useAssignmentGradeLimits, selGroup.assignmentGradeLimits);
+    testHook(hookKeys.useAreCourseGradeFiltersValid, selGroup.areCourseGradeFiltersValid);
+    testHook(hookKeys.useCourseGradeLimits, selGroup.courseGradeLimits);
+  });
+  describe('assignmentTypes', () => {
+    const hookKeys = keyStore(selectorHooks.assignmentTypes);
+    const selGroup = selectors.assignmentTypes;
+    beforeEach(() => { hooks = selectorHooks.assignmentTypes; });
+    testHook(hookKeys.useAllAssignmentTypes, selGroup.allAssignmentTypes);
   });
   describe('filters', () => {
     const hookKeys = keyStore(selectorHooks.filters);
+    const selGroup = selectors.filters;
     beforeEach(() => { hooks = selectorHooks.filters; });
-    testSelectorHook(hookKeys.useData, selectors.filters.allFilters);
-    testSelectorHook(
-      hookKeys.useSelectableAssignmentLabels,
-      selectors.filters.selectableAssignmentLabels,
-    );
-    testSelectorHook(
-      hookKeys.useSelectedAssignmentLabel,
-      selectors.filters.selectedAssignmentLabel,
-    );
-    testSelectorHook(
-      hookKeys.useSelectedAssignmentType,
-      selectors.filters.selectedAssignmentType,
-    );
+    testHook(hookKeys.useData, selGroup.allFilters);
+    testHook(hookKeys.useSelectableAssignmentLabels, selGroup.selectableAssignmentLabels);
+    testHook(hookKeys.useSelectedAssignmentLabel, selGroup.selectedAssignmentLabel);
+    testHook(hookKeys.useSelectedAssignmentType, selGroup.selectedAssignmentType);
+  });
+  describe('tracks', () => {
+    const hookKeys = keyStore(selectorHooks.tracks);
+    const selGroup = selectors.tracks;
+    beforeEach(() => { hooks = selectorHooks.tracks; });
+    testHook(hookKeys.useAllTracks, selGroup.allTracks);
+    testHook(hookKeys.useTracksByName, selGroup.tracksByName);
   });
 });

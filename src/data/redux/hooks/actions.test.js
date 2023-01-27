@@ -35,9 +35,12 @@ describe('action hooks', () => {
   });
   describe('filters', () => {
     const hookKeys = keyStore(actionHooks.filters);
+    const actionGroup = actions.filters.update;
     beforeEach(() => { hooks = actionHooks.filters; });
-    testActionHook(hookKeys.useUpdateAssignment, actions.filters.update.assignment);
-    testActionHook(hookKeys.useUpdateAssignmentLimits, actions.filters.update.assignmentLimits);
-    testActionHook(hookKeys.useUpdateCourseGradeLimits, actions.filters.update.courseGradeLimits);
+    testActionHook(hookKeys.useUpdateCohort, actionGroup.updateCohort);
+    testActionHook(hookKeys.useUpdateTrack, actionGroup.updateTrack);
+    testActionHook(hookKeys.useUpdateAssignment, actionGroup.assignment);
+    testActionHook(hookKeys.useUpdateAssignmentLimits, actionGroup.assignmentLimits);
+    testActionHook(hookKeys.useUpdateCourseGradeLimits, actionGroup.courseGradeLimits);
   });
 });
