@@ -10,12 +10,29 @@ jest.mock('react-redux', () => ({
 jest.mock('data/selectors', () => ({
   app: {
     assignmentGradeLimits: jest.fn(),
+    areCourseGradeFiltersValid: jest.fn(),
+    courseGradelimits: jest.fn(),
+  },
+  assignmentTypes: { allAssignmentTypes: jest.fn() },
+  cohorts: {
+    allCohorts: jest.fn(),
+    cohortsByName: jest.fn(),
   },
   filters: {
     allFilters: jest.fn(),
+    includeCourseRoleMembers: jest.fn(),
     selectableAssignmentLabels: jest.fn(),
     selectedAssignmentLabel: jest.fn(),
     selectedAssignmentType: jest.fn(),
+  },
+  tracks: {
+    allTracks: jest.fn(),
+    tracksByName: jest.fn(),
+  },
+  root: {
+    gradeExportUrl: jest.fn(),
+    selectedCohortEntry: jest.fn(),
+    selectedTrackEntry: jest.fn(),
   },
 }));
 
@@ -28,11 +45,10 @@ const testHook = (hookKey, selector) => {
 describe('selector hooks', () => {
   describe('root selectors', () => {
     const hookKeys = keyStore(selectorHooks.root);
-    const selGroup = selectors.root;
     beforeEach(() => { hooks = selectorHooks.root; });
-    testHook(hookKeys.useGradeExportUrl, selGroup.gradeExportUrl);
-    testHook(hookKeys.useSelectedCohortEntry, selGroup.selectedCohortEntry);
-    testHook(hookKeys.useSelectedTrackEntry, selGroup.selectedTrackEntry);
+    testHook(hookKeys.useGradeExportUrl, selectors.root.gradeExportUrl);
+    testHook(hookKeys.useSelectedCohortEntry, selectors.root.selectedCohortEntry);
+    testHook(hookKeys.useSelectedTrackEntry, selectors.root.selectedTrackEntry);
   });
   describe('app', () => {
     const hookKeys = keyStore(selectorHooks.app);
@@ -53,6 +69,7 @@ describe('selector hooks', () => {
     const selGroup = selectors.filters;
     beforeEach(() => { hooks = selectorHooks.filters; });
     testHook(hookKeys.useData, selGroup.allFilters);
+    testHook(hookKeys.useIncludeCourseRoleMembers, selGroup.includeCourseRoleMembers);
     testHook(hookKeys.useSelectableAssignmentLabels, selGroup.selectableAssignmentLabels);
     testHook(hookKeys.useSelectedAssignmentLabel, selGroup.selectedAssignmentLabel);
     testHook(hookKeys.useSelectedAssignmentType, selGroup.selectedAssignmentType);

@@ -37,10 +37,14 @@ describe('action hooks', () => {
     const hookKeys = keyStore(actionHooks.filters);
     const actionGroup = actions.filters.update;
     beforeEach(() => { hooks = actionHooks.filters; });
-    testActionHook(hookKeys.useUpdateCohort, actionGroup.updateCohort);
-    testActionHook(hookKeys.useUpdateTrack, actionGroup.updateTrack);
     testActionHook(hookKeys.useUpdateAssignment, actionGroup.assignment);
     testActionHook(hookKeys.useUpdateAssignmentLimits, actionGroup.assignmentLimits);
+    testActionHook(hookKeys.useUpdateCohort, actionGroup.updateCohort);
     testActionHook(hookKeys.useUpdateCourseGradeLimits, actionGroup.courseGradeLimits);
+    testActionHook(
+      hookKeys.useUpdateIncludeCourseRoleMembers,
+      actionGroup.updateIncludeCourseRoleMembers,
+    );
+    testActionHook(hookKeys.useUpdateTrack, actionGroup.updateTrack);
   });
 });

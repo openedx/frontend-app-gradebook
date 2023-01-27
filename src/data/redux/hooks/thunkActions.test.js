@@ -4,6 +4,9 @@ import { actionHook } from './utils';
 import thunkActionHooks from './thunkActions';
 
 jest.mock('data/thunkActions', () => ({
+  app: {
+    filterMenu: { close: jest.fn() },
+  },
   grades: {
     fetchGrades: jest.fn(),
     fetchGradesIfAssignmentGradeFiltersSet: jest.fn(),
@@ -23,17 +26,23 @@ const testActionHook = (hookKey, action) => {
   });
 };
 describe('thunkAction hooks', () => {
+  describe('app', () => {
+    const hookKeys = keyStore(thunkActionHooks.app);
+    beforeEach(() => { hooks = thunkActionHooks.app; });
+    testActionHook(hookKeys.useCloseFilterMenu, thunkActions.app.filterMenu.close);
+  });
   describe('grades', () => {
     const hookKeys = keyStore(thunkActionHooks.grades);
+    const actionGroup = thunkActions.grades;
     beforeEach(() => { hooks = thunkActionHooks.grades; });
-    testActionHook(hookKeys.useFetchGrades, thunkActions.grades.fetchGrades);
+    testActionHook(hookKeys.useFetchGrades, actionGroup.fetchGrades);
     testActionHook(
       hookKeys.useFetchGradesIfAssignmentGradeFiltersSet,
-      thunkActions.grades.fetchGradesIfAssignmentGradeFiltersSet,
+      actionGroup.fetchGradesIfAssignmentGradeFiltersSet,
     );
     testActionHook(
       hookKeys.useSubmitImportGradesButtonData,
-      thunkActions.grades.submitImportGradesButtonData,
+      actionGroup.submitImportGradesButtonData,
     );
   });
 });

@@ -165,6 +165,14 @@ export class MockUseState {
     );
   }
 
+  expectInitializedWith(key, value) {
+    expect(this.hooks.state[key]).toHaveBeenCalledWith(value);
+  }
+
+  expectSetStateCalledWith(key, value) {
+    expect(this.setState[key]).toHaveBeenCalledWith(value);
+  }
+
   /**
    * Restore the hook module's state object to the actual code.
    */
@@ -189,4 +197,8 @@ export class MockUseState {
       expect(this.hooks.state[key](testValue)).toEqual(useState(testValue));
     });
   }
-}
+
+  get values() {
+    return StrictDict({ ...this.hooks.state });
+  }
+};

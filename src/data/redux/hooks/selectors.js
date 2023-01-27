@@ -3,11 +3,11 @@ import { useSelector } from 'react-redux';
 import { StrictDict } from 'utils';
 import selectors from 'data/selectors';
 
-export const rootSelectors = {
+export const root = StrictDict({
   useGradeExportUrl: () => useSelector(selectors.root.gradeExportUrl),
   useSelectedCohortEntry: () => useSelector(selectors.root.selectedCohortEntry),
   useSelectedTrackEntry: () => useSelector(selectors.root.selectedTrackEntry),
-};
+});
 
 export const app = StrictDict({
   useAssignmentGradeLimits: () => useSelector(selectors.app.assignmentGradeLimits),
@@ -27,6 +27,7 @@ export const cohorts = StrictDict({
 
 export const filters = StrictDict({
   useData: () => useSelector(selectors.filters.allFilters),
+  useIncludeCourseRoleMembers: () => useSelector(selectors.filters.includeCourseRoleMembers),
   useSelectableAssignmentLabels: () => useSelector(selectors.filters.selectableAssignmentLabels),
   useSelectedAssignmentLabel: () => useSelector(selectors.filters.selectedAssignmentLabel),
   useSelectedAssignmentType: () => useSelector(selectors.filters.selectedAssignmentType),
@@ -44,5 +45,5 @@ export default StrictDict({
   cohorts,
   filters,
   tracks,
-  ...rootSelectors,
+  root,
 });

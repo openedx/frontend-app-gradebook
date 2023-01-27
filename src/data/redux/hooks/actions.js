@@ -7,11 +7,12 @@ const app = StrictDict({
 });
 
 const filters = StrictDict({
-  useUpdateCohort: actionHook(actions.filters.update.cohort),
-  useUpdateTrack: actionHook(actions.filters.update.track),
   useUpdateAssignment: actionHook(actions.filters.update.assignment),
   useUpdateAssignmentLimits: actionHook(actions.filters.update.assignmentLimits),
+  useUpdateCohort: actionHook(actions.filters.update.cohort),
   useUpdateCourseGradeLimits: actionHook(actions.filters.update.courseGradeLimits),
+  useUpdateIncludeCourseRoleMembers: actionHook(actions.filters.update.includeCourseRoleMembers),
+  useUpdateTrack: actionHook(actions.filters.update.track),
 });
 
 export default StrictDict({
