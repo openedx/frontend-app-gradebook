@@ -1,0 +1,63 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`CourseFilter component render if disabled snapshot 1`] = `
+<Fragment>
+  <div
+    className="grade-filter-inputs"
+  >
+    <PercentGroup
+      id="minimum-grade"
+      label="Min Grade"
+      onChange={[MockFunction]}
+      value={23}
+    />
+    <PercentGroup
+      id="maximum-grade"
+      label="Max Grade"
+      onChange={[MockFunction]}
+      value={300}
+    />
+  </div>
+  <div
+    className="grade-filter-action"
+  >
+    <Button
+      disabled={true}
+      variant="outline-secondary"
+    >
+      Apply
+    </Button>
+  </div>
+</Fragment>
+`;
+
+exports[`CourseFilter component render with selected assignment snapshot 1`] = `
+<Fragment>
+  <div
+    className="grade-filter-inputs"
+  >
+    <PercentGroup
+      id="minimum-grade"
+      label="Min Grade"
+      onChange={[MockFunction]}
+      value={23}
+    />
+    <PercentGroup
+      id="maximum-grade"
+      label="Max Grade"
+      onChange={[MockFunction]}
+      value={300}
+    />
+  </div>
+  <div
+    className="grade-filter-action"
+  >
+    <Button
+      disabled={false}
+      variant="outline-secondary"
+    >
+      Apply
+    </Button>
+  </div>
+</Fragment>
+`;

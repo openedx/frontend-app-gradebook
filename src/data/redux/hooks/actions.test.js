@@ -38,5 +38,6 @@ describe('action hooks', () => {
     beforeEach(() => { hooks = actionHooks.filters; });
     testActionHook(hookKeys.useUpdateAssignment, actions.filters.update.assignment);
     testActionHook(hookKeys.useUpdateAssignmentLimits, actions.filters.update.assignmentLimits);
+    testActionHook(hookKeys.useUpdateCourseGradeLimits, actions.filters.update.courseGradeLimits);
   });
 });

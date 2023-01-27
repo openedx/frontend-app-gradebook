@@ -30,6 +30,11 @@ describe('selector hooks', () => {
     const hookKeys = keyStore(selectorHooks.app);
     beforeEach(() => { hooks = selectorHooks.app; });
     testSelectorHook(hookKeys.useAssignmentGradeLimits, selectors.app.assignmentGradeLimits);
+    testSelectorHook(
+      hookKeys.useAreCourseGradeFiltersValid,
+      selectors.app.areCourseGradeFiltersValid,
+    );
+    testSelectorHook(hookKeys.useCourseGradeLimits, selectors.app.courseGradeLimits);
   });
   describe('filters', () => {
     const hookKeys = keyStore(selectorHooks.filters);
