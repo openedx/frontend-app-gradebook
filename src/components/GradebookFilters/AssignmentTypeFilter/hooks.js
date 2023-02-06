@@ -1,9 +1,9 @@
 import { selectors, actions } from 'data/redux/hooks';
 
 export const useAssignmentTypeFilterData = ({ updateQueryParams }) => {
-  const assignmentTypes = selectors.assignmentTypes.useAllAssignmentTypes();
+  const assignmentTypes = selectors.assignmentTypes.useAllAssignmentTypes() || {};
   const assignmentFilterOptions = selectors.filters.useSelectableAssignmentLabels();
-  const selectedAssignmentType = selectors.filters.useAssignmentType();
+  const selectedAssignmentType = selectors.filters.useAssignmentType() || '';
   const filterAssignmentType = actions.filters.useUpdateAssignmentType();
 
   const handleChange = (event) => {

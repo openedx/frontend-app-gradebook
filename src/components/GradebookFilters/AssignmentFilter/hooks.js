@@ -8,7 +8,7 @@ export const useAssignmentFilterData = ({
   updateQueryParams,
 }) => {
   const assignmentFilterOptions = selectors.filters.useSelectableAssignmentLabels();
-  const selectedAssignment = selectors.filters.useSelectedAssignmentLabel();
+  const selectedAssignmentLabel = selectors.filters.useSelectedAssignmentLabel() || '';
 
   const updateAssignmentFilter = actions.filters.useUpdateAssignment();
   const conditionalFetch = thunkActions.grades.useFetchGradesIfAssignmentGradeFiltersSet();
@@ -25,7 +25,7 @@ export const useAssignmentFilterData = ({
 
   return {
     handleChange,
-    selectedAssignment,
+    selectedAssignmentLabel,
     assignmentFilterOptions,
   };
 };

@@ -9,6 +9,7 @@ const app = StrictDict({
 const filters = StrictDict({
   useUpdateAssignment: actionHook(actions.filters.update.assignment),
   useUpdateAssignmentLimits: actionHook(actions.filters.update.assignmentLimits),
+  useUpdateAssignmentType: actionHook(actions.filters.update.assignmentType),
   useUpdateCohort: actionHook(actions.filters.update.cohort),
   useUpdateCourseGradeLimits: actionHook(actions.filters.update.courseGradeLimits),
   useUpdateIncludeCourseRoleMembers: actionHook(actions.filters.update.includeCourseRoleMembers),

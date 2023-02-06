@@ -26,7 +26,7 @@ jest.mock('./hooks', () => ({ __esModule: true, default: jest.fn() }));
 
 const hookProps = {
   closeMenu: jest.fn().mockName('hook.closeMenu'),
-  includeCourseRoleMembers: {
+  includeCourseTeamMembers: {
     value: true,
     handleChange: jest.fn().mockName('hook.handleChange'),
   },
@@ -74,7 +74,7 @@ describe('GradebookFilters', () => {
       const checkbox = el.find(Collapsible).at(3).children();
       expect(checkbox.props()).toEqual({
         checked: true,
-        onChange: hookProps.includeCourseRoleMembers.handleChange,
+        onChange: hookProps.includeCourseTeamMembers.handleChange,
         children: formatMessage(messages.includeCourseTeamMembers),
       });
     });

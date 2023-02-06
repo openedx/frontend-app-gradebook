@@ -30,7 +30,7 @@ export const filters = StrictDict({
   useIncludeCourseRoleMembers: () => useSelector(selectors.filters.includeCourseRoleMembers),
   useSelectableAssignmentLabels: () => useSelector(selectors.filters.selectableAssignmentLabels),
   useSelectedAssignmentLabel: () => useSelector(selectors.filters.selectedAssignmentLabel),
-  useSelectedAssignmentType: () => useSelector(selectors.filters.selectedAssignmentType),
+  useAssignmentType: () => useSelector(selectors.filters.assignmentType),
 });
 
 export const tracks = StrictDict({

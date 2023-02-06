@@ -29,13 +29,13 @@ export const useStudentGroupsFilterData = ({ updateQueryParams }) => {
   };
   return {
     cohorts: {
-      value: selectedCohortEntry.name,
+      value: selectedCohortEntry?.name || '',
       isDisabled: cohorts.length === 0,
       handleChange: handleUpdateCohort,
       entries: cohorts.map(({ id: value, name }) => ({ value, name })),
     },
     tracks: {
-      value: selectedTrackEntry.name,
+      value: selectedTrackEntry?.name || '',
       handleChange: handleUpdateTrack,
       entries: tracks.map(({ slug: value, name }) => ({ value, name })),
     },

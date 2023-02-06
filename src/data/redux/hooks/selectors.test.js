@@ -23,7 +23,7 @@ jest.mock('data/selectors', () => ({
     includeCourseRoleMembers: jest.fn(),
     selectableAssignmentLabels: jest.fn(),
     selectedAssignmentLabel: jest.fn(),
-    selectedAssignmentType: jest.fn(),
+    assignmentType: jest.fn(),
   },
   tracks: {
     allTracks: jest.fn(),
@@ -72,7 +72,7 @@ describe('selector hooks', () => {
     testHook(hookKeys.useIncludeCourseRoleMembers, selGroup.includeCourseRoleMembers);
     testHook(hookKeys.useSelectableAssignmentLabels, selGroup.selectableAssignmentLabels);
     testHook(hookKeys.useSelectedAssignmentLabel, selGroup.selectedAssignmentLabel);
-    testHook(hookKeys.useSelectedAssignmentType, selGroup.selectedAssignmentType);
+    testHook(hookKeys.useAssignmentType, selGroup.assignmentType);
   });
   describe('tracks', () => {
     const hookKeys = keyStore(selectorHooks.tracks);

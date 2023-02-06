@@ -69,8 +69,8 @@ describe('useAssignmentFilterData hook', () => {
         expect(fetch).toHaveBeenCalled();
       });
     });
-    it('passes selectedAssignment from hook', () => {
-      expect(out.selectedAssignment).toEqual(selectedAssignmentLabel);
+    it('passes selectedAssignmentLabel from hook', () => {
+      expect(out.selectedAssignmentLabel).toEqual(selectedAssignmentLabel);
     });
     it('passes assignmentFilterOptions from hook', () => {
       expect(out.assignmentFilterOptions).toEqual(selectableAssignmentLabels);

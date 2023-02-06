@@ -9,7 +9,7 @@ describe('redux action utils', () => {
   describe('formatDateForDisplay', () => {
     it('returns the datetime as a formatted string', () => {
       expect(utils.formatDateForDisplay(new Date('Jun 3 2021 11:59 AM EDT'))).toEqual(
-        'June 3, 2021 at 03:59 PM UTC',
+        'June 3, 2021 at 03:59 PM UTC',
       );
     });
   });

@@ -201,4 +201,4 @@ export class MockUseState {
   get values() {
     return StrictDict({ ...this.hooks.state });
   }
-};
+}

@@ -21,7 +21,7 @@ import useGradebookFiltersData from './hooks';
 export const GradebookFilters = ({ updateQueryParams }) => {
   const {
     closeMenu,
-    includeCourseRoleMembers,
+    includeCourseTeamMembers,
   } = useGradebookFiltersData({ updateQueryParams });
   const { formatMessage } = useIntl();
   const collapsibleClassName = 'filter-group mb-3';
@@ -73,8 +73,8 @@ export const GradebookFilters = ({ updateQueryParams }) => {
         className={collapsibleClassName}
       >
         <Form.Checkbox
-          checked={includeCourseRoleMembers.value}
-          onChange={includeCourseRoleMembers.handleChange}
+          checked={includeCourseTeamMembers.value}
+          onChange={includeCourseTeamMembers.handleChange}
         >
           {formatMessage(messages.includeCourseTeamMembers)}
         </Form.Checkbox>
