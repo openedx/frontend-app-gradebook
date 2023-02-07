@@ -65,8 +65,23 @@ describe('useAssignmentTypeFilterData hook', () => {
         expect(updateQueryParams).toHaveBeenCalledWith({ assignmentType: testType });
       });
     });
+    describe('selectedAssignmentType', () => {
+      it('returns selected assignmentType', () => {
+        expect(out.selectedAssignmentType).toEqual(testType);
+      });
+      it('returns empty string if no assignmentType is selected', () => {
+        selectors.filters.useAssignmentType.mockReturnValue(undefined);
+        out = useAssignmentTypeFilterData({ updateQueryParams });
+        expect(out.selectedAssignmentType).toEqual('');
+      });
+    });
     it('passes assignmentTypes from hook', () => {
       expect(out.assignmentTypes).toEqual(allTypes);
+    });
+    test('assignmentTypes is empty object if hook returns undefined', () => {
+      selectors.assignmentTypes.useAllAssignmentTypes.mockReturnValue(undefined);
+      out = useAssignmentTypeFilterData({ updateQueryParams });
+      expect(out.assignmentTypes).toEqual({});
     });
     it('returns isDisabled if assigmentFilterOptions is empty', () => {
       expect(out.isDisabled).toEqual(false);

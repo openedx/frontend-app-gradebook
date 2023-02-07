@@ -64,6 +64,13 @@ describe('selector hooks', () => {
     beforeEach(() => { hooks = selectorHooks.assignmentTypes; });
     testHook(hookKeys.useAllAssignmentTypes, selGroup.allAssignmentTypes);
   });
+  describe('cohorts', () => {
+    const hookKeys = keyStore(selectorHooks.cohorts);
+    const selGroup = selectors.cohorts;
+    beforeEach(() => { hooks = selectorHooks.cohorts; });
+    testHook(hookKeys.useAllCohorts, selGroup.allCohorts);
+    testHook(hookKeys.useCohortsByName, selGroup.cohortsByName);
+  });
   describe('filters', () => {
     const hookKeys = keyStore(selectorHooks.filters);
     const selGroup = selectors.filters;

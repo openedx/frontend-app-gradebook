@@ -65,12 +65,21 @@ describe('useAssignmentFilterData hook', () => {
       it('updates queryParams', () => {
         expect(updateQueryParams).toHaveBeenCalledWith({ assignment: testId });
       });
+      it('updates assignment filter with only label if no match', () => {
+        out.handleChange({ target: { value: 'no-match' } });
+        expect(updateAssignment).toHaveBeenCalledWith({ label: 'no-match' });
+      });
       it('calls conditional fetch', () => {
         expect(fetch).toHaveBeenCalled();
       });
     });
     it('passes selectedAssignmentLabel from hook', () => {
       expect(out.selectedAssignmentLabel).toEqual(selectedAssignmentLabel);
+    });
+    test('selectedAssignmentLabel is empty string if not set', () => {
+      selectors.filters.useSelectedAssignmentLabel.mockReturnValue(undefined);
+      out = useAssignmentFilterData({ updateQueryParams });
+      expect(out.selectedAssignmentLabel).toEqual('');
     });
     it('passes assignmentFilterOptions from hook', () => {
       expect(out.assignmentFilterOptions).toEqual(selectableAssignmentLabels);

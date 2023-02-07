@@ -86,6 +86,11 @@ describe('useAssignmentFilterData hook', () => {
         expect(entries[2]).toEqual({ value: allCohorts[2].id, name: allCohorts[2].name });
         expect(entries[3]).toEqual({ value: allCohorts[3].id, name: allCohorts[3].name });
       });
+      test('value defaults to empty string', () => {
+        selectors.root.useSelectedCohortEntry.mockReturnValueOnce(null);
+        out = useAssignmentFilterData({ updateQueryParams });
+        expect(out.cohorts.value).toEqual('');
+      });
       describe('handleEvent', () => {
         it('updates filter and query params and fetches grades', () => {
           out.cohorts.handleChange({ target: { value: testCohort.name } });
@@ -111,6 +116,11 @@ describe('useAssignmentFilterData hook', () => {
         expect(entries[1]).toEqual({ value: allTracks[1].slug, name: allTracks[1].name });
         expect(entries[2]).toEqual({ value: allTracks[2].slug, name: allTracks[2].name });
         expect(entries[3]).toEqual({ value: allTracks[3].slug, name: allTracks[3].name });
+      });
+      test('value defaults to empty string', () => {
+        selectors.root.useSelectedTrackEntry.mockReturnValueOnce(null);
+        out = useAssignmentFilterData({ updateQueryParams });
+        expect(out.tracks.value).toEqual('');
       });
       describe('handleEvent', () => {
         it('updates filter and query params and fetches grades', () => {
