@@ -8,8 +8,10 @@ jest.mock('@reduxjs/toolkit', () => ({
 describe('redux action utils', () => {
   describe('formatDateForDisplay', () => {
     it('returns the datetime as a formatted string', () => {
-      expect(utils.formatDateForDisplay(new Date('Jun 3 2021 11:59 AM EDT'))).toEqual(
-        'June 3, 2021 at 03:59 PM UTC',
+      // using toLocaleTimeString because mac/linux seems to generate strings
+      const date = new Date('Jun 3 2021 11:59 AM EDT');
+      expect(utils.formatDateForDisplay(date)).toEqual(
+        `June 3, 2021 at ${date.toLocaleTimeString('en-US', utils.timeOptions)}`
       );
     });
   });
