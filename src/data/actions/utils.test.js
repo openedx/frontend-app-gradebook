@@ -11,7 +11,7 @@ describe('redux action utils', () => {
       // using toLocaleTimeString because mac/linux seems to generate strings
       const date = new Date('Jun 3 2021 11:59 AM EDT');
       expect(utils.formatDateForDisplay(date)).toEqual(
-        `June 3, 2021 at ${date.toLocaleTimeString('en-US', utils.timeOptions)}`
+        `June 3, 2021 at ${date.toLocaleTimeString('en-US', utils.timeOptions)}`,
       );
     });
   });
