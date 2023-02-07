@@ -1,6 +1,5 @@
-import { actionHook } from './utils';
-
 import store from 'data/store';
+import { actionHook } from './utils';
 
 jest.mock('data/store', () => ({
   dispatch: jest.fn(),
