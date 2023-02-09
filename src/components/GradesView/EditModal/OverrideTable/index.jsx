@@ -26,6 +26,16 @@ export const OverrideTable = ({
   if (hide) {
     return null;
   }
+
+  const tableData = [
+    ...gradeOverrides,
+    {
+      adjustedGrade: <AdjustedGradeInput />,
+      date: todaysDate,
+      reason: <ReasonInput />,
+    },
+  ];
+
   return (
     <DataTable
       columns={[
@@ -37,15 +47,8 @@ export const OverrideTable = ({
           accessor: columns.adjustedGrade,
         },
       ]}
-      data={[
-        ...gradeOverrides,
-        {
-          adjustedGrade: <AdjustedGradeInput />,
-          date: todaysDate,
-          reason: <ReasonInput />,
-        },
-      ]}
-      itemCount={gradeOverrides.length}
+      data={tableData}
+      itemCount={tableData.length}
     />
   );
 };
