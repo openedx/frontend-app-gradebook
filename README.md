@@ -1,4 +1,5 @@
 [![Build Status](https://api.travis-ci.com/edx/frontend-app-gradebook.svg?branch=master)](https://travis-ci.com/edx/frontend-app-gradebook)
+[![Codecov](https://img.shields.io/codecov/c/gh/openedx/frontend-app-gradebook)](https://app.codecov.io/gh/openedx/frontend-app-gradebook)
 [![npm_version](https://img.shields.io/npm/v/@edx/frontend-app-gradebook.svg)](@edx/frontend-app-gradebook)
 [![npm_downloads](https://img.shields.io/npm/dt/@edx/frontend-app-gradebook.svg)](@edx/frontend-app-gradebook)
 [![license](https://img.shields.io/npm/l/@edx/frontend-app-gradebook.svg)](@edx/frontend-app-gradebook)
