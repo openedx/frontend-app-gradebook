@@ -59,6 +59,6 @@ exports[`OverrideTable Component snapshots basic snapshot shows a row for each e
       },
     ]
   }
-  itemCount={2}
+  itemCount={3}
 />
 `;
