@@ -72,7 +72,7 @@
     "axios": "0.21.2",
     "axios-mock-adapter": "^1.17.0",
     "enzyme-adapter-react-16": "^1.14.0",
-    "es-check": "^2.3.0",
+    "es-check": "^7.1.0",
     "fetch-mock": "^6.5.2",
     "husky": "2.7.0",
     "identity-obj-proxy": "^3.0.0",
