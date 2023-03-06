@@ -5,7 +5,7 @@ import useImportButtonData from './hooks';
 
 jest.mock('data/redux/hooks', () => ({
   selectors: {
-    useGradeExportUrl: jest.fn(),
+    root: { useGradeExportUrl: jest.fn() },
   },
   thunkActions: {
     grades: { useSubmitImportGradesButtonData: jest.fn() },
@@ -19,7 +19,7 @@ const submit = jest.fn().mockReturnValue(new Promise((resolve) => {
   submitThen = resolve;
 }));
 const gradeExportUrl = 'test-grade-export-url';
-selectors.useGradeExportUrl.mockReturnValue(gradeExportUrl);
+selectors.root.useGradeExportUrl.mockReturnValue(gradeExportUrl);
 thunkActions.grades.useSubmitImportGradesButtonData.mockReturnValue(submit);
 
 const testFile = 'test-file';
@@ -37,7 +37,7 @@ describe('useAssignmentFilterData hook', () => {
   });
   describe('behavior', () => {
     it('initializes redux hooks', () => {
-      expect(selectors.useGradeExportUrl).toHaveBeenCalledWith();
+      expect(selectors.root.useGradeExportUrl).toHaveBeenCalledWith();
       expect(thunkActions.grades.useSubmitImportGradesButtonData).toHaveBeenCalledWith();
     });
     it('initializes react ref', () => {

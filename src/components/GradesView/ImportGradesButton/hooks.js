@@ -2,7 +2,7 @@ import { useRef } from 'react';
 import { selectors, thunkActions } from 'data/redux/hooks';
 
 export const useImportButtonData = () => {
-  const gradeExportUrl = selectors.useGradeExportUrl();
+  const gradeExportUrl = selectors.root.useGradeExportUrl();
   const submitImportGradesButtonData = thunkActions.grades.useSubmitImportGradesButtonData();
 
   const fileInputRef = useRef();
