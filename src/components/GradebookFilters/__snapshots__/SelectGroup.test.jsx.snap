@@ -4,22 +4,16 @@ exports[`SelectGroup Component snapshots basic snapshot 1`] = `
 <div
   className="student-filters"
 >
-  <FormGroup
-    as="div"
+  <Form.Group
     controlId="group id"
-    isInvalid={false}
-    isValid={false}
   >
-    <FormLabel
-      isInline={false}
-    >
+    <Form.Label>
       Group Label
-    </FormLabel>
-    <ForwardRef
+    </Form.Label>
+    <Form.Control
       as="select"
       disabled={false}
       onChange={[MockFunction props.onChange]}
-      plaintext={false}
       value="group VALUE"
     >
       <option
@@ -40,8 +34,8 @@ exports[`SelectGroup Component snapshots basic snapshot 1`] = `
       >
         Option 3
       </option>
-    </ForwardRef>
-  </FormGroup>
+    </Form.Control>
+  </Form.Group>
 </div>
 `;
 
@@ -49,22 +43,16 @@ exports[`SelectGroup Component snapshots disabled 1`] = `
 <div
   className="student-filters"
 >
-  <FormGroup
-    as="div"
+  <Form.Group
     controlId="group id"
-    isInvalid={false}
-    isValid={false}
   >
-    <FormLabel
-      isInline={false}
-    >
+    <Form.Label>
       Group Label
-    </FormLabel>
-    <ForwardRef
+    </Form.Label>
+    <Form.Control
       as="select"
       disabled={true}
       onChange={[MockFunction props.onChange]}
-      plaintext={false}
       value="group VALUE"
     >
       <option
@@ -85,7 +73,7 @@ exports[`SelectGroup Component snapshots disabled 1`] = `
       >
         Option 3
       </option>
-    </ForwardRef>
-  </FormGroup>
+    </Form.Control>
+  </Form.Group>
 </div>
 `;
