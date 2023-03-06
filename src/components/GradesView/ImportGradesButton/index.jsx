@@ -38,7 +38,7 @@ export const ImportGradesButton = () => {
       </Form>
       <NetworkButton
         className="import-grades-btn"
-        label={formatMessage(messages.importGradesBtnText)}
+        label={messages.importGradesBtnText}
         onClick={handleClickImportGrades}
         import
       />

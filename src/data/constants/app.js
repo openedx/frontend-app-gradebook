@@ -63,21 +63,3 @@ export const gradeOverrideHistoryColumns = StrictDict({
   grader: 'grader',
   reason: 'reason',
 });
-
-/**
- * Display strings for various app components.
- * Note: this is a temporary storage location for these strings, before we put them in
- * messages files for translation.
- */
-export const messages = StrictDict({
-  BulkManagementTab: StrictDict({
-    csvUploadLabel: 'Upload Grade CSV',
-    heading: 'Use this feature by downloading a CSV for bulk management, overriding grades locally, and coming back here to upload.',
-    importBtnText: 'Import Grades',
-    successDialog: 'CSV processing. File uploads may take several minutes to complete.',
-    hints: [
-      'Results appear in the table below.',
-      'Grade processing may take a few seconds.',
-    ],
-  }),
-});
