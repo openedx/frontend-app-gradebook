@@ -2,46 +2,23 @@
 
 exports[`EditModal Component snapshots gradeOverrideHistoryError is and empty and open is true modal open and StatusAlert showing 1`] = `
 <ModalDialog
-  closeLabel="Close"
   hasCloseButton={true}
-  isBlocking={false}
   isFullscreenOnMobile={true}
-  isFullscreenScroll={false}
   isOpen={true}
   onClose={[MockFunction this.closeAssignmentModal]}
   size="xl"
   title="Edit Grades"
-  variant="default"
 >
-  <ModalDialogBody
-    as="div"
-  >
+  <ModalDialog.Body>
     <div>
       <ModalHeaders />
-      <ForwardRef
-        closeLabel="Dismiss"
+      <Alert
         dismissible={false}
-        onClose={[Function]}
         show={true}
-        stacked={false}
-        transition={
-          Object {
-            "$$typeof": Symbol(react.forward_ref),
-            "defaultProps": Object {
-              "appear": false,
-              "in": false,
-              "mountOnEnter": false,
-              "timeout": 300,
-              "unmountOnExit": false,
-            },
-            "displayName": "Fade",
-            "render": [Function],
-          }
-        }
         variant="danger"
       >
         Weve been trying to contact you regarding...
-      </ForwardRef>
+      </Alert>
       <OverrideTable />
       <div>
         <FormattedMessage
@@ -58,37 +35,10 @@ exports[`EditModal Component snapshots gradeOverrideHistoryError is and empty an
         />
       </div>
     </div>
-  </ModalDialogBody>
-  <ModalDialogFooter
-    as="div"
-  >
-    <ActionRow
-      as="div"
-      isStacked={false}
-    >
-      <ForwardRef
-        as={
-          Object {
-            "$$typeof": Symbol(react.forward_ref),
-            "Deprecated": [Function],
-            "defaultProps": Object {
-              "active": false,
-              "children": undefined,
-              "className": undefined,
-              "disabled": false,
-              "iconAfter": undefined,
-              "iconBefore": undefined,
-              "variant": "primary",
-            },
-            "propTypes": Object {
-              "children": [Function],
-              "className": [Function],
-              "iconAfter": [Function],
-              "iconBefore": [Function],
-            },
-            "render": [Function],
-          }
-        }
+  </ModalDialog.Body>
+  <ModalDialog.Footer>
+    <ActionRow>
+      <ModalDialog.CloseButton
         variant="tertiary"
       >
         <FormattedMessage
@@ -96,10 +46,8 @@ exports[`EditModal Component snapshots gradeOverrideHistoryError is and empty an
           description="Edit Modal close button text"
           id="gradebook.GradesView.EditModal.closeText"
         />
-      </ForwardRef>
-      <ForwardRef
-        active={false}
-        disabled={false}
+      </ModalDialog.CloseButton>
+      <Button
         onClick={[MockFunction this.handleAdjustedGradeClick]}
         variant="primary"
       >
@@ -108,54 +56,31 @@ exports[`EditModal Component snapshots gradeOverrideHistoryError is and empty an
           description="Edit Modal Save button label"
           id="gradebook.GradesView.EditModal.saveGrade"
         />
-      </ForwardRef>
+      </Button>
     </ActionRow>
-  </ModalDialogFooter>
+  </ModalDialog.Footer>
 </ModalDialog>
 `;
 
 exports[`EditModal Component snapshots gradeOverrideHistoryError is empty and open is false modal closed and StatusAlert closed 1`] = `
 <ModalDialog
-  closeLabel="Close"
   hasCloseButton={true}
-  isBlocking={false}
   isFullscreenOnMobile={true}
-  isFullscreenScroll={false}
   isOpen={false}
   onClose={[MockFunction this.closeAssignmentModal]}
   size="xl"
   title="Edit Grades"
-  variant="default"
 >
-  <ModalDialogBody
-    as="div"
-  >
+  <ModalDialog.Body>
     <div>
       <ModalHeaders />
-      <ForwardRef
-        closeLabel="Dismiss"
+      <Alert
         dismissible={false}
-        onClose={[Function]}
         show={false}
-        stacked={false}
-        transition={
-          Object {
-            "$$typeof": Symbol(react.forward_ref),
-            "defaultProps": Object {
-              "appear": false,
-              "in": false,
-              "mountOnEnter": false,
-              "timeout": 300,
-              "unmountOnExit": false,
-            },
-            "displayName": "Fade",
-            "render": [Function],
-          }
-        }
         variant="danger"
       >
         
-      </ForwardRef>
+      </Alert>
       <OverrideTable />
       <div>
         <FormattedMessage
@@ -172,37 +97,10 @@ exports[`EditModal Component snapshots gradeOverrideHistoryError is empty and op
         />
       </div>
     </div>
-  </ModalDialogBody>
-  <ModalDialogFooter
-    as="div"
-  >
-    <ActionRow
-      as="div"
-      isStacked={false}
-    >
-      <ForwardRef
-        as={
-          Object {
-            "$$typeof": Symbol(react.forward_ref),
-            "Deprecated": [Function],
-            "defaultProps": Object {
-              "active": false,
-              "children": undefined,
-              "className": undefined,
-              "disabled": false,
-              "iconAfter": undefined,
-              "iconBefore": undefined,
-              "variant": "primary",
-            },
-            "propTypes": Object {
-              "children": [Function],
-              "className": [Function],
-              "iconAfter": [Function],
-              "iconBefore": [Function],
-            },
-            "render": [Function],
-          }
-        }
+  </ModalDialog.Body>
+  <ModalDialog.Footer>
+    <ActionRow>
+      <ModalDialog.CloseButton
         variant="tertiary"
       >
         <FormattedMessage
@@ -210,10 +108,8 @@ exports[`EditModal Component snapshots gradeOverrideHistoryError is empty and op
           description="Edit Modal close button text"
           id="gradebook.GradesView.EditModal.closeText"
         />
-      </ForwardRef>
-      <ForwardRef
-        active={false}
-        disabled={false}
+      </ModalDialog.CloseButton>
+      <Button
         onClick={[MockFunction this.handleAdjustedGradeClick]}
         variant="primary"
       >
@@ -222,8 +118,8 @@ exports[`EditModal Component snapshots gradeOverrideHistoryError is empty and op
           description="Edit Modal Save button label"
           id="gradebook.GradesView.EditModal.saveGrade"
         />
-      </ForwardRef>
+      </Button>
     </ActionRow>
-  </ModalDialogFooter>
+  </ModalDialog.Footer>
 </ModalDialog>
 `;

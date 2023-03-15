@@ -1,6 +1,6 @@
 {
   "name": "@edx/frontend-app-gradebook",
-  "version": "1.6.0",
+  "version": "1.6.1",
   "description": "edx editable gradebook-ui to manipulate grade overrides on subsections",
   "repository": {
     "type": "git",
@@ -33,6 +33,7 @@
     "@edx/frontend-component-header": "^3.1.1",
     "@edx/frontend-platform": "2.5.0",
     "@edx/paragon": "^19.25.4",
+    "@edx/reactifex": "^2.1.1",
     "@fortawesome/fontawesome-svg-core": "^1.2.25",
     "@fortawesome/free-brands-svg-icons": "^5.11.2",
     "@fortawesome/free-solid-svg-icons": "^5.11.2",
@@ -68,6 +69,7 @@
   "devDependencies": {
     "@edx/browserslist-config": "^1.1.1",
     "@edx/frontend-build": "^12.4.15",
+    "@testing-library/react": "^12.1.0",
     "axios": "0.21.2",
     "axios-mock-adapter": "^1.17.0",
     "enzyme-adapter-react-16": "^1.14.0",
