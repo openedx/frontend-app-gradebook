@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
 import { AppProvider } from '@edx/frontend-platform/react';
 
@@ -19,13 +19,12 @@ const App = () => (
       <div>
         <Header />
         <main>
-          <Switch>
+          <Routes>
             <Route
-              exact
               path={routePath}
-              component={GradebookPage}
+              element={<GradebookPage />}
             />
-          </Switch>
+          </Routes>
         </main>
         <Footer logo={process.env.LOGO_POWERED_BY_OPEN_EDX_URL_SVG} />
       </div>

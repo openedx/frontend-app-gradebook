@@ -1,7 +1,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { AppProvider } from '@edx/frontend-platform/react';
 
 import Footer from '@edx/frontend-component-footer';
@@ -66,9 +66,9 @@ describe('App router component', () => {
       test('Routing - GradebookPage is only route', () => {
         expect(router.find('main')).toEqual(shallow(
           <main>
-            <Switch>
-              <Route exact path={routePath} component={GradebookPage} />
-            </Switch>
+            <Routes>
+              <Route path={routePath} element={<GradebookPage />} />
+            </Routes>
           </main>,
         ));
       });
