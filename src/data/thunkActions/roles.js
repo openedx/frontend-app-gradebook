@@ -16,12 +16,11 @@ export const fetchRoles = () => (
   (dispatch, getState) => {
     const courseId = selectors.app.courseId(getState());
     return lms.api.fetch.roles()
-      .then(response => response.data)
-      .then((response) => {
+      .then(({ data }) => {
         const isAllowedRole = (role) => (
           (role.course_id === courseId) && allowedRoles.includes(role.role)
         );
-        const canUserViewGradebook = (response.is_staff || (response.roles.some(isAllowedRole)));
+        const canUserViewGradebook = (data.is_staff || (data.roles.some(isAllowedRole)));
         dispatch(roles.fetching.received({ canUserViewGradebook }));
         if (canUserViewGradebook) {
           dispatch(fetchGrades());

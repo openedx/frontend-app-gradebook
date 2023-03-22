@@ -39,24 +39,23 @@ export const fetchGrades = (overrides = {}) => (
       cohort,
       track,
       fetchOptions,
-    ).then(response => response.data)
-      .then((data) => {
-        dispatch(grades.fetching.received({
-          assignmentType: (assignmentType || selectors.filters.assignmentType(getState())),
-          cohort,
-          courseId,
-          track,
-          grades: data.results.sort(sortAlphaAsc),
-          prev: data.previous,
-          next: data.next,
-          totalUsersCount: data.total_users_count,
-          filteredUsersCount: data.filtered_users_count,
-        }));
-        if (fetchOptions.showSuccess) {
-          dispatch(grades.banner.open());
-        }
-        dispatch(grades.fetching.finished());
-      })
+    ).then(({ data }) => {
+      dispatch(grades.fetching.received({
+        assignmentType: (assignmentType || selectors.filters.assignmentType(getState())),
+        cohort,
+        courseId,
+        track,
+        grades: data.results.sort(sortAlphaAsc),
+        prev: data.previous,
+        next: data.next,
+        totalUsersCount: data.total_users_count,
+        filteredUsersCount: data.filtered_users_count,
+      }));
+      if (fetchOptions.showSuccess) {
+        dispatch(grades.banner.open());
+      }
+      dispatch(grades.fetching.finished());
+    })
       .catch(() => {
         dispatch(grades.fetching.error());
       });
@@ -73,8 +72,7 @@ export const fetchGradesIfAssignmentGradeFiltersSet = () => (
 
 export const fetchGradeOverrideHistory = (subsectionId, userId) => (
   dispatch => lms.api.fetch.gradeOverrideHistory(subsectionId, userId)
-    .then(response => response.data)
-    .then((data) => {
+    .then(({ data }) => {
       if (data.success) {
         dispatch(grades.overrideHistory.received({
           overrideHistory: formatGradeOverrideForDisplay(data.history),
@@ -147,8 +145,7 @@ export const updateGrades = () => (
     const updateData = selectors.app.editUpdateData(getState());
     dispatch(grades.update.request());
     return lms.api.updateGradebookData(updateData)
-      .then(response => response.data)
-      .then((data) => {
+      .then(({ data }) => {
         dispatch(grades.update.success({ data }));
         dispatch(module.fetchGrades({
           assignmentType: defaultAssignmentFilter,
