@@ -1,4 +1,3 @@
-import { MockUseState } from 'testUtils';
 import { actions, selectors, thunkActions } from 'data/redux/hooks';
 import * as hooks from './hooks';
 
@@ -15,8 +14,6 @@ jest.mock('data/redux/hooks', () => ({
   },
 }));
 
-const state = new MockUseState(hooks);
-
 selectors.filters.useIncludeCourseRoleMembers.mockReturnValue(true);
 const updateIncludeCourseRoleMembers = jest.fn();
 actions.filters.useUpdateIncludeCourseRoleMembers.mockReturnValue(updateIncludeCourseRoleMembers);
@@ -29,12 +26,8 @@ const updateQueryParams = jest.fn();
 
 let out;
 describe('GradebookFiltersData component hooks', () => {
-  describe('state', () => {
-    state.testGetter(state.keys.includeCourseRoleMembers);
-  });
   describe('useGradebookFiltersData', () => {
     beforeEach(() => {
-      state.mock();
       out = hooks.useGradebookFiltersData({ updateQueryParams });
     });
     describe('behavior', () => {
@@ -55,7 +48,6 @@ describe('GradebookFiltersData component hooks', () => {
       test('includeCourseTeamMembers handleChange', () => {
         const event = { target: { checked: false } };
         out.includeCourseTeamMembers.handleChange(event);
-        expect(state.setState.includeCourseRoleMembers).toHaveBeenCalledWith(false);
         expect(updateIncludeCourseRoleMembers).toHaveBeenCalledWith(false);
         expect(fetchGrades).toHaveBeenCalledWith();
         expect(updateQueryParams).toHaveBeenCalledWith({ includeCourseRoleMembers: false });

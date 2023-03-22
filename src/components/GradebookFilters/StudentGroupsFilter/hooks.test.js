@@ -71,7 +71,7 @@ describe('useAssignmentFilterData hook', () => {
   describe('output', () => {
     describe('cohorts', () => {
       test('value from hook', () => {
-        expect(out.cohorts.value).toEqual(testCohort.name);
+        expect(out.cohorts.value).toEqual(testCohort.id);
       });
       test('disabled iff no cohorts found', () => {
         expect(out.cohorts.isDisabled).toEqual(false);
@@ -93,7 +93,7 @@ describe('useAssignmentFilterData hook', () => {
       });
       describe('handleEvent', () => {
         it('updates filter and query params and fetches grades', () => {
-          out.cohorts.handleChange({ target: { value: testCohort.name } });
+          out.cohorts.handleChange({ target: { value: testCohort.id } });
           expect(updateCohort).toHaveBeenCalledWith(testCohort.id.toString());
           expect(updateQueryParams).toHaveBeenCalledWith({ cohort: testCohort.id.toString() });
           expect(fetch).toHaveBeenCalled();
@@ -108,7 +108,7 @@ describe('useAssignmentFilterData hook', () => {
     });
     describe('tracks', () => {
       test('value from hook', () => {
-        expect(out.tracks.value).toEqual(testTrack.name);
+        expect(out.tracks.value).toEqual(testTrack.slug);
       });
       test('entries map slug to value', () => {
         const { entries } = out.tracks;
@@ -124,7 +124,7 @@ describe('useAssignmentFilterData hook', () => {
       });
       describe('handleEvent', () => {
         it('updates filter and query params and fetches grades', () => {
-          out.tracks.handleChange({ target: { value: testTrack.name } });
+          out.tracks.handleChange({ target: { value: testTrack.slug } });
           expect(updateTrack).toHaveBeenCalledWith(testTrack.slug.toString());
           expect(updateQueryParams).toHaveBeenCalledWith({ track: testTrack.slug.toString() });
           expect(fetch).toHaveBeenCalled();

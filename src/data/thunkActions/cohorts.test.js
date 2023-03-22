@@ -11,7 +11,7 @@ jest.mock('data/services/lms', () => ({
 }));
 
 const responseData = {
-  cohorts: {
+  data: {
     some: 'COHorts',
     other: 'cohORT$',
   },
@@ -27,10 +27,10 @@ describe('cohorts thunkActions', () => {
     );
     describe('actions dispatched on valid response', () => {
       test('fetching.started, fetching.received', () => testFetch(
-        (resolve) => resolve({ data: responseData }),
+        (resolve) => resolve(responseData),
         [
           actions.cohorts.fetching.started(),
-          actions.cohorts.fetching.received(responseData.cohorts),
+          actions.cohorts.fetching.received(responseData.data),
         ],
       ));
     });
