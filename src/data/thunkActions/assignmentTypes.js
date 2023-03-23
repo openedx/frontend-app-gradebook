@@ -15,8 +15,7 @@ export const fetchAssignmentTypes = () => (
   (dispatch) => {
     dispatch(fetching.started());
     return lms.api.fetch.assignmentTypes()
-      .then(response => response.data)
-      .then((data) => {
+      .then(({ data }) => {
         dispatch(fetching.received(Object.keys(data.assignment_types)));
         dispatch(gotGradesFrozen(data.grades_frozen));
         dispatch(gotBulkManagementConfig(data.can_see_bulk_management));
