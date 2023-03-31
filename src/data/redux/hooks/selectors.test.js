@@ -9,11 +9,16 @@ jest.mock('react-redux', () => ({
 
 jest.mock('data/selectors', () => ({
   app: {
+    activeView: jest.fn(),
     assignmentGradeLimits: jest.fn(),
     areCourseGradeFiltersValid: jest.fn(),
     courseGradelimits: jest.fn(),
+    courseId: jest.fn(),
   },
-  assignmentTypes: { allAssignmentTypes: jest.fn() },
+  assignmentTypes: {
+    allAssignmentTypes: jest.fn(),
+    areGradesFrozen: jest.fn(),
+  },
   cohorts: {
     allCohorts: jest.fn(),
     cohortsByName: jest.fn(),
@@ -25,6 +30,9 @@ jest.mock('data/selectors', () => ({
     selectedAssignmentLabel: jest.fn(),
     assignmentType: jest.fn(),
   },
+  roles: {
+    canUserViewGradebook: jest.fn(),
+  },
   tracks: {
     allTracks: jest.fn(),
     tracksByName: jest.fn(),
@@ -33,6 +41,7 @@ jest.mock('data/selectors', () => ({
     gradeExportUrl: jest.fn(),
     selectedCohortEntry: jest.fn(),
     selectedTrackEntry: jest.fn(),
+    showBulkManagement: jest.fn(),
   },
 }));
 
@@ -49,20 +58,24 @@ describe('selector hooks', () => {
     testHook(hookKeys.useGradeExportUrl, selectors.root.gradeExportUrl);
     testHook(hookKeys.useSelectedCohortEntry, selectors.root.selectedCohortEntry);
     testHook(hookKeys.useSelectedTrackEntry, selectors.root.selectedTrackEntry);
+    testHook(hookKeys.useShowBulkManagement, selectors.root.showBulkManagement);
   });
   describe('app', () => {
     const hookKeys = keyStore(selectorHooks.app);
     const selGroup = selectors.app;
     beforeEach(() => { hooks = selectorHooks.app; });
+    testHook(hookKeys.useActiveView, selGroup.activeView);
     testHook(hookKeys.useAssignmentGradeLimits, selGroup.assignmentGradeLimits);
     testHook(hookKeys.useAreCourseGradeFiltersValid, selGroup.areCourseGradeFiltersValid);
     testHook(hookKeys.useCourseGradeLimits, selGroup.courseGradeLimits);
+    testHook(hookKeys.useCourseId, selGroup.courseId);
   });
   describe('assignmentTypes', () => {
     const hookKeys = keyStore(selectorHooks.assignmentTypes);
     const selGroup = selectors.assignmentTypes;
     beforeEach(() => { hooks = selectorHooks.assignmentTypes; });
     testHook(hookKeys.useAllAssignmentTypes, selGroup.allAssignmentTypes);
+    testHook(hookKeys.useAreGradesFrozen, selGroup.areGradesFrozen);
   });
   describe('cohorts', () => {
     const hookKeys = keyStore(selectorHooks.cohorts);
@@ -80,6 +93,12 @@ describe('selector hooks', () => {
     testHook(hookKeys.useSelectableAssignmentLabels, selGroup.selectableAssignmentLabels);
     testHook(hookKeys.useSelectedAssignmentLabel, selGroup.selectedAssignmentLabel);
     testHook(hookKeys.useAssignmentType, selGroup.assignmentType);
+  });
+  describe('roles', () => {
+    const hookKeys = keyStore(selectorHooks.roles);
+    const selGroup = selectors.roles;
+    beforeEach(() => { hooks = selectorHooks.roles; });
+    testHook(hookKeys.useCanUserViewGradebook, selGroup.canUserViewGradebook);
   });
   describe('tracks', () => {
     const hookKeys = keyStore(selectorHooks.tracks);

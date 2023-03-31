@@ -7,6 +7,7 @@ import actionHooks from './actions';
 jest.mock('data/actions', () => ({
   app: {
     setLocalFilter: jest.fn(),
+    setView: jest.fn(),
   },
   filters: {
     update: {
@@ -32,6 +33,7 @@ describe('action hooks', () => {
     const hookKeys = keyStore(actionHooks.app);
     beforeEach(() => { hooks = actionHooks.app; });
     testActionHook(hookKeys.useSetLocalFilter, actions.app.setLocalFilter);
+    testActionHook(hookKeys.useSetView, actions.app.setView);
   });
   describe('filters', () => {
     const hookKeys = keyStore(actionHooks.filters);
