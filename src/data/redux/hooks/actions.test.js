@@ -15,6 +15,11 @@ jest.mock('data/actions', () => ({
       assignmentLimits: jest.fn(),
     },
   },
+  grades: {
+    downloadReport: {
+      bulkGrades: jest.fn(),
+    },
+  },
 }));
 jest.mock('./utils', () => ({
   actionHook: (action) => ({ actionHook: action }),
@@ -48,5 +53,12 @@ describe('action hooks', () => {
       actionGroup.updateIncludeCourseRoleMembers,
     );
     testActionHook(hookKeys.useUpdateTrack, actionGroup.updateTrack);
+  });
+  describe('grades', () => {
+    beforeEach(() => { hooks = actionHooks.grades; });
+    test('downloadReport.useBulkGrades', () => {
+      expect(hooks.downloadReport.useBulkGrades)
+        .toEqual(actionHook(actions.grades.downloadReport.bulkGrades));
+    });
   });
 });
