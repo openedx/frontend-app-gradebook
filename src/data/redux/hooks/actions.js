@@ -17,7 +17,14 @@ const filters = StrictDict({
   useUpdateTrack: actionHook(actions.filters.update.track),
 });
 
+const grades = StrictDict({
+  downloadReport: {
+    useBulkGrades: actionHook(actions.grades.downloadReport.bulkGrades),
+  },
+});
+
 export default StrictDict({
   app,
   filters,
+  grades,
 });
