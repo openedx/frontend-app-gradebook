@@ -7,16 +7,20 @@ export const root = StrictDict({
   useGradeExportUrl: () => useSelector(selectors.root.gradeExportUrl),
   useSelectedCohortEntry: () => useSelector(selectors.root.selectedCohortEntry),
   useSelectedTrackEntry: () => useSelector(selectors.root.selectedTrackEntry),
+  useShowBulkManagement: () => useSelector(selectors.root.showBulkManagement),
 });
 
 export const app = StrictDict({
+  useActiveView: () => useSelector(selectors.app.activeView),
   useAssignmentGradeLimits: () => useSelector(selectors.app.assignmentGradeLimits),
   useAreCourseGradeFiltersValid: () => useSelector(selectors.app.areCourseGradeFiltersValid),
   useCourseGradeLimits: () => useSelector(selectors.app.courseGradeLimits),
+  useCourseId: () => useSelector(selectors.app.courseId),
 });
 
 export const assignmentTypes = StrictDict({
   useAllAssignmentTypes: () => useSelector(selectors.assignmentTypes.allAssignmentTypes),
+  useAreGradesFrozen: () => useSelector(selectors.assignmentTypes.areGradesFrozen),
 });
 
 export const cohorts = StrictDict({
@@ -33,6 +37,10 @@ export const filters = StrictDict({
   useAssignmentType: () => useSelector(selectors.filters.assignmentType),
 });
 
+export const roles = StrictDict({
+  useCanUserViewGradebook: () => useSelector(selectors.roles.canUserViewGradebook),
+});
+
 export const tracks = StrictDict({
   useAllTracks: () => useSelector(selectors.tracks.allTracks),
   // maybe not needed?
@@ -44,6 +52,7 @@ export default StrictDict({
   assignmentTypes,
   cohorts,
   filters,
+  roles,
   tracks,
   root,
 });

@@ -4,6 +4,7 @@ import { actionHook } from './utils';
 
 const app = StrictDict({
   useSetLocalFilter: actionHook(actions.app.setLocalFilter),
+  useSetView: actionHook(actions.app.setView),
 });
 
 const filters = StrictDict({
