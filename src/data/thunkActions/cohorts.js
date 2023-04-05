@@ -7,9 +7,8 @@ export const fetchCohorts = () => (
   (dispatch) => {
     dispatch(actions.cohorts.fetching.started());
     return lms.api.fetch.cohorts()
-      .then(response => response.data)
-      .then((data) => {
-        dispatch(actions.cohorts.fetching.received(data.cohorts));
+      .then(({ data }) => {
+        dispatch(actions.cohorts.fetching.received(data));
       })
       .catch(() => {
         dispatch(actions.cohorts.fetching.error());

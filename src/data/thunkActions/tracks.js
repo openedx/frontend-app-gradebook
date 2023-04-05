@@ -8,8 +8,7 @@ export const fetchTracks = () => (
   (dispatch) => {
     dispatch(actions.tracks.fetching.started());
     return lms.api.fetch.tracks()
-      .then(response => response.data)
-      .then((data) => {
+      .then(({ data }) => {
         dispatch(actions.tracks.fetching.received(data.course_modes));
       })
       .catch(() => {

@@ -12,7 +12,7 @@ export const getGradesUrl = () => `${getUrlPrefix()}grades/v1/`;
 export const getGradebookUrl = () => `${getGradesUrl()}gradebook/${courseId}/`;
 export const getBulkUpdateUrl = () => `${getGradebookUrl()}bulk-update`;
 export const getInterventionUrl = () => `${getBulkGradesUrl()}intervention/`;
-export const getCohortsUrl = () => `${getUrlPrefix()}courses/${courseId}/cohorts/`;
+export const getCohortsUrl = () => `${getUrlPrefix()}cohorts/v1/courses/${courseId}/cohorts/`;
 export const getTracksUrl = () => `${getEnrollmentUrl()}course/${courseId}?include_expired=1`;
 export const getBulkHistoryUrl = () => `${getBulkUpdateUrl()}history/`;
 export const getAssignmentTypesUrl = () => stringifyUrl(`${getGradebookUrl()}grading-info`, { graded_only: true });
