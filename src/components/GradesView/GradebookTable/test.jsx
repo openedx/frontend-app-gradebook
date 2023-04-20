@@ -22,7 +22,7 @@ jest.mock('./Fields', () => ({
   __esModule: true,
   default: {
     Username: () => 'Fields.Username',
-    Email: () => 'Fields.Email',
+    SimpleText: () => 'Fields.SimpleText',
   },
 }));
 jest.mock('./LabelReplacements', () => ({
@@ -75,6 +75,7 @@ describe('GradebookTable', () => {
       ],
       headings: [
         Headings.username,
+        Headings.fullName,
         Headings.email,
         fields.field1,
         fields.field2,
@@ -104,17 +105,22 @@ describe('GradebookTable', () => {
         expect(heading.accessor).toEqual(Headings.username);
         expect(heading.Header.type).toEqual(LabelReplacements.UsernameLabelReplacement);
       });
-      test('email sets key and Header from header', () => {
+      test('full name sets key and Header from header', () => {
         const heading = headings[1];
+        expect(heading.accessor).toEqual(Headings.fullName);
+        expect(heading.Header).toEqual(<FormattedMessage {...messages.fullNameHeading} />);
+      });
+      test('email sets key and Header from header', () => {
+        const heading = headings[2];
         expect(heading.accessor).toEqual(Headings.email);
         expect(heading.Header).toEqual(<FormattedMessage {...messages.emailHeading} />);
       });
       test('subsections set key and Header from header', () => {
-        expect(headings[2]).toEqual({ accessor: fields.field1, Header: fields.field1 });
-        expect(headings[3]).toEqual({ accessor: fields.field2, Header: fields.field2 });
+        expect(headings[3]).toEqual({ accessor: fields.field1, Header: fields.field1 });
+        expect(headings[4]).toEqual({ accessor: fields.field2, Header: fields.field2 });
       });
       test('totalGrade sets key and replaces Header with component', () => {
-        const heading = headings[4];
+        const heading = headings[5];
         expect(heading.accessor).toEqual(Headings.totalGrade);
         expect(heading.Header.type).toEqual(LabelReplacements.TotalGradeLabelReplacement);
       });
@@ -139,10 +145,15 @@ describe('GradebookTable', () => {
             userKey: entry.external_user_key,
           });
         });
-        test('email set to Email Field', () => {
+        test('fullName set to SimpleText Field', () => {
+          const field = row[Headings.fullName];
+          expect(field.type).toEqual(Fields.SimpleText);
+          expect(field.props).toEqual({ value: entry.full_name });
+        });
+        test('email set to SimpleText Field', () => {
           const field = row[Headings.email];
-          expect(field.type).toEqual(Fields.Email);
-          expect(field.props).toEqual({ email: entry.email });
+          expect(field.type).toEqual(Fields.SimpleText);
+          expect(field.props).toEqual({ value: entry.email });
         });
         test('totalGrade set to rounded percent grade * 100', () => {
           expect(

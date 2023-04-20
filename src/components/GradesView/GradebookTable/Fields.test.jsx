@@ -41,13 +41,13 @@ describe('Gradebook Table Fields', () => {
     });
   });
 
-  describe('Email', () => {
-    const email = 'myTag@place.com';
+  describe('SimpleText', () => {
+    const value = 'myTag@place.com';
     test('snapshot', () => {
-      expect(shallow(<Fields.Email email={email} />)).toMatchSnapshot();
+      expect(shallow(<Fields.SimpleText value={value} />)).toMatchSnapshot();
     });
-    test('wraps entry email', () => {
-      expect(shallow(<Fields.Email email={email} />).text()).toEqual(email);
+    test('wraps entry value', () => {
+      expect(shallow(<Fields.SimpleText value={value} />).text()).toEqual(value);
     });
   });
 });

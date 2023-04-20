@@ -1,6 +1,11 @@
 import { defineMessages } from '@edx/frontend-platform/i18n';
 
 const messages = defineMessages({
+  fullNameHeading: {
+    id: 'gradebook.GradesView.table.headings.fullName',
+    defaultMessage: 'Full Name*',
+    description: 'Gradebook table full name column header',
+  },
   emailHeading: {
     id: 'gradebook.GradesView.table.headings.email',
     defaultMessage: 'Email*',

@@ -39,6 +39,8 @@ export class GradebookTable extends React.Component {
       label = <LabelReplacements.UsernameLabelReplacement />;
     } else if (heading === Headings.email) {
       label = <FormattedMessage {...messages.emailHeading} />;
+    } else if (heading === Headings.fullName) {
+      label = <FormattedMessage {...messages.fullNameHeading} />;
     } else {
       label = heading;
     }
@@ -49,7 +51,8 @@ export class GradebookTable extends React.Component {
     [Headings.username]: (
       <Fields.Username username={entry.username} userKey={entry.external_user_key} />
     ),
-    [Headings.email]: (<Fields.Email email={entry.email} />),
+    [Headings.fullName]: (<Fields.SimpleText value={entry.full_name} />),
+    [Headings.email]: (<Fields.SimpleText value={entry.email} />),
     [Headings.totalGrade]: `${roundGrade(entry.percent * 100)}${getLocalizedPercentSign()}`,
     ...entry.section_breakdown.reduce((acc, subsection) => ({
       ...acc,
