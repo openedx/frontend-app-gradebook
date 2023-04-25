@@ -9,7 +9,7 @@ const courseId = 'a-fake-course-id';
 const category = 'AFakeCategory';
 describe('segment service utils', () => {
   beforeAll(() => {
-    global.window = Object.create(window);
+    global.window ??= Object.create(window);
     const url = 'http://dummy.com';
     Object.defineProperty(window, 'location', {
       value: {
