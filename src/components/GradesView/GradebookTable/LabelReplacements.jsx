@@ -46,10 +46,9 @@ const TotalGradeLabelReplacement = () => (
 );
 
 /**
- * <MastersOnlyFieldAsterisk />
  * Asterisk to display next to heading labels that are only used for masters students
  */
-const MastersOnlyFieldAsterisk = () => (
+const mastersOnlyFieldAsterisk = (
   <span className="font-weight-normal">*</span>
 );
 
@@ -64,7 +63,7 @@ const UsernameLabelReplacement = () => (
     </div>
     <div className="font-weight-normal student-key">
       <FormattedMessage {...messages.studentKeyLabel} />
-      <MastersOnlyFieldAsterisk />
+      { mastersOnlyFieldAsterisk }
     </div>
   </div>
 );
@@ -76,7 +75,7 @@ const UsernameLabelReplacement = () => (
 const MastersOnlyLabelReplacement = (message) => (
   <div>
     <FormattedMessage {...message} />
-    <MastersOnlyFieldAsterisk />
+    { mastersOnlyFieldAsterisk }
   </div>
 );
 
