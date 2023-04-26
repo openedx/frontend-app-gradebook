@@ -32,6 +32,13 @@ jest.mock('@edx/frontend-platform/i18n', () => {
   };
 });
 
+jest.mock('@edx/frontend-component-header', () => ({
+  messages: ['some', 'messages'],
+}));
+jest.mock('@edx/frontend-component-footer', () => ({
+  messages: ['some', 'messages'],
+}));
+
 jest.mock('@edx/paragon', () => jest.requireActual('testUtils').mockNestedComponents({
   Alert: 'Alert',
   ActionRow: 'ActionRow',
