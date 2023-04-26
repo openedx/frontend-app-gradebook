@@ -2,7 +2,6 @@ import React from 'react';
 import { shallow } from 'enzyme';
 
 import { DataTable } from '@edx/paragon';
-import { FormattedMessage } from '@edx/frontend-platform/i18n';
 
 import selectors from 'data/selectors';
 import { Headings } from 'data/constants/grades';
@@ -30,6 +29,7 @@ jest.mock('./LabelReplacements', () => ({
   default: {
     TotalGradeLabelReplacement: () => 'TotalGradeLabelReplacement',
     UsernameLabelReplacement: () => 'UsernameLabelReplacement',
+    MastersOnlyLabelReplacement: () => 'MastersOnlyLabelReplacement',
   },
 }));
 jest.mock('./GradeButton', () => 'GradeButton');
@@ -108,12 +108,12 @@ describe('GradebookTable', () => {
       test('full name sets key and Header from header', () => {
         const heading = headings[1];
         expect(heading.accessor).toEqual(Headings.fullName);
-        expect(heading.Header).toEqual(<FormattedMessage {...messages.fullNameHeading} />);
+        expect(heading.Header).toEqual(<LabelReplacements.MastersOnlyLabelReplacement {...messages.fullNameHeading} />);
       });
       test('email sets key and Header from header', () => {
         const heading = headings[2];
         expect(heading.accessor).toEqual(Headings.email);
-        expect(heading.Header).toEqual(<FormattedMessage {...messages.emailHeading} />);
+        expect(heading.Header).toEqual(<LabelReplacements.MastersOnlyLabelReplacement {...messages.emailHeading} />);
       });
       test('subsections set key and Header from header', () => {
         expect(headings[3]).toEqual({ accessor: fields.field1, Header: fields.field1 });

@@ -3,12 +3,12 @@ import { defineMessages } from '@edx/frontend-platform/i18n';
 const messages = defineMessages({
   fullNameHeading: {
     id: 'gradebook.GradesView.table.headings.fullName',
-    defaultMessage: 'Full Name*',
+    defaultMessage: 'Full Name',
     description: 'Gradebook table full name column header',
   },
   emailHeading: {
     id: 'gradebook.GradesView.table.headings.email',
-    defaultMessage: 'Email*',
+    defaultMessage: 'Email',
     description: 'Gradebook table email column header',
   },
   totalGradeHeading: {
@@ -23,7 +23,7 @@ const messages = defineMessages({
   },
   studentKeyLabel: {
     id: 'gradebook.GradesView.table.labels.studentKey',
-    defaultMessage: 'Student Key*',
+    defaultMessage: 'Student Key',
     description: 'Gradebook table Student Key label',
   },
   usernameLabel: {

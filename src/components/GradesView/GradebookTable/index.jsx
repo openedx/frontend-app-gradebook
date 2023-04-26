@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 import { DataTable } from '@edx/paragon';
-import { FormattedMessage, injectIntl, intlShape } from '@edx/frontend-platform/i18n';
+import { injectIntl, intlShape } from '@edx/frontend-platform/i18n';
 
 import selectors from 'data/selectors';
 import { Headings } from 'data/constants/grades';
@@ -38,9 +38,9 @@ export class GradebookTable extends React.Component {
     } else if (heading === Headings.username) {
       label = <LabelReplacements.UsernameLabelReplacement />;
     } else if (heading === Headings.email) {
-      label = <FormattedMessage {...messages.emailHeading} />;
+      label = <LabelReplacements.MastersOnlyLabelReplacement {...messages.emailHeading} />;
     } else if (heading === Headings.fullName) {
-      label = <FormattedMessage {...messages.fullNameHeading} />;
+      label = <LabelReplacements.MastersOnlyLabelReplacement {...messages.fullNameHeading} />;
     } else {
       label = heading;
     }
