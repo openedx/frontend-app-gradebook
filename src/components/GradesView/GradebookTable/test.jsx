@@ -21,7 +21,7 @@ jest.mock('./Fields', () => ({
   __esModule: true,
   default: {
     Username: () => 'Fields.Username',
-    SimpleText: () => 'Fields.SimpleText',
+    Text: () => 'Fields.Text',
   },
 }));
 jest.mock('./LabelReplacements', () => ({
@@ -145,14 +145,14 @@ describe('GradebookTable', () => {
             userKey: entry.external_user_key,
           });
         });
-        test('fullName set to SimpleText Field', () => {
+        test('fullName set to Text Field', () => {
           const field = row[Headings.fullName];
-          expect(field.type).toEqual(Fields.SimpleText);
+          expect(field.type).toEqual(Fields.Text);
           expect(field.props).toEqual({ value: entry.full_name });
         });
-        test('email set to SimpleText Field', () => {
+        test('email set to Text Field', () => {
           const field = row[Headings.email];
-          expect(field.type).toEqual(Fields.SimpleText);
+          expect(field.type).toEqual(Fields.Text);
           expect(field.props).toEqual({ value: entry.email });
         });
         test('totalGrade set to rounded percent grade * 100', () => {

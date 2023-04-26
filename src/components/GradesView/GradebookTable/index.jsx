@@ -51,8 +51,8 @@ export class GradebookTable extends React.Component {
     [Headings.username]: (
       <Fields.Username username={entry.username} userKey={entry.external_user_key} />
     ),
-    [Headings.fullName]: (<Fields.SimpleText value={entry.full_name} />),
-    [Headings.email]: (<Fields.SimpleText value={entry.email} />),
+    [Headings.fullName]: (<Fields.Text value={entry.full_name} />),
+    [Headings.email]: (<Fields.Text value={entry.email} />),
     [Headings.totalGrade]: `${roundGrade(entry.percent * 100)}${getLocalizedPercentSign()}`,
     ...entry.section_breakdown.reduce((acc, subsection) => ({
       ...acc,

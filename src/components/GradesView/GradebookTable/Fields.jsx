@@ -29,16 +29,16 @@ Username.propTypes = {
 };
 
 /**
- * Fields.SimpleText
+ * Fields.Text
  * Simple label field for text value.
  * @param {string} value - value for display
  */
-const SimpleText = ({ value }) => (<span className="wrap-text-in-cell">{value}</span>);
-SimpleText.propTypes = {
+const Text = ({ value }) => (<span className="wrap-text-in-cell">{value}</span>);
+Text.propTypes = {
   value: PropTypes.string.isRequired,
 };
 
 export default StrictDict({
-  SimpleText,
+  Text,
   Username,
 });

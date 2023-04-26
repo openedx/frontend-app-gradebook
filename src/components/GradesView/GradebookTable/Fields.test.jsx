@@ -41,13 +41,13 @@ describe('Gradebook Table Fields', () => {
     });
   });
 
-  describe('SimpleText', () => {
+  describe('Text', () => {
     const value = 'myTag@place.com';
     test('snapshot', () => {
-      expect(shallow(<Fields.SimpleText value={value} />)).toMatchSnapshot();
+      expect(shallow(<Fields.Text value={value} />)).toMatchSnapshot();
     });
     test('wraps entry value', () => {
-      expect(shallow(<Fields.SimpleText value={value} />).text()).toEqual(value);
+      expect(shallow(<Fields.Text value={value} />).text()).toEqual(value);
     });
   });
 });
