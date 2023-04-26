@@ -182,7 +182,7 @@ describe('grades selectors', () => {
   });
 
   describe('headingMapper', () => {
-    const expectedHeaders = (subsectionLabels) => ([
+    const expectedMastersHeaders = (subsectionLabels) => ([
       USERNAME_HEADING,
       FULL_NAME_HEADING,
       EMAIL_HEADING,
@@ -190,27 +190,37 @@ describe('grades selectors', () => {
       TOTAL_COURSE_GRADE_HEADING,
     ]);
 
+    const expectedNonMastersHeaders = (subsectionLabels) => ([
+      USERNAME_HEADING,
+      ...subsectionLabels,
+      TOTAL_COURSE_GRADE_HEADING,
+    ]);
     const rows = genericResultsRows;
     const selector = selectors.headingMapper;
-    it('creates headers for all assignments when no filtering is applied', () => {
-      expect(selector('All')(genericResultsRows)).toEqual(
-        expectedHeaders([rows[0].label, rows[1].label, rows[2].label]),
-      );
-    });
-    it('creates headers for only matching assignment types when type filter is applied', () => {
-      expect(
-        selector('Homework')(genericResultsRows),
-      ).toEqual(
-        expectedHeaders([rows[0].label, rows[1].label]),
-      );
-    });
-    it('creates headers for only matching assignment when label filter is applied', () => {
-      expect(selector('Homework', rows[1].label)(rows)).toEqual(
-        expectedHeaders([rows[1].label]),
-      );
-    });
-    it('returns an empty array when no entries are passed', () => {
-      expect(selector('all')(undefined)).toEqual([]);
+    [true, false].forEach((isMasters) => {
+      const expectedHeaders = isMasters ? expectedMastersHeaders : expectedNonMastersHeaders;
+      describe(isMasters ? 'Masters' : 'Not Masters', () => {
+        it('creates headers for all assignments when no filtering is applied', () => {
+          expect(selector('All', 'All', isMasters)(genericResultsRows)).toEqual(
+            expectedHeaders([rows[0].label, rows[1].label, rows[2].label]),
+          );
+        });
+        it('creates headers for only matching assignment types when type filter is applied', () => {
+          expect(
+            selector('Homework', 'All', isMasters)(genericResultsRows),
+          ).toEqual(
+            expectedHeaders([rows[0].label, rows[1].label]),
+          );
+        });
+        it('creates headers for only matching assignment when label filter is applied', () => {
+          expect(selector('Homework', rows[1].label, isMasters)(rows)).toEqual(
+            expectedHeaders([rows[1].label]),
+          );
+        });
+        it('returns an empty array when no entries are passed', () => {
+          expect(selector('all')(undefined)).toEqual([]);
+        });
+      });
     });
   });
 

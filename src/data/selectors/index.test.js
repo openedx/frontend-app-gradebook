@@ -295,20 +295,27 @@ describe('root selectors', () => {
     const selector = moduleSelectors.getHeadings;
     beforeEach(() => {
       selectors.grades.headingMapper = jest.fn(
-        (type, label) => (breakdown) => ({ headingMapper: { type, label, breakdown } }),
+        (type, label, hasMastersTrack) => (breakdown) => ({
+          headingMapper: {
+            type, label, hasMastersTrack, breakdown,
+          },
+        }),
       );
       selectors.filters.assignmentType = jest.fn();
       selectors.filters.selectedAssignmentLabel = jest.fn();
+      selectors.tracks.stateHasMastersTrack = jest.fn();
       selectors.grades.getExampleSectionBreakdown = mockFn('getExampleSectionBreakdown');
     });
     describe('no assignmentType or label selected', () => {
       it('maps selected filters into getExampleSectionBreakdown', () => {
         selectors.filters.assignmentType.mockReturnValue(undefined);
         selectors.filters.selectedAssignmentLabel.mockReturnValue(undefined);
+        selectors.tracks.stateHasMastersTrack.mockReturnValue(false);
         expect(selector(testState)).toEqual({
           headingMapper: {
             type: 'All',
             label: 'All',
+            hasMastersTrack: false,
             breakdown: { getExampleSectionBreakdown: testState },
           },
         });
@@ -318,10 +325,27 @@ describe('root selectors', () => {
       it('maps selected filters into getExampleSectionBreakdown', () => {
         selectors.filters.assignmentType.mockReturnValue(mockAssignmentType);
         selectors.filters.selectedAssignmentLabel.mockReturnValue(mockAssignmentLabel);
+        selectors.tracks.stateHasMastersTrack.mockReturnValue(false);
         expect(selector(testState)).toEqual({
           headingMapper: {
             type: mockAssignmentType,
             label: mockAssignmentLabel,
+            hasMastersTrack: false,
+            breakdown: { getExampleSectionBreakdown: testState },
+          },
+        });
+      });
+    });
+    describe('has masters track', () => {
+      it('maps selected filters into getExampleSectionBreakdown', () => {
+        selectors.filters.assignmentType.mockReturnValue(undefined);
+        selectors.filters.selectedAssignmentLabel.mockReturnValue(undefined);
+        selectors.tracks.stateHasMastersTrack.mockReturnValue(true);
+        expect(selector(testState)).toEqual({
+          headingMapper: {
+            type: 'All',
+            label: 'All',
+            hasMastersTrack: true,
             breakdown: { getExampleSectionBreakdown: testState },
           },
         });
