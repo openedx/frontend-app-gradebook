@@ -1,4 +1,9 @@
-import { EMAIL_HEADING, TOTAL_COURSE_GRADE_HEADING, USERNAME_HEADING } from '../constants/grades';
+import {
+  EMAIL_HEADING,
+  FULL_NAME_HEADING,
+  TOTAL_COURSE_GRADE_HEADING,
+  USERNAME_HEADING,
+} from '../constants/grades';
 import { formatDateForDisplay } from '../actions/utils';
 import * as selectors from './grades';
 import exportedSelectors from './grades';
@@ -179,6 +184,7 @@ describe('grades selectors', () => {
   describe('headingMapper', () => {
     const expectedHeaders = (subsectionLabels) => ([
       USERNAME_HEADING,
+      FULL_NAME_HEADING,
       EMAIL_HEADING,
       ...subsectionLabels,
       TOTAL_COURSE_GRADE_HEADING,

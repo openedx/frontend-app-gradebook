@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 import { DataTable } from '@edx/paragon';
-import { FormattedMessage, injectIntl, intlShape } from '@edx/frontend-platform/i18n';
+import { injectIntl, intlShape } from '@edx/frontend-platform/i18n';
 
 import selectors from 'data/selectors';
 import { Headings } from 'data/constants/grades';
@@ -38,7 +38,9 @@ export class GradebookTable extends React.Component {
     } else if (heading === Headings.username) {
       label = <LabelReplacements.UsernameLabelReplacement />;
     } else if (heading === Headings.email) {
-      label = <FormattedMessage {...messages.emailHeading} />;
+      label = <LabelReplacements.MastersOnlyLabelReplacement {...messages.emailHeading} />;
+    } else if (heading === Headings.fullName) {
+      label = <LabelReplacements.MastersOnlyLabelReplacement {...messages.fullNameHeading} />;
     } else {
       label = heading;
     }
@@ -49,7 +51,8 @@ export class GradebookTable extends React.Component {
     [Headings.username]: (
       <Fields.Username username={entry.username} userKey={entry.external_user_key} />
     ),
-    [Headings.email]: (<Fields.Email email={entry.email} />),
+    [Headings.fullName]: (<Fields.Text value={entry.full_name} />),
+    [Headings.email]: (<Fields.Text value={entry.email} />),
     [Headings.totalGrade]: `${roundGrade(entry.percent * 100)}${getLocalizedPercentSign()}`,
     ...entry.section_breakdown.reduce((acc, subsection) => ({
       ...acc,

@@ -29,16 +29,16 @@ Username.propTypes = {
 };
 
 /**
- * Fields.Email
- * Simple label field for email value.
- * @param {string} email - email for display
+ * Fields.Text
+ * Simple label field for text value.
+ * @param {string} value - value for display
  */
-const Email = ({ email }) => <span className="wrap-text-in-cell">{email}</span>;
-Email.propTypes = {
-  email: PropTypes.string.isRequired,
+const Text = ({ value }) => (<span className="wrap-text-in-cell">{value}</span>);
+Text.propTypes = {
+  value: PropTypes.string.isRequired,
 };
 
 export default StrictDict({
-  Email,
+  Text,
   Username,
 });

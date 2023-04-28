@@ -9,6 +9,7 @@ import LabelReplacements from './LabelReplacements';
 const {
   TotalGradeLabelReplacement,
   UsernameLabelReplacement,
+  MastersOnlyLabelReplacement,
 } = LabelReplacements;
 
 jest.mock('@edx/paragon', () => ({
@@ -33,6 +34,16 @@ describe('LabelReplacements', () => {
   describe('UsernameLabelReplacement', () => {
     test('snapshot', () => {
       expect(shallow(<UsernameLabelReplacement />)).toMatchSnapshot();
+    });
+  });
+  describe('MastersOnlyLabelReplacement', () => {
+    test('snapshot', () => {
+      const message = {
+        id: 'id',
+        defaultMessage: 'defaultMessAge',
+        description: 'desCripTion',
+      };
+      expect(shallow(<MastersOnlyLabelReplacement {...message} />)).toMatchSnapshot();
     });
   });
 });
