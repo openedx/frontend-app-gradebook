@@ -18,7 +18,7 @@ import appMessages from './i18n';
 import App from './App';
 
 subscribe(APP_READY, () => {
-  lightning()
+  lightning();
   ReactDOM.render(<App />, document.getElementById('root'));
 });
 
