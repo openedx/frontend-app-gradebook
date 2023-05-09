@@ -1,5 +1,5 @@
 import { actions, selectors } from 'data/redux/hooks';
-import { getLocalizedSlash } from 'i18n';
+import { getLocalizedSlash } from 'i18n/utils';
 
 const useAdjustedGradeInputData = () => {
   const possibleGrade = selectors.root.useEditModalPossibleGrade();
