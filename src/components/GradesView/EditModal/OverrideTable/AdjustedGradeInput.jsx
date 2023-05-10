@@ -7,7 +7,7 @@ import { Form } from '@edx/paragon';
 
 import selectors from 'data/selectors';
 import actions from 'data/actions';
-import { getLocalizedSlash } from 'i18n';
+import { getLocalizedSlash } from 'i18n/utils';
 
 /**
  * <AdjustedGradeInput />

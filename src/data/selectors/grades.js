@@ -3,7 +3,7 @@ import { StrictDict } from 'utils';
 
 import { Headings, GradeFormats } from 'data/constants/grades';
 import { formatDateForDisplay } from 'data/actions/utils';
-import { getLocalizedSlash } from 'i18n';
+import { getLocalizedSlash } from 'i18n/utils';
 import simpleSelectorFactory from '../utils';
 import * as module from './grades';
 
@@ -105,12 +105,17 @@ export const headingMapper = (category, label = 'All') => {
   } else {
     filter = filters.byLabel;
   }
-  const { username, email, totalGrade } = Headings;
+  const {
+    username,
+    fullName,
+    email,
+    totalGrade,
+  } = Headings;
   const filteredLabels = (entry) => entry.filter(filter).map(s => s.label);
 
   return (entry) => (
     entry
-      ? [username, email, ...filteredLabels(entry), totalGrade]
+      ? [username, fullName, email, ...filteredLabels(entry), totalGrade]
       : []
   );
 };

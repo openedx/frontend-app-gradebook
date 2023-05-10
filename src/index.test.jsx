@@ -7,10 +7,8 @@ import {
   mergeConfig,
   subscribe,
 } from '@edx/frontend-platform';
-import { messages as headerMessages } from '@edx/frontend-component-header';
-import { messages as footerMessages } from '@edx/frontend-component-footer';
 
-import appMessages from './i18n';
+import messages from './i18n';
 import App from './App';
 import '.';
 
@@ -22,12 +20,6 @@ jest.mock('@edx/frontend-platform', () => ({
   initialize: jest.fn(),
   mergeConfig: jest.fn(),
   subscribe: jest.fn(),
-}));
-jest.mock('@edx/frontend-component-header', () => ({
-  messages: ['some', 'messages'],
-}));
-jest.mock('@edx/frontend-component-footer', () => ({
-  messages: ['some', 'messages'],
 }));
 jest.mock('./App', () => 'App');
 
@@ -50,7 +42,7 @@ describe('app registry', () => {
   });
   test('initialize is called with requireAuthenticatedUser, messages, and a config handler', () => {
     expect(initialize).toHaveBeenCalledWith({
-      messages: [appMessages, headerMessages, footerMessages],
+      messages,
       requireAuthenticatedUser: true,
       handlers: {
         config: expect.any(Function),

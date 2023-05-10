@@ -46,6 +46,13 @@ const TotalGradeLabelReplacement = () => (
 );
 
 /**
+ * Asterisk to display next to heading labels that are only used for masters students
+ */
+const mastersOnlyFieldAsterisk = (
+  <span className="font-weight-normal">*</span>
+);
+
+/**
  * <UsernameLabelReplacement />
  * Username column header.  Lists that Student Key is possibly available
  */
@@ -56,11 +63,24 @@ const UsernameLabelReplacement = () => (
     </div>
     <div className="font-weight-normal student-key">
       <FormattedMessage {...messages.studentKeyLabel} />
+      { mastersOnlyFieldAsterisk }
     </div>
+  </div>
+);
+
+/**
+ * <MastersOnlyLabelReplacement {message}>
+ * Column header for fields that are only available for masters students
+ */
+const MastersOnlyLabelReplacement = (message) => (
+  <div>
+    <FormattedMessage {...message} />
+    { mastersOnlyFieldAsterisk }
   </div>
 );
 
 export default StrictDict({
   TotalGradeLabelReplacement,
   UsernameLabelReplacement,
+  MastersOnlyLabelReplacement,
 });
