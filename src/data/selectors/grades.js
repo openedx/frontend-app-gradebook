@@ -3,7 +3,7 @@ import { StrictDict } from 'utils';
 
 import { Headings, GradeFormats } from 'data/constants/grades';
 import { formatDateForDisplay } from 'data/actions/utils';
-import { getLocalizedSlash } from 'i18n';
+import { getLocalizedSlash } from 'i18n/utils';
 import simpleSelectorFactory from '../utils';
 import * as module from './grades';
 
