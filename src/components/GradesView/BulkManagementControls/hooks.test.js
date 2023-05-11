@@ -5,7 +5,7 @@ import useBulkManagementControlsData from './hooks';
 jest.mock('data/redux/hooks', () => ({
   actions: {
     grades: {
-      downloadReport: { useBulkGrades: jest.fn() },
+      useDownloadBulkGradesReport: jest.fn(),
     },
   },
   selectors: {
@@ -17,7 +17,7 @@ jest.mock('data/redux/hooks', () => ({
 }));
 
 const downloadBulkGrades = jest.fn();
-actions.grades.downloadReport.useBulkGrades.mockReturnValue(downloadBulkGrades);
+actions.grades.useDownloadBulkGradesReport.mockReturnValue(downloadBulkGrades);
 const gradeExportUrl = 'test-grade-export-url';
 selectors.root.useGradeExportUrl.mockReturnValue(gradeExportUrl);
 selectors.root.useShowBulkManagement.mockReturnValue(true);
@@ -47,7 +47,7 @@ describe('useBulkManagementControlsData', () => {
     it('initializes redux hooks', () => {
       expect(selectors.root.useGradeExportUrl).toHaveBeenCalledWith();
       expect(selectors.root.useShowBulkManagement).toHaveBeenCalledWith();
-      expect(actions.grades.downloadReport.useBulkGrades).toHaveBeenCalledWith();
+      expect(actions.grades.useDownloadBulkGradesReport).toHaveBeenCalledWith();
     });
   });
   describe('output', () => {

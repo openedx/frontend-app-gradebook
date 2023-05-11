@@ -18,7 +18,8 @@ export const BulkManagementControls = () => {
     handleClickExportGrades,
   } = useBulkManagementControlsData();
 
-  return show && (
+  if (!show) { return null; }
+  return (
     <div className="d-flex">
       <NetworkButton
         label={messages.downloadGradesBtn}

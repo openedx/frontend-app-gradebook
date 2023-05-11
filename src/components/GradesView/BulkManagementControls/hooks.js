@@ -3,7 +3,7 @@ import { actions, selectors } from 'data/redux/hooks';
 export const useBulkManagementControlsData = () => {
   const gradeExportUrl = selectors.root.useGradeExportUrl();
   const showBulkManagement = selectors.root.useShowBulkManagement();
-  const downloadBulkGradesReport = actions.grades.downloadReport.useBulkGrades();
+  const downloadBulkGradesReport = actions.grades.useDownloadBulkGradesReport();
 
   const handleClickExportGrades = () => {
     downloadBulkGradesReport();

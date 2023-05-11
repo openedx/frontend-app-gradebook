@@ -16,7 +16,11 @@ export const InterventionsReport = () => {
   const { show, handleClick } = useInterventionsReportData();
   const { formatMessage } = useIntl();
 
-  return show && (
+  if (!show) {
+    return null;
+  }
+
+  return (
     <div>
       <h4 className="mt-0">
         {formatMessage(messages.title)}
