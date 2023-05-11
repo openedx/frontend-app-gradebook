@@ -266,11 +266,25 @@ const simpleSelectors = simpleSelectorFactory(
     'gradeOverrideHistoryError',
     'gradeOriginalEarnedGraded',
     'gradeOriginalPossibleGraded',
-    'nextPage',
-    'prevPage',
     'showSuccess',
   ],
 );
+
+const gradeData = ({ grades }) => ({
+  courseId: grades.courseId,
+  filteredUsersCount: grades.filteredUsersCount,
+  totalUsersCount: grades.totalUsersCount,
+  gradeFormat: grades.gradeFormat,
+  showSpinner: grades.showSpinner,
+  gradeOverrideCurrentEarnedGradedOverride: grades.gradeOverrideCurrentEarnedGradedOverride,
+  gradeOverrideHistoryError: grades.gradeOverrideHistoryError,
+  gradeOverrideHistoryResults: grades.gradeOverrideHistoryResults,
+  gradeOriginalEarnedGraded: grades.gradeOriginalEarnedGraded,
+  gradeOriginalPossibleGraded: grades.gradeOriginalPossibleGraded,
+  nextPage: grades.nextPage,
+  prevPage: grades.prevPage,
+  showSuccess: grades.showSuccess,
+});
 
 export default StrictDict({
   bulkImportError,
@@ -286,6 +300,7 @@ export default StrictDict({
   subsectionGrade,
 
   ...simpleSelectors,
+  gradeData,
   allGrades,
   bulkManagementHistoryEntries,
   getExampleSectionBreakdown,
