@@ -1,0 +1,25 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`OverrideTable component render snapshot 1`] = `
+<DataTable
+  columns="test-columns"
+  data={
+    Array [
+      Object {
+        "test": "data",
+      },
+      Object {
+        "andOther": "test-data",
+      },
+      Object {
+        "adjustedGrade": <AdjustedGradeInput />,
+        "date": Object {
+          "formatted": 2000-01-01T00:00:00.000Z,
+        },
+        "reason": <ReasonInput />,
+      },
+    ]
+  }
+  itemCount={2}
+/>
+`;

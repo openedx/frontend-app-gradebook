@@ -1,0 +1,11 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ReasonInput component render snapshot 1`] = `
+<Form.Control
+  data-testid="reason-input-control"
+  name="reasonForChange"
+  onChange={[MockFunction hook.onChange]}
+  type="text"
+  value="test-value"
+/>
+`;
