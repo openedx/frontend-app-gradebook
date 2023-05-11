@@ -3,7 +3,6 @@ import { shallow } from 'enzyme';
 
 import {
   ActionRow,
-  Alert,
   ModalDialog,
 } from '@edx/paragon';
 import { useIntl } from '@edx/frontend-platform/i18n';

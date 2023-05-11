@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { getLocalizedSlash } from 'i18n';
 import { actions, selectors } from 'data/redux/hooks';
 import useAdjustedGradeInputData from './hooks';
