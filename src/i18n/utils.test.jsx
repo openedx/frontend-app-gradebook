@@ -1,5 +1,5 @@
 import { isRtl } from '@edx/frontend-platform/i18n';
-import { getLocalizedSlash, getLocalizedPercentSign } from './index';
+import { getLocalizedSlash, getLocalizedPercentSign } from './utils';
 
 jest.mock('@edx/frontend-platform/i18n', () => ({
   isRtl: jest.fn(),
