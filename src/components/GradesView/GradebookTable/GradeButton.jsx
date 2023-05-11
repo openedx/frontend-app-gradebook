@@ -1,14 +1,31 @@
-/* eslint-disable react/sort-comp, react/button-has-type */
 import React from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
 
 import { Button } from '@edx/paragon';
 
-import selectors from 'data/selectors';
-import thunkActions from 'data/thunkActions';
+import { selectors, thunkActions } from 'data/redux/hooks';
+import transforms from 'data/redux/transforms';
+import * as module from './GradeButton';
 
-const { subsectionGrade } = selectors.grades;
+export const useGradeButtonData = ({ entry, subsection }) => {
+  const areGradesFrozen = selectors.assignmentTypes.useAreGradesFrozen();
+  const { gradeFormat } = selectors.grades.useGradeData();
+  const setModalState = thunkActions.app.useSetModalStateFromTable();
+  const label = transforms.grades.subsectionGrade({ gradeFormat, subsection });
+
+  const onClick = () => {
+    setModalState({
+      userEntry: entry,
+      subsection,
+    });
+  };
+
+  return {
+    areGradesFrozen,
+    label,
+    onClick,
+  };
+};
 
 /**
  * GradeButton
@@ -18,38 +35,24 @@ const { subsectionGrade } = selectors.grades;
  * @param {object} entry - user's grade entry
  * @param {object} subsection - user's subsection grade from subsection_breakdown
  */
-export class GradeButton extends React.Component {
-  constructor(props) {
-    super(props);
-    this.onClick = this.onClick.bind(this);
-  }
-
-  get label() {
-    return subsectionGrade[this.props.format](this.props.subsection);
-  }
-
-  onClick() {
-    this.props.setModalState({
-      userEntry: this.props.entry,
-      subsection: this.props.subsection,
-    });
-  }
-
-  render() {
-    return this.props.areGradesFrozen
-      ? this.label
-      : (
-        <Button
-          variant="link"
-          className="btn-header grade-button"
-          onClick={this.onClick}
-        >
-          {this.label}
-        </Button>
-      );
-  }
-}
-
+export const GradeButton = ({ entry, subsection }) => {
+  const {
+    areGradesFrozen,
+    label,
+    onClick,
+  } = module.useGradeButtonData({ entry, subsection });
+  return areGradesFrozen
+    ? label
+    : (
+      <Button
+        variant="link"
+        className="btn-header grade-button"
+        onClick={onClick}
+      >
+        {label}
+      </Button>
+    );
+};
 GradeButton.propTypes = {
   subsection: PropTypes.shape({
     attempted: PropTypes.bool,
@@ -62,19 +65,6 @@ GradeButton.propTypes = {
     user_id: PropTypes.number,
     username: PropTypes.string,
   }).isRequired,
-  // redux
-  areGradesFrozen: PropTypes.bool.isRequired,
-  format: PropTypes.string.isRequired,
-  setModalState: PropTypes.func.isRequired,
 };
 
-export const mapStateToProps = (state) => ({
-  areGradesFrozen: selectors.assignmentTypes.areGradesFrozen(state),
-  format: selectors.grades.gradeFormat(state),
-});
-
-export const mapDispatchToProps = {
-  setModalState: thunkActions.app.setModalStateFromTable,
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(GradeButton);
+export default GradeButton;
