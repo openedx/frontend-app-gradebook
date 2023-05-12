@@ -18,7 +18,9 @@ import useOverrideTableData from './hooks';
 export const OverrideTable = () => {
   const { hide, columns, data } = useOverrideTableData();
 
-  return hide ? null : (
+  if (hide) { return null; }
+
+  return (
     <DataTable
       columns={columns}
       data={[

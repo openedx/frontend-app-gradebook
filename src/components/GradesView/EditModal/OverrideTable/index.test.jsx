@@ -33,7 +33,7 @@ describe('OverrideTable component', () => {
     jest
       .clearAllMocks()
       .useFakeTimers('modern')
-      .setSystemTime(new Date('2000-01-01'));
+      .setSystemTime(new Date('2000-01-01').getTime());
     el = shallow(<OverrideTable />);
   });
   describe('behavior', () => {
