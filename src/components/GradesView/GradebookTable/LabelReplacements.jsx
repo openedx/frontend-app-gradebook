@@ -76,12 +76,15 @@ const UsernameLabelReplacement = () => {
  * <MastersOnlyLabelReplacement {message}>
  * Column header for fields that are only available for masters students
  */
-const MastersOnlyLabelReplacement = (message) => (
-  <div>
-    <FormattedMessage {...message} />
-    { mastersOnlyFieldAsterisk }
-  </div>
-);
+const MastersOnlyLabelReplacement = (message) => {
+  const { formatMessage } = useIntl();
+  return (
+    <div>
+      {formatMessage(message)}
+      { mastersOnlyFieldAsterisk }
+    </div>
+  );
+};
 
 export default StrictDict({
   TotalGradeLabelReplacement,

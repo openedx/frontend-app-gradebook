@@ -2,11 +2,7 @@
 
 exports[`LabelReplacements MastersOnlyLabelReplacement snapshot 1`] = `
 <div>
-  <FormattedMessage
-    defaultMessage="defaultMessAge"
-    description="desCripTion"
-    id="id"
-  />
+  defaultMessAge
   <span
     className="font-weight-normal"
   >
@@ -65,20 +61,12 @@ exports[`LabelReplacements UsernameLabelReplacement snapshot 1`] = `
   <div
     className="font-weight-normal student-key"
   >
-<<<<<<< HEAD
-    <FormattedMessage
-      defaultMessage="Student Key"
-      description="Gradebook table Student Key label"
-      id="gradebook.GradesView.table.labels.studentKey"
-    />
+    Student Key
     <span
       className="font-weight-normal"
     >
       *
     </span>
-=======
-    Student Key*
->>>>>>> 0a08c33... refactor: GradebookTable component modernization
   </div>
 </div>
 `;

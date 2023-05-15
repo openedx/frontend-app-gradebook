@@ -27,6 +27,7 @@ jest.mock('./Fields', () => jest.requireActual('testUtils').mockNestedComponents
 jest.mock('./LabelReplacements', () => jest.requireActual('testUtils').mockNestedComponents({
   TotalGradeLabelReplacement: 'LabelReplacements.TotalGradeLabelReplacement',
   UsernameLabelReplacement: 'LabelReplacements.UsernameLabelReplacement',
+  MastersOnlyLabelReplacement: 'LabelReplacements.MastersOnlyLabelReplacement',
 }));
 
 jest.mock('data/redux/hooks', () => ({
@@ -53,6 +54,7 @@ const allGrades = [
     username: 'test-username-1',
     external_user_key: 'EKey1',
     email: 'email-1',
+    fullName: 'test-fullNAME',
     percent: 0.9,
     section_breakdown: [
       { label: subsectionLabels[0] },
@@ -88,6 +90,7 @@ const headings = [
   Headings.totalGrade,
   Headings.username,
   Headings.email,
+  Headings.fullName,
   testHeading,
 ];
 selectors.grades.useAllGrades.mockReturnValue(allGrades);
@@ -127,12 +130,21 @@ describe('useGradebookTableData', () => {
       test('email heading replaces with email heading message', () => {
         const { Header, accessor } = out.columns[2];
         expect(accessor).toEqual(headings[2]);
-        expect(Header).toEqual(formatMessage(messages.emailHeading));
+        expect(shallow(Header)).toMatchObject(
+          shallow(<LabelReplacements.MastersOnlyLabelReplacement {...messages.emailHeading} />),
+        );
       });
-      test('other headings are passed through', () => {
+      test('fullName heading replaces with fullName heading message', () => {
         const { Header, accessor } = out.columns[3];
         expect(accessor).toEqual(headings[3]);
-        expect(Header).toEqual(headings[3]);
+        expect(shallow(Header)).toMatchObject(
+          shallow(<LabelReplacements.MastersOnlyLabelReplacement {...messages.fullNameHeading} />),
+        );
+      });
+      test('other headings are passed through', () => {
+        const { Header, accessor } = out.columns[4];
+        expect(accessor).toEqual(headings[4]);
+        expect(Header).toEqual(headings[4]);
       });
     });
     describe('data', () => {
