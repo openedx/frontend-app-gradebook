@@ -10,13 +10,14 @@ import {
   mergeConfig,
   subscribe,
 } from '@edx/frontend-platform';
-import { messages as headerMessages } from '@edx/frontend-component-header';
-import { messages as footerMessages } from '@edx/frontend-component-footer';
 
-import appMessages from './i18n';
+import lightning from './lightning';
+
+import messages from './i18n';
 import App from './App';
 
 subscribe(APP_READY, () => {
+  lightning();
   ReactDOM.render(<App />, document.getElementById('root'));
 });
 
@@ -37,10 +38,6 @@ initialize({
       });
     },
   },
-  messages: [
-    appMessages,
-    headerMessages,
-    footerMessages,
-  ],
+  messages,
   requireAuthenticatedUser: true,
 });

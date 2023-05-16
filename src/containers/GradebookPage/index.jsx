@@ -14,6 +14,8 @@ import GradesView from 'components/GradesView';
 import GradebookFilters from 'components/GradebookFilters';
 import BulkManagementHistoryView from 'components/BulkManagementHistoryView';
 
+import withParams from '../../utils/hoc';
+
 /**
  * <GradebookPage />
  * Top-level view for the Gradebook MFE.
@@ -28,7 +30,7 @@ export class GradebookPage extends React.Component {
 
   componentDidMount() {
     const urlQuery = queryString.parse(this.props.location.search);
-    this.props.initializeApp(this.props.match.params.courseId, urlQuery);
+    this.props.initializeApp(this.props.courseId, urlQuery);
   }
 
   updateQueryParams(queryParams) {
@@ -67,11 +69,7 @@ GradebookPage.propTypes = {
     push: PropTypes.func,
   }).isRequired,
   location: PropTypes.shape({ search: PropTypes.string }),
-  match: PropTypes.shape({
-    params: PropTypes.shape({
-      courseId: PropTypes.string,
-    }),
-  }).isRequired,
+  courseId: PropTypes.string.isRequired,
   // redux
   activeView: PropTypes.string.isRequired,
   initializeApp: PropTypes.func.isRequired,
@@ -85,4 +83,4 @@ export const mapDispatchToProps = {
   initializeApp: thunkActions.app.initialize,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(GradebookPage);
+export default connect(mapStateToProps, mapDispatchToProps)(withParams(GradebookPage));

@@ -1,7 +1,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 import { AppProvider } from '@edx/frontend-platform/react';
 
 import Footer from '@edx/frontend-component-footer';
@@ -32,7 +32,7 @@ jest.mock('@edx/frontend-component-header', () => 'Header');
 
 const logo = 'fakeLogo.png';
 let el;
-let router;
+let secondChild;
 
 describe('App router component', () => {
   test('snapshot', () => {
@@ -42,7 +42,7 @@ describe('App router component', () => {
     beforeEach(() => {
       process.env.LOGO_POWERED_BY_OPEN_EDX_URL_SVG = logo;
       el = shallow(<App />);
-      router = el.childAt(1);
+      secondChild = el.childAt(1);
     });
     describe('AppProvider', () => {
       test('AppProvider is the parent component, passed the redux store props', () => {
@@ -57,14 +57,14 @@ describe('App router component', () => {
     });
     describe('Router', () => {
       test('second child of AppProvider', () => {
-        expect(router.type()).toBe(Router);
+        expect(secondChild.type()).toBe('div');
       });
       test('Header is above/outside-of the routing', () => {
-        expect(router.childAt(0).childAt(0).type()).toBe(Header);
-        expect(router.childAt(0).childAt(1).type()).toBe('main');
+        expect(secondChild.childAt(0).type()).toBe(Header);
+        expect(secondChild.childAt(1).type()).toBe('main');
       });
       test('Routing - GradebookPage is only route', () => {
-        expect(router.find('main')).toEqual(shallow(
+        expect(secondChild.find('main')).toEqual(shallow(
           <main>
             <Routes>
               <Route path={routePath} element={<GradebookPage />} />
@@ -74,7 +74,7 @@ describe('App router component', () => {
       });
     });
     test('Footer logo drawn from env variable', () => {
-      expect(router.find(Footer).props().logo).toEqual(logo);
+      expect(secondChild.find(Footer).props().logo).toEqual(logo);
     });
   });
 });

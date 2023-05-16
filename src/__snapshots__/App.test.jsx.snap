@@ -4,20 +4,18 @@ exports[`App router component snapshot 1`] = `
 <AppProvider
   store="testStore"
 >
-  <InjectIntl(ShimmedIntlComponent) />
-  <BrowserRouter>
-    <div>
-      <Header />
-      <main>
-        <Component>
-          <Route
-            element={<GradebookPage />}
-            path="/:courseId"
-          />
-        </Component>
-      </main>
-      <Footer />
-    </div>
-  </BrowserRouter>
+  <Head />
+  <div>
+    <Header />
+    <main>
+      <Component>
+        <Route
+          element={<GradebookPage />}
+          path="/:courseId"
+        />
+      </Component>
+    </main>
+    <Footer />
+  </div>
 </AppProvider>
 `;

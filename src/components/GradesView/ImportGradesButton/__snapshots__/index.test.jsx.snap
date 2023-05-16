@@ -1,0 +1,34 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ImportGradesButton component render snapshot 1`] = `
+<Fragment>
+  <Form
+    action="test-grade-export-url"
+    method="post"
+  >
+    <Form.Group
+      controlId="csv"
+    >
+      <Form.Control
+        className="d-none"
+        data-testid="file-control"
+        label="Upload Grade CSV"
+        onChange={[MockFunction]}
+        type="file"
+      />
+    </Form.Group>
+  </Form>
+  <NetworkButton
+    className="import-grades-btn"
+    import={true}
+    label={
+      Object {
+        "defaultMessage": "Import Grades",
+        "description": "A labeled button to import grades in the BulkManagement Tab File Upload Form",
+        "id": "gradebook.GradesView.importGradesBtnText",
+      }
+    }
+    onClick={[MockFunction]}
+  />
+</Fragment>
+`;

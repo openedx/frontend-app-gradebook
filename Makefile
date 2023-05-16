@@ -1,10 +1,10 @@
 npm-install-%: ## install specified % npm package
 	npm install $* --save-dev
 	git add package.json
-
-transifex_resource = frontend-app-gradebook
+export TRANSIFEX_RESOURCE = frontend-app-gradebook
 transifex_langs = "ar,de,es_419,fa_IR,fr,fr_CA,hi,it,pt,ru,uk,zh_CN"
 
+intl_imports = ./node_modules/.bin/intl-imports.js
 transifex_utils = ./node_modules/.bin/transifex-utils.js
 i18n = ./src/i18n
 transifex_input = $(i18n)/transifex_input.json
@@ -49,15 +49,29 @@ push_translations:
 	# Pushing strings to Transifex...
 	tx push -s
 	# Fetching hashes from Transifex...
-	./node_modules/reactifex/bash_scripts/get_hashed_strings.sh $(tx_url1)
+	./node_modules/@edx/reactifex/bash_scripts/get_hashed_strings_v3.sh
 	# Writing out comments to file...
-	$(transifex_utils) $(transifex_temp) --comments
+	$(transifex_utils) $(transifex_temp) --comments --v3-scripts-path
 	# Pushing comments to Transifex...
-	./node_modules/reactifex/bash_scripts/put_comments.sh $(tx_url2)
+	./node_modules/@edx/reactifex/bash_scripts/put_comments_v3.sh
 
+ifeq ($(OPENEDX_ATLAS_PULL),)
 # Pulls translations from Transifex.
 pull_translations:
 	tx pull -t -f --mode reviewed --languages=$(transifex_langs)
+else
+# Experimental: OEP-58 Pulls translations using atlas
+pull_translations:
+	rm -rf src/i18n/messages
+	mkdir src/i18n/messages
+	cd src/i18n/messages \
+	  && atlas pull --filter=$(transifex_langs) \
+	           translations/frontend-component-footer/src/i18n/messages:frontend-component-footer \
+	           translations/frontend-component-header/src/i18n/messages:frontend-component-header \
+	           translations/frontend-app-gradebook/src/i18n/messages:frontend-app-gradebook
+
+	$(intl_imports) frontend-component-header frontend-component-footer frontend-app-gradebook
+endif
 
 # This target is used by CI.
 validate-no-uncommitted-package-lock-changes:

@@ -66,6 +66,11 @@ const messages = defineMessages({
     defaultMessage: 'Close Filters',
     description: 'Button label for Close button in Gradebook Filters',
   },
+  apply: {
+    id: 'gradebook.GradebookFilters.apply',
+    defaultMessage: 'Apply',
+    description: 'Apply filter button text',
+  },
 });
 
 export default messages;

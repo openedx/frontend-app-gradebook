@@ -1,5 +1,20 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`LabelReplacements MastersOnlyLabelReplacement snapshot 1`] = `
+<div>
+  <FormattedMessage
+    defaultMessage="defaultMessAge"
+    description="desCripTion"
+    id="id"
+  />
+  <span
+    className="font-weight-normal"
+  >
+    *
+  </span>
+</div>
+`;
+
 exports[`LabelReplacements TotalGradeLabelReplacement displays overlay tooltip 1`] = `
 <Tooltip
   id="course-grade-tooltip"
@@ -73,10 +88,15 @@ exports[`LabelReplacements UsernameLabelReplacement snapshot 1`] = `
     className="font-weight-normal student-key"
   >
     <FormattedMessage
-      defaultMessage="Student Key*"
+      defaultMessage="Student Key"
       description="Gradebook table Student Key label"
       id="gradebook.GradesView.table.labels.studentKey"
     />
+    <span
+      className="font-weight-normal"
+    >
+      *
+    </span>
   </div>
 </div>
 `;

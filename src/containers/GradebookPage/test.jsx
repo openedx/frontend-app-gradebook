@@ -52,7 +52,7 @@ describe('GradebookPage', () => {
       location: {
         search: 'searchString',
       },
-      match: { params: { courseId } },
+      courseId,
       activeView: views.grades,
     };
     beforeEach(() => {

@@ -1,17 +1,31 @@
 import React from 'react';
-import { IntlProvider } from '@edx/frontend-platform/i18n';
+import { shallow } from 'enzyme';
 import { Helmet } from 'react-helmet';
-import { mount } from 'enzyme';
 import { getConfig } from '@edx/frontend-platform';
 import Head from './Head';
 
+jest.mock('react-helmet', () => ({
+  Helmet: () => 'Helmet',
+}));
+jest.mock('@edx/frontend-platform', () => ({
+  getConfig: jest.fn(),
+}));
+
+const config = {
+  SITE_NAME: 'test-site-name',
+  FAVICON_URL: 'test-favicon-url',
+};
+
+getConfig.mockReturnValue(config);
+
 describe('Head', () => {
-  const props = {};
   it('should match render title tag and favicon with the site configuration values', () => {
-    mount(<IntlProvider locale="en"><Head {...props} /></IntlProvider>);
-    const helmet = Helmet.peek();
-    expect(helmet.title).toEqual(`Gradebook | ${getConfig().SITE_NAME}`);
-    expect(helmet.linkTags[0].rel).toEqual('shortcut icon');
-    expect(helmet.linkTags[0].href).toEqual(getConfig().FAVICON_URL);
+    const el = shallow(<Head />);
+    const helmet = el.find(Helmet);
+    const title = helmet.find('title');
+    const link = el.find('link');
+    expect(title.props().children).toEqual(`Gradebook | ${config.SITE_NAME}`);
+    expect(link.props().rel).toEqual('shortcut icon');
+    expect(link.props().href).toEqual(config.FAVICON_URL);
   });
 });
