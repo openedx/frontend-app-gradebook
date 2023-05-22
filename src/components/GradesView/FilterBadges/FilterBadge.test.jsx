@@ -1,107 +1,95 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import { FormattedMessage } from '@edx/frontend-platform/i18n';
+import { useIntl } from '@edx/frontend-platform/i18n';
 
+import { formatMessage } from 'testUtils';
 import { Button } from '@edx/paragon';
-import selectors from 'data/selectors';
-import { FilterBadge, mapStateToProps } from './FilterBadge';
+import { selectors } from 'data/redux/hooks';
+import FilterBadge from './FilterBadge';
 
 jest.mock('@edx/paragon', () => ({
   Button: () => 'Button',
 }));
-jest.mock('data/selectors', () => ({
-  __esModule: true,
-  default: {
+jest.mock('data/redux/hooks', () => ({
+  selectors: {
     root: {
-      filterBadgeConfig: jest.fn(state => ({ filterBadgeConfig: state })),
+      useFilterBadgeConfig: jest.fn(),
     },
   },
 }));
 
+const handleClose = jest.fn(filters => ({ handleClose: filters }));
+const filterName = 'test-filter-name';
+
+const hookProps = {
+  displayName: {
+    defaultMessage: 'a common name',
+  },
+  isDefault: false,
+  hideValue: false,
+  value: 'a common value',
+  connectedFilters: ['some', 'filters'],
+};
+selectors.root.useFilterBadgeConfig.mockReturnValue(hookProps);
+
+let el;
 describe('FilterBadge', () => {
-  describe('component', () => {
-    const config = {
-      displayName: {
-        defaultMessage: 'a common name',
-      },
-      isDefault: false,
-      hideValue: false,
-      value: 'a common value',
-      connectedFilters: ['some', 'filters'],
-    };
-    const filterName = 'api.filter.name';
-    let handleClose;
-    let el;
-    let props;
-    beforeEach(() => {
-      handleClose = (filters) => ({ handleClose: filters });
-      props = { filterName, handleClose, config };
+  beforeEach(() => {
+    el = shallow(<FilterBadge {...{ handleClose, filterName }} />);
+  });
+  describe('behavior', () => {
+    it('initializes intl hook', () => {
+      expect(useIntl).toHaveBeenCalled();
     });
-    describe('with default value', () => {
-      beforeEach(() => {
-        el = shallow(
-          <FilterBadge {...props} config={{ ...config, isDefault: true }} />,
-        );
-      });
-      test('snapshot - empty', () => {
-        expect(el).toMatchSnapshot();
-      });
-      it('does not display', () => {
-        expect(el).toEqual({});
-      });
-    });
-    describe('with non-default value (active)', () => {
-      describe('if hideValue is true', () => {
-        beforeEach(() => {
-          el = shallow(
-            <FilterBadge {...props} config={{ ...config, hideValue: true }} />,
-          );
-        });
-        test('snapshot - shows displayName but not value in span', () => {
-          expect(el).toMatchSnapshot();
-        });
-        it('shows displayName but not value in span', () => {
-          expect(el.find('span.badge').childAt(0).getElement()).toEqual(
-            <span>
-              <FormattedMessage {...config.displayName} />
-            </span>,
-          );
-        });
-        it('calls a handleClose event for connected filters on button click', () => {
-          expect(el.find(Button).props().onClick).toEqual(handleClose(config.connectedFilters));
-        });
-      });
-      describe('if hideValue is false (default)', () => {
-        beforeEach(() => {
-          el = shallow(<FilterBadge {...props} />);
-        });
-        test('snapshot', () => {
-          expect(el).toMatchSnapshot();
-        });
-        it('shows displayName and value in span', () => {
-          expect(el.find('span.badge').childAt(0).getElement()).toEqual(
-            <span>
-              <FormattedMessage {...config.displayName} />
-            </span>,
-          );
-          expect(el.find('span.badge').childAt(1).getElement()).toEqual(
-            <span>
-              {`: ${config.value}`}
-            </span>,
-          );
-        });
-        it('calls a handleClose event for connected filters on button click', () => {
-          expect(el.find(Button).props().onClick).toEqual(handleClose(config.connectedFilters));
-        });
-      });
+    it('initializes redux hooks', () => {
+      expect(selectors.root.useFilterBadgeConfig).toHaveBeenCalledWith(filterName);
     });
   });
-  describe('mapStateToProps', () => {
-    const testState = { some: 'kind', of: 'alien' };
-    const filterName = 'Lilu Dallas Multipass';
-    test('config loads config from root.filterBadgeConfig with ownProps.filterName', () => {
-      const { config } = mapStateToProps(testState, { filterName });
-      expect(config).toEqual(selectors.root.filterBadgeConfig(testState, filterName));
+  describe('render', () => {
+    const testDisplayName = () => {
+      test('formatted display name appears on badge', () => {
+        expect(el.contains(formatMessage(hookProps.displayName))).toEqual(true);
+      });
+    };
+    const testCloseButton = () => {
+      test('close button forwards close method', () => {
+        expect(el.find(Button).props().onClick).toEqual(handleClose(hookProps.connectedFilters));
+      });
+    };
+    test('empty render if isDefault', () => {
+      selectors.root.useFilterBadgeConfig.mockReturnValueOnce({
+        ...hookProps,
+        isDefault: true,
+      });
+      el = shallow(<FilterBadge {...{ handleClose, filterName }} />);
+      expect(el.isEmptyRender()).toEqual(true);
+    });
+    describe('hide Value', () => {
+      beforeEach(() => {
+        selectors.root.useFilterBadgeConfig.mockReturnValueOnce({
+          ...hookProps,
+          hideValue: true,
+        });
+        el = shallow(<FilterBadge {...{ handleClose, filterName }} />);
+      });
+      testDisplayName();
+      testCloseButton();
+      test('snapshot', () => {
+        expect(el).toMatchSnapshot();
+      });
+      test('value is note present in the badge', () => {
+        expect(el.contains(hookProps.value)).toEqual(false);
+      });
+    });
+    describe('do not hide value', () => {
+      testDisplayName();
+      testCloseButton();
+      test('snapshot', () => {
+        expect(el).toMatchSnapshot();
+      });
+      test('value is note present in the badge', () => {
+        expect(el.text().includes(hookProps.value)).toEqual(true);
+      });
     });
   });
 });

@@ -1,16 +1,12 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`FilterBadge component with default value snapshot - empty 1`] = `""`;
-
-exports[`FilterBadge component with non-default value (active) if hideValue is false (default) snapshot 1`] = `
+exports[`FilterBadge render do not hide value snapshot 1`] = `
 <div>
   <span
     className="badge badge-info"
   >
     <span>
-      <FormattedMessage
-        defaultMessage="a common name"
-      />
+      a common name
     </span>
     <span>
       : a common value
@@ -38,15 +34,13 @@ exports[`FilterBadge component with non-default value (active) if hideValue is f
 </div>
 `;
 
-exports[`FilterBadge component with non-default value (active) if hideValue is true snapshot - shows displayName but not value in span 1`] = `
+exports[`FilterBadge render hide Value snapshot 1`] = `
 <div>
   <span
     className="badge badge-info"
   >
     <span>
-      <FormattedMessage
-        defaultMessage="a common name"
-      />
+      a common name
     </span>
     <span />
     <Button
