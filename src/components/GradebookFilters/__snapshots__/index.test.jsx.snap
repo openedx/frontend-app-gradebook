@@ -16,7 +16,7 @@ exports[`GradebookFilters render snapshot 1`] = `
       className="p-1"
       iconAs="Icon"
       onClick={[MockFunction hook.closeMenu]}
-      src={[Function]}
+      src="Close"
     />
   </div>
   <Collapsible
