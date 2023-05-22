@@ -5,7 +5,11 @@ import thunkActionHooks from './thunkActions';
 
 jest.mock('data/thunkActions', () => ({
   app: {
-    filterMenu: { close: jest.fn() },
+    filterMenu: {
+      close: jest.fn(),
+      handleTransitionEnd: jest.fn(),
+      toggle: jest.fn(),
+    },
   },
   grades: {
     fetchGrades: jest.fn(),
@@ -25,24 +29,38 @@ const testActionHook = (hookKey, action) => {
     expect(hooks[hookKey]).toEqual(actionHook(action));
   });
 };
+let hookKeys;
 describe('thunkAction hooks', () => {
   describe('app', () => {
-    const hookKeys = keyStore(thunkActionHooks.app);
+    hookKeys = keyStore(thunkActionHooks.app);
     beforeEach(() => { hooks = thunkActionHooks.app; });
-    testActionHook(hookKeys.useCloseFilterMenu, thunkActions.app.filterMenu.close);
+    testActionHook(hookKeys.useSetModalStateFromTable, thunkActions.app.setModalStateFromTable);
+
+    describe('filterMenu', () => {
+      hookKeys = keyStore(thunkActionHooks.app.filterMenu);
+      beforeEach(() => { hooks = thunkActionHooks.app.filterMenu; });
+      testActionHook(hookKeys.useCloseMenu, thunkActions.app.filterMenu.close);
+      testActionHook(
+        hookKeys.useHandleTransitionEnd,
+        thunkActions.app.filterMenu.handleTransitionEnd,
+      );
+      testActionHook(hookKeys.useToggleMenu, thunkActions.app.filterMenu.toggle);
+    });
   });
   describe('grades', () => {
-    const hookKeys = keyStore(thunkActionHooks.grades);
+    hookKeys = keyStore(thunkActionHooks.grades);
     const actionGroup = thunkActions.grades;
     beforeEach(() => { hooks = thunkActionHooks.grades; });
-    testActionHook(hookKeys.useFetchGrades, actionGroup.fetchGrades);
     testActionHook(
       hookKeys.useFetchGradesIfAssignmentGradeFiltersSet,
       actionGroup.fetchGradesIfAssignmentGradeFiltersSet,
     );
+    testActionHook(hookKeys.useFetchPrevNextGrades, actionGroup.fetchPrevNextGrades);
+    testActionHook(hookKeys.useFetchGrades, actionGroup.fetchGrades);
     testActionHook(
       hookKeys.useSubmitImportGradesButtonData,
       actionGroup.submitImportGradesButtonData,
     );
+    testActionHook(hookKeys.useUpdateGrades, actionGroup.updateGrades);
   });
 });
