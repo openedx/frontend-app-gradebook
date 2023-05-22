@@ -9,7 +9,9 @@ jest.mock('data/redux/hooks', () => ({
     filters: { useIncludeCourseRoleMembers: jest.fn() },
   },
   thunkActions: {
-    app: { useCloseFilterMenu: jest.fn() },
+    app: {
+      filterMenu: { useCloseMenu: jest.fn() },
+    },
     grades: { useFetchGrades: jest.fn() },
   },
 }));
@@ -18,7 +20,7 @@ selectors.filters.useIncludeCourseRoleMembers.mockReturnValue(true);
 const updateIncludeCourseRoleMembers = jest.fn();
 actions.filters.useUpdateIncludeCourseRoleMembers.mockReturnValue(updateIncludeCourseRoleMembers);
 const closeFilterMenu = jest.fn();
-thunkActions.app.useCloseFilterMenu.mockReturnValue(closeFilterMenu);
+thunkActions.app.filterMenu.useCloseMenu.mockReturnValue(closeFilterMenu);
 const fetchGrades = jest.fn();
 thunkActions.grades.useFetchGrades.mockReturnValue(fetchGrades);
 
@@ -34,7 +36,7 @@ describe('GradebookFiltersData component hooks', () => {
       it('initializes hooks', () => {
         expect(actions.filters.useUpdateIncludeCourseRoleMembers).toHaveBeenCalledWith();
         expect(selectors.filters.useIncludeCourseRoleMembers).toHaveBeenCalledWith();
-        expect(thunkActions.app.useCloseFilterMenu).toHaveBeenCalledWith();
+        expect(thunkActions.app.filterMenu.useCloseMenu).toHaveBeenCalledWith();
         expect(thunkActions.grades.useFetchGrades).toHaveBeenCalledWith();
       });
     });
