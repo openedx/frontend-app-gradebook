@@ -89,6 +89,16 @@ const modalSelectors = simpleSelectorFactory(
   ],
 );
 
+const modalData = ({ app: { modalState } }) => ({
+  assignmentName: modalState.assignmentName,
+  adjustedGradePossible: modalState.adjustedGradePossible,
+  adjustedGradeValue: modalState.adjustedGradeValue,
+  open: modalState.open,
+  reasonForChange: modalState.reasonForChange,
+  todaysDate: modalState.todaysDate,
+  updateUserName: modalState.updateUserName,
+});
+
 const filterMenuSelectors = simpleSelectorFactory(
   ({ app: { filterMenu } }) => filterMenu,
   ['open', 'transitioning'],
@@ -115,6 +125,7 @@ export default StrictDict({
   isFilterMenuOpening,
   ...simpleSelectors,
   modalState: StrictDict(modalSelectors),
+  modalData,
   filterMenu: StrictDict({
     ...filterMenuSelectors,
     isClosed: isFilterMenuClosed,
