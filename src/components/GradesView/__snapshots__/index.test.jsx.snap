@@ -1,0 +1,41 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`GradesView component render snapshot 1`] = `
+<Fragment>
+  <SpinnerIcon />
+  <InterventionsReport />
+  <h3
+    className="step-message-1"
+  >
+    filter-step-heading
+  </h3>
+  <div
+    className="d-flex justify-content-between"
+  >
+    <FilterMenuToggle />
+    <SearchControls />
+  </div>
+  <FilterBadges
+    handleClose={[MockFunction hooks.handleFilterBadgeClose]}
+  />
+  <StatusAlerts />
+  <h3>
+    gradebook-step-heading
+  </h3>
+  <div
+    className="d-flex justify-content-between align-items-center mb-2"
+  >
+    <ScoreViewInput />
+    <BulkManagementControls />
+  </div>
+  <FilteredUsersLabel />
+  <GradebookTable />
+  <PageButtons />
+  <p>
+    * 
+    test-masters-hint
+  </p>
+  <EditModal />
+  <ImportSuccessToast />
+</Fragment>
+`;
