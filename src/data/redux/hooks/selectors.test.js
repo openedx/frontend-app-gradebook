@@ -7,85 +7,102 @@ jest.mock('react-redux', () => ({
   useSelector: (selector) => ({ useSelector: selector }),
 }));
 
-jest.mock('data/selectors', () => ({
-  app: {
-    assignmentGradeLimits: jest.fn(),
-    areCourseGradeFiltersValid: jest.fn(),
-    courseGradelimits: jest.fn(),
-  },
-  assignmentTypes: { allAssignmentTypes: jest.fn() },
-  cohorts: {
-    allCohorts: jest.fn(),
-    cohortsByName: jest.fn(),
-  },
-  filters: {
-    allFilters: jest.fn(),
-    includeCourseRoleMembers: jest.fn(),
-    selectableAssignmentLabels: jest.fn(),
-    selectedAssignmentLabel: jest.fn(),
-    assignmentType: jest.fn(),
-  },
-  tracks: {
-    allTracks: jest.fn(),
-    tracksByName: jest.fn(),
-  },
-  root: {
-    gradeExportUrl: jest.fn(),
-    selectedCohortEntry: jest.fn(),
-    selectedTrackEntry: jest.fn(),
-  },
-}));
+const testValue = 'test-value';
+const testState = { test: 'state value' };
 
+let hookKeys;
 let hooks;
-const testHook = (hookKey, selector) => {
-  test(hookKey, () => {
-    expect(hooks[hookKey]()).toEqual(useSelector(selector));
+let selKeys;
+let selectorGroup;
+
+const loadSelectorGroup = (hookGroup, selGroup) => {
+  hookKeys = keyStore(hookGroup);
+  selKeys = keyStore(selGroup);
+  beforeEach(() => {
+    hooks = hookGroup;
+    selectorGroup = selGroup;
   });
 };
+
+const testHook = (hookKey, selectorKey) => {
+  test(hookKey, () => {
+    expect(hooks[hookKey]()).toEqual(useSelector(selectorGroup[selectorKey]));
+  });
+};
+
 describe('selector hooks', () => {
   describe('root selectors', () => {
-    const hookKeys = keyStore(selectorHooks.root);
-    beforeEach(() => { hooks = selectorHooks.root; });
-    testHook(hookKeys.useGradeExportUrl, selectors.root.gradeExportUrl);
-    testHook(hookKeys.useSelectedCohortEntry, selectors.root.selectedCohortEntry);
-    testHook(hookKeys.useSelectedTrackEntry, selectors.root.selectedTrackEntry);
+    loadSelectorGroup(selectorHooks.root, selectors.root);
+    testHook(hookKeys.useEditModalPossibleGrade, selKeys.editModalPossibleGrade);
+    testHook(hookKeys.useGetHeadings, selKeys.getHeadings);
+    testHook(hookKeys.useGradeExportUrl, selKeys.gradeExportUrl);
+    testHook(hookKeys.useInterventionExportUrl, selKeys.interventionExportUrl);
+    testHook(hookKeys.useSelectedCohortEntry, selKeys.selectedCohortEntry);
+    testHook(hookKeys.useSelectedTrackEntry, selKeys.selectedTrackEntry);
+    testHook(hookKeys.useShouldShowSpinner, selKeys.shouldShowSpinner);
+    testHook(hookKeys.useShowBulkManagement, selKeys.showBulkManagement);
+    describe(hookKeys.useFilterBadgeConfig, () => {
+      test('calls filterBadgeConfig selector with passed filterName', () => {
+        const filterBadgeConfig = (state, filterName) => ({
+          filterBadgeConfig: { state, filterName },
+        });
+        const rootKeys = keyStore(selectors.root);
+        jest.spyOn(selectors.root, rootKeys.filterBadgeConfig)
+          .mockImplementation(filterBadgeConfig);
+        const out = hooks.useFilterBadgeConfig(testValue);
+        expect(out.useSelector(testState)).toEqual(filterBadgeConfig(testState, testValue));
+      });
+    });
   });
   describe('app', () => {
-    const hookKeys = keyStore(selectorHooks.app);
-    const selGroup = selectors.app;
-    beforeEach(() => { hooks = selectorHooks.app; });
-    testHook(hookKeys.useAssignmentGradeLimits, selGroup.assignmentGradeLimits);
-    testHook(hookKeys.useAreCourseGradeFiltersValid, selGroup.areCourseGradeFiltersValid);
-    testHook(hookKeys.useCourseGradeLimits, selGroup.courseGradeLimits);
+    loadSelectorGroup(selectorHooks.app, selectors.app);
+    testHook(hookKeys.useActiveView, selKeys.activeView);
+    testHook(hookKeys.useAssignmentGradeLimits, selKeys.assignmentGradeLimits);
+    testHook(hookKeys.useAreCourseGradeFiltersValid, selKeys.areCourseGradeFiltersValid);
+    testHook(hookKeys.useCourseGradeLimits, selKeys.courseGradeLimits);
+    testHook(hookKeys.useCourseId, selKeys.courseId);
+    testHook(hookKeys.useModalData, selKeys.modalData);
+    testHook(hookKeys.useSearchValue, selKeys.searchValue);
+    testHook(hookKeys.useShowImportSuccessToast, selKeys.showImportSuccessToast);
   });
   describe('assignmentTypes', () => {
-    const hookKeys = keyStore(selectorHooks.assignmentTypes);
-    const selGroup = selectors.assignmentTypes;
-    beforeEach(() => { hooks = selectorHooks.assignmentTypes; });
-    testHook(hookKeys.useAllAssignmentTypes, selGroup.allAssignmentTypes);
+    loadSelectorGroup(selectorHooks.assignmentTypes, selectors.assignmentTypes);
+    testHook(hookKeys.useAllAssignmentTypes, selKeys.allAssignmentTypes);
+    testHook(hookKeys.useAreGradesFrozen, selKeys.areGradesFrozen);
   });
   describe('cohorts', () => {
-    const hookKeys = keyStore(selectorHooks.cohorts);
-    const selGroup = selectors.cohorts;
-    beforeEach(() => { hooks = selectorHooks.cohorts; });
-    testHook(hookKeys.useAllCohorts, selGroup.allCohorts);
-    testHook(hookKeys.useCohortsByName, selGroup.cohortsByName);
+    loadSelectorGroup(selectorHooks.cohorts, selectors.cohorts);
+    testHook(hookKeys.useAllCohorts, selKeys.allCohorts);
+    testHook(hookKeys.useCohortsByName, selKeys.cohortsByName);
   });
   describe('filters', () => {
-    const hookKeys = keyStore(selectorHooks.filters);
-    const selGroup = selectors.filters;
-    beforeEach(() => { hooks = selectorHooks.filters; });
-    testHook(hookKeys.useData, selGroup.allFilters);
-    testHook(hookKeys.useIncludeCourseRoleMembers, selGroup.includeCourseRoleMembers);
-    testHook(hookKeys.useSelectableAssignmentLabels, selGroup.selectableAssignmentLabels);
-    testHook(hookKeys.useSelectedAssignmentLabel, selGroup.selectedAssignmentLabel);
-    testHook(hookKeys.useAssignmentType, selGroup.assignmentType);
+    loadSelectorGroup(selectorHooks.filters, selectors.filters);
+    testHook(hookKeys.useData, selKeys.allFilters);
+    testHook(hookKeys.useIncludeCourseRoleMembers, selKeys.includeCourseRoleMembers);
+    testHook(hookKeys.useSelectableAssignmentLabels, selKeys.selectableAssignmentLabels);
+    testHook(hookKeys.useSelectedAssignmentLabel, selKeys.selectedAssignmentLabel);
+    testHook(hookKeys.useAssignmentType, selKeys.assignmentType);
+  });
+  describe('grades', () => {
+    loadSelectorGroup(selectorHooks.grades, selectors.grades);
+    testHook(hookKeys.useAllGrades, selKeys.allGrades);
+    testHook(hookKeys.useGradeData, selKeys.gradeData);
+    testHook(hookKeys.useHasOverrideErrors, selKeys.hasOverrideErrors);
+    testHook(hookKeys.useShowSuccess, selKeys.showSuccess);
+    test(hookKeys.useUserCounts, () => {
+      expect(hooks.useUserCounts()).toEqual({
+        filteredUsersCount: useSelector(selectors.grades.filteredUsersCount),
+        totalUsersCount: useSelector(selectors.grades.totalUsersCount),
+      });
+    });
+  });
+  describe('roles', () => {
+    loadSelectorGroup(selectorHooks.roles, selectors.roles);
+    testHook(hookKeys.useCanUserViewGradebook, selKeys.canUserViewGradebook);
   });
   describe('tracks', () => {
-    const hookKeys = keyStore(selectorHooks.tracks);
-    const selGroup = selectors.tracks;
-    beforeEach(() => { hooks = selectorHooks.tracks; });
-    testHook(hookKeys.useAllTracks, selGroup.allTracks);
-    testHook(hookKeys.useTracksByName, selGroup.tracksByName);
+    loadSelectorGroup(selectorHooks.tracks, selectors.tracks);
+    testHook(hookKeys.useAllTracks, selKeys.allTracks);
+    testHook(hookKeys.useTracksByName, selKeys.tracksByName);
   });
 });
