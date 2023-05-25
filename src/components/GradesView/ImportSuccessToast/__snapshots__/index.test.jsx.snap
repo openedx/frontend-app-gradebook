@@ -1,0 +1,11 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ImportSuccessToast component render snapshot 1`] = `
+<Toast
+  action="test-action"
+  onClose={[MockFunction hooks.onClose]}
+  show="test-show"
+>
+  test-description
+</Toast>
+`;

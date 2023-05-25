@@ -9,5 +9,3 @@ exports[`SpinnerIcon component snapshot - displays spinner overlay with spinner 
   />
 </div>
 `;
-
-exports[`SpinnerIcon component snapshot - does not render if show: false 1`] = `""`;

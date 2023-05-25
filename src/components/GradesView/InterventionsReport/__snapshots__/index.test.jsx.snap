@@ -1,0 +1,30 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`InterventionsReport component output snapshot 1`] = `
+<div>
+  <h4
+    className="mt-0"
+  >
+    Interventions Report
+  </h4>
+  <div
+    className="d-flex justify-content-between align-items-center"
+  >
+    <div
+      className="intervention-report-description"
+    >
+      Need to find students who may be falling behind?  Download the interventions report to obtain engagement metrics such as section attempts and visits.
+    </div>
+    <NetworkButton
+      label={
+        Object {
+          "defaultMessage": "Download Interventions",
+          "description": "The labeled button to download the Intervention report from the Grades View",
+          "id": "gradebook.GradesView.InterventionsReport.downloadBtn",
+        }
+      }
+      onClick={[MockFunction]}
+    />
+  </div>
+</div>
+`;

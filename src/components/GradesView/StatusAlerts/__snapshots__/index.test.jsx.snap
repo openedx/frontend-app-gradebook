@@ -1,0 +1,20 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`StatusAlerts component render snapshot 1`] = `
+<Fragment>
+  <Alert
+    onClose={[MockFunction hooks.successBanner.onClose]}
+    show="hooks.show-success-banner"
+    variant="success"
+  >
+    hooks.success-banner-text
+  </Alert>
+  <Alert
+    dismissible={false}
+    show="hooks.show-grade-filter"
+    variant="danger"
+  >
+    hooks.grade-filter-text
+  </Alert>
+</Fragment>
+`;

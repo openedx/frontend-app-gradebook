@@ -1,0 +1,131 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`GradebookHeader component render default view shapshot 1`] = `
+<div
+  className="gradebook-header"
+>
+  <a
+    className="mb-3"
+    href="test-dashboard-url"
+  >
+    <span
+      aria-hidden="true"
+    >
+      &lt;&lt; 
+    </span>
+    Back to Dashboard
+  </a>
+  <h1>
+    Gradebook
+  </h1>
+  <div
+    className="subtitle-row d-flex justify-content-between align-items-center"
+  >
+    <h2>
+      test-course-id
+    </h2>
+  </div>
+</div>
+`;
+
+exports[`GradebookHeader component render frozen grades snapshot: show frozen warning 1`] = `
+<div
+  className="gradebook-header"
+>
+  <a
+    className="mb-3"
+    href="test-dashboard-url"
+  >
+    <span
+      aria-hidden="true"
+    >
+      &lt;&lt; 
+    </span>
+    Back to Dashboard
+  </a>
+  <h1>
+    Gradebook
+  </h1>
+  <div
+    className="subtitle-row d-flex justify-content-between align-items-center"
+  >
+    <h2>
+      test-course-id
+    </h2>
+  </div>
+  <div
+    className="alert alert-warning"
+    role="alert"
+  >
+    The grades for this course are now frozen. Editing of grades is no longer allowed.
+  </div>
+</div>
+`;
+
+exports[`GradebookHeader component render show bulk management snapshot: show toggle view message button with handleToggleViewClick method 1`] = `
+<div
+  className="gradebook-header"
+>
+  <a
+    className="mb-3"
+    href="test-dashboard-url"
+  >
+    <span
+      aria-hidden="true"
+    >
+      &lt;&lt; 
+    </span>
+    Back to Dashboard
+  </a>
+  <h1>
+    Gradebook
+  </h1>
+  <div
+    className="subtitle-row d-flex justify-content-between align-items-center"
+  >
+    <h2>
+      test-course-id
+    </h2>
+    <Button
+      onClick={[MockFunction hooks.handleToggleViewClick]}
+      variant="tertiary"
+    >
+      toggle-view-message
+    </Button>
+  </div>
+</div>
+`;
+
+exports[`GradebookHeader component render user cannot view gradebook snapshot: show unauthorized warning 1`] = `
+<div
+  className="gradebook-header"
+>
+  <a
+    className="mb-3"
+    href="test-dashboard-url"
+  >
+    <span
+      aria-hidden="true"
+    >
+      &lt;&lt; 
+    </span>
+    Back to Dashboard
+  </a>
+  <h1>
+    Gradebook
+  </h1>
+  <div
+    className="subtitle-row d-flex justify-content-between align-items-center"
+  >
+    <h2>
+      test-course-id
+    </h2>
+  </div>
+  <div
+    className="alert alert-warning"
+    role="alert"
+  >
+    You are not authorized to view the gradebook for this course.
+  </div>
+</div>
+`;

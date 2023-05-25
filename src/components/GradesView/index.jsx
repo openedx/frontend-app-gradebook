@@ -1,12 +1,6 @@
 /* eslint-disable react/sort-comp, react/button-has-type, import/no-named-as-default */
 import React from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-
-import { FormattedMessage } from '@edx/frontend-platform/i18n';
-
-import actions from 'data/actions';
-import thunkActions from 'data/thunkActions';
 
 import BulkManagementControls from './BulkManagementControls';
 import EditModal from './EditModal';
@@ -21,79 +15,55 @@ import ScoreViewInput from './ScoreViewInput';
 import SearchControls from './SearchControls';
 import SpinnerIcon from './SpinnerIcon';
 import StatusAlerts from './StatusAlerts';
-import messages from './messages';
 
-export class GradesView extends React.Component {
-  constructor(props) {
-    super(props);
-    this.handleFilterBadgeClose = this.handleFilterBadgeClose.bind(this);
-  }
+import useGradesViewData from './hooks';
 
-  handleFilterBadgeClose(filterNames) {
-    return () => {
-      this.props.resetFilters(filterNames);
-      this.props.updateQueryParams(filterNames.reduce(
-        (obj, filterName) => ({ ...obj, [filterName]: false }),
-        {},
-      ));
-      this.props.fetchGrades();
-    };
-  }
+export const GradesView = ({ updateQueryParams }) => {
+  const {
+    stepHeadings,
+    handleFilterBadgeClose,
+    mastersHint,
+  } = useGradesViewData({ updateQueryParams });
 
-  render() {
-    return (
-      <>
-        <SpinnerIcon />
+  return (
+    <>
+      <SpinnerIcon />
 
-        <InterventionsReport />
-        <h3 className="step-message-1">
-          <FormattedMessage {...messages.filterStepHeading} />
-        </h3>
+      <InterventionsReport />
+      <h3 className="step-message-1">
+        {stepHeadings.filter}
+      </h3>
 
-        <div className="d-flex justify-content-between">
-          <FilterMenuToggle />
-          <SearchControls />
-        </div>
+      <div className="d-flex justify-content-between">
+        <FilterMenuToggle />
+        <SearchControls />
+      </div>
 
-        <FilterBadges handleClose={this.handleFilterBadgeClose} />
-        <StatusAlerts />
+      <FilterBadges handleClose={handleFilterBadgeClose} />
+      <StatusAlerts />
 
-        <h3><FormattedMessage {...messages.gradebookStepHeading} /></h3>
+      <h3>{stepHeadings.gradebook}</h3>
 
-        <div className="d-flex justify-content-between align-items-center mb-2">
-          <ScoreViewInput />
-          <BulkManagementControls />
-        </div>
+      <div className="d-flex justify-content-between align-items-center mb-2">
+        <ScoreViewInput />
+        <BulkManagementControls />
+      </div>
 
-        <FilteredUsersLabel />
+      <FilteredUsersLabel />
 
-        <GradebookTable />
+      <GradebookTable />
 
-        <PageButtons />
-        <p>* <FormattedMessage {...messages.mastersHint} /></p>
-        <EditModal />
+      <PageButtons />
+      <p>* {mastersHint}</p>
+      <EditModal />
 
-        <ImportSuccessToast />
-      </>
-    );
-  }
-}
-
-GradesView.defaultProps = {};
+      <ImportSuccessToast />
+    </>
+  );
+};
 
 GradesView.propTypes = {
   updateQueryParams: PropTypes.func.isRequired,
-
-  // redux
-  fetchGrades: PropTypes.func.isRequired,
-  resetFilters: PropTypes.func.isRequired,
 };
 
-export const mapStateToProps = () => ({});
-
-export const mapDispatchToProps = {
-  fetchGrades: thunkActions.grades.fetchGrades,
-  resetFilters: actions.filters.reset,
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(GradesView);
+export default GradesView;
