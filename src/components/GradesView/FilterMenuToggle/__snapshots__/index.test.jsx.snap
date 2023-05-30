@@ -1,0 +1,15 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`FilterMenuToggle component render snapshot 1`] = `
+<Button
+  className="btn-primary align-self-start"
+  id="edit-filters-btn"
+  onClick={[MockFunction hooks.toggleFilterMenu]}
+>
+  <Icon
+    src="FilterAlt"
+  />
+   
+  Edit Filters
+</Button>
+`;

@@ -29,7 +29,7 @@ testFormData.append('csv', testFile);
 const ref = {
   current: { click: jest.fn(), files: [testFile], value: 'test-value' },
 };
-describe('useAssignmentFilterData hook', () => {
+describe('useImportButtonData hook', () => {
   beforeEach(() => {
     jest.clearAllMocks();
     React.useRef.mockReturnValue(ref);

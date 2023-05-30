@@ -1,13 +1,13 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`GradeButton component snapshots grades are frozen 1`] = `"why you gotta label people?"`;
+exports[`GradeButton component frozen grades snapshot 1`] = `"test-label"`;
 
-exports[`GradeButton component snapshots grades are not frozen 1`] = `
+exports[`GradeButton component not frozen grades snapshot 1`] = `
 <Button
   className="btn-header grade-button"
-  onClick={[MockFunction this.onClick]}
+  onClick={[MockFunction hooks.onClick]}
   variant="link"
 >
-  why you gotta label people?
+  test-label
 </Button>
 `;

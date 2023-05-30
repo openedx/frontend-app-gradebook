@@ -1,0 +1,23 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`FilteredUsersLabel component render snapshot 1`] = `
+<format-message-function
+  message={
+    Object {
+      "defaultMessage": "Showing {filteredUsers} of {totalUsers} total learners",
+      "description": "Users visibility label",
+      "id": "gradebook.GradesTab.usersVisibilityLabel",
+    }
+  }
+  values={
+    Object {
+      "filteredUsers": <BoldText
+        text={100}
+      />,
+      "totalUsers": <BoldText
+        text={123}
+      />,
+    }
+  }
+/>
+`;

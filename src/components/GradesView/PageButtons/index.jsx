@@ -1,75 +1,37 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
 
 import { Button } from '@edx/paragon';
-import { FormattedMessage } from '@edx/frontend-platform/i18n';
 
-import selectors from 'data/selectors';
-import thunkActions from 'data/thunkActions';
-import messages from './messages';
+import usePageButtonsData from './hooks';
 
-export class PageButtons extends React.Component {
-  constructor(props) {
-    super(props);
-    this.getPrevGrades = this.getPrevGrades.bind(this);
-    this.getNextGrades = this.getNextGrades.bind(this);
-  }
+export const PageButtons = () => {
+  const { prev, next } = usePageButtonsData();
 
-  getPrevGrades() {
-    this.props.getPrevNextGrades(this.props.prevPage);
-  }
-
-  getNextGrades() {
-    this.props.getPrevNextGrades(this.props.nextPage);
-  }
-
-  render() {
-    return (
-      <div
-        className="d-flex justify-content-center"
-        style={{ paddingBottom: '20px' }}
+  return (
+    <div
+      className="d-flex justify-content-center"
+      style={{ paddingBottom: '20px' }}
+    >
+      <Button
+        style={{ margin: '20px' }}
+        variant="outline-primary"
+        disabled={prev.disabled}
+        onClick={prev.onClick}
       >
-        <Button
-          style={{ margin: '20px' }}
-          variant="outline-primary"
-          disabled={!this.props.prevPage}
-          onClick={this.getPrevGrades}
-        >
-          <FormattedMessage {...messages.prevPage} />
-        </Button>
-        <Button
-          style={{ margin: '20px' }}
-          variant="outline-primary"
-          disabled={!this.props.nextPage}
-          onClick={this.getNextGrades}
-        >
-          <FormattedMessage {...messages.nextPage} />
-        </Button>
-      </div>
-    );
-  }
-}
-
-PageButtons.defaultProps = {
-  nextPage: '',
-  prevPage: '',
+        {prev.text}
+      </Button>
+      <Button
+        style={{ margin: '20px' }}
+        variant="outline-primary"
+        disabled={next.disabled}
+        onClick={next.onClick}
+      >
+        {next.text}
+      </Button>
+    </div>
+  );
 };
 
-PageButtons.propTypes = {
-  // redux
-  getPrevNextGrades: PropTypes.func.isRequired,
-  nextPage: PropTypes.string,
-  prevPage: PropTypes.string,
-};
+PageButtons.propTypes = {};
 
-export const mapStateToProps = (state) => ({
-  nextPage: selectors.grades.nextPage(state),
-  prevPage: selectors.grades.prevPage(state),
-});
-
-export const mapDispatchToProps = {
-  getPrevNextGrades: thunkActions.grades.fetchPrevNextGrades,
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(PageButtons);
+export default PageButtons;

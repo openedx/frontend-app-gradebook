@@ -1,0 +1,28 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ScoreViewInput component render snapshot 1`] = `
+<Form.Group
+  controlId="ScoreView"
+>
+  <Form.Label>
+    Score View
+    :
+  </Form.Label>
+  <Form.Control
+    as="select"
+    onChange={[MockFunction hooks.toggleGradeFormat]}
+    value="test-grade-format"
+  >
+    <option
+      value="percent"
+    >
+      Percent
+    </option>
+    <option
+      value="absolute"
+    >
+      Absolute
+    </option>
+  </Form.Control>
+</Form.Group>
+`;
