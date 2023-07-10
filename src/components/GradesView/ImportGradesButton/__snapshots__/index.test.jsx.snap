@@ -1,5 +1,24 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`ImportGradesButton component render Form 1`] = `
+<Form
+  action="test-grade-export-url"
+  method="post"
+>
+  <Form.Group
+    controlId="csv"
+  >
+    <Form.Control
+      className="d-none"
+      data-testid="file-control"
+      label="Upload Grade CSV"
+      onChange={[MockFunction props.handleFileInputChange]}
+      type="file"
+    />
+  </Form.Group>
+</Form>
+`;
+
 exports[`ImportGradesButton component render snapshot 1`] = `
 <Fragment>
   <Form
@@ -13,7 +32,7 @@ exports[`ImportGradesButton component render snapshot 1`] = `
         className="d-none"
         data-testid="file-control"
         label="Upload Grade CSV"
-        onChange={[MockFunction]}
+        onChange={[MockFunction props.handleFileInputChange]}
         type="file"
       />
     </Form.Group>
@@ -28,7 +47,7 @@ exports[`ImportGradesButton component render snapshot 1`] = `
         "id": "gradebook.GradesView.importGradesBtnText",
       }
     }
-    onClick={[MockFunction]}
+    onClick={[MockFunction props.handleClickImportGrades]}
   />
 </Fragment>
 `;

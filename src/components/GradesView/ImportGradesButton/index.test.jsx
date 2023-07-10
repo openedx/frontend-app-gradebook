@@ -1,5 +1,5 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import { shallow } from '@edx/react-unit-test-utils';
 
 import { useIntl } from '@edx/frontend-platform/i18n';
 import { Form } from '@edx/paragon';
@@ -18,8 +18,8 @@ describe('ImportGradesButton component', () => {
     props = {
       fileInputRef: { current: null },
       gradeExportUrl: 'test-grade-export-url',
-      handleClickImportGrades: jest.fn(),
-      handleFileInputChange: jest.fn(),
+      handleClickImportGrades: jest.fn().mockName('props.handleClickImportGrades'),
+      handleFileInputChange: jest.fn().mockName('props.handleFileInputChange'),
     };
     useImportGradesButtonData.mockReturnValue(props);
     el = shallow(<ImportGradesButton />);
@@ -32,14 +32,15 @@ describe('ImportGradesButton component', () => {
   });
   describe('render', () => {
     test('snapshot', () => {
-      expect(el).toMatchSnapshot();
+      expect(el.snapshot).toMatchSnapshot();
     });
     test('Form', () => {
-      expect(el.find(Form).props().action).toEqual(props.gradeExportUrl);
-      expect(el.find(Form.Control).props().onChange).toEqual(props.handleFileInputChange);
+      expect(el.instance.findByType(Form)[0].snapshot).toMatchSnapshot();
+      expect(el.instance.findByType(Form)[0].props.action).toEqual(props.gradeExportUrl);
+      expect(el.instance.findByType(Form.Control)[0].props.onChange).toEqual(props.handleFileInputChange);
     });
     test('import button', () => {
-      expect(el.find(NetworkButton).props().onClick).toEqual(props.handleClickImportGrades);
+      expect(el.instance.findByType(NetworkButton)[0].props.onClick).toEqual(props.handleClickImportGrades);
     });
   });
 });
