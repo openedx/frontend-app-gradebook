@@ -68,9 +68,10 @@ pull_translations:
 	  && atlas pull --filter=$(transifex_langs) \
 	           translations/frontend-component-footer/src/i18n/messages:frontend-component-footer \
 	           translations/frontend-component-header/src/i18n/messages:frontend-component-header \
+	           translations/paragon/src/i18n/messages:paragon \
 	           translations/frontend-app-gradebook/src/i18n/messages:frontend-app-gradebook
 
-	$(intl_imports) frontend-component-header frontend-component-footer frontend-app-gradebook
+	$(intl_imports) paragon frontend-component-header frontend-component-footer frontend-app-gradebook
 endif
 
 # This target is used by CI.
