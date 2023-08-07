@@ -41,7 +41,7 @@ const props = {
 };
 const gradeFormat = 'percent';
 const setModalState = jest.fn();
-const subsectionGrade = 'test-subsection-grade';
+const subsectionGrade = () => 'test-subsection-grade';
 selectors.assignmentTypes.useAreGradesFrozen.mockReturnValue(false);
 selectors.grades.useGradeData.mockReturnValue({ gradeFormat });
 thunkActions.app.useSetModalStateFromTable.mockReturnValue(setModalState);
@@ -73,7 +73,7 @@ describe('GradeButton', () => {
         expect(out.areGradesFrozen).toEqual(false);
       });
       test('label passed from subsection grade redux hook', () => {
-        expect(out.label).toEqual(subsectionGrade);
+        expect(out.label).toEqual(subsectionGrade());
       });
       test('onClick sets modal state with user entry and subsection', () => {
         out.onClick();
