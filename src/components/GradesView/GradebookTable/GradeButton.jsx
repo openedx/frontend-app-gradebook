@@ -11,7 +11,7 @@ export const useGradeButtonData = ({ entry, subsection }) => {
   const areGradesFrozen = selectors.assignmentTypes.useAreGradesFrozen();
   const { gradeFormat } = selectors.grades.useGradeData();
   const setModalState = thunkActions.app.useSetModalStateFromTable();
-  const label = transforms.grades.subsectionGrade({ gradeFormat, subsection });
+  const label = transforms.grades.subsectionGrade({ gradeFormat, subsection })();
 
   const onClick = () => {
     setModalState({
