@@ -1,7 +1,4 @@
-/* eslint-disable react/sort-comp, react/button-has-type, import/no-named-as-default */
 import React from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
 
 import {
   Button,
@@ -9,15 +6,12 @@ import {
   ModalDialog,
   ActionRow,
 } from '@edx/paragon';
-import { FormattedMessage, injectIntl, intlShape } from '@edx/frontend-platform/i18n';
+import { useIntl } from '@edx/frontend-platform/i18n';
 
-import selectors from 'data/selectors';
-import actions from 'data/actions';
-import thunkActions from 'data/thunkActions';
-
-import messages from './messages';
 import OverrideTable from './OverrideTable';
 import ModalHeaders from './ModalHeaders';
+import useEditModalData from './hooks';
+import messages from './messages';
 
 /**
  * <EditModal />
@@ -28,87 +22,48 @@ import ModalHeaders from './ModalHeaders';
  * adjusting the grade.
  * (also provides a close button that clears the modal state)
  */
-export class EditModal extends React.Component {
-  constructor(props) {
-    super(props);
-    this.closeAssignmentModal = this.closeAssignmentModal.bind(this);
-    this.handleAdjustedGradeClick = this.handleAdjustedGradeClick.bind(this);
-  }
+export const EditModal = () => {
+  const { formatMessage } = useIntl();
+  const {
+    onClose,
+    error,
+    handleAdjustedGradeClick,
+    isOpen,
+  } = useEditModalData();
 
-  closeAssignmentModal() {
-    this.props.doneViewingAssignment();
-    this.props.closeModal();
-  }
+  return (
+    <ModalDialog
+      title={formatMessage(messages.title)}
+      isOpen={isOpen}
+      onClose={onClose}
+      size="xl"
+      hasCloseButton
+      isFullscreenOnMobile
+    >
+      <ModalDialog.Body>
+        <div>
+          <ModalHeaders />
+          <Alert variant="danger" show={!!error} dismissible={false}>
+            {error}
+          </Alert>
+          <OverrideTable />
+          <div>{formatMessage(messages.visibility)}</div>
+          <div>{formatMessage(messages.saveVisibility)}</div>
+        </div>
+      </ModalDialog.Body>
 
-  handleAdjustedGradeClick() {
-    this.props.updateGrades();
-    this.closeAssignmentModal();
-  }
-
-  render() {
-    return (
-      <ModalDialog
-        title={this.props.intl.formatMessage(messages.title)}
-        isOpen={this.props.open}
-        onClose={this.closeAssignmentModal}
-        size="xl"
-        hasCloseButton
-        isFullscreenOnMobile
-      >
-        <ModalDialog.Body>
-          <div>
-            <ModalHeaders />
-            <Alert
-              variant="danger"
-              show={!!this.props.gradeOverrideHistoryError}
-              dismissible={false}
-            >
-              {this.props.gradeOverrideHistoryError}
-            </Alert>
-            <OverrideTable />
-            <div><FormattedMessage {...messages.visibility} /></div>
-            <div><FormattedMessage {...messages.saveVisibility} /></div>
-          </div>
-        </ModalDialog.Body>
-        <ModalDialog.Footer>
-          <ActionRow>
-            <ModalDialog.CloseButton variant="tertiary">
-              <FormattedMessage {...messages.closeText} />
-            </ModalDialog.CloseButton>
-            <Button variant="primary" onClick={this.handleAdjustedGradeClick}>
-              <FormattedMessage {...messages.saveGrade} />
-            </Button>
-          </ActionRow>
-        </ModalDialog.Footer>
-      </ModalDialog>
-    );
-  }
-}
-
-EditModal.defaultProps = {
-  gradeOverrideHistoryError: '',
+      <ModalDialog.Footer>
+        <ActionRow>
+          <ModalDialog.CloseButton variant="tertiary">
+            {formatMessage(messages.closeText)}
+          </ModalDialog.CloseButton>
+          <Button variant="primary" onClick={handleAdjustedGradeClick}>
+            {formatMessage(messages.saveGrade)}
+          </Button>
+        </ActionRow>
+      </ModalDialog.Footer>
+    </ModalDialog>
+  );
 };
 
-EditModal.propTypes = {
-  // redux
-  gradeOverrideHistoryError: PropTypes.string,
-  open: PropTypes.bool.isRequired,
-  closeModal: PropTypes.func.isRequired,
-  doneViewingAssignment: PropTypes.func.isRequired,
-  updateGrades: PropTypes.func.isRequired,
-  // injected
-  intl: intlShape.isRequired,
-};
-
-export const mapStateToProps = (state) => ({
-  gradeOverrideHistoryError: selectors.grades.gradeOverrideHistoryError(state),
-  open: selectors.app.modalState.open(state),
-});
-
-export const mapDispatchToProps = {
-  closeModal: actions.app.closeModal,
-  doneViewingAssignment: actions.grades.doneViewingAssignment,
-  updateGrades: thunkActions.grades.updateGrades,
-};
-
-export default injectIntl(connect(mapStateToProps, mapDispatchToProps)(EditModal));
+export default EditModal;

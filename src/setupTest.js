@@ -1,7 +1,7 @@
 /* eslint-disable import/no-extraneous-dependencies */
 
 import Enzyme from 'enzyme';
-import Adapter from 'enzyme-adapter-react-16';
+import Adapter from '@wojtekmaj/enzyme-adapter-react-17';
 
 Enzyme.configure({ adapter: new Adapter() });
 
@@ -37,6 +37,11 @@ jest.mock('@edx/frontend-component-header', () => ({
 }));
 jest.mock('@edx/frontend-component-footer', () => ({
   messages: ['some', 'messages'],
+}));
+
+jest.mock('@edx/paragon/icons', () => ({
+  FilterAlt: 'FilterAlt',
+  Close: 'Close',
 }));
 
 jest.mock('@edx/paragon', () => jest.requireActual('testUtils').mockNestedComponents({
@@ -75,6 +80,7 @@ jest.mock('@edx/paragon', () => jest.requireActual('testUtils').mockNestedCompon
   Hyperlink: 'Hyperlink',
   Icon: 'Icon',
   IconButton: 'IconButton',
+  Input: 'Input',
   ModalDialog: {
     Body: 'ModalDialog.Body',
     CloseButton: 'ModalDialog.CloseButton',
@@ -84,8 +90,10 @@ jest.mock('@edx/paragon', () => jest.requireActual('testUtils').mockNestedCompon
   },
   OverlayTrigger: 'OverlayTrigger',
   Row: 'Row',
-  StatefulButton: 'StatefulButton',
+  SearchField: 'SearchField',
   Spinner: 'Spinner',
+  StatefulButton: 'StatefulButton',
+  Toast: 'Toast',
 
   useCheckboxSetValues: () => jest.fn().mockImplementation((values) => ([values, {
     add: jest.fn().mockName('useCheckboxSetValues.add'),

@@ -1,73 +1,40 @@
 /* eslint-disable react/sort-comp, react/button-has-type, import/no-named-as-default */
 import React from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
 
 import { DataTable } from '@edx/paragon';
-import { FormattedMessage } from '@edx/frontend-platform/i18n';
 
-import { gradeOverrideHistoryColumns as columns } from 'data/constants/app';
-import selectors from 'data/selectors';
+import { formatDateForDisplay } from 'utils';
 
-import messages from './messages';
 import ReasonInput from './ReasonInput';
 import AdjustedGradeInput from './AdjustedGradeInput';
+import useOverrideTableData from './hooks';
 
 /**
  * <OverrideTable />
  * Table containing previous grade override entries, and an "edit" row
  * with todays date, an AdjustedGradeInput and a ReasonInput
  */
-export const OverrideTable = ({
-  hide,
-  gradeOverrides,
-  todaysDate,
-}) => {
-  if (hide) {
-    return null;
-  }
+
+export const OverrideTable = () => {
+  const { hide, columns, data } = useOverrideTableData();
+
+  if (hide) { return null; }
+
   return (
     <DataTable
-      columns={[
-        { Header: <FormattedMessage {...messages.dateHeader} />, accessor: columns.date },
-        { Header: <FormattedMessage {...messages.graderHeader} />, accessor: columns.grader },
-        { Header: <FormattedMessage {...messages.reasonHeader} />, accessor: columns.reason },
-        {
-          Header: <FormattedMessage {...messages.adjustedGradeHeader} />,
-          accessor: columns.adjustedGrade,
-        },
-      ]}
+      columns={columns}
       data={[
-        ...gradeOverrides,
+        ...data,
         {
           adjustedGrade: <AdjustedGradeInput />,
-          date: todaysDate,
+          date: formatDateForDisplay(new Date()),
           reason: <ReasonInput />,
         },
       ]}
-      itemCount={gradeOverrides.length}
+      itemCount={data.length}
     />
   );
 };
-OverrideTable.defaultProps = {
-  gradeOverrides: [],
-};
-OverrideTable.propTypes = {
-  // redux
-  gradeOverrides: PropTypes.arrayOf(PropTypes.shape({
-    date: PropTypes.string,
-    grader: PropTypes.string,
-    reason: PropTypes.string,
-    adjustedGrade: PropTypes.number,
-  })),
-  hide: PropTypes.bool.isRequired,
-  todaysDate: PropTypes.string.isRequired,
-};
+OverrideTable.propTypes = {};
 
-export const mapStateToProps = (state) => ({
-  hide: selectors.grades.hasOverrideErrors(state),
-  gradeOverrides: selectors.grades.gradeOverrides(state),
-  todaysDate: selectors.app.modalState.todaysDate(state),
-});
-
-export default connect(mapStateToProps)(OverrideTable);
+export default OverrideTable;

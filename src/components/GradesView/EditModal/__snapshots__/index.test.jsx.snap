@@ -1,0 +1,91 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`EditModal component render with error snapshot 1`] = `
+<ModalDialog
+  hasCloseButton={true}
+  isFullscreenOnMobile={true}
+  isOpen="test-is-open"
+  onClose={[MockFunction hooks.onClose]}
+  size="xl"
+  title="Edit Grades"
+>
+  <ModalDialog.Body>
+    <div>
+      <ModalHeaders />
+      <Alert
+        dismissible={false}
+        show={true}
+        variant="danger"
+      >
+        test-error
+      </Alert>
+      <OverrideTable />
+      <div>
+        Showing most recent actions (max 5). To see more, please contact support
+      </div>
+      <div>
+        Note: Once you save, your changes will be visible to students.
+      </div>
+    </div>
+  </ModalDialog.Body>
+  <ModalDialog.Footer>
+    <ActionRow>
+      <ModalDialog.CloseButton
+        variant="tertiary"
+      >
+        Cancel
+      </ModalDialog.CloseButton>
+      <Button
+        onClick={[MockFunction hooks.handleAdjustedGradeClick]}
+        variant="primary"
+      >
+        Save Grades
+      </Button>
+    </ActionRow>
+  </ModalDialog.Footer>
+</ModalDialog>
+`;
+
+exports[`EditModal component render without error snapshot 1`] = `
+<ModalDialog
+  hasCloseButton={true}
+  isFullscreenOnMobile={true}
+  isOpen="test-is-open"
+  onClose={[MockFunction hooks.onClose]}
+  size="xl"
+  title="Edit Grades"
+>
+  <ModalDialog.Body>
+    <div>
+      <ModalHeaders />
+      <Alert
+        dismissible={false}
+        show={false}
+        variant="danger"
+      />
+      <OverrideTable />
+      <div>
+        Showing most recent actions (max 5). To see more, please contact support
+      </div>
+      <div>
+        Note: Once you save, your changes will be visible to students.
+      </div>
+    </div>
+  </ModalDialog.Body>
+  <ModalDialog.Footer>
+    <ActionRow>
+      <ModalDialog.CloseButton
+        variant="tertiary"
+      >
+        Cancel
+      </ModalDialog.CloseButton>
+      <Button
+        onClick={[MockFunction hooks.handleAdjustedGradeClick]}
+        variant="primary"
+      >
+        Save Grades
+      </Button>
+    </ActionRow>
+  </ModalDialog.Footer>
+</ModalDialog>
+`;

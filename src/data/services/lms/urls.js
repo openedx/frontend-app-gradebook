@@ -36,6 +36,10 @@ export const sectionOverrideHistoryUrl = (subsectionId, userId) => stringifyUrl(
   { user_id: userId, history_record_limit: historyRecordLimit },
 );
 
+export const instructorDashboardUrl = () => (
+  `${getConfig().LMS_BASE_URL}/courses/${courseId}/instructor`
+);
+
 export default StrictDict({
   getUrlPrefix,
   getBulkGradesUrl,
