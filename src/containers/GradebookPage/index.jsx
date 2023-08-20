@@ -14,7 +14,7 @@ import GradesView from 'components/GradesView';
 import GradebookFilters from 'components/GradebookFilters';
 import BulkManagementHistoryView from 'components/BulkManagementHistoryView';
 
-import withParams from '../../utils/hoc';
+import { withParams, withNavigate, withLocation } from '../../utils/hoc';
 
 /**
  * <GradebookPage />
@@ -34,6 +34,7 @@ export class GradebookPage extends React.Component {
   }
 
   updateQueryParams(queryParams) {
+    const { pathname } = this.props.location;
     const parsed = queryString.parse(this.props.location.search);
     Object.keys(queryParams).forEach((key) => {
       if (queryParams[key]) {
@@ -42,7 +43,7 @@ export class GradebookPage extends React.Component {
         delete parsed[key];
       }
     });
-    this.props.history.push(`?${queryString.stringify(parsed)}`);
+    this.props.navigate({ pathname, search: `?${queryString.stringify(parsed)}` });
   }
 
   render() {
@@ -62,13 +63,11 @@ export class GradebookPage extends React.Component {
   }
 }
 GradebookPage.defaultProps = {
-  location: { search: '' },
+  location: { pathname: '/', search: '' },
 };
 GradebookPage.propTypes = {
-  history: PropTypes.shape({
-    push: PropTypes.func,
-  }).isRequired,
-  location: PropTypes.shape({ search: PropTypes.string }),
+  navigate: PropTypes.func.isRequired,
+  location: PropTypes.shape({ pathname: PropTypes.string, search: PropTypes.string }),
   courseId: PropTypes.string.isRequired,
   // redux
   activeView: PropTypes.string.isRequired,
@@ -83,4 +82,4 @@ export const mapDispatchToProps = {
   initializeApp: thunkActions.app.initialize,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(withParams(GradebookPage));
+export default connect(mapStateToProps, mapDispatchToProps)(withParams(withNavigate(withLocation(GradebookPage))));

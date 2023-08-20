@@ -17,7 +17,6 @@ import Head from './head/Head';
 jest.mock('react-router-dom', () => ({
   BrowserRouter: () => 'BrowserRouter',
   Route: () => 'Route',
-  Switch: () => 'Switch',
 }));
 jest.mock('@edx/frontend-platform/react', () => ({
   AppProvider: () => 'AppProvider',
