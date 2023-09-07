@@ -23,8 +23,9 @@ const App = () => (
             <Route
               exact
               path={routePath}
-              component={GradebookPage}
-            />
+            >
+              <GradebookPage/>
+            </Route>
           </Switch>
         </main>
         <Footer logo={process.env.LOGO_POWERED_BY_OPEN_EDX_URL_SVG} />

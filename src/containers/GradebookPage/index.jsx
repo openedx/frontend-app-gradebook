@@ -44,6 +44,7 @@ export class GradebookPage extends React.Component {
   }
 
   render() {
+    console.log('---------', this.context)
     return (
       <WithSidebar
         sidebar={<GradebookFilters updateQueryParams={this.updateQueryParams} />}

@@ -19,29 +19,21 @@ import thunkActions from 'data/thunkActions';
  * Ex Usage:
  *   <WithSidebar sidebar={sidebarContent} sidebarHeader={sidebarHeader}>{children}</WithSidebar>
  */
-export class WithSidebar extends React.Component {
-  get sidebarClassNames() {
-    return classNames('sidebar', { open: this.props.open, 'd-none': this.props.isClosed });
-  }
-
-  get contentClassNames() {
-    return classNames('sidebar-contents', 'position-relative', {
-      opening: this.props.isOpening,
-    });
-  }
-
-  render() {
-    return (
-      <div className="d-flex sidebar-container page-gradebook">
-        <aside className={this.sidebarClassNames} onTransitionEnd={this.props.handleSlideDone}>
-          { this.props.sidebar }
-        </aside>
-        <div className={this.contentClassNames}>
-          { this.props.children}
-        </div>
+export function WithSidebar (props) {
+  const sidebarClassNames = classNames('sidebar', { open: props.open, 'd-none': props.isClosed });
+  const contentClassNames = classNames('sidebar-contents', 'position-relative', {
+      opening: props.isOpening,
+  });
+  return (
+    <div className="d-flex sidebar-container page-gradebook">
+      <aside className={sidebarClassNames} onTransitionEnd={props.handleSlideDone}>
+        { props.sidebar }
+      </aside>
+      <div className={contentClassNames}>
+        { props.children}
       </div>
-    );
-  }
+    </div>
+  );
 }
 
 WithSidebar.propTypes = {

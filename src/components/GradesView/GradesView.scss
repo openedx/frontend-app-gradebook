@@ -116,9 +116,9 @@ select#ScoreView.form-control {
 [dir=rtl] #course-grade-tooltip .arrow {
     right: initial;
     left: 0;
-    
+
     &:before {
         border-width: 0.4rem 0.4rem 0.4rem 0;
-        border-right-color: $black;
+        border-right-color: var(--pgn-color-black);
     }
 }

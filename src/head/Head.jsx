@@ -6,7 +6,10 @@ import { getConfig } from '@edx/frontend-platform';
 import messages from './messages';
 
 const Head = () => {
+  console.log("HEAD");
+
   const { formatMessage } = useIntl();
+  console.log("FM");
   return (
     <Helmet>
       <title>
