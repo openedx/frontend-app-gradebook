@@ -23,3 +23,7 @@ temp/babel-plugin-react-intl
 ### transifex ###
 src/i18n/transifex_input.json
 temp
+
+### Local-only config ###
+.env.private
+module.config.js

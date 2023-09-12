@@ -28,13 +28,13 @@
     "extends @edx/browserslist-config"
   ],
   "dependencies": {
-    "@edx/brand": "npm:@edx/brand-openedx@^1.2.0",
-    "@edx/frontend-component-footer": "12.2.0",
+    "@edx/brand": "npm:@edx/brand-edx.org@2.2.0-alpha.16",
+    "@edx/frontend-component-footer": "12.2.1",
     "@edx/frontend-component-header": "4.6.0",
-    "@edx/frontend-platform": "5.0.0",
-    "@edx/paragon": "20.45.0",
+    "@edx/frontend-platform": "github:openedx/frontend-platform#ags/inject-theme-css",
+    "@edx/paragon": "22.0.0-alpha.1",
     "@edx/react-unit-test-utils": "1.7.0",
-    "@edx/reactifex": "^2.1.1",
+    "@edx/reactifex": "^2.2.0",
     "@fortawesome/fontawesome-svg-core": "^1.2.25",
     "@fortawesome/free-brands-svg-icons": "^5.11.2",
     "@fortawesome/free-solid-svg-icons": "^5.11.2",
@@ -67,8 +67,8 @@
     "whatwg-fetch": "^2.0.4"
   },
   "devDependencies": {
-    "@edx/browserslist-config": "^1.1.1",
-    "@edx/frontend-build": "12.9.3",
+    "@edx/browserslist-config": "^1.2.0",
+    "@edx/frontend-build": "github:openedx/frontend-build#ags/2321",
     "@testing-library/react": "12.1.5",
     "@wojtekmaj/enzyme-adapter-react-17": "0.8.0",
     "axios": "0.21.2",

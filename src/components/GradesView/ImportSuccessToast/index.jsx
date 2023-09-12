@@ -16,6 +16,7 @@ export const ImportSuccessToast = () => {
     show,
     description,
   } = useImportSuccessToastData();
+  return null;
   return (
     <Toast {...{ action, onClose, show }}>
       {description}

@@ -10,7 +10,7 @@ import useGradebookTableData from './hooks';
  * a row for each user, with a column for their username, email, and total grade,
  * along with one for each subsection in their grade entry.
  */
-export const GradebookTable = () => {
+const GradebookTable = () => {
   const {
     columns,
     data,
