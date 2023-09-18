@@ -10,7 +10,7 @@ import { fetchGrades } from './grades';
 import { fetchTracks } from './tracks';
 import { fetchAssignmentTypes } from './assignmentTypes';
 
-export const allowedRoles = ['staff', 'instructor', 'support'];
+export const allowedRoles = ['staff', 'limited_staff', 'instructor', 'support'];
 
 export const fetchRoles = () => (
   (dispatch, getState) => {
