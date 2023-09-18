@@ -5,20 +5,17 @@ exports[`App router component snapshot 1`] = `
   store="testStore"
 >
   <Head />
-  <BrowserRouter>
-    <div>
-      <Header />
-      <main>
-        <Switch>
-          <Route
-            component="GradebookPage"
-            exact={true}
-            path="/:courseId"
-          />
-        </Switch>
-      </main>
-      <Footer />
-    </div>
-  </BrowserRouter>
+  <div>
+    <Header />
+    <main>
+      <Component>
+        <Route
+          element={<GradebookPage />}
+          path="/:courseId"
+        />
+      </Component>
+    </main>
+    <Footer />
+  </div>
 </AppProvider>
 `;

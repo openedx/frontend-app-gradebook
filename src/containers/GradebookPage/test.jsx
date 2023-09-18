@@ -50,14 +50,15 @@ describe('GradebookPage', () => {
     let el;
     const props = {
       location: {
+        pathname: '/',
         search: 'searchString',
       },
-      match: { params: { courseId } },
+      courseId,
       activeView: views.grades,
     };
     beforeEach(() => {
       props.initializeApp = jest.fn();
-      props.history = { push: jest.fn() };
+      props.navigate = jest.fn();
     });
     test('snapshot - shows BulkManagementHistoryView if activeView === views.bulkManagementHistory', () => {
       el = shallow(<GradebookPage {...props} activeView={views.bulkManagementHistory} />);
@@ -130,7 +131,7 @@ describe('GradebookPage', () => {
           const val2 = 'VALTWO!!';
           const args = { [newKey]: val1, [props.location.search]: val2 };
           el.instance().updateQueryParams(args);
-          expect(props.history.push).toHaveBeenCalledWith(`?${queryString.stringify(args)}`);
+          expect(props.navigate).toHaveBeenCalledWith({ pathname: '/', search: `?${queryString.stringify(args)}` });
         });
         it('clears values for non-truthy values', () => {
           queryString.parse.mockImplementation(key => ({ [key]: key }));
@@ -139,8 +140,8 @@ describe('GradebookPage', () => {
           const val2 = false;
           const args = { [newKey]: val1, [props.location.search]: val2 };
           el.instance().updateQueryParams(args);
-          expect(props.history.push).toHaveBeenCalledWith(
-            `?${queryString.stringify({ [newKey]: val1 })}`,
+          expect(props.navigate).toHaveBeenCalledWith(
+            { pathname: '/', search: `?${queryString.stringify({ [newKey]: val1 })}` },
           );
         });
       });
