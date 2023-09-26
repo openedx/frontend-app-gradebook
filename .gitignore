@@ -23,3 +23,5 @@ temp/babel-plugin-react-intl
 ### transifex ###
 src/i18n/transifex_input.json
 temp
+
+src/i18n/messages/
