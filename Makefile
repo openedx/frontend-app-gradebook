@@ -1,15 +1,11 @@
 npm-install-%: ## install specified % npm package
 	npm ci $* --save-dev
 	git add package.json
-export TRANSIFEX_RESOURCE = frontend-app-gradebook
-transifex_langs = "ar,de,es_419,fa_IR,fr,fr_CA,hi,it,pt,ru,uk,zh_CN"
 
 intl_imports = ./node_modules/.bin/intl-imports.js
 transifex_utils = ./node_modules/.bin/transifex-utils.js
 i18n = ./src/i18n
 transifex_input = $(i18n)/transifex_input.json
-tx_url1 = https://www.transifex.com/api/2/project/edx-platform/resource/$(transifex_resource)/translation/en/strings/
-tx_url2 = https://www.transifex.com/api/2/project/edx-platform/resource/$(transifex_resource)/source/
 
 # This directory must match .babelrc .
 transifex_temp = ./temp/babel-plugin-formatjs
@@ -39,27 +35,7 @@ i18n.concat:
 
 extract_translations: | requirements i18n.extract i18n.concat
 
-# Despite the name, we actually need this target to detect changes in the incoming translated message files as well.
-detect_changed_source_translations:
-	# Checking for changed translations...
-	git diff --exit-code $(i18n)
 
-# Pushes translations to Transifex.  You must run make extract_translations first.
-push_translations:
-	# Pushing strings to Transifex...
-	tx push -s
-	# Fetching hashes from Transifex...
-	./node_modules/@edx/reactifex/bash_scripts/get_hashed_strings_v3.sh
-	# Writing out comments to file...
-	$(transifex_utils) $(transifex_temp) --comments --v3-scripts-path
-	# Pushing comments to Transifex...
-	./node_modules/@edx/reactifex/bash_scripts/put_comments_v3.sh
-
-ifeq ($(OPENEDX_ATLAS_PULL),)
-# Pulls translations from Transifex.
-pull_translations:
-	tx pull -t -f --mode reviewed --languages=$(transifex_langs)
-else
 # Experimental: OEP-58 Pulls translations using atlas
 pull_translations:
 	rm -rf src/i18n/messages
@@ -73,7 +49,6 @@ pull_translations:
 	           translations/frontend-app-gradebook/src/i18n/messages:frontend-app-gradebook
 
 	$(intl_imports) frontend-platform paragon frontend-component-header frontend-component-footer frontend-app-gradebook
-endif
 
 # This target is used by CI.
 validate-no-uncommitted-package-lock-changes:
