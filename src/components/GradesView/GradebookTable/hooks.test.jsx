@@ -22,7 +22,7 @@ jest.mock('i18n/utils', () => ({
 jest.mock('./GradeButton', () => 'GradeButton');
 jest.mock('./Fields', () => jest.requireActual('testUtils').mockNestedComponents({
   Username: 'Fields.Username',
-  Email: 'Fields.Email',
+  Text: 'Fields.Text',
 }));
 jest.mock('./LabelReplacements', () => jest.requireActual('testUtils').mockNestedComponents({
   TotalGradeLabelReplacement: 'LabelReplacements.TotalGradeLabelReplacement',
@@ -158,7 +158,7 @@ describe('useGradebookTableData', () => {
       test('email field', () => {
         allGrades.forEach((entry, index) => {
           expect(out.data[index][Headings.email]).toMatchObject(
-            <Fields.Email email={entry.email} />,
+            <Fields.Text value={entry.email} />,
           );
         });
       });
