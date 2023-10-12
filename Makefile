@@ -1,5 +1,5 @@
 npm-install-%: ## install specified % npm package
-	npm install $* --save-dev
+	npm ci $* --save-dev
 	git add package.json
 export TRANSIFEX_RESOURCE = frontend-app-gradebook
 transifex_langs = "ar,de,es_419,fa_IR,fr,fr_CA,hi,it,pt,ru,uk,zh_CN"
@@ -12,7 +12,7 @@ tx_url1 = https://www.transifex.com/api/2/project/edx-platform/resource/$(transi
 tx_url2 = https://www.transifex.com/api/2/project/edx-platform/resource/$(transifex_resource)/source/
 
 # This directory must match .babelrc .
-transifex_temp = ./temp/babel-plugin-react-intl
+transifex_temp = ./temp/babel-plugin-formatjs
 
 NPM_TESTS=build i18n_extract lint test is-es5
 
