@@ -20,6 +20,7 @@ jest.mock('data/selectors', () => ({
   default: {
     app: {
       courseGradeFilterValidity: (state) => ({ courseGradeFilterValidity: state }),
+      assignmentGradeFilterValidity: (state) => ({ assignmentGradeFilterValidity: state }),
     },
     grades: {
       showSuccess: (state) => ({ showSuccess: state }),
@@ -30,9 +31,15 @@ jest.mock('data/selectors', () => ({
 describe('StatusAlerts', () => {
   let props = {
     showSuccessBanner: true,
-    limitValidity: {
+    courseLimitValidity: {
       isMaxValid: true,
       isMinValid: true,
+      isMinLessMaxValid: true,
+    },
+    assignmentLimitValidity: {
+      isMaxValid: true,
+      isMinValid: true,
+      isMinLessMaxValid: true,
     },
   };
 
@@ -47,55 +54,166 @@ describe('StatusAlerts', () => {
     let el;
     it('basic snapshot', () => {
       el = shallow(<StatusAlerts {...props} />);
-      const courseGradeFilterAlertDialogText = 'the quiCk brown does somEthing or other';
+      const courseGradeFilterAlertDialogText = 'Course grade text';
+      const assignmentGradeFilterAlertDialogText = 'Assignment grade text';
       jest.spyOn(
         el.instance(),
         'courseGradeFilterAlertDialogText',
         'get',
       ).mockReturnValue(courseGradeFilterAlertDialogText);
+      jest.spyOn(
+        el.instance(),
+        'assignmentGradeFilterAlertDialogText',
+        'get',
+      ).mockReturnValue(assignmentGradeFilterAlertDialogText);
       expect(el.instance().render()).toMatchSnapshot();
     });
   });
 
-  describe('behavior', () => {
+  describe('behavior course grade', () => {
     it.each([
-      [false, false],
-      [false, true],
-      [true, false],
-      [true, true],
-    ])('min + max course grade validity', (isMinValid, isMaxValid) => {
+      [false, false, false],
+      [false, true, false],
+      [false, false, true],
+      [true, false, false],
+      [true, true, false],
+      [true, true, true],
+    ])('min + max + min less max course grade validity', (isMinValid, isMaxValid, isMinLessMaxValid) => {
       props = {
         ...props,
-        limitValidity: {
+        courseLimitValidity: {
           isMinValid,
           isMaxValid,
+          isMinLessMaxValid,
         },
       };
       const el = shallow(<StatusAlerts {...props} />);
       expect(
         el.instance().isCourseGradeFilterAlertOpen,
       ).toEqual(
-        !isMinValid || !isMaxValid,
+        !isMinValid || !isMaxValid || !isMinLessMaxValid,
       );
-      if (!isMaxValid) {
-        if (!isMinValid) {
-          expect(el.instance().courseGradeFilterAlertDialogText).toEqual(
-            <>
-              <FormattedMessage {...messages.minGradeInvalid} />
-              <FormattedMessage {...messages.maxGradeInvalid} />
-            </>,
-          );
-        } else {
-          expect(
-            el.instance().courseGradeFilterAlertDialogText,
-          // eslint-disable-next-line react/jsx-curly-brace-presence
-          ).toEqual(<>{''}<FormattedMessage {...messages.maxGradeInvalid} /></>);
-        }
-      } else if (!isMinValid) {
-        expect(
-          el.instance().courseGradeFilterAlertDialogText,
-        // eslint-disable-next-line react/jsx-curly-brace-presence
-        ).toEqual(<><FormattedMessage {...messages.minGradeInvalid} />{''}</>);
+      if (!isMinValid && !isMaxValid && !isMinLessMaxValid) {
+        expect(el.instance().courseGradeFilterAlertDialogText).toEqual(
+          <>
+            <FormattedMessage {...messages.minGradeInvalid} />{' '}
+            <FormattedMessage {...messages.maxGradeInvalid} />{' '}
+            <FormattedMessage {...messages.minLessMaxGradeInvalid} />
+          </>,
+        );
+      }
+      if (!isMinValid && isMaxValid && !isMinLessMaxValid) {
+        expect(el.instance().courseGradeFilterAlertDialogText).toEqual(
+          <>
+            <FormattedMessage {...messages.minGradeInvalid} />{' '}{''}{' '}
+            <FormattedMessage {...messages.minLessMaxGradeInvalid} />
+          </>,
+        );
+      }
+      if (!isMinValid && !isMaxValid && isMinLessMaxValid) {
+        expect(el.instance().courseGradeFilterAlertDialogText).toEqual(
+          <>
+            <FormattedMessage {...messages.minGradeInvalid} />{' '}
+            <FormattedMessage {...messages.maxGradeInvalid} />{' '}{''}
+          </>,
+        );
+      }
+      if (isMinValid && !isMaxValid && isMinLessMaxValid) {
+        expect(el.instance().courseGradeFilterAlertDialogText).toEqual(
+          <>
+            <FormattedMessage {...messages.maxGradeInvalid} />{' '}{''}
+          </>,
+        );
+      }
+      if (!isMinValid && isMaxValid && isMinLessMaxValid) {
+        expect(el.instance().courseGradeFilterAlertDialogText).toEqual(
+          <>
+            {' '}
+            <FormattedMessage {...messages.minGradeInvalid} />
+            {' '}
+          </>,
+        );
+      }
+      if (isMinValid && isMaxValid && !isMinLessMaxValid) {
+        expect(el.instance().courseGradeFilterAlertDialogText).toEqual(
+          <>
+            {''}{' '}{''}{' '}<FormattedMessage {...messages.minLessMaxGradeInvalid} />
+          </>,
+        );
+      }
+    });
+  });
+
+  describe('behavior assignment grade', () => {
+    it.each([
+      [false, false, false],
+      [false, true, false],
+      [false, false, true],
+      [true, false, false],
+      [true, true, false],
+      [true, true, true],
+    ])('min + max + min less max course grade validity', (isMinValid, isMaxValid, isMinLessMaxValid) => {
+      props = {
+        ...props,
+        assignmentLimitValidity: {
+          isMinValid,
+          isMaxValid,
+          isMinLessMaxValid,
+        },
+      };
+      const el = shallow(<StatusAlerts {...props} />);
+      expect(
+        el.instance().isAssignmentGradeFilterAlertOpen,
+      ).toEqual(
+        !isMinValid || !isMaxValid || !isMinLessMaxValid,
+      );
+      if (!isMinValid && !isMaxValid && !isMinLessMaxValid) {
+        expect(el.instance().assignmentGradeFilterAlertDialogText).toEqual(
+          <>
+            <FormattedMessage {...messages.minAssignmentInvalid} />{' '}
+            <FormattedMessage {...messages.maxAssignmentInvalid} />{' '}
+            <FormattedMessage {...messages.minLessMaxAssignmentInvalid} />
+          </>,
+        );
+      }
+      if (!isMinValid && isMaxValid && !isMinLessMaxValid) {
+        expect(el.instance().assignmentGradeFilterAlertDialogText).toEqual(
+          <>
+            <FormattedMessage {...messages.minAssignmentInvalid} />{' '}{''}{' '}
+            <FormattedMessage {...messages.minLessMaxAssignmentInvalid} />
+          </>,
+        );
+      }
+      if (!isMinValid && !isMaxValid && isMinLessMaxValid) {
+        expect(el.instance().assignmentGradeFilterAlertDialogText).toEqual(
+          <>
+            <FormattedMessage {...messages.minAssignmentInvalid} />{' '}
+            <FormattedMessage {...messages.maxAssignmentInvalid} />{' '}{''}
+          </>,
+        );
+      }
+      if (isMinValid && !isMaxValid && isMinLessMaxValid) {
+        expect(el.instance().assignmentGradeFilterAlertDialogText).toEqual(
+          <>
+            <FormattedMessage {...messages.maxAssignmentInvalid} />{' '}{''}
+          </>,
+        );
+      }
+      if (!isMinValid && isMaxValid && isMinLessMaxValid) {
+        expect(el.instance().assignmentGradeFilterAlertDialogText).toEqual(
+          <>
+            {' '}
+            <FormattedMessage {...messages.minAssignmentInvalid} />
+            {' '}
+          </>,
+        );
+      }
+      if (isMinValid && isMaxValid && !isMinLessMaxValid) {
+        expect(el.instance().assignmentGradeFilterAlertDialogText).toEqual(
+          <>
+            {''}{' '}{''}{' '}<FormattedMessage {...messages.minLessMaxAssignmentInvalid} />
+          </>,
+        );
       }
     });
   });
@@ -106,8 +224,11 @@ describe('StatusAlerts', () => {
     beforeEach(() => {
       mapped = mapStateToProps(testState);
     });
-    test('limitValidity from app.courseGradeFitlerValidity', () => {
-      expect(mapped.limitValidity).toEqual(selectors.app.courseGradeFilterValidity(testState));
+    test('courseLimitValidity from app.courseGradeFitlerValidity', () => {
+      expect(mapped.courseLimitValidity).toEqual(selectors.app.courseGradeFilterValidity(testState));
+    });
+    test('assignmentLimitValidity from app.assignmentGradeFitlerValidity', () => {
+      expect(mapped.assignmentLimitValidity).toEqual(selectors.app.assignmentGradeFilterValidity(testState));
     });
     test('showSuccessBanner from grades.showSuccess', () => {
       expect(mapped.showSuccessBanner).toEqual(selectors.grades.showSuccess(testState));

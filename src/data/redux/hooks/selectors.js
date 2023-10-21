@@ -12,6 +12,7 @@ export const root = StrictDict({
 export const app = StrictDict({
   useAssignmentGradeLimits: () => useSelector(selectors.app.assignmentGradeLimits),
   useAreCourseGradeFiltersValid: () => useSelector(selectors.app.areCourseGradeFiltersValid),
+  useAreAssignmentGradeFiltersValid: () => useSelector(selectors.app.areAssignmentGradeFiltersValid),
   useCourseGradeLimits: () => useSelector(selectors.app.courseGradeLimits),
 });
 
