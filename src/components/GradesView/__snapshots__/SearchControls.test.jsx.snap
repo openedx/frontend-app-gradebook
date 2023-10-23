@@ -1,7 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`SearchControls Component Snapshots basic snapshot 1`] = `
-<div>
+<div
+  className="search-container"
+>
   <SearchField
     inputLabel={
       <FormattedMessage

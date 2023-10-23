@@ -19,7 +19,7 @@ export const FilterMenuToggle = ({ toggleFilterDrawer }) => (
     className="btn-primary align-self-start"
     onClick={toggleFilterDrawer}
   >
-    <Icon className="fa fa-filter" /> <FormattedMessage {...messages.editFilters} />
+    <Icon className="fa fa-filter mr-1" /> <FormattedMessage {...messages.editFilters} />
   </Button>
 );
 
