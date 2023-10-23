@@ -22,7 +22,7 @@ export const AdjustedGradeInput = () => {
         type="number"
         name="adjustedGradeValue"
         min="0"
-        max={possibleGrade ? possibleGrade : ''}
+        max={possibleGrade || ''}
         value={value}
         onChange={onChange}
       />
