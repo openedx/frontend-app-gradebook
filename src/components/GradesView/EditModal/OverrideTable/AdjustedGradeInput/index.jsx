@@ -14,12 +14,15 @@ export const AdjustedGradeInput = () => {
     value,
     onChange,
     hintText,
+    possibleGrade,
   } = useAdjustedGradeInputData();
   return (
     <span>
       <Form.Control
-        type="text"
+        type="number"
         name="adjustedGradeValue"
+        min="0"
+        max={possibleGrade ? possibleGrade : ''}
         value={value}
         onChange={onChange}
       />
