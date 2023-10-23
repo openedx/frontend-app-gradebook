@@ -18,7 +18,7 @@ export const SearchControls = () => {
   } = useSearchControlsData();
 
   return (
-    <div>
+    <div className="search-container">
       <SearchField
         onSubmit={onSubmit}
         inputLabel={inputLabel}

@@ -34,7 +34,7 @@ export const GradesView = ({ updateQueryParams }) => {
         {stepHeadings.filter}
       </h3>
 
-      <div className="d-flex justify-content-between">
+      <div className="d-flex justify-content-between flex-wrap">
         <FilterMenuToggle />
         <SearchControls />
       </div>
