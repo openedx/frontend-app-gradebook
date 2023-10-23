@@ -1,7 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`SearchControls component render snapshot 1`] = `
-<div>
+<div
+  className="search-container"
+>
   <SearchField
     inputLabel="test-input-label"
     onBlur={[MockFunction hooks.onBlur]}
