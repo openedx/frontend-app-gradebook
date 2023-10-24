@@ -14,7 +14,11 @@ const hookProps = {
     show: 'hooks.show-success-banner',
     text: 'hooks.success-banner-text',
   },
-  gradeFilter: {
+  courseGradeFilter: {
+    show: 'hooks.show-grade-filter',
+    text: 'hooks.grade-filter-text',
+  },
+  assignmentGradeFilter: {
     show: 'hooks.show-grade-filter',
     text: 'hooks.grade-filter-text',
   },
@@ -48,6 +52,13 @@ describe('StatusAlerts component', () => {
       const { props } = alert;
       expect(props.show).toEqual(hookProps.gradeFilter.show);
       expect(alert.children[0].el).toEqual(hookProps.gradeFilter.text);
+    test('course and assignment filter banner', () => {
+      const alert = el.find(Alert).at(1);
+      const props = alert.props();
+      expect(props.show).toEqual(hookProps.courseGradeFilter.show);
+      expect(alert.text()).toEqual(hookProps.courseGradeFilter.text);
+      expect(props.show).toEqual(hookProps.assignmentGradeFilter.show);
+      expect(alert.text()).toEqual(hookProps.assignmentGradeFilter.text);
     });
   });
 });
