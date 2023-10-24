@@ -4,7 +4,10 @@ import useAssignmentGradeFilterData from './hooks';
 
 jest.mock('data/redux/hooks', () => ({
   selectors: {
-    app: { useAssignmentGradeLimits: jest.fn() },
+    app: {
+      useAreAssignmentGradeFiltersValid: jest.fn(),
+      useAssignmentGradeLimits: jest.fn(),
+    },
     filters: { useSelectedAssignmentLabel: jest.fn() },
   },
   actions: {
@@ -20,6 +23,7 @@ let out;
 
 const assignmentGradeLimits = { assignmentGradeMax: 200, assignmentGradeMin: 3 };
 const selectedAssignmentLabel = 'test-assignment-label';
+const useAreAssignmentGradeFiltersValid = false;
 selectors.app.useAssignmentGradeLimits.mockReturnValue(assignmentGradeLimits);
 selectors.filters.useSelectedAssignmentLabel.mockReturnValue(selectedAssignmentLabel);
 
@@ -40,6 +44,7 @@ describe('useAssignmentFilterData hook', () => {
   });
   describe('behavior', () => {
     it('initializes redux hooks', () => {
+      expect(selectors.app.useAreAssignmentGradeFiltersValid).toHaveBeenCalledWith();
       expect(selectors.app.useAssignmentGradeLimits).toHaveBeenCalledWith();
       expect(selectors.filters.useSelectedAssignmentLabel).toHaveBeenCalledWith();
       expect(actions.app.useSetLocalFilter).toHaveBeenCalledWith();
@@ -76,6 +81,9 @@ describe('useAssignmentFilterData hook', () => {
     it('passes assignmentGradeMin and assignmentGradeMax from hook', () => {
       expect(out.assignmentGradeMax).toEqual(assignmentGradeLimits.assignmentGradeMax);
       expect(out.assignmentGradeMin).toEqual(assignmentGradeLimits.assignmentGradeMin);
+    });
+    it('passes isDisabled from hook', () => {
+      expect(out.isDisabled).toEqual(!useAreAssignmentGradeFiltersValid || !selectedAssignmentLabel);
     });
   });
 });

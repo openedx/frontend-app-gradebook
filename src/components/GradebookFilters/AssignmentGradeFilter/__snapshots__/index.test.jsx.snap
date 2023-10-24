@@ -55,7 +55,7 @@ exports[`AssignmentFilter component render without selected assignment snapshot 
     className="grade-filter-action"
   >
     <Button
-      disabled={true}
+      disabled={false}
       name="assignmentGradeMinMax"
       type="submit"
       variant="outline-secondary"

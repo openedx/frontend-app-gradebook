@@ -16,5 +16,12 @@ exports[`StatusAlerts component render snapshot 1`] = `
   >
     hooks.grade-filter-text
   </Alert>
+  <Alert
+    dismissible={false}
+    show="hooks.show-grade-filter"
+    variant="danger"
+  >
+    hooks.grade-filter-text
+  </Alert>
 </Fragment>
 `;
