@@ -6,11 +6,10 @@ export const useImportButtonData = () => {
   const submitImportGradesButtonData = thunkActions.grades.useSubmitImportGradesButtonData();
 
   const fileInputRef = useRef();
-  const hasFile = fileInputRef.current && fileInputRef.current.files[0];
 
-  const handleClickImportGrades = () => hasFile && fileInputRef.current.click();
+  const handleClickImportGrades = () => fileInputRef.current?.click();
   const handleFileInputChange = () => {
-    if (hasFile) {
+    if (fileInputRef.current?.files[0]) {
       const clearInput = () => {
         fileInputRef.current.value = null;
       };
