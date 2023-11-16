@@ -10,6 +10,7 @@ jest.mock('react-redux', () => ({
 jest.mock('data/selectors', () => ({
   app: {
     assignmentGradeLimits: jest.fn(),
+    areAssignmentGradeFiltersValid: jest.fn(),
     areCourseGradeFiltersValid: jest.fn(),
     courseGradelimits: jest.fn(),
   },
@@ -56,6 +57,7 @@ describe('selector hooks', () => {
     beforeEach(() => { hooks = selectorHooks.app; });
     testHook(hookKeys.useAssignmentGradeLimits, selGroup.assignmentGradeLimits);
     testHook(hookKeys.useAreCourseGradeFiltersValid, selGroup.areCourseGradeFiltersValid);
+    testHook(hookKeys.useAreAssignmentGradeFiltersValid, selGroup.areAssignmentGradeFiltersValid);
     testHook(hookKeys.useCourseGradeLimits, selGroup.courseGradeLimits);
   });
   describe('assignmentTypes', () => {

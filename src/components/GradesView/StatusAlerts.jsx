@@ -12,27 +12,69 @@ import messages from './StatusAlerts.messages';
 export class StatusAlerts extends React.Component {
   get isCourseGradeFilterAlertOpen() {
     return (
-      !this.props.limitValidity.isMinValid
-      || !this.props.limitValidity.isMaxValid
+      !this.props.courseLimitValidity.isMinValid
+      || !this.props.courseLimitValidity.isMaxValid
+      || !this.props.courseLimitValidity.isMinLessMaxValid
     );
   }
 
-  get minValidityMessage() {
-    return (this.props.limitValidity.isMinValid)
+  get minCourseValidityMessage() {
+    return (this.props.courseLimitValidity.isMinValid)
       ? ''
       : <FormattedMessage {...messages.minGradeInvalid} />;
   }
 
-  get maxValidityMessage() {
-    return (this.props.limitValidity.isMaxValid)
+  get maxCourseValidityMessage() {
+    return (this.props.courseLimitValidity.isMaxValid)
       ? ''
       : <FormattedMessage {...messages.maxGradeInvalid} />;
+  }
+
+  get minLessMaxCourseValidityMessage() {
+    return (this.props.courseLimitValidity.isMinLessMaxValid)
+      ? ''
+      : <FormattedMessage {...messages.minLessMaxGradeInvalid} />;
   }
 
   get courseGradeFilterAlertDialogText() {
     return (
       <>
-        {this.minValidityMessage}{this.maxValidityMessage}
+        {this.minCourseValidityMessage} {this.maxCourseValidityMessage} {this.minLessMaxCourseValidityMessage}
+      </>
+    );
+  }
+
+  get isAssignmentGradeFilterAlertOpen() {
+    return (
+      !this.props.assignmentLimitValidity.isMinValid
+      || !this.props.assignmentLimitValidity.isMaxValid
+      || !this.props.assignmentLimitValidity.isMinLessMaxValid
+    );
+  }
+
+  get minAssignmentValidityMessage() {
+    return (this.props.assignmentLimitValidity.isMinValid)
+      ? ''
+      : <FormattedMessage {...messages.minAssignmentInvalid} />;
+  }
+
+  get maxAssignmentValidityMessage() {
+    return (this.props.assignmentLimitValidity.isMaxValid)
+      ? ''
+      : <FormattedMessage {...messages.maxAssignmentInvalid} />;
+  }
+
+  get minLessMaxAssignmentValidityMessage() {
+    return (this.props.assignmentLimitValidity.isMinLessMaxValid)
+      ? ''
+      : <FormattedMessage {...messages.minLessMaxAssignmentInvalid} />;
+  }
+
+  get assignmentGradeFilterAlertDialogText() {
+    return (
+      <>
+        {/* eslint-disable-next-line max-len */}
+        {this.minAssignmentValidityMessage} {this.maxAssignmentValidityMessage} {this.minLessMaxAssignmentValidityMessage}
       </>
     );
   }
@@ -40,6 +82,20 @@ export class StatusAlerts extends React.Component {
   render() {
     return (
       <>
+        <Alert
+          variant="success"
+          onClose={this.props.handleCloseSuccessBanner}
+          show={this.props.showSuccessBanner}
+        >
+          <FormattedMessage {...messages.editSuccessAlert} />
+        </Alert>
+        <Alert
+          variant="danger"
+          dismissible={false}
+          show={this.isAssignmentGradeFilterAlertOpen}
+        >
+          {this.assignmentGradeFilterAlertDialogText}
+        </Alert>
         <Alert
           variant="success"
           onClose={this.props.handleCloseSuccessBanner}
@@ -65,15 +121,22 @@ StatusAlerts.defaultProps = {
 StatusAlerts.propTypes = {
   // redux
   handleCloseSuccessBanner: PropTypes.func.isRequired,
-  limitValidity: PropTypes.shape({
+  courseLimitValidity: PropTypes.shape({
     isMaxValid: PropTypes.bool,
     isMinValid: PropTypes.bool,
+    isMinLessMaxValid: PropTypes.bool,
+  }).isRequired,
+  assignmentLimitValidity: PropTypes.shape({
+    isMaxValid: PropTypes.bool,
+    isMinValid: PropTypes.bool,
+    isMinLessMaxValid: PropTypes.bool,
   }).isRequired,
   showSuccessBanner: PropTypes.bool.isRequired,
 };
 
 export const mapStateToProps = (state) => ({
-  limitValidity: selectors.app.courseGradeFilterValidity(state),
+  courseLimitValidity: selectors.app.courseGradeFilterValidity(state),
+  assignmentLimitValidity: selectors.app.assignmentGradeFilterValidity(state),
   showSuccessBanner: selectors.grades.showSuccess(state),
 });
 
