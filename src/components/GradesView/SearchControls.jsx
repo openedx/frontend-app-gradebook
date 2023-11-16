@@ -40,7 +40,7 @@ export class SearchControls extends React.Component {
 
   render() {
     return (
-      <div>
+      <div className="search-container">
         <SearchField
           onSubmit={this.onSubmit}
           inputLabel={<FormattedMessage {...messages.label} />}

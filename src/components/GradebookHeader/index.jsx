@@ -47,7 +47,7 @@ export class GradebookHeader extends React.Component {
           <FormattedMessage {...messages.gradebook} />
         </h1>
         <div className="subtitle-row d-flex justify-content-between align-items-center">
-          <h2>{this.props.courseId}</h2>
+          <h2 className="text-break">{this.props.courseId}</h2>
           { this.props.showBulkManagement && (
             <Button
               variant="tertiary"

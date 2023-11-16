@@ -7,7 +7,7 @@ exports[`FilterMenuToggle component snapshots basic snapshot 1`] = `
   onClick={[MockFunction this.props.toggleFilterDrawer]}
 >
   <Icon
-    className="fa fa-filter"
+    className="fa fa-filter mr-1"
   />
    
   <FormattedMessage

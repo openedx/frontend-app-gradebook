@@ -29,7 +29,9 @@ exports[`GradebookHeader component snapshots default values (grades frozen, cann
   <div
     className="subtitle-row d-flex justify-content-between align-items-center"
   >
-    <h2>
+    <h2
+      className="text-break"
+    >
       fakeID
     </h2>
   </div>
@@ -75,7 +77,9 @@ exports[`GradebookHeader component snapshots grades frozen, can view. grades fro
   <div
     className="subtitle-row d-flex justify-content-between align-items-center"
   >
-    <h2>
+    <h2
+      className="text-break"
+    >
       fakeID
     </h2>
   </div>
@@ -121,7 +125,9 @@ exports[`GradebookHeader component snapshots grades frozen, cannot view unauthor
   <div
     className="subtitle-row d-flex justify-content-between align-items-center"
   >
-    <h2>
+    <h2
+      className="text-break"
+    >
       fakeID
     </h2>
   </div>
@@ -177,7 +183,9 @@ exports[`GradebookHeader component snapshots show bulk management, active view i
   <div
     className="subtitle-row d-flex justify-content-between align-items-center"
   >
-    <h2>
+    <h2
+      className="text-break"
+    >
       fakeID
     </h2>
     <Button
@@ -233,7 +241,9 @@ exports[`GradebookHeader component snapshots show bulk management, active view i
   <div
     className="subtitle-row d-flex justify-content-between align-items-center"
   >
-    <h2>
+    <h2
+      className="text-break"
+    >
       fakeID
     </h2>
     <Button
