@@ -4,7 +4,7 @@ exports[`PageButtons component render snapshot 1`] = `
 <div
   className="d-flex justify-content-center"
   style={
-    Object {
+    {
       "paddingBottom": "20px",
     }
   }
@@ -13,7 +13,7 @@ exports[`PageButtons component render snapshot 1`] = `
     disabled="prev-disabled"
     onClick={[MockFunction hooks.prev.onClick]}
     style={
-      Object {
+      {
         "margin": "20px",
       }
     }
@@ -25,7 +25,7 @@ exports[`PageButtons component render snapshot 1`] = `
     disabled="next-disabled"
     onClick={[MockFunction hooks.next.onClick]}
     style={
-      Object {
+      {
         "margin": "20px",
       }
     }

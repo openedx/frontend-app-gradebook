@@ -32,7 +32,7 @@ exports[`LabelReplacements TotalGradeLabelReplacement snapshot 1`] = `
     }
     placement="left"
     trigger={
-      Array [
+      [
         "hover",
         "focus",
       ]
@@ -84,7 +84,7 @@ exports[`snapshot left to right overlay placement 1`] = `
     }
     placement="right"
     trigger={
-      Array [
+      [
         "hover",
         "focus",
       ]
@@ -118,7 +118,7 @@ exports[`snapshot right to left overlay placement 1`] = `
     }
     placement="left"
     trigger={
-      Array [
+      [
         "hover",
         "focus",
       ]

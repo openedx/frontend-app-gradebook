@@ -7,7 +7,7 @@ exports[`StudentGroupsFilter component render snapshot 1`] = `
     label="Tracks"
     onChange={[MockFunction]}
     options={
-      Array [
+      [
         <option
           value="Track-All"
         >
@@ -43,7 +43,7 @@ exports[`StudentGroupsFilter component render snapshot 1`] = `
     label="Cohorts"
     onChange={[MockFunction]}
     options={
-      Array [
+      [
         <option
           value="Cohort-All"
         >

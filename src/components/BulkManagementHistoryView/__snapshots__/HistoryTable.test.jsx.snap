@@ -1,8 +1,8 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`HistoryTable component snapshot history table data (from bulkManagementHistory.map(this.formatHistoryRow) snapshot: maps resultsSummay to ResultsSummary, wraps filename and user, forwards the rest 1`] = `
-Array [
-  Object {
+[
+  {
     "filename": <span
       className="wrap-text-in-cell"
     >
@@ -20,7 +20,7 @@ Array [
       Eifel
     </span>,
   },
-  Object {
+  {
     "filename": <span
       className="wrap-text-in-cell"
     >
@@ -45,26 +45,26 @@ exports[`HistoryTable component snapshot snapshot - loads formatted table 1`] = 
 <DataTable
   className="table-striped"
   columns={
-    Array [
-      Object {
+    [
+      {
         "Header": "Gradebook",
         "accessor": "filename",
         "columnSortable": false,
         "width": "col-5",
       },
-      Object {
+      {
         "Header": "Download Summary",
         "accessor": "resultsSummary",
         "columnSortable": false,
         "width": "col",
       },
-      Object {
+      {
         "Header": "Who",
         "accessor": "user",
         "columnSortable": false,
         "width": "col-1",
       },
-      Object {
+      {
         "Header": "When",
         "accessor": "timeUploaded",
         "columnSortable": false,
@@ -73,8 +73,8 @@ exports[`HistoryTable component snapshot snapshot - loads formatted table 1`] = 
     ]
   }
   data={
-    Array [
-      Object {
+    [
+      {
         "filename": <span
           className="wrap-text-in-cell"
         >
@@ -92,7 +92,7 @@ exports[`HistoryTable component snapshot snapshot - loads formatted table 1`] = 
           Eifel
         </span>,
       },
-      Object {
+      {
         "filename": <span
           className="wrap-text-in-cell"
         >
