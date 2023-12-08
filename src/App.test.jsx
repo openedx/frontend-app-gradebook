@@ -7,7 +7,6 @@ import { AppProvider } from '@edx/frontend-platform/react';
 import Footer from '@edx/frontend-component-footer';
 import Header from '@edx/frontend-component-header';
 
-import { routePath } from 'data/constants/app';
 import store from 'data/store';
 import GradebookPage from 'containers/GradebookPage';
 
@@ -20,9 +19,6 @@ jest.mock('react-router-dom', () => ({
 }));
 jest.mock('@edx/frontend-platform/react', () => ({
   AppProvider: () => 'AppProvider',
-}));
-jest.mock('data/constants/app', () => ({
-  routePath: '/:courseId',
 }));
 jest.mock('@edx/frontend-component-footer', () => 'Footer');
 jest.mock('data/store', () => 'testStore');
@@ -66,7 +62,7 @@ describe('App router component', () => {
         expect(secondChild.find('main')).toEqual(shallow(
           <main>
             <Routes>
-              <Route path={routePath} element={<GradebookPage />} />
+              <Route path="/:courseId" element={<GradebookPage />} />
             </Routes>
           </main>,
         ));
