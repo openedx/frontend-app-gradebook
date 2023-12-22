@@ -10,7 +10,7 @@ exports[`AssignmentFilterType component render snapshot 1`] = `
     label="Assignment Types"
     onChange={[MockFunction]}
     options={
-      Array [
+      [
         <option
           value=""
         >
