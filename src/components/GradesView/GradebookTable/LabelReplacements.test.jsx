@@ -2,7 +2,7 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import { getLocale } from '@edx/frontend-platform/i18n';
 
-import { OverlayTrigger } from '@edx/paragon';
+import { OverlayTrigger } from '@openedx/paragon';
 
 import LabelReplacements from './LabelReplacements';
 
@@ -12,7 +12,7 @@ const {
   MastersOnlyLabelReplacement,
 } = LabelReplacements;
 
-jest.mock('@edx/paragon', () => ({
+jest.mock('@openedx/paragon', () => ({
   Icon: () => 'Icon',
   OverlayTrigger: () => 'OverlayTrigger',
   Tooltip: () => 'Tooltip',

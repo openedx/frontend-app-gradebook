@@ -1,7 +1,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 
-import { Form } from '@edx/paragon';
+import { Form } from '@openedx/paragon';
 
 import useAdjustedGradeInputData from './hooks';
 import AdjustedGradeInput from '.';

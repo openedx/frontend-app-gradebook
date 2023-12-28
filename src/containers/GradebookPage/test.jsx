@@ -19,7 +19,7 @@ jest.mock('query-string', () => ({
   stringify: (val) => `stringify: ${JSON.stringify(val, Object.keys(val).sort())}`,
 }));
 
-jest.mock('@edx/paragon', () => ({
+jest.mock('@openedx/paragon', () => ({
   Tab: () => 'Tab',
   Tabs: () => 'Tabs',
 }));

@@ -1,7 +1,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 
-import { Icon, StatefulButton } from '@edx/paragon';
+import { Icon, StatefulButton } from '@openedx/paragon';
 import { FormattedMessage } from '@edx/frontend-platform/i18n';
 
 import selectors from 'data/selectors';
@@ -10,7 +10,7 @@ import { NetworkButton, mapStateToProps, buttonStates } from '.';
 jest.mock('@edx/frontend-platform/i18n', () => ({
   FormattedMessage: () => 'FormattedMessage',
 }));
-jest.mock('@edx/paragon', () => ({
+jest.mock('@openedx/paragon', () => ({
   Icon: () => 'Icon',
   StatefulButton: () => 'StatefulButton',
 }));

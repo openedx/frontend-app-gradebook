@@ -1,6 +1,6 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import { Alert } from '@edx/paragon';
+import { Alert } from '@openedx/paragon';
 import { FormattedMessage } from '@edx/frontend-platform/i18n';
 
 import selectors from 'data/selectors';
@@ -12,7 +12,7 @@ jest.mock('@edx/frontend-platform/i18n', () => ({
   defineMessages: m => m,
   FormattedMessage: () => 'FormattedMessage',
 }));
-jest.mock('@edx/paragon', () => ({
+jest.mock('@openedx/paragon', () => ({
   Alert: () => 'Alert',
 }));
 jest.mock('data/selectors', () => ({

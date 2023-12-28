@@ -1,7 +1,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 
-import { SearchField } from '@edx/paragon';
+import { SearchField } from '@openedx/paragon';
 
 import useSearchControlsData from './hooks';
 import SearchControls from '.';

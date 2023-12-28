@@ -1,7 +1,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 
-import { DataTable } from '@edx/paragon';
+import { DataTable } from '@openedx/paragon';
 
 import useGradebookTableData from './hooks';
 import GradebookTable from '.';

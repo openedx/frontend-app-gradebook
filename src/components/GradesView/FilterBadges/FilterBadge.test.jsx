@@ -3,11 +3,11 @@ import { shallow } from 'enzyme';
 import { useIntl } from '@edx/frontend-platform/i18n';
 
 import { formatMessage } from 'testUtils';
-import { Button } from '@edx/paragon';
+import { Button } from '@openedx/paragon';
 import { selectors } from 'data/redux/hooks';
 import FilterBadge from './FilterBadge';
 
-jest.mock('@edx/paragon', () => ({
+jest.mock('@openedx/paragon', () => ({
   Button: () => 'Button',
 }));
 jest.mock('data/redux/hooks', () => ({
