@@ -13,6 +13,7 @@ export const AssignmentGradeFilter = ({ updateQueryParams }) => {
     assignmentGradeMin,
     assignmentGradeMax,
     selectedAssignment,
+    isDisabled,
     handleSetMax,
     handleSetMin,
     handleSubmit,
@@ -39,7 +40,7 @@ export const AssignmentGradeFilter = ({ updateQueryParams }) => {
           type="submit"
           variant="outline-secondary"
           name="assignmentGradeMinMax"
-          disabled={!selectedAssignment}
+          disabled={isDisabled}
           onClick={handleSubmit}
         >
           {formatMessage(messages.apply)}
