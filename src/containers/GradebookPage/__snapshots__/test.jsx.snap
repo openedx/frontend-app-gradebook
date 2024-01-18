@@ -4,7 +4,7 @@ exports[`GradebookPage component snapshot - shows BulkManagementHistoryView if a
 <WithSidebar
   sidebar={
     <GradebookFilters
-      updateQueryParams={[MockFunction updateQueryParams]}
+      updateQueryParams={[Function]}
     />
   }
 >
@@ -21,7 +21,7 @@ exports[`GradebookPage component snapshot - shows GradesView if aciveView === vi
 <WithSidebar
   sidebar={
     <GradebookFilters
-      updateQueryParams={[MockFunction updateQueryParams]}
+      updateQueryParams={[Function]}
     />
   }
 >
@@ -30,7 +30,7 @@ exports[`GradebookPage component snapshot - shows GradesView if aciveView === vi
   >
     <GradebookHeader />
     <GradesView
-      updateQueryParams={[MockFunction updateQueryParams]}
+      updateQueryParams={[Function]}
     />
   </div>
 </WithSidebar>

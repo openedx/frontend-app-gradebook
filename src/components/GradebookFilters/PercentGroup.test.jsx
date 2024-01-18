@@ -1,5 +1,5 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import { shallow } from '@edx/react-unit-test-utils';
 
 import PercentGroup from './PercentGroup';
 
@@ -22,11 +22,11 @@ describe('PercentGroup', () => {
     describe('snapshots', () => {
       test('basic snapshot', () => {
         const el = shallow(<PercentGroup {...props} />);
-        expect(el).toMatchSnapshot();
+        expect(el.snapshot).toMatchSnapshot();
       });
       test('disabled', () => {
         const el = shallow(<PercentGroup {...props} disabled />);
-        expect(el).toMatchSnapshot();
+        expect(el.snapshot).toMatchSnapshot();
       });
     });
   });

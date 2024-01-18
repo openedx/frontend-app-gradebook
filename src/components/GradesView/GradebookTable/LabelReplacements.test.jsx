@@ -1,5 +1,5 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import { shallow } from '@edx/react-unit-test-utils';
 import { getLocale } from '@edx/frontend-platform/i18n';
 
 import { OverlayTrigger } from '@edx/paragon';
@@ -25,15 +25,15 @@ describe('LabelReplacements', () => {
       el = shallow(<TotalGradeLabelReplacement />);
     });
     test('snapshot', () => {
-      expect(el).toMatchSnapshot();
+      expect(el.snapshot).toMatchSnapshot();
     });
     test('displays overlay tooltip', () => {
-      expect(el.find(OverlayTrigger).props().overlay).toMatchSnapshot();
+      expect(el.instance.findByType(OverlayTrigger)[0].props.overlay).toMatchSnapshot();
     });
   });
   describe('UsernameLabelReplacement', () => {
     test('snapshot', () => {
-      expect(shallow(<UsernameLabelReplacement />)).toMatchSnapshot();
+      expect(shallow(<UsernameLabelReplacement />).snapshot).toMatchSnapshot();
     });
   });
   describe('MastersOnlyLabelReplacement', () => {
@@ -43,7 +43,7 @@ describe('LabelReplacements', () => {
         defaultMessage: 'defaultMessAge',
         description: 'desCripTion',
       };
-      expect(shallow(<MastersOnlyLabelReplacement {...message} />)).toMatchSnapshot();
+      expect(shallow(<MastersOnlyLabelReplacement {...message} />).snapshot).toMatchSnapshot();
     });
   });
 });
@@ -53,11 +53,11 @@ describe('snapshot', () => {
   test('right to left overlay placement', () => {
     getLocale.mockImplementation(() => 'en');
     el = shallow(<TotalGradeLabelReplacement />);
-    expect(el).toMatchSnapshot();
+    expect(el.snapshot).toMatchSnapshot();
   });
   test('left to right overlay placement', () => {
     getLocale.mockImplementation(() => 'ar');
     el = shallow(<TotalGradeLabelReplacement />);
-    expect(el).toMatchSnapshot();
+    expect(el.snapshot).toMatchSnapshot();
   });
 });

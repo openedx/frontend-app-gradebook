@@ -1,5 +1,5 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import { shallow } from '@edx/react-unit-test-utils';
 
 import useImportSuccessToastData from './hooks';
 import ImportSuccessToast from '.';
@@ -26,14 +26,14 @@ describe('ImportSuccessToast component', () => {
   });
   describe('render', () => {
     test('snapshot', () => {
-      expect(el).toMatchSnapshot();
+      expect(el.snapshot).toMatchSnapshot();
     });
     test('Toast', () => {
-      expect(el.type()).toEqual('Toast');
-      expect(el.props().action).toEqual(hookProps.action);
-      expect(el.props().onClose).toEqual(hookProps.onClose);
-      expect(el.props().show).toEqual(hookProps.show);
-      expect(el.text()).toEqual(hookProps.description);
+      expect(el.instance.type).toEqual('Toast');
+      expect(el.instance.props.action).toEqual(hookProps.action);
+      expect(el.instance.props.onClose).toEqual(hookProps.onClose);
+      expect(el.instance.props.show).toEqual(hookProps.show);
+      expect(el.instance.children[0].el).toEqual(hookProps.description);
     });
   });
 });

@@ -1,5 +1,5 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import { shallow } from '@edx/react-unit-test-utils';
 
 import HistoryHeader from './HistoryHeader';
 
@@ -11,7 +11,7 @@ describe('HistoryHeader', () => {
   };
   describe('Component', () => {
     test('snapshot', () => {
-      expect(shallow(<HistoryHeader {...props} />)).toMatchSnapshot();
+      expect(shallow(<HistoryHeader {...props} />).snapshot).toMatchSnapshot();
     });
   });
 });

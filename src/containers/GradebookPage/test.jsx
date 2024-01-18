@@ -1,6 +1,7 @@
 /* eslint-disable import/no-named-as-default */
 import React from 'react';
-import { shallow } from 'enzyme';
+import { render } from '@testing-library/react'; // eslint-disable-line import/no-extraneous-dependencies
+import { shallow } from '@edx/react-unit-test-utils';
 import queryString from 'query-string';
 
 import selectors from 'data/selectors';
@@ -62,13 +63,11 @@ describe('GradebookPage', () => {
     });
     test('snapshot - shows BulkManagementHistoryView if activeView === views.bulkManagementHistory', () => {
       el = shallow(<GradebookPage {...props} activeView={views.bulkManagementHistory} />);
-      el.instance().updateQueryParams = jest.fn().mockName('updateQueryParams');
-      expect(el.instance().render()).toMatchSnapshot();
+      expect(el.snapshot).toMatchSnapshot();
     });
     test('snapshot - shows GradesView if aciveView === views.grades', () => {
       el = shallow(<GradebookPage {...props} />);
-      el.instance().updateQueryParams = jest.fn().mockName('updateQueryParams');
-      expect(el.instance().render()).toMatchSnapshot();
+      expect(el.snapshot).toMatchSnapshot();
     });
     describe('render', () => {
       beforeEach(() => {
@@ -76,9 +75,9 @@ describe('GradebookPage', () => {
       });
       describe('top-level WithSidebar', () => {
         test('sidebar from GradebookFilters, with updateQueryParams', () => {
-          const { sidebar } = el.props();
-          expect(sidebar).toEqual(
-            <GradebookFilters updateQueryParams={el.instance().updateQueryParams} />,
+          const { sidebar } = el.instance.props;
+          expect(sidebar).toMatchObject(
+            <GradebookFilters updateQueryParams={el.shallowWrapper.props.sidebar.props.updateQueryParams} />,
           );
         });
       });
@@ -86,37 +85,37 @@ describe('GradebookPage', () => {
         let content;
         let children;
         beforeEach(() => {
-          content = el.props().children;
-          children = content.props.children;
+          content = el.instance.children;
+          children = content[0].children;
         });
         it('is wrapped in a div w/ px-3 gradebook-content classNames', () => {
-          expect(content.type).toEqual('div');
-          expect(content.props.className).toEqual('px-3 gradebook-content');
+          expect(content[0].type).toEqual('div');
+          expect(content[0].props.className).toEqual('px-3 gradebook-content');
         });
         it('displays Gradebook header and then tabs', () => {
-          expect(children[0]).toEqual(<GradebookHeader />);
+          expect(shallow(children[0])).toEqual(shallow(<GradebookHeader />));
         });
         it('displays GradesView if activeView === views.grades', () => {
           expect(shallow(children[1])).toEqual(shallow((
-            <GradesView updateQueryParams={el.instance().updateQueryParams} />
+            <GradesView updateQueryParams={el.shallowWrapper.props.sidebar.props.updateQueryParams} />
           )));
         });
         it('displays Bulk Management History View if activeView === views.bulkManagementHistory', () => {
           el = shallow(<GradebookPage {...props} activeView={views.bulkManagementHistory} />);
-          const mainView = el.props().children.props.children[1];
-          expect(mainView).toEqual((
-            <BulkManagementHistoryView />
+          const mainView = el.instance.children[0].children[1];
+          expect(shallow(mainView)).toEqual(shallow(
+            <BulkManagementHistoryView />,
           ));
         });
       });
     });
     describe('behavior', () => {
       beforeEach(() => {
-        el = shallow(<GradebookPage {...props} />, { disableLifecucleMethods: true });
+        el = shallow(<GradebookPage {...props} />);
       });
       describe('componentDidMount', () => {
         test('initializes app with courseId and urlQuery', () => {
-          el.instance().componentDidMount();
+          render(<GradebookPage {...props} />);
           expect(props.initializeApp).toHaveBeenCalledWith(
             courseId,
             queryString.parse(props.location.search),
@@ -130,7 +129,7 @@ describe('GradebookPage', () => {
           const val1 = 'VALUE';
           const val2 = 'VALTWO!!';
           const args = { [newKey]: val1, [props.location.search]: val2 };
-          el.instance().updateQueryParams(args);
+          el.shallowWrapper.props.sidebar.props.updateQueryParams(args);
           expect(props.navigate).toHaveBeenCalledWith({ pathname: '/', search: `?${queryString.stringify(args)}` });
         });
         it('clears values for non-truthy values', () => {
@@ -139,7 +138,7 @@ describe('GradebookPage', () => {
           const val1 = 'VALUE';
           const val2 = false;
           const args = { [newKey]: val1, [props.location.search]: val2 };
-          el.instance().updateQueryParams(args);
+          el.shallowWrapper.props.sidebar.props.updateQueryParams(args);
           expect(props.navigate).toHaveBeenCalledWith(
             { pathname: '/', search: `?${queryString.stringify({ [newKey]: val1 })}` },
           );
