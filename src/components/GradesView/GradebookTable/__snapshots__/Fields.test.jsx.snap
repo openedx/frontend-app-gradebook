@@ -28,168 +28,34 @@ exports[`Gradebook Table Fields Username with external_user_key snapshot 1`] = `
 `;
 
 exports[`Gradebook Table Fields Username with external_user_key wraps external user key and username 1`] = `
-ElementExplorer {
+Object {
   "children": Array [
-    ElementExplorer {
-      "children": Array [
-        ElementExplorer {
-          "children": Array [
-            ElementExplorer {
-              "children": Array [],
-              "el": "MyNameFromHere",
-              "parent": [Circular],
-              "props": Object {},
-              "toSnapshot": [Function],
-              "type": null,
-            },
-          ],
-          "el": Object {
-            "children": Array [
-              "MyNameFromHere",
-            ],
-            "props": Object {},
-            "type": "div",
-          },
-          "parent": [Circular],
-          "props": Object {},
-          "toSnapshot": [Function],
-          "type": "div",
-        },
-        ElementExplorer {
-          "children": Array [
-            ElementExplorer {
-              "children": Array [],
-              "el": "My name from another land",
-              "parent": [Circular],
-              "props": Object {},
-              "toSnapshot": [Function],
-              "type": null,
-            },
-          ],
-          "el": Object {
-            "children": Array [
-              "My name from another land",
-            ],
-            "props": Object {
-              "className": "student-key",
-            },
-            "type": "div",
-          },
-          "parent": [Circular],
-          "props": Object {
-            "className": "student-key",
-          },
-          "toSnapshot": [Function],
-          "type": "div",
-        },
-      ],
-      "el": Object {
-        "children": Array [
-          Object {
-            "children": Array [
-              "MyNameFromHere",
-            ],
-            "props": Object {},
-            "type": "div",
-          },
-          Object {
-            "children": Array [
-              "My name from another land",
-            ],
-            "props": Object {
-              "className": "student-key",
-            },
-            "type": "div",
-          },
-        ],
-        "props": Object {},
-        "type": "div",
-      },
-      "parent": [Circular],
-      "props": Object {},
-      "toSnapshot": [Function],
-      "type": "div",
-    },
-  ],
-  "el": Object {
-    "children": Array [
-      Object {
-        "children": Array [
-          Object {
-            "children": Array [
-              "MyNameFromHere",
-            ],
-            "props": Object {},
-            "type": "div",
-          },
-          Object {
-            "children": Array [
-              "My name from another land",
-            ],
-            "props": Object {
-              "className": "student-key",
-            },
-            "type": "div",
-          },
-        ],
-        "props": Object {},
-        "type": "div",
-      },
-    ],
-    "props": Object {
-      "className": "wrap-text-in-cell",
-    },
-    "type": "span",
-  },
-  "parent": ElementExplorer {
-    "children": Array [
-      [Circular],
-    ],
-    "el": Object {
+    Object {
       "children": Array [
         Object {
           "children": Array [
-            Object {
-              "children": Array [
-                Object {
-                  "children": Array [
-                    "MyNameFromHere",
-                  ],
-                  "props": Object {},
-                  "type": "div",
-                },
-                Object {
-                  "children": Array [
-                    "My name from another land",
-                  ],
-                  "props": Object {
-                    "className": "student-key",
-                  },
-                  "type": "div",
-                },
-              ],
-              "props": Object {},
-              "type": "div",
-            },
+            "MyNameFromHere",
+          ],
+          "props": Object {},
+          "type": "div",
+        },
+        Object {
+          "children": Array [
+            "My name from another land",
           ],
           "props": Object {
-            "className": "wrap-text-in-cell",
+            "className": "student-key",
           },
-          "type": "span",
+          "type": "div",
         },
       ],
       "props": Object {},
       "type": "div",
     },
-    "parent": null,
-    "props": Object {},
-    "toSnapshot": [Function],
-    "type": "div",
-  },
+  ],
   "props": Object {
     "className": "wrap-text-in-cell",
   },
-  "toSnapshot": [Function],
   "type": "span",
 }
 `;

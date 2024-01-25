@@ -38,12 +38,12 @@ describe('BulkManagementAlerts', () => {
         expect(el.snapshot).toMatchSnapshot();
       });
       test('closed danger alert', () => {
-        expect(el.shallowWrapper.props.children[0].type).toBe(Alert);
+        expect(el.instance.children[0].type).toBe('Alert');
         expect(el.instance.findByType(Alert)[0].props.show).toEqual(false);
         expect(el.instance.findByType(Alert)[0].props.variant).toEqual('danger');
       });
       test('closed success alert', () => {
-        expect(el.shallowWrapper.props.children[1].type).toBe(Alert);
+        expect(el.instance.children[1].type).toBe('Alert');
         expect(el.instance.findByType(Alert)[1].props.show).toEqual(false);
         expect(el.instance.findByType(Alert)[1].props.variant).toEqual('success');
       });
@@ -60,16 +60,16 @@ describe('BulkManagementAlerts', () => {
         expect(el.snapshot).toMatchSnapshot();
       });
       test('open danger alert with bulkImportError content', () => {
-        expect(el.shallowWrapper.props.children[0].type).toBe(Alert);
+        expect(el.instance.children[0].type).toBe('Alert');
         expect(el.instance.findByType(Alert)[0].children[0].el).toEqual(errorMessage);
         expect(el.instance.findByType(Alert)[0].props.show).toEqual(true);
       });
       test('open success alert with messages.successDialog content', () => {
-        expect(el.shallowWrapper.props.children[1].type).toBe(Alert);
+        expect(el.instance.children[1].type).toBe('Alert');
         expect(el.shallowWrapper.props.children[1].props.children).toEqual(
           <FormattedMessage {...messages.successDialog} />,
         );
-        expect(el.shallowWrapper.props.children[1].props.show).toEqual(true);
+        expect(el.instance.children[1].props.show).toEqual(true);
       });
     });
   });

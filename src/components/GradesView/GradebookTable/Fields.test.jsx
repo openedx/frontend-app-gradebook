@@ -19,7 +19,7 @@ describe('Gradebook Table Fields', () => {
         expect(el.snapshot).toMatchSnapshot();
       });
       test('wraps external user key and username', () => {
-        expect(el.instance.findByType('span')[0]).toMatchSnapshot();
+        expect(el.instance.findByType('span')[0].el).toMatchSnapshot();
         const content = el.instance.findByType('span')[0].children[0];
         expect(content.children[0].children[0].el).toEqual(username);
         expect(content.children[1].children[0].el).toEqual(props.userKey);
