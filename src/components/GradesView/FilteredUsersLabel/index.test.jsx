@@ -1,5 +1,5 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import { shallow } from '@edx/react-unit-test-utils';
 
 import { useIntl } from '@edx/frontend-platform/i18n';
 
@@ -46,8 +46,8 @@ describe('FilteredUsersLabel component', () => {
       expect(shallow(<FilteredUsersLabel />).isEmptyRender()).toEqual(true);
     });
     test('snapshot', () => {
-      expect(el).toMatchSnapshot();
-      expect(el).toMatchObject(shallow(formatMessage(messages.visibilityLabel, {
+      expect(el.snapshot).toMatchSnapshot();
+      expect(el.instance).toMatchObject(shallow(formatMessage(messages.visibilityLabel, {
         filteredUsers: <BoldText text={userCounts.filteredUsersCount} />,
         totalUsers: <BoldText text={userCounts.totalUsersCount} />,
       })));

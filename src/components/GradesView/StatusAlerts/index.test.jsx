@@ -1,5 +1,5 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import { shallow } from '@edx/react-unit-test-utils';
 
 import { Alert } from '@edx/paragon';
 
@@ -34,20 +34,20 @@ describe('StatusAlerts component', () => {
   });
   describe('render', () => {
     test('snapshot', () => {
-      expect(el).toMatchSnapshot();
+      expect(el.snapshot).toMatchSnapshot();
     });
     test('success banner', () => {
-      const alert = el.find(Alert).at(0);
-      const props = alert.props();
+      const alert = el.instance.findByType(Alert)[0];
+      const { props } = alert;
       expect(props.onClose).toEqual(hookProps.successBanner.onClose);
       expect(props.show).toEqual(hookProps.successBanner.show);
-      expect(alert.text()).toEqual(hookProps.successBanner.text);
+      expect(alert.children[0].el).toEqual(hookProps.successBanner.text);
     });
     test('grade filter banner', () => {
-      const alert = el.find(Alert).at(1);
-      const props = alert.props();
+      const alert = el.instance.findByType(Alert)[1];
+      const { props } = alert;
       expect(props.show).toEqual(hookProps.gradeFilter.show);
-      expect(alert.text()).toEqual(hookProps.gradeFilter.text);
+      expect(alert.children[0].el).toEqual(hookProps.gradeFilter.text);
     });
   });
 });

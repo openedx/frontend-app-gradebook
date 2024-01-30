@@ -1,5 +1,5 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import { shallow } from '@edx/react-unit-test-utils';
 import { useIntl } from '@edx/frontend-platform/i18n';
 
 import SelectGroup from '../SelectGroup';
@@ -38,10 +38,10 @@ describe('AssignmentFilter component', () => {
   });
   describe('render', () => {
     test('snapshot', () => {
-      expect(el).toMatchSnapshot();
+      expect(el.snapshot).toMatchSnapshot();
     });
     test('filter options', () => {
-      const { options } = el.find(SelectGroup).props();
+      const { options } = el.instance.findByType(SelectGroup)[0].props;
       expect(options.length).toEqual(5);
       const testOption = assignmentFilterOptions[0];
       const optionProps = options[1].props;

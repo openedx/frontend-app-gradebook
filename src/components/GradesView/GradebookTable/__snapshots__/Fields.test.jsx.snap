@@ -28,29 +28,36 @@ exports[`Gradebook Table Fields Username with external_user_key snapshot 1`] = `
 `;
 
 exports[`Gradebook Table Fields Username with external_user_key wraps external user key and username 1`] = `
-<div>
-  <div>
-    MyNameFromHere
-  </div>
-  <div
-    className="student-key"
-  >
-    My name from another land
-  </div>
-</div>
-`;
-
-exports[`Gradebook Table Fields Username with external_user_key wraps external user key and username 2`] = `
-<div>
-  <div>
-    MyNameFromHere
-  </div>
-  <div
-    className="student-key"
-  >
-    My name from another land
-  </div>
-</div>
+Object {
+  "children": Array [
+    Object {
+      "children": Array [
+        Object {
+          "children": Array [
+            "MyNameFromHere",
+          ],
+          "props": Object {},
+          "type": "div",
+        },
+        Object {
+          "children": Array [
+            "My name from another land",
+          ],
+          "props": Object {
+            "className": "student-key",
+          },
+          "type": "div",
+        },
+      ],
+      "props": Object {},
+      "type": "div",
+    },
+  ],
+  "props": Object {
+    "className": "wrap-text-in-cell",
+  },
+  "type": "span",
+}
 `;
 
 exports[`Gradebook Table Fields Username without external_user_key snapshot 1`] = `

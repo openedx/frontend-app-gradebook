@@ -1,5 +1,5 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import { shallow } from '@edx/react-unit-test-utils';
 
 import { DataTable } from '@edx/paragon';
 
@@ -24,16 +24,16 @@ describe('GradebookTable', () => {
     el = shallow(<GradebookTable />);
   });
   test('snapshot', () => {
-    expect(el).toMatchSnapshot();
+    expect(el.snapshot).toMatchSnapshot();
   });
   test('Datatable props', () => {
-    const datatable = el.find(DataTable);
-    const props = datatable.props();
+    const datatable = el.instance.findByType(DataTable)[0];
+    const { props } = datatable;
     expect(props.columns).toEqual(hookProps.columns);
     expect(props.data).toEqual(hookProps.data);
     expect(props.itemCount).toEqual(hookProps.grades.length);
     expect(props.RowStatusComponent).toEqual(hookProps.nullMethod);
-    expect(datatable.children().at(2).type()).toEqual('DataTable.EmptyTable');
-    expect(datatable.children().at(2).props().content).toEqual(hookProps.emptyContent);
+    expect(datatable.children[2].type).toEqual('DataTable.EmptyTable');
+    expect(datatable.children[2].props.content).toEqual(hookProps.emptyContent);
   });
 });

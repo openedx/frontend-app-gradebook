@@ -1,5 +1,5 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import { shallow } from '@edx/react-unit-test-utils';
 
 import { useIntl } from '@edx/frontend-platform/i18n';
 
@@ -33,8 +33,8 @@ describe('InterventionsReport component', () => {
       expect(el.isEmptyRender()).toEqual(true);
     });
     test('snapshot', () => {
-      expect(el).toMatchSnapshot();
-      const btnProps = el.find(NetworkButton).props();
+      expect(el.snapshot).toMatchSnapshot();
+      const btnProps = el.instance.findByType(NetworkButton)[0].props;
       expect(btnProps.label).toEqual(messages.downloadBtn);
       expect(btnProps.onClick).toEqual(hookProps.handleClick);
     });

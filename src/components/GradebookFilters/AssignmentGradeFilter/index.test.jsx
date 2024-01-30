@@ -1,5 +1,5 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import { shallow } from '@edx/react-unit-test-utils';
 import { useIntl } from '@edx/frontend-platform/i18n';
 import { Button } from '@edx/paragon';
 
@@ -37,20 +37,20 @@ describe('AssignmentFilter component', () => {
   describe('render', () => {
     describe('with selected assignment', () => {
       test('snapshot', () => {
-        expect(el).toMatchSnapshot();
+        expect(el.snapshot).toMatchSnapshot();
       });
       it('renders a PercentGroup for both Max and Min filters', () => {
-        let props = el.find(PercentGroup).at(0).props();
+        let { props } = el.instance.findByType(PercentGroup)[0];
         expect(props.value).toEqual(hookData.assignmentGradeMin);
         expect(props.disabled).toEqual(false);
         expect(props.onChange).toEqual(hookData.handleSetMin);
-        props = el.find(PercentGroup).at(1).props();
+        props = el.instance.findByType(PercentGroup)[1].props;
         expect(props.value).toEqual(hookData.assignmentGradeMax);
         expect(props.disabled).toEqual(false);
         expect(props.onChange).toEqual(hookData.handleSetMax);
       });
       it('renders a submit button', () => {
-        const props = el.find(Button).props();
+        const { props } = el.instance.findByType(Button)[0];
         expect(props.disabled).toEqual(false);
         expect(props.onClick).toEqual(hookData.handleSubmit);
       });
@@ -64,12 +64,12 @@ describe('AssignmentFilter component', () => {
         el = shallow(<AssignmentFilter updateQueryParams={updateQueryParams} />);
       });
       test('snapshot', () => {
-        expect(el).toMatchSnapshot();
+        expect(el.snapshot).toMatchSnapshot();
       });
       it('disables controls', () => {
-        let props = el.find(PercentGroup).at(0).props();
+        let { props } = el.instance.findByType(PercentGroup)[0];
         expect(props.disabled).toEqual(true);
-        props = el.find(PercentGroup).at(1).props();
+        props = el.instance.findByType(PercentGroup)[1].props;
         expect(props.disabled).toEqual(true);
       });
     });

@@ -1,5 +1,5 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import { shallow } from '@edx/react-unit-test-utils';
 
 import {
   ActionRow,
@@ -43,60 +43,56 @@ describe('EditModal component', () => {
   });
   describe('render', () => {
     test('modal props', () => {
-      const modalProps = el.find(ModalDialog).props();
+      const modalProps = el.instance.findByType(ModalDialog)[0].props;
       expect(modalProps.title).toEqual(formatMessage(messages.title));
       expect(modalProps.isOpen).toEqual(hookProps.isOpen);
       expect(modalProps.onClose).toEqual(hookProps.onClose);
     });
     const loadBody = () => {
-      const body = el.find(ModalDialog).children().at(0);
-      const children = body.find('div').children();
+      const body = el.instance.findByType(ModalDialog)[0].children[0];
+      const { children } = body.children[0];
       return { body, children };
     };
     const testBody = () => {
       test('type', () => {
         const { body } = loadBody();
-        expect(body.type()).toEqual('ModalDialog.Body');
+        expect(body.type).toEqual('ModalDialog.Body');
       });
       test('headers row', () => {
         const { children } = loadBody();
-        expect(children.at(0)).toMatchObject(shallow(<ModalHeaders />));
+        expect(children[0]).toMatchObject(shallow(<ModalHeaders />));
       });
       test('table row', () => {
         const { children } = loadBody();
-        expect(children.at(2)).toMatchObject(shallow(<OverrideTable />));
+        expect(children[2]).toMatchObject(shallow(<OverrideTable />));
       });
       test('messages', () => {
         const { children } = loadBody();
-        expect(
-          children.at(3).contains(formatMessage(messages.visibility)),
-        ).toEqual(true);
-        expect(
-          children.at(4).contains(formatMessage(messages.saveVisibility)),
-        ).toEqual(true);
+        expect(children[3].children[0].el).toEqual(formatMessage(messages.visibility));
+        expect(children[4].children[0].el).toEqual(formatMessage(messages.saveVisibility));
       });
     };
     const testFooter = () => {
       let footer;
       beforeEach(() => {
-        footer = el.find(ModalDialog).children().at(1);
+        footer = el.instance.findByType(ModalDialog)[0].children;
       });
       test('type', () => {
-        expect(footer.type()).toEqual('ModalDialog.Footer');
+        expect(footer[1].type).toEqual('ModalDialog.Footer');
       });
       test('contains action row', () => {
-        expect(footer.children().at(0).type()).toEqual('ActionRow');
+        expect(footer[1].children[0].type).toEqual('ActionRow');
       });
       test('close button', () => {
-        const button = footer.find(ActionRow).children().at(0);
-        expect(button.contains(formatMessage(messages.closeText))).toEqual(true);
-        expect(button.type()).toEqual('ModalDialog.CloseButton');
+        const button = footer[1].findByType(ActionRow)[0].children[0];
+        expect(button.children[0].el).toEqual(formatMessage(messages.closeText));
+        expect(button.type).toEqual('ModalDialog.CloseButton');
       });
       test('adjusted grade button', () => {
-        const button = footer.find(ActionRow).children().at(1);
-        expect(button.contains(formatMessage(messages.saveGrade))).toEqual(true);
-        expect(button.type()).toEqual('Button');
-        expect(button.props().onClick).toEqual(hookProps.handleAdjustedGradeClick);
+        const button = footer[1].findByType(ActionRow)[0].children[1];
+        expect(button.children[0].el).toEqual(formatMessage(messages.saveGrade));
+        expect(button.type).toEqual('Button');
+        expect(button.props.onClick).toEqual(hookProps.handleAdjustedGradeClick);
       });
     };
     describe('without error', () => {
@@ -105,26 +101,26 @@ describe('EditModal component', () => {
         el = shallow(<EditModal />);
       });
       test('snapshot', () => {
-        expect(el).toMatchSnapshot();
+        expect(el.snapshot).toMatchSnapshot();
       });
       testBody();
       testFooter();
       test('alert row', () => {
-        const alert = loadBody().children.at(1);
-        expect(alert.type()).toEqual('Alert');
-        expect(alert.props().show).toEqual(false);
+        const alert = loadBody().children[1];
+        expect(alert.type).toEqual('Alert');
+        expect(alert.props.show).toEqual(false);
       });
     });
     describe('with error', () => {
       test('snapshot', () => {
-        expect(el).toMatchSnapshot();
+        expect(el.snapshot).toMatchSnapshot();
       });
       testBody();
       test('alert row', () => {
-        const alert = loadBody().children.at(1);
-        expect(alert.type()).toEqual('Alert');
-        expect(alert.props().show).toEqual(true);
-        expect(alert.contains(hookProps.error)).toEqual(true);
+        const alert = loadBody().children[1];
+        expect(alert.type).toEqual('Alert');
+        expect(alert.props.show).toEqual(true);
+        expect(alert.children[0].el).toEqual(hookProps.error);
       });
       testFooter();
     });

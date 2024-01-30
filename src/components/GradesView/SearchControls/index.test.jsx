@@ -1,5 +1,5 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import { shallow } from '@edx/react-unit-test-utils';
 
 import { SearchField } from '@edx/paragon';
 
@@ -31,10 +31,10 @@ describe('SearchControls component', () => {
   });
   describe('render', () => {
     test('snapshot', () => {
-      expect(el).toMatchSnapshot();
+      expect(el.snapshot).toMatchSnapshot();
     });
     test('search field', () => {
-      const props = el.find(SearchField).props();
+      const { props } = el.instance.findByType(SearchField)[0];
       expect(props.onSubmit).toEqual(hookProps.onSubmit);
       expect(props.onBlur).toEqual(hookProps.onBlur);
       expect(props.onClear).toEqual(hookProps.onClear);
@@ -42,7 +42,7 @@ describe('SearchControls component', () => {
       expect(props.value).toEqual(hookProps.searchValue);
     });
     test('hint text', () => {
-      expect(el.find('small').text()).toEqual(hookProps.hintText);
+      expect(el.instance.findByType('small')[0].children[0].el).toEqual(hookProps.hintText);
     });
   });
 });
