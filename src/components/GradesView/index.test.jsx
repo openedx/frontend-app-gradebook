@@ -1,5 +1,5 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import { shallow } from '@edx/react-unit-test-utils';
 
 import FilterBadges from './FilterBadges';
 
@@ -46,10 +46,10 @@ describe('GradesView component', () => {
   });
   describe('render', () => {
     test('snapshot', () => {
-      expect(el).toMatchSnapshot();
+      expect(el.snapshot).toMatchSnapshot();
     });
     test('filterBadges load close behavior from hook', () => {
-      expect(el.find(FilterBadges).props().handleClose).toEqual(
+      expect(el.instance.findByType(FilterBadges)[0].props.handleClose).toEqual(
         hookProps.handleFilterBadgeClose,
       );
     });

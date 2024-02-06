@@ -1,5 +1,5 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import { shallow } from '@edx/react-unit-test-utils';
 import { useIntl } from '@edx/frontend-platform/i18n';
 import { Button } from '@edx/paragon';
 
@@ -42,18 +42,18 @@ describe('CourseFilter component', () => {
   describe('render', () => {
     describe('with selected assignment', () => {
       test('snapshot', () => {
-        expect(el).toMatchSnapshot();
+        expect(el.snapshot).toMatchSnapshot();
       });
       it('renders a PercentGroup for both Max and Min filters', () => {
-        let props = el.find(PercentGroup).at(0).props();
+        let { props } = el.instance.findByType(PercentGroup)[0];
         expect(props.value).toEqual(hookData.min.value);
         expect(props.onChange).toEqual(hookData.min.onChange);
-        props = el.find(PercentGroup).at(1).props();
+        props = el.instance.findByType(PercentGroup)[1].props;
         expect(props.value).toEqual(hookData.max.value);
         expect(props.onChange).toEqual(hookData.max.onChange);
       });
       it('renders a submit button', () => {
-        const props = el.find(Button).props();
+        const { props } = el.instance.findByType(Button)[0];
         expect(props.disabled).toEqual(false);
         expect(props.onClick).toEqual(hookData.handleApplyClick);
       });
@@ -64,10 +64,10 @@ describe('CourseFilter component', () => {
         el = shallow(<CourseFilter updateQueryParams={updateQueryParams} />);
       });
       test('snapshot', () => {
-        expect(el).toMatchSnapshot();
+        expect(el.snapshot).toMatchSnapshot();
       });
       it('disables submit', () => {
-        const props = el.find(Button).props();
+        const { props } = el.instance.findByType(Button)[0];
         expect(props.disabled).toEqual(true);
       });
     });

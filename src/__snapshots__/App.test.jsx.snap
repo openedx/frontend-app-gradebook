@@ -8,12 +8,12 @@ exports[`App router component snapshot 1`] = `
   <div>
     <Header />
     <main>
-      <Component>
+      <Routes>
         <Route
           element={<GradebookPage />}
           path="/:courseId"
         />
-      </Component>
+      </Routes>
     </main>
     <Footer />
   </div>

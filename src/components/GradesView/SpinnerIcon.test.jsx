@@ -1,5 +1,5 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import { shallow } from '@edx/react-unit-test-utils';
 
 import { selectors } from 'data/redux/hooks';
 import SpinnerIcon from './SpinnerIcon';
@@ -29,7 +29,7 @@ describe('SpinnerIcon', () => {
       expect(el.isEmptyRender()).toEqual(true);
     });
     test('snapshot - displays spinner overlay with spinner icon', () => {
-      expect(el).toMatchSnapshot();
+      expect(el.snapshot).toMatchSnapshot();
     });
   });
 });

@@ -1,5 +1,5 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import { shallow } from '@edx/react-unit-test-utils';
 import { useIntl } from '@edx/frontend-platform/i18n';
 
 import SelectGroup from '../SelectGroup';
@@ -48,14 +48,14 @@ describe('StudentGroupsFilter component', () => {
   });
   describe('render', () => {
     test('snapshot', () => {
-      expect(el).toMatchSnapshot();
+      expect(el.snapshot).toMatchSnapshot();
     });
     test('track options', () => {
       const {
         options,
         onChange,
         value,
-      } = el.find(SelectGroup).at(0).props();
+      } = el.instance.findByType(SelectGroup)[0].props;
       expect(value).toEqual(props.tracks.value);
       expect(onChange).toEqual(props.tracks.handleChange);
       expect(options.length).toEqual(5);
@@ -70,7 +70,7 @@ describe('StudentGroupsFilter component', () => {
         onChange,
         disabled,
         value,
-      } = el.find(SelectGroup).at(1).props();
+      } = el.instance.findByType(SelectGroup)[1].props;
       expect(value).toEqual(props.cohorts.value);
       expect(disabled).toEqual(false);
       expect(onChange).toEqual(props.cohorts.handleChange);

@@ -1,5 +1,5 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import { shallow } from '@edx/react-unit-test-utils';
 import { Alert } from '@edx/paragon';
 import { FormattedMessage } from '@edx/frontend-platform/i18n';
 
@@ -35,17 +35,17 @@ describe('BulkManagementAlerts', () => {
         el = shallow(<BulkManagementAlerts />);
       });
       test('snapshot - bulkImportError closed, success closed', () => {
-        expect(el).toMatchSnapshot();
+        expect(el.snapshot).toMatchSnapshot();
       });
       test('closed danger alert', () => {
-        expect(el.childAt(0).is(Alert)).toEqual(true);
-        expect(el.childAt(0).props().show).toEqual(false);
-        expect(el.childAt(0).props().variant).toEqual('danger');
+        expect(el.instance.children[0].type).toBe('Alert');
+        expect(el.instance.findByType(Alert)[0].props.show).toEqual(false);
+        expect(el.instance.findByType(Alert)[0].props.variant).toEqual('danger');
       });
       test('closed success alert', () => {
-        expect(el.childAt(1).is(Alert)).toEqual(true);
-        expect(el.childAt(1).props().show).toEqual(false);
-        expect(el.childAt(1).props().variant).toEqual('success');
+        expect(el.instance.children[1].type).toBe('Alert');
+        expect(el.instance.findByType(Alert)[1].props.show).toEqual(false);
+        expect(el.instance.findByType(Alert)[1].props.variant).toEqual('success');
       });
     });
     describe('no errer, no upload success', () => {
@@ -57,19 +57,19 @@ describe('BulkManagementAlerts', () => {
         'success alert open with messages.successDialog',
       ];
       test(`snapshot - ${assertions.join(', ')}`, () => {
-        expect(el).toMatchSnapshot();
+        expect(el.snapshot).toMatchSnapshot();
       });
       test('open danger alert with bulkImportError content', () => {
-        expect(el.childAt(0).is(Alert)).toEqual(true);
-        expect(el.childAt(0).children().text()).toEqual(errorMessage);
-        expect(el.childAt(0).props().show).toEqual(true);
+        expect(el.instance.children[0].type).toBe('Alert');
+        expect(el.instance.findByType(Alert)[0].children[0].el).toEqual(errorMessage);
+        expect(el.instance.findByType(Alert)[0].props.show).toEqual(true);
       });
       test('open success alert with messages.successDialog content', () => {
-        expect(el.childAt(1).is(Alert)).toEqual(true);
-        expect(el.childAt(1).children().getElement()).toEqual(
+        expect(el.instance.children[1].type).toBe('Alert');
+        expect(el.shallowWrapper.props.children[1].props.children).toEqual(
           <FormattedMessage {...messages.successDialog} />,
         );
-        expect(el.childAt(1).props().show).toEqual(true);
+        expect(el.instance.children[1].props.show).toEqual(true);
       });
     });
   });

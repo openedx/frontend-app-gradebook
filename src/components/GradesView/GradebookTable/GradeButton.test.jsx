@@ -1,5 +1,5 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import { shallow } from '@edx/react-unit-test-utils';
 
 import { selectors, thunkActions } from 'data/redux/hooks';
 import transforms from 'data/redux/transforms';
@@ -101,8 +101,8 @@ describe('GradeButton', () => {
         el = shallow(<GradeButton {...props} />);
       });
       test('snapshot', () => {
-        expect(el).toMatchSnapshot();
-        expect(el.text()).toEqual(hookProps.label);
+        expect(el.snapshot).toMatchSnapshot();
+        expect(el.instance.el).toEqual(hookProps.label);
       });
     });
     describe('not frozen grades', () => {
@@ -111,10 +111,10 @@ describe('GradeButton', () => {
         el = shallow(<GradeButton {...props} />);
       });
       test('snapshot', () => {
-        expect(el).toMatchSnapshot();
-        expect(el.type()).toEqual('Button');
-        expect(el.props().onClick).toEqual(hookProps.onClick);
-        expect(el.contains(hookProps.label)).toEqual(true);
+        expect(el.snapshot).toMatchSnapshot();
+        expect(el.instance.type).toEqual('Button');
+        expect(el.instance.props.onClick).toEqual(hookProps.onClick);
+        expect(el.instance.children[0].el).toEqual(hookProps.label);
       });
     });
   });
