@@ -57,10 +57,25 @@ describe('useAdjustedGradeInputData hook', () => {
       });
     });
     describe('onChange', () => {
-      it('sets modal state with event target value', () => {
-        const testValue = 'test-value';
+      it('sets modal state with event target value when it is less than possibleGrade', () => {
+        const testValue = possibleGrade - 1;
         out.onChange({ target: { value: testValue } });
         expect(setModalState).toHaveBeenCalledWith({ adjustedGradeValue: testValue });
+      });
+      it('sets modal state with event target value when it is equal to possibleGrade', () => {
+        const testValue = possibleGrade;
+        out.onChange({ target: { value: testValue } });
+        expect(setModalState).toHaveBeenCalledWith({ adjustedGradeValue: testValue });
+      });
+      it('sets modal state to possibleGrade when event target value is greater than possibleGrade', () => {
+        const testValue = possibleGrade + 1;
+        out.onChange({ target: { value: testValue } });
+        expect(setModalState).toHaveBeenCalledWith({ adjustedGradeValue: possibleGrade });
+      });
+      it('sets modal state to 0 when event target value is less than 0', () => {
+        const testValue = -1;
+        out.onChange({ target: { value: testValue } });
+        expect(setModalState).toHaveBeenCalledWith({ adjustedGradeValue: 0 });
       });
     });
   });
