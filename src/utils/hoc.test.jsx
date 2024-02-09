@@ -1,5 +1,5 @@
 import React from 'react';
-import { mount } from 'enzyme';
+import { fireEvent, render } from '@testing-library/react';
 
 import { withLocation, withNavigate } from './hoc';
 
@@ -20,19 +20,19 @@ const MockComponent = ({ navigate, location }) => (
 const WrappedComponent = withNavigate(withLocation(MockComponent));
 
 test('Provide Navigation to Component', () => {
-  const wrapper = mount(
+  const wrapper = render(
     <WrappedComponent />,
   );
-  const btn = wrapper.find('#btn');
-  btn.simulate('click');
+  const btn = wrapper.container.querySelector('#btn');
+  fireEvent.click(btn);
 
   expect(mockedNavigator).toHaveBeenCalledWith('/some-route');
 });
 
 test('Provide Location object to Component', () => {
-  const wrapper = mount(
+  const wrapper = render(
     <WrappedComponent />,
   );
 
-  expect(wrapper.find('#btn').text()).toContain('/current-location');
+  expect(wrapper.container.querySelector('#btn').textContent).toContain('/current-location');
 });

@@ -1,5 +1,5 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import { shallow } from '@edx/react-unit-test-utils';
 
 import { getConfig } from '@edx/frontend-platform';
 
@@ -16,6 +16,6 @@ describe('Header', () => {
   test('snapshot - has edx link with logo url', () => {
     const url = 'www.ourLogo.url';
     getConfig.mockReturnValue({ LOGO_URL: url });
-    expect(shallow(<Header />)).toMatchSnapshot();
+    expect(shallow(<Header />).snapshot).toMatchSnapshot();
   });
 });

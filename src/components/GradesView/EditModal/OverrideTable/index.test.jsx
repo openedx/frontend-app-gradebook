@@ -1,5 +1,5 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import { shallow } from '@edx/react-unit-test-utils';
 
 import { DataTable } from '@openedx/paragon';
 
@@ -48,10 +48,10 @@ describe('OverrideTable component', () => {
       expect(el.isEmptyRender()).toEqual(true);
     });
     test('snapshot', () => {
-      expect(el).toMatchSnapshot();
-      const table = el.find(DataTable);
-      expect(table.props().columns).toEqual(hookProps.columns);
-      const data = [...table.props().data];
+      expect(el.snapshot).toMatchSnapshot();
+      const table = el.instance.findByType(DataTable)[0];
+      expect(table.props.columns).toEqual(hookProps.columns);
+      const data = [...table.props.data];
       const inputRow = data.pop();
       const formattedDate = formatDateForDisplay(new Date());
       expect(data).toEqual(hookProps.data);

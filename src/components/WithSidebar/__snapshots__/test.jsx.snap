@@ -5,7 +5,7 @@ exports[`WithSidebar Component snapshots basic snapshot 1`] = `
   className="d-flex sidebar-container page-gradebook"
 >
   <aside
-    className="sidebar-class-names"
+    className="sidebar d-none"
     onTransitionEnd={[MockFunction handleSlideDone]}
   >
     <div>
@@ -13,7 +13,7 @@ exports[`WithSidebar Component snapshots basic snapshot 1`] = `
     </div>
   </aside>
   <div
-    className="content-class-names"
+    className="sidebar-contents position-relative"
   >
     <b>
       aby in a bi

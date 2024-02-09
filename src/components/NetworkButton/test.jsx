@@ -1,5 +1,5 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import { shallow } from '@edx/react-unit-test-utils';
 
 import { Icon, StatefulButton } from '@openedx/paragon';
 import { FormattedMessage } from '@edx/frontend-platform/i18n';
@@ -37,10 +37,10 @@ describe('NetworkButton component', () => {
     beforeEach(() => {
       props.onClick = jest.fn();
       el = shallow(<NetworkButton {...props} />);
-      btnProps = el.find(StatefulButton).props();
+      btnProps = el.instance.findByType(StatefulButton)[0].props;
     });
     test('snapshot', () => {
-      expect(el).toMatchSnapshot();
+      expect(el.snapshot).toMatchSnapshot();
     });
     it('sets labels to translated label prop', () => {
       expect(btnProps.labels).toEqual({
@@ -58,8 +58,8 @@ describe('NetworkButton component', () => {
     });
     describe('import icons', () => {
       it('sets icons with spinner pending icon and upload default', () => {
-        el.setProps({ import: true });
-        expect(el.find(StatefulButton).props().icons).toEqual({
+        el = shallow(<NetworkButton {...props} import />);
+        expect(el.instance.findByType(StatefulButton)[0].props.icons).toEqual({
           pending: (<Icon className="fa mr-2 fa-spinner fa-spin" />),
           default: (<Icon className="fa mr-2 fa-upload" />),
         });
@@ -70,8 +70,8 @@ describe('NetworkButton component', () => {
         expect(btnProps.state).toEqual(buttonStates.default);
       });
       it('is set to pending state if props.showSpinner', () => {
-        el.setProps({ showSpinner: true });
-        expect(el.find(StatefulButton).props().state).toEqual(buttonStates.pending);
+        el = shallow(<NetworkButton {...props} showSpinner />);
+        expect(el.instance.findByType(StatefulButton)[0].props.state).toEqual(buttonStates.pending);
         expect(btnProps.state).toEqual(buttonStates.default);
       });
     });

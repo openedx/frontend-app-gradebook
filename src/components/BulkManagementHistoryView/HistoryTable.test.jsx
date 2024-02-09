@@ -1,6 +1,6 @@
 /* eslint-disable import/no-named-as-default */
 import React from 'react';
-import { shallow } from 'enzyme';
+import { shallow } from '@edx/react-unit-test-utils';
 import { DataTable } from '@openedx/paragon';
 
 import selectors from 'data/selectors';
@@ -56,12 +56,12 @@ describe('HistoryTable', () => {
         el = shallow(<HistoryTable {...props} />);
       });
       test('snapshot - loads formatted table', () => {
-        expect(el).toMatchSnapshot();
+        expect(el.snapshot).toMatchSnapshot();
       });
       describe('history table', () => {
         let table;
         beforeEach(() => {
-          table = el.find(DataTable);
+          table = el.instance.findByType(DataTable);
         });
         describe('data (from bulkManagementHistory.map(this.formatHistoryRow)', () => {
           const fieldAssertions = [
@@ -70,10 +70,10 @@ describe('HistoryTable', () => {
             'forwards the rest',
           ];
           test(`snapshot: ${fieldAssertions.join(', ')}`, () => {
-            expect(table.props().data).toMatchSnapshot();
+            expect(table[0].props.data).toMatchSnapshot();
           });
           test(fieldAssertions.join(', '), () => {
-            const rows = table.props().data;
+            const rows = table[0].props.data;
             expect(rows[0].resultsSummary).toEqual(<ResultsSummary {...entry1.resultsSummary} />);
             expect(rows[0].user).toEqual(<span className="wrap-text-in-cell">{entry1.user}</span>);
             expect(
@@ -87,7 +87,7 @@ describe('HistoryTable', () => {
           });
         });
         test('columns from bulkManagementColumns', () => {
-          expect(table.props().columns).toEqual(bulkManagementColumns);
+          expect(table[0].props.columns).toEqual(bulkManagementColumns);
         });
       });
     });

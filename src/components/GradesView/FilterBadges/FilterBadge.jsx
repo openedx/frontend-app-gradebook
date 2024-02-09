@@ -32,8 +32,8 @@ export const FilterBadge = ({
   return (
     <div>
       <span className="badge badge-info">
-        <span>{formatMessage(displayName)}</span>
-        <span>
+        <span data-testid="display-name">{formatMessage(displayName)}</span>
+        <span data-testid="filter-value">
           {!hideValue ? `: ${value}` : ''}
         </span>
         <Button

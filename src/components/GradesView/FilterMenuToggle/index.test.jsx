@@ -1,5 +1,5 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import { shallow } from '@edx/react-unit-test-utils';
 
 import { useIntl } from '@edx/frontend-platform/i18n';
 
@@ -38,10 +38,10 @@ describe('FilterMenuToggle component', () => {
   });
   describe('render', () => {
     test('snapshot', () => {
-      expect(el).toMatchSnapshot();
-      expect(el.type()).toEqual('Button');
-      expect(el.props().onClick).toEqual(toggleFilterMenu);
-      expect(el.text().includes(formatMessage(messages.editFilters)));
+      expect(el.snapshot).toMatchSnapshot();
+      expect(el.instance.type).toEqual('Button');
+      expect(el.instance.props.onClick).toEqual(toggleFilterMenu);
+      expect(el.instance.children[2].el).toContain(formatMessage(messages.editFilters));
     });
   });
 });

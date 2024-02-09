@@ -1,5 +1,5 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import { shallow } from '@edx/react-unit-test-utils';
 
 import SelectGroup from './SelectGroup';
 
@@ -27,11 +27,11 @@ describe('SelectGroup', () => {
     describe('snapshots', () => {
       test('basic snapshot', () => {
         const el = shallow(<SelectGroup {...props} />);
-        expect(el).toMatchSnapshot();
+        expect(el.snapshot).toMatchSnapshot();
       });
       test('disabled', () => {
         const el = shallow(<SelectGroup {...props} disabled />);
-        expect(el).toMatchSnapshot();
+        expect(el.snapshot).toMatchSnapshot();
       });
     });
   });
