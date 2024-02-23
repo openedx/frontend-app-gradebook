@@ -1,8 +1,8 @@
 import React from 'react';
 
-import { Button, Icon } from '@edx/paragon';
+import { Button, Icon } from '@openedx/paragon';
 import { useIntl } from '@edx/frontend-platform/i18n';
-import { FilterAlt } from '@edx/paragon/icons';
+import { FilterAlt } from '@openedx/paragon/icons';
 
 import { thunkActions } from 'data/redux/hooks';
 

@@ -5,7 +5,7 @@ import useImportGradesButtonData from './hooks';
 import ImportGradesButton from '.';
 
 jest.unmock('react');
-jest.unmock('@edx/paragon');
+jest.unmock('@openedx/paragon');
 jest.mock('components/NetworkButton', () => 'network-button');
 jest.mock('./hooks', () => ({ __esModule: true, default: jest.fn() }));
 

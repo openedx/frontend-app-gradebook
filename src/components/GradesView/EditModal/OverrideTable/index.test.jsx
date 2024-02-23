@@ -1,7 +1,7 @@
 import React from 'react';
 import { shallow } from '@edx/react-unit-test-utils';
 
-import { DataTable } from '@edx/paragon';
+import { DataTable } from '@openedx/paragon';
 
 import { formatDateForDisplay } from 'utils';
 

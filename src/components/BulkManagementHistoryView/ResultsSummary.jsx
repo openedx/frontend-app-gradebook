@@ -2,8 +2,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { Hyperlink, Icon } from '@edx/paragon';
-import { Download } from '@edx/paragon/icons';
+import { Hyperlink, Icon } from '@openedx/paragon';
+import { Download } from '@openedx/paragon/icons';
 
 import lms from 'data/services/lms';
 

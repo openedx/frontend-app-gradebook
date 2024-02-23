@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { FormattedMessage } from '@edx/frontend-platform/i18n';
 import { connect } from 'react-redux';
 
-import { Alert } from '@edx/paragon';
+import { Alert } from '@openedx/paragon';
 
 import selectors from 'data/selectors';
 import messages from './messages';
