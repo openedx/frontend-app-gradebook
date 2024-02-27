@@ -1,7 +1,7 @@
 import React from 'react';
 import { shallow } from '@edx/react-unit-test-utils';
 import { useIntl } from '@edx/frontend-platform/i18n';
-import { Button } from '@edx/paragon';
+import { Button } from '@openedx/paragon';
 
 import PercentGroup from '../PercentGroup';
 import useAssignmentGradeFilterData from './hooks';

@@ -4,7 +4,7 @@ import { shallow } from '@edx/react-unit-test-utils';
 import {
   ActionRow,
   ModalDialog,
-} from '@edx/paragon';
+} from '@openedx/paragon';
 import { useIntl } from '@edx/frontend-platform/i18n';
 
 import { formatMessage } from 'testUtils';

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Alert } from '@edx/paragon';
+import { Alert } from '@openedx/paragon';
 
 import useStatusAlertsData from './hooks';
 

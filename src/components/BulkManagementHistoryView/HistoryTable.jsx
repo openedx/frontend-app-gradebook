@@ -3,7 +3,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
-import { DataTable } from '@edx/paragon';
+import { DataTable } from '@openedx/paragon';
 
 import { bulkManagementColumns } from 'data/constants/app';
 import selectors from 'data/selectors';

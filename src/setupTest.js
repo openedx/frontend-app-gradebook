@@ -32,12 +32,12 @@ jest.mock('@edx/frontend-component-footer', () => ({
   messages: ['some', 'messages'],
 }));
 
-jest.mock('@edx/paragon/icons', () => ({
+jest.mock('@openedx/paragon/icons', () => ({
   FilterAlt: 'FilterAlt',
   Close: 'Close',
 }));
 
-jest.mock('@edx/paragon', () => jest.requireActual('testUtils').mockNestedComponents({
+jest.mock('@openedx/paragon', () => jest.requireActual('testUtils').mockNestedComponents({
   Alert: 'Alert',
   ActionRow: 'ActionRow',
   Badge: 'Badge',

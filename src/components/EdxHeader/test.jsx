@@ -5,7 +5,7 @@ import { getConfig } from '@edx/frontend-platform';
 
 import Header from '.';
 
-jest.mock('@edx/paragon', () => ({
+jest.mock('@openedx/paragon', () => ({
   Hyperlink: () => 'Hyperlink',
 }));
 jest.mock('@edx/frontend-platform', () => ({

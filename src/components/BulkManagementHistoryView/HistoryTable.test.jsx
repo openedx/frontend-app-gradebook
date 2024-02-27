@@ -1,7 +1,7 @@
 /* eslint-disable import/no-named-as-default */
 import React from 'react';
 import { shallow } from '@edx/react-unit-test-utils';
-import { DataTable } from '@edx/paragon';
+import { DataTable } from '@openedx/paragon';
 
 import selectors from 'data/selectors';
 import { bulkManagementColumns } from 'data/constants/app';
@@ -9,7 +9,7 @@ import { bulkManagementColumns } from 'data/constants/app';
 import ResultsSummary from './ResultsSummary';
 import { HistoryTable, mapStateToProps } from './HistoryTable';
 
-jest.mock('@edx/paragon', () => ({ DataTable: () => 'DataTable' }));
+jest.mock('@openedx/paragon', () => ({ DataTable: () => 'DataTable' }));
 
 jest.mock('@edx/frontend-platform/i18n', () => ({
   defineMessages: m => m,

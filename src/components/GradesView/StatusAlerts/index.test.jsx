@@ -1,7 +1,7 @@
 import React from 'react';
 import { shallow } from '@edx/react-unit-test-utils';
 
-import { Alert } from '@edx/paragon';
+import { Alert } from '@openedx/paragon';
 
 import useStatusAlertsData from './hooks';
 import StatusAlerts from '.';

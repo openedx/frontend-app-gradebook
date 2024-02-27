@@ -1,16 +1,16 @@
 import React from 'react';
 import { shallow } from '@edx/react-unit-test-utils';
 
-import { Download } from '@edx/paragon/icons';
+import { Download } from '@openedx/paragon/icons';
 
 import lms from 'data/services/lms';
 import ResultsSummary from './ResultsSummary';
 
-jest.mock('@edx/paragon', () => ({
+jest.mock('@openedx/paragon', () => ({
   Hyperlink: () => 'Hyperlink',
   Icon: () => 'Icon',
 }));
-jest.mock('@edx/paragon/icons', () => ({
+jest.mock('@openedx/paragon/icons', () => ({
   Download: 'DownloadIcon',
 }));
 jest.mock('data/services/lms', () => ({

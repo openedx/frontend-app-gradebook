@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Icon } from '@edx/paragon';
+import { Icon } from '@openedx/paragon';
 
 import { selectors } from 'data/redux/hooks';
 

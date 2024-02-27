@@ -3,7 +3,7 @@ import React from 'react';
 
 import { useIntl } from '@edx/frontend-platform/i18n';
 
-import { Form } from '@edx/paragon';
+import { Form } from '@openedx/paragon';
 
 import NetworkButton from 'components/NetworkButton';
 import messages from './messages';

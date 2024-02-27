@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { useIntl } from '@edx/frontend-platform/i18n';
-import { Button } from '@edx/paragon';
+import { Button } from '@openedx/paragon';
 
 import { instructorDashboardUrl } from 'data/services/lms/urls';
 import useGradebookHeaderData from './hooks';

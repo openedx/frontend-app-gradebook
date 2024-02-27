@@ -5,7 +5,7 @@ import {
   Alert,
   ModalDialog,
   ActionRow,
-} from '@edx/paragon';
+} from '@openedx/paragon';
 import { useIntl } from '@edx/frontend-platform/i18n';
 
 import OverrideTable from './OverrideTable';
