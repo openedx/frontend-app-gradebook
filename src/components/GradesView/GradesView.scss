@@ -46,6 +46,7 @@
 }
 .grade-history-header{
     float: left;
+    min-width: 170px;
 }
 
 .grade-history-assignment{
@@ -65,7 +66,7 @@
 .gradebook-container {
     width: 100%;
     overflow-x: auto;
-    height: 600px;
+    max-height: 600px;
     overflow-y: auto;
     position: relative;
 }
@@ -120,5 +121,36 @@ select#ScoreView.form-control {
     &:before {
         border-width: 0.4rem 0.4rem 0.4rem 0;
         border-right-color: $black;
+    }
+}
+
+#edit-filters-btn {
+    @include media-breakpoint-down(xs) {
+        width: 100%;
+        margin-bottom: 1rem;
+    }
+}
+
+.search-container {
+    @include media-breakpoint-down(xs) {
+        width: 100%;
+    }
+}
+
+.pgn__modal-body-content .pgn__data-table-layout-wrapper {
+    @include media-breakpoint-down(sm) {
+        clear: both;
+        padding: 1rem 0;
+    }
+}
+
+.page-gradebook {
+    position: relative;
+
+    .sidebar-container {
+        position: relative;
+    }
+    aside.sidebar {
+        overflow: auto;
     }
 }
