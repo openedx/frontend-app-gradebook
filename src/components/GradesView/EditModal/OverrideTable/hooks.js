@@ -9,7 +9,7 @@ const useOverrideTableData = () => {
   const { formatMessage } = useIntl();
 
   const hide = selectors.grades.useHasOverrideErrors();
-  const gradeOverrides = selectors.grades.useGradeData().gradeOverrideHistoryResults;
+  const gradeOverrides = selectors.grades.useGradeData().gradeOverrideHistoryResults || [];
   const tableProps = {};
   if (!hide) {
     tableProps.columns = [
