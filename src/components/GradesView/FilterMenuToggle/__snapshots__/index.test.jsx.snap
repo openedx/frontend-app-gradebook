@@ -7,6 +7,7 @@ exports[`FilterMenuToggle component render snapshot 1`] = `
   onClick={[MockFunction hooks.toggleFilterMenu]}
 >
   <Icon
+    className="mr-1"
     src="FilterAlt"
   />
    

@@ -10,7 +10,7 @@ exports[`GradesView component render snapshot 1`] = `
     filter-step-heading
   </h3>
   <div
-    className="d-flex justify-content-between"
+    className="d-flex justify-content-between flex-wrap"
   >
     <FilterMenuToggle />
     <SearchControls />
