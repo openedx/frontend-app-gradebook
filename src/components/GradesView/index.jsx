@@ -50,7 +50,7 @@ export class GradesView extends React.Component {
           <FormattedMessage {...messages.filterStepHeading} />
         </h3>
 
-        <div className="d-flex justify-content-between">
+        <div className="d-flex justify-content-between flex-wrap">
           <FilterMenuToggle />
           <SearchControls />
         </div>

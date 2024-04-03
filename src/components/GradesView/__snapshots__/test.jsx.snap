@@ -14,7 +14,7 @@ exports[`GradesView Component snapshots basic snapshot 1`] = `
     />
   </h3>
   <div
-    className="d-flex justify-content-between"
+    className="d-flex justify-content-between flex-wrap"
   >
     <FilterMenuToggle />
     <SearchControls />
