@@ -67,7 +67,7 @@
   },
   "devDependencies": {
     "@edx/browserslist-config": "^1.1.1",
-    "@edx/frontend-build": "https://github.com/openedx/frontend-build/tarball/bilalqamar95/jest-v29-upgrade",
+    "@openedx/frontend-build": "https://github.com/openedx/frontend-build/tarball/bilalqamar95/alpha-eslint-update",
     "@testing-library/react": "12.1.5",
     "axios": "0.21.2",
     "axios-mock-adapter": "^1.17.0",
