@@ -1,5 +1,5 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import { shallow } from '@edx/react-unit-test-utils';
 
 import { useIntl } from '@edx/frontend-platform/i18n';
 import { selectors } from 'data/redux/hooks';
@@ -47,10 +47,10 @@ describe('ModalHeaders', () => {
   });
   describe('render', () => {
     test('snapshot', () => {
-      expect(el).toMatchSnapshot();
+      expect(el.snapshot).toMatchSnapshot();
     });
     test('assignment header', () => {
-      const headerProps = el.find(HistoryHeader).at(0).props();
+      const headerProps = el.instance.findByType(HistoryHeader)[0].props;
       expect(headerProps).toMatchObject({
         id: HistoryKeys.assignment,
         label: formatMessage(messages.assignmentHeader),
@@ -58,7 +58,7 @@ describe('ModalHeaders', () => {
       });
     });
     test('student header', () => {
-      const headerProps = el.find(HistoryHeader).at(1).props();
+      const headerProps = el.instance.findByType(HistoryHeader)[1].props;
       expect(headerProps).toMatchObject({
         id: HistoryKeys.student,
         label: formatMessage(messages.studentHeader),
@@ -66,7 +66,7 @@ describe('ModalHeaders', () => {
       });
     });
     test('originalGrade header', () => {
-      const headerProps = el.find(HistoryHeader).at(2).props();
+      const headerProps = el.instance.findByType(HistoryHeader)[2].props;
       expect(headerProps).toMatchObject({
         id: HistoryKeys.originalGrade,
         label: formatMessage(messages.originalGradeHeader),
@@ -74,7 +74,7 @@ describe('ModalHeaders', () => {
       });
     });
     test('currentGrade header', () => {
-      const headerProps = el.find(HistoryHeader).at(3).props();
+      const headerProps = el.instance.findByType(HistoryHeader)[3].props;
       expect(headerProps).toMatchObject({
         id: HistoryKeys.currentGrade,
         label: formatMessage(messages.currentGradeHeader),

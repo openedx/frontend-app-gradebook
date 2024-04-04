@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { useIntl } from '@edx/frontend-platform/i18n';
-import { Button } from '@edx/paragon';
+import { Button } from '@openedx/paragon';
 
 import { instructorDashboardUrl } from 'data/services/lms/urls';
 import useGradebookHeaderData from './hooks';
@@ -26,7 +26,7 @@ export const GradebookHeader = () => {
       </a>
       <h1>{formatMessage(messages.gradebook)}</h1>
       <div className="subtitle-row d-flex justify-content-between align-items-center">
-        <h2>{courseId}</h2>
+        <h2 className="text-break">{courseId}</h2>
         {showBulkManagement && (
           <Button variant="tertiary" onClick={handleToggleViewClick}>
             {formatMessage(toggleViewMessage)}

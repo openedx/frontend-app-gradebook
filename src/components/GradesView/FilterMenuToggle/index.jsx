@@ -1,8 +1,8 @@
 import React from 'react';
 
-import { Button, Icon } from '@edx/paragon';
+import { Button, Icon } from '@openedx/paragon';
 import { useIntl } from '@edx/frontend-platform/i18n';
-import { FilterAlt } from '@edx/paragon/icons';
+import { FilterAlt } from '@openedx/paragon/icons';
 
 import { thunkActions } from 'data/redux/hooks';
 
@@ -21,7 +21,7 @@ export const FilterMenuToggle = () => {
       className="btn-primary align-self-start"
       onClick={toggleFilterMenu}
     >
-      <Icon src={FilterAlt} /> {formatMessage(messages.editFilters)}
+      <Icon src={FilterAlt} className="mr-1" /> {formatMessage(messages.editFilters)}
     </Button>
   );
 };

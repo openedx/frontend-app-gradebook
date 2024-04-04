@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { Button } from '@edx/paragon';
+import { Button } from '@openedx/paragon';
 
 import { selectors, thunkActions } from 'data/redux/hooks';
 import transforms from 'data/redux/transforms';

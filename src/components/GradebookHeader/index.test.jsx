@@ -1,7 +1,7 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import { shallow } from '@edx/react-unit-test-utils';
 import { useIntl } from '@edx/frontend-platform/i18n';
-import { Button } from '@edx/paragon';
+import { Button } from '@openedx/paragon';
 
 import { formatMessage } from 'testUtils';
 import { instructorDashboardUrl } from 'data/services/lms/urls';
@@ -40,7 +40,7 @@ describe('GradebookHeader component', () => {
   describe('render', () => {
     describe('default view', () => {
       test('shapshot', () => {
-        expect(el).toMatchSnapshot();
+        expect(el.snapshot).toMatchSnapshot();
       });
     });
     describe('show bulk management', () => {
@@ -49,10 +49,10 @@ describe('GradebookHeader component', () => {
         el = shallow(<GradebookHeader />);
       });
       test('snapshot: show toggle view message button with handleToggleViewClick method', () => {
-        expect(el).toMatchSnapshot();
-        const { onClick, children } = el.find(Button).props();
+        expect(el.snapshot).toMatchSnapshot();
+        const { onClick } = el.instance.findByType(Button)[0].props;
         expect(onClick).toEqual(hookProps.handleToggleViewClick);
-        expect(children).toEqual(formatMessage(hookProps.toggleViewMessage));
+        expect(el.instance.findByType(Button)[0].children[0].el).toEqual(formatMessage(hookProps.toggleViewMessage));
       });
     });
     describe('frozen grades', () => {
@@ -61,7 +61,7 @@ describe('GradebookHeader component', () => {
         el = shallow(<GradebookHeader />);
       });
       test('snapshot: show frozen warning', () => {
-        expect(el).toMatchSnapshot();
+        expect(el.snapshot).toMatchSnapshot();
       });
     });
     describe('user cannot view gradebook', () => {
@@ -70,7 +70,7 @@ describe('GradebookHeader component', () => {
         el = shallow(<GradebookHeader />);
       });
       test('snapshot: show unauthorized warning', () => {
-        expect(el).toMatchSnapshot();
+        expect(el.snapshot).toMatchSnapshot();
       });
     });
   });

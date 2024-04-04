@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { SearchField } from '@edx/paragon';
+import { SearchField } from '@openedx/paragon';
 import useSearchControlsData from './hooks';
 
 /**
@@ -18,7 +18,7 @@ export const SearchControls = () => {
   } = useSearchControlsData();
 
   return (
-    <div>
+    <div className="search-container">
       <SearchField
         onSubmit={onSubmit}
         inputLabel={inputLabel}

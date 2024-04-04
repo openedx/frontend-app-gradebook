@@ -1,10 +1,3 @@
-/* eslint-disable import/no-extraneous-dependencies */
-
-import Enzyme from 'enzyme';
-import Adapter from '@wojtekmaj/enzyme-adapter-react-17';
-
-Enzyme.configure({ adapter: new Adapter() });
-
 // These configuration values are usually set in webpack's EnvironmentPlugin however
 // Jest does not use webpack so we need to set these so for testing
 process.env.LMS_BASE_URL = 'http://localhost:18000';
@@ -39,12 +32,12 @@ jest.mock('@edx/frontend-component-footer', () => ({
   messages: ['some', 'messages'],
 }));
 
-jest.mock('@edx/paragon/icons', () => ({
+jest.mock('@openedx/paragon/icons', () => ({
   FilterAlt: 'FilterAlt',
   Close: 'Close',
 }));
 
-jest.mock('@edx/paragon', () => jest.requireActual('testUtils').mockNestedComponents({
+jest.mock('@openedx/paragon', () => jest.requireActual('testUtils').mockNestedComponents({
   Alert: 'Alert',
   ActionRow: 'ActionRow',
   Badge: 'Badge',

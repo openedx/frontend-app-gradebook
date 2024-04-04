@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Form } from '@edx/paragon';
+import { Form } from '@openedx/paragon';
 
 import useAdjustedGradeInputData from './hooks';
 

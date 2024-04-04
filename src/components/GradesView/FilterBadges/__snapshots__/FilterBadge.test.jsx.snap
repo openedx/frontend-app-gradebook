@@ -5,10 +5,14 @@ exports[`FilterBadge render do not hide value snapshot 1`] = `
   <span
     className="badge badge-info"
   >
-    <span>
+    <span
+      data-testid="display-name"
+    >
       a common name
     </span>
-    <span>
+    <span
+      data-testid="filter-value"
+    >
       : a common value
     </span>
     <Button
@@ -39,10 +43,14 @@ exports[`FilterBadge render hide Value snapshot 1`] = `
   <span
     className="badge badge-info"
   >
-    <span>
+    <span
+      data-testid="display-name"
+    >
       a common name
     </span>
-    <span />
+    <span
+      data-testid="filter-value"
+    />
     <Button
       aria-label="close"
       className="btn-info"

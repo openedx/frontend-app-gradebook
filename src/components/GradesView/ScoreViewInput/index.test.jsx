@@ -1,5 +1,5 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import { shallow } from '@edx/react-unit-test-utils';
 
 import { useIntl } from '@edx/frontend-platform/i18n';
 import { GradeFormats } from 'data/constants/grades';
@@ -40,27 +40,27 @@ describe('ScoreViewInput component', () => {
   });
   describe('render', () => {
     test('snapshot', () => {
-      expect(el).toMatchSnapshot();
+      expect(el.snapshot).toMatchSnapshot();
     });
     test('label', () => {
-      const label = el.children().at(0);
-      expect(label.text()).toEqual(`${formatMessage(messages.scoreView)}:`);
+      const label = el.instance.children[0];
+      expect(label.children[0].el).toEqual(`${formatMessage(messages.scoreView)}`);
     });
     describe('form control', () => {
       let control;
       beforeEach(() => {
-        control = el.children().at(1);
+        control = el.instance.children;
       });
       test('value and onChange from redux hooks', () => {
-        expect(control.props().value).toEqual(gradeFormat);
-        expect(control.props().onChange).toEqual(toggleGradeFormat);
+        expect(control[1].props.value).toEqual(gradeFormat);
+        expect(control[1].props.onChange).toEqual(toggleGradeFormat);
       });
       test('absolute and percent options', () => {
-        const children = control.children();
-        expect(children.at(0).props().value).toEqual(GradeFormats.percent);
-        expect(children.at(0).text()).toEqual(formatMessage(messages.percent));
-        expect(children.at(1).props().value).toEqual(GradeFormats.absolute);
-        expect(children.at(1).text()).toEqual(formatMessage(messages.absolute));
+        const { children } = control[1];
+        expect(children[0].props.value).toEqual(GradeFormats.percent);
+        expect(children[0].children[0].el).toEqual(formatMessage(messages.percent));
+        expect(children[1].props.value).toEqual(GradeFormats.absolute);
+        expect(children[1].children[0].el).toEqual(formatMessage(messages.absolute));
       });
     });
   });

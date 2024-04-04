@@ -1,5 +1,5 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import { shallow } from '@edx/react-unit-test-utils';
 
 import useBulkManagementControlsData from './hooks';
 import BulkManagementControls from '.';
@@ -22,7 +22,7 @@ describe('BulkManagementControls', () => {
   });
   describe('render', () => {
     test('snapshot - show - network and import buttons', () => {
-      expect(shallow(<BulkManagementControls />)).toMatchSnapshot();
+      expect(shallow(<BulkManagementControls />).snapshot).toMatchSnapshot();
     });
     test('snapshot - empty if show is not truthy', () => {
       useBulkManagementControlsData.mockReturnValueOnce({ ...hookProps, show: false });

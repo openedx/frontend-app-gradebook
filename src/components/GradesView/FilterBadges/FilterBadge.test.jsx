@@ -1,13 +1,13 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import { shallow } from '@edx/react-unit-test-utils';
 import { useIntl } from '@edx/frontend-platform/i18n';
 
 import { formatMessage } from 'testUtils';
-import { Button } from '@edx/paragon';
+import { Button } from '@openedx/paragon';
 import { selectors } from 'data/redux/hooks';
 import FilterBadge from './FilterBadge';
 
-jest.mock('@edx/paragon', () => ({
+jest.mock('@openedx/paragon', () => ({
   Button: () => 'Button',
 }));
 jest.mock('data/redux/hooks', () => ({
@@ -48,12 +48,12 @@ describe('FilterBadge', () => {
   describe('render', () => {
     const testDisplayName = () => {
       test('formatted display name appears on badge', () => {
-        expect(el.contains(formatMessage(hookProps.displayName))).toEqual(true);
+        expect(el.instance.findByTestId('display-name')[0].children[0].el).toEqual(formatMessage(hookProps.displayName));
       });
     };
     const testCloseButton = () => {
       test('close button forwards close method', () => {
-        expect(el.find(Button).props().onClick).toEqual(handleClose(hookProps.connectedFilters));
+        expect(el.instance.findByType(Button)[0].props.onClick).toEqual(handleClose(hookProps.connectedFilters));
       });
     };
     test('empty render if isDefault', () => {
@@ -75,20 +75,20 @@ describe('FilterBadge', () => {
       testDisplayName();
       testCloseButton();
       test('snapshot', () => {
-        expect(el).toMatchSnapshot();
+        expect(el.snapshot).toMatchSnapshot();
       });
       test('value is note present in the badge', () => {
-        expect(el.contains(hookProps.value)).toEqual(false);
+        expect(el.instance.findByTestId('filter-value')[0].children).toHaveLength(0);
       });
     });
     describe('do not hide value', () => {
       testDisplayName();
       testCloseButton();
       test('snapshot', () => {
-        expect(el).toMatchSnapshot();
+        expect(el.snapshot).toMatchSnapshot();
       });
-      test('value is note present in the badge', () => {
-        expect(el.text().includes(hookProps.value)).toEqual(true);
+      test('value is present in the badge', () => {
+        expect(el.instance.findByTestId('filter-value')[0].children[0].el).toBe(`: ${hookProps.value}`);
       });
     });
   });

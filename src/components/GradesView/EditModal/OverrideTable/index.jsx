@@ -1,7 +1,7 @@
 /* eslint-disable react/sort-comp, react/button-has-type, import/no-named-as-default */
 import React from 'react';
 
-import { DataTable } from '@edx/paragon';
+import { DataTable } from '@openedx/paragon';
 
 import { formatDateForDisplay } from 'utils';
 

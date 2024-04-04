@@ -1,8 +1,8 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import { shallow } from '@edx/react-unit-test-utils';
 
 import { useIntl } from '@edx/frontend-platform/i18n';
-import { Collapsible } from '@edx/paragon';
+import { Collapsible } from '@openedx/paragon';
 
 import { formatMessage } from 'testUtils';
 
@@ -49,10 +49,10 @@ describe('GradebookFilters', () => {
   });
   describe('render', () => {
     test('snapshot', () => {
-      expect(el).toMatchSnapshot();
+      expect(el.snapshot).toMatchSnapshot();
     });
     test('Assignment filters', () => {
-      expect(el.find(Collapsible).at(0).children()).toMatchObject(shallow(
+      expect(el.instance.findByType(Collapsible)[0].children[0]).toMatchObject(shallow(
         <div>
           <AssignmentTypeFilter updateQueryParams={updateQueryParams} />
           <AssignmentFilter updateQueryParams={updateQueryParams} />
@@ -61,22 +61,22 @@ describe('GradebookFilters', () => {
       ));
     });
     test('CourseGrade filters', () => {
-      expect(el.find(Collapsible).at(1).children()).toMatchObject(shallow(
+      expect(el.instance.findByType(Collapsible)[1].children[0]).toMatchObject(shallow(
         <CourseGradeFilter updateQueryParams={updateQueryParams} />,
       ));
     });
     test('StudentGroups filters', () => {
-      expect(el.find(Collapsible).at(2).children()).toMatchObject(shallow(
+      expect(el.instance.findByType(Collapsible)[2].children[0]).toMatchObject(shallow(
         <StudentGroupsFilter updateQueryParams={updateQueryParams} />,
       ));
     });
     test('includeCourseTeamMembers', () => {
-      const checkbox = el.find(Collapsible).at(3).children();
-      expect(checkbox.props()).toEqual({
+      const checkbox = el.instance.findByType(Collapsible)[3].children[0];
+      expect(checkbox.props).toEqual({
         checked: true,
         onChange: hookProps.includeCourseTeamMembers.handleChange,
-        children: formatMessage(messages.includeCourseTeamMembers),
       });
+      expect(checkbox.children[0].el).toEqual(formatMessage(messages.includeCourseTeamMembers));
     });
   });
 });

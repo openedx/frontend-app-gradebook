@@ -5,7 +5,7 @@ import {
   Icon,
   OverlayTrigger,
   Tooltip,
-} from '@edx/paragon';
+} from '@openedx/paragon';
 
 import { StrictDict } from 'utils';
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { Button } from '@edx/paragon';
+import { Button } from '@openedx/paragon';
 import { useIntl } from '@edx/frontend-platform/i18n';
 
 import { selectors } from 'data/redux/hooks';
@@ -32,8 +32,8 @@ export const FilterBadge = ({
   return (
     <div>
       <span className="badge badge-info">
-        <span>{formatMessage(displayName)}</span>
-        <span>
+        <span data-testid="display-name">{formatMessage(displayName)}</span>
+        <span data-testid="filter-value">
           {!hideValue ? `: ${value}` : ''}
         </span>
         <Button

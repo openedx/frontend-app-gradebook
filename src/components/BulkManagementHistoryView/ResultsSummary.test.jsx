@@ -1,17 +1,16 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import { shallow } from '@edx/react-unit-test-utils';
 
-import { Icon } from '@edx/paragon';
-import { Download } from '@edx/paragon/icons';
+import { Download } from '@openedx/paragon/icons';
 
 import lms from 'data/services/lms';
 import ResultsSummary from './ResultsSummary';
 
-jest.mock('@edx/paragon', () => ({
+jest.mock('@openedx/paragon', () => ({
   Hyperlink: () => 'Hyperlink',
   Icon: () => 'Icon',
 }));
-jest.mock('@edx/paragon/icons', () => ({
+jest.mock('@openedx/paragon/icons', () => ({
   Download: 'DownloadIcon',
 }));
 jest.mock('data/services/lms', () => ({
@@ -35,19 +34,19 @@ describe('ResultsSummary component', () => {
     el = shallow(<ResultsSummary {...props} />);
   });
   test(`snapshot - ${assertions.join(', ')}`, () => {
-    expect(el).toMatchSnapshot();
+    expect(el.snapshot).toMatchSnapshot();
   });
   test('Hyperlink has target="_blank" and rel="noopener noreferrer"', () => {
-    expect(el.props().target).toEqual('_blank');
-    expect(el.props().rel).toEqual('noopener noreferrer');
+    expect(el.instance.props.target).toEqual('_blank');
+    expect(el.instance.props.rel).toEqual('noopener noreferrer');
   });
   test('Hyperlink has href to bulkGradesUrl', () => {
-    expect(el.props().href).toEqual(lms.urls.bulkGradesUrlByRow(props.rowId));
+    expect(el.instance.props.href).toEqual(lms.urls.bulkGradesUrlByRow(props.rowId));
   });
   test('displays Download Icon and text', () => {
-    const icon = el.childAt(0);
-    expect(icon.is(Icon)).toEqual(true);
-    expect(icon.props().src).toEqual(Download);
-    expect(el.childAt(1).text()).toEqual(props.text);
+    const icon = el.instance.children[0];
+    expect(icon.type).toEqual('Icon');
+    expect(icon.props.src).toEqual(Download);
+    expect(el.instance.children[1].el).toEqual(props.text);
   });
 });

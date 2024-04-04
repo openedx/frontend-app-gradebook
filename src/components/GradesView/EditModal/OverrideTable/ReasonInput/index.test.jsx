@@ -1,7 +1,7 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import { shallow } from '@edx/react-unit-test-utils';
 
-import { Form } from '@edx/paragon';
+import { Form } from '@openedx/paragon';
 
 import useReasonInputData from './hooks';
 import ReasonInput from '.';
@@ -28,10 +28,10 @@ describe('ReasonInput component', () => {
   });
   describe('render', () => {
     test('snapshot', () => {
-      expect(el).toMatchSnapshot();
-      const control = el.find(Form.Control);
-      expect(control.props().value).toEqual(hookProps.value);
-      expect(control.props().onChange).toEqual(hookProps.onChange);
+      expect(el.snapshot).toMatchSnapshot();
+      const control = el.instance.findByType(Form.Control)[0];
+      expect(control.props.value).toEqual(hookProps.value);
+      expect(control.props.onChange).toEqual(hookProps.onChange);
     });
   });
 });

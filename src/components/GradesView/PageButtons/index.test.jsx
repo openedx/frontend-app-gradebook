@@ -1,7 +1,7 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import { shallow } from '@edx/react-unit-test-utils';
 
-import { Button } from '@edx/paragon';
+import { Button } from '@openedx/paragon';
 
 import usePageButtonsData from './hooks';
 import PageButtons from '.';
@@ -35,19 +35,19 @@ describe('PageButtons component', () => {
   });
   describe('render', () => {
     test('snapshot', () => {
-      expect(el).toMatchSnapshot();
+      expect(el.snapshot).toMatchSnapshot();
     });
     test('prev button', () => {
-      const button = el.find(Button).at(0);
-      expect(button.props().disabled).toEqual(hookProps.prev.disabled);
-      expect(button.props().onClick).toEqual(hookProps.prev.onClick);
-      expect(button.text()).toEqual(hookProps.prev.text);
+      const button = el.instance.findByType(Button)[0];
+      expect(button.props.disabled).toEqual(hookProps.prev.disabled);
+      expect(button.props.onClick).toEqual(hookProps.prev.onClick);
+      expect(button.children[0].el).toEqual(hookProps.prev.text);
     });
     test('next button', () => {
-      const button = el.find(Button).at(1);
-      expect(button.props().disabled).toEqual(hookProps.next.disabled);
-      expect(button.props().onClick).toEqual(hookProps.next.onClick);
-      expect(button.text()).toEqual(hookProps.next.text);
+      const button = el.instance.findByType(Button)[1];
+      expect(button.props.disabled).toEqual(hookProps.next.disabled);
+      expect(button.props.onClick).toEqual(hookProps.next.onClick);
+      expect(button.children[0].el).toEqual(hookProps.next.text);
     });
   });
 });
