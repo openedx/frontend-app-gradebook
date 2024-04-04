@@ -20,18 +20,20 @@ export const OverrideTable = () => {
 
   if (hide) { return null; }
 
+  const tableData = [
+    ...data,
+    {
+      adjustedGrade: <AdjustedGradeInput />,
+      date: formatDateForDisplay(new Date()),
+      reason: <ReasonInput />,
+    },
+  ];
+
   return (
     <DataTable
       columns={columns}
-      data={[
-        ...data,
-        {
-          adjustedGrade: <AdjustedGradeInput />,
-          date: formatDateForDisplay(new Date()),
-          reason: <ReasonInput />,
-        },
-      ]}
-      itemCount={data.length}
+      data={tableData}
+      itemCount={tableData.length}
     />
   );
 };
