@@ -8,13 +8,25 @@ const useAdjustedGradeInputData = () => {
   const hintText = possibleGrade && ` ${getLocalizedSlash()} ${possibleGrade}`;
 
   const onChange = ({ target }) => {
-    setModalState({ adjustedGradeValue: target.value });
+    let adjustedGradeValue;
+    switch (true) {
+      case target.value < 0:
+        adjustedGradeValue = 0;
+        break;
+      case possibleGrade && target.value > possibleGrade:
+        adjustedGradeValue = possibleGrade;
+        break;
+      default:
+        adjustedGradeValue = target.value;
+    }
+    setModalState({ adjustedGradeValue });
   };
 
   return {
     value,
     onChange,
     hintText,
+    possibleGrade,
   };
 };
 
