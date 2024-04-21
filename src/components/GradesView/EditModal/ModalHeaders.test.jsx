@@ -25,8 +25,8 @@ const modalData = {
 };
 selectors.app.useModalData.mockReturnValue(modalData);
 const gradeData = {
-  currentGrade: 'test-current-grade',
-  originalGrade: 'test-original-grade',
+  gradeOverrideCurrentEarnedGradedOverride: 'test-current-grade',
+  gradeOriginalEarnedGraded: 'test-original-grade',
 };
 selectors.grades.useGradeData.mockReturnValue(gradeData);
 
@@ -70,7 +70,7 @@ describe('ModalHeaders', () => {
       expect(headerProps).toMatchObject({
         id: HistoryKeys.originalGrade,
         label: formatMessage(messages.originalGradeHeader),
-        value: gradeData.originalGrade,
+        value: gradeData.gradeOriginalEarnedGraded,
       });
     });
     test('currentGrade header', () => {
@@ -78,7 +78,7 @@ describe('ModalHeaders', () => {
       expect(headerProps).toMatchObject({
         id: HistoryKeys.currentGrade,
         label: formatMessage(messages.currentGradeHeader),
-        value: gradeData.currentGrade,
+        value: gradeData.gradeOverrideCurrentEarnedGradedOverride,
       });
     });
   });
