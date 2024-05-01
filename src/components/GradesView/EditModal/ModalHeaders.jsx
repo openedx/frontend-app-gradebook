@@ -22,7 +22,7 @@ export const HistoryKeys = StrictDict({
  */
 export const ModalHeaders = () => {
   const { assignmentName, updateUserName } = selectors.app.useModalData();
-  const { currentGrade, originalGrade } = selectors.grades.useGradeData();
+  const { gradeOverrideCurrentEarnedGradedOverride, gradeOriginalEarnedGraded } = selectors.grades.useGradeData();
   const { formatMessage } = useIntl();
   return (
     <div>
@@ -39,12 +39,12 @@ export const ModalHeaders = () => {
       <HistoryHeader
         id={HistoryKeys.originalGrade}
         label={formatMessage(messages.originalGradeHeader)}
-        value={originalGrade}
+        value={gradeOriginalEarnedGraded}
       />
       <HistoryHeader
         id={HistoryKeys.currentGrade}
         label={formatMessage(messages.currentGradeHeader)}
-        value={currentGrade}
+        value={gradeOverrideCurrentEarnedGradedOverride}
       />
     </div>
   );
