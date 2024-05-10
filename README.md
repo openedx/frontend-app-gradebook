@@ -108,6 +108,11 @@ check the ``enabled`` and ``enabled for all courses`` boxes.
 numbers for grades. If your gradebook isn't accepting your changes, or the changes aren't resulting in sane, 
 recalculated grade values, verify you've set all flags correctly.
 
+## Plugins
+This MFE can be customized using [Frontend Plugin Framework](https://github.com/openedx/frontend-plugin-framework).
+
+The parts of this MFE that can be customized in that manner are documented [here](/src/plugin-slots).
+
 ## Running tests
 
 1. Assuming that you're operating in the context of the edX devstack,
