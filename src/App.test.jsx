@@ -3,8 +3,6 @@ import { shallow } from '@edx/react-unit-test-utils';
 
 import { Route } from 'react-router-dom';
 
-import Footer from '@edx/frontend-component-footer';
-
 import store from 'data/store';
 import GradebookPage from 'containers/GradebookPage';
 
@@ -18,13 +16,12 @@ jest.mock('react-router-dom', () => ({
 jest.mock('@edx/frontend-platform/react', () => ({
   AppProvider: () => 'AppProvider',
 }));
-jest.mock('@edx/frontend-component-footer', () => 'Footer');
+jest.mock('@edx/frontend-component-footer', () => ({ FooterSlot: 'Footer' }));
 jest.mock('data/store', () => 'testStore');
 jest.mock('containers/GradebookPage', () => 'GradebookPage');
 jest.mock('@edx/frontend-component-header', () => 'Header');
 jest.mock('./head/Head', () => 'Head');
 
-const logo = 'fakeLogo.png';
 let el;
 let secondChild;
 
@@ -34,7 +31,6 @@ describe('App router component', () => {
   });
   describe('component', () => {
     beforeEach(() => {
-      process.env.LOGO_POWERED_BY_OPEN_EDX_URL_SVG = logo;
       el = shallow(<App />);
       secondChild = el.instance.children;
     });
@@ -62,9 +58,6 @@ describe('App router component', () => {
         expect(secondChild[1].findByType(Route)[0].props.path).toEqual('/:courseId');
         expect(secondChild[1].findByType(Route)[0].props.element.type).toEqual(GradebookPage);
       });
-    });
-    test('Footer logo drawn from env variable', () => {
-      expect(secondChild[1].findByType(Footer)[0].props.logo).toEqual(logo);
     });
   });
 });

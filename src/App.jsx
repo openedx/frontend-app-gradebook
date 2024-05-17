@@ -3,7 +3,7 @@ import { Route, Routes } from 'react-router-dom';
 
 import { AppProvider } from '@edx/frontend-platform/react';
 
-import Footer from '@edx/frontend-component-footer';
+import FooterSlot from '@openedx/frontend-slot-footer';
 import Header from '@edx/frontend-component-header';
 
 import store from 'data/store';
@@ -24,7 +24,7 @@ const App = () => (
           />
         </Routes>
       </main>
-      <Footer logo={process.env.LOGO_POWERED_BY_OPEN_EDX_URL_SVG} />
+      <FooterSlot />
     </div>
   </AppProvider>
 );
