@@ -20,6 +20,6 @@ exports[`OverrideTable component render snapshot 1`] = `
       },
     ]
   }
-  itemCount={2}
+  itemCount={3}
 />
 `;
