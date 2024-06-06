@@ -15,7 +15,7 @@ exports[`App router component snapshot 1`] = `
         />
       </Routes>
     </main>
-    <Footer />
+    <FooterSlot />
   </div>
 </AppProvider>
 `;
