@@ -87,15 +87,16 @@ describe('root selectors', () => {
         });
       });
       describe('if neither/only 1 are default values', () => {
-        beforeEach(() => {
-          filterConstants.filterConfig[filterName] = testConfig;
-          config = selectors.root.filterBadgeConfig(testState, filterName);
-        });
         describe.each([
           ['neither', () => false],
           ['only filter1', (v) => v === filters[0]],
           ['only filter2', (v) => v === filters[1]],
         ], '%1 is default', (label, isDefaultFn) => {
+          beforeEach(() => {
+            filterConstants.filterConfig[filterName] = testConfig;
+            config = selectors.root.filterBadgeConfig(testState, filterName);
+          });
+
           it('returns isDefault: false, string value, and remaining filterConfig', () => {
             selectors.filters.isDefault.mockImplementation(isDefaultFn);
             const { filterOrder, ...rest } = testConfig;

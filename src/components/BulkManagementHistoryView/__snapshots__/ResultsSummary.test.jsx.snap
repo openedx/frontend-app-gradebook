@@ -4,8 +4,8 @@ exports[`ResultsSummary component snapshot - safe hyperlink with bulkGradesUrl w
 <Hyperlink
   destination="www.edx.org"
   href={
-    Object {
-      "url": Object {
+    {
+      "url": {
         "rowId": 42,
       },
     }

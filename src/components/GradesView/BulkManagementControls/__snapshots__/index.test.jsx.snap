@@ -6,7 +6,7 @@ exports[`BulkManagementControls render snapshot - show - network and import butt
 >
   <NetworkButton
     label={
-      Object {
+      {
         "defaultMessage": "Download Grades",
         "description": "A labeled button that allows an admin user to download course grades all at once (in bulk).",
         "id": "gradebook.GradesView.BulkManagementControls.bulkManagementLabel",

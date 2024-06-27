@@ -19,8 +19,8 @@ exports[`FilterBadge render do not hide value snapshot 1`] = `
       aria-label="close"
       className="btn-info"
       onClick={
-        Object {
-          "handleClose": Array [
+        {
+          "handleClose": [
             "some",
             "filters",
           ],
@@ -55,8 +55,8 @@ exports[`FilterBadge render hide Value snapshot 1`] = `
       aria-label="close"
       className="btn-info"
       onClick={
-        Object {
-          "handleClose": Array [
+        {
+          "handleClose": [
             "some",
             "filters",
           ],
