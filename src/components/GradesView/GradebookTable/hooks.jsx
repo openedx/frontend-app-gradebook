@@ -28,7 +28,8 @@ export const useGradebookTableData = () => {
     } else if (heading === Headings.email) {
       label = <LabelReplacements.MastersOnlyLabelReplacement {...messages.emailHeading} />;
     } else if (heading === Headings.fullName) {
-      label = <LabelReplacements.MastersOnlyLabelReplacement {...messages.fullNameHeading} />;
+      label = ""
+      // label = <LabelReplacements.MastersOnlyLabelReplacement {...messages.fullNameHeading} />;
     } else {
       label = heading;
     }
