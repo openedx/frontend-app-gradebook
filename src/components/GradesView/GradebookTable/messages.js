@@ -18,7 +18,7 @@ const messages = defineMessages({
   },
   usernameHeading: {
     id: 'gradebook.GradesView.table.headings.username',
-    defaultMessage: 'Username',
+    defaultMessage: 'Full Name',
     description: 'Gradebook table username column header',
   },
   studentKeyLabel: {
