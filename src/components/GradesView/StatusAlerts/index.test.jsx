@@ -50,8 +50,11 @@ describe('StatusAlerts component', () => {
     test('grade filter banner', () => {
       const alert = el.instance.findByType(Alert)[1];
       const { props } = alert;
-      expect(props.show).toEqual(hookProps.gradeFilter.show);
-      expect(alert.children[0].el).toEqual(hookProps.gradeFilter.text);
+      expect(props.show)
+        .toEqual(hookProps.gradeFilter.show);
+      expect(alert.children[0].el)
+        .toEqual(hookProps.gradeFilter.text);
+    });
     test('course and assignment filter banner', () => {
       const alert = el.find(Alert).at(1);
       const props = alert.props();
