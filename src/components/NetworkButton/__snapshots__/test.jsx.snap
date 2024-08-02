@@ -4,12 +4,12 @@ exports[`NetworkButton component snapshots snapshot 1`] = `
 <StatefulButton
   className="ml-2 test-class"
   disabledStates={
-    Array [
+    [
       "pending",
     ]
   }
   icons={
-    Object {
+    {
       "default": <Icon
         className="fa mr-2 fa-download"
       />,
@@ -19,7 +19,7 @@ exports[`NetworkButton component snapshots snapshot 1`] = `
     }
   }
   labels={
-    Object {
+    {
       "default": <FormattedMessage
         defaultMessage="test button label"
         description="test button label description"

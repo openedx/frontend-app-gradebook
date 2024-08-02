@@ -7,13 +7,13 @@ exports[`GradebookTable snapshot 1`] = `
   <DataTable
     RowStatusComponent={[MockFunction hooks.nullMethod]}
     columns={
-      Array [
+      [
         "some",
         "columns",
       ]
     }
     data={
-      Array [
+      [
         "some",
         "data",
       ]

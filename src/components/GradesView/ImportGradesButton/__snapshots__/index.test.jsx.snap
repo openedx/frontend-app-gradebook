@@ -41,7 +41,7 @@ exports[`ImportGradesButton component render snapshot 1`] = `
     className="import-grades-btn"
     import={true}
     label={
-      Object {
+      {
         "defaultMessage": "Import Grades",
         "description": "A labeled button to import grades in the BulkManagement Tab File Upload Form",
         "id": "gradebook.GradesView.importGradesBtnText",
