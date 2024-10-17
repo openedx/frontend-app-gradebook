@@ -1,6 +1,8 @@
 import React from 'react';
 
 import { Form } from '@openedx/paragon';
+import { useIntl } from '@edx/frontend-platform/i18n';
+import messages from '../messages';
 
 import useAdjustedGradeInputData from './hooks';
 
@@ -13,17 +15,22 @@ export const AdjustedGradeInput = () => {
   const {
     value,
     onChange,
+    possibleGrade,
     hintText,
   } = useAdjustedGradeInputData();
+
+  const { formatMessage } = useIntl();
+
   return (
     <span>
       <Form.Control
-        type="text"
+        type="number"
         name="adjustedGradeValue"
         value={value}
         onChange={onChange}
+        size="sm"
       />
-      {hintText}
+      {value > possibleGrade ? <div style={{ color: 'red' }}>{ formatMessage(messages.adjustedGradeError)}</div> : hintText}
     </span>
   );
 };

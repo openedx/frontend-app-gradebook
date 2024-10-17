@@ -5,7 +5,8 @@ exports[`AdjustedGradeInput component render snapshot 1`] = `
   <Form.Control
     name="adjustedGradeValue"
     onChange={[MockFunction hook.onChange]}
-    type="text"
+    size="sm"
+    type="number"
     value="test-value"
   />
   some-hint-text

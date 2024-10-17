@@ -14,10 +14,12 @@ import OverrideTable from './OverrideTable';
 import useEditModalData from './hooks';
 import EditModal from '.';
 import messages from './messages';
+import useAdjustedGradeInputData from './OverrideTable/AdjustedGradeInput/hooks';
 
 jest.mock('./hooks', () => jest.fn());
 jest.mock('./ModalHeaders', () => 'ModalHeaders');
 jest.mock('./OverrideTable', () => 'OverrideTable');
+jest.mock('./OverrideTable/AdjustedGradeInput/hooks', () => jest.fn());
 
 const hookProps = {
   onClose: jest.fn().mockName('hooks.onClose'),
@@ -26,6 +28,12 @@ const hookProps = {
   isOpen: 'test-is-open',
 };
 useEditModalData.mockReturnValue(hookProps);
+
+const adjustedGradeProps = {
+  value: 50,
+  possibleGrade: 100,
+};
+useAdjustedGradeInputData.mockReturnValue(adjustedGradeProps);
 
 let el;
 describe('EditModal component', () => {
@@ -39,6 +47,7 @@ describe('EditModal component', () => {
     });
     it('initializes component hooks', () => {
       expect(useEditModalData).toHaveBeenCalled();
+      expect(useAdjustedGradeInputData).toHaveBeenCalled();
     });
   });
   describe('render', () => {
@@ -88,16 +97,18 @@ describe('EditModal component', () => {
         expect(button.children[0].el).toEqual(formatMessage(messages.closeText));
         expect(button.type).toEqual('ModalDialog.CloseButton');
       });
-      test('adjusted grade button', () => {
+      test('adjusted grade button enabled', () => {
         const button = footer[1].findByType(ActionRow)[0].children[1];
         expect(button.children[0].el).toEqual(formatMessage(messages.saveGrade));
         expect(button.type).toEqual('Button');
         expect(button.props.onClick).toEqual(hookProps.handleAdjustedGradeClick);
+        expect(button.props.disabled).toEqual(false);
       });
     };
     describe('without error', () => {
       beforeEach(() => {
         useEditModalData.mockReturnValueOnce({ ...hookProps, error: undefined });
+        useAdjustedGradeInputData.mockReturnValueOnce({ value: 50, possibleGrade: 100 });
         el = shallow(<EditModal />);
       });
       test('snapshot', () => {
@@ -123,6 +134,16 @@ describe('EditModal component', () => {
         expect(alert.children[0].el).toEqual(hookProps.error);
       });
       testFooter();
+    });
+    describe('when the adjusted grade button is disabled', () => {
+      beforeEach(() => {
+        useAdjustedGradeInputData.mockReturnValueOnce({ value: 101, possibleGrade: 100 });
+        el = shallow(<EditModal />);
+      });
+      test('adjusted grade button is disabled', () => {
+        const button = el.instance.findByType(ActionRow)[0].children[1];
+        expect(button.props.disabled).toEqual(true);
+      });
     });
   });
 });

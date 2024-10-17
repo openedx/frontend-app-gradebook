@@ -15,6 +15,7 @@ const useAdjustedGradeInputData = () => {
     value,
     onChange,
     hintText,
+    possibleGrade,
   };
 };
 
