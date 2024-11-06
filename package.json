@@ -72,7 +72,7 @@
     "@testing-library/react": "12.1.5",
     "axios": "0.21.2",
     "axios-mock-adapter": "^1.17.0",
-    "es-check": "^2.3.0",
+    "es-check": "^7.2.1",
     "fetch-mock": "^6.5.2",
     "husky": "2.7.0",
     "identity-obj-proxy": "^3.0.0",
