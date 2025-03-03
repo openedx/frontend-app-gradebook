@@ -40,7 +40,7 @@
     "@fortawesome/react-fontawesome": "^0.1.5",
     "@openedx/frontend-plugin-framework": "^1.2.1",
     "@openedx/frontend-slot-footer": "^1.0.2",
-    "@openedx/paragon": "^22.1.1",
+    "@openedx/paragon": "^23.3.0",
     "@redux-beacon/segment": "^1.0.0",
     "@reduxjs/toolkit": "^1.5.1",
     "classnames": "^2.2.6",
@@ -68,7 +68,7 @@
   },
   "devDependencies": {
     "@edx/browserslist-config": "^1.1.1",
-    "@openedx/frontend-build": "14.0.3",
+    "@openedx/frontend-build": "^14.0.3",
     "@testing-library/react": "12.1.5",
     "es-check": "^2.3.0",
     "fetch-mock": "^12.2.0",
