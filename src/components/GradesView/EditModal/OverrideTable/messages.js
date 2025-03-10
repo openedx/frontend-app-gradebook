@@ -21,6 +21,11 @@ const messages = defineMessages({
     defaultMessage: 'Reason',
     description: 'Edit Modal Override Table Reason column header',
   },
+  adjustedGradeError: {
+    id: 'gradebook.GradesView.EditModal.Overrides.adjustedGradeError',
+    defaultMessage: 'The value exceeds the maximum grade: {possibleGrade}',
+    description: 'Edit Modal Override Adjusted Grade Error',
+  },
 });
 
 export default messages;
