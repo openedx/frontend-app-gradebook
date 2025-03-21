@@ -4,15 +4,15 @@ Instructions for setting up environments and data for testing Gradebook.
 
 ## Set up a course with graded content
 
-A course with graded content is the first prerequisite to testing. Use an existing course (e.g. the DemoX Demonstration Course in Devstack) or see [Building and Running an edX Course > Developing Your Course](https://edx.readthedocs.io/projects/edx-partner-course-staff/en/latest/developing_course/index.html) for notes on how to develop a course from scratch.
+A course with graded content is the first prerequisite to testing. Use an existing course (e.g. the DemoX Demonstration Course in Devstack) or see [Building and Running an edX Course > Developing Your Course](https://docs.openedx.org/en/latest/educators/quickstarts/build_a_course.html) for notes on how to develop a course from scratch.
 
 Notably, the course needs a grading policy and subsections with scoreable content.
 After creating subsections with content, they need to be configured with an "Assignment Type" to be included in grading.
 
 Suggested resources:
-- [Establishing a Grading Policy For Your Course](https://edx.readthedocs.io/projects/edx-partner-course-staff/en/latest/grading/index.html)
-- [Adding Exercises and Tools](https://edx.readthedocs.io/projects/edx-partner-course-staff/en/latest/grading/index.html)
-- [Set the Assignment Type and Due Date for a Subsection](https://edx.readthedocs.io/projects/edx-partner-course-staff/en/latest/developing_course/course_subsections.html#set-the-assignment-type-and-due-date-for-a-subsection)
+- [Establishing a Grading Policy For Your Course](https://docs.openedx.org/en/latest/educators/how-tos/data/manage_learner_grades.html#review-how-grading-is-configured-for-your-course)
+- [Adding Exercises and Tools](https://docs.openedx.org/en/latest/educators/concepts/exercise_tools/about_problems_exercises_tools.html)
+- [Set the Assignment Type and Due Date for a Subsection](https://docs.openedx.org/en/latest/educators/how-tos/course_development/set_subsection_problem_date.html#set-the-assignment-type-and-due-date-for-a-subsection)
 
 ## Enable Gradebook for course
 
@@ -35,7 +35,7 @@ Bulk Management is an added feature to allow modifying grades in bulk via CSV up
 
 ## Create a Master's track for testing Master's-only features
 
-[source](https://openedx.atlassian.net/wiki/spaces/MS/pages/1453818012/Add+a+learner+into+a+master+s+track)
+[source - note: possibly outdated, edx.org-specific](https://openedx.atlassian.net/wiki/spaces/MS/pages/1453818012/Add+a+learner+into+a+master+s+track)
 
 Add a Master's track in your course:
 - As an admin user, go to Django Admin (`{lms-url}/admin`) > Course Modes and add a new course mode
