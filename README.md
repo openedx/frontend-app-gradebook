@@ -58,6 +58,7 @@ To install gradebook into your project:
 ```
 npm i --save @edx/frontend-app-gradebook
 ```
+
 Cloning and Startup
 ===================
 
@@ -65,10 +66,7 @@ Cloning and Startup
 
   ``git clone https://github.com/openedx/frontend-app-gradebook.git``
 
-2. Use node v20.x. The current version of the micro-frontend build scripts
-   supports node 20. Using other major versions of node may work, but this is
-   unsupported. For convenience, this repository includes an .nvmrc file to help
-   in setting the correct node version via [nvm](https://github.com/nvm-sh/nvm).
+2. Use the version of Node specified in ``.nvmrc``
 
 3. Stop the Tutor devstack, if it's running:
 
@@ -93,24 +91,27 @@ Cloning and Startup
 
 2. Start the dev server:
 
-  ``npm start``
+  ``npm run dev``
 
 ## Running the UI Standalone
 
 To install the project please refer to the [`MFE Development on Tutor`](https://github.com/overhangio/tutor-mfe?tab=readme-ov-file#mfe-development) instructions.
 
-(How to update devstack mention?) The web application runs on port **1994**, so when you go to `http://localhost:1994/course-v1:edX+DemoX+Demo_Course` you should see the UI (assuming you have such a Demo Course in your devstack).  Note that you always have to provide a course id to actually see a gradebook.
+When not mounted, gradebook will run in the shared MFE container at http://apps.local.openedx.io/gradebook/course-v1:edX+DemoX+Demo_Course.
 
-(How to update devstack mention?) If you don't, you can see the log messages for the docker container by executing `make gradebook-logs` in the `devstack` directory.
+When mounted in the tutor ``gradebook`` container, or when running a local (host) webpack dev server, the web application runs on port **1994**, so when you go to `http://apps.local.openedx.io:1994/gradebook/course-v1:edX+DemoX+Demo_Course` you should see the UI (assuming you have such a Demo Course in your devstack).  Note that you always have to provide a course id to actually see a gradebook.
+
+(Note: This may not work in Tutor; these instructions are for the deprecated Devstack) You can see the log messages for the docker container by executing `make gradebook-logs` in the `devstack` directory.
 
 Note that starting the container executes the `npm run start` script which will hot-reload JavaScript and Sass files changes, so you should (:crossed_fingers:) not need to do anything (other than wait) when making changes.
 
 ## Configuring for local use in edx-platform
 
-Assuming you've got the UI running at `http://localhost:1994`, you can configure the LMS in edx-platform
+Assuming you've got the UI running at `http://apps.local.openedx.io:1994`, you can configure the LMS in edx-platform
 to point to your local gradebook from the instructor dashboard by putting this setting in `lms/env/private.py`:
+
 ```
-WRITABLE_GRADEBOOK_URL = 'http://localhost:1994'
+WRITABLE_GRADEBOOK_URL = 'http://localhost:1994' (?)
 ```
 
 There are also several edx-platform waffle and feature flags you'll have to enable from the Django admin:
