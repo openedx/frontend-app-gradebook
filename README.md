@@ -18,8 +18,8 @@ Jump to:
 
 For existing documentation see:
 
-- Basic Usage: [Review Learner Grades (read-the-docs)](https://edx.readthedocs.io/projects/edx-partner-course-staff/en/latest/student_progress/course_grades.html#review-learner-grades-on-the-instructor-dashboard)
-- Bulk Grade Management: [Override Learner Subsection Scores in Bulk (read-the-docs)](https://edx.readthedocs.io/projects/edx-partner-course-staff/en/latest/student_progress/course_grades.html#override-learner-subsection-scores-in-bulk)
+- Basic Usage: [Review Learner Grades (read-the-docs)](https://docs.openedx.org/en/latest/educators/how-tos/data/view_learner_grades.html)
+- Bulk Grade Management: [Override Learner Subsection Scores in Bulk (read-the-docs)](https://docs.openedx.org/en/latest/educators/how-tos/data/manage_learner_grades.html#override-learner-subsection-scores-in-bulk)
 
 ## Should I use Gradebook in my course?
 
@@ -58,6 +58,7 @@ To install gradebook into your project:
 ```
 npm i --save @edx/frontend-app-gradebook
 ```
+
 Cloning and Startup
 ===================
 
@@ -65,30 +66,52 @@ Cloning and Startup
 
   ``git clone https://github.com/openedx/frontend-app-gradebook.git``
 
-2. Install npm dependencies:
+2. Use the version of Node specified in ``.nvmrc``
+
+3. Stop the Tutor devstack, if it's running:
+
+  ``tutor dev stop``
+
+4. Next, we need to tell Tutor that we're going to be running this repo in development mode, and it should be excluded from the mfe container that otherwise runs every MFE. Run this:
+
+  ``tutor mounts add /path/to/frontend-app-gradebook``
+
+5. Start Tutor in development mode. This command will start the LMS and Studio,
+   and other required MFEs like ``authn`` and ``account``, but will not start the
+   Gradebook MFE, which we're going to run on the host instead of in a container
+   managed by Tutor. Run:
+
+   ``tutor dev start lms cms mfe``
+
+## Startup
+
+1. Install npm dependencies:
 
   ``cd frontend-app-gradebook && npm install``
 
-3. Start the dev server:
+2. Start the dev server:
 
-  ``npm start``
+  ``npm run dev``
 
 ## Running the UI Standalone
 
-To install the project please refer to the [`edX Developer Stack`](https://github.com/openedx/devstack) instructions.
+To install the project please refer to the [`MFE Development on Tutor`](https://github.com/overhangio/tutor-mfe?tab=readme-ov-file#mfe-development) instructions.
 
-The web application runs on port **1994**, so when you go to `http://localhost:1994/course-v1:edX+DemoX+Demo_Course` you should see the UI (assuming you have such a Demo Course in your devstack).  Note that you always have to provide a course id to actually see a gradebook.
+When not mounted, gradebook will run in the shared MFE container at http://apps.local.openedx.io/gradebook/course-v1:edX+DemoX+Demo_Course.
 
-If you don't, you can see the log messages for the docker container by executing `make gradebook-logs` in the `devstack` directory.
+When mounted in the tutor ``gradebook`` container, or when running a local (host) webpack dev server, the web application runs on port **1994**, so when you go to `http://apps.local.openedx.io:1994/gradebook/course-v1:edX+DemoX+Demo_Course` you should see the UI (assuming you have such a Demo Course in your devstack).  Note that you always have to provide a course id to actually see a gradebook.
+
+(Note: This may not work in Tutor; these instructions are for the deprecated Devstack) You can see the log messages for the docker container by executing `make gradebook-logs` in the `devstack` directory.
 
 Note that starting the container executes the `npm run start` script which will hot-reload JavaScript and Sass files changes, so you should (:crossed_fingers:) not need to do anything (other than wait) when making changes.
 
 ## Configuring for local use in edx-platform
 
-Assuming you've got the UI running at `http://localhost:1994`, you can configure the LMS in edx-platform
+Assuming you've got the UI running at `http://apps.local.openedx.io:1994`, you can configure the LMS in edx-platform
 to point to your local gradebook from the instructor dashboard by putting this setting in `lms/env/private.py`:
+
 ```
-WRITABLE_GRADEBOOK_URL = 'http://localhost:1994'
+WRITABLE_GRADEBOOK_URL = 'http://localhost:1994' (?)
 ```
 
 There are also several edx-platform waffle and feature flags you'll have to enable from the Django admin:
@@ -115,7 +138,7 @@ The parts of this MFE that can be customized in that manner are documented [here
 
 ## Running tests
 
-1. Assuming that you're operating in the context of the edX devstack,
+1. (How to update devstack mention?) Assuming that you're operating in the context of the edX devstack,
 run `gradebook-shell` from your devstack directory.  This will start a bash shell inside your
 running gradebook container.
 2. Run `make test` (which executes `npm run test`).  This will run all of the gradebook tests.
@@ -151,9 +174,7 @@ noted.
 Contributing
 ============
 
-Contributions are very welcome.  Please read `How To Contribute`_ for details.
-
-.. _How To Contribute: https://openedx.org/r/how-to-contribute
+Contributions are very welcome.  Please read [How To Contribute](https://docs.openedx.org/en/latest/developers/references/developer_guide/process/index.html) for details.
 
 This project is currently accepting all types of contributions, bug fixes,
 security fixes, maintenance work, or new features.  However, please make sure
@@ -168,29 +189,23 @@ Getting Help
 If you're having trouble, we have discussion forums at
 https://discuss.openedx.org where you can connect with others in the community.
 
-Our real-time conversations are on Slack. You can request a `Slack
-invitation`_, then join our `community Slack workspace`_.  Because this is a
-frontend repository, the best place to discuss it would be in the `#wg-frontend
-channel`_.
+Our real-time conversations are on Slack. You can request a [Slack
+invitation](https://openedx.org/slack), then join our 
+[community Slack workspace](https://openedx.slack.com/)  Because this is a
+frontend repository, the best place to discuss it would be in the 
+[#wg-frontend channel](https://openedx.slack.com/archives/C04BM6YC7A6).
 
 For anything non-trivial, the best path is to open an issue in this repository
 with as many details about the issue you are facing as you can provide.
 
 https://github.com/openedx/frontend-app-gradebook/issues
 
-For more information about these options, see the `Getting Help`_ page.
-
-.. _Slack invitation: https://openedx.org/slack
-.. _community Slack workspace: https://openedx.slack.com/
-.. _#wg-frontend channel: https://openedx.slack.com/archives/C04BM6YC7A6
-.. _Getting Help: https://openedx.org/community/connect
+For more information about these options, see the [Getting Help](https://openedx.org/community/connect) page.
 
 The Open edX Code of Conduct
 ============================
 
-All community members are expected to follow the `Open edX Code of Conduct`_.
-
-.. _Open edX Code of Conduct: https://openedx.org/code-of-conduct/
+All community members are expected to follow the [Open edX Code of Conduct](https://openedx.org/code-of-conduct/).
 
 Reporting Security Issues
 =========================
