@@ -18,8 +18,8 @@ Jump to:
 
 For existing documentation see:
 
-- Basic Usage: [Review Learner Grades (read-the-docs)](https://edx.readthedocs.io/projects/edx-partner-course-staff/en/latest/student_progress/course_grades.html#review-learner-grades-on-the-instructor-dashboard)
-- Bulk Grade Management: [Override Learner Subsection Scores in Bulk (read-the-docs)](https://edx.readthedocs.io/projects/edx-partner-course-staff/en/latest/student_progress/course_grades.html#override-learner-subsection-scores-in-bulk)
+- Basic Usage: [Review Learner Grades (read-the-docs)](https://docs.openedx.org/en/latest/educators/how-tos/data/view_learner_grades.html)
+- Bulk Grade Management: [Override Learner Subsection Scores in Bulk (read-the-docs)](https://docs.openedx.org/en/latest/educators/how-tos/data/manage_learner_grades.html#override-learner-subsection-scores-in-bulk)
 
 ## Should I use Gradebook in my course?
 
