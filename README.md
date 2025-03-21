@@ -65,21 +65,43 @@ Cloning and Startup
 
   ``git clone https://github.com/openedx/frontend-app-gradebook.git``
 
-2. Install npm dependencies:
+2. Use node v20.x. The current version of the micro-frontend build scripts
+   supports node 20. Using other major versions of node may work, but this is
+   unsupported. For convenience, this repository includes an .nvmrc file to help
+   in setting the correct node version via [nvm](https://github.com/nvm-sh/nvm).
+
+3. Stop the Tutor devstack, if it's running:
+
+  ``tutor dev stop``
+
+4. Next, we need to tell Tutor that we're going to be running this repo in development mode, and it should be excluded from the mfe container that otherwise runs every MFE. Run this:
+
+  ``tutor mounts add /path/to/frontend-app-gradebook``
+
+5. Start Tutor in development mode. This command will start the LMS and Studio,
+   and other required MFEs like ``authn`` and ``account``, but will not start the
+   Gradebook MFE, which we're going to run on the host instead of in a container
+   managed by Tutor. Run:
+
+   ``tutor dev start lms cms mfe``
+
+## Startup
+
+1. Install npm dependencies:
 
   ``cd frontend-app-gradebook && npm install``
 
-3. Start the dev server:
+2. Start the dev server:
 
   ``npm start``
 
 ## Running the UI Standalone
 
-To install the project please refer to the [`edX Developer Stack`](https://github.com/openedx/devstack) instructions.
+To install the project please refer to the [`MFE Development on Tutor`](https://github.com/overhangio/tutor-mfe?tab=readme-ov-file#mfe-development) instructions.
 
-The web application runs on port **1994**, so when you go to `http://localhost:1994/course-v1:edX+DemoX+Demo_Course` you should see the UI (assuming you have such a Demo Course in your devstack).  Note that you always have to provide a course id to actually see a gradebook.
+(How to update devstack mention?) The web application runs on port **1994**, so when you go to `http://localhost:1994/course-v1:edX+DemoX+Demo_Course` you should see the UI (assuming you have such a Demo Course in your devstack).  Note that you always have to provide a course id to actually see a gradebook.
 
-If you don't, you can see the log messages for the docker container by executing `make gradebook-logs` in the `devstack` directory.
+(How to update devstack mention?) If you don't, you can see the log messages for the docker container by executing `make gradebook-logs` in the `devstack` directory.
 
 Note that starting the container executes the `npm run start` script which will hot-reload JavaScript and Sass files changes, so you should (:crossed_fingers:) not need to do anything (other than wait) when making changes.
 
@@ -115,7 +137,7 @@ The parts of this MFE that can be customized in that manner are documented [here
 
 ## Running tests
 
-1. Assuming that you're operating in the context of the edX devstack,
+1. (How to update devstack mention?) Assuming that you're operating in the context of the edX devstack,
 run `gradebook-shell` from your devstack directory.  This will start a bash shell inside your
 running gradebook container.
 2. Run `make test` (which executes `npm run test`).  This will run all of the gradebook tests.
