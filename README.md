@@ -58,55 +58,52 @@ To install gradebook into your project:
 ```
 npm i --save @edx/frontend-app-gradebook
 ```
+
 Cloning and Startup
 ===================
 
 1. Clone your new repo:
 
-  ``git clone https://github.com/openedx/frontend-app-gradebook.git``
+   ``git clone https://github.com/openedx/frontend-app-gradebook.git``
 
-2. Install npm dependencies:
+2. Use the version of Node specified in ``.nvmrc``
 
-  ``cd frontend-app-gradebook && npm install``
+3. Stop the Tutor devstack, if it's running:
 
-3. Start the dev server:
+   ``tutor dev stop``
 
-  ``npm start``
+4. Next, we need to tell Tutor that we're going to be running this repo in development mode, and it should be excluded from the mfe container that otherwise runs every MFE. Run this:
+
+   ``tutor mounts add /path/to/frontend-app-gradebook``
+
+5. Start Tutor in development mode. This command will start the LMS and Studio,
+   and other required MFEs like ``authn`` and ``account``, but will not start the
+   Gradebook MFE, which we're going to run on the host instead of in a container
+   managed by Tutor. Run:
+
+   ``tutor dev start lms cms mfe``
+
+## Startup
+
+1. Install npm dependencies:
+
+   ``cd frontend-app-gradebook && npm install``
+
+2. Start the dev server:
+
+   ``npm run dev``
 
 ## Running the UI Standalone
 
-To install the project please refer to the [`edX Developer Stack`](https://github.com/openedx/devstack) instructions.
+To install the project please refer to the [`MFE Development on Tutor`](https://github.com/overhangio/tutor-mfe?tab=readme-ov-file#mfe-development) instructions.
 
-The web application runs on port **1994**, so when you go to `http://localhost:1994/course-v1:edX+DemoX+Demo_Course` you should see the UI (assuming you have such a Demo Course in your devstack).  Note that you always have to provide a course id to actually see a gradebook.
+When not mounted, gradebook will run in the shared MFE container at http://apps.local.openedx.io/gradebook/course-v1:edX+DemoX+Demo_Course.
 
-If you don't, you can see the log messages for the docker container by executing `make gradebook-logs` in the `devstack` directory.
+When mounted in the tutor ``gradebook`` container, or when running a local (host) webpack dev server, the web application runs on port **1994**, so when you go to `http://apps.local.openedx.io:1994/gradebook/course-v1:edX+DemoX+Demo_Course` you should see the UI (assuming you have such a Demo Course in your devstack).  Note that you always have to provide a course id to actually see a gradebook.
+
+(Note: This may not work in Tutor; these instructions are for the deprecated Devstack) You can see the log messages for the docker container by executing `make gradebook-logs` in the `devstack` directory.
 
 Note that starting the container executes the `npm run start` script which will hot-reload JavaScript and Sass files changes, so you should (:crossed_fingers:) not need to do anything (other than wait) when making changes.
-
-## Configuring for local use in edx-platform
-
-Assuming you've got the UI running at `http://localhost:1994`, you can configure the LMS in edx-platform
-to point to your local gradebook from the instructor dashboard by putting this setting in `lms/env/private.py`:
-```
-WRITABLE_GRADEBOOK_URL = 'http://localhost:1994'
-```
-
-There are also several edx-platform waffle and feature flags you'll have to enable from the Django admin:
-
-1. Grades > Persistent grades enabled flag.  Add this flag if it doesn't exist,
-check the ``enabled`` and ``enabled for all courses`` boxes.
-
-2. Waffle > Switches.  Add the ``grades.assume_zero_grade_if_absent`` switch and make it active.
-
-3. Waffle_utils > Waffle flag course overrides.  Activate waffle flags for courses where you want to enable Gradebook functionality:
-    - Enable Gradebook by adding the ``grades.writable_gradebook`` add checking the ``enabled`` box.
-    - Enable Bulk Grade Management by adding the ``grades.bulk_management`` flag and checking the ``enabled`` box.
-
-    Alternatively, you could add these as regular waffle flags to enable the functionality for all courses.
-
-**NOTE:** IF the above flags are not configured correctly, the gradebook may appear to work, but will return bogus
-numbers for grades. If your gradebook isn't accepting your changes, or the changes aren't resulting in sane, 
-recalculated grade values, verify you've set all flags correctly.
 
 ## Plugins
 This MFE can be customized using [Frontend Plugin Framework](https://github.com/openedx/frontend-plugin-framework).
@@ -115,10 +112,13 @@ The parts of this MFE that can be customized in that manner are documented [here
 
 ## Running tests
 
-1. Assuming that you're operating in the context of the edX devstack,
-run `gradebook-shell` from your devstack directory.  This will start a bash shell inside your
-running gradebook container.
-2. Run `make test` (which executes `npm run test`).  This will run all of the gradebook tests.
+Run:
+
+``nvm use``
+
+``npm ci``
+
+``npm test``
 
 ## Directory Structure
 
