@@ -105,32 +105,6 @@ When mounted in the tutor ``gradebook`` container, or when running a local (host
 
 Note that starting the container executes the `npm run start` script which will hot-reload JavaScript and Sass files changes, so you should (:crossed_fingers:) not need to do anything (other than wait) when making changes.
 
-## Configuring for local use in edx-platform
-
-Assuming you've got the UI running at `http://apps.local.openedx.io:1994`, you can configure the LMS in edx-platform
-to point to your local gradebook from the instructor dashboard by putting this setting in `lms/env/private.py`:
-
-```
-WRITABLE_GRADEBOOK_URL = 'http://localhost:1994' (?)
-```
-
-There are also several edx-platform waffle and feature flags you'll have to enable from the Django admin:
-
-1. Grades > Persistent grades enabled flag.  Add this flag if it doesn't exist,
-check the ``enabled`` and ``enabled for all courses`` boxes.
-
-2. Waffle > Switches.  Add the ``grades.assume_zero_grade_if_absent`` switch and make it active.
-
-3. Waffle_utils > Waffle flag course overrides.  Activate waffle flags for courses where you want to enable Gradebook functionality:
-    - Enable Gradebook by adding the ``grades.writable_gradebook`` add checking the ``enabled`` box.
-    - Enable Bulk Grade Management by adding the ``grades.bulk_management`` flag and checking the ``enabled`` box.
-
-    Alternatively, you could add these as regular waffle flags to enable the functionality for all courses.
-
-**NOTE:** IF the above flags are not configured correctly, the gradebook may appear to work, but will return bogus
-numbers for grades. If your gradebook isn't accepting your changes, or the changes aren't resulting in sane, 
-recalculated grade values, verify you've set all flags correctly.
-
 ## Plugins
 This MFE can be customized using [Frontend Plugin Framework](https://github.com/openedx/frontend-plugin-framework).
 
