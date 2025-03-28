@@ -112,10 +112,13 @@ The parts of this MFE that can be customized in that manner are documented [here
 
 ## Running tests
 
-1. (How to update devstack mention?) Assuming that you're operating in the context of the edX devstack,
-run `gradebook-shell` from your devstack directory.  This will start a bash shell inside your
-running gradebook container.
-2. Run `make test` (which executes `npm run test`).  This will run all of the gradebook tests.
+Run:
+
+``nvm use``
+
+``npm ci``
+
+``npm test``
 
 ## Directory Structure
 
