@@ -1,4 +1,4 @@
-import { StrictDict } from 'utils';
+import { StrictDict } from '@src/utils';
 import initialFilters from '../constants/filters';
 import { createActionFactory } from './utils';
 

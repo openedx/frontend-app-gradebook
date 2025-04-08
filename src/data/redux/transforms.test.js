@@ -1,6 +1,6 @@
-import selectors from 'data/selectors';
+import selectors from '@src/data/selectors';
 
-import { GradeFormats } from 'data/constants/grades';
+import { GradeFormats } from '@src/data/constants/grades';
 import transforms from './transforms';
 
 jest.mock('data/selectors', () => {

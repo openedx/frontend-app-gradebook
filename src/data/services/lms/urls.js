@@ -1,5 +1,5 @@
 import { getConfig } from '@edx/frontend-platform';
-import { StrictDict } from 'utils';
+import { StrictDict } from '@src/utils';
 import { historyRecordLimit } from './constants';
 import { filterQuery, stringifyUrl } from './utils';
 

@@ -1,7 +1,7 @@
 import { useIntl } from '@edx/frontend-platform/i18n';
 
 import { formatMessage } from 'testUtils';
-import { actions, selectors } from 'data/redux/hooks';
+import { actions, selectors } from '@src/data/redux/hooks';
 
 import useStatusAlertsData from './hooks';
 import messages from './messages';

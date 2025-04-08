@@ -6,8 +6,8 @@ import { AppProvider } from '@edx/frontend-platform/react';
 import FooterSlot from '@openedx/frontend-slot-footer';
 import Header from '@edx/frontend-component-header';
 
-import store from 'data/store';
-import GradebookPage from 'containers/GradebookPage';
+import store from '@src/data/store';
+import GradebookPage from '@src/containers/GradebookPage';
 import './App.scss';
 import Head from './head/Head';
 

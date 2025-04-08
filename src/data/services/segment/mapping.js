@@ -1,6 +1,6 @@
 import { trackPageView } from '@redux-beacon/segment';
 
-import { StrictDict } from 'utils';
+import { StrictDict } from '@src/utils';
 import { handleEvent } from './utils';
 
 import {

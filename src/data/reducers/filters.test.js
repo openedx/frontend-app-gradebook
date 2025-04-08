@@ -1,4 +1,4 @@
-import selectors from 'data/selectors';
+import selectors from '@src/data/selectors';
 import filter, { initialState } from './filters';
 import actions from '../actions/filters';
 import gradeActions from '../actions/grades';

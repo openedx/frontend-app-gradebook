@@ -1,9 +1,9 @@
 /* eslint-disable import/prefer-default-export */
-import { StrictDict } from 'utils';
-import roles from 'data/actions/roles';
-import selectors from 'data/selectors';
+import { StrictDict } from '@src/utils';
+import roles from '@src/data/actions/roles';
+import selectors from '@src/data/selectors';
 
-import lms from 'data/services/lms';
+import lms from '@src/data/services/lms';
 
 import { fetchCohorts } from './cohorts';
 import { fetchGrades } from './grades';

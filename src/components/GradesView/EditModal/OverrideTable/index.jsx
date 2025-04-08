@@ -3,7 +3,7 @@ import React from 'react';
 
 import { DataTable } from '@openedx/paragon';
 
-import { formatDateForDisplay } from 'utils';
+import { formatDateForDisplay } from '@src/utils';
 
 import ReasonInput from './ReasonInput';
 import AdjustedGradeInput from './AdjustedGradeInput';

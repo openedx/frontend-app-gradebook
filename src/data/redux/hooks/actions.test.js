@@ -1,5 +1,5 @@
-import { keyStore } from 'utils';
-import actions from 'data/actions';
+import { keyStore } from '@src/utils';
+import actions from '@src/data/actions';
 
 import { actionHook } from './utils';
 import actionHooks from './actions';

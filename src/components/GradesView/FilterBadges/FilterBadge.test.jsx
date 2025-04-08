@@ -4,7 +4,7 @@ import { useIntl } from '@edx/frontend-platform/i18n';
 
 import { formatMessage } from 'testUtils';
 import { Button } from '@openedx/paragon';
-import { selectors } from 'data/redux/hooks';
+import { selectors } from '@src/data/redux/hooks';
 import FilterBadge from './FilterBadge';
 
 jest.mock('@openedx/paragon', () => ({

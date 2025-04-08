@@ -1,5 +1,5 @@
-import { getLocalizedSlash } from 'i18n/utils';
-import { actions, selectors } from 'data/redux/hooks';
+import { getLocalizedSlash } from '@src/i18n/utils';
+import { actions, selectors } from '@src/data/redux/hooks';
 import useAdjustedGradeInputData from './hooks';
 
 jest.mock('data/redux/hooks', () => ({

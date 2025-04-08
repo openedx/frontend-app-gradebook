@@ -1,5 +1,5 @@
-import { StrictDict } from 'utils';
-import { modalFieldKeys, localFilterKeys } from 'data/constants/app';
+import { StrictDict } from '@src/utils';
+import { modalFieldKeys, localFilterKeys } from '@src/data/constants/app';
 import { createActionFactory } from './utils';
 
 export const dataKey = 'app';

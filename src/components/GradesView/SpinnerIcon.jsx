@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Icon } from '@openedx/paragon';
 
-import { selectors } from 'data/redux/hooks';
+import { selectors } from '@src/data/redux/hooks';
 
 /**
  * <SpinnerIcon />

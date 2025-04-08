@@ -3,7 +3,7 @@ import { shallow } from '@edx/react-unit-test-utils';
 
 import { Download } from '@openedx/paragon/icons';
 
-import lms from 'data/services/lms';
+import lms from '@src/data/services/lms';
 import ResultsSummary from './ResultsSummary';
 
 jest.mock('@openedx/paragon', () => ({

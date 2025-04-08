@@ -1,14 +1,14 @@
 /* eslint-disable import/no-self-import, import/no-named-as-default-member */
 import { getAuthenticatedHttpClient } from '@edx/frontend-platform/auth';
 
-import { StrictDict } from 'utils';
+import { StrictDict } from '@src/utils';
 
-import GRADE_OVERRIDE_HISTORY_ERROR_DEFAULT_MSG from 'data/constants/errors';
+import GRADE_OVERRIDE_HISTORY_ERROR_DEFAULT_MSG from '@src/data/constants/errors';
 
-import grades from 'data/actions/grades';
-import { sortAlphaAsc } from 'data/actions/utils';
-import selectors from 'data/selectors';
-import lms from 'data/services/lms';
+import grades from '@src/data/actions/grades';
+import { sortAlphaAsc } from '@src/data/actions/utils';
+import selectors from '@src/data/selectors';
+import lms from '@src/data/services/lms';
 
 import * as module from './grades';
 

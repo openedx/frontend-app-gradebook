@@ -1,4 +1,4 @@
-import { StrictDict } from 'utils';
+import { StrictDict } from '@src/utils';
 import app from './app';
 import assignmentTypes from './assignmentTypes';
 import cohorts from './cohorts';

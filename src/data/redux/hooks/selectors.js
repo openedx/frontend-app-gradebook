@@ -1,7 +1,7 @@
 import { useSelector } from 'react-redux';
 
-import { StrictDict } from 'utils';
-import selectors from 'data/selectors';
+import { StrictDict } from '@src/utils';
+import selectors from '@src/data/selectors';
 
 const selectorHook = (selector) => () => useSelector(selector);
 

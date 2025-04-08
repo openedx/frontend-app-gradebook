@@ -4,7 +4,7 @@ import { shallow } from '@edx/react-unit-test-utils';
 import { useIntl } from '@edx/frontend-platform/i18n';
 import { Form } from '@openedx/paragon';
 
-import NetworkButton from 'components/NetworkButton';
+import NetworkButton from '@src/components/NetworkButton';
 import useImportGradesButtonData from './hooks';
 import ImportGradesButton from '.';
 

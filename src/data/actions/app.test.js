@@ -1,4 +1,4 @@
-import { modalFieldKeys, localFilterKeys } from 'data/constants/app';
+import { modalFieldKeys, localFilterKeys } from '@src/data/constants/app';
 import actions, { dataKey } from './app';
 import { testAction, testActionTypes } from './testUtils';
 

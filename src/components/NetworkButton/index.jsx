@@ -7,8 +7,8 @@ import { connect } from 'react-redux';
 import { StatefulButton, Icon } from '@openedx/paragon';
 import { FormattedMessage } from '@edx/frontend-platform/i18n';
 
-import selectors from 'data/selectors';
-import { StrictDict } from 'utils';
+import selectors from '@src/data/selectors';
+import { StrictDict } from '@src/utils';
 
 export const buttonStates = StrictDict({
   pending: 'pending',

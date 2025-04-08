@@ -1,5 +1,5 @@
 import { useRef } from 'react';
-import { selectors, thunkActions } from 'data/redux/hooks';
+import { selectors, thunkActions } from '@src/data/redux/hooks';
 
 export const useImportButtonData = () => {
   const gradeExportUrl = selectors.root.useGradeExportUrl();

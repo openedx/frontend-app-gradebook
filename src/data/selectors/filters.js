@@ -1,7 +1,7 @@
 /* eslint-disable import/no-self-import */
-import { StrictDict } from 'utils';
+import { StrictDict } from '@src/utils';
 
-import initialFilters from 'data/constants/filters';
+import initialFilters from '@src/data/constants/filters';
 import simpleSelectorFactory from '../utils';
 import * as module from './filters';
 

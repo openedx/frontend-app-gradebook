@@ -1,7 +1,7 @@
-import appActions from 'data/actions/app';
-import filterActions from 'data/actions/filters';
-import gradesActions from 'data/actions/grades';
-import { formatDateForDisplay } from 'data/actions/utils';
+import appActions from '@src/data/actions/app';
+import filterActions from '@src/data/actions/filters';
+import gradesActions from '@src/data/actions/grades';
+import { formatDateForDisplay } from '@src/data/actions/utils';
 import app, { initialState } from './app';
 
 const testingState = {

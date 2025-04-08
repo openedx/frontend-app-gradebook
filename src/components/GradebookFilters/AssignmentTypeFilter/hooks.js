@@ -1,4 +1,4 @@
-import { selectors, actions } from 'data/redux/hooks';
+import { selectors, actions } from '@src/data/redux/hooks';
 
 export const useAssignmentTypeFilterData = ({ updateQueryParams }) => {
   const assignmentTypes = selectors.assignmentTypes.useAllAssignmentTypes() || {};

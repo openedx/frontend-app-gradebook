@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { actions, selectors } from 'data/redux/hooks';
+import { actions, selectors } from '@src/data/redux/hooks';
 import useReasonInputData from './hooks';
 
 jest.mock('data/redux/hooks', () => ({

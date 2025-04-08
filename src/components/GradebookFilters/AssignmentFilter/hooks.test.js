@@ -1,4 +1,4 @@
-import { selectors, actions, thunkActions } from 'data/redux/hooks';
+import { selectors, actions, thunkActions } from '@src/data/redux/hooks';
 
 import useAssignmentFilterData from './hooks';
 

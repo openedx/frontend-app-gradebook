@@ -1,5 +1,5 @@
-import { keyStore } from 'utils';
-import thunkActions from 'data/thunkActions';
+import { keyStore } from '@src/utils';
+import thunkActions from '@src/data/thunkActions';
 import { actionHook } from './utils';
 import thunkActionHooks from './thunkActions';
 

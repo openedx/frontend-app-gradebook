@@ -1,6 +1,6 @@
-import { keyStore } from 'utils';
+import { keyStore } from '@src/utils';
 import { useSelector } from 'react-redux';
-import selectors from 'data/selectors';
+import selectors from '@src/data/selectors';
 import selectorHooks from './selectors';
 
 jest.mock('react-redux', () => ({

@@ -1,5 +1,5 @@
-import { StrictDict } from 'utils';
-import thunkActions from 'data/thunkActions';
+import { StrictDict } from '@src/utils';
+import thunkActions from '@src/data/thunkActions';
 import { actionHook } from './utils';
 
 const app = StrictDict({

@@ -3,8 +3,8 @@ import React from 'react';
 import { shallow } from '@edx/react-unit-test-utils';
 import { DataTable } from '@openedx/paragon';
 
-import selectors from 'data/selectors';
-import { bulkManagementColumns } from 'data/constants/app';
+import selectors from '@src/data/selectors';
+import { bulkManagementColumns } from '@src/data/constants/app';
 
 import ResultsSummary from './ResultsSummary';
 import { HistoryTable, mapStateToProps } from './HistoryTable';

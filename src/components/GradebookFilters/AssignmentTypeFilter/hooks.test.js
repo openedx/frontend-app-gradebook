@@ -1,4 +1,4 @@
-import { selectors, actions } from 'data/redux/hooks';
+import { selectors, actions } from '@src/data/redux/hooks';
 
 import useAssignmentTypeFilterData from './hooks';
 

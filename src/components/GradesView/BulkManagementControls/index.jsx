@@ -1,7 +1,7 @@
 /* eslint-disable react/sort-comp, react/button-has-type */
 import React from 'react';
 
-import NetworkButton from 'components/NetworkButton';
+import NetworkButton from '@src/components/NetworkButton';
 import ImportGradesButton from '../ImportGradesButton';
 
 import useBulkManagementControlsData from './hooks';

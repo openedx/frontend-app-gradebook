@@ -3,6 +3,8 @@ const { createConfig } = require('@openedx/frontend-build');
 
 const config = createConfig('webpack-prod');
 
+config.resolve.alias['@src'] = path.resolve(__dirname, 'src');
+
 config.resolve.modules = [
   path.resolve(__dirname, './src'),
   'node_modules',

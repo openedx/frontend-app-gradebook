@@ -1,8 +1,8 @@
 /* eslint-disable import/no-self-import */
-import { StrictDict } from 'utils';
+import { StrictDict } from '@src/utils';
 
-import actions from 'data/actions';
-import selectors from 'data/selectors';
+import actions from '@src/data/actions';
+import selectors from '@src/data/selectors';
 import { fetchGradeOverrideHistory } from './grades';
 import { fetchRoles } from './roles';
 import * as module from './app';

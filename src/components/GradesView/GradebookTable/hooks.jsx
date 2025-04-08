@@ -2,10 +2,10 @@ import React from 'react';
 
 import { useIntl } from '@edx/frontend-platform/i18n';
 
-import { selectors } from 'data/redux/hooks';
-import transforms from 'data/redux/transforms';
-import { Headings } from 'data/constants/grades';
-import { getLocalizedPercentSign } from 'i18n/utils';
+import { selectors } from '@src/data/redux/hooks';
+import transforms from '@src/data/redux/transforms';
+import { Headings } from '@src/data/constants/grades';
+import { getLocalizedPercentSign } from '@src/i18n/utils';
 
 import messages from './messages';
 import Fields from './Fields';

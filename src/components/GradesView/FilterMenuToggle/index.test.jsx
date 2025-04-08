@@ -4,7 +4,7 @@ import { shallow } from '@edx/react-unit-test-utils';
 import { useIntl } from '@edx/frontend-platform/i18n';
 
 import { formatMessage } from 'testUtils';
-import { thunkActions } from 'data/redux/hooks';
+import { thunkActions } from '@src/data/redux/hooks';
 
 import FilterMenuToggle from '.';
 import messages from './messages';

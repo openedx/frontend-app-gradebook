@@ -1,8 +1,8 @@
 /* eslint-disable import/prefer-default-export */
-import { StrictDict } from 'utils';
+import { StrictDict } from '@src/utils';
 
-import lms from 'data/services/lms';
-import actions from 'data/actions';
+import lms from '@src/data/services/lms';
+import actions from '@src/data/actions';
 
 export const fetchTracks = () => (
   (dispatch) => {

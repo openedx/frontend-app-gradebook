@@ -2,10 +2,10 @@ import React from 'react';
 import { shallow } from '@edx/react-unit-test-utils';
 
 import { useIntl } from '@edx/frontend-platform/i18n';
-import { GradeFormats } from 'data/constants/grades';
+import { GradeFormats } from '@src/data/constants/grades';
 
 import { formatMessage } from 'testUtils';
-import { actions, selectors } from 'data/redux/hooks';
+import { actions, selectors } from '@src/data/redux/hooks';
 import ScoreViewInput from '.';
 import messages from './messages';
 
