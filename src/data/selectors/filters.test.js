@@ -1,4 +1,4 @@
-import initialFilters, { filters as filterNames } from 'data/constants/filters';
+import initialFilters, { filters as filterNames } from '@src/data/constants/filters';
 // import * in order to mock in-file references
 import * as selectors from './filters';
 // import default export in order to test simpleSelectors not exported individually

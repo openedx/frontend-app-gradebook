@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import { Hyperlink, Icon } from '@openedx/paragon';
 import { Download } from '@openedx/paragon/icons';
 
-import lms from 'data/services/lms';
+import lms from '@src/data/services/lms';
 
 /**
  * <ResultsSummary {...{ courseId, rowId, text }} />

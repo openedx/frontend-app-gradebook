@@ -1,5 +1,5 @@
-import lms from 'data/services/lms';
-import actions from 'data/actions';
+import lms from '@src/data/services/lms';
+import actions from '@src/data/actions';
 
 import { createTestFetcher } from './testUtils';
 

@@ -1,6 +1,6 @@
 import { useIntl } from '@edx/frontend-platform/i18n';
 
-import { selectors, thunkActions } from 'data/redux/hooks';
+import { selectors, thunkActions } from '@src/data/redux/hooks';
 import messages from './messages';
 
 export const usePageButtonsData = () => {

@@ -2,8 +2,8 @@ import React from 'react';
 
 import { useIntl } from '@edx/frontend-platform/i18n';
 
-import { StrictDict } from 'utils';
-import { selectors } from 'data/redux/hooks';
+import { StrictDict } from '@src/utils';
+import { selectors } from '@src/data/redux/hooks';
 
 import messages from './messages';
 import HistoryHeader from './HistoryHeader';

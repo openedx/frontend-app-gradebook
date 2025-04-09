@@ -4,7 +4,7 @@ import { shallow } from '@edx/react-unit-test-utils';
 import { Icon, StatefulButton } from '@openedx/paragon';
 import { FormattedMessage } from '@edx/frontend-platform/i18n';
 
-import selectors from 'data/selectors';
+import selectors from '@src/data/selectors';
 import { NetworkButton, mapStateToProps, buttonStates } from '.';
 
 jest.mock('@edx/frontend-platform/i18n', () => ({

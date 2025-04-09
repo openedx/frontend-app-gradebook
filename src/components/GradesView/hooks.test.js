@@ -1,7 +1,7 @@
 import { useIntl } from '@edx/frontend-platform/i18n';
 
 import { formatMessage } from 'testUtils';
-import { actions, thunkActions } from 'data/redux/hooks';
+import { actions, thunkActions } from '@src/data/redux/hooks';
 
 import useGradesViewData from './hooks';
 import messages from './messages';

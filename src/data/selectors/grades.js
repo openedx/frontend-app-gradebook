@@ -1,9 +1,9 @@
 /* eslint-disable import/no-self-import */
-import { StrictDict } from 'utils';
+import { StrictDict } from '@src/utils';
 
-import { Headings, GradeFormats } from 'data/constants/grades';
-import { formatDateForDisplay } from 'data/actions/utils';
-import { getLocalizedSlash } from 'i18n/utils';
+import { Headings, GradeFormats } from '@src/data/constants/grades';
+import { formatDateForDisplay } from '@src/data/actions/utils';
+import { getLocalizedSlash } from '@src/i18n/utils';
 import simpleSelectorFactory from '../utils';
 import * as module from './grades';
 

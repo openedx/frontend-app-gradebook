@@ -73,6 +73,7 @@
     "@openedx/frontend-build": "^14.3.3",
     "@testing-library/react": "12.1.5",
     "es-check": "^2.3.0",
+    "eslint-import-resolver-webpack": "^0.13.9",
     "fetch-mock": "^12.2.0",
     "husky": "2.7.0",
     "identity-obj-proxy": "^3.0.0",

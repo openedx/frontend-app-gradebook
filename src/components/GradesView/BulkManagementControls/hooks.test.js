@@ -1,4 +1,4 @@
-import { actions, selectors } from 'data/redux/hooks';
+import { actions, selectors } from '@src/data/redux/hooks';
 
 import useBulkManagementControlsData from './hooks';
 

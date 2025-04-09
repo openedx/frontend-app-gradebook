@@ -1,5 +1,5 @@
 /* eslint-disable import/no-self-import */
-import { StrictDict } from 'utils';
+import { StrictDict } from '@src/utils';
 import * as module from './tracks';
 
 export const mastersKey = 'masters';

@@ -1,6 +1,6 @@
-import lms from 'data/services/lms';
-import actions from 'data/actions';
-import selectors from 'data/selectors';
+import lms from '@src/data/services/lms';
+import actions from '@src/data/actions';
+import selectors from '@src/data/selectors';
 
 import { fetchAssignmentTypes } from './assignmentTypes';
 import { fetchCohorts } from './cohorts';

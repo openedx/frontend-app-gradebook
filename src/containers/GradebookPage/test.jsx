@@ -4,14 +4,14 @@ import { render } from '@testing-library/react'; // eslint-disable-line import/n
 import { shallow } from '@edx/react-unit-test-utils';
 import queryString from 'query-string';
 
-import selectors from 'data/selectors';
-import thunkActions from 'data/thunkActions';
+import selectors from '@src/data/selectors';
+import thunkActions from '@src/data/thunkActions';
 
-import GradebookFilters from 'components/GradebookFilters';
-import GradebookHeader from 'components/GradebookHeader';
-import GradesView from 'components/GradesView';
-import BulkManagementHistoryView from 'components/BulkManagementHistoryView';
-import { views } from 'data/constants/app';
+import GradebookFilters from '@src/components/GradebookFilters';
+import GradebookHeader from '@src/components/GradebookHeader';
+import GradesView from '@src/components/GradesView';
+import BulkManagementHistoryView from '@src/components/BulkManagementHistoryView';
+import { views } from '@src/data/constants/app';
 
 import { GradebookPage, mapStateToProps, mapDispatchToProps } from '.';
 

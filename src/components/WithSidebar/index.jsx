@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import classNames from 'classnames';
 
-import selectors from 'data/selectors';
-import thunkActions from 'data/thunkActions';
+import selectors from '@src/data/selectors';
+import thunkActions from '@src/data/thunkActions';
 
 /**
  * WithSidebar

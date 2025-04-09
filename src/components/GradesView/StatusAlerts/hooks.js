@@ -1,6 +1,6 @@
 import { useIntl } from '@edx/frontend-platform/i18n';
 
-import { actions, selectors } from 'data/redux/hooks';
+import { actions, selectors } from '@src/data/redux/hooks';
 import messages from './messages';
 
 export const useStatusAlertsData = () => {

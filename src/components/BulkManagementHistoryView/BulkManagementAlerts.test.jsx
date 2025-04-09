@@ -3,7 +3,7 @@ import { shallow } from '@edx/react-unit-test-utils';
 import { Alert } from '@openedx/paragon';
 import { FormattedMessage } from '@edx/frontend-platform/i18n';
 
-import selectors from 'data/selectors';
+import selectors from '@src/data/selectors';
 import messages from './messages';
 
 import { BulkManagementAlerts, mapStateToProps } from './BulkManagementAlerts';

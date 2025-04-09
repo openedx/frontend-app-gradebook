@@ -2,7 +2,7 @@ import React from 'react';
 import { shallow } from '@edx/react-unit-test-utils';
 
 import { useIntl } from '@edx/frontend-platform/i18n';
-import { selectors } from 'data/redux/hooks';
+import { selectors } from '@src/data/redux/hooks';
 
 import { formatMessage } from 'testUtils';
 

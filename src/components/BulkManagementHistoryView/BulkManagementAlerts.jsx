@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 
 import { Alert } from '@openedx/paragon';
 
-import selectors from 'data/selectors';
+import selectors from '@src/data/selectors';
 import messages from './messages';
 
 /**

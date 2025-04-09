@@ -1,8 +1,8 @@
 import { useIntl } from '@edx/frontend-platform/i18n';
 
 import { formatMessage } from 'testUtils';
-import { views } from 'data/constants/app';
-import { actions, selectors } from 'data/redux/hooks';
+import { views } from '@src/data/constants/app';
+import { actions, selectors } from '@src/data/redux/hooks';
 
 import useImportSuccessToastData from './hooks';
 import messages from './messages';

@@ -1,5 +1,5 @@
-import actions from 'data/actions';
-import selectors from 'data/selectors';
+import actions from '@src/data/actions';
+import selectors from '@src/data/selectors';
 
 import * as thunkActions from './app';
 import { fetchGradeOverrideHistory } from './grades';

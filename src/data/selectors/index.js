@@ -1,7 +1,7 @@
-import { StrictDict } from 'utils';
+import { StrictDict } from '@src/utils';
 
-import lms from 'data/services/lms';
-import * as filterConstants from 'data/constants/filters';
+import lms from '@src/data/services/lms';
+import * as filterConstants from '@src/data/constants/filters';
 
 import * as module from '.';
 import app from './app';

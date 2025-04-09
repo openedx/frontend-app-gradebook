@@ -1,8 +1,8 @@
 import React from 'react';
 import { shallow } from '@edx/react-unit-test-utils';
 
-import selectors from 'data/selectors';
-import thunkActions from 'data/thunkActions';
+import selectors from '@src/data/selectors';
+import thunkActions from '@src/data/thunkActions';
 
 import {
   WithSidebar,

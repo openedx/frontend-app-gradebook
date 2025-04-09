@@ -1,5 +1,5 @@
 import React from 'react';
-import { selectors, thunkActions } from 'data/redux/hooks';
+import { selectors, thunkActions } from '@src/data/redux/hooks';
 
 import useImportButtonData from './hooks';
 

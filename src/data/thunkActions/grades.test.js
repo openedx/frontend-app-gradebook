@@ -3,11 +3,11 @@ import thunk from 'redux-thunk';
 
 import * as auth from '@edx/frontend-platform/auth';
 
-import GRADE_OVERRIDE_HISTORY_ERROR_DEFAULT_MSG from 'data/constants/errors';
-import actions from 'data/actions';
-import { sortAlphaAsc } from 'data/actions/utils';
-import lms from 'data/services/lms';
-import selectors from 'data/selectors';
+import GRADE_OVERRIDE_HISTORY_ERROR_DEFAULT_MSG from '@src/data/constants/errors';
+import actions from '@src/data/actions';
+import { sortAlphaAsc } from '@src/data/actions/utils';
+import lms from '@src/data/services/lms';
+import selectors from '@src/data/selectors';
 import * as thunkActions from './grades';
 
 import { createTestFetcher } from './testUtils';

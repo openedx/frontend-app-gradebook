@@ -2,7 +2,7 @@ import React from 'react';
 
 import { useIntl } from '@edx/frontend-platform/i18n';
 
-import NetworkButton from 'components/NetworkButton';
+import NetworkButton from '@src/components/NetworkButton';
 
 import messages from './messages';
 import useInterventionsReportData from './hooks';

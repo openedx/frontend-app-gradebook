@@ -1,7 +1,7 @@
 import React from 'react';
 import { shallow } from '@edx/react-unit-test-utils';
 
-import { selectors } from 'data/redux/hooks';
+import { selectors } from '@src/data/redux/hooks';
 import SpinnerIcon from './SpinnerIcon';
 
 jest.mock('data/redux/hooks', () => ({

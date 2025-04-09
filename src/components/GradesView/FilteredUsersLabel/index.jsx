@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import { useIntl } from '@edx/frontend-platform/i18n';
 
-import { selectors } from 'data/redux/hooks';
+import { selectors } from '@src/data/redux/hooks';
 import messages from './messages';
 
 export const BoldText = ({ text }) => (

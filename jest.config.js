@@ -10,4 +10,7 @@ module.exports = createConfig('jest', {
     'src/postcss.config.js',
     'testUtils', // don't unit test jest mocking tools
   ],
+  moduleNameMapper: {
+    '@src/(.*)': '<rootDir>/src/$1',
+  }
 });

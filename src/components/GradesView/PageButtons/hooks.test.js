@@ -1,7 +1,7 @@
 import { useIntl } from '@edx/frontend-platform/i18n';
 
 import { formatMessage } from 'testUtils';
-import { selectors, thunkActions } from 'data/redux/hooks';
+import { selectors, thunkActions } from '@src/data/redux/hooks';
 
 import usePageButtonsData from './hooks';
 import messages from './messages';

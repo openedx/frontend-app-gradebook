@@ -4,7 +4,7 @@ import { shallow } from '@edx/react-unit-test-utils';
 import { useIntl } from '@edx/frontend-platform/i18n';
 
 import { formatMessage } from 'testUtils';
-import { selectors } from 'data/redux/hooks';
+import { selectors } from '@src/data/redux/hooks';
 
 import FilteredUsersLabel, { BoldText } from '.';
 import messages from './messages';

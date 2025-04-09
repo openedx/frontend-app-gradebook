@@ -1,9 +1,9 @@
 import React from 'react';
 import { shallow } from '@edx/react-unit-test-utils';
 
-import { selectors, thunkActions } from 'data/redux/hooks';
-import transforms from 'data/redux/transforms';
-import { keyStore } from 'utils';
+import { selectors, thunkActions } from '@src/data/redux/hooks';
+import transforms from '@src/data/redux/transforms';
+import { keyStore } from '@src/utils';
 
 import * as module from './GradeButton';
 

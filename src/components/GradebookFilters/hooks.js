@@ -1,4 +1,4 @@
-import { actions, selectors, thunkActions } from 'data/redux/hooks';
+import { actions, selectors, thunkActions } from '@src/data/redux/hooks';
 
 export const useGradebookFiltersData = ({ updateQueryParams }) => {
   const includeCourseRoleMembers = selectors.filters.useIncludeCourseRoleMembers();

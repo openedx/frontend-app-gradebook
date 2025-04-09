@@ -1,6 +1,6 @@
-import lms from 'data/services/lms';
+import lms from '@src/data/services/lms';
 
-import actions from 'data/actions';
+import actions from '@src/data/actions';
 import * as thunkActions from './cohorts';
 import { createTestFetcher } from './testUtils';
 

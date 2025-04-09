@@ -3,7 +3,7 @@ import { shallow } from '@edx/react-unit-test-utils';
 
 import { DataTable } from '@openedx/paragon';
 
-import { formatDateForDisplay } from 'utils';
+import { formatDateForDisplay } from '@src/utils';
 
 import AdjustedGradeInput from './AdjustedGradeInput';
 import ReasonInput from './ReasonInput';

@@ -1,5 +1,5 @@
 /* eslint-disable react/sort-comp, react/button-has-type */
-import { selectors, actions, thunkActions } from 'data/redux/hooks';
+import { selectors, actions, thunkActions } from '@src/data/redux/hooks';
 
 const useAssignmentGradeFilterData = ({ updateQueryParams }) => {
   const localAssignmentLimits = selectors.app.useAssignmentGradeLimits();

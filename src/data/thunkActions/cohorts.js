@@ -1,7 +1,7 @@
 /* eslint-disable import/prefer-default-export */
-import { StrictDict } from 'utils';
-import actions from 'data/actions';
-import lms from 'data/services/lms';
+import { StrictDict } from '@src/utils';
+import actions from '@src/data/actions';
+import lms from '@src/data/services/lms';
 
 export const fetchCohorts = () => (
   (dispatch) => {

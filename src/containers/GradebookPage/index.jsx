@@ -4,15 +4,15 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import queryString from 'query-string';
 
-import selectors from 'data/selectors';
-import thunkActions from 'data/thunkActions';
-import { views } from 'data/constants/app';
+import selectors from '@src/data/selectors';
+import thunkActions from '@src/data/thunkActions';
+import { views } from '@src/data/constants/app';
 
-import WithSidebar from 'components/WithSidebar';
-import GradebookHeader from 'components/GradebookHeader';
-import GradesView from 'components/GradesView';
-import GradebookFilters from 'components/GradebookFilters';
-import BulkManagementHistoryView from 'components/BulkManagementHistoryView';
+import WithSidebar from '@src/components/WithSidebar';
+import GradebookHeader from '@src/components/GradebookHeader';
+import GradesView from '@src/components/GradesView';
+import GradebookFilters from '@src/components/GradebookFilters';
+import BulkManagementHistoryView from '@src/components/BulkManagementHistoryView';
 
 import { withParams, withNavigate, withLocation } from '../../utils/hoc';
 

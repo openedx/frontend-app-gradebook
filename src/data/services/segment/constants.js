@@ -1,5 +1,5 @@
-import { StrictDict } from 'utils';
-import actions from 'data/actions';
+import { StrictDict } from '@src/utils';
+import actions from '@src/data/actions';
 
 export const courseId = window.location.pathname.slice(1);
 

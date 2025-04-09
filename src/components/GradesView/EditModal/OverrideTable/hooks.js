@@ -1,7 +1,7 @@
 import { useIntl } from '@edx/frontend-platform/i18n';
 
-import { gradeOverrideHistoryColumns as columns } from 'data/constants/app';
-import { selectors } from 'data/redux/hooks';
+import { gradeOverrideHistoryColumns as columns } from '@src/data/constants/app';
+import { selectors } from '@src/data/redux/hooks';
 
 import messages from './messages';
 

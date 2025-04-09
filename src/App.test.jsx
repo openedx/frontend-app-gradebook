@@ -3,8 +3,8 @@ import { shallow } from '@edx/react-unit-test-utils';
 
 import { Route } from 'react-router-dom';
 
-import store from 'data/store';
-import GradebookPage from 'containers/GradebookPage';
+import store from '@src/data/store';
+import GradebookPage from '@src/containers/GradebookPage';
 
 import App from './App';
 

@@ -1,4 +1,4 @@
-import { actions, selectors, thunkActions } from 'data/redux/hooks';
+import { actions, selectors, thunkActions } from '@src/data/redux/hooks';
 import * as hooks from './hooks';
 
 jest.mock('data/redux/hooks', () => ({
