@@ -120,25 +120,25 @@ select#ScoreView.form-control {
     
     &:before {
         border-width: 0.4rem 0.4rem 0.4rem 0;
-        border-right-color: $black;
+        border-right-color: var(--pgn-color-black);
     }
 }
 
 #edit-filters-btn {
-    @include media-breakpoint-down(xs) {
+     @media (--pgn-size-breakpoint-max-width-xs) {
         width: 100%;
         margin-bottom: 1rem;
     }
 }
 
 .search-container {
-    @include media-breakpoint-down(xs) {
+     @media (--pgn-size-breakpoint-max-width-xs) {
         width: 100%;
     }
 }
 
 .pgn__modal-body-content .pgn__data-table-layout-wrapper {
-    @include media-breakpoint-down(sm) {
+    @media (--pgn-size-breakpoint-max-width-xs) {
         clear: both;
         padding: 1rem 0;
     }
