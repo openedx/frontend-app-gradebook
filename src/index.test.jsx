@@ -1,5 +1,4 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
+import React, { StrictMode } from 'react';
 
 import {
   APP_READY,
@@ -12,9 +11,21 @@ import messages from './i18n';
 import App from './App';
 import '.';
 
-jest.mock('react-dom', () => ({
-  render: jest.fn(),
-}));
+// These need to be var not let so they get hoisted
+// and can be used by jest.mock (which is also hoisted)
+var mockRender; // eslint-disable-line no-var
+var mockCreateRoot; // eslint-disable-line no-var
+jest.mock('react-dom/client', () => {
+  mockRender = jest.fn();
+  mockCreateRoot = jest.fn(() => ({
+    render: mockRender,
+  }));
+
+  return ({
+    createRoot: mockCreateRoot,
+  });
+});
+
 jest.mock('@edx/frontend-platform', () => ({
   APP_READY: 'app-is-ready-key',
   initialize: jest.fn(),
@@ -36,8 +47,11 @@ describe('app registry', () => {
   test('subscribe is called for APP_READY, linking App to root element', () => {
     const callArgs = subscribe.mock.calls[0];
     expect(callArgs[0]).toEqual(APP_READY);
-    expect(callArgs[1]()).toEqual(
-      ReactDOM.render(<App />, document.getElementById('root')),
+    callArgs[1]();
+    expect(mockRender).toHaveBeenCalledWith(
+      <StrictMode>
+        <App />
+      </StrictMode>,
     );
   });
   test('initialize is called with requireAuthenticatedUser, messages, and a config handler', () => {

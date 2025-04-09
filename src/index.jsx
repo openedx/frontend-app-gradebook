@@ -1,8 +1,8 @@
 import 'core-js/stable';
 import 'regenerator-runtime/runtime';
 
-import React from 'react';
-import ReactDOM from 'react-dom';
+import React, { StrictMode } from 'react';
+import { createRoot } from 'react-dom/client';
 
 import {
   APP_READY,
@@ -18,7 +18,14 @@ import App from './App';
 
 subscribe(APP_READY, () => {
   lightning();
-  ReactDOM.render(<App />, document.getElementById('root'));
+
+  const root = createRoot(document.getElementById('root'));
+
+  root.render(
+    <StrictMode>
+      <App />
+    </StrictMode>,
+  );
 });
 
 initialize({
