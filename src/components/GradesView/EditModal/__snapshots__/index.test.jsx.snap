@@ -36,6 +36,7 @@ exports[`EditModal component render with error snapshot 1`] = `
         Cancel
       </ModalDialog.CloseButton>
       <Button
+        disabled={false}
         onClick={[MockFunction hooks.handleAdjustedGradeClick]}
         variant="primary"
       >
@@ -80,6 +81,7 @@ exports[`EditModal component render without error snapshot 1`] = `
         Cancel
       </ModalDialog.CloseButton>
       <Button
+        disabled={false}
         onClick={[MockFunction hooks.handleAdjustedGradeClick]}
         variant="primary"
       >
