@@ -3,7 +3,7 @@ import { Route, Routes } from 'react-router-dom';
 
 import { AppProvider } from '@edx/frontend-platform/react';
 
-import FooterSlot from '@openedx/frontend-slot-footer';
+import { FooterSlot } from '@edx/frontend-component-footer';
 import Header from '@edx/frontend-component-header';
 
 import store from 'data/store';
