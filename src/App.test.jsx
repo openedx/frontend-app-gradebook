@@ -16,7 +16,7 @@ jest.mock('react-router-dom', () => ({
 jest.mock('@edx/frontend-platform/react', () => ({
   AppProvider: () => 'AppProvider',
 }));
-jest.mock('@edx/frontend-component-footer', () => ({ FooterSlot: 'Footer' }));
+jest.mock('@edx/frontend-component-footer', () => ({ FooterSlot: 'FooterSlot' }));
 jest.mock('data/store', () => 'testStore');
 jest.mock('containers/GradebookPage', () => 'GradebookPage');
 jest.mock('@edx/frontend-component-header', () => 'Header');
