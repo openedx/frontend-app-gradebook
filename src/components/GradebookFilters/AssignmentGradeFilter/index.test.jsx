@@ -17,6 +17,7 @@ const hookData = {
   selectedAssignment: 'test-assignment',
   assignmentGradeMax: 300,
   assignmentGradeMin: 23,
+  isDisabled: false,
 };
 useAssignmentGradeFilterData.mockReturnValue(hookData);
 

@@ -38,21 +38,38 @@ describe('app selectors', () => {
       });
     });
   });
+  describe('assignmentGradeFilterValidity', () => {
+    it('returns true iff the value is between 0 and 100 (inclusive)', () => {
+      const testSelector = (assignmentGradeMax, isMaxValid, assignmentGradeMin, isMinValid, isMinLessMaxValid) => {
+        expect(selectors.assignmentGradeFilterValidity({
+          ...testState,
+          app: {
+            ...testState.app,
+            filters: { ...testState.filters, assignmentGradeMax, assignmentGradeMin },
+          },
+        })).toEqual({ isMaxValid, isMinValid, isMinLessMaxValid });
+      };
+      testSelector(-1, false, 0, true, false);
+      testSelector(0, true, -1, false, true);
+      testSelector(100, true, 101, false, false);
+      testSelector(101, false, 100, true, true);
+    });
+  });
   describe('courseGradeFilterValidity', () => {
     it('returns true iff the value is between 0 and 100 (inclusive)', () => {
-      const testSelector = (courseGradeMax, isMaxValid, courseGradeMin, isMinValid) => {
+      const testSelector = (courseGradeMax, isMaxValid, courseGradeMin, isMinValid, isMinLessMaxValid) => {
         expect(selectors.courseGradeFilterValidity({
           ...testState,
           app: {
             ...testState.app,
             filters: { ...testState.filters, courseGradeMax, courseGradeMin },
           },
-        })).toEqual({ isMaxValid, isMinValid });
+        })).toEqual({ isMaxValid, isMinValid, isMinLessMaxValid });
       };
-      testSelector(-1, false, 0, true);
-      testSelector(0, true, -1, false);
-      testSelector(100, true, 101, false);
-      testSelector(101, false, 100, true);
+      testSelector(-1, false, 0, true, false);
+      testSelector(0, true, -1, false, true);
+      testSelector(100, true, 101, false, false);
+      testSelector(101, false, 100, true, true);
     });
   });
   describe('courseGradeLimits', () => {
@@ -75,20 +92,44 @@ describe('app selectors', () => {
       }]);
     });
   });
+  describe('areAssignmentGradeFiltersValid', () => {
+    const mockValidity = (isMinValid, isMaxValid, isMinLessMaxValid) => {
+      selectors.assignmentGradeFilterValidity = jest.fn(() => ({
+        isMinValid,
+        isMaxValid,
+        isMinLessMaxValid,
+      }));
+    };
+    it('returns true iff assignmentGrade filters are both valid', () => {
+      const old = selectors.assignmentGradeFilterValidity;
+      mockValidity(true, false, false);
+      expect(exportedSelectors.areAssignmentGradeFiltersValid(testState)).toEqual(false);
+      mockValidity(false, true, false);
+      expect(exportedSelectors.areAssignmentGradeFiltersValid(testState)).toEqual(false);
+      mockValidity(false, false, true);
+      expect(exportedSelectors.areAssignmentGradeFiltersValid(testState)).toEqual(false);
+      mockValidity(true, true, true);
+      expect(exportedSelectors.areAssignmentGradeFiltersValid(testState)).toEqual(true);
+      selectors.assignmentGradeFilterValidity = old;
+    });
+  });
   describe('areCourseGradeFiltersValid', () => {
-    const mockValidity = (isMinValid, isMaxValid) => {
+    const mockValidity = (isMinValid, isMaxValid, isMinLessMaxValid) => {
       selectors.courseGradeFilterValidity = jest.fn(() => ({
         isMinValid,
         isMaxValid,
+        isMinLessMaxValid,
       }));
     };
     it('returns true iff courseGrade filters are both valid', () => {
       const old = selectors.courseGradeFilterValidity;
-      mockValidity(false, true);
+      mockValidity(true, false, false);
       expect(exportedSelectors.areCourseGradeFiltersValid(testState)).toEqual(false);
-      mockValidity(true, false);
+      mockValidity(false, true, false);
       expect(exportedSelectors.areCourseGradeFiltersValid(testState)).toEqual(false);
-      mockValidity(true, true);
+      mockValidity(false, false, true);
+      expect(exportedSelectors.areCourseGradeFiltersValid(testState)).toEqual(false);
+      mockValidity(true, true, true);
       expect(exportedSelectors.areCourseGradeFiltersValid(testState)).toEqual(true);
       selectors.courseGradeFilterValidity = old;
     });

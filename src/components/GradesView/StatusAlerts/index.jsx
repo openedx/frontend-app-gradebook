@@ -7,7 +7,8 @@ import useStatusAlertsData from './hooks';
 export const StatusAlerts = () => {
   const {
     successBanner,
-    gradeFilter,
+    courseGradeFilter,
+    assignmentGradeFilter,
   } = useStatusAlertsData();
 
   return (
@@ -22,9 +23,16 @@ export const StatusAlerts = () => {
       <Alert
         variant="danger"
         dismissible={false}
-        show={gradeFilter.show}
+        show={assignmentGradeFilter.show}
       >
-        {gradeFilter.text}
+        {assignmentGradeFilter.text}
+      </Alert>
+      <Alert
+        variant="danger"
+        dismissible={false}
+        show={courseGradeFilter.show}
+      >
+        {courseGradeFilter.text}
       </Alert>
     </>
   );
