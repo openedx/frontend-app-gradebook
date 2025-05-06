@@ -59,6 +59,7 @@ describe('selector hooks', () => {
     testHook(hookKeys.useActiveView, selKeys.activeView);
     testHook(hookKeys.useAssignmentGradeLimits, selKeys.assignmentGradeLimits);
     testHook(hookKeys.useAreCourseGradeFiltersValid, selKeys.areCourseGradeFiltersValid);
+    testHook(hookKeys.useAreAssignmentGradeFiltersValid, selKeys.areAssignmentGradeFiltersValid);
     testHook(hookKeys.useCourseGradeLimits, selKeys.courseGradeLimits);
     testHook(hookKeys.useCourseId, selKeys.courseId);
     testHook(hookKeys.useModalData, selKeys.modalData);
