@@ -5,6 +5,25 @@ import * as module from './app';
 import { minGrade, maxGrade } from './grades';
 
 /**
+ * assignmentGradeFilterValidity(state)
+ * returns { isMaxValid, isMinValid } with each assignment grade limit, verifying they
+ * are between minGrade and maxGrade (0, 100).
+ * @param {object} state - redux state
+ * @return {object} - { isMaxValid, isMinValid, isMinLessMaxValid }
+ */
+export const assignmentGradeFilterValidity = ({ app: { filters } }) => {
+  const isFilterValid = (value) => {
+    const intValue = parseInt(value, 10);
+    return intValue >= minGrade && intValue <= maxGrade;
+  };
+  return {
+    isMaxValid: isFilterValid(filters.assignmentGradeMax),
+    isMinValid: isFilterValid(filters.assignmentGradeMin),
+    isMinLessMaxValid: Number(filters.assignmentGradeMin) <= Number(filters.assignmentGradeMax),
+  };
+};
+
+/**
  * assignmentGradeLimits(state)
  * returns an object of local assignmentGradeMin/Max
  * @param {object} state - redux state
@@ -29,6 +48,7 @@ export const courseGradeFilterValidity = ({ app: { filters } }) => {
   return {
     isMaxValid: isFilterValid(filters.courseGradeMax),
     isMinValid: isFilterValid(filters.courseGradeMin),
+    isMinLessMaxValid: Number(filters.courseGradeMin) <= Number(filters.courseGradeMax),
   };
 };
 
@@ -65,7 +85,18 @@ const editUpdateData = ({ app: { modalState } }) => ([{
  */
 const areCourseGradeFiltersValid = (state) => {
   const validity = module.courseGradeFilterValidity(state);
-  return validity.isMinValid && validity.isMaxValid;
+  return validity.isMinValid && validity.isMaxValid && validity.isMinLessMaxValid;
+};
+
+/**
+ * areAssignmentGradeFiltersValid(state)
+ * returns true iff both min and max assignment grade filters are valid (within bounds)
+ * @param {object} state - redux state
+ * @return {bool} - are both filters valid?
+ */
+const areAssignmentGradeFiltersValid = (state) => {
+  const validity = module.assignmentGradeFilterValidity(state);
+  return validity.isMinValid && validity.isMaxValid && validity.isMinLessMaxValid;
 };
 
 const isFilterMenuClosed = ({ app: { filterMenu } }) => (
@@ -117,8 +148,10 @@ const simpleSelectors = simpleSelectorFactory(
 
 export default StrictDict({
   areCourseGradeFiltersValid,
+  areAssignmentGradeFiltersValid,
   assignmentGradeLimits,
   courseGradeFilterValidity,
+  assignmentGradeFilterValidity,
   courseGradeLimits,
   editUpdateData,
   isFilterMenuClosed,
