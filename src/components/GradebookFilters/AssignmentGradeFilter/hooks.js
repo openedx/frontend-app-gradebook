@@ -7,6 +7,7 @@ const useAssignmentGradeFilterData = ({ updateQueryParams }) => {
   const fetchGrades = thunkActions.grades.useFetchGrades();
   const setFilter = actions.app.useSetLocalFilter();
   const updateAssignmentLimits = actions.filters.useUpdateAssignmentLimits();
+  const isDisabled = !selectors.app.useAreAssignmentGradeFiltersValid() || !selectedAssignment;
 
   const handleSubmit = () => {
     updateAssignmentLimits(localAssignmentLimits);
@@ -27,6 +28,7 @@ const useAssignmentGradeFilterData = ({ updateQueryParams }) => {
     assignmentGradeMin,
     assignmentGradeMax,
     selectedAssignment,
+    isDisabled,
     handleSetMax,
     handleSetMin,
     handleSubmit,
