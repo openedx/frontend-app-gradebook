@@ -1,21 +1,13 @@
 import React from 'react';
-import { shallow } from '@edx/react-unit-test-utils';
-
-import { Download } from '@openedx/paragon/icons';
 
 import lms from 'data/services/lms';
+import { render, screen } from '@testing-library/react';
 import ResultsSummary from './ResultsSummary';
 
-jest.mock('@openedx/paragon', () => ({
-  Hyperlink: () => 'Hyperlink',
-  Icon: () => 'Icon',
-}));
-jest.mock('@openedx/paragon/icons', () => ({
-  Download: 'DownloadIcon',
-}));
+jest.unmock('@openedx/paragon');
 jest.mock('data/services/lms', () => ({
   urls: {
-    bulkGradesUrlByRow: jest.fn((rowId) => ({ url: { rowId } })),
+    bulkGradesUrlByRow: jest.fn((rowId) => (`www.edx.org/${rowId}`)),
   },
 }));
 
@@ -25,28 +17,21 @@ describe('ResultsSummary component', () => {
     text: 'texty',
   };
   let el;
-  const assertions = [
-    'safe hyperlink with bulkGradesUrl with course and row id',
-    'download icon',
-    'results text',
-  ];
+  let link;
   beforeEach(() => {
-    el = shallow(<ResultsSummary {...props} />);
-  });
-  test(`snapshot - ${assertions.join(', ')}`, () => {
-    expect(el.snapshot).toMatchSnapshot();
+    el = render(<ResultsSummary {...props} />);
+    link = screen.getByRole('link', { name: props.text });
   });
   test('Hyperlink has target="_blank" and rel="noopener noreferrer"', () => {
-    expect(el.instance.props.target).toEqual('_blank');
-    expect(el.instance.props.rel).toEqual('noopener noreferrer');
+    expect(link).toHaveAttribute('target', '_blank');
+    expect(link).toHaveAttribute('rel', 'noopener noreferrer');
   });
   test('Hyperlink has href to bulkGradesUrl', () => {
-    expect(el.instance.props.href).toEqual(lms.urls.bulkGradesUrlByRow(props.rowId));
+    expect(link).toHaveAttribute('href', lms.urls.bulkGradesUrlByRow(props.rowId));
   });
   test('displays Download Icon and text', () => {
-    const icon = el.instance.children[0];
-    expect(icon.type).toEqual('Icon');
-    expect(icon.props.src).toEqual(Download);
-    expect(el.instance.children[1].el).toEqual(props.text);
+    expect(link).toHaveTextContent(props.text);
+    const span = el.container.querySelector('span[aria-hidden="true"]');
+    expect(span).toBeInTheDocument();
   });
 });
