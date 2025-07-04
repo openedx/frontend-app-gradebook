@@ -19,10 +19,8 @@ const ResultsSummary = ({
   text,
 }) => (
   <Hyperlink
-    href={lms.urls.bulkGradesUrlByRow(rowId)}
-    destination="www.edx.org"
+    destination={lms.urls.bulkGradesUrlByRow(rowId)}
     target="_blank"
-    rel="noopener noreferrer"
     showLaunchIcon={false}
   >
     <Icon src={Download} className="d-inline-block" />
