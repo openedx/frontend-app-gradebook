@@ -1,6 +1,4 @@
 import React from 'react';
-import { shallow } from '@edx/react-unit-test-utils';
-import { Button } from '@openedx/paragon';
 import { render, screen } from '@testing-library/react';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 
