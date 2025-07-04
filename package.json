@@ -1,6 +1,6 @@
 {
   "name": "@edx/frontend-app-gradebook",
-  "version": "1.6.2",
+  "version": "1.6.3",
   "description": "edx editable gradebook-ui to manipulate grade overrides on subsections",
   "repository": {
     "type": "git",
@@ -44,6 +44,8 @@
     "@openedx/paragon": "^22.16.0",
     "@redux-beacon/segment": "^1.0.0",
     "@reduxjs/toolkit": "^1.5.1",
+    "@testing-library/jest-dom": "^6.6.3",
+    "@testing-library/react": "^16.2.0",
     "classnames": "^2.2.6",
     "core-js": "3.6.5",
     "email-prop-type": "^1.1.7",
@@ -70,8 +72,6 @@
   "devDependencies": {
     "@edx/browserslist-config": "^1.1.1",
     "@openedx/frontend-build": "^14.3.3",
-    "@testing-library/jest-dom": "^6.6.3",
-    "@testing-library/react": "^16.2.0",
     "es-check": "^2.3.0",
     "fetch-mock": "^12.2.0",
     "identity-obj-proxy": "^3.0.0",
