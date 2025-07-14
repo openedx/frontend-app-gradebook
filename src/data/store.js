@@ -11,7 +11,7 @@ import selectors from './selectors';
 import reducers from './reducers';
 import eventsMap from './services/segment/mapping';
 
-export const createStore = () => {
+export const createStore = (preloadedState = undefined) => {
   const loggerMiddleware = createLogger();
 
   const middleware = [thunkMiddleware, loggerMiddleware];
@@ -22,6 +22,7 @@ export const createStore = () => {
   const store = redux.createStore(
     reducers,
     composeWithDevTools(redux.applyMiddleware(...middleware)),
+    preloadedState,
   );
 
   /**

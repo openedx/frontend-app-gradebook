@@ -1,53 +1,64 @@
 import React from 'react';
-import { shallow } from '@edx/react-unit-test-utils';
 
-import { Button } from '@openedx/paragon';
+import { initializeMocks, render, screen } from 'testUtilsExtra';
 
 import usePageButtonsData from './hooks';
 import PageButtons from '.';
 
+jest.unmock('@openedx/paragon');
+jest.unmock('@edx/frontend-platform/i18n');
+jest.unmock('react');
 jest.mock('./hooks', () => jest.fn());
 
 const hookProps = {
   prev: {
-    disabled: 'prev-disabled',
+    disabled: false,
     onClick: jest.fn().mockName('hooks.prev.onClick'),
     text: 'prev-text',
   },
   next: {
-    disabled: 'next-disabled',
+    disabled: false,
     onClick: jest.fn().mockName('hooks.next.onClick'),
     text: 'next-text',
   },
 };
-usePageButtonsData.mockReturnValue(hookProps);
 
-let el;
 describe('PageButtons component', () => {
-  beforeEach(() => {
+  beforeAll(() => {
     jest.clearAllMocks();
-    el = shallow(<PageButtons />);
+    initializeMocks();
   });
-  describe('behavior', () => {
-    it('initializes component hooks', () => {
-      expect(usePageButtonsData).toHaveBeenCalled();
+  describe('renders enabled buttons', () => {
+    beforeEach(() => {
+      usePageButtonsData.mockReturnValue(hookProps);
+      render(<PageButtons />);
+    });
+    test('prev button enabled', () => {
+      expect(screen.getByText(hookProps.prev.text)).toBeInTheDocument();
+      expect(screen.getByText(hookProps.next.text)).toBeEnabled();
+    });
+    test('next button enabled', () => {
+      expect(screen.getByText(hookProps.next.text)).toBeInTheDocument();
+      expect(screen.getByText(hookProps.prev.text)).toBeEnabled();
     });
   });
-  describe('render', () => {
-    test('snapshot', () => {
-      expect(el.snapshot).toMatchSnapshot();
+
+  describe('renders disabled buttons', () => {
+    beforeAll(() => {
+      hookProps.prev.disabled = true;
+      hookProps.next.disabled = true;
     });
-    test('prev button', () => {
-      const button = el.instance.findByType(Button)[0];
-      expect(button.props.disabled).toEqual(hookProps.prev.disabled);
-      expect(button.props.onClick).toEqual(hookProps.prev.onClick);
-      expect(button.children[0].el).toEqual(hookProps.prev.text);
+    beforeEach(() => {
+      usePageButtonsData.mockReturnValue(hookProps);
+      render(<PageButtons />);
     });
-    test('next button', () => {
-      const button = el.instance.findByType(Button)[1];
-      expect(button.props.disabled).toEqual(hookProps.next.disabled);
-      expect(button.props.onClick).toEqual(hookProps.next.onClick);
-      expect(button.children[0].el).toEqual(hookProps.next.text);
+    test('prev button disabled', () => {
+      expect(screen.getByText(hookProps.next.text)).toBeInTheDocument();
+      expect(screen.getByText(hookProps.prev.text)).toBeDisabled();
+    });
+    test('next button disabled', () => {
+      expect(screen.getByText(hookProps.prev.text)).toBeInTheDocument();
+      expect(screen.getByText(hookProps.next.text)).toBeDisabled();
     });
   });
 });

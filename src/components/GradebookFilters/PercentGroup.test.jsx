@@ -1,7 +1,12 @@
 import React from 'react';
-import { shallow } from '@edx/react-unit-test-utils';
+import { render, screen } from 'testUtilsExtra';
 
 import PercentGroup from './PercentGroup';
+import { initializeMocks } from '../../testUtilsExtra';
+
+jest.unmock('@openedx/paragon');
+jest.unmock('react');
+jest.unmock('@edx/frontend-platform/i18n');
 
 describe('PercentGroup', () => {
   let props = {
@@ -12,6 +17,7 @@ describe('PercentGroup', () => {
   };
 
   beforeEach(() => {
+    initializeMocks();
     props = {
       ...props,
       onChange: jest.fn().mockName('props.onChange'),
@@ -19,15 +25,14 @@ describe('PercentGroup', () => {
   });
 
   describe('Component', () => {
-    describe('snapshots', () => {
-      test('basic snapshot', () => {
-        const el = shallow(<PercentGroup {...props} />);
-        expect(el.snapshot).toMatchSnapshot();
-      });
-      test('disabled', () => {
-        const el = shallow(<PercentGroup {...props} disabled />);
-        expect(el.snapshot).toMatchSnapshot();
-      });
+    test('is displayed', () => {
+      render(<PercentGroup {...props} />);
+      expect(screen.getByRole('spinbutton', { name: 'Group Label' })).toBeInTheDocument();
+      expect(screen.getByText('Group Label')).toBeVisible();
+    });
+    test('disabled', () => {
+      render(<PercentGroup {...props} disabled />);
+      expect(screen.getByRole('spinbutton', { name: 'Group Label' })).toBeDisabled();
     });
   });
 });
