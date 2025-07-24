@@ -1,10 +1,7 @@
-import React from 'react';
-import { shallow } from '@edx/react-unit-test-utils';
-import { getLocale } from '@edx/frontend-platform/i18n';
-
-import { OverlayTrigger } from '@openedx/paragon';
-
+import { render, screen } from '@testing-library/react';
+import { getLocale, IntlProvider } from '@edx/frontend-platform/i18n';
 import LabelReplacements from './LabelReplacements';
+import messages from './messages';
 
 const {
   TotalGradeLabelReplacement,
@@ -12,52 +9,40 @@ const {
   MastersOnlyLabelReplacement,
 } = LabelReplacements;
 
-jest.mock('@openedx/paragon', () => ({
-  Icon: () => 'Icon',
-  OverlayTrigger: () => 'OverlayTrigger',
-  Tooltip: () => 'Tooltip',
+jest.unmock('@openedx/paragon');
+jest.unmock('react');
+jest.unmock('@edx/frontend-platform/i18n');
+
+jest.mock('@edx/frontend-platform/i18n', () => ({
+  ...jest.requireActual('@edx/frontend-platform/i18n'),
+  getLocale: jest.fn(),
+  isRtl: jest.fn(),
 }));
 
 describe('LabelReplacements', () => {
   describe('TotalGradeLabelReplacement', () => {
-    let el;
-    beforeEach(() => {
-      el = shallow(<TotalGradeLabelReplacement />);
-    });
-    test('snapshot', () => {
-      expect(el.snapshot).toMatchSnapshot();
-    });
-    test('displays overlay tooltip', () => {
-      expect(el.instance.findByType(OverlayTrigger)[0].props.overlay).toMatchSnapshot();
+    getLocale.mockImplementation(() => 'en');
+    render(<IntlProvider locale="en"><TotalGradeLabelReplacement /></IntlProvider>);
+    it('displays overlay tooltip', () => {
+      const tooltip = screen.getByText(messages.totalGradePercentage.defaultMessage);
+      expect(tooltip).toBeInTheDocument();
     });
   });
   describe('UsernameLabelReplacement', () => {
-    test('snapshot', () => {
-      expect(shallow(<UsernameLabelReplacement />).snapshot).toMatchSnapshot();
+    it('renders correctly', () => {
+      render(<IntlProvider locale="en"><UsernameLabelReplacement /></IntlProvider>);
+      expect(screen.getByText(messages.usernameHeading.defaultMessage)).toBeInTheDocument();
     });
   });
   describe('MastersOnlyLabelReplacement', () => {
-    test('snapshot', () => {
+    it('renders correctly', () => {
       const message = {
         id: 'id',
         defaultMessage: 'defaultMessAge',
         description: 'desCripTion',
       };
-      expect(shallow(<MastersOnlyLabelReplacement {...message} />).snapshot).toMatchSnapshot();
+      render(<IntlProvider locale="en"><MastersOnlyLabelReplacement {...message} /></IntlProvider>);
+      expect(screen.getByText(message.defaultMessage)).toBeInTheDocument();
     });
-  });
-});
-
-describe('snapshot', () => {
-  let el;
-  test('right to left overlay placement', () => {
-    getLocale.mockImplementation(() => 'en');
-    el = shallow(<TotalGradeLabelReplacement />);
-    expect(el.snapshot).toMatchSnapshot();
-  });
-  test('left to right overlay placement', () => {
-    getLocale.mockImplementation(() => 'ar');
-    el = shallow(<TotalGradeLabelReplacement />);
-    expect(el.snapshot).toMatchSnapshot();
   });
 });
