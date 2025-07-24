@@ -1,8 +1,6 @@
-import React from 'react';
-import { render, screen } from 'testUtilsExtra';
+import { render, screen, initializeMocks } from 'testUtilsExtra';
 
 import PercentGroup from './PercentGroup';
-import { initializeMocks } from '../../testUtilsExtra';
 
 jest.unmock('@openedx/paragon');
 jest.unmock('react');
