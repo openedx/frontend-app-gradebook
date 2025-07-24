@@ -1,13 +1,14 @@
-import React from 'react';
-import { shallow } from '@edx/react-unit-test-utils';
+import { render, screen } from '@testing-library/react';
 
-import { useIntl } from '@edx/frontend-platform/i18n';
+import { IntlProvider } from '@edx/frontend-platform/i18n';
 
-import { formatMessage } from 'testUtils';
 import { selectors } from 'data/redux/hooks';
 
-import FilteredUsersLabel, { BoldText } from '.';
-import messages from './messages';
+import FilteredUsersLabel from '.';
+
+jest.unmock('@openedx/paragon');
+jest.unmock('react');
+jest.unmock('@edx/frontend-platform/i18n');
 
 jest.mock('data/redux/hooks', () => ({
   selectors: {
@@ -23,34 +24,29 @@ const userCounts = {
 };
 selectors.grades.useUserCounts.mockReturnValue(userCounts);
 
-let el;
 describe('FilteredUsersLabel component', () => {
   beforeEach(() => {
     jest.clearAllMocks();
-    el = shallow(<FilteredUsersLabel />);
   });
   describe('behavior', () => {
-    it('initializes intl hook', () => {
-      expect(useIntl).toHaveBeenCalled();
-    });
     it('initializes redux hooks', () => {
+      render(<IntlProvider locale="en"><FilteredUsersLabel /></IntlProvider>);
       expect(selectors.grades.useUserCounts).toHaveBeenCalled();
     });
   });
   describe('render', () => {
-    test('null render if totalUsersCount is 0', () => {
+    it('null render if totalUsersCount is 0', () => {
       selectors.grades.useUserCounts.mockReturnValueOnce({
         ...userCounts,
         totalUsersCount: 0,
       });
-      expect(shallow(<FilteredUsersLabel />).isEmptyRender()).toEqual(true);
+      const { container } = render(<IntlProvider locale="en"><FilteredUsersLabel /></IntlProvider>);
+      expect(container.firstChild).toBeNull();
     });
-    test('snapshot', () => {
-      expect(el.snapshot).toMatchSnapshot();
-      expect(el.instance).toMatchObject(shallow(formatMessage(messages.visibilityLabel, {
-        filteredUsers: <BoldText text={userCounts.filteredUsersCount} />,
-        totalUsers: <BoldText text={userCounts.totalUsersCount} />,
-      })));
+    it('renders correctly', () => {
+      render(<IntlProvider locale="en"><FilteredUsersLabel /></IntlProvider>);
+      expect(screen.getByText((text) => text.includes(userCounts.filteredUsersCount))).toBeInTheDocument();
+      expect(screen.getByText((text) => text.includes(userCounts.totalUsersCount))).toBeInTheDocument();
     });
   });
 });
