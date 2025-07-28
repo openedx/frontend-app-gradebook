@@ -1,42 +1,77 @@
 import React from 'react';
-import { shallow } from '@edx/react-unit-test-utils';
 
-import { useIntl } from '@edx/frontend-platform/i18n';
+import { render, screen, initializeMocks } from 'testUtilsExtra';
 
-import NetworkButton from 'components/NetworkButton';
-
-import messages from './messages';
-import useInterventionsReportData from './hooks';
 import InterventionsReport from '.';
+
+jest.unmock('@openedx/paragon');
+jest.unmock('react');
+jest.unmock('@edx/frontend-platform/i18n');
 
 jest.mock('components/NetworkButton', () => 'NetworkButton');
 jest.mock('./hooks', () => jest.fn());
 
-const hookProps = { show: true, handleClick: jest.fn() };
-useInterventionsReportData.mockReturnValue(hookProps);
+const useInterventionsReportData = require('./hooks');
 
-let el;
-describe('InterventionsReport component', () => {
+initializeMocks();
+
+describe('InterventionsReport', () => {
   beforeEach(() => {
-    el = shallow(<InterventionsReport />);
+    jest.clearAllMocks();
   });
-  describe('behavior', () => {
-    it('initializes hooks', () => {
-      expect(useInterventionsReportData).toHaveBeenCalledWith();
-      expect(useIntl).toHaveBeenCalledWith();
+
+  it('renders without errors when show is true', () => {
+    useInterventionsReportData.mockReturnValue({
+      show: true,
+      handleClick: jest.fn(),
     });
+
+    render(<InterventionsReport />);
+    expect(screen.getByRole('heading', { level: 4 })).toBeInTheDocument();
+    expect(useInterventionsReportData).toHaveBeenCalled();
   });
-  describe('output', () => {
-    it('does now render if show is false', () => {
-      useInterventionsReportData.mockReturnValueOnce({ ...hookProps, show: false });
-      el = shallow(<InterventionsReport />);
-      expect(el.isEmptyRender()).toEqual(true);
+
+  it('renders nothing when show is false', () => {
+    useInterventionsReportData.mockReturnValue({
+      show: false,
+      handleClick: jest.fn(),
     });
-    test('snapshot', () => {
-      expect(el.snapshot).toMatchSnapshot();
-      const btnProps = el.instance.findByType(NetworkButton)[0].props;
-      expect(btnProps.label).toEqual(messages.downloadBtn);
-      expect(btnProps.onClick).toEqual(hookProps.handleClick);
+
+    render(<InterventionsReport />);
+    expect(screen.queryByRole('heading')).not.toBeInTheDocument();
+    expect(screen.queryByText('Interventions Report')).not.toBeInTheDocument();
+    expect(useInterventionsReportData).toHaveBeenCalled();
+  });
+
+  it('calls useInterventionsReportData hook', () => {
+    useInterventionsReportData.mockReturnValue({
+      show: true,
+      handleClick: jest.fn(),
     });
+
+    render(<InterventionsReport />);
+    expect(useInterventionsReportData).toHaveBeenCalled();
+  });
+
+  it('renders with correct content when show is true', () => {
+    const mockReportData = {
+      show: true,
+      handleClick: jest.fn(),
+    };
+
+    useInterventionsReportData.mockReturnValue(mockReportData);
+
+    render(<InterventionsReport />);
+
+    expect(screen.getByText('Interventions Report')).toBeInTheDocument();
+
+    expect(
+      screen.getByText(/Need to find students who may be falling behind/),
+    ).toBeInTheDocument();
+
+    const networkButton = document.querySelector('networkbutton');
+    expect(networkButton).toBeInTheDocument();
+
+    expect(useInterventionsReportData).toHaveBeenCalled();
   });
 });

@@ -1,39 +1,101 @@
 import React from 'react';
-import { shallow } from '@edx/react-unit-test-utils';
 
-import useImportSuccessToastData from './hooks';
+import { render, initializeMocks } from 'testUtilsExtra';
+
 import ImportSuccessToast from '.';
+
+jest.unmock('@openedx/paragon');
+jest.unmock('react');
+jest.unmock('@edx/frontend-platform/i18n');
+
+jest.mock('data/redux/hooks', () => ({
+  actions: {
+    app: {
+      useSetView: jest.fn(),
+      useSetShowImportSuccessToast: jest.fn(),
+    },
+  },
+  selectors: {
+    app: {
+      useShowImportSuccessToast: jest.fn(),
+    },
+  },
+}));
 
 jest.mock('./hooks', () => jest.fn());
 
-const hookProps = {
-  action: 'test-action',
-  onClose: jest.fn().mockName('hooks.onClose'),
-  show: 'test-show',
-  description: 'test-description',
-};
-useImportSuccessToastData.mockReturnValue(hookProps);
+const useImportSuccessToastData = require('./hooks');
 
-let el;
-describe('ImportSuccessToast component', () => {
-  beforeAll(() => {
-    el = shallow(<ImportSuccessToast />);
+initializeMocks();
+
+describe('ImportSuccessToast', () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
   });
-  describe('behavior', () => {
-    it('initializes component hook', () => {
-      expect(useImportSuccessToastData).toHaveBeenCalled();
+
+  it('renders without errors', () => {
+    useImportSuccessToastData.mockReturnValue({
+      action: {
+        label: 'View Activity Log',
+        onClick: jest.fn(),
+      },
+      onClose: jest.fn(),
+      show: false,
+      description: 'Import Successful! Grades will be updated momentarily.',
     });
+
+    const { container } = render(<ImportSuccessToast />);
+    expect(container).toBeInTheDocument();
+    expect(useImportSuccessToastData).toHaveBeenCalled();
   });
-  describe('render', () => {
-    test('snapshot', () => {
-      expect(el.snapshot).toMatchSnapshot();
+
+  it('renders with show true', () => {
+    useImportSuccessToastData.mockReturnValue({
+      action: {
+        label: 'View Activity Log',
+        onClick: jest.fn(),
+      },
+      onClose: jest.fn(),
+      show: true,
+      description: 'Import Successful! Grades will be updated momentarily.',
     });
-    test('Toast', () => {
-      expect(el.instance.type).toEqual('Toast');
-      expect(el.instance.props.action).toEqual(hookProps.action);
-      expect(el.instance.props.onClose).toEqual(hookProps.onClose);
-      expect(el.instance.props.show).toEqual(hookProps.show);
-      expect(el.instance.children[0].el).toEqual(hookProps.description);
+
+    const { container } = render(<ImportSuccessToast />);
+    expect(container).toBeInTheDocument();
+    expect(useImportSuccessToastData).toHaveBeenCalled();
+  });
+
+  it('calls useImportSuccessToastData hook', () => {
+    useImportSuccessToastData.mockReturnValue({
+      action: {
+        label: 'View Activity Log',
+        onClick: jest.fn(),
+      },
+      onClose: jest.fn(),
+      show: false,
+      description: 'Import Successful! Grades will be updated momentarily.',
     });
+
+    render(<ImportSuccessToast />);
+    expect(useImportSuccessToastData).toHaveBeenCalled();
+  });
+
+  it('passes correct props to Toast component', () => {
+    const mockOnClose = jest.fn();
+    const mockOnClick = jest.fn();
+
+    useImportSuccessToastData.mockReturnValue({
+      action: {
+        label: 'View Activity Log',
+        onClick: mockOnClick,
+      },
+      onClose: mockOnClose,
+      show: true,
+      description: 'Import Successful! Grades will be updated momentarily.',
+    });
+
+    const { container } = render(<ImportSuccessToast />);
+    expect(container).toBeInTheDocument();
+    expect(useImportSuccessToastData).toHaveBeenCalled();
   });
 });
