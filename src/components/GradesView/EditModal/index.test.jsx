@@ -1,126 +1,107 @@
-import React from 'react';
-import { shallow } from '@edx/react-unit-test-utils';
+import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import { IntlProvider } from '@edx/frontend-platform/i18n';
 
-import {
-  ActionRow,
-  ModalDialog,
-} from '@openedx/paragon';
-import { useIntl } from '@edx/frontend-platform/i18n';
-
-import { formatMessage } from 'testUtils';
-
-import ModalHeaders from './ModalHeaders';
-import OverrideTable from './OverrideTable';
 import useEditModalData from './hooks';
 import EditModal from '.';
 import messages from './messages';
 
 jest.mock('./hooks', () => jest.fn());
-jest.mock('./ModalHeaders', () => 'ModalHeaders');
-jest.mock('./OverrideTable', () => 'OverrideTable');
+jest.mock('./ModalHeaders', () => jest.fn(() => <div>ModalHeaders</div>));
+jest.mock('./OverrideTable', () => jest.fn(() => <div>OverrideTable</div>));
+
+jest.unmock('@openedx/paragon');
+jest.unmock('react');
+jest.unmock('@edx/frontend-platform/i18n');
 
 const hookProps = {
   onClose: jest.fn().mockName('hooks.onClose'),
   error: 'test-error',
   handleAdjustedGradeClick: jest.fn().mockName('hooks.handleAdjustedGradeClick'),
-  isOpen: 'test-is-open',
+  isOpen: true,
 };
-useEditModalData.mockReturnValue(hookProps);
 
-let el;
 describe('EditModal component', () => {
   beforeEach(() => {
     jest.clearAllMocks();
-    el = shallow(<EditModal />);
   });
   describe('behavior', () => {
-    it('initializes intl hook', () => {
-      expect(useIntl).toHaveBeenCalled();
-    });
     it('initializes component hooks', () => {
+      useEditModalData.mockReturnValue(hookProps);
+      render(<IntlProvider locale="en"><EditModal /></IntlProvider>);
       expect(useEditModalData).toHaveBeenCalled();
     });
   });
-  describe('render', () => {
-    test('modal props', () => {
-      const modalProps = el.instance.findByType(ModalDialog)[0].props;
-      expect(modalProps.title).toEqual(formatMessage(messages.title));
-      expect(modalProps.isOpen).toEqual(hookProps.isOpen);
-      expect(modalProps.onClose).toEqual(hookProps.onClose);
-    });
-    const loadBody = () => {
-      const body = el.instance.findByType(ModalDialog)[0].children[0];
-      const { children } = body.children[0];
-      return { body, children };
+  describe('renders', () => {
+    const testModal = () => {
+      it('modal properly', () => {
+        const modal = screen.getByRole('dialog', { title: messages.title.defaultMessage });
+        expect(modal).toBeInTheDocument();
+      });
+      it('triggers onClose when closed', async () => {
+        const user = userEvent.setup();
+        const closeButton = screen.getByRole('button', { name: messages.closeText.defaultMessage });
+        await user.click(closeButton);
+        expect(hookProps.onClose).toHaveBeenCalled();
+      });
     };
     const testBody = () => {
-      test('type', () => {
-        const { body } = loadBody();
-        expect(body.type).toEqual('ModalDialog.Body');
+      it('headers row', () => {
+        const headers = screen.getByText('ModalHeaders');
+        expect(headers).toBeInTheDocument();
       });
-      test('headers row', () => {
-        const { children } = loadBody();
-        expect(children[0]).toMatchObject(shallow(<ModalHeaders />));
+      it('table row', () => {
+        const table = screen.getByText('OverrideTable');
+        expect(table).toBeInTheDocument();
       });
-      test('table row', () => {
-        const { children } = loadBody();
-        expect(children[2]).toMatchObject(shallow(<OverrideTable />));
-      });
-      test('messages', () => {
-        const { children } = loadBody();
-        expect(children[3].children[0].el).toEqual(formatMessage(messages.visibility));
-        expect(children[4].children[0].el).toEqual(formatMessage(messages.saveVisibility));
+      it('messages', () => {
+        const visibilityMessage = screen.getByText(messages.visibility.defaultMessage);
+        const saveVisibilityMessage = screen.getByText(messages.saveVisibility.defaultMessage);
+        expect(visibilityMessage).toBeInTheDocument();
+        expect(saveVisibilityMessage).toBeInTheDocument();
       });
     };
     const testFooter = () => {
-      let footer;
-      beforeEach(() => {
-        footer = el.instance.findByType(ModalDialog)[0].children;
+      it('adjusted grade button', async () => {
+        const user = userEvent.setup();
+        const saveGradeButton = screen.getByRole('button', { name: messages.saveGrade.defaultMessage });
+        expect(saveGradeButton).toBeInTheDocument();
+        await user.click(saveGradeButton);
+        expect(hookProps.handleAdjustedGradeClick).toHaveBeenCalled();
       });
-      test('type', () => {
-        expect(footer[1].type).toEqual('ModalDialog.Footer');
-      });
-      test('contains action row', () => {
-        expect(footer[1].children[0].type).toEqual('ActionRow');
-      });
-      test('close button', () => {
-        const button = footer[1].findByType(ActionRow)[0].children[0];
-        expect(button.children[0].el).toEqual(formatMessage(messages.closeText));
-        expect(button.type).toEqual('ModalDialog.CloseButton');
-      });
-      test('adjusted grade button', () => {
-        const button = footer[1].findByType(ActionRow)[0].children[1];
-        expect(button.children[0].el).toEqual(formatMessage(messages.saveGrade));
-        expect(button.type).toEqual('Button');
-        expect(button.props.onClick).toEqual(hookProps.handleAdjustedGradeClick);
+      it('close button', async () => {
+        const user = userEvent.setup();
+        const cancelButton = screen.getByRole('button', { name: messages.closeText.defaultMessage });
+        expect(cancelButton).toBeInTheDocument();
+        await user.click(cancelButton);
+        expect(hookProps.onClose).toHaveBeenCalled();
       });
     };
     describe('without error', () => {
       beforeEach(() => {
         useEditModalData.mockReturnValueOnce({ ...hookProps, error: undefined });
-        el = shallow(<EditModal />);
+        render(<IntlProvider locale="en"><EditModal /></IntlProvider>);
       });
-      test('snapshot', () => {
-        expect(el.snapshot).toMatchSnapshot();
-      });
+      testModal();
       testBody();
       testFooter();
       test('alert row', () => {
-        const alert = loadBody().children[1];
-        expect(alert.type).toEqual('Alert');
-        expect(alert.props.show).toEqual(false);
+        screen.debug();
+        const alert = screen.queryByRole('alert');
+        expect(alert).toBeNull();
       });
     });
     describe('with error', () => {
-      test('snapshot', () => {
-        expect(el.snapshot).toMatchSnapshot();
+      beforeEach(() => {
+        useEditModalData.mockReturnValue(hookProps);
+        render(<IntlProvider locale="en"><EditModal /></IntlProvider>);
       });
+      testModal();
       testBody();
       test('alert row', () => {
-        const alert = loadBody().children[1];
-        expect(alert.type).toEqual('Alert');
-        expect(alert.props.show).toEqual(true);
-        expect(alert.children[0].el).toEqual(hookProps.error);
+        const alert = screen.getByRole('alert');
+        expect(alert).toBeInTheDocument();
+        expect(alert).toHaveTextContent(hookProps.error);
       });
       testFooter();
     });

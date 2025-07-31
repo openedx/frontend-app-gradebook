@@ -1,65 +1,65 @@
 import React from 'react';
-import { shallow } from '@edx/react-unit-test-utils';
+import { render, screen } from '@testing-library/react';
+import { IntlProvider } from '@edx/frontend-platform/i18n';
 
-import { DataTable } from '@openedx/paragon';
-
-import { formatDateForDisplay } from 'utils';
-
-import AdjustedGradeInput from './AdjustedGradeInput';
-import ReasonInput from './ReasonInput';
 import useOverrideTableData from './hooks';
 import OverrideTable from '.';
 
+jest.unmock('@openedx/paragon');
+jest.unmock('react');
+jest.unmock('@edx/frontend-platform/i18n');
+
 jest.mock('utils', () => ({
+  ...jest.requireActual('utils'),
   formatDateForDisplay: (date) => ({ formatted: date }),
 }));
 jest.mock('./hooks', () => jest.fn());
-jest.mock('./AdjustedGradeInput', () => 'AdjustedGradeInput');
-jest.mock('./ReasonInput', () => 'ReasonInput');
 
 const hookProps = {
   hide: false,
   data: [
-    { test: 'data' },
-    { andOther: 'test-data' },
+    { filename: 'data' },
+    { resultsSummary: 'test-data' },
   ],
-  columns: 'test-columns',
+  columns: [{
+    Header: 'Gradebook',
+    accessor: 'filename',
+  },
+  {
+    Header: 'Download Summary',
+    accessor: 'resultsSummary',
+  }],
 };
-useOverrideTableData.mockReturnValue(hookProps);
 
-let el;
 describe('OverrideTable component', () => {
   beforeEach(() => {
     jest
       .clearAllMocks()
       .useFakeTimers('modern')
       .setSystemTime(new Date('2000-01-01').getTime());
-    el = shallow(<OverrideTable />);
   });
-  describe('behavior', () => {
+  describe('hooks', () => {
     it('initializes hook data', () => {
+      useOverrideTableData.mockReturnValue(hookProps);
+      render(<IntlProvider locale="en"><OverrideTable /></IntlProvider>);
       expect(useOverrideTableData).toHaveBeenCalled();
     });
   });
-  describe('render', () => {
-    test('null render if hide', () => {
-      useOverrideTableData.mockReturnValueOnce({ ...hookProps, hide: true });
-      el = shallow(<OverrideTable />);
-      expect(el.isEmptyRender()).toEqual(true);
+  describe('behavior', () => {
+    it('null render if hide', () => {
+      useOverrideTableData.mockReturnValue({ ...hookProps, hide: true });
+      render(<IntlProvider locale="en"><OverrideTable /></IntlProvider>);
+      expect(screen.queryByRole('table')).toBeNull();
     });
-    test('snapshot', () => {
-      expect(el.snapshot).toMatchSnapshot();
-      const table = el.instance.findByType(DataTable)[0];
-      expect(table.props.columns).toEqual(hookProps.columns);
-      const data = [...table.props.data];
-      const inputRow = data.pop();
-      const formattedDate = formatDateForDisplay(new Date());
-      expect(data).toEqual(hookProps.data);
-      expect(inputRow).toMatchObject({
-        adjustedGrade: <AdjustedGradeInput />,
-        date: formattedDate,
-        reason: <ReasonInput />,
-      });
+    it('renders table with correct data', () => {
+      useOverrideTableData.mockReturnValue(hookProps);
+      render(<IntlProvider locale="en"><OverrideTable /></IntlProvider>);
+      const table = screen.getByRole('table');
+      expect(table).toBeInTheDocument();
+      expect(screen.getByText(hookProps.columns[0].Header)).toBeInTheDocument();
+      expect(screen.getByText(hookProps.columns[1].Header)).toBeInTheDocument();
+      expect(screen.getByText(hookProps.data[0].filename)).toBeInTheDocument();
+      expect(screen.getByText(hookProps.data[1].resultsSummary)).toBeInTheDocument();
     });
   });
 });

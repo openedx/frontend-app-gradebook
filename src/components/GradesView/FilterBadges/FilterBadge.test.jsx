@@ -1,10 +1,10 @@
 import React from 'react';
-import { shallow } from '@edx/react-unit-test-utils';
+import { render, screen } from '@testing-library/react';
 import { useIntl } from '@edx/frontend-platform/i18n';
 
 import { formatMessage } from 'testUtils';
-import { Button } from '@openedx/paragon';
 import { selectors } from 'data/redux/hooks';
+import userEvent from '@testing-library/user-event';
 import FilterBadge from './FilterBadge';
 
 jest.mock('@openedx/paragon', () => ({
@@ -18,7 +18,10 @@ jest.mock('data/redux/hooks', () => ({
   },
 }));
 
-const handleClose = jest.fn(filters => ({ handleClose: filters }));
+jest.unmock('@openedx/paragon');
+jest.unmock('react');
+
+const handleClose = jest.fn();
 const filterName = 'test-filter-name';
 
 const hookProps = {
@@ -32,12 +35,11 @@ const hookProps = {
 };
 selectors.root.useFilterBadgeConfig.mockReturnValue(hookProps);
 
-let el;
 describe('FilterBadge', () => {
-  beforeEach(() => {
-    el = shallow(<FilterBadge {...{ handleClose, filterName }} />);
-  });
-  describe('behavior', () => {
+  describe('hooks', () => {
+    beforeEach(() => {
+      render(<FilterBadge {...{ handleClose, filterName }} />);
+    });
     it('initializes intl hook', () => {
       expect(useIntl).toHaveBeenCalled();
     });
@@ -46,49 +48,42 @@ describe('FilterBadge', () => {
     });
   });
   describe('render', () => {
-    const testDisplayName = () => {
-      test('formatted display name appears on badge', () => {
-        expect(el.instance.findByTestId('display-name')[0].children[0].el).toEqual(formatMessage(hookProps.displayName));
-      });
-    };
-    const testCloseButton = () => {
-      test('close button forwards close method', () => {
-        expect(el.instance.findByType(Button)[0].props.onClick).toEqual(handleClose(hookProps.connectedFilters));
-      });
-    };
-    test('empty render if isDefault', () => {
+    it('empty render if isDefault', () => {
       selectors.root.useFilterBadgeConfig.mockReturnValueOnce({
         ...hookProps,
         isDefault: true,
       });
-      el = shallow(<FilterBadge {...{ handleClose, filterName }} />);
-      expect(el.isEmptyRender()).toEqual(true);
+      render(<FilterBadge {...{ handleClose, filterName }} />);
+      expect(screen.queryByText(hookProps.displayName)).toBeNull();
     });
     describe('hide Value', () => {
-      beforeEach(() => {
+      it('renders display name, value is not shown and close button has correct behavior', async () => {
         selectors.root.useFilterBadgeConfig.mockReturnValueOnce({
           ...hookProps,
           hideValue: true,
         });
-        el = shallow(<FilterBadge {...{ handleClose, filterName }} />);
-      });
-      testDisplayName();
-      testCloseButton();
-      test('snapshot', () => {
-        expect(el.snapshot).toMatchSnapshot();
-      });
-      test('value is note present in the badge', () => {
-        expect(el.instance.findByTestId('filter-value')[0].children).toHaveLength(0);
+        render(<FilterBadge {...{ handleClose, filterName }} />);
+        const user = userEvent.setup();
+        expect(screen.getByTestId('display-name')).toHaveTextContent(formatMessage(hookProps.displayName));
+        expect(screen.queryByTestId('filter-value')).toHaveTextContent('');
+        const button = screen.getByRole('button', { name: /close/i });
+        await user.click(button);
+        expect(handleClose).toHaveBeenCalledWith(hookProps.connectedFilters);
       });
     });
     describe('do not hide value', () => {
-      testDisplayName();
-      testCloseButton();
-      test('snapshot', () => {
-        expect(el.snapshot).toMatchSnapshot();
-      });
-      test('value is present in the badge', () => {
-        expect(el.instance.findByTestId('filter-value')[0].children[0].el).toBe(`: ${hookProps.value}`);
+      it('renders display name and value, and close button has correct behavior', async () => {
+        selectors.root.useFilterBadgeConfig.mockReturnValueOnce({
+          ...hookProps,
+          hideValue: false,
+        });
+        render(<FilterBadge {...{ handleClose, filterName }} />);
+        const user = userEvent.setup();
+        expect(screen.getByTestId('display-name')).toHaveTextContent(formatMessage(hookProps.displayName));
+        expect(screen.getByTestId('filter-value')).toHaveTextContent(`: ${hookProps.value}`);
+        const button = screen.getByRole('button', { name: /close/i });
+        await user.click(button);
+        expect(handleClose).toHaveBeenCalledWith(hookProps.connectedFilters);
       });
     });
   });
