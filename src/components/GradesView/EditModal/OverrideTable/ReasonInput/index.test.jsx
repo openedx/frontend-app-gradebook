@@ -1,37 +1,34 @@
-import React from 'react';
-import { shallow } from '@edx/react-unit-test-utils';
-
-import { Form } from '@openedx/paragon';
+import { render, screen } from '@testing-library/react';
 
 import useReasonInputData from './hooks';
 import ReasonInput from '.';
 
 jest.mock('./hooks', () => jest.fn());
 
+jest.unmock('@openedx/paragon');
+jest.unmock('react');
+
 const hookProps = {
-  ref: 'reason-input-ref',
+  ref: jest.fn().mockName('hook.ref'),
   onChange: jest.fn().mockName('hook.onChange'),
   value: 'test-value',
 };
 useReasonInputData.mockReturnValue(hookProps);
 
-let el;
 describe('ReasonInput component', () => {
   beforeEach(() => {
     jest.clearAllMocks();
-    el = shallow(<ReasonInput />);
+    render(<ReasonInput />);
   });
   describe('behavior', () => {
     it('initializes hook data', () => {
       expect(useReasonInputData).toHaveBeenCalled();
     });
   });
-  describe('render', () => {
-    test('snapshot', () => {
-      expect(el.snapshot).toMatchSnapshot();
-      const control = el.instance.findByType(Form.Control)[0];
-      expect(control.props.value).toEqual(hookProps.value);
-      expect(control.props.onChange).toEqual(hookProps.onChange);
+  describe('renders', () => {
+    it('input correctly', () => {
+      expect(screen.getByRole('textbox')).toBeInTheDocument();
+      expect(screen.getByRole('textbox')).toHaveValue(hookProps.value);
     });
   });
 });
