@@ -1,89 +1,310 @@
 import React from 'react';
-import { shallow } from '@edx/react-unit-test-utils';
 
-import { Icon, StatefulButton } from '@openedx/paragon';
-import { FormattedMessage } from '@edx/frontend-platform/i18n';
+import { render, screen, initializeMocks } from 'testUtilsExtra';
 
-import selectors from 'data/selectors';
 import { NetworkButton, mapStateToProps, buttonStates } from '.';
 
-jest.mock('@edx/frontend-platform/i18n', () => ({
-  FormattedMessage: () => 'FormattedMessage',
-}));
-jest.mock('@openedx/paragon', () => ({
-  Icon: () => 'Icon',
-  StatefulButton: () => 'StatefulButton',
-}));
+jest.unmock('@openedx/paragon');
+jest.unmock('react');
+jest.unmock('@edx/frontend-platform/i18n');
+
 jest.mock('data/selectors', () => ({
-  __esModule: true,
-  default: {
-    root: { shouldShowSpinner: (state) => ({ shouldShowSpinner: state }) },
+  root: {
+    shouldShowSpinner: jest.fn(),
   },
 }));
 
-describe('NetworkButton component', () => {
-  describe('snapshots', () => {
-    let el;
-    let btnProps;
+const selectors = require('data/selectors');
+
+initializeMocks();
+
+describe('NetworkButton', () => {
+  const defaultProps = {
+    label: {
+      id: 'test.button.label',
+      defaultMessage: 'Test Button',
+      description: 'A test button',
+    },
+    onClick: jest.fn(),
+    className: '',
+    showSpinner: false,
+    import: false,
+  };
+
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
+  it('renders without errors', () => {
+    render(<NetworkButton {...defaultProps} />);
+
+    expect(document.body).toBeInTheDocument();
+  });
+
+  it('renders button with correct label', () => {
+    render(<NetworkButton {...defaultProps} />);
+
+    expect(
+      screen.getByRole('button', { name: /test button/i }),
+    ).toBeInTheDocument();
+  });
+
+  it('renders button with download icon by default', () => {
+    render(<NetworkButton {...defaultProps} />);
+
+    const button = screen.getByRole('button');
+    const icon = button.querySelector('.fa-download');
+    expect(icon).toBeInTheDocument();
+  });
+
+  it('renders button with upload icon when import is true', () => {
     const props = {
-      className: 'test-class',
-      label: {
-        id: 'label-id',
-        defaultMessage: 'test button label',
-        description: 'test button label description',
-        showSpinner: false,
-      },
+      ...defaultProps,
+      import: true,
     };
-    beforeEach(() => {
-      props.onClick = jest.fn();
-      el = shallow(<NetworkButton {...props} />);
-      btnProps = el.instance.findByType(StatefulButton)[0].props;
+    render(<NetworkButton {...props} />);
+
+    const button = screen.getByRole('button');
+    const icon = button.querySelector('.fa-upload');
+    expect(icon).toBeInTheDocument();
+  });
+
+  it('applies custom className when provided', () => {
+    const props = {
+      ...defaultProps,
+      className: 'custom-class',
+    };
+    render(<NetworkButton {...props} />);
+
+    const button = screen.getByRole('button');
+    expect(button).toHaveClass('custom-class', 'ml-2');
+  });
+
+  it('applies default margin class', () => {
+    render(<NetworkButton {...defaultProps} />);
+
+    const button = screen.getByRole('button');
+    expect(button).toHaveClass('ml-2');
+  });
+
+  it('calls onClick when button is clicked', () => {
+    const onClick = jest.fn();
+    const props = {
+      ...defaultProps,
+      onClick,
+    };
+    render(<NetworkButton {...props} />);
+
+    const button = screen.getByRole('button');
+    button.click();
+
+    expect(onClick).toHaveBeenCalledTimes(1);
+  });
+
+  describe('spinner state', () => {
+    it('shows spinner icon when showSpinner is true', () => {
+      const props = {
+        ...defaultProps,
+        showSpinner: true,
+      };
+      render(<NetworkButton {...props} />);
+
+      const button = screen.getByRole('button');
+      const spinner = button.querySelector('.fa-spinner.fa-spin');
+      expect(spinner).toBeInTheDocument();
     });
-    test('snapshot', () => {
-      expect(el.snapshot).toMatchSnapshot();
+
+    it('disables button when showSpinner is true', () => {
+      const props = {
+        ...defaultProps,
+        showSpinner: true,
+      };
+      render(<NetworkButton {...props} />);
+
+      const button = screen.getByRole('button');
+      expect(button).toHaveAttribute('aria-disabled', 'true');
     });
-    it('sets labels to translated label prop', () => {
-      expect(btnProps.labels).toEqual({
-        default: (<FormattedMessage {...props.label} />),
-        pending: (<FormattedMessage {...props.label} />),
-      });
+
+    it('does not call onClick when button is disabled and clicked', () => {
+      const onClick = jest.fn();
+      const props = {
+        ...defaultProps,
+        onClick,
+        showSpinner: true,
+      };
+      render(<NetworkButton {...props} />);
+
+      const button = screen.getByRole('button');
+      button.click();
+
+      expect(onClick).not.toHaveBeenCalled();
     });
-    describe('export icons', () => {
-      it('sets icons with spinner pending icon and download default', () => {
-        expect(btnProps.icons).toEqual({
-          pending: (<Icon className="fa mr-2 fa-spinner fa-spin" />),
-          default: (<Icon className="fa mr-2 fa-download" />),
-        });
-      });
+
+    it('enables button when showSpinner is false', () => {
+      render(<NetworkButton {...defaultProps} />);
+
+      const button = screen.getByRole('button');
+      expect(button).toBeEnabled();
     });
-    describe('import icons', () => {
-      it('sets icons with spinner pending icon and upload default', () => {
-        el = shallow(<NetworkButton {...props} import />);
-        expect(el.instance.findByType(StatefulButton)[0].props.icons).toEqual({
-          pending: (<Icon className="fa mr-2 fa-spinner fa-spin" />),
-          default: (<Icon className="fa mr-2 fa-upload" />),
-        });
-      });
+  });
+
+  describe('button states', () => {
+    it('uses default state when showSpinner is false', () => {
+      const component = new NetworkButton(defaultProps);
+
+      expect(component.buttonState).toBe(buttonStates.default);
     });
-    describe('buttonState', () => {
-      it('is set to pending state if props.showSpinner', () => {
-        expect(btnProps.state).toEqual(buttonStates.default);
-      });
-      it('is set to pending state if props.showSpinner', () => {
-        el = shallow(<NetworkButton {...props} showSpinner />);
-        expect(el.instance.findByType(StatefulButton)[0].props.state).toEqual(buttonStates.pending);
-        expect(btnProps.state).toEqual(buttonStates.default);
+
+    it('uses pending state when showSpinner is true', () => {
+      const props = {
+        ...defaultProps,
+        showSpinner: true,
+      };
+      const component = new NetworkButton(props);
+
+      expect(component.buttonState).toBe(buttonStates.pending);
+    });
+  });
+
+  describe('computed properties', () => {
+    it('generates correct labels object', () => {
+      const component = new NetworkButton(defaultProps);
+      const { labels } = component;
+
+      expect(labels.default).toBeDefined();
+      expect(labels.pending).toBeDefined();
+    });
+
+    it('generates correct icons for download button', () => {
+      const component = new NetworkButton(defaultProps);
+      const { icons } = component;
+
+      expect(icons.default).toBeDefined();
+      expect(icons.pending).toBeDefined();
+    });
+
+    it('generates correct icons for import button', () => {
+      const props = {
+        ...defaultProps,
+        import: true,
+      };
+      const component = new NetworkButton(props);
+      const { icons } = component;
+
+      expect(icons.default).toBeDefined();
+      expect(icons.pending).toBeDefined();
+    });
+  });
+
+  describe('accessibility', () => {
+    it('has accessible button role', () => {
+      render(<NetworkButton {...defaultProps} />);
+
+      const button = screen.getByRole('button');
+      expect(button).toBeInTheDocument();
+    });
+
+    it('has accessible name from label', () => {
+      render(<NetworkButton {...defaultProps} />);
+
+      expect(
+        screen.getByRole('button', { name: /test button/i }),
+      ).toBeInTheDocument();
+    });
+
+    it('indicates disabled state to screen readers', () => {
+      const props = {
+        ...defaultProps,
+        showSpinner: true,
+      };
+      render(<NetworkButton {...props} />);
+
+      const button = screen.getByRole('button');
+      expect(button).toHaveAttribute('aria-disabled', 'true');
+    });
+  });
+
+  describe('visual states', () => {
+    it('has outline-primary variant styling', () => {
+      render(<NetworkButton {...defaultProps} />);
+
+      const button = screen.getByRole('button');
+      expect(button).toHaveClass('btn-outline-primary');
+    });
+
+    it('shows different visual states based on spinner', () => {
+      const { rerender } = render(<NetworkButton {...defaultProps} />);
+
+      let button = screen.getByRole('button');
+      expect(button).toBeEnabled();
+      expect(button.querySelector('.fa-download')).toBeInTheDocument();
+
+      rerender(<NetworkButton {...defaultProps} showSpinner />);
+      button = screen.getByRole('button');
+      expect(button).toHaveAttribute('aria-disabled', 'true');
+      expect(button.querySelector('.fa-spinner')).toBeInTheDocument();
+    });
+  });
+
+  describe('component interaction', () => {
+    it('maintains label text in both states', () => {
+      const { rerender } = render(<NetworkButton {...defaultProps} />);
+
+      expect(
+        screen.getByRole('button', { name: /test button/i }),
+      ).toBeInTheDocument();
+
+      rerender(<NetworkButton {...defaultProps} showSpinner />);
+      expect(
+        screen.getByRole('button', { name: /test button/i }),
+      ).toBeInTheDocument();
+    });
+
+    it('changes icon but maintains functionality', () => {
+      const onClick = jest.fn();
+      const { rerender } = render(
+        <NetworkButton {...defaultProps} onClick={onClick} />,
+      );
+
+      let button = screen.getByRole('button');
+      expect(button.querySelector('.fa-download')).toBeInTheDocument();
+      button.click();
+      expect(onClick).toHaveBeenCalledTimes(1);
+
+      onClick.mockClear();
+      rerender(<NetworkButton {...defaultProps} onClick={onClick} import />);
+      button = screen.getByRole('button');
+      expect(button.querySelector('.fa-upload')).toBeInTheDocument();
+      button.click();
+      expect(onClick).toHaveBeenCalledTimes(1);
+    });
+  });
+
+  describe('mapStateToProps', () => {
+    it('maps showSpinner from state', () => {
+      const mockState = { app: { network: { showSpinner: true } } };
+      selectors.root.shouldShowSpinner.mockReturnValue(true);
+
+      const result = mapStateToProps(mockState);
+
+      expect(selectors.root.shouldShowSpinner).toHaveBeenCalledWith(mockState);
+      expect(result).toEqual({
+        showSpinner: true,
       });
     });
   });
-  describe('mapStateToProps', () => {
-    const testState = { a: 'wrinkle', in: 'time' };
-    let mapped;
-    beforeEach(() => {
-      mapped = mapStateToProps(testState);
+
+  describe('default props', () => {
+    it('has correct default className', () => {
+      expect(NetworkButton.defaultProps.className).toBe('');
     });
-    test('showSpinner from root shouldShowSpinner selector', () => {
-      expect(mapped.showSpinner).toEqual(selectors.root.shouldShowSpinner(testState));
+
+    it('has correct default showSpinner', () => {
+      expect(NetworkButton.defaultProps.showSpinner).toBe(false);
+    });
+
+    it('has correct default import', () => {
+      expect(NetworkButton.defaultProps.import).toBe(false);
     });
   });
 });
