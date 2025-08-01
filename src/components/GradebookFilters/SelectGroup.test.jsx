@@ -1,7 +1,11 @@
 import React from 'react';
-import { shallow } from '@edx/react-unit-test-utils';
+import { render, screen } from '@testing-library/react';
 
 import SelectGroup from './SelectGroup';
+
+jest.unmock('@openedx/paragon');
+jest.unmock('react');
+jest.unmock('@edx/frontend-platform/i18n');
 
 describe('SelectGroup', () => {
   let props = {
@@ -24,15 +28,14 @@ describe('SelectGroup', () => {
   });
 
   describe('Component', () => {
-    describe('snapshots', () => {
-      test('basic snapshot', () => {
-        const el = shallow(<SelectGroup {...props} />);
-        expect(el.snapshot).toMatchSnapshot();
-      });
-      test('disabled', () => {
-        const el = shallow(<SelectGroup {...props} disabled />);
-        expect(el.snapshot).toMatchSnapshot();
-      });
+    test('rendered with all options and label', () => {
+      render(<SelectGroup {...props} />);
+      expect(screen.getAllByRole('option')).toHaveLength(props.options.length);
+      expect(screen.getByLabelText(props.label)).toBeInTheDocument();
+    });
+    test('disabled', () => {
+      render(<SelectGroup {...props} disabled />);
+      expect(screen.getByRole('combobox')).toBeDisabled();
     });
   });
 });

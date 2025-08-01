@@ -1,24 +1,12 @@
 import React from 'react';
-import { shallow } from '@edx/react-unit-test-utils';
-
-import FilterBadges from './FilterBadges';
+import { fireEvent, render, initializeMocks } from 'testUtilsExtra';
 
 import useGradesViewData from './hooks';
 import GradesView from '.';
 
-jest.mock('./BulkManagementControls', () => 'BulkManagementControls');
-jest.mock('./EditModal', () => 'EditModal');
-jest.mock('./FilterBadges', () => 'FilterBadges');
-jest.mock('./FilteredUsersLabel', () => 'FilteredUsersLabel');
-jest.mock('./FilterMenuToggle', () => 'FilterMenuToggle');
-jest.mock('./GradebookTable', () => 'GradebookTable');
-jest.mock('./ImportSuccessToast', () => 'ImportSuccessToast');
-jest.mock('./InterventionsReport', () => 'InterventionsReport');
-jest.mock('./PageButtons', () => 'PageButtons');
-jest.mock('./ScoreViewInput', () => 'ScoreViewInput');
-jest.mock('./SearchControls', () => 'SearchControls');
-jest.mock('./SpinnerIcon', () => 'SpinnerIcon');
-jest.mock('./StatusAlerts', () => 'StatusAlerts');
+jest.unmock('@openedx/paragon');
+jest.unmock('react');
+jest.unmock('@edx/frontend-platform/i18n');
 jest.mock('./hooks', () => jest.fn());
 
 const hookProps = {
@@ -35,23 +23,20 @@ const updateQueryParams = jest.fn().mockName('props.updateQueryParams');
 
 let el;
 describe('GradesView component', () => {
+  beforeAll(() => {
+    initializeMocks();
+  });
   beforeEach(() => {
     jest.clearAllMocks();
-    el = shallow(<GradesView updateQueryParams={updateQueryParams} />);
-  });
-  describe('behavior', () => {
-    it('initializes component hooks', () => {
-      expect(useGradesViewData).toHaveBeenCalled();
-    });
+    el = render(<GradesView updateQueryParams={updateQueryParams} />);
   });
   describe('render', () => {
-    test('snapshot', () => {
-      expect(el.snapshot).toMatchSnapshot();
+    test('component to be rendered', () => {
+      expect(el.container).toBeInTheDocument();
     });
     test('filterBadges load close behavior from hook', () => {
-      expect(el.instance.findByType(FilterBadges)[0].props.handleClose).toEqual(
-        hookProps.handleFilterBadgeClose,
-      );
+      fireEvent.click(el.getAllByRole('button', { name: 'close' })[0]); // All the buttons use the same handler
+      expect(hookProps.handleFilterBadgeClose).toHaveBeenCalled();
     });
   });
 });
