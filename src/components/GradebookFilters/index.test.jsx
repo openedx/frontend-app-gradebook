@@ -1,82 +1,34 @@
 import React from 'react';
-import { shallow } from '@edx/react-unit-test-utils';
+import { render, screen, initializeMocks } from 'testUtilsExtra';
 
-import { useIntl } from '@edx/frontend-platform/i18n';
-import { Collapsible } from '@openedx/paragon';
-
-import { formatMessage } from 'testUtils';
-
-import AssignmentTypeFilter from './AssignmentTypeFilter';
-import AssignmentFilter from './AssignmentFilter';
-import AssignmentGradeFilter from './AssignmentGradeFilter';
-import CourseGradeFilter from './CourseGradeFilter';
-import StudentGroupsFilter from './StudentGroupsFilter';
-import messages from './messages';
-
-import useGradebookFiltersData from './hooks';
 import GradebookFilters from '.';
 
-jest.mock('./AssignmentTypeFilter', () => 'AssignmentTypeFilter');
-jest.mock('./AssignmentFilter', () => 'AssignmentFilter');
-jest.mock('./AssignmentGradeFilter', () => 'AssignmentGradeFilter');
-jest.mock('./CourseGradeFilter', () => 'CourseGradeFilter');
-jest.mock('./StudentGroupsFilter', () => 'StudentGroupsFilter');
+jest.unmock('@openedx/paragon');
+jest.unmock('react');
+jest.unmock('@edx/frontend-platform/i18n');
 
-jest.mock('./hooks', () => ({ __esModule: true, default: jest.fn() }));
-
-const hookProps = {
-  closeMenu: jest.fn().mockName('hook.closeMenu'),
-  includeCourseTeamMembers: {
-    value: true,
-    handleChange: jest.fn().mockName('hook.handleChange'),
-  },
-};
-useGradebookFiltersData.mockReturnValue(hookProps);
-
-let el;
 const updateQueryParams = jest.fn();
+
+initializeMocks();
 
 describe('GradebookFilters', () => {
   beforeEach(() => {
     jest.clearAllMocks();
-    el = shallow(<GradebookFilters updateQueryParams={updateQueryParams} />);
+    render(<GradebookFilters updateQueryParams={updateQueryParams} />);
   });
-  describe('behavior', () => {
-    it('initializes hooks', () => {
-      expect(useGradebookFiltersData).toHaveBeenCalledWith({ updateQueryParams });
-      expect(useIntl).toHaveBeenCalledWith();
-    });
-  });
-  describe('render', () => {
-    test('snapshot', () => {
-      expect(el.snapshot).toMatchSnapshot();
-    });
+  describe('All filters render together', () => {
     test('Assignment filters', () => {
-      expect(el.instance.findByType(Collapsible)[0].children[0]).toMatchObject(shallow(
-        <div>
-          <AssignmentTypeFilter updateQueryParams={updateQueryParams} />
-          <AssignmentFilter updateQueryParams={updateQueryParams} />
-          <AssignmentGradeFilter updateQueryParams={updateQueryParams} />
-        </div>,
-      ));
+      expect(screen.getByRole('combobox', { name: 'Assignment Types' })).toBeInTheDocument();
+      expect(screen.getByRole('combobox', { name: 'Assignment' })).toBeInTheDocument();
     });
     test('CourseGrade filters', () => {
-      expect(el.instance.findByType(Collapsible)[1].children[0]).toMatchObject(shallow(
-        <CourseGradeFilter updateQueryParams={updateQueryParams} />,
-      ));
+      expect(screen.getByRole('button', { name: 'Overall Grade' })).toBeInTheDocument();
     });
     test('StudentGroups filters', () => {
-      expect(el.instance.findByType(Collapsible)[2].children[0]).toMatchObject(shallow(
-        <StudentGroupsFilter updateQueryParams={updateQueryParams} />,
-      ));
+      expect(screen.getByRole('button', { name: 'Student Groups' })).toBeInTheDocument();
     });
     test('includeCourseTeamMembers', () => {
-      const checkbox = el.instance.findByType(Collapsible)[3].children[0];
-      expect(checkbox.props).toEqual({
-        checked: true,
-        onChange: hookProps.includeCourseTeamMembers.handleChange,
-      });
-      expect(checkbox.children[0].el).toEqual(formatMessage(messages.includeCourseTeamMembers));
+      expect(screen.getByRole('button', { name: 'Include Course Team Members' })).toBeInTheDocument();
     });
   });
 });

@@ -1,84 +1,167 @@
 import React from 'react';
-import { shallow } from '@edx/react-unit-test-utils';
-import { useIntl } from '@edx/frontend-platform/i18n';
+import { render, screen, initializeMocks } from 'testUtilsExtra';
 
 import SelectGroup from '../SelectGroup';
+import { StudentGroupsFilter } from './index';
 import useStudentGroupsFilterData from './hooks';
-import StudentGroupsFilter from '.';
 
-jest.mock('../SelectGroup', () => 'SelectGroup');
-jest.mock('./hooks', () => ({ __esModule: true, default: jest.fn() }));
+jest.unmock('@openedx/paragon');
+jest.unmock('react');
+jest.unmock('@edx/frontend-platform/i18n');
+jest.mock('../SelectGroup', () => jest.fn(() => <div data-testid="select-group">SelectGroup</div>));
+jest.mock('./hooks', () => jest.fn());
 
-const props = {
-  cohorts: {
-    value: 'test-cohort',
+initializeMocks();
+
+describe('StudentGroupsFilter', () => {
+  const mockUpdateQueryParams = jest.fn();
+
+  const mockTracksData = {
+    value: 'test-track-value',
     entries: [
-      { value: 'v1', name: 'n1' },
-      { value: 'v2', name: 'n2' },
-      { value: 'v3', name: 'n3' },
+      { value: 'track1', name: 'Track 1' },
+      { value: 'track2', name: 'Track 2' },
+    ],
+    handleChange: jest.fn(),
+  };
+
+  const mockCohortsData = {
+    value: 'test-cohort-value',
+    entries: [
+      { value: 'cohort1', name: 'Cohort 1' },
+      { value: 'cohort2', name: 'Cohort 2' },
     ],
     handleChange: jest.fn(),
     isDisabled: false,
-  },
-  tracks: {
-    value: 'test-track',
-    entries: [
-      { value: 'v1', name: 'n1' },
-      { value: 'v2', name: 'n2' },
-      { value: 'v3', name: 'n3' },
-      { value: 'v4', name: 'n4' },
-    ],
-    handleChange: jest.fn(),
-  },
-};
-useStudentGroupsFilterData.mockReturnValue(props);
-const updateQueryParams = jest.fn();
+  };
 
-let el;
-describe('StudentGroupsFilter component', () => {
-  beforeAll(() => {
+  beforeEach(() => {
     jest.clearAllMocks();
-    el = shallow(<StudentGroupsFilter updateQueryParams={updateQueryParams} />);
-  });
-  describe('behavior', () => {
-    it('initializes hooks', () => {
-      expect(useStudentGroupsFilterData).toHaveBeenCalledWith({ updateQueryParams });
-      expect(useIntl).toHaveBeenCalledWith();
+    useStudentGroupsFilterData.mockReturnValue({
+      tracks: mockTracksData,
+      cohorts: mockCohortsData,
     });
   });
-  describe('render', () => {
-    test('snapshot', () => {
-      expect(el.snapshot).toMatchSnapshot();
+
+  it('calls useStudentGroupsFilterData hook with updateQueryParams', () => {
+    render(<StudentGroupsFilter updateQueryParams={mockUpdateQueryParams} />);
+
+    expect(useStudentGroupsFilterData).toHaveBeenCalledWith({
+      updateQueryParams: mockUpdateQueryParams,
     });
-    test('track options', () => {
-      const {
-        options,
-        onChange,
-        value,
-      } = el.instance.findByType(SelectGroup)[0].props;
-      expect(value).toEqual(props.tracks.value);
-      expect(onChange).toEqual(props.tracks.handleChange);
-      expect(options.length).toEqual(5);
-      const testEntry = props.tracks.entries[0];
-      const optionProps = options[1].props;
-      expect(optionProps.value).toEqual(testEntry.value);
-      expect(optionProps.children).toEqual(testEntry.name);
+  });
+
+  it('renders two SelectGroup components', () => {
+    render(<StudentGroupsFilter updateQueryParams={mockUpdateQueryParams} />);
+
+    expect(SelectGroup).toHaveBeenCalledTimes(2);
+    expect(screen.getAllByTestId('select-group')).toHaveLength(2);
+  });
+
+  describe('tracks SelectGroup', () => {
+    it('renders tracks SelectGroup with correct props', () => {
+      render(<StudentGroupsFilter updateQueryParams={mockUpdateQueryParams} />);
+
+      const tracksCall = SelectGroup.mock.calls[0][0];
+      expect(tracksCall.id).toBe('Tracks');
+      expect(tracksCall.value).toBe(mockTracksData.value);
+      expect(tracksCall.onChange).toBe(mockTracksData.handleChange);
     });
-    test('cohort options', () => {
-      const {
-        options,
-        onChange,
-        disabled,
-        value,
-      } = el.instance.findByType(SelectGroup)[1].props;
-      expect(value).toEqual(props.cohorts.value);
-      expect(disabled).toEqual(false);
-      expect(onChange).toEqual(props.cohorts.handleChange);
-      expect(options.length).toEqual(4);
-      const testEntry = props.cohorts.entries[0];
-      const optionProps = options[1].props;
-      expect(optionProps.value).toEqual(testEntry.value);
-      expect(optionProps.children).toEqual(testEntry.name);
+
+    it('includes trackAll option in tracks SelectGroup', () => {
+      render(<StudentGroupsFilter updateQueryParams={mockUpdateQueryParams} />);
+
+      const tracksCall = SelectGroup.mock.calls[0][0];
+      const { options } = tracksCall;
+
+      expect(options).toHaveLength(3);
+      expect(options[0].props.value).toBeDefined();
+      expect(options[0].props.children).toBeDefined();
+    });
+
+    it('includes track entries in tracks SelectGroup options', () => {
+      render(<StudentGroupsFilter updateQueryParams={mockUpdateQueryParams} />);
+
+      const tracksCall = SelectGroup.mock.calls[0][0];
+      const { options } = tracksCall;
+
+      expect(options[1].props.value).toBe('track1');
+      expect(options[1].props.children).toBe('Track 1');
+      expect(options[2].props.value).toBe('track2');
+      expect(options[2].props.children).toBe('Track 2');
+    });
+  });
+
+  describe('cohorts SelectGroup', () => {
+    it('renders cohorts SelectGroup with correct props', () => {
+      render(<StudentGroupsFilter updateQueryParams={mockUpdateQueryParams} />);
+
+      const cohortsCall = SelectGroup.mock.calls[1][0];
+      expect(cohortsCall.id).toBe('Cohorts');
+      expect(cohortsCall.value).toBe(mockCohortsData.value);
+      expect(cohortsCall.onChange).toBe(mockCohortsData.handleChange);
+      expect(cohortsCall.disabled).toBe(mockCohortsData.isDisabled);
+    });
+
+    it('includes cohortAll option in cohorts SelectGroup', () => {
+      render(<StudentGroupsFilter updateQueryParams={mockUpdateQueryParams} />);
+
+      const cohortsCall = SelectGroup.mock.calls[1][0];
+      const { options } = cohortsCall;
+
+      expect(options).toHaveLength(3);
+      expect(options[0].props.value).toBeDefined();
+      expect(options[0].props.children).toBeDefined();
+    });
+
+    it('includes cohort entries in cohorts SelectGroup options', () => {
+      render(<StudentGroupsFilter updateQueryParams={mockUpdateQueryParams} />);
+
+      const cohortsCall = SelectGroup.mock.calls[1][0];
+      const { options } = cohortsCall;
+
+      expect(options[1].props.value).toBe('cohort1');
+      expect(options[1].props.children).toBe('Cohort 1');
+      expect(options[2].props.value).toBe('cohort2');
+      expect(options[2].props.children).toBe('Cohort 2');
+    });
+
+    it('passes disabled state to cohorts SelectGroup', () => {
+      useStudentGroupsFilterData.mockReturnValue({
+        tracks: mockTracksData,
+        cohorts: { ...mockCohortsData, isDisabled: true },
+      });
+
+      render(<StudentGroupsFilter updateQueryParams={mockUpdateQueryParams} />);
+
+      const cohortsCall = SelectGroup.mock.calls[1][0];
+      expect(cohortsCall.disabled).toBe(true);
+    });
+  });
+
+  describe('with empty entries', () => {
+    it('handles empty tracks entries', () => {
+      useStudentGroupsFilterData.mockReturnValue({
+        tracks: { ...mockTracksData, entries: [] },
+        cohorts: mockCohortsData,
+      });
+
+      render(<StudentGroupsFilter updateQueryParams={mockUpdateQueryParams} />);
+
+      const tracksCall = SelectGroup.mock.calls[0][0];
+      expect(tracksCall.options).toHaveLength(1);
+    });
+
+    it('handles empty cohorts entries', () => {
+      useStudentGroupsFilterData.mockReturnValue({
+        tracks: mockTracksData,
+        cohorts: { ...mockCohortsData, entries: [] },
+      });
+
+      render(<StudentGroupsFilter updateQueryParams={mockUpdateQueryParams} />);
+
+      const cohortsCall = SelectGroup.mock.calls[1][0];
+      expect(cohortsCall.options).toHaveLength(1);
     });
   });
 });
