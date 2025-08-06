@@ -21,7 +21,7 @@ export const SearchControls = () => {
     <div className="search-container">
       <SearchField
         onSubmit={onSubmit}
-        inputLabel={inputLabel}
+        label={inputLabel}
         onBlur={onBlur}
         onClear={onClear}
         value={searchValue}
