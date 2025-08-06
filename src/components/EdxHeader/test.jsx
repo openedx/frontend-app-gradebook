@@ -1,21 +1,23 @@
 import React from 'react';
-import { shallow } from '@edx/react-unit-test-utils';
-
+import { render, screen } from '@testing-library/react';
 import { getConfig } from '@edx/frontend-platform';
 
 import Header from '.';
 
-jest.mock('@openedx/paragon', () => ({
-  Hyperlink: () => 'Hyperlink',
-}));
+jest.unmock('@openedx/paragon');
+
 jest.mock('@edx/frontend-platform', () => ({
   getConfig: jest.fn(),
 }));
 
 describe('Header', () => {
-  test('snapshot - has edx link with logo url', () => {
+  test('has edx link with logo url', () => {
     const url = 'www.ourLogo.url';
-    getConfig.mockReturnValue({ LOGO_URL: url });
-    expect(shallow(<Header />).snapshot).toMatchSnapshot();
+    const baseUrl = 'www.lms.url';
+    getConfig.mockReturnValue({ LOGO_URL: url, LMS_BASE_URL: baseUrl });
+
+    render(<Header />);
+    expect(screen.getByRole('link')).toHaveAttribute('href', `${baseUrl}/dashboard`);
+    expect(screen.getByAltText('edX logo')).toHaveAttribute('src', url);
   });
 });
