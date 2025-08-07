@@ -1,13 +1,14 @@
 import React from 'react';
-import { shallow } from '@edx/react-unit-test-utils';
-import { useIntl } from '@edx/frontend-platform/i18n';
-import { Button } from '@openedx/paragon';
+import { render, screen } from '@testing-library/react';
+import { IntlProvider } from '@edx/frontend-platform/i18n';
 
-import PercentGroup from '../PercentGroup';
 import useCourseGradeFilterData from './hooks';
 import CourseFilter from '.';
 
-jest.mock('../PercentGroup', () => 'PercentGroup');
+jest.unmock('@openedx/paragon');
+jest.unmock('react');
+jest.unmock('@edx/frontend-platform/i18n');
+
 jest.mock('./hooks', () => ({ __esModule: true, default: jest.fn() }));
 
 const hookData = {
@@ -27,48 +28,37 @@ useCourseGradeFilterData.mockReturnValue(hookData);
 
 const updateQueryParams = jest.fn();
 
-let el;
 describe('CourseFilter component', () => {
   beforeEach(() => {
     jest.clearAllMocks();
-    el = shallow(<CourseFilter updateQueryParams={updateQueryParams} />);
-  });
-  describe('behavior', () => {
-    it('initializes hooks', () => {
-      expect(useCourseGradeFilterData).toHaveBeenCalledWith({ updateQueryParams });
-      expect(useIntl).toHaveBeenCalledWith();
-    });
   });
   describe('render', () => {
+    beforeEach(() => {
+      jest.clearAllMocks();
+    });
     describe('with selected assignment', () => {
-      test('snapshot', () => {
-        expect(el.snapshot).toMatchSnapshot();
+      beforeEach(() => {
+        render(<IntlProvider locale="en"><CourseFilter updateQueryParams={updateQueryParams} /></IntlProvider>);
       });
+
       it('renders a PercentGroup for both Max and Min filters', () => {
-        let { props } = el.instance.findByType(PercentGroup)[0];
-        expect(props.value).toEqual(hookData.min.value);
-        expect(props.onChange).toEqual(hookData.min.onChange);
-        props = el.instance.findByType(PercentGroup)[1].props;
-        expect(props.value).toEqual(hookData.max.value);
-        expect(props.onChange).toEqual(hookData.max.onChange);
+        expect(screen.getByRole('spinbutton', { name: 'Min Grade' })).toHaveValue(hookData.min.value);
+        expect(screen.getByRole('spinbutton', { name: 'Max Grade' })).toHaveValue(hookData.max.value);
       });
       it('renders a submit button', () => {
-        const { props } = el.instance.findByType(Button)[0];
-        expect(props.disabled).toEqual(false);
-        expect(props.onClick).toEqual(hookData.handleApplyClick);
+        expect(screen.getByRole('button', { name: 'Apply' })).toBeInTheDocument();
+        // Expect it to be enabled
+        expect(screen.getByRole('button', { name: 'Apply' })).not.toBeDisabled();
       });
     });
     describe('if disabled', () => {
       beforeEach(() => {
+        jest.clearAllMocks();
         useCourseGradeFilterData.mockReturnValueOnce({ ...hookData, isDisabled: true });
-        el = shallow(<CourseFilter updateQueryParams={updateQueryParams} />);
-      });
-      test('snapshot', () => {
-        expect(el.snapshot).toMatchSnapshot();
+        render(<IntlProvider locale="en"><CourseFilter updateQueryParams={updateQueryParams} /></IntlProvider>);
       });
       it('disables submit', () => {
-        const { props } = el.instance.findByType(Button)[0];
-        expect(props.disabled).toEqual(true);
+        expect(screen.getByRole('button', { name: 'Apply' })).toBeDisabled();
       });
     });
   });
