@@ -1,6 +1,6 @@
 {
   "name": "@edx/frontend-app-gradebook",
-  "version": "1.6.3",
+  "version": "1.6.2",
   "description": "edx editable gradebook-ui to manipulate grade overrides on subsections",
   "repository": {
     "type": "git",
@@ -16,7 +16,7 @@
     "semantic-release": "semantic-release",
     "start": "fedx-scripts webpack-dev-server --progress",
     "dev": "PUBLIC_PATH=/gradebook/ MFE_CONFIG_API_URL='http://localhost:8000/api/mfe_config/v1' fedx-scripts webpack-dev-server --progress --host apps.local.openedx.io",
-    "test": "TZ=GMT NODE_ENV=test fedx-scripts jest --coverage --passWithNoTests",
+    "test": "TZ=GMT fedx-scripts jest --coverage --passWithNoTests",
     "watch-tests": "jest --watch"
   },
   "author": "edX",
@@ -44,8 +44,6 @@
     "@openedx/paragon": "^22.16.0",
     "@redux-beacon/segment": "^1.0.0",
     "@reduxjs/toolkit": "^1.5.1",
-    "@testing-library/jest-dom": "^6.6.3",
-    "@testing-library/react": "^16.2.0",
     "classnames": "^2.2.6",
     "core-js": "3.6.5",
     "email-prop-type": "^1.1.7",
@@ -72,6 +70,8 @@
   "devDependencies": {
     "@edx/browserslist-config": "^1.1.1",
     "@openedx/frontend-build": "^14.3.3",
+    "@testing-library/jest-dom": "^6.6.4",
+    "@testing-library/react": "^16.3.0",
     "es-check": "^2.3.0",
     "fetch-mock": "^12.2.0",
     "identity-obj-proxy": "^3.0.0",
