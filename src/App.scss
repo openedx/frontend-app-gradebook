@@ -1,14 +1,14 @@
-@import "~@edx/brand/paragon/fonts";
-@import "~@edx/brand/paragon/variables";
-@import "~@openedx/paragon/scss/core/core";
-@import "~@edx/brand/paragon/overrides";
+@use "~@edx/brand/paragon/fonts";
+@use "~@edx/brand/paragon/variables";
+@use "~@openedx/paragon/scss/core/core";
+@use "~@edx/brand/paragon/overrides";
 
 $fa-font-path: "~font-awesome/fonts";
-@import "~font-awesome/scss/font-awesome";
+@use "~font-awesome/scss/font-awesome";
 
 $input-focus-box-shadow: var(--pgn-elevation-form-input-base); // hack to get upgrade to paragon 4.0.0 to work
 
-@import "./components/GradesView/GradesView";
-@import "./components/BulkManagementHistoryView/BulkManagementHistoryView";
-@import "./components/WithSidebar/WithSidebar";
-@import "./components/GradebookFilters/GradebookFilters";
+@use "./components/GradesView/GradesView";
+@use "./components/BulkManagementHistoryView/BulkManagementHistoryView";
+@use "./components/WithSidebar/WithSidebar";
+@use "./components/GradebookFilters/GradebookFilters";
