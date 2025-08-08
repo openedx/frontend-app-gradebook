@@ -1,6 +1,1 @@
-coverage/*
-dist/
-node_modules/
 src/postcss.config.js
-src/segment.js
-src/lightning.js
