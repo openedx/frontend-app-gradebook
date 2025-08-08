@@ -1,13 +1,14 @@
 import React from 'react';
 
-import { useIntl, getLocale, isRtl } from '@edx/frontend-platform/i18n';
+import { useIntl, getLocale, isRtl } from '@openedx/frontend-base';
+import { InfoOutline } from '@openedx/paragon/icons';
 import {
   Icon,
   OverlayTrigger,
   Tooltip,
 } from '@openedx/paragon';
 
-import { StrictDict } from 'utils';
+import { StrictDict } from '../../../utils';
 
 import messages from './messages';
 
@@ -36,7 +37,7 @@ const TotalGradeLabelReplacement = () => {
           {formatMessage(messages.totalGradeHeading)}
           <div id="courseGradeTooltipIcon">
             <Icon
-              className="fa fa-info-circle"
+              src={InfoOutline}
               screenReaderText={formatMessage(messages.totalGradePercentage)}
             />
           </div>
@@ -66,7 +67,7 @@ const UsernameLabelReplacement = () => {
       </div>
       <div className="font-weight-normal student-key">
         {formatMessage(messages.studentKeyLabel)}
-        { mastersOnlyFieldAsterisk }
+        {mastersOnlyFieldAsterisk}
       </div>
     </div>
   );
@@ -81,7 +82,7 @@ const MastersOnlyLabelReplacement = (message) => {
   return (
     <div>
       {formatMessage(message)}
-      { mastersOnlyFieldAsterisk }
+      {mastersOnlyFieldAsterisk}
     </div>
   );
 };

@@ -5,10 +5,10 @@ import classNames from 'classnames';
 import { connect } from 'react-redux';
 
 import { StatefulButton, Icon } from '@openedx/paragon';
-import { FormattedMessage } from '@edx/frontend-platform/i18n';
+import { FormattedMessage } from '@openedx/frontend-base';
 
-import selectors from 'data/selectors';
-import { StrictDict } from 'utils';
+import selectors from '../../data/selectors';
+import { StrictDict } from '../../utils';
 
 export const buttonStates = StrictDict({
   pending: 'pending',

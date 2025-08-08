@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 
 import { Button } from '@openedx/paragon';
-import { useIntl } from '@edx/frontend-platform/i18n';
+import { useIntl } from '@openedx/frontend-base';
 
 import messages from '../messages';
 import PercentGroup from '../PercentGroup';

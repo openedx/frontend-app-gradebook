@@ -1,9 +1,9 @@
 import React from 'react';
 
-import { useIntl } from '@edx/frontend-platform/i18n';
+import { useIntl } from '@openedx/frontend-base';
 
-import { StrictDict } from 'utils';
-import { selectors } from 'data/redux/hooks';
+import { StrictDict } from '../../../utils';
+import { selectors } from '../../../data/redux/hooks';
 
 import messages from './messages';
 import HistoryHeader from './HistoryHeader';

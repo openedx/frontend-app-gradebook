@@ -1,6 +1,6 @@
-import { useIntl } from '@edx/frontend-platform/i18n';
+import { useIntl } from '@openedx/frontend-base';
 
-import { actions, selectors, thunkActions } from 'data/redux/hooks';
+import { actions, selectors, thunkActions } from '../../../data/redux/hooks';
 
 import messages from './messages';
 
