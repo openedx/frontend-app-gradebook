@@ -36,19 +36,16 @@ i18n.concat:
 extract_translations: | requirements i18n.extract i18n.concat
 
 
-# Experimental: OEP-58 Pulls translations using atlas
+# Pulls translations using atlas.
 pull_translations:
-	rm -rf src/i18n/messages
 	mkdir src/i18n/messages
 	cd src/i18n/messages \
-	  && atlas pull $(ATLAS_OPTIONS) \
-	           translations/frontend-component-footer/src/i18n/messages:frontend-component-footer \
-	           translations/frontend-component-header/src/i18n/messages:frontend-component-header \
-	           translations/frontend-platform/src/i18n/messages:frontend-platform \
-	           translations/paragon/src/i18n/messages:paragon \
-	           translations/frontend-app-gradebook/src/i18n/messages:frontend-app-gradebook
+	   && atlas pull $(ATLAS_OPTIONS) \
+	            translations/frontend-base/src/i18n/messages:frontend-base \
+	            translations/paragon/src/i18n/messages:paragon \
+	            translations/frontend-app-gradebook/src/i18n/messages:frontend-app-gradebook
 
-	$(intl_imports) frontend-platform paragon frontend-component-header frontend-component-footer frontend-app-gradebook
+	$(intl_imports) frontend-base paragon frontend-app-gradebook
 
 # This target is used by CI.
 validate-no-uncommitted-package-lock-changes:
