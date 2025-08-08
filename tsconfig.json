@@ -1,0 +1,15 @@
+{
+  "extends": "@openedx/frontend-base/config/tsconfig.json",
+  "compilerOptions": {
+    "rootDir": ".",
+    "outDir": "dist",
+  },
+  "include": [
+    "src/**/*",
+    "app.d.ts",
+    "babel.config.js",
+    ".eslintrc.js",
+    "jest.config.js",
+    "site.config.*.tsx",
+  ],
+}
