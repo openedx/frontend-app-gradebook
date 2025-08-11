@@ -4,7 +4,8 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { connect } from 'react-redux';
 
-import { StatefulButton, Icon } from '@openedx/paragon';
+import { StatefulButton, Icon, Spinner } from '@openedx/paragon';
+import { Download, Upload } from '@openedx/paragon/icons';
 import { FormattedMessage } from '@openedx/frontend-base';
 
 import selectors from '../../data/selectors';
@@ -36,11 +37,11 @@ export class NetworkButton extends React.Component {
   }
 
   get icons() {
-    const iconClass = 'fa mr-2';
-    const defaultIcon = this.props.import ? 'fa-upload' : 'fa-download';
+    const iconClass = 'mr-2';
+    const defaultIconSrc = this.props.import ? Upload : Download;
     return {
-      pending: (<Icon className={classNames(iconClass, 'fa-spinner fa-spin')} />),
-      default: (<Icon className={classNames(iconClass, defaultIcon)} />),
+      pending: (<Spinner animation="border" size="sm" className={iconClass} />),
+      default: (<Icon src={defaultIconSrc} className={iconClass} />),
     };
   }
 
