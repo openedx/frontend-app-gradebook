@@ -6,7 +6,7 @@ import { Route } from 'react-router-dom';
 import store from 'data/store';
 import GradebookPage from 'containers/GradebookPage';
 
-import App from './App';
+import App from './app';
 
 jest.mock('react-router-dom', () => ({
   BrowserRouter: () => 'BrowserRouter',
