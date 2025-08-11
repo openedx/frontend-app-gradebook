@@ -1,4 +1,4 @@
-import { actions, selectors } from 'data/redux/hooks';
+import { actions, selectors } from '../../../data/redux/hooks';
 
 export const useBulkManagementControlsData = () => {
   const gradeExportUrl = selectors.root.useGradeExportUrl();

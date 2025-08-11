@@ -1,4 +1,4 @@
-import { StrictDict } from 'utils';
+import { StrictDict } from '../../utils';
 
 const EMAIL_HEADING = 'Email';
 const TOTAL_COURSE_GRADE_HEADING = 'Total Grade (%)';

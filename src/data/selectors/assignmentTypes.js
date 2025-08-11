@@ -1,4 +1,4 @@
-import { StrictDict } from 'utils';
+import { StrictDict } from '../../utils';
 
 const areGradesFrozen = ({ assignmentTypes }) => assignmentTypes.areGradesFrozen;
 const allAssignmentTypes = ({ assignmentTypes }) => assignmentTypes.results;

@@ -1,8 +1,7 @@
-/* eslint-disable import/no-self-import */
-import { StrictDict } from 'utils';
+import { StrictDict } from '../../utils';
 
-import actions from 'data/actions';
-import selectors from 'data/selectors';
+import actions from '../actions';
+import selectors from '../selectors';
 import { fetchGradeOverrideHistory } from './grades';
 import { fetchRoles } from './roles';
 import * as module from './app';
@@ -32,12 +31,12 @@ export const filterMenu = StrictDict({
   },
 });
 
-export const setModalStateFromTable = ({ userEntry, subsection }) => (
+export const setModalStateFromTable = ({ userEntry, subsection }) =>
   (dispatch) => {
     dispatch(fetchGradeOverrideHistory(subsection.module_id, userEntry.user_id));
     dispatch(actions.app.setModalStateFromTable({ subsection, userEntry }));
   }
-);
+  ;
 
 export default StrictDict({
   initialize,

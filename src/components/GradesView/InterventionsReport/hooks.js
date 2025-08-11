@@ -1,4 +1,4 @@
-import { actions, selectors } from 'data/redux/hooks';
+import { actions, selectors } from '../../../data/redux/hooks';
 
 const useInterventionsReportData = () => {
   const interventionExportUrl = selectors.root.useInterventionExportUrl();

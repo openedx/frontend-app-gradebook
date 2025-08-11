@@ -1,4 +1,4 @@
-import { selectors, actions, thunkActions } from 'data/redux/hooks';
+import { selectors, actions, thunkActions } from '../../../data/redux/hooks';
 
 export const useEditModalData = () => {
   const error = selectors.grades.useGradeData().gradeOverrideHistoryError;

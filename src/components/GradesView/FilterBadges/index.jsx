@@ -2,7 +2,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { badgeOrder } from 'data/constants/filters';
+import { badgeOrder } from '../../../data/constants/filters';
 
 import FilterBadge from './FilterBadge';
 

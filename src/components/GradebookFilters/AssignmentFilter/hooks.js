@@ -2,7 +2,7 @@ import {
   selectors,
   actions,
   thunkActions,
-} from 'data/redux/hooks';
+} from '../../../data/redux/hooks';
 
 export const useAssignmentFilterData = ({
   updateQueryParams,

@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 
 import { Button } from '@openedx/paragon';
 
-import { selectors, thunkActions } from 'data/redux/hooks';
-import transforms from 'data/redux/transforms';
+import { selectors, thunkActions } from '../../../data/redux/hooks';
+import transforms from '../../../data/redux/transforms';
 import * as module from './GradeButton';
 
 export const useGradeButtonData = ({ entry, subsection }) => {

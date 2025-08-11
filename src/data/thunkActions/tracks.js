@@ -1,10 +1,9 @@
-/* eslint-disable import/prefer-default-export */
-import { StrictDict } from 'utils';
+import { StrictDict } from '../../utils';
 
-import lms from 'data/services/lms';
-import actions from 'data/actions';
+import lms from '../../data/services/lms';
+import actions from '../../data/actions';
 
-export const fetchTracks = () => (
+export const fetchTracks = () =>
   (dispatch) => {
     dispatch(actions.tracks.fetching.started());
     return lms.api.fetch.tracks()
@@ -15,7 +14,7 @@ export const fetchTracks = () => (
         dispatch(actions.tracks.fetching.error());
       });
   }
-);
+  ;
 
 export default StrictDict({
   fetchTracks,
