@@ -9,5 +9,6 @@ module.exports = createConfig('jest', {
     'src/segment.js',
     'src/postcss.config.js',
     'testUtils', // don't unit test jest mocking tools
+    'testUtilsExtra', // don't unit test jest mocking tools
   ],
 });
