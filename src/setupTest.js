@@ -1,3 +1,8 @@
+import siteConfig from 'site.config';
+import { mergeSiteConfig } from '@openedx/frontend-base';
+
+mergeSiteConfig(siteConfig);
+
 // These configuration values are usually set in webpack's EnvironmentPlugin however
 // Jest does not use webpack so we need to set these so for testing
 process.env.LMS_BASE_URL = 'http://localhost:18000';

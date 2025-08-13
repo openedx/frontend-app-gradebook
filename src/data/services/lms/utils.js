@@ -1,6 +1,6 @@
 import queryString from 'query-string';
-import { getAuthenticatedHttpClient } from '@edx/frontend-platform/auth';
-import { filters } from 'data/constants/filters';
+import { getAuthenticatedHttpClient } from '@openedx/frontend-base';
+import { filters } from '../../constants/filters';
 
 /**
  * get(url)

@@ -1,12 +1,12 @@
 /* eslint-disable react/sort-comp, react/button-has-type */
 import React from 'react';
 import PropTypes from 'prop-types';
-import { FormattedMessage } from '@edx/frontend-platform/i18n';
+import { FormattedMessage } from '@openedx/frontend-base';
 import { connect } from 'react-redux';
 
 import { Alert } from '@openedx/paragon';
 
-import selectors from 'data/selectors';
+import selectors from '../../data/selectors';
 import messages from './messages';
 
 /**

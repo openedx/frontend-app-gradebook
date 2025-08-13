@@ -1,9 +1,8 @@
-/* eslint-disable import/prefer-default-export */
-import { StrictDict } from 'utils';
-import actions from 'data/actions';
-import lms from 'data/services/lms';
+import { StrictDict } from '../../utils';
+import actions from '../actions';
+import lms from '../services/lms';
 
-export const fetchCohorts = () => (
+export const fetchCohorts = () =>
   (dispatch) => {
     dispatch(actions.cohorts.fetching.started());
     return lms.api.fetch.cohorts()
@@ -14,6 +13,6 @@ export const fetchCohorts = () => (
         dispatch(actions.cohorts.fetching.error());
       });
   }
-);
+  ;
 
 export default StrictDict({ fetchCohorts });

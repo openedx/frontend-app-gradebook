@@ -1,6 +1,6 @@
-import { useIntl } from '@edx/frontend-platform/i18n';
+import { useIntl } from '@openedx/frontend-base';
 
-import { actions, thunkActions } from 'data/redux/hooks';
+import { actions, thunkActions } from '../../data/redux/hooks';
 import messages from './messages';
 
 export const useGradesViewData = ({ updateQueryParams }) => {
@@ -25,6 +25,12 @@ export const useGradesViewData = ({ updateQueryParams }) => {
     handleFilterBadgeClose,
     mastersHint: formatMessage(messages.mastersHint),
   };
+};
+
+export const useGradesViewSpinnerMessages = () => {
+  const { formatMessage } = useIntl();
+  const spinnerScreenReaderText = formatMessage(messages.spinnerScreenReaderText);
+  return { spinnerScreenReaderText };
 };
 
 export default useGradesViewData;

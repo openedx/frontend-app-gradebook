@@ -36,9 +36,6 @@ jobs:
     - name: Run Test
       run: npm run test
 
-    - name: Run Build
-      run: npm run build
-
     - name: Run Coverage
       uses: codecov/codecov-action@v5
       with:
@@ -47,7 +44,7 @@ jobs:
 
     - name: Send failure notification
       if: ${{ failure() }}
-      uses: dawidd6/action-send-mail@v4
+      uses: dawidd6/action-send-mail@v6
       with:
         server_address: email-smtp.us-east-1.amazonaws.com
         server_port: 465

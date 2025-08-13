@@ -7,8 +7,8 @@ import {
   IconButton,
   Form,
 } from '@openedx/paragon';
-import { Close } from '@openedx/paragon/icons';
-import { useIntl } from '@edx/frontend-platform/i18n';
+import { Close, FilterAlt } from '@openedx/paragon/icons';
+import { useIntl } from '@openedx/frontend-base';
 
 import messages from './messages';
 import AssignmentTypeFilter from './AssignmentTypeFilter';
@@ -28,7 +28,7 @@ export const GradebookFilters = ({ updateQueryParams }) => {
   return (
     <>
       <div className="filter-sidebar-header">
-        <h2><Icon className="fa fa-filter" /></h2>
+        <h2><Icon src={FilterAlt} /></h2>
         <IconButton
           className="p-1"
           onClick={closeMenu}

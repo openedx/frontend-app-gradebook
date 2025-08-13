@@ -1,4 +1,4 @@
-import { defineMessages } from '@edx/frontend-platform/i18n';
+import { defineMessages } from '@openedx/frontend-base';
 
 const messages = defineMessages({
   filterStepHeading: {
@@ -15,6 +15,11 @@ const messages = defineMessages({
     id: 'gradebook.GradesView.mastersHint',
     defaultMessage: "available for learners in the Master's track only",
     description: 'Masters feature availability hint on Grades Tab',
+  },
+  spinnerScreenReaderText: {
+    id: 'gradebook.GradesView.spinnerScreenReaderText',
+    defaultMessage: 'Loading...',
+    description: 'Screen reader text for loading spinner',
   },
 });
 

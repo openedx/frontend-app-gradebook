@@ -8,7 +8,7 @@ import {
 } from '@edx/frontend-platform';
 
 import messages from './i18n';
-import App from './App';
+import App from './app';
 import '.';
 
 // These need to be var not let so they get hoisted

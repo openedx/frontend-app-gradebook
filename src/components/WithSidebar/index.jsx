@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import classNames from 'classnames';
 
-import selectors from 'data/selectors';
-import thunkActions from 'data/thunkActions';
+import selectors from '../../data/selectors';
+import thunkActions from '../../data/thunkActions';
 
 /**
  * WithSidebar
@@ -34,10 +34,10 @@ export class WithSidebar extends React.Component {
     return (
       <div className="d-flex sidebar-container page-gradebook">
         <aside className={this.sidebarClassNames} onTransitionEnd={this.props.handleSlideDone}>
-          { this.props.sidebar }
+          {this.props.sidebar}
         </aside>
         <div className={this.contentClassNames}>
-          { this.props.children}
+          {this.props.children}
         </div>
       </div>
     );

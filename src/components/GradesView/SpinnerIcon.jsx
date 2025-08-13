@@ -1,8 +1,9 @@
 import React from 'react';
 
-import { Icon } from '@openedx/paragon';
+import { Spinner } from '@openedx/paragon';
 
-import { selectors } from 'data/redux/hooks';
+import { selectors } from '../../data/redux/hooks';
+import { useGradesViewSpinnerMessages } from './hooks';
 
 /**
  * <SpinnerIcon />
@@ -10,10 +11,15 @@ import { selectors } from 'data/redux/hooks';
  * redux state says it should.
  */
 export const SpinnerIcon = () => {
+  const { spinnerScreenReaderText } = useGradesViewSpinnerMessages();
   const show = selectors.root.useShouldShowSpinner();
   return show && (
     <div className="spinner-overlay">
-      <Icon className="fa fa-spinner fa-spin fa-5x color-black" />
+      <Spinner
+        animation="border"
+        className="mie-3 color-black"
+        screenReaderText={spinnerScreenReaderText}
+      />
     </div>
   );
 };

@@ -1,11 +1,11 @@
 /* eslint-disable react/button-has-type, import/no-named-as-default */
 import React from 'react';
 
-import { useIntl } from '@edx/frontend-platform/i18n';
+import { useIntl } from '@openedx/frontend-base';
 
 import { Form } from '@openedx/paragon';
 
-import NetworkButton from 'components/NetworkButton';
+import NetworkButton from '../../../components/NetworkButton';
 import messages from './messages';
 import useImportGradesButtonData from './hooks';
 

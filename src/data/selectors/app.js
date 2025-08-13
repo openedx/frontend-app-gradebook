@@ -1,5 +1,4 @@
-/* eslint-disable import/no-self-import */
-import { StrictDict } from 'utils';
+import { StrictDict } from '../../utils';
 import simpleSelectorFactory from '../utils';
 import * as module from './app';
 import { minGrade, maxGrade } from './grades';

@@ -1,4 +1,4 @@
-import { StrictDict } from 'utils';
+import { StrictDict } from '../../utils';
 
 import app from './app';
 import assignmentTypes from './assignmentTypes';
