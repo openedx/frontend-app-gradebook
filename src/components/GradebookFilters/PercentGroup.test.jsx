@@ -29,10 +29,13 @@ describe('PercentGroup', () => {
       render(<PercentGroup {...props} />);
       expect(screen.getByRole('spinbutton', { name: 'Group Label' })).toBeInTheDocument();
       expect(screen.getByText('Group Label')).toBeVisible();
+      expect(screen.getByText('%')).toBeVisible();
     });
     test('disabled', () => {
       render(<PercentGroup {...props} disabled />);
       expect(screen.getByRole('spinbutton', { name: 'Group Label' })).toBeDisabled();
+      expect(screen.getByText('Group Label')).toBeVisible();
+      expect(screen.getByText('%')).toBeVisible();
     });
   });
 });

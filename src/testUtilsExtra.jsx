@@ -1,4 +1,10 @@
 /* eslint-disable import/no-extraneous-dependencies */
+
+// This a file with extra things required for being able to mock services etc...
+// Normally this is on the `testUtils`file, but given the current state of the tests
+// It creates a non trivial circular dependency, which is avoided by not having the
+// mocks that currently exists on testUtils, and that will be gone after the DEPR of react-unit-test-utils
+// so to wrapup the migration this file needs to be integrated in testUtils as the last step.
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
