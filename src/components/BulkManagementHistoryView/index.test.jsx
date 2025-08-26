@@ -1,5 +1,4 @@
 import { render, initializeMocks, screen } from 'testUtilsExtra';
-import { formatMessage } from 'testUtils';
 
 import { BulkManagementHistoryView } from '.';
 import messages from './messages';
@@ -7,6 +6,9 @@ import messages from './messages';
 jest.unmock('@openedx/paragon');
 jest.unmock('react');
 jest.unmock('@edx/frontend-platform/i18n');
+
+jest.mock('./BulkManagementAlerts', () => jest.fn(() => <div>BulkManagementAlerts</div>));
+jest.mock('./HistoryTable', () => jest.fn(() => <div>HistoryTable</div>));
 
 initializeMocks();
 
@@ -17,7 +19,10 @@ describe('BulkManagementHistoryView', () => {
     });
     describe('render alerts and heading', () => {
       it('heading - h4 loaded from messages', () => {
-        expect(screen.getByText(formatMessage(messages.heading))).toBeInTheDocument();
+        expect(screen.getByText(messages.heading.defaultMessage)).toBeInTheDocument();
+        expect(screen.getByText(messages.helpText.defaultMessage)).toBeInTheDocument();
+        expect(screen.getByText('BulkManagementAlerts')).toBeInTheDocument();
+        expect(screen.getByText('HistoryTable')).toBeInTheDocument();
       });
     });
   });
