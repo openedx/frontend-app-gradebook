@@ -1,17 +1,18 @@
-import React from 'react';
-import { shallow } from '@edx/react-unit-test-utils';
-import { useIntl } from '@edx/frontend-platform/i18n';
-import { Button } from '@openedx/paragon';
+/* eslint-disable import/no-extraneous-dependencies */
+import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import { IntlProvider } from '@edx/frontend-platform/i18n';
 
-import PercentGroup from '../PercentGroup';
 import useAssignmentGradeFilterData from './hooks';
 import AssignmentFilter from '.';
 
-jest.mock('../PercentGroup', () => 'PercentGroup');
 jest.mock('./hooks', () => ({ __esModule: true, default: jest.fn() }));
+jest.unmock('@openedx/paragon');
+jest.unmock('react');
+jest.unmock('@edx/frontend-platform/i18n');
 
 const hookData = {
-  handleChange: jest.fn(),
+  handleSubmit: jest.fn(),
   handleSetMax: jest.fn(),
   handleSetMin: jest.fn(),
   selectedAssignment: 'test-assignment',
@@ -22,37 +23,39 @@ useAssignmentGradeFilterData.mockReturnValue(hookData);
 
 const updateQueryParams = jest.fn();
 
-let el;
 describe('AssignmentFilter component', () => {
-  beforeEach(() => {
-    jest.clearAllMocks();
-    el = shallow(<AssignmentFilter updateQueryParams={updateQueryParams} />);
-  });
   describe('behavior', () => {
     it('initializes hooks', () => {
+      render(<IntlProvider locale="en" messages={{}}><AssignmentFilter updateQueryParams={updateQueryParams} /></IntlProvider>);
       expect(useAssignmentGradeFilterData).toHaveBeenCalledWith({ updateQueryParams });
-      expect(useIntl).toHaveBeenCalledWith();
     });
   });
   describe('render', () => {
     describe('with selected assignment', () => {
-      test('snapshot', () => {
-        expect(el.snapshot).toMatchSnapshot();
+      beforeEach(() => {
+        jest.clearAllMocks();
+        render(<IntlProvider locale="en" messages={{}}><AssignmentFilter updateQueryParams={updateQueryParams} /></IntlProvider>);
       });
-      it('renders a PercentGroup for both Max and Min filters', () => {
-        let { props } = el.instance.findByType(PercentGroup)[0];
-        expect(props.value).toEqual(hookData.assignmentGradeMin);
-        expect(props.disabled).toEqual(false);
-        expect(props.onChange).toEqual(hookData.handleSetMin);
-        props = el.instance.findByType(PercentGroup)[1].props;
-        expect(props.value).toEqual(hookData.assignmentGradeMax);
-        expect(props.disabled).toEqual(false);
-        expect(props.onChange).toEqual(hookData.handleSetMax);
+      it('renders a PercentGroup for both Max and Min filters', async () => {
+        const user = userEvent.setup();
+        const minGradeInput = screen.getByRole('spinbutton', { name: /Min Grade/i });
+        const maxGradeInput = screen.getByRole('spinbutton', { name: /Max Grade/i });
+        expect(minGradeInput).toBeInTheDocument();
+        expect(maxGradeInput).toBeInTheDocument();
+        expect(minGradeInput).toBeEnabled();
+        expect(maxGradeInput).toBeEnabled();
+        await user.type(minGradeInput, '25');
+        expect(hookData.handleSetMin).toHaveBeenCalled();
+        await user.type(maxGradeInput, '50');
+        expect(hookData.handleSetMax).toHaveBeenCalled();
       });
-      it('renders a submit button', () => {
-        const { props } = el.instance.findByType(Button)[0];
-        expect(props.disabled).toEqual(false);
-        expect(props.onClick).toEqual(hookData.handleSubmit);
+      it('renders a submit button', async () => {
+        const user = userEvent.setup();
+        const submitButton = screen.getByRole('button', { name: /Apply/ });
+        expect(submitButton).toBeInTheDocument();
+        expect(submitButton).not.toHaveAttribute('disabled');
+        await user.click(submitButton);
+        expect(hookData.handleSubmit).toHaveBeenCalled();
       });
     });
     describe('without selected assignment', () => {
@@ -61,16 +64,13 @@ describe('AssignmentFilter component', () => {
           ...hookData,
           selectedAssignment: null,
         });
-        el = shallow(<AssignmentFilter updateQueryParams={updateQueryParams} />);
-      });
-      test('snapshot', () => {
-        expect(el.snapshot).toMatchSnapshot();
+        render(<IntlProvider locale="en" messages={{}}><AssignmentFilter updateQueryParams={updateQueryParams} /></IntlProvider>);
       });
       it('disables controls', () => {
-        let { props } = el.instance.findByType(PercentGroup)[0];
-        expect(props.disabled).toEqual(true);
-        props = el.instance.findByType(PercentGroup)[1].props;
-        expect(props.disabled).toEqual(true);
+        const minGrade = screen.getByRole('spinbutton', { name: /Min Grade/ });
+        const maxGrade = screen.getByRole('spinbutton', { name: /Max Grade/ });
+        expect(minGrade).toHaveAttribute('disabled');
+        expect(maxGrade).toHaveAttribute('disabled');
       });
     });
   });
