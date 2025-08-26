@@ -24,7 +24,6 @@ describe('ImportGradesButton component', () => {
       expect(uploader).toBeInTheDocument();
     });
     test('import button', () => {
-      screen.debug();
       expect(screen.getByRole('button', { name: 'Import Grades' })).toBeInTheDocument();
     });
   });

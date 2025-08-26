@@ -1,5 +1,7 @@
 import React from 'react';
-import { fireEvent, render, initializeMocks } from 'testUtilsExtra';
+// eslint-disable-next-line import/no-extraneous-dependencies
+import userEvent from '@testing-library/user-event';
+import { render, initializeMocks } from 'testUtilsExtra';
 
 import useGradesViewData from './hooks';
 import GradesView from '.';
@@ -34,8 +36,9 @@ describe('GradesView component', () => {
     test('component to be rendered', () => {
       expect(el.container).toBeInTheDocument();
     });
-    test('filterBadges load close behavior from hook', () => {
-      fireEvent.click(el.getAllByRole('button', { name: 'close' })[0]); // All the buttons use the same handler
+    test('filterBadges load close behavior from hook', async () => {
+      const user = userEvent.setup();
+      await user.click(el.getAllByRole('button', { name: 'close' })[0]); // All the buttons use the same handler
       expect(hookProps.handleFilterBadgeClose).toHaveBeenCalled();
     });
   });

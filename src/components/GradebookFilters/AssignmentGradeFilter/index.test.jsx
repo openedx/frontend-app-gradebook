@@ -1,4 +1,6 @@
-import { fireEvent, render, screen } from '@testing-library/react';
+/* eslint-disable import/no-extraneous-dependencies */
+import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 
 import useAssignmentGradeFilterData from './hooks';
@@ -34,24 +36,25 @@ describe('AssignmentFilter component', () => {
         jest.clearAllMocks();
         render(<IntlProvider locale="en" messages={{}}><AssignmentFilter updateQueryParams={updateQueryParams} /></IntlProvider>);
       });
-      it('renders a PercentGroup for both Max and Min filters', () => {
+      it('renders a PercentGroup for both Max and Min filters', async () => {
+        const user = userEvent.setup();
         const minGradeInput = screen.getByRole('spinbutton', { name: /Min Grade/i });
         const maxGradeInput = screen.getByRole('spinbutton', { name: /Max Grade/i });
         expect(minGradeInput).toBeInTheDocument();
         expect(maxGradeInput).toBeInTheDocument();
         expect(minGradeInput).toBeEnabled();
         expect(maxGradeInput).toBeEnabled();
-        fireEvent.change(minGradeInput, { target: { value: '25' } });
+        await user.type(minGradeInput, '25');
         expect(hookData.handleSetMin).toHaveBeenCalled();
-        fireEvent.change(maxGradeInput, { target: { value: '50' } });
+        await user.type(maxGradeInput, '50');
         expect(hookData.handleSetMax).toHaveBeenCalled();
       });
-      it('renders a submit button', () => {
+      it('renders a submit button', async () => {
+        const user = userEvent.setup();
         const submitButton = screen.getByRole('button', { name: /Apply/ });
-        screen.debug();
         expect(submitButton).toBeInTheDocument();
         expect(submitButton).not.toHaveAttribute('disabled');
-        fireEvent.click(submitButton);
+        await user.click(submitButton);
         expect(hookData.handleSubmit).toHaveBeenCalled();
       });
     });
