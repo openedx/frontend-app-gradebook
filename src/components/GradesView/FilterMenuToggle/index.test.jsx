@@ -1,8 +1,6 @@
-import React from 'react';
-import { shallow } from '@edx/react-unit-test-utils';
-
-import { useIntl } from '@edx/frontend-platform/i18n';
-
+import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import { IntlProvider } from '@edx/frontend-platform/i18n';
 import { formatMessage } from 'testUtils';
 import { thunkActions } from 'data/redux/hooks';
 
@@ -19,29 +17,30 @@ jest.mock('data/redux/hooks', () => ({
   },
 }));
 
+jest.unmock('@openedx/paragon');
+jest.unmock('react');
+jest.unmock('@edx/frontend-platform/i18n');
+
 const toggleFilterMenu = jest.fn().mockName('hooks.toggleFilterMenu');
 thunkActions.app.filterMenu.useToggleMenu.mockReturnValue(toggleFilterMenu);
 
-let el;
 describe('FilterMenuToggle component', () => {
   beforeEach(() => {
     jest.clearAllMocks();
-    el = shallow(<FilterMenuToggle />);
+    render(<IntlProvider locale="en"><FilterMenuToggle /></IntlProvider>);
   });
   describe('behavior', () => {
-    it('initializes intl hook', () => {
-      expect(useIntl).toHaveBeenCalled();
-    });
     it('initializes redux hooks', () => {
       expect(thunkActions.app.filterMenu.useToggleMenu).toHaveBeenCalled();
     });
   });
-  describe('render', () => {
-    test('snapshot', () => {
-      expect(el.snapshot).toMatchSnapshot();
-      expect(el.instance.type).toEqual('Button');
-      expect(el.instance.props.onClick).toEqual(toggleFilterMenu);
-      expect(el.instance.children[2].el).toContain(formatMessage(messages.editFilters));
+  describe('renders', () => {
+    it('button and triggers click', async () => {
+      const user = userEvent.setup();
+      const button = screen.getByRole('button', { name: formatMessage(messages.editFilters) });
+      expect(button).toBeInTheDocument();
+      await user.click(button);
+      expect(toggleFilterMenu).toHaveBeenCalled();
     });
   });
 });

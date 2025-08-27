@@ -1,5 +1,5 @@
-import React from 'react';
-import { shallow } from '@edx/react-unit-test-utils';
+import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 
 import { selectors, thunkActions } from 'data/redux/hooks';
 import transforms from 'data/redux/transforms';
@@ -26,6 +26,10 @@ jest.mock('data/redux/transforms', () => ({
   },
 }));
 
+jest.unmock('@openedx/paragon');
+jest.unmock('react');
+jest.unmock('@edx/frontend-platform/i18n');
+
 const props = {
   subsection: {
     attempted: false,
@@ -47,7 +51,6 @@ selectors.grades.useGradeData.mockReturnValue({ gradeFormat });
 thunkActions.app.useSetModalStateFromTable.mockReturnValue(setModalState);
 transforms.grades.subsectionGrade.mockReturnValue(subsectionGrade);
 
-let el;
 let out;
 describe('GradeButton', () => {
   beforeEach(() => {
@@ -98,23 +101,24 @@ describe('GradeButton', () => {
     describe('frozen grades', () => {
       beforeEach(() => {
         hookSpy.mockReturnValue({ ...hookProps, areGradesFrozen: true });
-        el = shallow(<GradeButton {...props} />);
+        render(<GradeButton {...props} />);
       });
-      test('snapshot', () => {
-        expect(el.snapshot).toMatchSnapshot();
-        expect(el.instance.el).toEqual(hookProps.label);
+      it('renders only labels', () => {
+        const label = screen.getByText(hookProps.label);
+        expect(label).toBeInTheDocument();
       });
     });
     describe('not frozen grades', () => {
       beforeEach(() => {
         hookSpy.mockReturnValue(hookProps);
-        el = shallow(<GradeButton {...props} />);
+        render(<GradeButton {...props} />);
       });
-      test('snapshot', () => {
-        expect(el.snapshot).toMatchSnapshot();
-        expect(el.instance.type).toEqual('Button');
-        expect(el.instance.props.onClick).toEqual(hookProps.onClick);
-        expect(el.instance.children[0].el).toEqual(hookProps.label);
+      it('renders button', async () => {
+        const user = userEvent.setup();
+        const button = screen.getByRole('button', { name: hookProps.label });
+        expect(button).toBeInTheDocument();
+        await user.click(button);
+        expect(hookProps.onClick).toHaveBeenCalled();
       });
     });
   });
