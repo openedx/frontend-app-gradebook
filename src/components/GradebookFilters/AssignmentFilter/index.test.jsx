@@ -1,12 +1,12 @@
 import React from 'react';
-import { shallow } from '@edx/react-unit-test-utils';
-import { useIntl } from '@edx/frontend-platform/i18n';
+import { render, screen, initializeMocks } from 'testUtilsExtra';
 
-import SelectGroup from '../SelectGroup';
 import useAssignmentFilterData from './hooks';
 import AssignmentFilter from '.';
 
-jest.mock('../SelectGroup', () => 'SelectGroup');
+jest.unmock('@openedx/paragon');
+jest.unmock('react');
+jest.unmock('@edx/frontend-platform/i18n');
 jest.mock('./hooks', () => ({ __esModule: true, default: jest.fn() }));
 
 const handleChange = jest.fn();
@@ -25,29 +25,16 @@ useAssignmentFilterData.mockReturnValue({
 
 const updateQueryParams = jest.fn();
 
-let el;
 describe('AssignmentFilter component', () => {
   beforeAll(() => {
-    el = shallow(<AssignmentFilter updateQueryParams={updateQueryParams} />);
-  });
-  describe('behavior', () => {
-    it('initializes hooks', () => {
-      expect(useAssignmentFilterData).toHaveBeenCalledWith({ updateQueryParams });
-      expect(useIntl).toHaveBeenCalledWith();
-    });
+    initializeMocks();
+    render(<AssignmentFilter updateQueryParams={updateQueryParams} />);
   });
   describe('render', () => {
-    test('snapshot', () => {
-      expect(el.snapshot).toMatchSnapshot();
-    });
     test('filter options', () => {
-      const { options } = el.instance.findByType(SelectGroup)[0].props;
-      expect(options.length).toEqual(5);
-      const testOption = assignmentFilterOptions[0];
-      const optionProps = options[1].props;
-      expect(optionProps.value).toEqual(testOption.label);
-      expect(optionProps.children.join(''))
-        .toEqual(`${testOption.label}: ${testOption.subsectionLabel}`);
+      expect(screen.getByRole('combobox', { name: 'Assignment' })).toBeInTheDocument();
+      expect(screen.getAllByRole('option')).toHaveLength(assignmentFilterOptions.length + 1); // +1 for the default option
+      expect(screen.getAllByRole('option')[assignmentFilterOptions.length]).toHaveTextContent(assignmentFilterOptions[assignmentFilterOptions.length - 1].label);
     });
   });
 });

@@ -1,10 +1,12 @@
 import React from 'react';
-import { shallow } from '@edx/react-unit-test-utils';
-
-import { Form } from '@openedx/paragon';
+import { render, screen } from '@testing-library/react';
 
 import useAdjustedGradeInputData from './hooks';
 import AdjustedGradeInput from '.';
+
+jest.unmock('@openedx/paragon');
+jest.unmock('react');
+jest.unmock('@edx/frontend-platform/i18n');
 
 jest.mock('./hooks', () => jest.fn());
 
@@ -15,24 +17,17 @@ const hookProps = {
 };
 useAdjustedGradeInputData.mockReturnValue(hookProps);
 
-let el;
 describe('AdjustedGradeInput component', () => {
   beforeEach(() => {
     jest.clearAllMocks();
-    el = shallow(<AdjustedGradeInput />);
-  });
-  describe('behavior', () => {
-    it('initializes hook data', () => {
-      expect(useAdjustedGradeInputData).toHaveBeenCalled();
-    });
+    render(<AdjustedGradeInput />);
   });
   describe('render', () => {
-    test('snapshot', () => {
-      expect(el.snapshot).toMatchSnapshot();
-      const control = el.instance.findByType(Form.Control)[0];
-      expect(control.props.value).toEqual(hookProps.value);
-      expect(control.props.onChange).toEqual(hookProps.onChange);
-      expect(el.instance.children[1].el).toContain(hookProps.hintText);
+    test('renders input with correct props', () => {
+      const input = screen.getByRole('textbox');
+      expect(input).toBeInTheDocument();
+      expect(input).toHaveValue(hookProps.value);
+      expect(screen.getByText(hookProps.hintText)).toBeInTheDocument();
     });
   });
 });

@@ -8,7 +8,7 @@ const messages = defineMessages({
   },
   helpText: {
     id: 'gradebook.BulkManagementHistoryView',
-    defaultMessage: 'Below is a log of previous grade imports.  To download a CSV of your gradebook and import grades for override, return to the Gradebook.  Please note, after importing grades, it may take a few seconds to process the override.',
+    defaultMessage: 'Below is a log of previous grade imports. To download a CSV of your gradebook and import grades for override, return to the Gradebook. Please note, after importing grades, it may take a few seconds to process the override.',
     description: 'Bulk Management History View help text',
   },
   successDialog: {
