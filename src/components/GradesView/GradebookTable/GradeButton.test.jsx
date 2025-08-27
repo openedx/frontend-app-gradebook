@@ -1,4 +1,5 @@
-import { fireEvent, render, screen } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 
 import { selectors, thunkActions } from 'data/redux/hooks';
 import transforms from 'data/redux/transforms';
@@ -112,10 +113,11 @@ describe('GradeButton', () => {
         hookSpy.mockReturnValue(hookProps);
         render(<GradeButton {...props} />);
       });
-      it('renders button', () => {
+      it('renders button', async () => {
+        const user = userEvent.setup();
         const button = screen.getByRole('button', { name: hookProps.label });
         expect(button).toBeInTheDocument();
-        fireEvent.click(button);
+        await user.click(button);
         expect(hookProps.onClick).toHaveBeenCalled();
       });
     });

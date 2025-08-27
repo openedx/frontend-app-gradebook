@@ -43,7 +43,7 @@ describe('FilteredUsersLabel component', () => {
       const { container } = render(<IntlProvider locale="en"><FilteredUsersLabel /></IntlProvider>);
       expect(container.firstChild).toBeNull();
     });
-    it('renders correctly', () => {
+    it('renders users count correctly', () => {
       render(<IntlProvider locale="en"><FilteredUsersLabel /></IntlProvider>);
       expect(screen.getByText((text) => text.includes(userCounts.filteredUsersCount))).toBeInTheDocument();
       expect(screen.getByText((text) => text.includes(userCounts.totalUsersCount))).toBeInTheDocument();

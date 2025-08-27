@@ -1,4 +1,5 @@
-import { fireEvent, render, screen } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 import { formatMessage } from 'testUtils';
 import { thunkActions } from 'data/redux/hooks';
@@ -34,10 +35,11 @@ describe('FilterMenuToggle component', () => {
     });
   });
   describe('renders', () => {
-    it('button and triggers click', () => {
+    it('button and triggers click', async () => {
+      const user = userEvent.setup();
       const button = screen.getByRole('button', { name: formatMessage(messages.editFilters) });
       expect(button).toBeInTheDocument();
-      fireEvent.click(button);
+      await user.click(button);
       expect(toggleFilterMenu).toHaveBeenCalled();
     });
   });
