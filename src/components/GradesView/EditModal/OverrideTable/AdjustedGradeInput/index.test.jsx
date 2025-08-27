@@ -24,7 +24,6 @@ describe('AdjustedGradeInput component', () => {
   });
   describe('render', () => {
     test('renders input with correct props', () => {
-      screen.debug();
       const input = screen.getByRole('textbox');
       expect(input).toBeInTheDocument();
       expect(input).toHaveValue(hookProps.value);
