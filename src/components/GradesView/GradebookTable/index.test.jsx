@@ -1,39 +1,68 @@
 import React from 'react';
-import { shallow } from '@edx/react-unit-test-utils';
 
-import { DataTable } from '@openedx/paragon';
+import { initializeMocks, render, screen } from '../../../testUtilsExtra';
+import GradebookTable from './index';
 
-import useGradebookTableData from './hooks';
-import GradebookTable from '.';
+jest.unmock('@openedx/paragon');
+jest.unmock('react');
+jest.unmock('@edx/frontend-platform/i18n');
 
 jest.mock('./hooks', () => jest.fn());
 
-const hookProps = {
-  columns: ['some', 'columns'],
-  data: ['some', 'data'],
-  grades: ['a', 'few', 'grades'],
-  nullMethod: jest.fn().mockName('hooks.nullMethod'),
-  emptyContent: 'empty-table-content',
-};
-useGradebookTableData.mockReturnValue(hookProps);
+const mockUseGradebookTableData = require('./hooks');
 
-let el;
+const mockHookData = {
+  columns: [
+    { Header: 'Username', accessor: 'username' },
+    { Header: 'Assignment 1', accessor: 'assignment1' },
+  ],
+  data: [
+    { username: 'user1', assignment1: 'A' },
+    { username: 'user2', assignment1: 'B' },
+  ],
+  grades: ['grade1', 'grade2'],
+  nullMethod: jest.fn(),
+  emptyContent: 'No grades available',
+};
+
 describe('GradebookTable', () => {
   beforeEach(() => {
-    jest.clearAllMocks();
-    el = shallow(<GradebookTable />);
+    initializeMocks();
+    mockUseGradebookTableData.mockReturnValue(mockHookData);
   });
-  test('snapshot', () => {
-    expect(el.snapshot).toMatchSnapshot();
+
+  it('renders gradebook container', () => {
+    render(<GradebookTable />);
+    const container = document.querySelector('.gradebook-container');
+    expect(container).toBeInTheDocument();
   });
-  test('Datatable props', () => {
-    const datatable = el.instance.findByType(DataTable)[0];
-    const { props } = datatable;
-    expect(props.columns).toEqual(hookProps.columns);
-    expect(props.data).toEqual(hookProps.data);
-    expect(props.itemCount).toEqual(hookProps.grades.length);
-    expect(props.RowStatusComponent).toEqual(hookProps.nullMethod);
-    expect(datatable.children[2].type).toEqual('DataTable.EmptyTable');
-    expect(datatable.children[2].props.content).toEqual(hookProps.emptyContent);
+
+  it('calls useGradebookTableData hook', () => {
+    render(<GradebookTable />);
+    expect(mockUseGradebookTableData).toHaveBeenCalled();
+  });
+
+  it('renders DataTable with data', () => {
+    render(<GradebookTable />);
+
+    // Check that the data is rendered in the table
+    expect(screen.getByText('Username')).toBeInTheDocument();
+    expect(screen.getByText('Assignment 1')).toBeInTheDocument();
+    expect(screen.getByText('user1')).toBeInTheDocument();
+    expect(screen.getByText('user2')).toBeInTheDocument();
+  });
+
+  it('renders component without errors when empty', () => {
+    mockUseGradebookTableData.mockReturnValue({
+      columns: [],
+      data: [],
+      grades: [],
+      nullMethod: jest.fn(),
+      emptyContent: 'No grades available',
+    });
+
+    render(<GradebookTable />);
+    const container = document.querySelector('.gradebook-container');
+    expect(container).toBeInTheDocument();
   });
 });
