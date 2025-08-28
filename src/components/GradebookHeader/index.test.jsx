@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen, initializeMocks } from 'testUtilsExtra';
-import { fireEvent } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 
 import { instructorDashboardUrl } from 'data/services/lms/urls';
 
@@ -116,11 +116,12 @@ describe('GradebookHeader', () => {
         expect(toggleButton).toHaveTextContent('View Bulk Management History');
       });
 
-      it('calls handleToggleViewClick when button is clicked', () => {
+      it('calls handleToggleViewClick when button is clicked', async () => {
         render(<GradebookHeader />);
+        const user = userEvent.setup();
         const toggleButton = screen.getByRole('button');
 
-        fireEvent.click(toggleButton);
+        await user.click(toggleButton);
         expect(mockHandleToggleViewClick).toHaveBeenCalledTimes(1);
       });
 
