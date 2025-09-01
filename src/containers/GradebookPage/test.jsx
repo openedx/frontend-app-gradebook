@@ -10,10 +10,17 @@ jest.unmock('@edx/frontend-platform/i18n');
 
 jest.mock(
   'components/WithSidebar',
-  () => function WithSidebar() {
-    return <div data-testid="with-sidebar">WithSidebar</div>;
+  // eslint-disable-next-line react/prop-types
+  () => function WithSidebar({ children }) {
+    return (
+      <div data-testid="with-sidebar">
+        <p>WithSidebar</p>
+        {children}
+      </div>
+    );
   },
 );
+
 jest.mock(
   'components/GradebookHeader',
   () => function GradebookHeader() {
@@ -83,8 +90,7 @@ describe('GradebookPage', () => {
 
   it('renders without errors', () => {
     render(<GradebookPage {...defaultProps} />);
-
-    expect(document.body).toBeInTheDocument();
+    expect(screen.getByText('WithSidebar')).toBeInTheDocument();
   });
 
   it('calls initializeApp on mount with courseId and parsed query', () => {
@@ -105,13 +111,13 @@ describe('GradebookPage', () => {
   it('renders GradebookHeader in content area', () => {
     render(<GradebookPage {...defaultProps} />);
 
-    expect(screen.getByText('WithSidebar')).toBeInTheDocument();
+    expect(screen.getByText('GradebookHeader')).toBeInTheDocument();
   });
 
   it('renders GradesView when activeView is grades', () => {
     render(<GradebookPage {...defaultProps} activeView="grades" />);
 
-    expect(screen.getByText('WithSidebar')).toBeInTheDocument();
+    expect(screen.getByText('GradesView')).toBeInTheDocument();
   });
 
   it('renders BulkManagementHistoryView when activeView is bulkManagementHistory', () => {
@@ -119,13 +125,7 @@ describe('GradebookPage', () => {
       <GradebookPage {...defaultProps} activeView="bulkManagementHistory" />,
     );
 
-    expect(screen.getByText('WithSidebar')).toBeInTheDocument();
-  });
-
-  it('passes updateQueryParams to components', () => {
-    render(<GradebookPage {...defaultProps} />);
-
-    expect(screen.getByText('WithSidebar')).toBeInTheDocument();
+    expect(screen.getByText('BulkManagementHistoryView')).toBeInTheDocument();
   });
 
   describe('updateQueryParams', () => {

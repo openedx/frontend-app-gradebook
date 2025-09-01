@@ -1,6 +1,8 @@
 import React from 'react';
 
 import { render, screen, initializeMocks } from 'testUtilsExtra';
+// eslint-disable-next-line import/no-extraneous-dependencies
+import userEvent from '@testing-library/user-event';
 
 import { NetworkButton, mapStateToProps, buttonStates } from '.';
 
@@ -36,12 +38,6 @@ describe('NetworkButton', () => {
   });
 
   it('renders without errors', () => {
-    render(<NetworkButton {...defaultProps} />);
-
-    expect(document.body).toBeInTheDocument();
-  });
-
-  it('renders button with correct label', () => {
     render(<NetworkButton {...defaultProps} />);
 
     expect(
@@ -87,16 +83,17 @@ describe('NetworkButton', () => {
     expect(button).toHaveClass('ml-2');
   });
 
-  it('calls onClick when button is clicked', () => {
+  it('calls onClick when button is clicked', async () => {
     const onClick = jest.fn();
     const props = {
       ...defaultProps,
       onClick,
     };
     render(<NetworkButton {...props} />);
+    const user = userEvent.setup();
 
     const button = screen.getByRole('button');
-    button.click();
+    await user.click(button);
 
     expect(onClick).toHaveBeenCalledTimes(1);
   });
@@ -125,7 +122,7 @@ describe('NetworkButton', () => {
       expect(button).toHaveAttribute('aria-disabled', 'true');
     });
 
-    it('does not call onClick when button is disabled and clicked', () => {
+    it('does not call onClick when button is disabled and clicked', async () => {
       const onClick = jest.fn();
       const props = {
         ...defaultProps,
@@ -133,9 +130,10 @@ describe('NetworkButton', () => {
         showSpinner: true,
       };
       render(<NetworkButton {...props} />);
+      const user = userEvent.setup();
 
       const button = screen.getByRole('button');
-      button.click();
+      await user.click(button);
 
       expect(onClick).not.toHaveBeenCalled();
     });
@@ -260,22 +258,23 @@ describe('NetworkButton', () => {
       ).toBeInTheDocument();
     });
 
-    it('changes icon but maintains functionality', () => {
+    it('changes icon but maintains functionality', async () => {
       const onClick = jest.fn();
+      const user = userEvent.setup();
       const { rerender } = render(
         <NetworkButton {...defaultProps} onClick={onClick} />,
       );
 
       let button = screen.getByRole('button');
       expect(button.querySelector('.fa-download')).toBeInTheDocument();
-      button.click();
+      await user.click(button);
       expect(onClick).toHaveBeenCalledTimes(1);
 
       onClick.mockClear();
       rerender(<NetworkButton {...defaultProps} onClick={onClick} import />);
       button = screen.getByRole('button');
       expect(button.querySelector('.fa-upload')).toBeInTheDocument();
-      button.click();
+      await user.click(button);
       expect(onClick).toHaveBeenCalledTimes(1);
     });
   });

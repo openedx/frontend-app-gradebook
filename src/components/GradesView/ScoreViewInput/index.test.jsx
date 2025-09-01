@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { render, screen, initializeMocks } from 'testUtilsExtra';
+import userEvent from '@testing-library/user-event';
 
 import { ScoreViewInput } from '.';
 
@@ -85,11 +86,13 @@ describe('ScoreViewInput', () => {
     expect(select).toHaveValue('absolute');
   });
 
-  it('calls toggle function when selection changes', () => {
+  it('calls toggle function when selection changes', async () => {
     render(<ScoreViewInput />);
+    const user = userEvent.setup();
 
     const select = screen.getByRole('combobox', { name: /score view/i });
-    select.dispatchEvent(new Event('change', { bubbles: true }));
+
+    await user.selectOptions(select, 'absolute');
 
     expect(mockToggleFormat).toHaveBeenCalledTimes(1);
   });
@@ -179,13 +182,13 @@ describe('ScoreViewInput', () => {
   });
 
   describe('user interactions', () => {
-    it('handles option selection', () => {
+    it('handles option selection', async () => {
       render(<ScoreViewInput />);
+      const user = userEvent.setup();
 
       const select = screen.getByRole('combobox', { name: /score view/i });
 
-      select.value = 'absolute';
-      select.dispatchEvent(new Event('change', { bubbles: true }));
+      await user.selectOptions(select, 'absolute');
 
       expect(mockToggleFormat).toHaveBeenCalledWith(expect.any(Object));
     });
