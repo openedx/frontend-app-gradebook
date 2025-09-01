@@ -1,46 +1,63 @@
 import React from 'react';
-import { render, initializeMocks } from 'testUtilsExtra';
-import { MemoryRouter } from 'react-router-dom';
-
+import { render, screen } from '@testing-library/react';
 import App from './App';
 
-jest.unmock('@openedx/paragon');
-jest.unmock('react');
-jest.unmock('@edx/frontend-platform/i18n');
+jest.mock('react-router-dom', () => ({
+  Routes: ({ children }) => children,
+  Route: ({ element }) => element,
+}));
+
+jest.mock('@edx/frontend-platform/react', () => ({
+  AppProvider: ({ children }) => children,
+}));
+
+jest.mock('@edx/frontend-component-header', () => ({
+  __esModule: true,
+  default: () => <div>Header</div>,
+}));
+
+jest.mock('@edx/frontend-component-footer', () => ({
+  FooterSlot: () => <div>Footer</div>,
+}));
+
+jest.mock('./head/Head', () => ({
+  __esModule: true,
+  default: () => <div>Head</div>,
+}));
+
+jest.mock('containers/GradebookPage', () => ({
+  __esModule: true,
+  default: () => <div>Gradebook</div>,
+}));
 
 describe('App', () => {
   beforeEach(() => {
-    initializeMocks();
+    render(<App />);
   });
 
-  const renderWithRouter = (initialEntries = ['/course-v1:TestU+CS101+2024']) => render(
-    <MemoryRouter initialEntries={initialEntries}>
-      <App />
-    </MemoryRouter>,
-  );
-
-  it('renders without crashing', () => {
-    const { container } = renderWithRouter();
-    expect(container).toBeInTheDocument();
+  afterEach(() => {
+    jest.clearAllMocks();
   });
 
-  it('renders main app structure', () => {
-    renderWithRouter();
-    expect(document.body).toBeInTheDocument();
+  it('renders Head component', () => {
+    const head = screen.getByText('Head');
+    expect(head).toBeInTheDocument();
   });
 
-  it('handles different course ID formats', () => {
-    const { container } = renderWithRouter(['/course-v1:MIT+6.00x+2023']);
-    expect(container).toBeInTheDocument();
+  it('renders Header component', () => {
+    const header = screen.getByText('Header');
+    expect(header).toBeInTheDocument();
   });
 
-  it('renders with route parameters', () => {
-    const { container } = renderWithRouter(['/course-v1:Harvard+CS50+2024']);
-    expect(container).toBeInTheDocument();
+  it('renders Footer component', () => {
+    const footer = screen.getByText('Footer');
+    expect(footer).toBeInTheDocument();
   });
 
-  it('includes Head component for document management', () => {
-    const { container } = renderWithRouter();
-    expect(container.firstChild).toBeTruthy();
+  it('renders main content wrapper', () => {
+    const main = screen.getByRole('main');
+    expect(main).toBeInTheDocument();
+    const gradebook = screen.getByText('Gradebook');
+    expect(gradebook).toBeInTheDocument();
   });
 });
