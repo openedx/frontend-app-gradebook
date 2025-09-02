@@ -1,164 +1,218 @@
-/* eslint-disable import/no-named-as-default */
 import React from 'react';
-import { render } from '@testing-library/react'; // eslint-disable-line import/no-extraneous-dependencies
-import { shallow } from '@edx/react-unit-test-utils';
-import queryString from 'query-string';
 
-import selectors from 'data/selectors';
-import thunkActions from 'data/thunkActions';
-
-import GradebookFilters from 'components/GradebookFilters';
-import GradebookHeader from 'components/GradebookHeader';
-import GradesView from 'components/GradesView';
-import BulkManagementHistoryView from 'components/BulkManagementHistoryView';
-import { views } from 'data/constants/app';
+import { render, screen, initializeMocks } from 'testUtilsExtra';
 
 import { GradebookPage, mapStateToProps, mapDispatchToProps } from '.';
 
-jest.mock('query-string', () => ({
-  parse: jest.fn(val => ({ parsed: val })),
-  stringify: (val) => `stringify: ${JSON.stringify(val, Object.keys(val).sort())}`,
-}));
+jest.unmock('@openedx/paragon');
+jest.unmock('react');
+jest.unmock('@edx/frontend-platform/i18n');
 
-jest.mock('@openedx/paragon', () => ({
-  Tab: () => 'Tab',
-  Tabs: () => 'Tabs',
-}));
+jest.mock(
+  'components/WithSidebar',
+  // eslint-disable-next-line react/prop-types
+  () => function WithSidebar({ children }) {
+    return (
+      <div data-testid="with-sidebar">
+        <p>WithSidebar</p>
+        {children}
+      </div>
+    );
+  },
+);
+
+jest.mock(
+  'components/GradebookHeader',
+  () => function GradebookHeader() {
+    return <div data-testid="gradebook-header">GradebookHeader</div>;
+  },
+);
+jest.mock(
+  'components/GradesView',
+  () => function GradesView() {
+    return <div data-testid="grades-view">GradesView</div>;
+  },
+);
+jest.mock(
+  'components/GradebookFilters',
+  () => function GradebookFilters() {
+    return <div data-testid="gradebook-filters">GradebookFilters</div>;
+  },
+);
+jest.mock(
+  'components/BulkManagementHistoryView',
+  () => function BulkManagementHistoryView() {
+    return (
+      <div data-testid="bulk-management-history">
+        BulkManagementHistoryView
+      </div>
+    );
+  },
+);
+
 jest.mock('data/selectors', () => ({
-  __esModule: true,
-  default: {
-    app: {
-      activeView: (state) => ({ activeView: state }),
-    },
-  },
-}));
-jest.mock('data/thunkActions', () => ({
-  __esModule: true,
-  default: {
-    app: { initialize: jest.fn() },
+  app: {
+    activeView: jest.fn(),
   },
 }));
 
-jest.mock('components/WithSidebar', () => 'WithSidebar');
-jest.mock('components/GradebookHeader', () => 'GradebookHeader');
-jest.mock('components/GradesView', () => 'GradesView');
-jest.mock('components/GradebookFilters', () => 'GradebookFilters');
-jest.mock('components/BulkManagementHistoryView', () => 'BulkManagementHistoryView');
+jest.mock('data/thunkActions', () => ({
+  app: {
+    initialize: jest.fn(),
+  },
+}));
+
+jest.mock('query-string', () => ({
+  parse: jest.fn(),
+  stringify: jest.fn(),
+}));
+
+const queryString = require('query-string');
+const selectors = require('data/selectors');
+const thunkActions = require('data/thunkActions');
+
+initializeMocks();
 
 describe('GradebookPage', () => {
-  describe('component', () => {
-    const courseId = 'a course';
-    let el;
-    const props = {
-      location: {
-        pathname: '/',
-        search: 'searchString',
-      },
-      courseId,
-      activeView: views.grades,
-    };
-    beforeEach(() => {
-      props.initializeApp = jest.fn();
-      props.navigate = jest.fn();
+  const defaultProps = {
+    navigate: jest.fn(),
+    location: { pathname: '/gradebook', search: '?course_id=test-course' },
+    courseId: 'test-course-id',
+    activeView: 'grades',
+    initializeApp: jest.fn(),
+  };
+
+  beforeEach(() => {
+    jest.clearAllMocks();
+    queryString.parse.mockReturnValue({});
+    queryString.stringify.mockReturnValue('course_id=test-course');
+  });
+
+  it('renders without errors', () => {
+    render(<GradebookPage {...defaultProps} />);
+    expect(screen.getByText('WithSidebar')).toBeInTheDocument();
+  });
+
+  it('calls initializeApp on mount with courseId and parsed query', () => {
+    const mockQuery = { assignment: 'test-assignment' };
+    queryString.parse.mockReturnValue(mockQuery);
+
+    render(<GradebookPage {...defaultProps} />);
+
+    expect(defaultProps.initializeApp).toHaveBeenCalledWith(
+      defaultProps.courseId,
+      mockQuery,
+    );
+    expect(queryString.parse).toHaveBeenCalledWith(
+      defaultProps.location.search,
+    );
+  });
+
+  it('renders GradebookHeader in content area', () => {
+    render(<GradebookPage {...defaultProps} />);
+
+    expect(screen.getByText('GradebookHeader')).toBeInTheDocument();
+  });
+
+  it('renders GradesView when activeView is grades', () => {
+    render(<GradebookPage {...defaultProps} activeView="grades" />);
+
+    expect(screen.getByText('GradesView')).toBeInTheDocument();
+  });
+
+  it('renders BulkManagementHistoryView when activeView is bulkManagementHistory', () => {
+    render(
+      <GradebookPage {...defaultProps} activeView="bulkManagementHistory" />,
+    );
+
+    expect(screen.getByText('BulkManagementHistoryView')).toBeInTheDocument();
+  });
+
+  describe('updateQueryParams', () => {
+    it('updates query parameters and navigates', () => {
+      const component = new GradebookPage(defaultProps);
+      const queryParams = {
+        assignment: 'new-assignment',
+        student: 'student-1',
+      };
+
+      queryString.parse.mockReturnValue({ course_id: 'test-course' });
+      queryString.stringify.mockReturnValue(
+        'course_id=test-course&assignment=new-assignment&student=student-1',
+      );
+
+      component.updateQueryParams(queryParams);
+
+      expect(queryString.parse).toHaveBeenCalledWith(
+        defaultProps.location.search,
+      );
+      expect(queryString.stringify).toHaveBeenCalledWith({
+        course_id: 'test-course',
+        assignment: 'new-assignment',
+        student: 'student-1',
+      });
+      expect(defaultProps.navigate).toHaveBeenCalledWith({
+        pathname: defaultProps.location.pathname,
+        search:
+          '?course_id=test-course&assignment=new-assignment&student=student-1',
+      });
     });
-    test('snapshot - shows BulkManagementHistoryView if activeView === views.bulkManagementHistory', () => {
-      el = shallow(<GradebookPage {...props} activeView={views.bulkManagementHistory} />);
-      expect(el.snapshot).toMatchSnapshot();
-    });
-    test('snapshot - shows GradesView if aciveView === views.grades', () => {
-      el = shallow(<GradebookPage {...props} />);
-      expect(el.snapshot).toMatchSnapshot();
-    });
-    describe('render', () => {
-      beforeEach(() => {
-        el = shallow(<GradebookPage {...props} />);
+
+    it('removes query parameters when value is falsy', () => {
+      const component = new GradebookPage(defaultProps);
+      const queryParams = { assignment: null, student: '' };
+
+      queryString.parse.mockReturnValue({
+        course_id: 'test-course',
+        assignment: 'old-assignment',
+        student: 'old-student',
       });
-      describe('top-level WithSidebar', () => {
-        test('sidebar from GradebookFilters, with updateQueryParams', () => {
-          const { sidebar } = el.instance.props;
-          expect(sidebar).toMatchObject(
-            <GradebookFilters updateQueryParams={el.shallowWrapper.props.sidebar.props.updateQueryParams} />,
-          );
-        });
-      });
-      describe('gradebook-content', () => {
-        let content;
-        let children;
-        beforeEach(() => {
-          content = el.instance.children;
-          children = content[0].children;
-        });
-        it('is wrapped in a div w/ px-3 gradebook-content classNames', () => {
-          expect(content[0].type).toEqual('div');
-          expect(content[0].props.className).toEqual('px-3 gradebook-content');
-        });
-        it('displays Gradebook header and then tabs', () => {
-          expect(shallow(children[0])).toEqual(shallow(<GradebookHeader />));
-        });
-        it('displays GradesView if activeView === views.grades', () => {
-          expect(shallow(children[1])).toEqual(shallow((
-            <GradesView updateQueryParams={el.shallowWrapper.props.sidebar.props.updateQueryParams} />
-          )));
-        });
-        it('displays Bulk Management History View if activeView === views.bulkManagementHistory', () => {
-          el = shallow(<GradebookPage {...props} activeView={views.bulkManagementHistory} />);
-          const mainView = el.instance.children[0].children[1];
-          expect(shallow(mainView)).toEqual(shallow(
-            <BulkManagementHistoryView />,
-          ));
-        });
-      });
-    });
-    describe('behavior', () => {
-      beforeEach(() => {
-        el = shallow(<GradebookPage {...props} />);
-      });
-      describe('componentDidMount', () => {
-        test('initializes app with courseId and urlQuery', () => {
-          render(<GradebookPage {...props} />);
-          expect(props.initializeApp).toHaveBeenCalledWith(
-            courseId,
-            queryString.parse(props.location.search),
-          );
-        });
-      });
-      describe('updateQueryParams', () => {
-        it('replaces values for truthy values', () => {
-          queryString.parse.mockImplementation(key => ({ [key]: key }));
-          const newKey = 'testKey';
-          const val1 = 'VALUE';
-          const val2 = 'VALTWO!!';
-          const args = { [newKey]: val1, [props.location.search]: val2 };
-          el.shallowWrapper.props.sidebar.props.updateQueryParams(args);
-          expect(props.navigate).toHaveBeenCalledWith({ pathname: '/', search: `?${queryString.stringify(args)}` });
-        });
-        it('clears values for non-truthy values', () => {
-          queryString.parse.mockImplementation(key => ({ [key]: key }));
-          const newKey = 'testKey';
-          const val1 = 'VALUE';
-          const val2 = false;
-          const args = { [newKey]: val1, [props.location.search]: val2 };
-          el.shallowWrapper.props.sidebar.props.updateQueryParams(args);
-          expect(props.navigate).toHaveBeenCalledWith(
-            { pathname: '/', search: `?${queryString.stringify({ [newKey]: val1 })}` },
-          );
-        });
+      queryString.stringify.mockReturnValue('course_id=test-course');
+
+      component.updateQueryParams(queryParams);
+
+      expect(queryString.stringify).toHaveBeenCalledWith({
+        course_id: 'test-course',
       });
     });
   });
+
   describe('mapStateToProps', () => {
-    let mapped;
-    const testState = { trash: 'in', the: 'wind' };
-    beforeEach(() => {
-      mapped = mapStateToProps(testState);
-    });
-    test('activeView from app.activeView', () => {
-      expect(mapped.activeView).toEqual(selectors.app.activeView(testState));
+    it('maps activeView from state', () => {
+      const mockState = { app: { activeView: 'bulkManagementHistory' } };
+      selectors.app.activeView.mockReturnValue('bulkManagementHistory');
+
+      const result = mapStateToProps(mockState);
+
+      expect(selectors.app.activeView).toHaveBeenCalledWith(mockState);
+      expect(result).toEqual({
+        activeView: 'bulkManagementHistory',
+      });
     });
   });
+
   describe('mapDispatchToProps', () => {
-    test('initializeApp from thunkActions.app.initialize', () => {
-      expect(mapDispatchToProps.initializeApp).toEqual(thunkActions.app.initialize);
+    it('maps initializeApp action', () => {
+      expect(mapDispatchToProps.initializeApp).toBe(
+        thunkActions.app.initialize,
+      );
+    });
+  });
+
+  describe('default props', () => {
+    it('has correct default location', () => {
+      expect(GradebookPage.defaultProps.location).toEqual({
+        pathname: '/',
+        search: '',
+      });
+    });
+  });
+
+  describe('component lifecycle', () => {
+    it('binds updateQueryParams in constructor', () => {
+      const component = new GradebookPage(defaultProps);
+
+      expect(typeof component.updateQueryParams).toBe('function');
     });
   });
 });

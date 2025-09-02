@@ -1,67 +1,241 @@
 import React from 'react';
-import { shallow } from '@edx/react-unit-test-utils';
 
-import { useIntl } from '@edx/frontend-platform/i18n';
-import { GradeFormats } from 'data/constants/grades';
+import { render, screen, initializeMocks } from 'testUtilsExtra';
+import userEvent from '@testing-library/user-event';
 
-import { formatMessage } from 'testUtils';
-import { actions, selectors } from 'data/redux/hooks';
-import ScoreViewInput from '.';
-import messages from './messages';
+import { ScoreViewInput } from '.';
+
+jest.unmock('@openedx/paragon');
+jest.unmock('react');
+jest.unmock('@edx/frontend-platform/i18n');
 
 jest.mock('data/redux/hooks', () => ({
   actions: {
-    grades: { useToggleGradeFormat: jest.fn() },
+    grades: {
+      useToggleGradeFormat: jest.fn(),
+    },
   },
   selectors: {
-    grades: { useGradeData: jest.fn() },
+    grades: {
+      useGradeData: jest.fn(),
+    },
   },
 }));
 
-const toggleGradeFormat = jest.fn().mockName('hooks.toggleGradeFormat');
-actions.grades.useToggleGradeFormat.mockReturnValue(toggleGradeFormat);
-const gradeFormat = 'test-grade-format';
-selectors.grades.useGradeData.mockReturnValue({ gradeFormat });
+const { actions, selectors } = require('data/redux/hooks');
 
-let el;
-describe('ScoreViewInput component', () => {
+initializeMocks();
+
+describe('ScoreViewInput', () => {
+  const mockToggleFormat = jest.fn();
+
   beforeEach(() => {
     jest.clearAllMocks();
-    el = shallow(<ScoreViewInput />);
+
+    selectors.grades.useGradeData.mockReturnValue({
+      gradeFormat: 'percent',
+    });
+    actions.grades.useToggleGradeFormat.mockReturnValue(mockToggleFormat);
   });
-  describe('behavior', () => {
-    it('initializes intl hook', () => {
-      expect(useIntl).toHaveBeenCalled();
+
+  it('renders without errors', () => {
+    render(<ScoreViewInput />);
+
+    expect(document.body).toBeInTheDocument();
+  });
+
+  it('renders form group with correct label', () => {
+    render(<ScoreViewInput />);
+
+    expect(screen.getByLabelText(/score view/i)).toBeInTheDocument();
+  });
+
+  it('renders select element with correct options', () => {
+    render(<ScoreViewInput />);
+
+    const select = screen.getByRole('combobox', { name: /score view/i });
+    expect(select).toBeInTheDocument();
+
+    expect(
+      screen.getByRole('option', { name: /percent/i }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole('option', { name: /absolute/i }),
+    ).toBeInTheDocument();
+  });
+
+  it('displays correct selected value for percent format', () => {
+    selectors.grades.useGradeData.mockReturnValue({
+      gradeFormat: 'percent',
     });
-    it('initializes redux hooks', () => {
-      expect(actions.grades.useToggleGradeFormat).toHaveBeenCalled();
-      expect(selectors.grades.useGradeData).toHaveBeenCalled();
+
+    render(<ScoreViewInput />);
+
+    const select = screen.getByRole('combobox', { name: /score view/i });
+    expect(select).toHaveValue('percent');
+  });
+
+  it('displays correct selected value for absolute format', () => {
+    selectors.grades.useGradeData.mockReturnValue({
+      gradeFormat: 'absolute',
+    });
+
+    render(<ScoreViewInput />);
+
+    const select = screen.getByRole('combobox', { name: /score view/i });
+    expect(select).toHaveValue('absolute');
+  });
+
+  it('calls toggle function when selection changes', async () => {
+    render(<ScoreViewInput />);
+    const user = userEvent.setup();
+
+    const select = screen.getByRole('combobox', { name: /score view/i });
+
+    await user.selectOptions(select, 'absolute');
+
+    expect(mockToggleFormat).toHaveBeenCalledTimes(1);
+  });
+
+  describe('accessibility', () => {
+    it('has proper form structure', () => {
+      render(<ScoreViewInput />);
+
+      const select = screen.getByRole('combobox', { name: /score view/i });
+      const label = screen.getByText(/score view/i);
+
+      expect(select).toBeInTheDocument();
+      expect(label).toBeInTheDocument();
+    });
+
+    it('has accessible label association', () => {
+      render(<ScoreViewInput />);
+
+      const label = screen.getByText(/score view/i);
+      const select = screen.getByRole('combobox', { name: /score view/i });
+
+      expect(label).toBeInTheDocument();
+      expect(select).toHaveAccessibleName(/score view/i);
+    });
+
+    it('has correct control ID for accessibility', () => {
+      render(<ScoreViewInput />);
+
+      const select = screen.getByRole('combobox', { name: /score view/i });
+      expect(select).toHaveAttribute('id', 'ScoreView');
     });
   });
-  describe('render', () => {
-    test('snapshot', () => {
-      expect(el.snapshot).toMatchSnapshot();
+
+  describe('form control behavior', () => {
+    it('renders as a select element', () => {
+      render(<ScoreViewInput />);
+
+      const select = screen.getByRole('combobox', { name: /score view/i });
+      expect(select.tagName).toBe('SELECT');
     });
-    test('label', () => {
-      const label = el.instance.children[0];
-      expect(label.children[0].el).toEqual(`${formatMessage(messages.scoreView)}`);
+
+    it('has correct option values', () => {
+      render(<ScoreViewInput />);
+
+      const percentOption = screen.getByRole('option', { name: /percent/i });
+      const absoluteOption = screen.getByRole('option', { name: /absolute/i });
+
+      expect(percentOption).toHaveValue('percent');
+      expect(absoluteOption).toHaveValue('absolute');
     });
-    describe('form control', () => {
-      let control;
-      beforeEach(() => {
-        control = el.instance.children;
+
+    it('has exactly two options', () => {
+      render(<ScoreViewInput />);
+
+      const options = screen.getAllByRole('option');
+      expect(options).toHaveLength(2);
+    });
+  });
+
+  describe('redux integration', () => {
+    it('uses grade data selector hook', () => {
+      render(<ScoreViewInput />);
+
+      expect(selectors.grades.useGradeData).toHaveBeenCalledTimes(1);
+    });
+
+    it('uses toggle grade format action hook', () => {
+      render(<ScoreViewInput />);
+
+      expect(actions.grades.useToggleGradeFormat).toHaveBeenCalledTimes(1);
+    });
+
+    it('responds to different grade format values', () => {
+      const { rerender } = render(<ScoreViewInput />);
+
+      let select = screen.getByRole('combobox', { name: /score view/i });
+      expect(select).toHaveValue('percent');
+
+      selectors.grades.useGradeData.mockReturnValue({
+        gradeFormat: 'absolute',
       });
-      test('value and onChange from redux hooks', () => {
-        expect(control[1].props.value).toEqual(gradeFormat);
-        expect(control[1].props.onChange).toEqual(toggleGradeFormat);
-      });
-      test('absolute and percent options', () => {
-        const { children } = control[1];
-        expect(children[0].props.value).toEqual(GradeFormats.percent);
-        expect(children[0].children[0].el).toEqual(formatMessage(messages.percent));
-        expect(children[1].props.value).toEqual(GradeFormats.absolute);
-        expect(children[1].children[0].el).toEqual(formatMessage(messages.absolute));
-      });
+
+      rerender(<ScoreViewInput />);
+      select = screen.getByRole('combobox', { name: /score view/i });
+      expect(select).toHaveValue('absolute');
+    });
+  });
+
+  describe('user interactions', () => {
+    it('handles option selection', async () => {
+      render(<ScoreViewInput />);
+      const user = userEvent.setup();
+
+      const select = screen.getByRole('combobox', { name: /score view/i });
+
+      await user.selectOptions(select, 'absolute');
+
+      expect(mockToggleFormat).toHaveBeenCalledWith(expect.any(Object));
+    });
+
+    it('maintains state consistency', () => {
+      render(<ScoreViewInput />);
+
+      const select = screen.getByRole('combobox', { name: /score view/i });
+      const percentOption = screen.getByRole('option', { name: /percent/i });
+
+      expect(select).toHaveValue('percent');
+      expect(percentOption).toBeInTheDocument();
+    });
+  });
+
+  describe('internationalization', () => {
+    it('displays localized label text', () => {
+      render(<ScoreViewInput />);
+
+      expect(screen.getByText('Score View:')).toBeInTheDocument();
+    });
+
+    it('displays localized option text', () => {
+      render(<ScoreViewInput />);
+
+      expect(screen.getByText('Percent')).toBeInTheDocument();
+      expect(screen.getByText('Absolute')).toBeInTheDocument();
+    });
+  });
+
+  describe('component structure', () => {
+    it('uses proper Bootstrap form classes', () => {
+      render(<ScoreViewInput />);
+
+      const select = screen.getByRole('combobox', { name: /score view/i });
+      expect(select).toHaveClass('form-control');
+    });
+
+    it('renders within form group structure', () => {
+      render(<ScoreViewInput />);
+
+      const label = screen.getByText(/score view/i);
+      const select = screen.getByRole('combobox', { name: /score view/i });
+
+      expect(label).toBeInTheDocument();
+      expect(select).toBeInTheDocument();
+      expect(select).toHaveAccessibleName(expect.stringMatching(/score view/i));
     });
   });
 });
