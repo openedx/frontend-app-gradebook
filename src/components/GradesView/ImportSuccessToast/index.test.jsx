@@ -1,8 +1,9 @@
 import React from 'react';
 
-import { render, initializeMocks } from 'testUtilsExtra';
+import { render, initializeMocks, screen } from 'testUtilsExtra';
 
 import ImportSuccessToast from '.';
+import useImportSuccessToastData from './hooks';
 
 jest.unmock('@openedx/paragon');
 jest.unmock('react');
@@ -24,8 +25,6 @@ jest.mock('data/redux/hooks', () => ({
 
 jest.mock('./hooks', () => jest.fn());
 
-const useImportSuccessToastData = require('./hooks');
-
 initializeMocks();
 
 describe('ImportSuccessToast', () => {
@@ -33,7 +32,7 @@ describe('ImportSuccessToast', () => {
     jest.clearAllMocks();
   });
 
-  it('renders without errors', () => {
+  it('renders with show false', () => {
     useImportSuccessToastData.mockReturnValue({
       action: {
         label: 'View Activity Log',
@@ -44,8 +43,11 @@ describe('ImportSuccessToast', () => {
       description: 'Import Successful! Grades will be updated momentarily.',
     });
 
-    const { container } = render(<ImportSuccessToast />);
-    expect(container).toBeInTheDocument();
+    render(<ImportSuccessToast />);
+    const alert = screen.getByRole('alert');
+    expect(alert).toBeInTheDocument();
+    const toastMessage = screen.queryByText('Import Successful! Grades will be updated momentarily.');
+    expect(toastMessage).toBeNull();
     expect(useImportSuccessToastData).toHaveBeenCalled();
   });
 
@@ -60,23 +62,9 @@ describe('ImportSuccessToast', () => {
       description: 'Import Successful! Grades will be updated momentarily.',
     });
 
-    const { container } = render(<ImportSuccessToast />);
-    expect(container).toBeInTheDocument();
-    expect(useImportSuccessToastData).toHaveBeenCalled();
-  });
-
-  it('calls useImportSuccessToastData hook', () => {
-    useImportSuccessToastData.mockReturnValue({
-      action: {
-        label: 'View Activity Log',
-        onClick: jest.fn(),
-      },
-      onClose: jest.fn(),
-      show: false,
-      description: 'Import Successful! Grades will be updated momentarily.',
-    });
-
     render(<ImportSuccessToast />);
+    const toastMessage = screen.getByText('Import Successful! Grades will be updated momentarily.');
+    expect(toastMessage).toBeInTheDocument();
     expect(useImportSuccessToastData).toHaveBeenCalled();
   });
 
