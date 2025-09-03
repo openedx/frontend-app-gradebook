@@ -86,7 +86,6 @@ describe('EditModal component', () => {
       testBody();
       testFooter();
       test('alert row', () => {
-        screen.debug();
         const alert = screen.queryByRole('alert');
         expect(alert).toBeNull();
       });
