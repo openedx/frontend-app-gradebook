@@ -1,31 +1,29 @@
 import React from 'react';
-import { shallow } from '@edx/react-unit-test-utils';
-
-import { Alert } from '@openedx/paragon';
+import { render, screen } from '@testing-library/react';
 
 import useStatusAlertsData from './hooks';
 import StatusAlerts from '.';
 
 jest.mock('./hooks', () => jest.fn());
+jest.unmock('@openedx/paragon');
 
 const hookProps = {
   successBanner: {
     onClose: jest.fn().mockName('hooks.successBanner.onClose'),
-    show: 'hooks.show-success-banner',
+    show: true,
     text: 'hooks.success-banner-text',
   },
   gradeFilter: {
-    show: 'hooks.show-grade-filter',
+    show: true,
     text: 'hooks.grade-filter-text',
   },
 };
 useStatusAlertsData.mockReturnValue(hookProps);
 
-let el;
 describe('StatusAlerts component', () => {
   beforeEach(() => {
     jest.clearAllMocks();
-    el = shallow(<StatusAlerts />);
+    render(<StatusAlerts />);
   });
   describe('behavior', () => {
     it('initializes component hooks', () => {
@@ -33,21 +31,17 @@ describe('StatusAlerts component', () => {
     });
   });
   describe('render', () => {
-    test('snapshot', () => {
-      expect(el.snapshot).toMatchSnapshot();
+    it('success banner', () => {
+      const alerts = screen.getAllByRole('alert');
+      const successAlert = alerts[0];
+      expect(successAlert).toHaveTextContent(hookProps.successBanner.text);
+      expect(successAlert).toHaveClass('alert-success');
     });
-    test('success banner', () => {
-      const alert = el.instance.findByType(Alert)[0];
-      const { props } = alert;
-      expect(props.onClose).toEqual(hookProps.successBanner.onClose);
-      expect(props.show).toEqual(hookProps.successBanner.show);
-      expect(alert.children[0].el).toEqual(hookProps.successBanner.text);
-    });
-    test('grade filter banner', () => {
-      const alert = el.instance.findByType(Alert)[1];
-      const { props } = alert;
-      expect(props.show).toEqual(hookProps.gradeFilter.show);
-      expect(alert.children[0].el).toEqual(hookProps.gradeFilter.text);
+    it('grade filter banner', () => {
+      const alerts = screen.getAllByRole('alert');
+      const gradeFilter = alerts[1];
+      expect(gradeFilter).toHaveTextContent(hookProps.gradeFilter.text);
+      expect(gradeFilter).toHaveClass('alert-danger');
     });
   });
 });
