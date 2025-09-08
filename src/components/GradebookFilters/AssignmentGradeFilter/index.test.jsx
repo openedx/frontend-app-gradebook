@@ -1,15 +1,12 @@
 /* eslint-disable import/no-extraneous-dependencies */
-import { render, screen } from '@testing-library/react';
+import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { IntlProvider } from '@edx/frontend-platform/i18n';
 
 import useAssignmentGradeFilterData from './hooks';
 import AssignmentFilter from '.';
+import { renderWithIntl } from '../../../testUtilsExtra';
 
 jest.mock('./hooks', () => ({ __esModule: true, default: jest.fn() }));
-jest.unmock('@openedx/paragon');
-jest.unmock('react');
-jest.unmock('@edx/frontend-platform/i18n');
 
 const hookData = {
   handleSubmit: jest.fn(),
@@ -26,7 +23,7 @@ const updateQueryParams = jest.fn();
 describe('AssignmentFilter component', () => {
   describe('behavior', () => {
     it('initializes hooks', () => {
-      render(<IntlProvider locale="en" messages={{}}><AssignmentFilter updateQueryParams={updateQueryParams} /></IntlProvider>);
+      renderWithIntl(<AssignmentFilter updateQueryParams={updateQueryParams} />);
       expect(useAssignmentGradeFilterData).toHaveBeenCalledWith({ updateQueryParams });
     });
   });
@@ -34,7 +31,7 @@ describe('AssignmentFilter component', () => {
     describe('with selected assignment', () => {
       beforeEach(() => {
         jest.clearAllMocks();
-        render(<IntlProvider locale="en" messages={{}}><AssignmentFilter updateQueryParams={updateQueryParams} /></IntlProvider>);
+        renderWithIntl(<AssignmentFilter updateQueryParams={updateQueryParams} />);
       });
       it('renders a PercentGroup for both Max and Min filters', async () => {
         const user = userEvent.setup();
@@ -64,7 +61,7 @@ describe('AssignmentFilter component', () => {
           ...hookData,
           selectedAssignment: null,
         });
-        render(<IntlProvider locale="en" messages={{}}><AssignmentFilter updateQueryParams={updateQueryParams} /></IntlProvider>);
+        renderWithIntl(<AssignmentFilter updateQueryParams={updateQueryParams} />);
       });
       it('disables controls', () => {
         const minGrade = screen.getByRole('spinbutton', { name: /Min Grade/ });

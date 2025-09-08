@@ -6,9 +6,6 @@ import userEvent from '@testing-library/user-event';
 
 import FilterBadges from '.';
 
-jest.unmock('@openedx/paragon');
-jest.unmock('react');
-
 const order = ['filter1', 'filter2', 'filter3'];
 jest.mock('data/constants/filters', () => ({
   ...jest.requireActual('data/constants/filters'),

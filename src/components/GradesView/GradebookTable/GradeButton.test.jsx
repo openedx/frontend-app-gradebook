@@ -26,10 +26,6 @@ jest.mock('data/redux/transforms', () => ({
   },
 }));
 
-jest.unmock('@openedx/paragon');
-jest.unmock('react');
-jest.unmock('@edx/frontend-platform/i18n');
-
 const props = {
   subsection: {
     attempted: false,

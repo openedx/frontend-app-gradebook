@@ -1,11 +1,8 @@
 import React from 'react';
-import { render } from '@testing-library/react';
-
 import useImportGradesButtonData from './hooks';
 import ImportGradesButton from '.';
+import { renderWithIntl, screen } from '../../../testUtilsExtra';
 
-jest.unmock('react');
-jest.unmock('@openedx/paragon');
 jest.mock('components/NetworkButton', () => 'network-button');
 jest.mock('./hooks', () => ({ __esModule: true, default: jest.fn() }));
 
@@ -17,11 +14,10 @@ const props = {
 };
 useImportGradesButtonData.mockReturnValue(props);
 
-let el;
 describe('ImportGradesButton ref test', () => {
   it('loads ref from hook', () => {
-    el = render(<ImportGradesButton />);
-    const input = el.getByTestId('file-control');
+    renderWithIntl(<ImportGradesButton />);
+    const input = screen.getByTestId('file-control');
     expect(input).toEqual(props.fileInputRef.current);
   });
 });

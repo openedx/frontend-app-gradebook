@@ -1,14 +1,10 @@
-import { render, screen } from '@testing-library/react';
-import { IntlProvider } from '@edx/frontend-platform/i18n';
+import { screen } from '@testing-library/react';
 
 import useGradebookTableData from './hooks';
 import GradebookTable from '.';
+import { renderWithIntl } from '../../../testUtilsExtra';
 
 jest.mock('./hooks', () => jest.fn());
-
-jest.unmock('@openedx/paragon');
-jest.unmock('react');
-jest.unmock('@edx/frontend-platform/i18n');
 
 const hookProps = {
   columns: [{ Header: 'Username', accessor: 'username' }, { Header: 'Email', accessor: 'email' }, { Header: 'Total Grade', accessor: 'totalGrade' }],
@@ -21,7 +17,7 @@ const hookProps = {
 describe('GradebookTable', () => {
   it('renders Datatable correctly', () => {
     useGradebookTableData.mockReturnValue(hookProps);
-    render(<IntlProvider locale="en"><GradebookTable /></IntlProvider>);
+    renderWithIntl(<GradebookTable />);
     expect(useGradebookTableData).toHaveBeenCalled();
     const headers = screen.getAllByRole('columnheader');
     expect(headers).toHaveLength(3);
@@ -40,7 +36,7 @@ describe('GradebookTable', () => {
       data: [],
       grades: [],
     });
-    render(<IntlProvider locale="en"><GradebookTable /></IntlProvider>);
+    renderWithIntl(<GradebookTable />);
     expect(screen.getByText(hookProps.emptyContent)).toBeInTheDocument();
   });
 });

@@ -15,6 +15,18 @@ jest.mock('data/redux/hooks', () => ({
   },
 }));
 
+jest.mock('react', () => ({
+  ...jest.requireActual('react'),
+  useContext: jest.fn(context => context),
+}));
+
+jest.mock('@edx/frontend-platform/i18n', () => ({
+  ...jest.requireActual('@edx/frontend-platform/i18n'),
+  useIntl: jest.fn(() => ({
+    formatMessage: (message) => message.defaultMessage,
+  })),
+}));
+
 const gradeData = { nextPage: 'test-next-page', prevPage: 'test-prev-page' };
 selectors.grades.useGradeData.mockReturnValue(gradeData);
 

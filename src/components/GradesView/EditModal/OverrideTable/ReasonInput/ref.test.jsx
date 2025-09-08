@@ -4,8 +4,6 @@ import { render } from '@testing-library/react';
 import useReasonInputData from './hooks';
 import ReasonInput, { controlTestId } from '.';
 
-jest.unmock('react');
-jest.unmock('@openedx/paragon');
 jest.mock('./hooks', () => ({ __esModule: true, default: jest.fn() }));
 
 const focus = jest.fn();

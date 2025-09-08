@@ -1,15 +1,12 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
-import { useIntl } from '@edx/frontend-platform/i18n';
+import { screen } from '@testing-library/react';
 
 import { formatMessage } from 'testUtils';
 import { selectors } from 'data/redux/hooks';
 import userEvent from '@testing-library/user-event';
 import FilterBadge from './FilterBadge';
+import { renderWithIntl } from '../../../testUtilsExtra';
 
-jest.mock('@openedx/paragon', () => ({
-  Button: () => 'Button',
-}));
 jest.mock('data/redux/hooks', () => ({
   selectors: {
     root: {
@@ -18,14 +15,12 @@ jest.mock('data/redux/hooks', () => ({
   },
 }));
 
-jest.unmock('@openedx/paragon');
-jest.unmock('react');
-
 const handleClose = jest.fn();
 const filterName = 'test-filter-name';
 
 const hookProps = {
   displayName: {
+    id: 'test.id',
     defaultMessage: 'a common name',
   },
   isDefault: false,
@@ -38,10 +33,7 @@ selectors.root.useFilterBadgeConfig.mockReturnValue(hookProps);
 describe('FilterBadge', () => {
   describe('hooks', () => {
     beforeEach(() => {
-      render(<FilterBadge {...{ handleClose, filterName }} />);
-    });
-    it('initializes intl hook', () => {
-      expect(useIntl).toHaveBeenCalled();
+      renderWithIntl(<FilterBadge {...{ handleClose, filterName }} />);
     });
     it('initializes redux hooks', () => {
       expect(selectors.root.useFilterBadgeConfig).toHaveBeenCalledWith(filterName);
@@ -53,7 +45,7 @@ describe('FilterBadge', () => {
         ...hookProps,
         isDefault: true,
       });
-      render(<FilterBadge {...{ handleClose, filterName }} />);
+      renderWithIntl(<FilterBadge {...{ handleClose, filterName }} />);
       expect(screen.queryByText(hookProps.displayName)).toBeNull();
     });
     describe('hide Value', () => {
@@ -62,7 +54,7 @@ describe('FilterBadge', () => {
           ...hookProps,
           hideValue: true,
         });
-        render(<FilterBadge {...{ handleClose, filterName }} />);
+        renderWithIntl(<FilterBadge {...{ handleClose, filterName }} />);
         const user = userEvent.setup();
         expect(screen.getByTestId('display-name')).toHaveTextContent(formatMessage(hookProps.displayName));
         expect(screen.queryByTestId('filter-value')).toHaveTextContent('');
@@ -77,7 +69,7 @@ describe('FilterBadge', () => {
           ...hookProps,
           hideValue: false,
         });
-        render(<FilterBadge {...{ handleClose, filterName }} />);
+        renderWithIntl(<FilterBadge {...{ handleClose, filterName }} />);
         const user = userEvent.setup();
         expect(screen.getByTestId('display-name')).toHaveTextContent(formatMessage(hookProps.displayName));
         expect(screen.getByTestId('filter-value')).toHaveTextContent(`: ${hookProps.value}`);

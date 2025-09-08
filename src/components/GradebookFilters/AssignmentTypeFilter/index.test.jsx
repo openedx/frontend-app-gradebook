@@ -1,13 +1,9 @@
 import React from 'react';
-import { IntlProvider } from '@edx/frontend-platform/i18n';
-import { render, screen } from '@testing-library/react';
+import { screen } from '@testing-library/react';
 
 import useAssignmentFilterTypeData from './hooks';
 import AssignmentFilterType from '.';
-
-jest.unmock('@openedx/paragon');
-jest.unmock('react');
-jest.unmock('@edx/frontend-platform/i18n');
+import { renderWithIntl } from '../../../testUtilsExtra';
 
 jest.mock('./hooks', () => ({ __esModule: true, default: jest.fn() }));
 
@@ -25,7 +21,7 @@ const updateQueryParams = jest.fn();
 
 describe('AssignmentFilterType component', () => {
   beforeAll(() => {
-    render(<IntlProvider locale="en"><AssignmentFilterType updateQueryParams={updateQueryParams} /></IntlProvider>);
+    renderWithIntl(<AssignmentFilterType updateQueryParams={updateQueryParams} />);
   });
   describe('render', () => {
     test('filter options', () => {

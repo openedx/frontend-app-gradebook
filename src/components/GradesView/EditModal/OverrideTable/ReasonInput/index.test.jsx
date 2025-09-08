@@ -5,9 +5,6 @@ import ReasonInput from '.';
 
 jest.mock('./hooks', () => jest.fn());
 
-jest.unmock('@openedx/paragon');
-jest.unmock('react');
-
 const hookProps = {
   ref: jest.fn().mockName('hook.ref'),
   onChange: jest.fn().mockName('hook.onChange'),

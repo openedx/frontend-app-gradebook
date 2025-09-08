@@ -4,10 +4,6 @@ import { initializeMocks, render, waitFor } from 'testUtilsExtra';
 
 import Head from './Head';
 
-jest.unmock('@openedx/paragon');
-jest.unmock('@edx/frontend-platform/i18n');
-jest.unmock('react');
-
 describe('Head', () => {
   it('should match render title tag and favicon with the site configuration values', async () => {
     initializeMocks();

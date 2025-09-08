@@ -143,3 +143,9 @@ export * from '@testing-library/react';
 export {
   customRender as render,
 };
+
+export const renderWithIntl = (component) => render(
+  <IntlProvider locale="en" messages={{}}>
+    {component}
+  </IntlProvider>,
+);

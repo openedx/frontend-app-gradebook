@@ -12,6 +12,11 @@ jest.mock('data/redux/hooks', () => ({
   },
 }));
 
+jest.mock('react', () => ({
+  ...jest.requireActual('react'),
+  useRef: jest.fn((val) => ({ current: val, useRef: true })),
+}));
+
 let out;
 
 let submitThen;

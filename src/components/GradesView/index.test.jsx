@@ -6,9 +6,6 @@ import { render, initializeMocks } from 'testUtilsExtra';
 import useGradesViewData from './hooks';
 import GradesView from '.';
 
-jest.unmock('@openedx/paragon');
-jest.unmock('react');
-jest.unmock('@edx/frontend-platform/i18n');
 jest.mock('./hooks', () => jest.fn());
 
 const hookProps = {

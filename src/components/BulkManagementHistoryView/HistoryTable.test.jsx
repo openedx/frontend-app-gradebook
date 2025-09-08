@@ -8,12 +8,10 @@ import { bulkManagementColumns } from 'data/constants/app';
 import { HistoryTable, mapHistoryRows, mapStateToProps } from './HistoryTable';
 import ResultsSummary from './ResultsSummary';
 
-jest.unmock('@openedx/paragon');
-jest.unmock('react');
-jest.unmock('@edx/frontend-platform/i18n');
 initializeMocks();
 
 jest.mock('@openedx/paragon', () => ({
+  ...jest.requireActual('@openedx/paragon'),
   DataTable: jest.fn(() => <div data-testid="data-table">DataTable</div>),
 }));
 jest.mock('./ResultsSummary', () => jest.fn(() => <div data-testid="results-summary">ResultsSummary</div>));
