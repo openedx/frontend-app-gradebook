@@ -19,6 +19,18 @@ jest.mock('data/redux/hooks', () => ({
   },
 }));
 
+jest.mock('react', () => ({
+  ...jest.requireActual('react'),
+  useContext: jest.fn(context => context),
+}));
+
+jest.mock('@edx/frontend-platform/i18n', () => ({
+  ...jest.requireActual('@edx/frontend-platform/i18n'),
+  useIntl: jest.fn(() => ({
+    formatMessage: (message) => message.defaultMessage,
+  })),
+}));
+
 const setView = jest.fn().mockName('hooks.setView');
 const setShowToast = jest.fn().mockName('hooks.setShowImportSuccessToast');
 actions.app.useSetView.mockReturnValue(setView);

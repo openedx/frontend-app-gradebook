@@ -4,9 +4,6 @@ import { render, screen, initializeMocks } from 'testUtilsExtra';
 import useAssignmentFilterData from './hooks';
 import AssignmentFilter from '.';
 
-jest.unmock('@openedx/paragon');
-jest.unmock('react');
-jest.unmock('@edx/frontend-platform/i18n');
 jest.mock('./hooks', () => ({ __esModule: true, default: jest.fn() }));
 
 const handleChange = jest.fn();

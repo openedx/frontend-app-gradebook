@@ -1,10 +1,9 @@
 import React from 'react';
 
 import lms from 'data/services/lms';
-import { render, screen } from '@testing-library/react';
+import { renderWithIntl, screen } from '../../testUtilsExtra';
 import ResultsSummary from './ResultsSummary';
 
-jest.unmock('@openedx/paragon');
 jest.mock('data/services/lms', () => ({
   urls: {
     bulkGradesUrlByRow: jest.fn((rowId) => (`www.edx.org/${rowId}`)),
@@ -16,10 +15,9 @@ describe('ResultsSummary component', () => {
     rowId: 42,
     text: 'texty',
   };
-  let el;
   let link;
   beforeEach(() => {
-    el = render(<ResultsSummary {...props} />);
+    renderWithIntl(<ResultsSummary {...props} />);
     link = screen.getByRole('link', { name: props.text });
   });
   test('Hyperlink has target="_blank" and rel="noopener noreferrer"', () => {
@@ -31,7 +29,7 @@ describe('ResultsSummary component', () => {
   });
   test('displays Download Icon and text', () => {
     expect(link).toHaveTextContent(props.text);
-    const span = el.container.querySelector('span[aria-hidden="true"]');
-    expect(span).toBeInTheDocument();
+    const icon = screen.getByRole('img', { hidden: true });
+    expect(icon).toBeInTheDocument();
   });
 });

@@ -5,7 +5,6 @@ import useStatusAlertsData from './hooks';
 import StatusAlerts from '.';
 
 jest.mock('./hooks', () => jest.fn());
-jest.unmock('@openedx/paragon');
 
 const hookProps = {
   successBanner: {

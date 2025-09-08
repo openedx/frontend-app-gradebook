@@ -1,18 +1,14 @@
-import { render, screen } from '@testing-library/react';
+import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { IntlProvider } from '@edx/frontend-platform/i18n';
 
 import useEditModalData from './hooks';
 import EditModal from '.';
 import messages from './messages';
+import { renderWithIntl } from '../../../testUtilsExtra';
 
 jest.mock('./hooks', () => jest.fn());
 jest.mock('./ModalHeaders', () => jest.fn(() => <div>ModalHeaders</div>));
 jest.mock('./OverrideTable', () => jest.fn(() => <div>OverrideTable</div>));
-
-jest.unmock('@openedx/paragon');
-jest.unmock('react');
-jest.unmock('@edx/frontend-platform/i18n');
 
 const hookProps = {
   onClose: jest.fn().mockName('hooks.onClose'),
@@ -28,7 +24,7 @@ describe('EditModal component', () => {
   describe('behavior', () => {
     it('initializes component hooks', () => {
       useEditModalData.mockReturnValue(hookProps);
-      render(<IntlProvider locale="en"><EditModal /></IntlProvider>);
+      renderWithIntl(<EditModal />);
       expect(useEditModalData).toHaveBeenCalled();
     });
   });
@@ -80,7 +76,7 @@ describe('EditModal component', () => {
     describe('without error', () => {
       beforeEach(() => {
         useEditModalData.mockReturnValueOnce({ ...hookProps, error: undefined });
-        render(<IntlProvider locale="en"><EditModal /></IntlProvider>);
+        renderWithIntl(<EditModal />);
       });
       testModal();
       testBody();
@@ -93,7 +89,7 @@ describe('EditModal component', () => {
     describe('with error', () => {
       beforeEach(() => {
         useEditModalData.mockReturnValue(hookProps);
-        render(<IntlProvider locale="en"><EditModal /></IntlProvider>);
+        renderWithIntl(<EditModal />);
       });
       testModal();
       testBody();

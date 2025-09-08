@@ -18,6 +18,18 @@ jest.mock('data/redux/hooks', () => ({
   },
 }));
 
+jest.mock('react', () => ({
+  ...jest.requireActual('react'),
+  useContext: jest.fn(context => context),
+}));
+
+jest.mock('@edx/frontend-platform/i18n', () => ({
+  ...jest.requireActual('@edx/frontend-platform/i18n'),
+  useIntl: jest.fn(() => ({
+    formatMessage: (message) => message.defaultMessage,
+  })),
+}));
+
 const searchValue = 'test-search-value';
 selectors.app.useSearchValue.mockReturnValue(searchValue);
 const setSearchValue = jest.fn();

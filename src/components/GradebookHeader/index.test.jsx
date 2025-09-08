@@ -8,9 +8,6 @@ import { GradebookHeader } from './index';
 import useGradebookHeaderData from './hooks';
 import messages from './messages';
 
-jest.unmock('@openedx/paragon');
-jest.unmock('react');
-jest.unmock('@edx/frontend-platform/i18n');
 jest.mock('data/services/lms/urls', () => ({
   instructorDashboardUrl: jest.fn(),
 }));

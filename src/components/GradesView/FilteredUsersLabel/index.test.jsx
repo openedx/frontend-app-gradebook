@@ -1,14 +1,9 @@
-import { render, screen } from '@testing-library/react';
-
-import { IntlProvider } from '@edx/frontend-platform/i18n';
+import { screen } from '@testing-library/react';
 
 import { selectors } from 'data/redux/hooks';
 
 import FilteredUsersLabel from '.';
-
-jest.unmock('@openedx/paragon');
-jest.unmock('react');
-jest.unmock('@edx/frontend-platform/i18n');
+import { renderWithIntl } from '../../../testUtilsExtra';
 
 jest.mock('data/redux/hooks', () => ({
   selectors: {
@@ -30,7 +25,7 @@ describe('FilteredUsersLabel component', () => {
   });
   describe('behavior', () => {
     it('initializes redux hooks', () => {
-      render(<IntlProvider locale="en"><FilteredUsersLabel /></IntlProvider>);
+      renderWithIntl(<FilteredUsersLabel />);
       expect(selectors.grades.useUserCounts).toHaveBeenCalled();
     });
   });
@@ -40,11 +35,11 @@ describe('FilteredUsersLabel component', () => {
         ...userCounts,
         totalUsersCount: 0,
       });
-      const { container } = render(<IntlProvider locale="en"><FilteredUsersLabel /></IntlProvider>);
+      const { container } = renderWithIntl(<FilteredUsersLabel />);
       expect(container.firstChild).toBeNull();
     });
     it('renders users count correctly', () => {
-      render(<IntlProvider locale="en"><FilteredUsersLabel /></IntlProvider>);
+      renderWithIntl(<FilteredUsersLabel />);
       expect(screen.getByText((text) => text.includes(userCounts.filteredUsersCount))).toBeInTheDocument();
       expect(screen.getByText((text) => text.includes(userCounts.totalUsersCount))).toBeInTheDocument();
     });

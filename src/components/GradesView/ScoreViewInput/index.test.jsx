@@ -5,10 +5,6 @@ import userEvent from '@testing-library/user-event';
 
 import { ScoreViewInput } from '.';
 
-jest.unmock('@openedx/paragon');
-jest.unmock('react');
-jest.unmock('@edx/frontend-platform/i18n');
-
 jest.mock('data/redux/hooks', () => ({
   actions: {
     grades: {

@@ -3,10 +3,6 @@ import { render, screen, initializeMocks } from 'testUtilsExtra';
 
 import HistoryHeader from './HistoryHeader';
 
-jest.unmock('@openedx/paragon');
-jest.unmock('react');
-jest.unmock('@edx/frontend-platform/i18n');
-
 initializeMocks();
 
 describe('HistoryHeader', () => {

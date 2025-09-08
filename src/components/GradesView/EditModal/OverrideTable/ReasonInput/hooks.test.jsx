@@ -16,6 +16,12 @@ jest.mock('data/redux/hooks', () => ({
   },
 }));
 
+jest.mock('react', () => ({
+  ...jest.requireActual('react'),
+  useRef: jest.fn((val) => ({ current: val, useRef: true })),
+  useEffect: jest.fn((cb, prereqs) => ({ useEffect: { cb, prereqs } })),
+}));
+
 const modalData = { reasonForChange: 'test-reason-for-change' };
 const setModalState = jest.fn();
 selectors.app.useModalData.mockReturnValue(modalData);
@@ -25,6 +31,7 @@ const ref = { current: { focus: jest.fn() }, useRef: true };
 React.useRef.mockReturnValue(ref);
 
 let out;
+
 describe('useReasonInputData hook', () => {
   beforeEach(() => {
     jest.clearAllMocks();

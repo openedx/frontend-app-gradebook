@@ -1,6 +1,5 @@
 import { useIntl } from '@edx/frontend-platform/i18n';
 
-import { formatMessage } from 'testUtils';
 import { actions, selectors } from 'data/redux/hooks';
 
 import useStatusAlertsData from './hooks';
@@ -14,6 +13,18 @@ jest.mock('data/redux/hooks', () => ({
     app: { useCourseGradeFilterValidity: jest.fn() },
     grades: { useShowSuccess: jest.fn() },
   },
+}));
+
+jest.mock('react', () => ({
+  ...jest.requireActual('react'),
+  useContext: jest.fn(context => context),
+}));
+
+jest.mock('@edx/frontend-platform/i18n', () => ({
+  ...jest.requireActual('@edx/frontend-platform/i18n'),
+  useIntl: jest.fn(() => ({
+    formatMessage: (message) => message.defaultMessage,
+  })),
 }));
 
 const validity = {
@@ -49,7 +60,7 @@ describe('useStatusAlertsData', () => {
         expect(out.successBanner.show).toEqual(showSuccess);
       });
       test('message', () => {
-        expect(out.successBanner.text).toEqual(formatMessage(messages.editSuccessAlert));
+        expect(out.successBanner.text).toEqual(messages.editSuccessAlert.defaultMessage);
       });
     });
     describe('gradeFilter', () => {
@@ -70,7 +81,7 @@ describe('useStatusAlertsData', () => {
           expect(out.gradeFilter.show).toEqual(true);
         });
         test('filter message', () => {
-          expect(out.gradeFilter.text).toEqual(formatMessage(messages.minGradeInvalid));
+          expect(out.gradeFilter.text).toEqual(messages.minGradeInvalid.defaultMessage);
         });
       });
       describe('max filter is invalid', () => {
@@ -85,7 +96,7 @@ describe('useStatusAlertsData', () => {
           expect(out.gradeFilter.show).toEqual(true);
         });
         test('filter message', () => {
-          expect(out.gradeFilter.text).toEqual(formatMessage(messages.maxGradeInvalid));
+          expect(out.gradeFilter.text).toEqual(messages.maxGradeInvalid.defaultMessage);
         });
       });
       describe('both filters are invalid', () => {
@@ -101,7 +112,7 @@ describe('useStatusAlertsData', () => {
         });
         test('filter message', () => {
           expect(out.gradeFilter.text).toEqual(
-            `${formatMessage(messages.minGradeInvalid)}${formatMessage(messages.maxGradeInvalid)}`,
+            `${messages.minGradeInvalid.defaultMessage}${messages.maxGradeInvalid.defaultMessage}`,
           );
         });
       });

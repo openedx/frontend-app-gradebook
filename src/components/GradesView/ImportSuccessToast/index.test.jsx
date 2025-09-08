@@ -5,10 +5,6 @@ import { render, initializeMocks, screen } from 'testUtilsExtra';
 import ImportSuccessToast from '.';
 import useImportSuccessToastData from './hooks';
 
-jest.unmock('@openedx/paragon');
-jest.unmock('react');
-jest.unmock('@edx/frontend-platform/i18n');
-
 jest.mock('data/redux/hooks', () => ({
   actions: {
     app: {

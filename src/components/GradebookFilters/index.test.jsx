@@ -3,10 +3,6 @@ import { render, screen, initializeMocks } from 'testUtilsExtra';
 
 import GradebookFilters from '.';
 
-jest.unmock('@openedx/paragon');
-jest.unmock('react');
-jest.unmock('@edx/frontend-platform/i18n');
-
 const updateQueryParams = jest.fn();
 
 initializeMocks();

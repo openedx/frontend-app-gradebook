@@ -5,9 +5,6 @@ import SelectGroup from '../SelectGroup';
 import { StudentGroupsFilter } from './index';
 import useStudentGroupsFilterData from './hooks';
 
-jest.unmock('@openedx/paragon');
-jest.unmock('react');
-jest.unmock('@edx/frontend-platform/i18n');
 jest.mock('../SelectGroup', () => jest.fn(() => <div data-testid="select-group">SelectGroup</div>));
 jest.mock('./hooks', () => jest.fn());
 

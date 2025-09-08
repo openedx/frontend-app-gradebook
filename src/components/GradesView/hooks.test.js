@@ -1,6 +1,5 @@
 import { useIntl } from '@edx/frontend-platform/i18n';
 
-import { formatMessage } from 'testUtils';
 import { actions, thunkActions } from 'data/redux/hooks';
 
 import useGradesViewData from './hooks';
@@ -13,6 +12,18 @@ jest.mock('data/redux/hooks', () => ({
   thunkActions: {
     grades: { useFetchGrades: jest.fn() },
   },
+}));
+
+jest.mock('react', () => ({
+  ...jest.requireActual('react'),
+  useContext: jest.fn(context => context),
+}));
+
+jest.mock('@edx/frontend-platform/i18n', () => ({
+  ...jest.requireActual('@edx/frontend-platform/i18n'),
+  useIntl: jest.fn(() => ({
+    formatMessage: (message) => message.defaultMessage,
+  })),
 }));
 
 const fetchGrades = jest.fn();
@@ -39,11 +50,11 @@ describe('useGradesViewData', () => {
   });
   describe('output', () => {
     test('stepHeadings', () => {
-      expect(out.stepHeadings.filter).toEqual(formatMessage(messages.filterStepHeading));
-      expect(out.stepHeadings.gradebook).toEqual(formatMessage(messages.gradebookStepHeading));
+      expect(out.stepHeadings.filter).toEqual(messages.filterStepHeading.defaultMessage);
+      expect(out.stepHeadings.gradebook).toEqual(messages.gradebookStepHeading.defaultMessage);
     });
     test('mastersHint', () => {
-      expect(out.mastersHint).toEqual(formatMessage(messages.mastersHint));
+      expect(out.mastersHint).toEqual(messages.mastersHint.defaultMessage);
     });
     describe('handleFilterBadgeClose', () => {
       it('resets filters locally and in query params, and fetches grades', () => {

@@ -5,9 +5,6 @@ import { initializeMocks, render, screen } from 'testUtilsExtra';
 import usePageButtonsData from './hooks';
 import PageButtons from '.';
 
-jest.unmock('@openedx/paragon');
-jest.unmock('@edx/frontend-platform/i18n');
-jest.unmock('react');
 jest.mock('./hooks', () => jest.fn());
 
 const hookProps = {

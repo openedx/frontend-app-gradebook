@@ -6,10 +6,6 @@ import userEvent from '@testing-library/user-event';
 
 import { NetworkButton, mapStateToProps, buttonStates } from '.';
 
-jest.unmock('@openedx/paragon');
-jest.unmock('react');
-jest.unmock('@edx/frontend-platform/i18n');
-
 jest.mock('data/selectors', () => ({
   root: {
     shouldShowSpinner: jest.fn(),

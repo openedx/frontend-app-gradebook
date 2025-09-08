@@ -5,10 +5,6 @@ import { initializeMocks, render } from '../../../testUtilsExtra';
 import * as hooks from './hooks';
 import messages from './messages';
 
-jest.unmock('@openedx/paragon');
-jest.unmock('react');
-jest.unmock('@edx/frontend-platform/i18n');
-
 let mockUseAllGrades;
 let mockUseGetHeadings;
 

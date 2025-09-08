@@ -1,13 +1,9 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
-import { IntlProvider } from '@edx/frontend-platform/i18n';
+import { screen } from '@testing-library/react';
 
 import useCourseGradeFilterData from './hooks';
 import CourseFilter from '.';
-
-jest.unmock('@openedx/paragon');
-jest.unmock('react');
-jest.unmock('@edx/frontend-platform/i18n');
+import { renderWithIntl } from '../../../testUtilsExtra';
 
 jest.mock('./hooks', () => ({ __esModule: true, default: jest.fn() }));
 
@@ -38,7 +34,7 @@ describe('CourseFilter component', () => {
     });
     describe('with selected assignment', () => {
       beforeEach(() => {
-        render(<IntlProvider locale="en"><CourseFilter updateQueryParams={updateQueryParams} /></IntlProvider>);
+        renderWithIntl(<CourseFilter updateQueryParams={updateQueryParams} />);
       });
 
       it('renders a PercentGroup for both Max and Min filters', () => {
@@ -55,7 +51,7 @@ describe('CourseFilter component', () => {
       beforeEach(() => {
         jest.clearAllMocks();
         useCourseGradeFilterData.mockReturnValueOnce({ ...hookData, isDisabled: true });
-        render(<IntlProvider locale="en"><CourseFilter updateQueryParams={updateQueryParams} /></IntlProvider>);
+        renderWithIntl(<CourseFilter updateQueryParams={updateQueryParams} />);
       });
       it('disables submit', () => {
         expect(screen.getByRole('button', { name: 'Apply' })).toBeDisabled();

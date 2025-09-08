@@ -1,11 +1,11 @@
-import { render, screen } from '@testing-library/react';
+import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { IntlProvider } from '@edx/frontend-platform/i18n';
 import { formatMessage } from 'testUtils';
 import { thunkActions } from 'data/redux/hooks';
 
 import FilterMenuToggle from '.';
 import messages from './messages';
+import { renderWithIntl } from '../../../testUtilsExtra';
 
 jest.mock('data/redux/hooks', () => ({
   thunkActions: {
@@ -17,17 +17,13 @@ jest.mock('data/redux/hooks', () => ({
   },
 }));
 
-jest.unmock('@openedx/paragon');
-jest.unmock('react');
-jest.unmock('@edx/frontend-platform/i18n');
-
 const toggleFilterMenu = jest.fn().mockName('hooks.toggleFilterMenu');
 thunkActions.app.filterMenu.useToggleMenu.mockReturnValue(toggleFilterMenu);
 
 describe('FilterMenuToggle component', () => {
   beforeEach(() => {
     jest.clearAllMocks();
-    render(<IntlProvider locale="en"><FilterMenuToggle /></IntlProvider>);
+    renderWithIntl(<FilterMenuToggle />);
   });
   describe('behavior', () => {
     it('initializes redux hooks', () => {

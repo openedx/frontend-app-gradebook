@@ -6,10 +6,6 @@ import {
 
 import ImportGradesButton from '.';
 
-jest.unmock('@openedx/paragon');
-jest.unmock('react');
-jest.unmock('@edx/frontend-platform/i18n');
-
 initializeMocks();
 
 describe('ImportGradesButton component', () => {

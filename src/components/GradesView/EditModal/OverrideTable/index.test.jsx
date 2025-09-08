@@ -1,13 +1,9 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
-import { IntlProvider } from '@edx/frontend-platform/i18n';
+import { screen } from '@testing-library/react';
 
 import useOverrideTableData from './hooks';
 import OverrideTable from '.';
-
-jest.unmock('@openedx/paragon');
-jest.unmock('react');
-jest.unmock('@edx/frontend-platform/i18n');
+import { renderWithIntl } from '../../../../testUtilsExtra';
 
 jest.mock('utils', () => ({
   ...jest.requireActual('utils'),
@@ -41,19 +37,19 @@ describe('OverrideTable component', () => {
   describe('hooks', () => {
     it('initializes hook data', () => {
       useOverrideTableData.mockReturnValue(hookProps);
-      render(<IntlProvider locale="en"><OverrideTable /></IntlProvider>);
+      renderWithIntl(<OverrideTable />);
       expect(useOverrideTableData).toHaveBeenCalled();
     });
   });
   describe('behavior', () => {
     it('null render if hide', () => {
       useOverrideTableData.mockReturnValue({ ...hookProps, hide: true });
-      render(<IntlProvider locale="en"><OverrideTable /></IntlProvider>);
+      renderWithIntl(<OverrideTable />);
       expect(screen.queryByRole('table')).toBeNull();
     });
     it('renders table with correct data', () => {
       useOverrideTableData.mockReturnValue(hookProps);
-      render(<IntlProvider locale="en"><OverrideTable /></IntlProvider>);
+      renderWithIntl(<OverrideTable />);
       const table = screen.getByRole('table');
       expect(table).toBeInTheDocument();
       expect(screen.getByText(hookProps.columns[0].Header)).toBeInTheDocument();

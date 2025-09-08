@@ -4,10 +4,6 @@ import { render, screen, initializeMocks } from 'testUtilsExtra';
 
 import { GradebookPage, mapStateToProps, mapDispatchToProps } from '.';
 
-jest.unmock('@openedx/paragon');
-jest.unmock('react');
-jest.unmock('@edx/frontend-platform/i18n');
-
 jest.mock(
   'components/WithSidebar',
   // eslint-disable-next-line react/prop-types

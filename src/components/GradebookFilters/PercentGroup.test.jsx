@@ -2,10 +2,6 @@ import { render, screen, initializeMocks } from 'testUtilsExtra';
 
 import PercentGroup from './PercentGroup';
 
-jest.unmock('@openedx/paragon');
-jest.unmock('react');
-jest.unmock('@edx/frontend-platform/i18n');
-
 describe('PercentGroup', () => {
   let props = {
     id: 'group id',
