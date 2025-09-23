@@ -2,6 +2,7 @@ import { useIntl } from '@edx/frontend-platform/i18n';
 
 import { actions, selectors } from 'data/redux/hooks';
 
+import { formatMessage } from '../../../testUtils';
 import useStatusAlertsData from './hooks';
 import messages from './messages';
 
@@ -95,7 +96,6 @@ describe('useStatusAlertsData', () => {
           expect(out.assignmentGradeFilter.show).toEqual(true);
         });
         test('filter message', () => {
-          expect(out.gradeFilter.text).toEqual(messages.minGradeInvalid.defaultMessage);
           expect(out.courseGradeFilter.text).toEqual(`${formatMessage(messages.minGradeInvalid)}  `);
           expect(out.assignmentGradeFilter.text).toEqual(`${formatMessage(messages.minAssignmentInvalid)}  `);
         });
@@ -119,7 +119,6 @@ describe('useStatusAlertsData', () => {
           expect(out.assignmentGradeFilter.show).toEqual(true);
         });
         test('filter message', () => {
-          expect(out.gradeFilter.text).toEqual(messages.maxGradeInvalid.defaultMessage);
           expect(out.courseGradeFilter.text).toEqual(` ${formatMessage(messages.maxGradeInvalid)} `);
           expect(out.assignmentGradeFilter.text).toEqual(` ${formatMessage(messages.maxAssignmentInvalid)} `);
         });
@@ -166,8 +165,6 @@ describe('useStatusAlertsData', () => {
           expect(out.assignmentGradeFilter.show).toEqual(true);
         });
         test('filter message', () => {
-          expect(out.gradeFilter.text).toEqual(
-            `${messages.minGradeInvalid.defaultMessage}${messages.maxGradeInvalid.defaultMessage}`,
           expect(out.courseGradeFilter.text).toEqual(
             `${formatMessage(messages.minGradeInvalid)} ${formatMessage(messages.maxGradeInvalid)} ${formatMessage(messages.minLessMaxGradeInvalid)}`,
           );
