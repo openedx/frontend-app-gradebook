@@ -17,7 +17,6 @@ const { get, post, stringifyUrl } = utils;
 const assignmentTypes = () => get(urls.getAssignmentTypesUrl());
 const cohorts = () => get(urls.getCohortsUrl());
 const roles = () => get(urls.getRolesUrl());
-console.log('roles:', urls.getRolesUrl());
 const tracks = () => get(urls.getTracksUrl());
 
 /**

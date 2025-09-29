@@ -37,7 +37,11 @@ export const sectionOverrideHistoryUrl = (subsectionId, userId) => stringifyUrl(
 );
 
 export const instructorDashboardUrl = () => (
-  `${getSiteConfig().LMS_BASE_URL}/courses/${courseId}/instructor`
+  `${getSiteConfig().baseUrl}/courses/${courseId}/instructor`
+);
+
+export const baseDashboardUrl = () => (
+  `${getSiteConfig().baseUrl}/dashboard`
 );
 
 export default StrictDict({

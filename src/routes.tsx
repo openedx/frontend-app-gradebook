@@ -12,7 +12,7 @@ const routes = [
         element: (<GradebookPage />)
       },
       {
-        path: ':id',
+        path: ':courseId',
         element: (<GradebookPage />)
       },
     ]
