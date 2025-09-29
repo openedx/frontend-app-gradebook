@@ -40,10 +40,6 @@ export const instructorDashboardUrl = () => (
   `${getSiteConfig().baseUrl}/courses/${courseId}/instructor`
 );
 
-export const baseDashboardUrl = () => (
-  `${getSiteConfig().baseUrl}/dashboard`
-);
-
 export default StrictDict({
   getUrlPrefix,
   getBulkGradesUrl,

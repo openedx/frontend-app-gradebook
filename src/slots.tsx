@@ -1,5 +1,5 @@
-import { LinkMenuItem, SlotOperation, WidgetOperationTypes } from '@openedx/frontend-base';
-import { baseDashboardUrl } from './data/services/lms/urls';
+import { SlotOperation, WidgetOperationTypes } from '@openedx/frontend-base';
+import GradebookMenuItem from './components/menus/GradebookMenuItem';
 
 const slots: SlotOperation[] = [
   {
@@ -7,11 +7,7 @@ const slots: SlotOperation[] = [
     id: 'org.openedx.frontend.widget.gradebookMenu.headerLink',
     op: WidgetOperationTypes.APPEND,
     element: (
-      <LinkMenuItem
-        label="Courses"
-        url={baseDashboardUrl()}
-        variant="navLink"
-      />
+      <GradebookMenuItem label="Courses" role="org.openedx.frontend.role.learnerDashboard" variant="navLink" />
     )
   },
 ];
