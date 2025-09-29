@@ -1,7 +1,7 @@
 {
   "name": "@openedx/frontend-app-gradebook",
-  "version": "1.6.2",
-  "description": "edx editable gradebook-ui to manipulate grade overrides on subsections",
+  "version": "1.0.0-alpha.0",
+  "description": "Editable gradebook UI to manipulate grade overrides on subsections",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/openedx/frontend-app-gradebook.git"
@@ -15,7 +15,6 @@
     "*.scss"
   ],
   "scripts": {
-    "is-es5": "es-check es5 ./dist/*.js",
     "i18n_extract": "openedx formatjs extract",
     "lint": "openedx lint .",
     "lint:fix": "openedx lint --fix .",
@@ -47,7 +46,7 @@
     "redux-mock-store": "^1.5.3"
   },
   "peerDependencies": {
-    "@openedx/frontend-base": "^1.0.0-alpha.5",
+    "@openedx/frontend-base": "^1.0.0-alpha.6",
     "@openedx/paragon": "^22",
     "@tanstack/react-query": "^5",
     "react": "^18",
