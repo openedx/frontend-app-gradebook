@@ -1,4 +1,4 @@
-import { StrictDict } from 'utils';
+import { StrictDict } from '../../../utils';
 
 import selectorHooks from './selectors';
 import actionHooks from './actions';

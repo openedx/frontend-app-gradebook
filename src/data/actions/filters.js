@@ -1,5 +1,5 @@
-import { StrictDict } from 'utils';
 import initialFilters from '../constants/filters';
+import { StrictDict } from '../../utils';
 import { createActionFactory } from './utils';
 
 export const dataKey = 'filters';

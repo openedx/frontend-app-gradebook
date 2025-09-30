@@ -1,4 +1,4 @@
-import { StrictDict } from 'utils';
+import { StrictDict } from '../../utils';
 import { createActionFactory } from './utils';
 
 export const dataKey = 'cohorts';

@@ -1,8 +1,7 @@
-/* eslint-disable import/prefer-default-export */
-import { StrictDict } from 'utils';
+import { StrictDict } from '../../utils';
 
-import lms from 'data/services/lms';
-import actions from 'data/actions';
+import lms from '../services/lms';
+import actions from '../actions';
 
 import { fetchBulkUpgradeHistory } from './grades';
 
@@ -11,7 +10,7 @@ const {
   config: { gotBulkManagementConfig },
 } = actions;
 
-export const fetchAssignmentTypes = () => (
+export const fetchAssignmentTypes = () =>
   (dispatch) => {
     dispatch(fetching.started());
     return lms.api.fetch.assignmentTypes()
@@ -27,6 +26,6 @@ export const fetchAssignmentTypes = () => (
         dispatch(fetching.error());
       });
   }
-);
+  ;
 
 export default StrictDict({ fetchAssignmentTypes });

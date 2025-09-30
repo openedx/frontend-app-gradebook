@@ -1,0 +1,3 @@
+# `frontend-app-gradebook` Slots
+
+*

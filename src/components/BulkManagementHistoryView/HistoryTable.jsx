@@ -5,8 +5,8 @@ import { connect } from 'react-redux';
 
 import { DataTable } from '@openedx/paragon';
 
-import { bulkManagementColumns } from 'data/constants/app';
-import selectors from 'data/selectors';
+import { bulkManagementColumns } from '../../data/constants/app';
+import selectors from '../../data/selectors';
 
 import ResultsSummary from './ResultsSummary';
 

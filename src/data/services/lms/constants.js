@@ -1,4 +1,4 @@
-import { StrictDict } from 'utils';
+import { StrictDict } from '../../../utils';
 
 export const pageSize = 25;
 export const historyRecordLimit = 5;

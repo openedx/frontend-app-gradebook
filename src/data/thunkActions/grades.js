@@ -1,14 +1,13 @@
-/* eslint-disable import/no-self-import, import/no-named-as-default-member */
-import { getAuthenticatedHttpClient } from '@edx/frontend-platform/auth';
+import { getAuthenticatedHttpClient } from '@openedx/frontend-base';
 
-import { StrictDict } from 'utils';
+import { StrictDict } from '../../utils';
 
-import GRADE_OVERRIDE_HISTORY_ERROR_DEFAULT_MSG from 'data/constants/errors';
+import GRADE_OVERRIDE_HISTORY_ERROR_DEFAULT_MSG from '../constants/errors';
 
-import grades from 'data/actions/grades';
-import { sortAlphaAsc } from 'data/actions/utils';
-import selectors from 'data/selectors';
-import lms from 'data/services/lms';
+import grades from '../actions/grades';
+import { sortAlphaAsc } from '../actions/utils';
+import selectors from '../selectors';
+import lms from '../services/lms';
 
 import * as module from './grades';
 
@@ -19,11 +18,13 @@ export const defaultAssignmentFilter = 'All';
 export const fetchBulkUpgradeHistory = () => (dispatch) => (
   // todo add loading effect
   lms.api.fetch.gradeBulkOperationHistory().then(
-    (response) => { dispatch(grades.bulkHistory.received(response)); },
+    (response) => {
+      dispatch(grades.bulkHistory.received(response));
+    },
   ).catch(() => dispatch(grades.bulkHistory.error()))
 );
 
-export const fetchGrades = (overrides = {}) => (
+export const fetchGrades = (overrides = {}) =>
   (dispatch, getState) => {
     dispatch(grades.fetching.started());
     const { assignmentType, options } = overrides;
@@ -35,13 +36,13 @@ export const fetchGrades = (overrides = {}) => (
       ...options,
     };
     return lms.api.fetch.gradebookData(
-      fetchOptions.searchText || null,
+      fetchOptions.searchText ?? null,
       cohort,
       track,
       fetchOptions,
     ).then(({ data }) => {
       dispatch(grades.fetching.received({
-        assignmentType: (assignmentType || selectors.filters.assignmentType(getState())),
+        assignmentType: (assignmentType ?? selectors.filters.assignmentType(getState())),
         cohort,
         courseId,
         track,
@@ -59,18 +60,16 @@ export const fetchGrades = (overrides = {}) => (
       .catch(() => {
         dispatch(grades.fetching.error());
       });
-  }
-);
+  };
 
-export const fetchGradesIfAssignmentGradeFiltersSet = () => (
+export const fetchGradesIfAssignmentGradeFiltersSet = () =>
   (dispatch, getState) => {
     if (selectors.filters.areAssignmentGradeFiltersSet(getState())) {
       dispatch(module.fetchGrades());
     }
-  }
-);
+  };
 
-export const fetchGradeOverrideHistory = (subsectionId, userId) => (
+export const fetchGradeOverrideHistory = (subsectionId, userId) =>
   dispatch => lms.api.fetch.gradeOverrideHistory(subsectionId, userId)
     .then(({ data }) => {
       if (data.success) {
@@ -94,10 +93,9 @@ export const fetchGradeOverrideHistory = (subsectionId, userId) => (
     })
     .catch(() => {
       dispatch(grades.overrideHistory.error(GRADE_OVERRIDE_HISTORY_ERROR_DEFAULT_MSG));
-    })
-);
+    });
 
-export const fetchPrevNextGrades = (endpoint) => (
+export const fetchPrevNextGrades = (endpoint) =>
   (dispatch, getState) => {
     dispatch(grades.fetching.started());
     return getAuthenticatedHttpClient().get(endpoint)
@@ -119,10 +117,9 @@ export const fetchPrevNextGrades = (endpoint) => (
       .catch(() => {
         dispatch(grades.fetching.error());
       });
-  }
-);
+  };
 
-export const submitImportGradesButtonData = (formData) => (
+export const submitImportGradesButtonData = (formData) =>
   (dispatch, getState) => {
     const courseId = selectors.app.courseId(getState());
     dispatch(grades.csvUpload.started());
@@ -137,10 +134,9 @@ export const submitImportGradesButtonData = (formData) => (
       }
       return dispatch(grades.csvUpload.error({ errorMessages: ['Unknown error.'] }));
     });
-  }
-);
+  };
 
-export const updateGrades = () => (
+export const updateGrades = () =>
   (dispatch, getState) => {
     const updateData = selectors.app.editUpdateData(getState());
     dispatch(grades.update.request());
@@ -155,8 +151,7 @@ export const updateGrades = () => (
       .catch((error) => {
         dispatch(grades.update.failure({ error }));
       });
-  }
-);
+  };
 
 export default StrictDict({
   fetchBulkUpgradeHistory,

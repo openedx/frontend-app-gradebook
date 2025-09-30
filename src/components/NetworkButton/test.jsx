@@ -2,12 +2,12 @@ import React from 'react';
 import { shallow } from '@edx/react-unit-test-utils';
 
 import { Icon, StatefulButton } from '@openedx/paragon';
-import { FormattedMessage } from '@edx/frontend-platform/i18n';
+import { FormattedMessage } from '@openedx/frontend-base';
 
 import selectors from 'data/selectors';
 import { NetworkButton, mapStateToProps, buttonStates } from '.';
 
-jest.mock('@edx/frontend-platform/i18n', () => ({
+jest.mock('@openedx/frontend-base', () => ({
   FormattedMessage: () => 'FormattedMessage',
 }));
 jest.mock('@openedx/paragon', () => ({

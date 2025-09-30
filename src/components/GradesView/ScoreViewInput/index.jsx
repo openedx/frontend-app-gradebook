@@ -1,9 +1,9 @@
 import React from 'react';
 
 import { Form } from '@openedx/paragon';
-import { useIntl } from '@edx/frontend-platform/i18n';
+import { useIntl } from '@openedx/frontend-base';
 
-import { actions, selectors } from 'data/redux/hooks';
+import { actions, selectors } from '../../../data/redux/hooks';
 import messages from './messages';
 
 /**

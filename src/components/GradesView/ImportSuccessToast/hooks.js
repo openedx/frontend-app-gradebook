@@ -1,7 +1,7 @@
-import { useIntl } from '@edx/frontend-platform/i18n';
+import { useIntl } from '@openedx/frontend-base';
 
-import { actions, selectors } from 'data/redux/hooks';
-import { views } from 'data/constants/app';
+import { actions, selectors } from '../../../data/redux/hooks';
+import { views } from '../../../data/constants/app';
 import messages from './messages';
 
 /**

@@ -1,11 +1,11 @@
 import React from 'react';
 
-import { useIntl } from '@edx/frontend-platform/i18n';
+import { useIntl } from '@openedx/frontend-base';
 
-import { selectors } from 'data/redux/hooks';
-import transforms from 'data/redux/transforms';
-import { Headings } from 'data/constants/grades';
-import { getLocalizedPercentSign } from 'i18n/utils';
+import { selectors } from '../../../data/redux/hooks';
+import transforms from '../../../data/redux/transforms';
+import { Headings } from '../../../data/constants/grades';
+import { getLocalizedPercentSign } from '../../../i18n/utils';
 
 import messages from './messages';
 import Fields from './Fields';

@@ -6,7 +6,7 @@ import {
   ModalDialog,
   ActionRow,
 } from '@openedx/paragon';
-import { useIntl } from '@edx/frontend-platform/i18n';
+import { useIntl } from '@openedx/frontend-base';
 
 import OverrideTable from './OverrideTable';
 import ModalHeaders from './ModalHeaders';

@@ -1,5 +1,5 @@
-import { views } from 'data/constants/app';
-import { actions, selectors } from 'data/redux/hooks';
+import { views } from '../../data/constants/app';
+import { actions, selectors } from '../../data/redux/hooks';
 
 import messages from './messages';
 

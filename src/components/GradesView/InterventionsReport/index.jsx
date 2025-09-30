@@ -1,8 +1,8 @@
 import React from 'react';
 
-import { useIntl } from '@edx/frontend-platform/i18n';
+import { useIntl } from '@openedx/frontend-base';
 
-import NetworkButton from 'components/NetworkButton';
+import NetworkButton from '../../NetworkButton';
 
 import messages from './messages';
 import useInterventionsReportData from './hooks';

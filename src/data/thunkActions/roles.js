@@ -1,9 +1,8 @@
-/* eslint-disable import/prefer-default-export */
-import { StrictDict } from 'utils';
-import roles from 'data/actions/roles';
-import selectors from 'data/selectors';
+import { StrictDict } from '../../utils';
+import roles from '../../data/actions/roles';
+import selectors from '../../data/selectors';
 
-import lms from 'data/services/lms';
+import lms from '../../data/services/lms';
 
 import { fetchCohorts } from './cohorts';
 import { fetchGrades } from './grades';
@@ -12,7 +11,7 @@ import { fetchAssignmentTypes } from './assignmentTypes';
 
 export const allowedRoles = ['staff', 'limited_staff', 'instructor', 'support'];
 
-export const fetchRoles = () => (
+export const fetchRoles = () =>
   (dispatch, getState) => {
     const courseId = selectors.app.courseId(getState());
     return lms.api.fetch.roles()
@@ -32,8 +31,7 @@ export const fetchRoles = () => (
       .catch(() => {
         dispatch(roles.fetching.error());
       });
-  }
-);
+  };
 
 export default StrictDict({
   allowedRoles,

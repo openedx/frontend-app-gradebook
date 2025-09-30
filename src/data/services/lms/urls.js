@@ -1,11 +1,11 @@
-import { getConfig } from '@edx/frontend-platform';
-import { StrictDict } from 'utils';
+import { getSiteConfig } from '@openedx/frontend-base';
+import { StrictDict } from '../../../utils';
 import { historyRecordLimit } from './constants';
 import { filterQuery, stringifyUrl } from './utils';
 
-const courseId = window.location.pathname.split('/').filter(Boolean).pop() || '';
+const courseId = window.location.pathname.split('/').filter(Boolean).pop() ?? '';
 
-export const getUrlPrefix = () => `${getConfig().LMS_BASE_URL}/api/`;
+export const getUrlPrefix = () => `${getSiteConfig().lmsBaseUrl}/api/`;
 export const getBulkGradesUrl = () => `${getUrlPrefix()}bulk_grades/course/${courseId}/`;
 export const getEnrollmentUrl = () => `${getUrlPrefix()}enrollment/v1/`;
 export const getGradesUrl = () => `${getUrlPrefix()}grades/v1/`;
@@ -37,7 +37,7 @@ export const sectionOverrideHistoryUrl = (subsectionId, userId) => stringifyUrl(
 );
 
 export const instructorDashboardUrl = () => (
-  `${getConfig().LMS_BASE_URL}/courses/${courseId}/instructor`
+  `${getSiteConfig().baseUrl}/courses/${courseId}/instructor`
 );
 
 export default StrictDict({

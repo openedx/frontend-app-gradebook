@@ -1,5 +1,5 @@
-import { StrictDict } from 'utils';
-import selectors from 'data/selectors';
+import { StrictDict } from '../../utils';
+import selectors from '../selectors';
 
 export const grades = StrictDict({
   subsectionGrade: ({ gradeFormat, subsection }) => () => (

@@ -25,12 +25,6 @@ This is important because `npm` uses the pinned dependencies in your `package-lo
 
 However, when these changes surface within a CI build, this indicates differing dependency expectations between the committed `package.json` file and the `package-lock.json` file, which is a good reason to fail a build.
 
-### What is this `npm run is-es5` check?
-
-This project outputs production files to the `dist` folder. The `npm script`, `npm run is-es5`, checks the JavaScript files in the `dist` folder to make sure that they are `ES5`-compliant.
-
-This check is important because `ES5` JavaScript has [greater browser compatibility](http://kangax.github.io/compat-table/es5/) than [`ES2015+`](http://kangax.github.io/compat-table/es6/) - particularly for `IE11`.
-
 ### `deploy` step
 
 How your project deploys will probably differ between the cookie cutter and your own application.
