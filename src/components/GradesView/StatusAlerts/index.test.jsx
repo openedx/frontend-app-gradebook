@@ -16,6 +16,14 @@ const hookProps = {
     show: true,
     text: 'hooks.grade-filter-text',
   },
+  courseGradeFilter: {
+    show: 'hooks.show-grade-filter',
+    text: 'hooks.grade-filter-text',
+  },
+  assignmentGradeFilter: {
+    show: 'hooks.show-grade-filter',
+    text: 'hooks.grade-filter-text',
+  },
 };
 useStatusAlertsData.mockReturnValue(hookProps);
 
@@ -41,6 +49,12 @@ describe('StatusAlerts component', () => {
       const gradeFilter = alerts[1];
       expect(gradeFilter).toHaveTextContent(hookProps.gradeFilter.text);
       expect(gradeFilter).toHaveClass('alert-danger');
+    });
+    it('course grade filter banner', () => {
+      const alerts = screen.getAllByRole('alert');
+      const courseAlert = alerts[2];
+      expect(courseAlert).toHaveTextContent(hookProps.courseGradeFilter.text);
+      expect(courseAlert).toHaveClass('alert-danger');
     });
   });
 });
