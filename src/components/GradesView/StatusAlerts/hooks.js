@@ -6,15 +6,27 @@ import messages from './messages';
 export const useStatusAlertsData = () => {
   const { formatMessage } = useIntl();
 
-  const limitValidity = selectors.app.useCourseGradeFilterValidity();
+  const courseLimitValidity = selectors.app.useCourseGradeFilterValidity();
+  const assignmentLimitValidity = selectors.app.useAssignmentGradeFilterValidity();
+
   const showSuccessBanner = selectors.grades.useShowSuccess();
   const handleCloseSuccessBanner = actions.grades.useCloseBanner();
 
-  const isCourseGradeFilterAlertOpen = !limitValidity.isMinValid || !limitValidity.isMaxValid;
+  const isCourseGradeFilterAlertOpen = !courseLimitValidity.isMinValid
+    || !courseLimitValidity.isMaxValid || !courseLimitValidity.isMinLessMaxValid;
+  const isAssignmentGradeFilterAlertOpen = !assignmentLimitValidity.isMinValid
+    || !assignmentLimitValidity.isMaxValid || !assignmentLimitValidity.isMinLessMaxValid;
 
-  const validityMessages = {
-    min: limitValidity.isMinValid ? '' : formatMessage(messages.minGradeInvalid),
-    max: limitValidity.isMaxValid ? '' : formatMessage(messages.maxGradeInvalid),
+  const courseValidityMessages = {
+    min: courseLimitValidity.isMinValid ? '' : formatMessage(messages.minGradeInvalid),
+    max: courseLimitValidity.isMaxValid ? '' : formatMessage(messages.maxGradeInvalid),
+    minLessMax: courseLimitValidity.isMinLessMaxValid ? '' : formatMessage(messages.minLessMaxGradeInvalid),
+  };
+
+  const assignmentValidityMessages = {
+    min: assignmentLimitValidity.isMinValid ? '' : formatMessage(messages.minAssignmentInvalid),
+    max: assignmentLimitValidity.isMaxValid ? '' : formatMessage(messages.maxAssignmentInvalid),
+    minLessMax: assignmentLimitValidity.isMinLessMaxValid ? '' : formatMessage(messages.minLessMaxAssignmentInvalid),
   };
 
   return {
@@ -23,9 +35,13 @@ export const useStatusAlertsData = () => {
       show: showSuccessBanner,
       text: formatMessage(messages.editSuccessAlert),
     },
-    gradeFilter: {
+    courseGradeFilter: {
       show: isCourseGradeFilterAlertOpen,
-      text: `${validityMessages.min}${validityMessages.max}`,
+      text: `${courseValidityMessages.min} ${courseValidityMessages.max} ${courseValidityMessages.minLessMax}`,
+    },
+    assignmentGradeFilter: {
+      show: isAssignmentGradeFilterAlertOpen,
+      text: `${assignmentValidityMessages.min} ${assignmentValidityMessages.max} ${assignmentValidityMessages.minLessMax}`,
     },
   };
 };
