@@ -40,8 +40,11 @@ describe('ImportSuccessToast', () => {
     });
 
     render(<ImportSuccessToast />);
-    const alert = screen.getByRole('alert');
-    expect(alert).toBeInTheDocument();
+
+    const toastRoot = document.getElementById('toast-root');
+    expect(toastRoot).toBeInTheDocument();
+    expect(toastRoot).toHaveClass('toast-container');
+
     const toastMessage = screen.queryByText('Import Successful! Grades will be updated momentarily.');
     expect(toastMessage).toBeNull();
     expect(useImportSuccessToastData).toHaveBeenCalled();
