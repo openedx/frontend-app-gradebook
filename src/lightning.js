@@ -1,5 +1,7 @@
-module.exports = () => {
-  if (process.env.DISPLAY_FEEDBACK_WIDGET === "true") {
+import { getConfig } from '@edx/frontend-platform';
+
+const lightning = () => {
+  if (getConfig().DISPLAY_FEEDBACK_WIDGET === "true") {
     window.lightningjs ||
       (function (n) {
         var e = "lightningjs";
@@ -129,3 +131,5 @@ module.exports = () => {
     );
   }
 };
+
+export default lightning;
