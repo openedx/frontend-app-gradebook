@@ -42,6 +42,7 @@ initialize({
         SECURE_COOKIES: process.env.NODE_ENV !== 'development',
         SEGMENT_KEY: process.env.SEGMENT_KEY,
         ACCESS_TOKEN_COOKIE_NAME: process.env.ACCESS_TOKEN_COOKIE_NAME,
+        DISPLAY_FEEDBACK_WIDGET: process.env.DISPLAY_FEEDBACK_WIDGET,
       });
     },
   },
