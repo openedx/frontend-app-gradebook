@@ -92,7 +92,11 @@ export const formatMinAssignmentGrade = (percentGrade, options) => (
  * @param {string} label - assignment filter label
  * @return {string[]} - list of table headers
  */
-export const headingMapper = (category, label = 'All') => {
+export const headingMapper = (
+  category,
+  label = 'All',
+  hasMastersTrack = false,
+) => {
   const filters = {
     all: section => section.label,
     byCategory: section => section.label && section.category === category,
@@ -105,17 +109,25 @@ export const headingMapper = (category, label = 'All') => {
   } else {
     filter = filters.byLabel;
   }
+
   const {
     username,
     fullName,
     email,
     totalGrade,
   } = Headings;
+  let userIdentificationHeadings;
+  if (hasMastersTrack) {
+    userIdentificationHeadings = [username, fullName, email];
+  } else {
+    userIdentificationHeadings = [username];
+  }
+
   const filteredLabels = (entry) => entry.filter(filter).map(s => s.label);
 
   return (entry) => (
     entry
-      ? [username, fullName, email, ...filteredLabels(entry), totalGrade]
+      ? [...userIdentificationHeadings, ...filteredLabels(entry), totalGrade]
       : []
   );
 };
