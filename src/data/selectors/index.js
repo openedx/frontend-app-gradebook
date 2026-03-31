@@ -109,6 +109,7 @@ export const formattedGradeLimits = (state) => {
 export const getHeadings = (state) => grades.headingMapper(
   filters.assignmentType(state) || 'All',
   filters.selectedAssignmentLabel(state) || 'All',
+  tracks.stateHasMastersTrack(state),
 )(grades.getExampleSectionBreakdown(state));
 
 /**
