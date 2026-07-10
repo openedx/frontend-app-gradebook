@@ -7,7 +7,7 @@ const courseId = window.location.pathname.split('/').filter(Boolean).pop() || ''
 
 export const getUrlPrefix = () => `${getConfig().LMS_BASE_URL}/api/`;
 export const getBulkGradesUrl = () => `${getUrlPrefix()}bulk_grades/course/${courseId}/`;
-export const getEnrollmentUrl = () => `${getUrlPrefix()}enrollment/v1/`;
+export const getEnrollmentUrl = () => `${getUrlPrefix()}enrollment/v2/`;
 export const getGradesUrl = () => `${getUrlPrefix()}grades/v1/`;
 export const getGradebookUrl = () => `${getGradesUrl()}gradebook/${courseId}/`;
 export const getBulkUpdateUrl = () => `${getGradebookUrl()}bulk-update`;
