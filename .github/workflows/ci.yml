@@ -47,7 +47,7 @@ jobs:
 
     - name: Send failure notification
       if: ${{ failure() }}
-      uses: dawidd6/action-send-mail@6d98ae34d733f9a723a9e04e94f2f24ba05e1402 # v6
+      uses: dawidd6/action-send-mail@94de994a9f6fffee200243214e17002e2920bb59 # v18
       with:
         server_address: email-smtp.us-east-1.amazonaws.com
         server_port: 465
