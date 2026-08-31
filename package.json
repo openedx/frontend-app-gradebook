@@ -78,5 +78,8 @@
     "react-dev-utils": "^12.0.1",
     "react-test-renderer": "^18.3.1",
     "redux-mock-store": "^1.5.3"
+  },
+  "overrides": {
+    "shell-quote": "1.9.0"
   }
 }
