@@ -1,12 +1,14 @@
-import { actions, selectors } from 'data/redux/hooks';
+import { useShowBulkManagement } from 'data/apiHook';
+import { trackGradesReportDownloaded } from 'data/services/segment/events';
+
+import { useGradeExportUrl } from '../data/hooks';
 
 export const useBulkManagementControlsData = () => {
-  const gradeExportUrl = selectors.root.useGradeExportUrl();
-  const showBulkManagement = selectors.root.useShowBulkManagement();
-  const downloadBulkGradesReport = actions.grades.useDownloadBulkGradesReport();
+  const gradeExportUrl = useGradeExportUrl();
+  const showBulkManagement = useShowBulkManagement();
 
   const handleClickExportGrades = () => {
-    downloadBulkGradesReport();
+    trackGradesReportDownloaded();
     window.location.assign(gradeExportUrl);
   };
 

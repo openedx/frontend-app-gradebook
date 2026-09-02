@@ -1,10 +1,11 @@
-import { actions, selectors } from 'data/redux/hooks';
+import { useGradebookUi } from 'data/gradebookUiContext';
+import { useEditModalPossibleGrade } from 'components/GradesView/data/hooks';
 import { getLocalizedSlash } from 'i18n/utils';
 
 const useAdjustedGradeInputData = () => {
-  const possibleGrade = selectors.root.useEditModalPossibleGrade();
-  const value = selectors.app.useModalData().adjustedGradeValue;
-  const setModalState = actions.app.useSetModalState();
+  const possibleGrade = useEditModalPossibleGrade();
+  const { modalState, setModalState } = useGradebookUi();
+  const value = modalState.adjustedGradeValue;
   const hintText = possibleGrade && ` ${getLocalizedSlash()} ${possibleGrade}`;
 
   const onChange = ({ target }) => {

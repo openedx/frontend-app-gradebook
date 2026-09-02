@@ -1,6 +1,6 @@
 import { useIntl } from '@edx/frontend-platform/i18n';
 
-import { actions, selectors } from 'data/redux/hooks';
+import { useGradebookUi } from 'data/gradebookUiContext';
 import { views } from 'data/constants/app';
 import messages from './messages';
 
@@ -12,17 +12,15 @@ import messages from './messages';
 export const useImportSuccessToastData = () => {
   const { formatMessage } = useIntl();
 
-  const show = selectors.app.useShowImportSuccessToast();
-  const setAppView = actions.app.useSetView();
-  const setShow = actions.app.useSetShowImportSuccessToast();
+  const { showImportSuccessToast: show, setActiveView, setShowImportSuccessToast } = useGradebookUi();
 
   const onClose = () => {
-    setShow(false);
+    setShowImportSuccessToast(false);
   };
 
   const handleShowHistoryView = () => {
-    setAppView(views.bulkManagementHistory);
-    setShow(false);
+    setActiveView(views.bulkManagementHistory);
+    setShowImportSuccessToast(false);
   };
 
   return {

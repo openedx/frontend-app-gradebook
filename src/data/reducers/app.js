@@ -1,3 +1,4 @@
+// DELETE THIS FILE LATER
 import initialFilters from '../constants/filters';
 import { views } from '../constants/app';
 import { formatDateForDisplay } from '../actions/utils';

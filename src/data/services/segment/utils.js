@@ -1,3 +1,4 @@
+// DELETE THIS FILE LATER
 /* eslint-disable import/prefer-default-export */
 import { trackEvent } from '@redux-beacon/segment';
 import { courseId, trackingCategory as category } from './constants';

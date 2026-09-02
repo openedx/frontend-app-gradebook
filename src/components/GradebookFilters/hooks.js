@@ -1,18 +1,19 @@
-import { actions, selectors, thunkActions } from 'data/redux/hooks';
+import { useGradebookUi } from 'data/gradebookUiContext';
+import { useFilters } from 'data/filtersContext';
+import { useRefetchGrades } from 'components/GradesView/data/hooks';
 
 export const useGradebookFiltersData = ({ updateQueryParams }) => {
-  const includeCourseRoleMembers = selectors.filters.useIncludeCourseRoleMembers();
-  const updateIncludeCourseRoleMembers = actions.filters.useUpdateIncludeCourseRoleMembers();
-  const closeMenu = thunkActions.app.filterMenu.useCloseMenu();
-  const fetchGrades = thunkActions.grades.useFetchGrades();
+  const { includeCourseRoleMembers, setIncludeCourseRoleMembers } = useFilters();
+  const { closeFilterMenu } = useGradebookUi();
+  const fetchGrades = useRefetchGrades();
 
   const handleIncludeTeamMembersChange = ({ target: { checked } }) => {
-    updateIncludeCourseRoleMembers(checked);
+    setIncludeCourseRoleMembers(checked);
     fetchGrades();
     updateQueryParams({ includeCourseRoleMembers: checked });
   };
   return {
-    closeMenu,
+    closeMenu: closeFilterMenu,
     includeCourseTeamMembers: {
       handleChange: handleIncludeTeamMembersChange,
       value: includeCourseRoleMembers,

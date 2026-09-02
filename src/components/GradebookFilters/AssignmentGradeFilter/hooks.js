@@ -1,28 +1,35 @@
 /* eslint-disable react/sort-comp, react/button-has-type */
-import { selectors, actions, thunkActions } from 'data/redux/hooks';
+import { useFilters } from 'data/filtersContext';
+import { useRefetchGrades, useSelectedAssignmentLabel } from 'components/GradesView/data/hooks';
 
 const useAssignmentGradeFilterData = ({ updateQueryParams }) => {
-  const localAssignmentLimits = selectors.app.useAssignmentGradeLimits();
-  const selectedAssignment = selectors.filters.useSelectedAssignmentLabel();
-  const fetchGrades = thunkActions.grades.useFetchGrades();
-  const setFilter = actions.app.useSetLocalFilter();
-  const updateAssignmentLimits = actions.filters.useUpdateAssignmentLimits();
+  const {
+    assignmentGradeMin,
+    assignmentGradeMax,
+    setAssignmentGradeMin,
+    setAssignmentGradeMax,
+    applyAssignmentGradeLimits,
+  } = useFilters();
+  const selectedAssignment = useSelectedAssignmentLabel();
+  const fetchGrades = useRefetchGrades();
 
   const handleSubmit = () => {
-    updateAssignmentLimits(localAssignmentLimits);
+    const localAssignmentLimits = { assignmentGradeMin, assignmentGradeMax };
+    // Commit the applied grade-limit values in the FiltersProvider (read by the
+    // filter badges + export URLs).
+    applyAssignmentGradeLimits(localAssignmentLimits);
     fetchGrades();
     updateQueryParams(localAssignmentLimits);
   };
 
   const handleSetMax = ({ target: { value } }) => {
-    setFilter({ assignmentGradeMax: value });
+    setAssignmentGradeMax(value);
   };
 
   const handleSetMin = ({ target: { value } }) => {
-    setFilter({ assignmentGradeMin: value });
+    setAssignmentGradeMin(value);
   };
 
-  const { assignmentGradeMax, assignmentGradeMin } = localAssignmentLimits;
   return {
     assignmentGradeMin,
     assignmentGradeMax,

@@ -14,8 +14,11 @@ import { AppProvider } from '@edx/frontend-platform/react';
 import { render } from '@testing-library/react';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 import { initializeMockApp } from '@edx/frontend-platform';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 import { createStore } from './data/store';
+import { FiltersProvider } from './data/filtersContext';
+import { GradebookUiProvider } from './data/gradebookUiContext';
 
 /** @deprecated Use React Query and/or regular React Context instead of redux */
 let reduxStore;
@@ -90,14 +93,26 @@ RouterAndRoute.propTypes = {
 };
 
 export const makeWrapper = ({ extraWrapper, ...routeArgs } = {}) => {
+  const queryClient = new QueryClient({
+    defaultOptions: {
+      queries: { retry: false, gcTime: 0 },
+      mutations: { retry: false },
+    },
+  });
   // eslint-disable-next-line react/prop-types
   const AllTheProviders = ({ children }) => (
     <AppProvider store={reduxStore} wrapWithRouter={false}>
-      <IntlProvider locale="en" messages={{}}>
-        <RouterAndRoute {...routeArgs}>
-          {extraWrapper ? React.createElement(extraWrapper, undefined, children) : children}
-        </RouterAndRoute>
-      </IntlProvider>
+      <QueryClientProvider client={queryClient}>
+        <IntlProvider locale="en" messages={{}}>
+          <RouterAndRoute {...routeArgs}>
+            <FiltersProvider>
+              <GradebookUiProvider>
+                {extraWrapper ? React.createElement(extraWrapper, undefined, children) : children}
+              </GradebookUiProvider>
+            </FiltersProvider>
+          </RouterAndRoute>
+        </IntlProvider>
+      </QueryClientProvider>
     </AppProvider>
   );
   return AllTheProviders;

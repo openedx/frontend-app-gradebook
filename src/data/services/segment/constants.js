@@ -1,5 +1,4 @@
 import { StrictDict } from 'utils';
-import actions from 'data/actions';
 
 export const courseId = window.location.pathname.slice(1);
 
@@ -26,17 +25,19 @@ export const eventNames = StrictDict({
   [events.interventionReportDownloaded]: 'edx.gradebook.reports.intervention.downloaded',
 });
 
-export const triggers = StrictDict({
-  [events.receivedRoles]: actions.roles.fetching.received.toString(),
-  [events.receivedGrades]: actions.grades.fetching.received.toString(),
-  [events.updateSucceeded]: actions.grades.update.success.toString(),
-  [events.updateFailed]: actions.grades.update.failure.toString(),
-  [events.uploadOverrideSucceeded]: actions.grades.uploadOverride.success.toString(),
-  [events.uploadOverrideFailed]: actions.grades.uploadOverride.failure.toString(),
-  [events.filterApplied]: actions.filters.update.courseGradeLimits.toString(),
-  [events.gradesReportDownloaded]: actions.grades.downloadReport.bulkGrades.toString(),
-  [events.interventionReportDownloaded]: actions.grades.downloadReport.intervention.toString(),
-});
+// MIGRATION (Redux teardown): dead redux-beacon action->event map. Superseded by
+// direct `sendTrackEvent` calls in ./events. Kept commented until teardown. -> Delete this later
+// export const triggers = StrictDict({
+//   [events.receivedRoles]: actions.roles.fetching.received.toString(),
+//   [events.receivedGrades]: actions.grades.fetching.received.toString(),
+//   [events.updateSucceeded]: actions.grades.update.success.toString(),
+//   [events.updateFailed]: actions.grades.update.failure.toString(),
+//   [events.uploadOverrideSucceeded]: actions.grades.uploadOverride.success.toString(),
+//   [events.uploadOverrideFailed]: actions.grades.uploadOverride.failure.toString(),
+//   [events.filterApplied]: actions.filters.update.courseGradeLimits.toString(),
+//   [events.gradesReportDownloaded]: actions.grades.downloadReport.bulkGrades.toString(),
+//   [events.interventionReportDownloaded]: actions.grades.downloadReport.intervention.toString(),
+// });
 
 export const trackingCategory = 'gradebook';
 

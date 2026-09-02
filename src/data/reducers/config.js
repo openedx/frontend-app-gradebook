@@ -1,3 +1,4 @@
+// DELETE THIS FILE LATER
 import actions from '../actions/config';
 
 const initialState = {};

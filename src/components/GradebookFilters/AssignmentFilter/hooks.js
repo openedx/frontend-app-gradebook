@@ -1,24 +1,25 @@
+import { useFilters } from 'data/filtersContext';
 import {
-  selectors,
-  actions,
-  thunkActions,
-} from 'data/redux/hooks';
+  useFetchGradesIfAssignmentGradeFiltersSet,
+  useSelectableAssignmentLabels,
+  useSelectedAssignmentLabel,
+} from 'components/GradesView/data/hooks';
 
 export const useAssignmentFilterData = ({
   updateQueryParams,
 }) => {
-  const assignmentFilterOptions = selectors.filters.useSelectableAssignmentLabels();
-  const selectedAssignmentLabel = selectors.filters.useSelectedAssignmentLabel() || '';
+  const assignmentFilterOptions = useSelectableAssignmentLabels();
+  const selectedAssignmentLabel = useSelectedAssignmentLabel() || '';
 
-  const updateAssignmentFilter = actions.filters.useUpdateAssignment();
-  const conditionalFetch = thunkActions.grades.useFetchGradesIfAssignmentGradeFiltersSet();
+  const { setAssignment } = useFilters();
+  const conditionalFetch = useFetchGradesIfAssignmentGradeFiltersSet();
 
   const handleChange = ({ target: { value: assignment } }) => {
     const selectedFilterOption = assignmentFilterOptions.find(
       ({ label }) => label === assignment,
     );
-    const { type, id } = selectedFilterOption || {};
-    updateAssignmentFilter({ label: assignment, type, id });
+    const { id } = selectedFilterOption || {};
+    setAssignment(id ?? '');
     updateQueryParams({ assignment: id });
     conditionalFetch();
   };

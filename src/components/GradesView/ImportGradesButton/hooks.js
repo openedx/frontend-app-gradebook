@@ -1,9 +1,11 @@
 import { useRef } from 'react';
-import { selectors, thunkActions } from 'data/redux/hooks';
+
+import { useGradeExportUrl } from '../data/hooks';
+import { useSubmitImportGradesButtonData } from '../data/apiHook';
 
 export const useImportButtonData = () => {
-  const gradeExportUrl = selectors.root.useGradeExportUrl();
-  const submitImportGradesButtonData = thunkActions.grades.useSubmitImportGradesButtonData();
+  const gradeExportUrl = useGradeExportUrl();
+  const submitImportGradesButtonData = useSubmitImportGradesButtonData();
 
   const fileInputRef = useRef();
 

@@ -1,3 +1,4 @@
+// DELETE THIS FILE LATER
 import { StrictDict } from 'utils';
 import app from './app';
 import assignmentTypes from './assignmentTypes';

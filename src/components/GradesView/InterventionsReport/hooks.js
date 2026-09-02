@@ -1,12 +1,14 @@
-import { actions, selectors } from 'data/redux/hooks';
+import { useShowBulkManagement } from 'data/apiHook';
+import { trackInterventionReportDownloaded } from 'data/services/segment/events';
+
+import { useInterventionExportUrl } from '../data/hooks';
 
 const useInterventionsReportData = () => {
-  const interventionExportUrl = selectors.root.useInterventionExportUrl();
-  const showBulkManagement = selectors.root.useShowBulkManagement();
-  const downloadInterventionReport = actions.grades.useDownloadInterventionReport();
+  const interventionExportUrl = useInterventionExportUrl();
+  const showBulkManagement = useShowBulkManagement();
 
   const handleClick = () => {
-    downloadInterventionReport();
+    trackInterventionReportDownloaded();
     window.location.assign(interventionExportUrl);
   };
 

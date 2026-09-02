@@ -1,17 +1,19 @@
+import { useParams } from 'react-router-dom';
+
 import { views } from 'data/constants/app';
-import { actions, selectors } from 'data/redux/hooks';
+import { useAssignmentTypes, useCanViewGradebook, useShowBulkManagement } from 'data/apiHook';
+import { useGradebookUi } from 'data/gradebookUiContext';
 
 import messages from './messages';
 
 export const useGradebookHeaderData = () => {
-  const activeView = selectors.app.useActiveView();
-  const courseId = selectors.app.useCourseId();
-  const areGradesFrozen = selectors.assignmentTypes.useAreGradesFrozen();
-  const canUserViewGradebook = selectors.roles.useCanUserViewGradebook();
-  const showBulkManagement = selectors.root.useShowBulkManagement();
-  const setView = actions.app.useSetView();
+  const { courseId = '' } = useParams();
+  const { activeView, setActiveView } = useGradebookUi();
+  const areGradesFrozen = useAssignmentTypes().data?.areGradesFrozen;
+  const canUserViewGradebook = useCanViewGradebook();
+  const showBulkManagement = useShowBulkManagement();
 
-  const handleToggleViewClick = () => setView(
+  const handleToggleViewClick = () => setActiveView(
     activeView === views.grades
       ? views.bulkManagementHistory
       : views.grades,

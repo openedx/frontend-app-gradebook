@@ -2,22 +2,20 @@ import React from 'react';
 
 import { useIntl } from '@edx/frontend-platform/i18n';
 
-import { selectors } from 'data/redux/hooks';
-import transforms from 'data/redux/transforms';
+import { roundGrade } from 'data/selectors/grades';
 import { Headings } from 'data/constants/grades';
 import { getLocalizedPercentSign } from 'i18n/utils';
 
+import { useAllGrades, useGradesHeadings } from '../data/hooks';
 import messages from './messages';
 import Fields from './Fields';
 import LabelReplacements from './LabelReplacements';
 import GradeButton from './GradeButton';
 
-const { roundGrade } = transforms.grades;
-
 export const useGradebookTableData = () => {
   const { formatMessage } = useIntl();
-  const grades = selectors.grades.useAllGrades();
-  const headings = selectors.root.useGetHeadings();
+  const grades = useAllGrades();
+  const headings = useGradesHeadings();
 
   const mapHeaders = (heading) => {
     let label;

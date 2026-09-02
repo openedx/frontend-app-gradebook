@@ -1,3 +1,4 @@
+// DELETE THIS FILE LATER
 import { combineReducers } from 'redux';
 
 import app from './app';

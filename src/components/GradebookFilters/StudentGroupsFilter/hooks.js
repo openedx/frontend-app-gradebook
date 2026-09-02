@@ -1,22 +1,26 @@
-import { actions, selectors, thunkActions } from 'data/redux/hooks';
+import { useFilters } from 'data/filtersContext';
+import { useRefetchGrades } from 'components/GradesView/data/hooks';
+
+import { useCohorts, useTracks } from '../data/apiHook';
+import { useSelectedCohortEntry, useSelectedTrackEntry } from '../data/hooks';
+
+const EMPTY_ARRAY = [];
 
 export const useStudentGroupsFilterData = ({ updateQueryParams }) => {
-  const selectedCohortEntry = selectors.root.useSelectedCohortEntry();
-  const selectedTrackEntry = selectors.root.useSelectedTrackEntry();
+  const selectedCohortEntry = useSelectedCohortEntry();
+  const selectedTrackEntry = useSelectedTrackEntry();
 
-  const cohorts = selectors.cohorts.useAllCohorts();
-  const tracks = selectors.tracks.useAllTracks();
+  const cohorts = useCohorts().data ?? EMPTY_ARRAY;
+  const tracks = useTracks().data ?? EMPTY_ARRAY;
 
-  const updateCohort = actions.filters.useUpdateCohort();
-  const updateTrack = actions.filters.useUpdateTrack();
-
-  const fetchGrades = thunkActions.grades.useFetchGrades();
+  const { setCohort, setTrack } = useFilters();
+  const fetchGrades = useRefetchGrades();
 
   const handleUpdateTrack = (event) => {
     const selectedTrackItem = tracks.find(track => track.slug === event.target.value);
     const track = selectedTrackItem ? selectedTrackItem.slug.toString() : null;
     updateQueryParams({ track });
-    updateTrack(track);
+    setTrack(track ?? '');
     fetchGrades();
   };
 
@@ -25,7 +29,7 @@ export const useStudentGroupsFilterData = ({ updateQueryParams }) => {
     const cohort = selectedCohortItem ? selectedCohortItem.id.toString() : null;
     // the param expected to be cohort_id
     updateQueryParams({ cohort });
-    updateCohort(cohort);
+    setCohort(cohort ?? '');
     fetchGrades();
   };
   return {

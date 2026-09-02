@@ -3,17 +3,19 @@ import React from 'react';
 import { Form } from '@openedx/paragon';
 import { useIntl } from '@edx/frontend-platform/i18n';
 
-import { actions, selectors } from 'data/redux/hooks';
+import { useGradebookUi } from 'data/gradebookUiContext';
+import { useGradeData } from '../data/hooks';
 import messages from './messages';
 
 /**
  * <ScoreViewInput />
- * redux-connected select control for grade format (percent vs absolute)
+ * Select control for grade format (percent vs absolute).
  */
 export const ScoreViewInput = () => {
   const { formatMessage } = useIntl();
-  const { gradeFormat } = selectors.grades.useGradeData();
-  const toggleFormat = actions.grades.useToggleGradeFormat();
+  const { gradeFormat } = useGradeData();
+  const { setGradeFormat } = useGradebookUi();
+  const toggleFormat = (e) => setGradeFormat(e.target.value);
   return (
     <Form.Group controlId="ScoreView">
       <Form.Label>{formatMessage(messages.scoreView)}:</Form.Label>

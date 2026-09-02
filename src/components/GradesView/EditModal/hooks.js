@@ -1,20 +1,20 @@
-import { selectors, actions, thunkActions } from 'data/redux/hooks';
+import { useGradebookUi } from 'data/gradebookUiContext';
+
+import { useGradeOverrideData } from 'components/GradesView/data/hooks';
+import { useUpdateGrades } from 'components/GradesView/data/apiHook';
 
 export const useEditModalData = () => {
-  const error = selectors.grades.useGradeData().gradeOverrideHistoryError;
-  const isOpen = selectors.app.useModalData().open;
-  const closeModal = actions.app.useCloseModal();
-  const doneViewingAssignment = actions.grades.useDoneViewingAssignment();
-  const updateGrades = thunkActions.grades.useUpdateGrades();
+  const error = useGradeOverrideData().gradeOverrideHistoryError;
+  const { modalState, closeModal } = useGradebookUi();
+  const isOpen = modalState.open;
+  const updateGrades = useUpdateGrades();
 
   const onClose = () => {
-    doneViewingAssignment();
     closeModal();
   };
 
   const handleAdjustedGradeClick = () => {
     updateGrades();
-    doneViewingAssignment();
     closeModal();
   };
 

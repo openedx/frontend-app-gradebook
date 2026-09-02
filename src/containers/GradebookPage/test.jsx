@@ -46,6 +46,13 @@ jest.mock(
   },
 );
 
+jest.mock(
+  './GradebookDataLoader',
+  () => function GradebookDataLoader() {
+    return null;
+  },
+);
+
 jest.mock('data/selectors', () => ({
   app: {
     activeView: jest.fn(),

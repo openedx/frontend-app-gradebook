@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import { useIntl } from '@edx/frontend-platform/i18n';
 
-import { selectors } from 'data/redux/hooks';
+import { useUserCounts } from '../data/hooks';
 import messages from './messages';
 
 export const BoldText = ({ text }) => (
@@ -18,7 +18,7 @@ BoldText.propTypes = {
  * Simple label component displaying the filtered and total users shown
  */
 export const FilteredUsersLabel = () => {
-  const { filteredUsersCount, totalUsersCount } = selectors.grades.useUserCounts();
+  const { filteredUsersCount, totalUsersCount } = useUserCounts();
   const { formatMessage } = useIntl();
 
   if (!totalUsersCount) {

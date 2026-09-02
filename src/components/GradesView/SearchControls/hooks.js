@@ -1,7 +1,8 @@
 import { useIntl } from '@edx/frontend-platform/i18n';
 
-import { actions, selectors, thunkActions } from 'data/redux/hooks';
+import { useFilters } from 'data/filtersContext';
 
+import { useRefetchGrades } from '../data/hooks';
 import messages from './messages';
 
 /**
@@ -10,9 +11,8 @@ import messages from './messages';
  */
 export const useSearchControlsData = () => {
   const { formatMessage } = useIntl();
-  const searchValue = selectors.app.useSearchValue();
-  const fetchGrades = thunkActions.grades.useFetchGrades();
-  const setSearchValue = actions.app.useSetSearchValue();
+  const { searchValue, setSearchValue } = useFilters();
+  const fetchGrades = useRefetchGrades();
 
   const onBlur = (e) => {
     setSearchValue(e.target.value);

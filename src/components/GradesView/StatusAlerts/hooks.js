@@ -1,14 +1,16 @@
 import { useIntl } from '@edx/frontend-platform/i18n';
 
-import { actions, selectors } from 'data/redux/hooks';
+import { useGradebookUi } from 'data/gradebookUiContext';
+import { useCourseGradeFilterValidity } from 'components/GradebookFilters/data/hooks';
+
 import messages from './messages';
 
 export const useStatusAlertsData = () => {
   const { formatMessage } = useIntl();
 
-  const limitValidity = selectors.app.useCourseGradeFilterValidity();
-  const showSuccessBanner = selectors.grades.useShowSuccess();
-  const handleCloseSuccessBanner = actions.grades.useCloseBanner();
+  const limitValidity = useCourseGradeFilterValidity();
+  const { showSuccess: showSuccessBanner, setShowSuccess } = useGradebookUi();
+  const handleCloseSuccessBanner = () => setShowSuccess(false);
 
   const isCourseGradeFilterAlertOpen = !limitValidity.isMinValid || !limitValidity.isMaxValid;
 

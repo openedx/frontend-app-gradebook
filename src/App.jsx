@@ -1,31 +1,37 @@
 import React from 'react';
 import { Route, Routes } from 'react-router-dom';
-
+import { QueryClientProvider } from '@tanstack/react-query';
 import { AppProvider } from '@edx/frontend-platform/react';
-
 import { FooterSlot } from '@edx/frontend-component-footer';
 import Header from '@edx/frontend-component-header';
-
-import store from 'data/store';
+import queryClient from 'data/queryClient';
+import { FiltersProvider } from 'data/filtersContext';
+import { GradebookUiProvider } from 'data/gradebookUiContext';
 import GradebookPage from 'containers/GradebookPage';
 import './App.scss';
 import Head from './head/Head';
 
 const App = () => (
-  <AppProvider store={store}>
-    <Head />
-    <div>
-      <Header />
-      <main>
-        <Routes>
-          <Route
-            path="/:courseId"
-            element={<GradebookPage />}
-          />
-        </Routes>
-      </main>
-      <FooterSlot />
-    </div>
+  <AppProvider>
+    <QueryClientProvider client={queryClient}>
+      <FiltersProvider>
+        <GradebookUiProvider>
+          <Head />
+          <div>
+            <Header />
+            <main>
+              <Routes>
+                <Route
+                  path="/:courseId"
+                  element={<GradebookPage />}
+                />
+              </Routes>
+            </main>
+            <FooterSlot />
+          </div>
+        </GradebookUiProvider>
+      </FiltersProvider>
+    </QueryClientProvider>
   </AppProvider>
 );
 

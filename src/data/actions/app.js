@@ -1,3 +1,6 @@
+// DELETE THIS FILE LATER
+// Redux action creators (@reduxjs/toolkit via ./utils). No longer used at runtime:
+// analytics emit via data/services/segment/events; state is React Query + context.
 import { StrictDict } from 'utils';
 import { modalFieldKeys, localFilterKeys } from 'data/constants/app';
 import { createActionFactory } from './utils';

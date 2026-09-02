@@ -1,15 +1,15 @@
 import { useIntl } from '@edx/frontend-platform/i18n';
 
 import { gradeOverrideHistoryColumns as columns } from 'data/constants/app';
-import { selectors } from 'data/redux/hooks';
+import { useGradeOverrideData } from 'components/GradesView/data/hooks';
 
 import messages from './messages';
 
 const useOverrideTableData = () => {
   const { formatMessage } = useIntl();
 
-  const hide = selectors.grades.useHasOverrideErrors();
-  const gradeOverrides = selectors.grades.useGradeData().gradeOverrideHistoryResults || [];
+  const { gradeOverrideHistoryResults, hasOverrideErrors: hide } = useGradeOverrideData();
+  const gradeOverrides = gradeOverrideHistoryResults || [];
   const tableProps = {};
   if (!hide) {
     tableProps.columns = [

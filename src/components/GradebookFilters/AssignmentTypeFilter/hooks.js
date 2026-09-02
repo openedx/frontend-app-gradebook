@@ -1,14 +1,15 @@
-import { selectors, actions } from 'data/redux/hooks';
+import { useFilters } from 'data/filtersContext';
+import { useAssignmentTypes } from 'data/apiHook';
+import { useSelectableAssignmentLabels } from 'components/GradesView/data/hooks';
 
 export const useAssignmentTypeFilterData = ({ updateQueryParams }) => {
-  const assignmentTypes = selectors.assignmentTypes.useAllAssignmentTypes() || {};
-  const assignmentFilterOptions = selectors.filters.useSelectableAssignmentLabels();
-  const selectedAssignmentType = selectors.filters.useAssignmentType() || '';
-  const filterAssignmentType = actions.filters.useUpdateAssignmentType();
+  const assignmentTypes = useAssignmentTypes().data?.assignmentTypes ?? [];
+  const assignmentFilterOptions = useSelectableAssignmentLabels();
+  const { assignmentType: selectedAssignmentType, setAssignmentType } = useFilters();
 
   const handleChange = (event) => {
     const assignmentType = event.target.value;
-    filterAssignmentType(assignmentType);
+    setAssignmentType(assignmentType);
     updateQueryParams({ assignmentType });
   };
 

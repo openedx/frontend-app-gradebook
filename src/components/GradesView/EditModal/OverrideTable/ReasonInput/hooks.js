@@ -1,11 +1,11 @@
 import React from 'react';
 
-import { actions, selectors } from 'data/redux/hooks';
+import { useGradebookUi } from 'data/gradebookUiContext';
 
 const useReasonInputData = () => {
   const ref = React.useRef();
-  const { reasonForChange } = selectors.app.useModalData();
-  const setModalState = actions.app.useSetModalState();
+  const { modalState, setModalState } = useGradebookUi();
+  const { reasonForChange } = modalState;
 
   React.useEffect(() => {
     ref.current.focus();

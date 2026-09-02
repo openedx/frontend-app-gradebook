@@ -1,15 +1,17 @@
 import { useIntl } from '@edx/frontend-platform/i18n';
 
-import { actions, thunkActions } from 'data/redux/hooks';
+import { useFilters } from 'data/filtersContext';
+
+import { useRefetchGrades } from './data/hooks';
 import messages from './messages';
 
 export const useGradesViewData = ({ updateQueryParams }) => {
   const { formatMessage } = useIntl();
-  const fetchGrades = thunkActions.grades.useFetchGrades();
-  const resetFilters = actions.filters.useResetFilters();
+  const fetchGrades = useRefetchGrades();
+  const { resetFilters: resetContextFilters } = useFilters();
 
   const handleFilterBadgeClose = (filterNames) => () => {
-    resetFilters(filterNames);
+    resetContextFilters(filterNames);
     updateQueryParams(filterNames.reduce(
       (obj, filterName) => ({ ...obj, [filterName]: false }),
       {},

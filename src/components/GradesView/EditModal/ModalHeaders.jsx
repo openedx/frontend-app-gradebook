@@ -3,7 +3,8 @@ import React from 'react';
 import { useIntl } from '@edx/frontend-platform/i18n';
 
 import { StrictDict } from 'utils';
-import { selectors } from 'data/redux/hooks';
+import { useGradebookUi } from 'data/gradebookUiContext';
+import { useGradeOverrideData } from 'components/GradesView/data/hooks';
 
 import messages from './messages';
 import HistoryHeader from './HistoryHeader';
@@ -21,8 +22,11 @@ export const HistoryKeys = StrictDict({
  * original grade, and current override grade.
  */
 export const ModalHeaders = () => {
-  const { assignmentName, updateUserName } = selectors.app.useModalData();
-  const { gradeOverrideCurrentEarnedGradedOverride, gradeOriginalEarnedGraded } = selectors.grades.useGradeData();
+  const { assignmentName, updateUserName } = useGradebookUi().modalState;
+  const {
+    gradeOverrideCurrentEarnedGradedOverride,
+    gradeOriginalEarnedGraded,
+  } = useGradeOverrideData();
   const { formatMessage } = useIntl();
   return (
     <div>
