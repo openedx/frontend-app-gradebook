@@ -10,20 +10,29 @@ import {
 import { Close } from '@openedx/paragon/icons';
 import { useIntl } from '@edx/frontend-platform/i18n';
 
+import { useGradebookUi } from 'data/gradebookUiContext';
+import { useFilters } from 'data/filtersContext';
+import { useRefetchGrades } from 'components/GradesView/data/hooks';
+
 import messages from './messages';
 import AssignmentTypeFilter from './AssignmentTypeFilter';
 import AssignmentFilter from './AssignmentFilter';
 import AssignmentGradeFilter from './AssignmentGradeFilter';
 import CourseGradeFilter from './CourseGradeFilter';
 import StudentGroupsFilter from './StudentGroupsFilter';
-import useGradebookFiltersData from './hooks';
 
 export const GradebookFilters = ({ updateQueryParams }) => {
-  const {
-    closeMenu,
-    includeCourseTeamMembers,
-  } = useGradebookFiltersData({ updateQueryParams });
   const { formatMessage } = useIntl();
+  const { includeCourseRoleMembers, setIncludeCourseRoleMembers } = useFilters();
+  const { closeFilterMenu } = useGradebookUi();
+  const fetchGrades = useRefetchGrades();
+
+  const handleIncludeTeamMembersChange = ({ target: { checked } }) => {
+    setIncludeCourseRoleMembers(checked);
+    fetchGrades();
+    updateQueryParams({ includeCourseRoleMembers: checked });
+  };
+
   const collapsibleClassName = 'filter-group mb-3';
   return (
     <>
@@ -31,7 +40,7 @@ export const GradebookFilters = ({ updateQueryParams }) => {
         <h2><Icon className="fa fa-filter" /></h2>
         <IconButton
           className="p-1"
-          onClick={closeMenu}
+          onClick={closeFilterMenu}
           iconAs={Icon}
           src={Close}
           alt={formatMessage(messages.closeFilters)}
@@ -73,8 +82,8 @@ export const GradebookFilters = ({ updateQueryParams }) => {
         className={collapsibleClassName}
       >
         <Form.Checkbox
-          checked={includeCourseTeamMembers.value}
-          onChange={includeCourseTeamMembers.handleChange}
+          checked={includeCourseRoleMembers}
+          onChange={handleIncludeTeamMembersChange}
         >
           {formatMessage(messages.includeCourseTeamMembers)}
         </Form.Checkbox>

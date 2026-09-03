@@ -2,9 +2,11 @@
 import React from 'react';
 
 import NetworkButton from 'components/NetworkButton';
-import ImportGradesButton from '../ImportGradesButton';
+import { useShowBulkManagement } from 'data/apiHook';
+import { trackGradesReportDownloaded } from 'data/services/segment/events';
 
-import useBulkManagementControlsData from './hooks';
+import ImportGradesButton from '../ImportGradesButton';
+import { useGradeExportUrl } from '../data/hooks';
 import messages from './messages';
 
 /**
@@ -13,12 +15,15 @@ import messages from './messages';
  * showBulkManagement is set in redus.
  */
 export const BulkManagementControls = () => {
-  const {
-    show,
-    handleClickExportGrades,
-  } = useBulkManagementControlsData();
+  const gradeExportUrl = useGradeExportUrl();
+  const showBulkManagement = useShowBulkManagement();
 
-  if (!show) { return null; }
+  const handleClickExportGrades = () => {
+    trackGradesReportDownloaded();
+    window.location.assign(gradeExportUrl);
+  };
+
+  if (!showBulkManagement) { return null; }
   return (
     <div className="d-flex">
       <NetworkButton

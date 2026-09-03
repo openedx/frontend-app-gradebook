@@ -1,30 +1,35 @@
 import React from 'react';
 
 import { Alert } from '@openedx/paragon';
+import { useIntl } from '@edx/frontend-platform/i18n';
 
-import useStatusAlertsData from './hooks';
+import { useGradebookUi } from 'data/gradebookUiContext';
+import { useCourseGradeFilterValidity } from 'components/GradebookFilters/data/hooks';
+
+import messages from './messages';
 
 export const StatusAlerts = () => {
-  const {
-    successBanner,
-    gradeFilter,
-  } = useStatusAlertsData();
+  const { formatMessage } = useIntl();
+  const { isMinValid, isMaxValid } = useCourseGradeFilterValidity();
+  const { showSuccess, setShowSuccess } = useGradebookUi();
+
+  const gradeFilterText = `${isMinValid ? '' : formatMessage(messages.minGradeInvalid)}${isMaxValid ? '' : formatMessage(messages.maxGradeInvalid)}`;
 
   return (
     <>
       <Alert
         variant="success"
-        onClose={successBanner.onClose}
-        show={successBanner.show}
+        onClose={() => setShowSuccess(false)}
+        show={showSuccess}
       >
-        {successBanner.text}
+        {formatMessage(messages.editSuccessAlert)}
       </Alert>
       <Alert
         variant="danger"
         dismissible={false}
-        show={gradeFilter.show}
+        show={!isMinValid || !isMaxValid}
       >
-        {gradeFilter.text}
+        {gradeFilterText}
       </Alert>
     </>
   );

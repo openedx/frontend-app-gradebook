@@ -2,7 +2,9 @@ import React from 'react';
 
 import { Form } from '@openedx/paragon';
 
-import useAdjustedGradeInputData from './hooks';
+import { useGradebookUi } from 'data/gradebookUiContext';
+import { getLocalizedSlash } from 'i18n/utils';
+import { useEditModalPossibleGrade } from 'components/GradesView/data/hooks';
 
 /**
  * <AdjustedGradeInput />
@@ -10,11 +12,15 @@ import useAdjustedGradeInputData from './hooks';
  * displays an "/ ${possibleGrade} if there is one in the data model.
  */
 export const AdjustedGradeInput = () => {
-  const {
-    value,
-    onChange,
-    hintText,
-  } = useAdjustedGradeInputData();
+  const possibleGrade = useEditModalPossibleGrade();
+  const { modalState, setModalState } = useGradebookUi();
+  const value = modalState.adjustedGradeValue;
+  const hintText = possibleGrade && ` ${getLocalizedSlash()} ${possibleGrade}`;
+
+  const onChange = ({ target }) => {
+    setModalState({ adjustedGradeValue: target.value });
+  };
+
   return (
     <span>
       <Form.Control

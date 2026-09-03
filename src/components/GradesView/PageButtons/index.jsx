@@ -1,11 +1,15 @@
 import React from 'react';
 
 import { Button } from '@openedx/paragon';
+import { useIntl } from '@edx/frontend-platform/i18n';
 
-import usePageButtonsData from './hooks';
+import { useFetchPrevNextGrades, useGradeData } from '../data/hooks';
+import messages from './messages';
 
 export const PageButtons = () => {
-  const { prev, next } = usePageButtonsData();
+  const { formatMessage } = useIntl();
+  const { nextPage, prevPage } = useGradeData();
+  const getPrevNextGrades = useFetchPrevNextGrades();
 
   return (
     <div
@@ -15,18 +19,18 @@ export const PageButtons = () => {
       <Button
         style={{ margin: '20px' }}
         variant="outline-primary"
-        disabled={prev.disabled}
-        onClick={prev.onClick}
+        disabled={!prevPage}
+        onClick={() => getPrevNextGrades(prevPage)}
       >
-        {prev.text}
+        {formatMessage(messages.prevPage)}
       </Button>
       <Button
         style={{ margin: '20px' }}
         variant="outline-primary"
-        disabled={next.disabled}
-        onClick={next.onClick}
+        disabled={!nextPage}
+        onClick={() => getPrevNextGrades(nextPage)}
       >
-        {next.text}
+        {formatMessage(messages.nextPage)}
       </Button>
     </div>
   );

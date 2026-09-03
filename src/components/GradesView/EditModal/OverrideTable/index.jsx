@@ -2,12 +2,15 @@
 import React from 'react';
 
 import { DataTable } from '@openedx/paragon';
+import { useIntl } from '@edx/frontend-platform/i18n';
 
 import { formatDateForDisplay } from 'utils';
+import { gradeOverrideHistoryColumns as columns } from 'data/constants/app';
+import { useGradeOverrideData } from 'components/GradesView/data/hooks';
 
 import ReasonInput from './ReasonInput';
 import AdjustedGradeInput from './AdjustedGradeInput';
-import useOverrideTableData from './hooks';
+import messages from './messages';
 
 /**
  * <OverrideTable />
@@ -16,12 +19,19 @@ import useOverrideTableData from './hooks';
  */
 
 export const OverrideTable = () => {
-  const { hide, columns, data } = useOverrideTableData();
+  const { formatMessage } = useIntl();
+  const { gradeOverrideHistoryResults, hasOverrideErrors: hide } = useGradeOverrideData();
 
   if (hide) { return null; }
 
+  const tableColumns = [
+    { Header: formatMessage(messages.dateHeader), accessor: columns.date },
+    { Header: formatMessage(messages.graderHeader), accessor: columns.grader },
+    { Header: formatMessage(messages.reasonHeader), accessor: columns.reason },
+    { Header: formatMessage(messages.adjustedGradeHeader), accessor: columns.adjustedGrade },
+  ];
   const tableData = [
-    ...data,
+    ...(gradeOverrideHistoryResults || []),
     {
       adjustedGrade: <AdjustedGradeInput />,
       date: formatDateForDisplay(new Date()),
@@ -31,7 +41,7 @@ export const OverrideTable = () => {
 
   return (
     <DataTable
-      columns={columns}
+      columns={tableColumns}
       data={tableData}
       itemCount={tableData.length}
     />

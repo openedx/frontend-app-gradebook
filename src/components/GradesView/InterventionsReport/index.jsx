@@ -3,9 +3,11 @@ import React from 'react';
 import { useIntl } from '@edx/frontend-platform/i18n';
 
 import NetworkButton from 'components/NetworkButton';
+import { useShowBulkManagement } from 'data/apiHook';
+import { trackInterventionReportDownloaded } from 'data/services/segment/events';
 
+import { useInterventionExportUrl } from '../data/hooks';
 import messages from './messages';
-import useInterventionsReportData from './hooks';
 
 /**
  * <InterventionsReport />
@@ -13,10 +15,16 @@ import useInterventionsReportData from './hooks';
  * showBulkManagement is set in redus.
  */
 export const InterventionsReport = () => {
-  const { show, handleClick } = useInterventionsReportData();
+  const interventionExportUrl = useInterventionExportUrl();
+  const showBulkManagement = useShowBulkManagement();
   const { formatMessage } = useIntl();
 
-  if (!show) {
+  const handleClick = () => {
+    trackInterventionReportDownloaded();
+    window.location.assign(interventionExportUrl);
+  };
+
+  if (!showBulkManagement) {
     return null;
   }
 
