@@ -1,4 +1,5 @@
 import { useFilters } from 'data/filtersContext';
+import { useCourseIdWithGate } from 'data/apiHook';
 
 import { useCohorts, useTracks } from './apiHook';
 
@@ -19,7 +20,8 @@ const isGradeValid = (value) => {
  * FiltersProvider), or undefined.
  */
 export const useSelectedCohortEntry = () => {
-  const cohortList = useCohorts().data ?? EMPTY_ARRAY;
+  const { courseId, enabled } = useCourseIdWithGate();
+  const cohortList = useCohorts(courseId, { enabled }).data ?? EMPTY_ARRAY;
   const { cohort: cohortId } = useFilters();
   return cohortList.find(({ id }) => id === parseInt(cohortId, 10));
 };
@@ -30,7 +32,8 @@ export const useSelectedCohortEntry = () => {
  * FiltersProvider), or undefined.
  */
 export const useSelectedTrackEntry = () => {
-  const trackList = useTracks().data ?? EMPTY_ARRAY;
+  const { courseId, enabled } = useCourseIdWithGate();
+  const trackList = useTracks(courseId, { enabled }).data ?? EMPTY_ARRAY;
   const { track } = useFilters();
   return trackList.find(({ slug }) => slug === track);
 };

@@ -3,14 +3,15 @@ import PropTypes from 'prop-types';
 
 import { Button } from '@openedx/paragon';
 
-import { useAssignmentTypes } from 'data/apiHook';
+import { useAssignmentTypes, useCourseIdWithGate } from 'data/apiHook';
 import { useGradebookUi } from 'data/gradebookUiContext';
-import { subsectionGrade } from 'data/selectors/grades';
+import { subsectionGrade } from '../data/utils';
 import { useGradeData } from '../data/hooks';
 import * as module from './GradeButton';
 
 export const useGradeButtonData = ({ entry, subsection }) => {
-  const areGradesFrozen = useAssignmentTypes().data?.areGradesFrozen;
+  const { courseId, enabled } = useCourseIdWithGate();
+  const areGradesFrozen = useAssignmentTypes(courseId, { enabled }).data?.areGradesFrozen;
   const { gradeFormat } = useGradeData();
   const { setModalStateFromTable: setModalState } = useGradebookUi();
   const label = subsectionGrade[gradeFormat](subsection);

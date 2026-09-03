@@ -1,15 +1,18 @@
-import { useParams } from 'react-router-dom';
-
 import { views } from 'data/constants/app';
-import { useAssignmentTypes, useCanViewGradebook, useShowBulkManagement } from 'data/apiHook';
+import {
+  useAssignmentTypes,
+  useCanViewGradebook,
+  useCourseIdWithGate,
+  useShowBulkManagement,
+} from 'data/apiHook';
 import { useGradebookUi } from 'data/gradebookUiContext';
 
 import messages from './messages';
 
 export const useGradebookHeaderData = () => {
-  const { courseId = '' } = useParams();
   const { activeView, setActiveView } = useGradebookUi();
-  const areGradesFrozen = useAssignmentTypes().data?.areGradesFrozen;
+  const { courseId, enabled } = useCourseIdWithGate();
+  const areGradesFrozen = useAssignmentTypes(courseId, { enabled }).data?.areGradesFrozen;
   const canUserViewGradebook = useCanViewGradebook();
   const showBulkManagement = useShowBulkManagement();
 

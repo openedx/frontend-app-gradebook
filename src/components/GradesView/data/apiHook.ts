@@ -2,12 +2,11 @@ import { useMemo } from 'react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useParams } from 'react-router-dom';
 
-import selectors from 'data/selectors';
 import lms from 'data/services/lms';
 import { sortAlphaAsc } from 'data/formatUtils';
 import { filtersSnapshot } from 'data/filtersSnapshot';
 import { useGradebookUi } from 'data/gradebookUiContext';
-import { useCanUserViewGradebook } from 'data/apiHook';
+import { useCourseIdWithGate } from 'data/apiHook';
 import {
   trackGradeOverrideSucceeded,
   trackGradeOverrideFailed,
@@ -20,68 +19,40 @@ import { bulkOperationHistoryQueryKeys } from 'components/BulkManagementHistoryV
 
 import { getGradeOverrideHistory, getGrades, getGradesPage } from './api';
 import { gradeOverrideHistoryQueryKeys, gradesQueryKeys } from './queryKeys';
+import { buildGradesFetchParams } from './utils';
 
 /**
- * Builds the `gradebookData` params from current state, mirroring the legacy
- * `fetchGrades` thunk's `getState()` reads. Reads at fetch time (not from the
- * query key) so imperative refetches pick up the latest filter values — the
- * FiltersProvider keeps `filtersSnapshot` in sync.
+ * Builds the `getGrades` params from the live `filtersSnapshot`. Reads at fetch
+ * time (not from the query key) so imperative refetches pick up the latest
+ * filter values — the FiltersProvider keeps `filtersSnapshot` in sync.
  */
-const buildGradebookDataParams = () => {
-  const state = {
-    filters: {
-      // Match the Redux shape: an object `{ id }` when an assignment is selected,
-      // else '' — so `selectedAssignmentId` is `undefined` (not '') when unset,
-      // preserving `formattedGradeLimits`' `hasAssignment` gating.
-      assignment: filtersSnapshot.assignment ? { id: filtersSnapshot.assignment } : '',
-      assignmentType: filtersSnapshot.assignmentType,
-      cohort: filtersSnapshot.cohort,
-      track: filtersSnapshot.track,
-      includeCourseRoleMembers: filtersSnapshot.includeCourseRoleMembers,
-    },
-    app: {
-      searchValue: filtersSnapshot.searchValue,
-      filters: {
-        assignmentGradeMin: filtersSnapshot.assignmentGradeMin,
-        assignmentGradeMax: filtersSnapshot.assignmentGradeMax,
-        courseGradeMin: filtersSnapshot.courseGradeMin,
-        courseGradeMax: filtersSnapshot.courseGradeMax,
-      },
-    },
-  };
-  const fetchOptions = selectors.root.localFilters(state);
-  return {
-    searchText: fetchOptions.searchText || null,
-    cohort: selectors.filters.cohort(state),
-    track: selectors.filters.track(state),
-    options: fetchOptions,
-  };
-};
+const buildGradebookDataParams = () => buildGradesFetchParams(filtersSnapshot);
 
 /**
  * useGrades()
- * The main gradebook rows query. Gated on the roles query. Keyed by courseId plus
- * the current pagination cursor (from `GradebookUi.gradesPageEndpoint`): the first
- * (unpaged) page reads the current filter params at fetch time (so an imperative
- * `invalidateQueries` on filter apply / search refetches with the latest values),
- * while a non-null cursor fetches that opaque prev/next URL — replacing the legacy
- * `fetchPrevNextGrades` thunk. The base grades key is a prefix of the paged key, so
- * invalidating `byCourse(courseId)` still refetches any page.
+ * Single-responsibility query for the main gradebook rows. Caller supplies
+ * `courseId`, the current pagination cursor (`gradesPageEndpoint` from
+ * `GradebookUi`, or `null` for the base/unpaged page), and decides when it may
+ * run via `enabled`. The base grades key is a prefix of the paged key, so
+ * invalidating `byCourse(courseId)` still refetches any page. The first
+ * (unpaged) page reads the current filter params at fetch time (so an
+ * imperative `invalidateQueries` on filter apply / search refetches with the
+ * latest values); a non-null cursor fetches that opaque prev/next URL —
+ * replacing the legacy `fetchPrevNextGrades` thunk.
  */
-export const useGrades = () => {
-  const { courseId = '' } = useParams();
-  const { data: canViewGradebook } = useCanUserViewGradebook();
-  const { gradesPageEndpoint } = useGradebookUi();
-  return useQuery({
-    queryKey: [...gradesQueryKeys.byCourse(courseId), gradesPageEndpoint ?? 'base'],
-    queryFn: () => (
-      gradesPageEndpoint
-        ? getGradesPage(gradesPageEndpoint)
-        : getGrades(buildGradebookDataParams())
-    ),
-    enabled: !!courseId && !!canViewGradebook,
-  });
-};
+export const useGrades = (
+  courseId: string,
+  gradesPageEndpoint: string | null,
+  { enabled = true }: { enabled?: boolean } = {},
+) => useQuery({
+  queryKey: [...gradesQueryKeys.byCourse(courseId), gradesPageEndpoint ?? 'base'],
+  queryFn: () => (
+    gradesPageEndpoint
+      ? getGradesPage(gradesPageEndpoint)
+      : getGrades(buildGradebookDataParams())
+  ),
+  enabled: !!courseId && enabled,
+});
 
 /** One subsection cell within a learner's grade row. */
 export interface SubsectionBreakdown {
@@ -127,7 +98,9 @@ export interface GradesData {
  * (matching the legacy `fetching.received` handling).
  */
 export const useGradesData = (): GradesData => {
-  const query = useGrades();
+  const { courseId, enabled } = useCourseIdWithGate();
+  const { gradesPageEndpoint } = useGradebookUi();
+  const query = useGrades(courseId, gradesPageEndpoint, { enabled });
   const data = query.data as {
     results?: GradeEntry[];
     previous?: string | null;

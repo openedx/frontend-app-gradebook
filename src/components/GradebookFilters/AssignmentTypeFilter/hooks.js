@@ -1,9 +1,10 @@
 import { useFilters } from 'data/filtersContext';
-import { useAssignmentTypes } from 'data/apiHook';
+import { useAssignmentTypes, useCourseIdWithGate } from 'data/apiHook';
 import { useSelectableAssignmentLabels } from 'components/GradesView/data/hooks';
 
 export const useAssignmentTypeFilterData = ({ updateQueryParams }) => {
-  const assignmentTypes = useAssignmentTypes().data?.assignmentTypes ?? [];
+  const { courseId, enabled } = useCourseIdWithGate();
+  const assignmentTypes = useAssignmentTypes(courseId, { enabled }).data?.assignmentTypes ?? [];
   const assignmentFilterOptions = useSelectableAssignmentLabels();
   const { assignmentType: selectedAssignmentType, setAssignmentType } = useFilters();
 

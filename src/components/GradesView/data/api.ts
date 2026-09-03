@@ -2,7 +2,7 @@ import { getAuthenticatedHttpClient } from '@edx/frontend-platform/auth';
 
 import lms from 'data/services/lms';
 import GRADE_OVERRIDE_HISTORY_ERROR_DEFAULT_MSG from 'data/constants/errors';
-import { formatGradeOverrideForDisplay } from 'data/selectors/grades';
+import { formatGradeOverrideForDisplay } from './utils';
 
 /**
  * getGrades({ searchText, cohort, track, options })

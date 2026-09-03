@@ -2,7 +2,6 @@ import { useMemo } from 'react';
 import { useIsMutating, useQueryClient } from '@tanstack/react-query';
 import { useParams } from 'react-router-dom';
 
-import selectors from 'data/selectors';
 import lms from 'data/services/lms';
 import initialFilters, { filterConfig, filters as filterNames } from 'data/constants/filters';
 import { useFilters } from 'data/filtersContext';
@@ -15,6 +14,17 @@ import {
 
 import { useGradesData, useGradeOverrideHistory } from './apiHook';
 import { gradesQueryKeys } from './queryKeys';
+import {
+  chooseRelevantAssignmentData,
+  formatMaxAssignmentGrade,
+  formatMaxCourseGrade,
+  formatMinAssignmentGrade,
+  formatMinCourseGrade,
+  getAssignmentsFromResultsSubstate,
+  headingMapper,
+  isDefault,
+  relevantAssignmentDataFromResults,
+} from './utils';
 
 // Stable empty reference so read hooks don't return a fresh array each render.
 const EMPTY_ARRAY = [];
@@ -28,10 +38,9 @@ export const useGradesHeadings = () => {
   const { results } = useGradesData();
   const { assignmentType, assignment: assignmentId } = useFilters();
   return useMemo(() => {
-    const { relevantAssignmentDataFromResults, getAssignmentsFromResultsSubstate } = selectors.filters;
     const selectedAssignmentLabel = relevantAssignmentDataFromResults(results, assignmentId)?.label;
     const sectionBreakdown = getAssignmentsFromResultsSubstate(results);
-    return selectors.grades.headingMapper(
+    return headingMapper(
       assignmentType || 'All',
       selectedAssignmentLabel || 'All',
     )(sectionBreakdown);
@@ -47,8 +56,8 @@ export const useSelectableAssignmentLabels = () => {
   const { results } = useGradesData();
   const { assignmentType } = useFilters();
   return useMemo(() => {
-    const all = selectors.filters.getAssignmentsFromResultsSubstate(results)
-      .map(selectors.filters.chooseRelevantAssignmentData);
+    const all = getAssignmentsFromResultsSubstate(results)
+      .map(chooseRelevantAssignmentData);
     return (assignmentType && assignmentType !== 'All')
       ? all.filter((assignment) => assignment.type === assignmentType)
       : all;
@@ -63,7 +72,7 @@ export const useSelectedAssignmentLabel = () => {
   const { results } = useGradesData();
   const { assignment: assignmentId } = useFilters();
   return useMemo(
-    () => selectors.filters.relevantAssignmentDataFromResults(results, assignmentId)?.label,
+    () => relevantAssignmentDataFromResults(results, assignmentId)?.label,
     [results, assignmentId],
   );
 };
@@ -112,8 +121,7 @@ export const useGradeData = () => {
 
 // Export URL args, built from the FiltersProvider (applied grade limits + the
 // immediate filters) and the selected cohort name. Reuses the pure
-// `selectors.grades.format*` helpers so the CSV/intervention URL formatting is
-// unchanged.
+// `format*` helpers so the CSV/intervention URL formatting is unchanged.
 const useLmsApiServiceArgs = () => {
   const {
     assignment, assignmentType, track, includeCourseRoleMembers,
@@ -123,10 +131,6 @@ const useLmsApiServiceArgs = () => {
   const selectedCohort = useSelectedCohortEntry();
   const assignmentId = assignment || undefined;
   const opts = { assignmentId };
-  const {
-    formatMinAssignmentGrade, formatMaxAssignmentGrade,
-    formatMinCourseGrade, formatMaxCourseGrade,
-  } = selectors.grades;
   return {
     cohort: selectedCohort ? selectedCohort.name : undefined,
     track,
@@ -170,7 +174,6 @@ export const useFilterBadgeConfig = (filterName) => {
     };
   }
 
-  const { isDefault } = selectors.filters;
   const { filterOrder, ...config } = filterConfig[filterName];
 
   if (filterOrder) {

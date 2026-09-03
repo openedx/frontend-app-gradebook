@@ -21,18 +21,18 @@ export const useCanUserViewGradebook = () => {
 
 /**
  * useAssignmentTypes()
- * Gated on the roles query; returns assignment types plus the grades-frozen and
- * bulk-management flags.
+ * Single-responsibility query for assignment types (types + grades-frozen +
+ * bulk-management flags). Caller supplies `courseId` and decides when it may
+ * run via `enabled`.
  */
-export const useAssignmentTypes = () => {
-  const { courseId = '' } = useParams();
-  const { data: canViewGradebook } = useCanUserViewGradebook();
-  return useQuery({
-    queryKey: assignmentTypesQueryKeys.byCourse(courseId),
-    queryFn: getAssignmentTypes,
-    enabled: !!courseId && !!canViewGradebook,
-  });
-};
+export const useAssignmentTypes = (
+  courseId: string,
+  { enabled = true }: { enabled?: boolean } = {},
+) => useQuery({
+  queryKey: assignmentTypesQueryKeys.byCourse(courseId),
+  queryFn: getAssignmentTypes,
+  enabled: !!courseId && enabled,
+});
 
 /**
  * useCanViewGradebook()
@@ -47,10 +47,24 @@ export const useCanViewGradebook = (): boolean => {
 };
 
 /**
+ * useCourseIdWithGate()
+ * Shared gate for the downstream server queries: the routed `courseId` plus an
+ * `enabled` flag that resolves truthy once `useCanUserViewGradebook` does.
+ * Callers pass the returned pair into single-responsibility query hooks so the
+ * gate rule lives in one place.
+ */
+export const useCourseIdWithGate = (): { courseId: string; enabled: boolean } => {
+  const { courseId = '' } = useParams();
+  const { data: canViewGradebook } = useCanUserViewGradebook();
+  return { courseId, enabled: !!canViewGradebook };
+};
+
+/**
  * useShowBulkManagement()
  * Whether bulk management is available for the course (derived from the
  * assignment-types query). Gates the header toggle + bulk-management controls.
  */
-export const useShowBulkManagement = (): boolean => (
-  !!useAssignmentTypes().data?.bulkManagementAvailable
-);
+export const useShowBulkManagement = (): boolean => {
+  const { courseId, enabled } = useCourseIdWithGate();
+  return !!useAssignmentTypes(courseId, { enabled }).data?.bulkManagementAvailable;
+};

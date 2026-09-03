@@ -1,3 +1,4 @@
+// DELETE THIS FILE LATER
 // import * in order to mock in-file references
 import * as selectors from './app';
 // import default export in order to test simpleSelectors not exported individually

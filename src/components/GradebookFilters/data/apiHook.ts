@@ -1,35 +1,32 @@
 import { useQuery } from '@tanstack/react-query';
-import { useParams } from 'react-router-dom';
-
-import { useCanUserViewGradebook } from 'data/apiHook';
 
 import { getCohorts, getTracks } from './api';
 import { cohortsQueryKeys, tracksQueryKeys } from './queryKeys';
 
 /**
  * useCohorts()
- * Gated on the roles query; returns the course's cohorts.
+ * Single-responsibility query for the course's cohorts. Caller supplies
+ * `courseId` and decides when it may run via `enabled`.
  */
-export const useCohorts = () => {
-  const { courseId = '' } = useParams();
-  const { data: canViewGradebook } = useCanUserViewGradebook();
-  return useQuery({
-    queryKey: cohortsQueryKeys.byCourse(courseId),
-    queryFn: getCohorts,
-    enabled: !!courseId && !!canViewGradebook,
-  });
-};
+export const useCohorts = (
+  courseId: string,
+  { enabled = true }: { enabled?: boolean } = {},
+) => useQuery({
+  queryKey: cohortsQueryKeys.byCourse(courseId),
+  queryFn: getCohorts,
+  enabled: !!courseId && enabled,
+});
 
 /**
  * useTracks()
- * Gated on the roles query; returns the course's enrollment tracks.
+ * Single-responsibility query for the course's enrollment tracks. Caller
+ * supplies `courseId` and decides when it may run via `enabled`.
  */
-export const useTracks = () => {
-  const { courseId = '' } = useParams();
-  const { data: canViewGradebook } = useCanUserViewGradebook();
-  return useQuery({
-    queryKey: tracksQueryKeys.byCourse(courseId),
-    queryFn: getTracks,
-    enabled: !!courseId && !!canViewGradebook,
-  });
-};
+export const useTracks = (
+  courseId: string,
+  { enabled = true }: { enabled?: boolean } = {},
+) => useQuery({
+  queryKey: tracksQueryKeys.byCourse(courseId),
+  queryFn: getTracks,
+  enabled: !!courseId && enabled,
+});

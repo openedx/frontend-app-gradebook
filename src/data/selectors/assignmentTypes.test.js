@@ -1,3 +1,4 @@
+// DELETE THIS FILE LATER
 import selectors from './assignmentTypes';
 
 describe('assignmentType selectors', () => {

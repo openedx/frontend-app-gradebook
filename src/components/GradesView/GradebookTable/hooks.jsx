@@ -2,10 +2,10 @@ import React from 'react';
 
 import { useIntl } from '@edx/frontend-platform/i18n';
 
-import { roundGrade } from 'data/selectors/grades';
 import { Headings } from 'data/constants/grades';
 import { getLocalizedPercentSign } from 'i18n/utils';
 
+import { roundGrade } from '../data/utils';
 import { useAllGrades, useGradesHeadings } from '../data/hooks';
 import messages from './messages';
 import Fields from './Fields';

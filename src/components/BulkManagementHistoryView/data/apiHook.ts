@@ -1,11 +1,10 @@
 import { useQuery } from '@tanstack/react-query';
-import { useParams } from 'react-router-dom';
 
-import { useAssignmentTypes, useCanUserViewGradebook } from 'data/apiHook';
-import { transformHistoryEntry } from 'data/selectors/grades';
+import { useAssignmentTypes, useCourseIdWithGate } from 'data/apiHook';
 
 import { getBulkOperationHistory } from './api';
 import { bulkOperationHistoryQueryKeys } from './queryKeys';
+import { transformHistoryEntry } from './utils';
 
 // Stable empty reference so the shaped read-model hook doesn't return a fresh
 // array on every render while the query is still loading.
@@ -13,26 +12,30 @@ const EMPTY_ARRAY: never[] = [];
 
 /**
  * useBulkOperationHistory()
- * Bulk grade-override upload history. Disabled until the roles query resolves
- * truthy and the assignment-types query reports bulk management is available.
+ * Bulk grade-override upload history. Single-responsibility query hook: the
+ * caller decides when it may run via `courseId` and `enabled`.
  */
-export const useBulkOperationHistory = () => {
-  const { courseId = '' } = useParams();
-  const { data: canViewGradebook } = useCanUserViewGradebook();
-  const { data: assignmentTypesData } = useAssignmentTypes();
-  return useQuery({
-    queryKey: bulkOperationHistoryQueryKeys.byCourse(courseId),
-    queryFn: getBulkOperationHistory,
-    enabled: !!courseId && !!canViewGradebook && !!assignmentTypesData?.bulkManagementAvailable,
-  });
-};
+export const useBulkOperationHistory = (
+  courseId: string,
+  { enabled = true }: { enabled?: boolean } = {},
+) => useQuery({
+  queryKey: bulkOperationHistoryQueryKeys.byCourse(courseId),
+  queryFn: getBulkOperationHistory,
+  enabled: !!courseId && enabled,
+});
 
 /**
  * useBulkManagementHistoryEntries()
- * Read-model for the history table: the query results shaped by
- * `transformHistoryEntry` (display filename / user / results summary). Replaces
- * the former facade selector `selectors.grades.useBulkManagementHistoryEntries`.
+ * Read-model for the history table: wires the roles + assignment-types gates
+ * into `useBulkOperationHistory` and shapes the results with
+ * `transformHistoryEntry`. Replaces the former facade selector
+ * `selectors.grades.useBulkManagementHistoryEntries`.
  */
-export const useBulkManagementHistoryEntries = () => (
-  (useBulkOperationHistory().data ?? EMPTY_ARRAY).map(transformHistoryEntry)
-);
+export const useBulkManagementHistoryEntries = () => {
+  const { courseId, enabled } = useCourseIdWithGate();
+  const { data: assignmentTypesData } = useAssignmentTypes(courseId, { enabled });
+  const { data } = useBulkOperationHistory(courseId, {
+    enabled: enabled && !!assignmentTypesData?.bulkManagementAvailable,
+  });
+  return (data ?? EMPTY_ARRAY).map(transformHistoryEntry);
+};

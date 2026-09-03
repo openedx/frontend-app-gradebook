@@ -1,3 +1,4 @@
+// DELETE THIS FILE LATER
 import { StrictDict } from 'utils';
 
 const areGradesFrozen = ({ assignmentTypes }) => assignmentTypes.areGradesFrozen;

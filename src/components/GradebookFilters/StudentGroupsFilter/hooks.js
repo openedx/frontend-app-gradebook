@@ -1,4 +1,5 @@
 import { useFilters } from 'data/filtersContext';
+import { useCourseIdWithGate } from 'data/apiHook';
 import { useRefetchGrades } from 'components/GradesView/data/hooks';
 
 import { useCohorts, useTracks } from '../data/apiHook';
@@ -7,11 +8,12 @@ import { useSelectedCohortEntry, useSelectedTrackEntry } from '../data/hooks';
 const EMPTY_ARRAY = [];
 
 export const useStudentGroupsFilterData = ({ updateQueryParams }) => {
+  const { courseId, enabled } = useCourseIdWithGate();
   const selectedCohortEntry = useSelectedCohortEntry();
   const selectedTrackEntry = useSelectedTrackEntry();
 
-  const cohorts = useCohorts().data ?? EMPTY_ARRAY;
-  const tracks = useTracks().data ?? EMPTY_ARRAY;
+  const cohorts = useCohorts(courseId, { enabled }).data ?? EMPTY_ARRAY;
+  const tracks = useTracks(courseId, { enabled }).data ?? EMPTY_ARRAY;
 
   const { setCohort, setTrack } = useFilters();
   const fetchGrades = useRefetchGrades();

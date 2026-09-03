@@ -1,3 +1,4 @@
+// DELETE THIS FILE LATER
 import initialFilters, { filters as filterNames } from 'data/constants/filters';
 // import * in order to mock in-file references
 import * as selectors from './filters';
