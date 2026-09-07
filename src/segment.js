@@ -1,6 +1,6 @@
 // The code in this file is from Segment's website:
 // https://segment.com/docs/sources/website/analytics.js/quickstart/
-import { getSiteConfig } from '@edx/frontend-platform';
+import { getSiteConfig } from '@openedx/frontend-base';
 
 (function () {
   // Create a queue, but don't obliterate an existing one!

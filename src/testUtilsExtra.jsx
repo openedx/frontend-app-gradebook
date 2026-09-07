@@ -10,7 +10,7 @@ import PropTypes from 'prop-types';
 import {
   MemoryRouter, Route, Routes, generatePath,
 } from 'react-router';
-import { AppProvider, IntlProvider, initializeMockApp } from '@openedx/frontend-base';
+import { IntlProvider, initializeMockApp } from '@openedx/frontend-base';
 import { render } from '@testing-library/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 

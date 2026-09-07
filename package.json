@@ -41,7 +41,7 @@
   "watch:build": "nodemon --exec 'npm run build'"
  },
  "atlasTranslations": {
-  "path": "translations/frontend-app-admin-console/src/i18n/messages",
+  "path": "translations/frontend-app-gradebook/src/i18n/messages",
   "dependencies": [
    "@openedx/frontend-base"
   ]
@@ -60,19 +60,14 @@
   "@fortawesome/free-brands-svg-icons": "^5.11.2",
   "@fortawesome/free-solid-svg-icons": "^5.11.2",
   "@fortawesome/react-fontawesome": "^0.1.5",
-  "@redux-beacon/segment": "^1.0.0",
-  "@reduxjs/toolkit": "^1.5.1",
   "classnames": "^2.2.6",
   "core-js": "3.6.5",
-  "email-prop-type": "^1.1.7",
   "font-awesome": "4.7.0",
   "history": "4.10.1",
   "prop-types": "15.8.1",
-  "query-string": "6.13.0",
   "react-helmet": "^6.1.0",
   "regenerator-runtime": "^0.13.7",
-  "sass": "^1.49.0",
-  "whatwg-fetch": "^2.0.4"
+  "sass": "^1.49.0"
  },
  "peerDependencies": {
   "@openedx/frontend-base": "^2.0.0-alpha.2 || 0.0.0-dev",
@@ -80,6 +75,7 @@
   "@tanstack/react-query": "^5",
   "react": "^18",
   "react-dom": "^18",
+  "react-router": "^6",
   "react-router-dom": "^6"
  },
  "devDependencies": {
@@ -94,7 +90,6 @@
   "nodemon": "^3.1.14",
   "react-dev-utils": "^12.0.1",
   "react-test-renderer": "^18.3.1",
-  "redux-mock-store": "^1.5.3",
   "tsc-alias": "^1.9.4",
   "turbo": "^2.10.12"
  }

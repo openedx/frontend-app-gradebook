@@ -1,0 +1,3 @@
+# `frontend-app-gradebook` Slots
+
+This directory contains the slots that this frontend app _offers_ for host sites to customize. Slots are implemented with the `<Slot />` component from [`@openedx/frontend-base`](https://github.com/openedx/frontend-base); see the [slot naming and lifecycle ADR](https://github.com/openedx/frontend-base/blob/main/docs/decisions/0009-slot-naming-and-lifecycle.rst) for the API and conventions.
