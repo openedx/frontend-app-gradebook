@@ -1,5 +1,5 @@
 import { screen } from '@testing-library/react';
-import { getLocale } from '@edx/frontend-platform/i18n';
+import { getLocale } from '@openedx/frontend-base';
 import LabelReplacements from './LabelReplacements';
 import messages from './messages';
 import { renderWithIntl } from '../../../testUtilsExtra';

@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
 import { StatefulButton, Icon } from '@openedx/paragon';
-import { FormattedMessage } from '@edx/frontend-platform/i18n';
+import { FormattedMessage } from '@openedx/frontend-base';
 
 import { useShouldShowSpinner } from 'components/GradesView/data/hooks';
 import { StrictDict } from 'utils';

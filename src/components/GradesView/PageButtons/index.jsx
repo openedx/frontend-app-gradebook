@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { Button } from '@openedx/paragon';
-import { useIntl } from '@edx/frontend-platform/i18n';
+import { useIntl } from '@openedx/frontend-base';
 
 import { useFetchPrevNextGrades, useGradeData } from '../data/hooks';
 import messages from './messages';

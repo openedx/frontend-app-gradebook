@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { Button, Icon } from '@openedx/paragon';
-import { useIntl } from '@edx/frontend-platform/i18n';
+import { useIntl } from '@openedx/frontend-base';
 import { FilterAlt } from '@openedx/paragon/icons';
 
 import { useGradebookUi } from 'data/gradebookUiContext';

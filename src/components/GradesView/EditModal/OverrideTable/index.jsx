@@ -2,7 +2,7 @@
 import React from 'react';
 
 import { DataTable } from '@openedx/paragon';
-import { useIntl } from '@edx/frontend-platform/i18n';
+import { useIntl } from '@openedx/frontend-base';
 
 import { formatDateForDisplay } from 'utils';
 import { gradeOverrideHistoryColumns as columns } from 'data/constants/app';

@@ -6,7 +6,7 @@ import {
   ModalDialog,
   ActionRow,
 } from '@openedx/paragon';
-import { useIntl } from '@edx/frontend-platform/i18n';
+import { useIntl } from '@openedx/frontend-base';
 
 import { useGradebookUi } from 'data/gradebookUiContext';
 import { useGradeOverrideData } from 'components/GradesView/data/hooks';

@@ -1,6 +1,5 @@
 import React from 'react';
-
-import { useIntl } from '@edx/frontend-platform/i18n';
+import { useIntl } from '@openedx/frontend-base';
 
 import { Headings } from 'data/constants/grades';
 import { getLocalizedPercentSign } from 'i18n/utils';

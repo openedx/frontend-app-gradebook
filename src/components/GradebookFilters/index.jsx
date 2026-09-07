@@ -8,7 +8,7 @@ import {
   Form,
 } from '@openedx/paragon';
 import { Close } from '@openedx/paragon/icons';
-import { useIntl } from '@edx/frontend-platform/i18n';
+import { useIntl } from '@openedx/frontend-base';
 
 import { useGradebookUi } from 'data/gradebookUiContext';
 import { useFilters } from 'data/filtersContext';

@@ -1,19 +1,25 @@
 import '@testing-library/jest-dom';
+import siteConfig from 'site.config';
+import {
+  addAppConfigs, configureLogging, mergeSiteConfig, MockLoggingService,
+} from '@openedx/frontend-base';
 
-export const mockConfigs = {
-  SITE_NAME: 'test-site-name',
-  FAVICON_URL: 'http://localhost:18000/favicon.ico',
-  LMS_BASE_URL: 'http://localhost:18000',
-};
-// These configuration values are usually set in webpack's EnvironmentPlugin however
-// Jest does not use webpack so we need to set these so for testing
-// many are here to prevent warnings on the tests
-process.env.LMS_BASE_URL = mockConfigs.LMS_BASE_URL;
-process.env.SITE_NAME = mockConfigs.SITE_NAME;
-process.env.FAVICON_URL = mockConfigs.FAVICON_URL;
-process.env.BASE_URL = mockConfigs.LMS_BASE_URL;
-process.env.LOGIN_URL = `${mockConfigs.LMS_BASE_URL}/login`;
-process.env.LOGOUT_URL = `${mockConfigs.LMS_BASE_URL}/logout`;
-process.env.REFRESH_ACCESS_TOKEN_ENDPOINT = `${mockConfigs.LMS_BASE_URL}/refresh_access_token`;
-process.env.ACCESS_TOKEN_COOKIE_NAME = 'edx';
-process.env.CSRF_TOKEN_API_PATH = 'TOKEN_PATH';
+// Seed configuration for tests, since initialize() is not called.
+mergeSiteConfig(siteConfig);
+addAppConfigs();
+// Ensures logError/logInfo don't crash on a null `service` when tests
+// don't call initializeMockApp themselves.
+configureLogging(MockLoggingService, { config: siteConfig });
+
+class ResizeObserver {
+  observe() { }
+
+  unobserve() { }
+
+  disconnect() { }
+}
+
+global.ResizeObserver = ResizeObserver;
+
+// jsdom does not implement scrollIntoView
+window.HTMLElement.prototype.scrollIntoView = jest.fn();

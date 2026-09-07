@@ -1,4 +1,4 @@
-import { useIntl } from '@edx/frontend-platform/i18n';
+import { useIntl } from '@openedx/frontend-base';
 
 import { useGradebookUi } from 'data/gradebookUiContext';
 import { views } from 'data/constants/app';

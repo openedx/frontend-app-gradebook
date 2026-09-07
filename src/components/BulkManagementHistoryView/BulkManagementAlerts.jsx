@@ -1,6 +1,6 @@
 /* eslint-disable react/button-has-type */
 import React from 'react';
-import { FormattedMessage } from '@edx/frontend-platform/i18n';
+import { FormattedMessage } from '@openedx/frontend-base';
 
 import { Alert } from '@openedx/paragon';
 

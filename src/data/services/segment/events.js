@@ -1,11 +1,11 @@
-import { sendTrackEvent } from '@edx/frontend-platform/analytics';
+import { sendTrackEvent } from '@openedx/frontend-base';
 
 import {
   courseId, events, eventNames, trackingCategory,
 } from './constants';
 
 /**
- * Segment analytics, emitted directly via `@edx/frontend-platform/analytics`
+ * Segment analytics, emitted directly via `@openedx/frontend-base`
  * (`sendTrackEvent`) instead of the legacy `redux-beacon` middleware that mapped
  * Redux actions to Segment events. Event names + base properties (category + the
  * `courseId` label) mirror the old `redux-beacon` mapping exactly.

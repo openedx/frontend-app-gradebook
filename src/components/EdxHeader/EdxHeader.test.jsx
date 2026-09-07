@@ -1,6 +1,6 @@
 import React from 'react';
 import { getConfig } from '@edx/frontend-platform';
-import { IntlProvider } from '@edx/frontend-platform/i18n';
+import { IntlProvider } from '@openedx/frontend-base';
 import { render, screen } from '@testing-library/react';
 
 import Header from '.';

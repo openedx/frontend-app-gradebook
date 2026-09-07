@@ -10,10 +10,8 @@ import PropTypes from 'prop-types';
 import {
   MemoryRouter, Route, Routes, generatePath,
 } from 'react-router';
-import { AppProvider } from '@edx/frontend-platform/react';
+import { AppProvider, IntlProvider, initializeMockApp } from '@openedx/frontend-base';
 import { render } from '@testing-library/react';
-import { IntlProvider } from '@edx/frontend-platform/i18n';
-import { initializeMockApp } from '@edx/frontend-platform';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 import { createStore } from './data/store';

@@ -1,7 +1,7 @@
 /* eslint-disable react/button-has-type, import/no-named-as-default */
 import React, { useRef } from 'react';
 
-import { useIntl } from '@edx/frontend-platform/i18n';
+import { useIntl } from '@openedx/frontend-base';
 
 import { Form } from '@openedx/paragon';
 

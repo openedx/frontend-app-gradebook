@@ -1,6 +1,6 @@
 import React from 'react';
 import { Hyperlink } from '@openedx/paragon';
-import { getConfig } from '@edx/frontend-platform';
+import { getSiteConfig } from '@openedx/frontend-base';
 
 /**
  * <EdxHeader />
@@ -10,8 +10,8 @@ import { getConfig } from '@edx/frontend-platform';
 const EdxHeader = () => (
   <div className="mb-3">
     <header className="d-flex justify-content-center align-items-center p-3 border-bottom-blue">
-      <Hyperlink destination={`${getConfig().LMS_BASE_URL}/dashboard`}>
-        <img src={getConfig().LOGO_URL} alt="edX logo" height="30" width="60" />
+      <Hyperlink destination={`${getSiteConfig().lmsBaseUrl}/dashboard`}>
+        <img src={getSiteConfig().headerLogoImageUrl} alt="edX logo" height="30" width="60" />
       </Hyperlink>
       <div />
     </header>

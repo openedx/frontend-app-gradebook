@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { useIntl } from '@edx/frontend-platform/i18n';
+import { useIntl } from '@openedx/frontend-base';
 import { Button } from '@openedx/paragon';
 
 import { instructorDashboardUrl } from 'data/services/lms/urls';

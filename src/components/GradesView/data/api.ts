@@ -1,4 +1,4 @@
-import { getAuthenticatedHttpClient } from '@edx/frontend-platform/auth';
+import { getAuthenticatedHttpClient } from '@openedx/frontend-base';
 
 import lms from 'data/services/lms';
 import GRADE_OVERRIDE_HISTORY_ERROR_DEFAULT_MSG from 'data/constants/errors';

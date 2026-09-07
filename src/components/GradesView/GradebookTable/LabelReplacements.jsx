@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { useIntl, getLocale, isRtl } from '@edx/frontend-platform/i18n';
+import { useIntl, getLocale, isRtl } from '@openedx/frontend-base';
 import {
   Icon,
   OverlayTrigger,

@@ -1,4 +1,4 @@
-import { useIntl } from '@edx/frontend-platform/i18n';
+import { useIntl } from '@openedx/frontend-base';
 
 import { formatMessage } from 'testUtils';
 import { views } from 'data/constants/app';
