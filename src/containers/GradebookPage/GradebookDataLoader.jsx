@@ -1,6 +1,6 @@
-import { useGrades } from 'components/GradesView/data/apiHook';
-import { useCourseIdWithGate } from 'data/apiHook';
-import { useGradebookUi } from 'data/gradebookUiContext';
+import { useGrades } from '@src/components/GradesView/data/apiHook';
+import { useCourseIdWithGate } from '@src/data/apiHook';
+import { useGradebookUi } from '@src/data/gradebookUiContext';
 
 /**
  * <GradebookDataLoader />

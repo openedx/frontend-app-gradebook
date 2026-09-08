@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 
 import { Button } from '@openedx/paragon';
 
-import { useAssignmentTypes, useCourseIdWithGate } from 'data/apiHook';
-import { useGradebookUi } from 'data/gradebookUiContext';
+import { useAssignmentTypes, useCourseIdWithGate } from '@src/data/apiHook';
+import { useGradebookUi } from '@src/data/gradebookUiContext';
 import { subsectionGrade } from '../data/utils';
 import { useGradeData } from '../data/hooks';
 import * as module from './GradeButton';

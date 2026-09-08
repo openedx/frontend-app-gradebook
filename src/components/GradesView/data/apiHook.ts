@@ -2,20 +2,20 @@ import { useMemo } from 'react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useParams } from 'react-router-dom';
 
-import lms from 'data/services/lms';
-import { sortAlphaAsc } from 'data/formatUtils';
-import { filtersSnapshot } from 'data/filtersSnapshot';
-import { useGradebookUi } from 'data/gradebookUiContext';
-import { useCourseIdWithGate } from 'data/apiHook';
+import lms from '@src/data/services/lms';
+import { sortAlphaAsc } from '@src/data/formatUtils';
+import { filtersSnapshot } from '@src/data/filtersSnapshot';
+import { useGradebookUi } from '@src/data/gradebookUiContext';
+import { useCourseIdWithGate } from '@src/data/apiHook';
 import {
   trackGradeOverrideSucceeded,
   trackGradeOverrideFailed,
   trackUploadOverrideSucceeded,
   trackUploadOverrideFailed,
-} from 'data/services/segment/events';
+} from '@src/data/services/segment/events';
 // Cross-feature invalidation: a successful CSV upload refreshes the bulk-operation
 // history owned by the BulkManagementHistoryView feature.
-import { bulkOperationHistoryQueryKeys } from 'components/BulkManagementHistoryView/data/queryKeys';
+import { bulkOperationHistoryQueryKeys } from '@src/components/BulkManagementHistoryView/data/queryKeys';
 
 import { getGradeOverrideHistory, getGrades, getGradesPage } from './api';
 import { gradeOverrideHistoryQueryKeys, gradesQueryKeys } from './queryKeys';

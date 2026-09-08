@@ -1,4 +1,3 @@
-/* eslint-disable react/button-has-type */
 import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
@@ -6,62 +5,13 @@ import classNames from 'classnames';
 import { StatefulButton, Icon } from '@openedx/paragon';
 import { FormattedMessage } from '@openedx/frontend-base';
 
-import { useShouldShowSpinner } from 'components/GradesView/data/hooks';
-import { StrictDict } from 'utils';
+import { useShouldShowSpinner } from '@src/components/GradesView/data/hooks';
+import { StrictDict } from '@src/utils';
 
 export const buttonStates = StrictDict({
   pending: 'pending',
   default: 'default',
 });
-
-// MIGRATION (Redux -> React Query): the network/busy spinner now comes from the
-// facade hook `selectors.root.useShouldShowSpinner()` (roles gate + the grades
-// query's `isFetching`) instead of `connect()`/`mapStateToProps` reading the Redux
-// `grades.showSpinner` read-model. NetworkButton was a connected class component;
-// it is now a function component that reads the spinner state itself. The old
-// Redux-connected implementation is kept below, commented, until teardown.
-//
-// import { connect } from 'react-redux';
-// import selectors from 'data/selectors';
-//
-// export class NetworkButton extends React.Component {
-//   get labels() {
-//     const label = <FormattedMessage {...this.props.label} />;
-//     return { default: label, pending: label };
-//   }
-//
-//   get icons() {
-//     const iconClass = 'fa mr-2';
-//     const defaultIcon = this.props.import ? 'fa-upload' : 'fa-download';
-//     return {
-//       pending: (<Icon className={classNames(iconClass, 'fa-spinner fa-spin')} />),
-//       default: (<Icon className={classNames(iconClass, defaultIcon)} />),
-//     };
-//   }
-//
-//   get buttonState() {
-//     return this.props.showSpinner ? buttonStates.pending : buttonStates.default;
-//   }
-//
-//   render() {
-//     return (
-//       <StatefulButton
-//         labels={this.labels}
-//         variant="outline-primary"
-//         disabledStates={[buttonStates.pending]}
-//         className={classNames('ml-2', this.props.className)}
-//         icons={this.icons}
-//         state={this.buttonState}
-//         onClick={this.props.onClick}
-//       />
-//     );
-//   }
-// }
-//
-// export const mapStateToProps = (state) => ({
-//   showSpinner: selectors.root.shouldShowSpinner(state),
-// });
-// export default connect(mapStateToProps)(NetworkButton);
 
 /**
  * <NetworkButton />

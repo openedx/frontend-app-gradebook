@@ -3,7 +3,7 @@ import React from 'react';
 import { useIntl } from '@openedx/frontend-base';
 import { Button } from '@openedx/paragon';
 
-import { instructorDashboardUrl } from 'data/services/lms/urls';
+import { instructorDashboardUrl } from '@src/data/services/lms/urls';
 import useGradebookHeaderData from './hooks';
 import messages from './messages';
 

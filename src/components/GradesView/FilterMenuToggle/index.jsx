@@ -4,7 +4,7 @@ import { Button, Icon } from '@openedx/paragon';
 import { useIntl } from '@openedx/frontend-base';
 import { FilterAlt } from '@openedx/paragon/icons';
 
-import { useGradebookUi } from 'data/gradebookUiContext';
+import { useGradebookUi } from '@src/data/gradebookUiContext';
 
 import messages from './messages';
 

@@ -1,11 +1,11 @@
-import { views } from 'data/constants/app';
+import { views } from '@src/data/constants/app';
 import {
   useAssignmentTypes,
   useCanViewGradebook,
   useCourseIdWithGate,
   useShowBulkManagement,
-} from 'data/apiHook';
-import { useGradebookUi } from 'data/gradebookUiContext';
+} from '@src/data/apiHook';
+import { useGradebookUi } from '@src/data/gradebookUiContext';
 
 import messages from './messages';
 

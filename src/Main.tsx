@@ -2,9 +2,9 @@
 import { CurrentAppProvider, PageWrap, getSiteConfig, useIntl } from '@openedx/frontend-base';
 import { Helmet } from 'react-helmet';
 import { appId } from './constants';
-import { FiltersProvider } from 'data/filtersContext';
-import { GradebookUiProvider } from 'data/gradebookUiContext';
-import GradebookPage from 'containers/GradebookPage';
+import { FiltersProvider } from '@src/data/filtersContext';
+import { GradebookUiProvider } from '@src/data/gradebookUiContext';
+import GradebookPage from '@src/containers/GradebookPage';
 import messages from './messages';
 import './style.scss';
 

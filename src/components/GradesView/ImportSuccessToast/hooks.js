@@ -1,7 +1,7 @@
 import { useIntl } from '@openedx/frontend-base';
 
-import { useGradebookUi } from 'data/gradebookUiContext';
-import { views } from 'data/constants/app';
+import { useGradebookUi } from '@src/data/gradebookUiContext';
+import { views } from '@src/data/constants/app';
 import messages from './messages';
 
 /**

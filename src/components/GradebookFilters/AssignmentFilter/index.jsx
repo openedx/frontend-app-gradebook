@@ -4,12 +4,12 @@ import PropTypes from 'prop-types';
 
 import { useIntl } from '@openedx/frontend-base';
 
-import { useFilters } from 'data/filtersContext';
+import { useFilters } from '@src/data/filtersContext';
 import {
   useFetchGradesIfAssignmentGradeFiltersSet,
   useSelectableAssignmentLabels,
   useSelectedAssignmentLabel,
-} from 'components/GradesView/data/hooks';
+} from '@src/components/GradesView/data/hooks';
 
 import messages from '../messages';
 import SelectGroup from '../SelectGroup';

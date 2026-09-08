@@ -2,9 +2,9 @@ import React from 'react';
 
 import { Form } from '@openedx/paragon';
 
-import { useGradebookUi } from 'data/gradebookUiContext';
-import { getLocalizedSlash } from 'i18n/utils';
-import { useEditModalPossibleGrade } from 'components/GradesView/data/hooks';
+import { useGradebookUi } from '@src/data/gradebookUiContext';
+import { getLocalizedSlash } from '@src/i18n/utils';
+import { useEditModalPossibleGrade } from '@src/components/GradesView/data/hooks';
 
 /**
  * <AdjustedGradeInput />

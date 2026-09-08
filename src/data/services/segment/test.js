@@ -1,7 +1,7 @@
 /**
  * This module houses integration tests for the segment api integration
  */
-import actions from 'data/actions';
+import actions from '@src/data/actions';
 import eventsMap from './mapping';
 
 import {

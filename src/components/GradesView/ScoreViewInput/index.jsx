@@ -3,7 +3,7 @@ import React from 'react';
 import { Form } from '@openedx/paragon';
 import { useIntl } from '@openedx/frontend-base';
 
-import { useGradebookUi } from 'data/gradebookUiContext';
+import { useGradebookUi } from '@src/data/gradebookUiContext';
 import { useGradeData } from '../data/hooks';
 import messages from './messages';
 

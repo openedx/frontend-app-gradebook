@@ -5,7 +5,7 @@ import { useIntl } from '@openedx/frontend-base';
 
 import { Form } from '@openedx/paragon';
 
-import NetworkButton from 'components/NetworkButton';
+import NetworkButton from '@src/components/NetworkButton';
 
 import { useGradeExportUrl } from '../data/hooks';
 import { useSubmitImportGradesButtonData } from '../data/apiHook';

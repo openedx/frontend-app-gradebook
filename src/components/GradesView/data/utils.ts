@@ -1,10 +1,10 @@
-import { StrictDict } from 'utils';
+import { StrictDict } from '@src/utils';
 
-import { Headings, GradeFormats } from 'data/constants/grades';
-import initialFilters from 'data/constants/filters';
-import { formatDateForDisplay } from 'data/formatUtils';
-import { getLocalizedSlash } from 'i18n/utils';
-import type { FiltersSnapshot } from 'data/filtersSnapshot';
+import { Headings, GradeFormats } from '@src/data/constants/grades';
+import initialFilters from '@src/data/constants/filters';
+import { formatDateForDisplay } from '@src/data/formatUtils';
+import { getLocalizedSlash } from '@src/i18n/utils';
+import type { FiltersSnapshot } from '@src/data/filtersSnapshot';
 
 /* ------------------------------------------------------------------ *
  * Grade formatting

@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Form } from '@openedx/paragon';
 
-import { useGradebookUi } from 'data/gradebookUiContext';
+import { useGradebookUi } from '@src/data/gradebookUiContext';
 
 export const controlTestId = 'reason-input-control';
 

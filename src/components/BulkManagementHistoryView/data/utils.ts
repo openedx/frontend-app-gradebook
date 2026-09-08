@@ -1,4 +1,4 @@
-import { formatDateForDisplay } from 'data/formatUtils';
+import { formatDateForDisplay } from '@src/data/formatUtils';
 
 /** Shape of the `data` payload inside one raw bulk-history entry. */
 export interface BulkHistoryRowsData {

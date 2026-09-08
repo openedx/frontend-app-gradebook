@@ -2,9 +2,9 @@ import React from 'react';
 
 import { useIntl } from '@openedx/frontend-base';
 
-import NetworkButton from 'components/NetworkButton';
-import { useShowBulkManagement } from 'data/apiHook';
-import { trackInterventionReportDownloaded } from 'data/services/segment/events';
+import NetworkButton from '@src/components/NetworkButton';
+import { useShowBulkManagement } from '@src/data/apiHook';
+import { trackInterventionReportDownloaded } from '@src/data/services/segment/events';
 
 import { useInterventionExportUrl } from '../data/hooks';
 import messages from './messages';

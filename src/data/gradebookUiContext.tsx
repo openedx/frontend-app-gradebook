@@ -2,8 +2,8 @@ import React, {
   createContext, useCallback, useContext, useEffect, useMemo, useRef, useState,
 } from 'react';
 
-import { views, modalFieldKeys } from 'data/constants/app';
-import { formatDateForDisplay } from 'data/formatUtils';
+import { views, modalFieldKeys } from '@src/data/constants/app';
+import { formatDateForDisplay } from '@src/data/formatUtils';
 
 /** Edit-grade modal state (was the Redux `app.modalState` slice). */
 export interface ModalState {

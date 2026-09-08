@@ -3,8 +3,8 @@ import React from 'react';
 import { Alert } from '@openedx/paragon';
 import { useIntl } from '@openedx/frontend-base';
 
-import { useGradebookUi } from 'data/gradebookUiContext';
-import { useCourseGradeFilterValidity } from 'components/GradebookFilters/data/hooks';
+import { useGradebookUi } from '@src/data/gradebookUiContext';
+import { useCourseGradeFilterValidity } from '@src/components/GradebookFilters/data/hooks';
 
 import messages from './messages';
 

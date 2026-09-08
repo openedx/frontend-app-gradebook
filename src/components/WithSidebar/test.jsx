@@ -4,7 +4,7 @@ import { render, screen, initializeMocks } from 'testUtilsExtra';
 
 import { WithSidebar, mapStateToProps, mapDispatchToProps } from '.';
 
-jest.mock('data/selectors', () => ({
+jest.mock('@src/data/selectors', () => ({
   app: {
     filterMenu: {
       open: jest.fn(),
@@ -14,7 +14,7 @@ jest.mock('data/selectors', () => ({
   },
 }));
 
-jest.mock('data/thunkActions', () => ({
+jest.mock('@src/data/thunkActions', () => ({
   app: {
     filterMenu: {
       handleTransitionEnd: jest.fn(),
@@ -22,8 +22,8 @@ jest.mock('data/thunkActions', () => ({
   },
 }));
 
-const selectors = require('data/selectors');
-const thunkActions = require('data/thunkActions');
+const selectors = require('@src/data/selectors');
+const thunkActions = require('@src/data/thunkActions');
 
 initializeMocks();
 

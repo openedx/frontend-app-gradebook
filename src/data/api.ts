@@ -1,4 +1,4 @@
-import lms from 'data/services/lms';
+import lms from '@src/data/services/lms';
 
 /** LMS course roles that grant permission to view the gradebook. */
 export const allowedRoles = ['staff', 'limited_staff', 'instructor', 'support'];

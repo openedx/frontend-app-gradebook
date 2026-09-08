@@ -4,9 +4,9 @@ import React from 'react';
 import { DataTable } from '@openedx/paragon';
 import { useIntl } from '@openedx/frontend-base';
 
-import { formatDateForDisplay } from 'utils';
-import { gradeOverrideHistoryColumns as columns } from 'data/constants/app';
-import { useGradeOverrideData } from 'components/GradesView/data/hooks';
+import { formatDateForDisplay } from '@src/utils';
+import { gradeOverrideHistoryColumns as columns } from '@src/data/constants/app';
+import { useGradeOverrideData } from '@src/components/GradesView/data/hooks';
 
 import ReasonInput from './ReasonInput';
 import AdjustedGradeInput from './AdjustedGradeInput';

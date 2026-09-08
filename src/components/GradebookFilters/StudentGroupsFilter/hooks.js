@@ -1,6 +1,6 @@
-import { useFilters } from 'data/filtersContext';
-import { useCourseIdWithGate } from 'data/apiHook';
-import { useRefetchGrades } from 'components/GradesView/data/hooks';
+import { useFilters } from '@src/data/filtersContext';
+import { useCourseIdWithGate } from '@src/data/apiHook';
+import { useRefetchGrades } from '@src/components/GradesView/data/hooks';
 
 import { useCohorts, useTracks } from '../data/apiHook';
 import { useSelectedCohortEntry, useSelectedTrackEntry } from '../data/hooks';

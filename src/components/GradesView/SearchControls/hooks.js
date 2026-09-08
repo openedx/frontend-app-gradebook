@@ -1,6 +1,6 @@
 import { useIntl } from '@openedx/frontend-base';
 
-import { useFilters } from 'data/filtersContext';
+import { useFilters } from '@src/data/filtersContext';
 
 import { useRefetchGrades } from '../data/hooks';
 import messages from './messages';

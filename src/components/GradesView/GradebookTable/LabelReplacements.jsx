@@ -7,7 +7,7 @@ import {
   Tooltip,
 } from '@openedx/paragon';
 
-import { StrictDict } from 'utils';
+import { StrictDict } from '@src/utils';
 
 import messages from './messages';
 

@@ -1,4 +1,4 @@
-import initialFilters from 'data/constants/filters';
+import initialFilters from '@src/data/constants/filters';
 
 /**
  * Synchronous mirror of the `FiltersProvider` filter values.

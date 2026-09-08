@@ -2,9 +2,9 @@ import React from 'react';
 
 import { useIntl } from '@openedx/frontend-base';
 
-import { StrictDict } from 'utils';
-import { useGradebookUi } from 'data/gradebookUiContext';
-import { useGradeOverrideData } from 'components/GradesView/data/hooks';
+import { StrictDict } from '@src/utils';
+import { useGradebookUi } from '@src/data/gradebookUiContext';
+import { useGradeOverrideData } from '@src/components/GradesView/data/hooks';
 
 import messages from './messages';
 import HistoryHeader from './HistoryHeader';

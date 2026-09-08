@@ -1,6 +1,6 @@
-import { useFilters } from 'data/filtersContext';
-import { trackFilterApplied } from 'data/services/segment/events';
-import { useRefetchGrades } from 'components/GradesView/data/hooks';
+import { useFilters } from '@src/data/filtersContext';
+import { trackFilterApplied } from '@src/data/services/segment/events';
+import { useRefetchGrades } from '@src/components/GradesView/data/hooks';
 
 import { useAreCourseGradeFiltersValid } from '../data/hooks';
 

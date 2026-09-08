@@ -1,4 +1,4 @@
-import lms from 'data/services/lms';
+import lms from '@src/data/services/lms';
 
 /**
  * getBulkOperationHistory()

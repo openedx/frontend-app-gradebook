@@ -1,6 +1,5 @@
-/* eslint-disable react/sort-comp, react/button-has-type */
-import { useFilters } from 'data/filtersContext';
-import { useRefetchGrades, useSelectedAssignmentLabel } from 'components/GradesView/data/hooks';
+import { useFilters } from '@src/data/filtersContext';
+import { useRefetchGrades, useSelectedAssignmentLabel } from '@src/components/GradesView/data/hooks';
 
 const useAssignmentGradeFilterData = ({ updateQueryParams }) => {
   const {

@@ -6,13 +6,13 @@ import userEvent from '@testing-library/user-event';
 
 import { NetworkButton, mapStateToProps, buttonStates } from '.';
 
-jest.mock('data/selectors', () => ({
+jest.mock('@src/data/selectors', () => ({
   root: {
     shouldShowSpinner: jest.fn(),
   },
 }));
 
-const selectors = require('data/selectors');
+const selectors = require('@src/data/selectors');
 
 initializeMocks();
 

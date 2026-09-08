@@ -1,9 +1,6 @@
-/* eslint-disable react/sort-comp, react/button-has-type */
-import React from 'react';
-
-import NetworkButton from 'components/NetworkButton';
-import { useShowBulkManagement } from 'data/apiHook';
-import { trackGradesReportDownloaded } from 'data/services/segment/events';
+import NetworkButton from '@src/components/NetworkButton';
+import { useShowBulkManagement } from '@src/data/apiHook';
+import { trackGradesReportDownloaded } from '@src/data/services/segment/events';
 
 import ImportGradesButton from '../ImportGradesButton';
 import { useGradeExportUrl } from '../data/hooks';

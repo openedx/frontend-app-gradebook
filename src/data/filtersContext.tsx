@@ -3,8 +3,8 @@ import React, {
 } from 'react';
 import { useSearchParams } from 'react-router-dom';
 
-import initialFilters from 'data/constants/filters';
-import { filtersSnapshot } from 'data/filtersSnapshot';
+import initialFilters from '@src/data/constants/filters';
+import { filtersSnapshot } from '@src/data/filtersSnapshot';
 
 /**
  * Client-side gradebook filter state, held in React (Context + useState).

@@ -1,5 +1,5 @@
-import { useFilters } from 'data/filtersContext';
-import { useCourseIdWithGate } from 'data/apiHook';
+import { useFilters } from '@src/data/filtersContext';
+import { useCourseIdWithGate } from '@src/data/apiHook';
 
 import { useCohorts, useTracks } from './apiHook';
 

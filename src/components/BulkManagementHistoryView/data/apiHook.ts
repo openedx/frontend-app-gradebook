@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 
-import { useAssignmentTypes, useCourseIdWithGate } from 'data/apiHook';
+import { useAssignmentTypes, useCourseIdWithGate } from '@src/data/apiHook';
 
 import { getBulkOperationHistory } from './api';
 import { bulkOperationHistoryQueryKeys } from './queryKeys';

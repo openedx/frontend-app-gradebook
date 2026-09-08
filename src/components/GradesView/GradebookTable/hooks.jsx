@@ -1,8 +1,8 @@
 import React from 'react';
 import { useIntl } from '@openedx/frontend-base';
 
-import { Headings } from 'data/constants/grades';
-import { getLocalizedPercentSign } from 'i18n/utils';
+import { Headings } from '@src/data/constants/grades';
+import { getLocalizedPercentSign } from '@src/i18n/utils';
 
 import { roundGrade } from '../data/utils';
 import { useAllGrades, useGradesHeadings } from '../data/hooks';

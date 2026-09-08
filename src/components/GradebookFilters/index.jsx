@@ -10,9 +10,9 @@ import {
 import { Close } from '@openedx/paragon/icons';
 import { useIntl } from '@openedx/frontend-base';
 
-import { useGradebookUi } from 'data/gradebookUiContext';
-import { useFilters } from 'data/filtersContext';
-import { useRefetchGrades } from 'components/GradesView/data/hooks';
+import { useGradebookUi } from '@src/data/gradebookUiContext';
+import { useFilters } from '@src/data/filtersContext';
+import { useRefetchGrades } from '@src/components/GradesView/data/hooks';
 
 import messages from './messages';
 import AssignmentTypeFilter from './AssignmentTypeFilter';

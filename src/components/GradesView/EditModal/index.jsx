@@ -8,9 +8,9 @@ import {
 } from '@openedx/paragon';
 import { useIntl } from '@openedx/frontend-base';
 
-import { useGradebookUi } from 'data/gradebookUiContext';
-import { useGradeOverrideData } from 'components/GradesView/data/hooks';
-import { useUpdateGrades } from 'components/GradesView/data/apiHook';
+import { useGradebookUi } from '@src/data/gradebookUiContext';
+import { useGradeOverrideData } from '@src/components/GradesView/data/hooks';
+import { useUpdateGrades } from '@src/components/GradesView/data/apiHook';
 
 import OverrideTable from './OverrideTable';
 import ModalHeaders from './ModalHeaders';

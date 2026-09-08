@@ -53,13 +53,13 @@ jest.mock(
   },
 );
 
-jest.mock('data/selectors', () => ({
+jest.mock('@src/data/selectors', () => ({
   app: {
     activeView: jest.fn(),
   },
 }));
 
-jest.mock('data/thunkActions', () => ({
+jest.mock('@src/data/thunkActions', () => ({
   app: {
     initialize: jest.fn(),
   },
@@ -71,8 +71,8 @@ jest.mock('query-string', () => ({
 }));
 
 const queryString = require('query-string');
-const selectors = require('data/selectors');
-const thunkActions = require('data/thunkActions');
+const selectors = require('@src/data/selectors');
+const thunkActions = require('@src/data/thunkActions');
 
 initializeMocks();
 

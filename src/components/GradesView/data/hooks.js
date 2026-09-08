@@ -2,15 +2,15 @@ import { useMemo } from 'react';
 import { useIsMutating, useQueryClient } from '@tanstack/react-query';
 import { useParams } from 'react-router-dom';
 
-import lms from 'data/services/lms';
-import initialFilters, { filterConfig, filters as filterNames } from 'data/constants/filters';
-import { useFilters } from 'data/filtersContext';
-import { useGradebookUi } from 'data/gradebookUiContext';
-import { useCanViewGradebook } from 'data/apiHook';
+import lms from '@src/data/services/lms';
+import initialFilters, { filterConfig, filters as filterNames } from '@src/data/constants/filters';
+import { useFilters } from '@src/data/filtersContext';
+import { useGradebookUi } from '@src/data/gradebookUiContext';
+import { useCanViewGradebook } from '@src/data/apiHook';
 import {
   useSelectedCohortEntry,
   useSelectedTrackEntry,
-} from 'components/GradebookFilters/data/hooks';
+} from '@src/components/GradebookFilters/data/hooks';
 
 import { useGradesData, useGradeOverrideHistory } from './apiHook';
 import { gradesQueryKeys } from './queryKeys';

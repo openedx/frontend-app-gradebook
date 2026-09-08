@@ -7,7 +7,7 @@ import userEvent from '@testing-library/user-event';
 import FilterBadges from '.';
 
 const order = ['filter1', 'filter2', 'filter3'];
-jest.mock('data/constants/filters', () => ({
+jest.mock('@src/data/constants/filters', () => ({
   ...jest.requireActual('data/constants/filters'),
   badgeOrder: order,
 }));

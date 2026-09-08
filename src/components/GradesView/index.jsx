@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 
 import { useIntl } from '@openedx/frontend-base';
 
-import { useFilters } from 'data/filtersContext';
+import { useFilters } from '@src/data/filtersContext';
 
 import BulkManagementControls from './BulkManagementControls';
 import EditModal from './EditModal';

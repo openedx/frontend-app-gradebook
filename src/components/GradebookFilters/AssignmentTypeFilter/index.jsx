@@ -4,9 +4,9 @@ import PropTypes from 'prop-types';
 
 import { useIntl } from '@openedx/frontend-base';
 
-import { useFilters } from 'data/filtersContext';
-import { useAssignmentTypes, useCourseIdWithGate } from 'data/apiHook';
-import { useSelectableAssignmentLabels } from 'components/GradesView/data/hooks';
+import { useFilters } from '@src/data/filtersContext';
+import { useAssignmentTypes, useCourseIdWithGate } from '@src/data/apiHook';
+import { useSelectableAssignmentLabels } from '@src/components/GradesView/data/hooks';
 
 import SelectGroup from '../SelectGroup';
 import messages from '../messages';

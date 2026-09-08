@@ -1,12 +1,8 @@
-/* eslint-disable react/button-has-type, import/no-named-as-default */
-import React from 'react';
 import PropTypes from 'prop-types';
-// import { connect } from 'react-redux';
-// import selectors from 'data/selectors';
 
 import { DataTable } from '@openedx/paragon';
 
-import { bulkManagementColumns } from 'data/constants/app';
+import { bulkManagementColumns } from '@src/data/constants/app';
 import { useBulkManagementHistoryEntries } from './data/apiHook';
 
 import ResultsSummary from './ResultsSummary';
