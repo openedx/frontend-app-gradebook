@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { Form } from '@openedx/paragon';
 
 import { useGradebookUi } from '@src/data/gradebookUiContext';

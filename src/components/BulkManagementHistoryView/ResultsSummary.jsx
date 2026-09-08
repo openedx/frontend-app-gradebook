@@ -1,5 +1,3 @@
-/* eslint-disable react/sort-comp, react/button-has-type */
-import React from 'react';
 import PropTypes from 'prop-types';
 
 import { Hyperlink, Icon } from '@openedx/paragon';

@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { Icon } from '@openedx/paragon';
 
 import { useShouldShowSpinner } from './data/hooks';

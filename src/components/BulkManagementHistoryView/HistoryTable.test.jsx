@@ -1,6 +1,4 @@
-import React from 'react';
 import { render, screen } from '@testing-library/react';
-
 import { HistoryTable, mapHistoryRows } from './HistoryTable';
 
 jest.mock('@openedx/paragon', () => ({

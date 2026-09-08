@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { Alert } from '@openedx/paragon';
 import { useIntl } from '@openedx/frontend-base';
 

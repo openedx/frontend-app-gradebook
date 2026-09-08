@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { useIntl, getLocale, isRtl } from '@openedx/frontend-base';
 import {
   Icon,

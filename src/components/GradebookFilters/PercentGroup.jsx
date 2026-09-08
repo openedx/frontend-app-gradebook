@@ -1,5 +1,3 @@
-/* eslint-disable react/sort-comp */
-import React from 'react';
 import PropTypes from 'prop-types';
 
 import { Form } from '@openedx/paragon';

@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { DataTable } from '@openedx/paragon';
 
 import useGradebookTableData from './hooks';

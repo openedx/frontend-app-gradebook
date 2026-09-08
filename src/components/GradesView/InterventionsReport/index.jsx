@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { useIntl } from '@openedx/frontend-base';
 
 import NetworkButton from '@src/components/NetworkButton';

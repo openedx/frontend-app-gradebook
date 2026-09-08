@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { renderWithAllProviders } from '@src/testUtils';
 import { Headings } from '@src/data/constants/grades';
 import { useAllGrades, useGradesHeadings } from '../data/hooks';

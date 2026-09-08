@@ -1,4 +1,3 @@
-import React from 'react';
 import { renderWithAllProviders, initializeMocks } from '@src/testUtils';
 import { screen } from '@testing-library/react';
 

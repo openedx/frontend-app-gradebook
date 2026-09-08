@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { SearchField } from '@openedx/paragon';
 import useSearchControlsData from './hooks';
 

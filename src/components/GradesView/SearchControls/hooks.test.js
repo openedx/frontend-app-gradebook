@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { renderWithAllProviders } from '@src/testUtils';
 import { useFilters } from '@src/data/filtersContext';
 import { useRefetchGrades } from '../data/hooks';

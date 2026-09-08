@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { Button } from '@openedx/paragon';
 import { useIntl } from '@openedx/frontend-base';
 

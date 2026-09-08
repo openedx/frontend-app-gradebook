@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { useIntl } from '@openedx/frontend-base';
 
 import { StrictDict } from '@src/utils';

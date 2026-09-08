@@ -1,4 +1,3 @@
-import React from 'react';
 import { Hyperlink } from '@openedx/paragon';
 import { getSiteConfig } from '@openedx/frontend-base';
 

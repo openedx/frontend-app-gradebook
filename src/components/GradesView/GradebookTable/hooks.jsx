@@ -1,4 +1,3 @@
-import React from 'react';
 import { useIntl } from '@openedx/frontend-base';
 
 import { Headings } from '@src/data/constants/grades';

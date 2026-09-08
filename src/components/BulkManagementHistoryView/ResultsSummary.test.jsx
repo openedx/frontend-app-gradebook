@@ -1,4 +1,3 @@
-import React from 'react';
 
 import lms from '@src/data/services/lms';
 import { renderWithAllProviders } from '@src/testUtils';
