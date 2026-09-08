@@ -1,5 +1,6 @@
 import React from 'react';
-import { render, screen, initializeMocks } from 'testUtilsExtra';
+import { renderWithAllProviders, initializeMocks } from '@src/testUtils';
+import { screen } from '@testing-library/react';
 
 import HistoryHeader from './HistoryHeader';
 
@@ -13,14 +14,14 @@ describe('HistoryHeader', () => {
   };
 
   it('renders header with label and value', () => {
-    render(<HistoryHeader {...defaultProps} />);
+    renderWithAllProviders(<HistoryHeader {...defaultProps} />);
 
     expect(screen.getByText('Test Label:')).toBeInTheDocument();
     expect(screen.getByText('Test Value')).toBeInTheDocument();
   });
 
   it('renders header element with correct classes', () => {
-    render(<HistoryHeader {...defaultProps} />);
+    renderWithAllProviders(<HistoryHeader {...defaultProps} />);
 
     const headerElement = screen.getByText('Test Label:');
     expect(headerElement).toHaveClass('grade-history-header');
@@ -33,7 +34,7 @@ describe('HistoryHeader', () => {
       value: 'String Value',
     };
 
-    render(<HistoryHeader {...props} />);
+    renderWithAllProviders(<HistoryHeader {...props} />);
     expect(screen.getByText('String Value')).toBeInTheDocument();
   });
 
@@ -43,7 +44,7 @@ describe('HistoryHeader', () => {
       value: 85,
     };
 
-    render(<HistoryHeader {...props} />);
+    renderWithAllProviders(<HistoryHeader {...props} />);
     expect(screen.getByText('85')).toBeInTheDocument();
   });
 
@@ -53,7 +54,7 @@ describe('HistoryHeader', () => {
       label: 'Test Label',
     };
 
-    render(<HistoryHeader {...props} />);
+    renderWithAllProviders(<HistoryHeader {...props} />);
     expect(screen.getByText('Test Label:')).toBeInTheDocument();
 
     const valueDiv = screen.getByText('Test Label:').nextSibling;
@@ -67,7 +68,7 @@ describe('HistoryHeader', () => {
       label: <strong>Bold Label</strong>,
     };
 
-    render(<HistoryHeader {...props} />);
+    renderWithAllProviders(<HistoryHeader {...props} />);
     const strongElement = screen.getByText('Bold Label');
     expect(strongElement.tagName).toBe('STRONG');
   });
@@ -78,13 +79,13 @@ describe('HistoryHeader', () => {
       id: 'assignment-name',
     };
 
-    render(<HistoryHeader {...props} />);
+    renderWithAllProviders(<HistoryHeader {...props} />);
     const headerElement = screen.getByText('Test Label:');
     expect(headerElement).toHaveClass('grade-history-assignment-name');
   });
 
   it('renders container structure correctly', () => {
-    render(<HistoryHeader {...defaultProps} />);
+    renderWithAllProviders(<HistoryHeader {...defaultProps} />);
 
     const headerElement = screen.getByText('Test Label:');
     const valueElement = screen.getByText('Test Value');

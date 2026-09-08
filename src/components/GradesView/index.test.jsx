@@ -1,42 +1,57 @@
 import React from 'react';
-// eslint-disable-next-line import/no-extraneous-dependencies
-import userEvent from '@testing-library/user-event';
-import { render, initializeMocks } from 'testUtilsExtra';
+import { screen } from '@testing-library/react';
 
-import useGradesViewData from './hooks';
+import { renderWithAllProviders } from '@src/testUtils';
+import { useFilters } from '@src/data/filtersContext';
+import { useRefetchGrades } from './data/hooks';
 import GradesView from '.';
+import messages from './messages';
 
-jest.mock('./hooks', () => jest.fn());
+jest.mock('@src/data/filtersContext', () => ({
+  ...jest.requireActual('@src/data/filtersContext'),
+  useFilters: jest.fn(),
+}));
+jest.mock('./data/hooks', () => ({
+  ...jest.requireActual('./data/hooks'),
+  useRefetchGrades: jest.fn(),
+}));
 
-const hookProps = {
-  stepHeadings: {
-    filter: 'filter-step-heading',
-    gradebook: 'gradebook-step-heading',
-  },
-  handleFilterBadgeClose: jest.fn().mockName('hooks.handleFilterBadgeClose'),
-  mastersHint: 'test-masters-hint',
-};
-useGradesViewData.mockReturnValue(hookProps);
+// Mock the entire child component tree so the parent test focuses on layout.
+jest.mock('./BulkManagementControls', () => () => <div data-testid="bulk-management-controls" />);
+jest.mock('./EditModal', () => () => <div data-testid="edit-modal" />);
+jest.mock('./FilterBadges', () => () => <div data-testid="filter-badges" />);
+jest.mock('./FilteredUsersLabel', () => () => <div data-testid="filtered-users-label" />);
+jest.mock('./FilterMenuToggle', () => () => <div data-testid="filter-menu-toggle" />);
+jest.mock('./GradebookTable', () => () => <div data-testid="gradebook-table" />);
+jest.mock('./ImportSuccessToast', () => () => <div data-testid="import-success-toast" />);
+jest.mock('./InterventionsReport', () => () => <div data-testid="interventions-report" />);
+jest.mock('./PageButtons', () => () => <div data-testid="page-buttons" />);
+jest.mock('./ScoreViewInput', () => () => <div data-testid="score-view-input" />);
+jest.mock('./SearchControls', () => () => <div data-testid="search-controls" />);
+jest.mock('./SpinnerIcon', () => () => <div data-testid="spinner-icon" />);
+jest.mock('./StatusAlerts', () => () => <div data-testid="status-alerts" />);
 
-const updateQueryParams = jest.fn().mockName('props.updateQueryParams');
+describe('GradesView', () => {
+  const resetFilters = jest.fn();
+  const updateQueryParams = jest.fn();
 
-let el;
-describe('GradesView component', () => {
-  beforeAll(() => {
-    initializeMocks();
-  });
   beforeEach(() => {
     jest.clearAllMocks();
-    el = render(<GradesView updateQueryParams={updateQueryParams} />);
+    useFilters.mockReturnValue({ resetFilters });
+    useRefetchGrades.mockReturnValue(jest.fn());
   });
-  describe('render', () => {
-    test('component to be rendered', () => {
-      expect(el.container).toBeInTheDocument();
-    });
-    test('filterBadges load close behavior from hook', async () => {
-      const user = userEvent.setup();
-      await user.click(el.getAllByRole('button', { name: 'close' })[0]); // All the buttons use the same handler
-      expect(hookProps.handleFilterBadgeClose).toHaveBeenCalled();
+
+  it('renders the two step headings and the master hint', () => {
+    renderWithAllProviders(<GradesView updateQueryParams={updateQueryParams} />);
+    expect(screen.getByText(messages.filterStepHeading.defaultMessage)).toBeInTheDocument();
+    expect(screen.getByText(messages.gradebookStepHeading.defaultMessage)).toBeInTheDocument();
+    expect(screen.getByText(new RegExp(messages.mastersHint.defaultMessage))).toBeInTheDocument();
+  });
+
+  it('mounts the main sub-components', () => {
+    renderWithAllProviders(<GradesView updateQueryParams={updateQueryParams} />);
+    ['filter-badges', 'status-alerts', 'gradebook-table', 'page-buttons', 'edit-modal'].forEach((id) => {
+      expect(screen.getByTestId(id)).toBeInTheDocument();
     });
   });
 });

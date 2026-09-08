@@ -1,14 +1,15 @@
 import React from 'react';
-import { render, screen, initializeMocks } from 'testUtilsExtra';
+import { renderWithAllProviders, initializeMocks } from '@src/testUtils';
+import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
-import { instructorDashboardUrl } from 'data/services/lms/urls';
+import { instructorDashboardUrl } from '@src/data/services/lms/urls';
 
 import { GradebookHeader } from './index';
 import useGradebookHeaderData from './hooks';
 import messages from './messages';
 
-jest.mock('data/services/lms/urls', () => ({
+jest.mock('@src/data/services/lms/urls', () => ({
   instructorDashboardUrl: jest.fn(),
 }));
 jest.mock('./hooks', () => jest.fn());
@@ -36,13 +37,13 @@ describe('GradebookHeader', () => {
     });
 
     it('renders the main header container', () => {
-      render(<GradebookHeader />);
+      renderWithAllProviders(<GradebookHeader />);
       const header = screen.getByText('Gradebook').closest('.gradebook-header');
       expect(header).toHaveClass('gradebook-header');
     });
 
     it('renders back to dashboard link', () => {
-      render(<GradebookHeader />);
+      renderWithAllProviders(<GradebookHeader />);
       const dashboardLink = screen.getByRole('link');
       expect(dashboardLink).toHaveAttribute(
         'href',
@@ -53,20 +54,20 @@ describe('GradebookHeader', () => {
     });
 
     it('renders gradebook title', () => {
-      render(<GradebookHeader />);
+      renderWithAllProviders(<GradebookHeader />);
       const title = screen.getByRole('heading', { level: 1 });
       expect(title).toHaveTextContent('Gradebook');
     });
 
     it('renders course ID subtitle', () => {
-      render(<GradebookHeader />);
+      renderWithAllProviders(<GradebookHeader />);
       const subtitle = screen.getByRole('heading', { level: 2 });
       expect(subtitle).toHaveTextContent('course-v1:TestU+CS101+2024');
       expect(subtitle).toHaveClass('text-break');
     });
 
     it('renders subtitle row with correct classes', () => {
-      render(<GradebookHeader />);
+      renderWithAllProviders(<GradebookHeader />);
       const subtitleRow = screen.getByRole('heading', {
         level: 2,
       }).parentElement;
@@ -79,12 +80,12 @@ describe('GradebookHeader', () => {
     });
 
     it('calls instructorDashboardUrl to get dashboard URL', () => {
-      render(<GradebookHeader />);
+      renderWithAllProviders(<GradebookHeader />);
       expect(instructorDashboardUrl).toHaveBeenCalled();
     });
 
     it('calls useGradebookHeaderData hook', () => {
-      render(<GradebookHeader />);
+      renderWithAllProviders(<GradebookHeader />);
       expect(useGradebookHeaderData).toHaveBeenCalled();
     });
   });
@@ -103,18 +104,18 @@ describe('GradebookHeader', () => {
       });
 
       it('renders toggle view button', () => {
-        render(<GradebookHeader />);
+        renderWithAllProviders(<GradebookHeader />);
         expect(screen.getByRole('button')).toBeInTheDocument();
       });
 
       it('displays correct button text from toggleViewMessage', () => {
-        render(<GradebookHeader />);
+        renderWithAllProviders(<GradebookHeader />);
         const toggleButton = screen.getByRole('button');
         expect(toggleButton).toHaveTextContent('View Bulk Management History');
       });
 
       it('calls handleToggleViewClick when button is clicked', async () => {
-        render(<GradebookHeader />);
+        renderWithAllProviders(<GradebookHeader />);
         const user = userEvent.setup();
         const toggleButton = screen.getByRole('button');
 
@@ -132,7 +133,7 @@ describe('GradebookHeader', () => {
           toggleViewMessage: messages.toGradesView,
         });
 
-        render(<GradebookHeader />);
+        renderWithAllProviders(<GradebookHeader />);
         const toggleButton = screen.getByRole('button');
         expect(toggleButton).toHaveTextContent('Return to Gradebook');
       });
@@ -151,7 +152,7 @@ describe('GradebookHeader', () => {
       });
 
       it('does not render toggle view button', () => {
-        render(<GradebookHeader />);
+        renderWithAllProviders(<GradebookHeader />);
         expect(screen.queryByRole('button')).not.toBeInTheDocument();
       });
     });
@@ -171,7 +172,7 @@ describe('GradebookHeader', () => {
       });
 
       it('renders frozen warning alert', () => {
-        render(<GradebookHeader />);
+        renderWithAllProviders(<GradebookHeader />);
         const alert = screen.getByRole('alert');
         expect(alert).toHaveClass('alert', 'alert-warning');
         expect(alert).toHaveTextContent(
@@ -193,7 +194,7 @@ describe('GradebookHeader', () => {
       });
 
       it('does not render frozen warning alert', () => {
-        render(<GradebookHeader />);
+        renderWithAllProviders(<GradebookHeader />);
         expect(
           screen.queryByText(
             'The grades for this course are now frozen. Editing of grades is no longer allowed.',
@@ -217,7 +218,7 @@ describe('GradebookHeader', () => {
       });
 
       it('renders unauthorized warning alert', () => {
-        render(<GradebookHeader />);
+        renderWithAllProviders(<GradebookHeader />);
         const alert = screen.getByRole('alert');
         expect(alert).toHaveClass('alert', 'alert-warning');
         expect(alert).toHaveTextContent(
@@ -239,7 +240,7 @@ describe('GradebookHeader', () => {
       });
 
       it('does not render unauthorized warning alert', () => {
-        render(<GradebookHeader />);
+        renderWithAllProviders(<GradebookHeader />);
         expect(
           screen.queryByText(
             'You are not authorized to view the gradebook for this course.',
@@ -260,7 +261,7 @@ describe('GradebookHeader', () => {
         toggleViewMessage: messages.toActivityLog,
       });
 
-      render(<GradebookHeader />);
+      renderWithAllProviders(<GradebookHeader />);
       const alerts = screen.getAllByRole('alert');
       expect(alerts).toHaveLength(2);
 
@@ -288,7 +289,7 @@ describe('GradebookHeader', () => {
         toggleViewMessage: messages.toActivityLog,
       });
 
-      render(<GradebookHeader />);
+      renderWithAllProviders(<GradebookHeader />);
 
       expect(screen.getByRole('link')).toBeInTheDocument();
       expect(screen.getByRole('heading', { level: 1 })).toBeInTheDocument();

@@ -1,4 +1,5 @@
-import { render, screen, initializeMocks } from 'testUtilsExtra';
+import { renderWithAllProviders, initializeMocks } from '@src/testUtils';
+import { screen } from '@testing-library/react';
 
 import PercentGroup from './PercentGroup';
 
@@ -20,13 +21,13 @@ describe('PercentGroup', () => {
 
   describe('Component', () => {
     test('is displayed', () => {
-      render(<PercentGroup {...props} />);
+      renderWithAllProviders(<PercentGroup {...props} />);
       expect(screen.getByRole('spinbutton', { name: 'Group Label' })).toBeInTheDocument();
       expect(screen.getByText('Group Label')).toBeVisible();
       expect(screen.getByText('%')).toBeVisible();
     });
     test('disabled', () => {
-      render(<PercentGroup {...props} disabled />);
+      renderWithAllProviders(<PercentGroup {...props} disabled />);
       expect(screen.getByRole('spinbutton', { name: 'Group Label' })).toBeDisabled();
       expect(screen.getByText('Group Label')).toBeVisible();
       expect(screen.getByText('%')).toBeVisible();

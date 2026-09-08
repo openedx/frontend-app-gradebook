@@ -1,8 +1,17 @@
+import React from 'react';
 import { screen } from '@testing-library/react';
+
 import { getLocale } from '@openedx/frontend-base';
+
+import { renderWithAllProviders } from '@src/testUtils';
 import LabelReplacements from './LabelReplacements';
 import messages from './messages';
-import { renderWithIntl } from '../../../testUtilsExtra';
+
+jest.mock('@openedx/frontend-base', () => ({
+  ...jest.requireActual('@openedx/frontend-base'),
+  getLocale: jest.fn(),
+  isRtl: jest.fn(),
+}));
 
 const {
   TotalGradeLabelReplacement,
@@ -10,36 +19,37 @@ const {
   MastersOnlyLabelReplacement,
 } = LabelReplacements;
 
-jest.mock('@edx/frontend-platform/i18n', () => ({
-  ...jest.requireActual('@edx/frontend-platform/i18n'),
-  getLocale: jest.fn(),
-  isRtl: jest.fn(),
-}));
-
 describe('LabelReplacements', () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+    getLocale.mockReturnValue('en');
+  });
+
   describe('TotalGradeLabelReplacement', () => {
-    getLocale.mockImplementation(() => 'en');
-    renderWithIntl(<TotalGradeLabelReplacement />);
-    it('displays overlay tooltip', () => {
-      const tooltip = screen.getByText(messages.totalGradePercentage.defaultMessage);
-      expect(tooltip).toBeInTheDocument();
+    it('renders the total grade heading with the overlay tooltip content', () => {
+      renderWithAllProviders(<TotalGradeLabelReplacement />);
+      expect(screen.getByText(messages.totalGradeHeading.defaultMessage)).toBeInTheDocument();
     });
   });
+
   describe('UsernameLabelReplacement', () => {
-    it('renders correctly', () => {
-      renderWithIntl(<UsernameLabelReplacement />);
+    it('renders the username heading and student-key label', () => {
+      renderWithAllProviders(<UsernameLabelReplacement />);
       expect(screen.getByText(messages.usernameHeading.defaultMessage)).toBeInTheDocument();
+      expect(screen.getByText(messages.studentKeyLabel.defaultMessage)).toBeInTheDocument();
     });
   });
+
   describe('MastersOnlyLabelReplacement', () => {
-    it('renders correctly', () => {
+    it('renders the passed message next to the masters-only asterisk', () => {
       const message = {
-        id: 'id',
-        defaultMessage: 'defaultMessAge',
-        description: 'desCripTion',
+        id: 'test.masters-only',
+        defaultMessage: 'masters only heading',
+        description: 'test',
       };
-      renderWithIntl(<MastersOnlyLabelReplacement {...message} />);
+      renderWithAllProviders(<MastersOnlyLabelReplacement {...message} />);
       expect(screen.getByText(message.defaultMessage)).toBeInTheDocument();
+      expect(screen.getByText('*')).toBeInTheDocument();
     });
   });
 });

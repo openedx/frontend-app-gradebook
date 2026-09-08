@@ -1,45 +1,47 @@
 import React from 'react';
-import { selectors } from 'data/redux/hooks';
+import { screen } from '@testing-library/react';
 
-import { render, screen, initializeMocks } from 'testUtilsExtra';
+import { renderWithAllProviders } from '@src/testUtils';
+import { useGradebookUi } from '@src/data/gradebookUiContext';
+import { useGradeOverrideData } from '@src/components/GradesView/data/hooks';
 import ModalHeaders from './ModalHeaders';
 
-jest.mock('data/redux/hooks', () => ({
-  selectors: {
-    app: { useModalData: jest.fn() },
-    grades: { useGradeData: jest.fn() },
-  },
+jest.mock('@src/data/gradebookUiContext', () => ({
+  ...jest.requireActual('@src/data/gradebookUiContext'),
+  useGradebookUi: jest.fn(),
+}));
+jest.mock('@src/components/GradesView/data/hooks', () => ({
+  ...jest.requireActual('@src/components/GradesView/data/hooks'),
+  useGradeOverrideData: jest.fn(),
 }));
 
-const modalData = {
-  assignmentName: 'test-assignment-name',
-  updateUserName: 'test-user-name',
-};
-selectors.app.useModalData.mockReturnValue(modalData);
-const gradeData = {
-  gradeOverrideCurrentEarnedGradedOverride: 'test-current-grade',
-  gradeOriginalEarnedGraded: 'test-original-grade',
-};
-selectors.grades.useGradeData.mockReturnValue(gradeData);
-initializeMocks();
-
 describe('ModalHeaders', () => {
+  const modalState = {
+    assignmentName: 'test-assignment-name',
+    updateUserName: 'test-user-name',
+  };
+  const overrideData = {
+    gradeOverrideCurrentEarnedGradedOverride: 'test-current-grade',
+    gradeOriginalEarnedGraded: 'test-original-grade',
+  };
+
   beforeEach(() => {
     jest.clearAllMocks();
-    render(<ModalHeaders />);
+    useGradebookUi.mockReturnValue({ modalState });
+    useGradeOverrideData.mockReturnValue(overrideData);
+    renderWithAllProviders(<ModalHeaders />);
   });
-  describe('render', () => {
-    test('assignment header', () => {
-      expect(screen.getByText(modalData.assignmentName)).toBeInTheDocument();
-    });
-    test('student header', () => {
-      expect(screen.getByText(modalData.updateUserName)).toBeInTheDocument();
-    });
-    test('originalGrade header', () => {
-      expect(screen.getByText(gradeData.gradeOriginalEarnedGraded)).toBeInTheDocument();
-    });
-    test('currentGrade header', () => {
-      expect(screen.getByText(gradeData.gradeOverrideCurrentEarnedGradedOverride)).toBeInTheDocument();
-    });
+
+  it('renders the assignment name', () => {
+    expect(screen.getByText(modalState.assignmentName)).toBeInTheDocument();
+  });
+  it('renders the student name', () => {
+    expect(screen.getByText(modalState.updateUserName)).toBeInTheDocument();
+  });
+  it('renders the original grade', () => {
+    expect(screen.getByText(overrideData.gradeOriginalEarnedGraded)).toBeInTheDocument();
+  });
+  it('renders the current override grade', () => {
+    expect(screen.getByText(overrideData.gradeOverrideCurrentEarnedGradedOverride)).toBeInTheDocument();
   });
 });

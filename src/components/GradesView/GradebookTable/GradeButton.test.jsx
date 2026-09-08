@@ -1,121 +1,72 @@
-import { render, screen } from '@testing-library/react';
+import React from 'react';
+import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
-import { selectors, thunkActions } from 'data/redux/hooks';
-import transforms from 'data/redux/transforms';
-import { keyStore } from 'utils';
+import { renderWithAllProviders } from '@src/testUtils';
+import { useAssignmentTypes, useCourseIdWithGate } from '@src/data/apiHook';
+import { useGradebookUi } from '@src/data/gradebookUiContext';
+import { useGradeData } from '../data/hooks';
+import GradeButton from './GradeButton';
 
-import * as module from './GradeButton';
-
-const { useGradeButtonData, default: GradeButton } = module;
-
-jest.mock('data/redux/hooks', () => ({
-  selectors: {
-    assignmentTypes: { useAreGradesFrozen: jest.fn() },
-    grades: {
-      useGradeData: jest.fn(),
-    },
-  },
-  thunkActions: {
-    app: { useSetModalStateFromTable: jest.fn() },
-  },
+jest.mock('@src/data/apiHook', () => ({
+  ...jest.requireActual('@src/data/apiHook'),
+  useCourseIdWithGate: jest.fn(),
+  useAssignmentTypes: jest.fn(),
 }));
-jest.mock('data/redux/transforms', () => ({
-  grades: {
-    subsectionGrade: jest.fn(),
-  },
+jest.mock('@src/data/gradebookUiContext', () => ({
+  ...jest.requireActual('@src/data/gradebookUiContext'),
+  useGradebookUi: jest.fn(),
+}));
+jest.mock('../data/hooks', () => ({
+  ...jest.requireActual('../data/hooks'),
+  useGradeData: jest.fn(),
 }));
 
-const props = {
-  subsection: {
-    attempted: false,
-    percent: 23,
-    score_possible: 32,
-    subsection_name: 'the things we do',
-    module_id: 'in potions',
-  },
-  entry: {
-    user_id: 2,
-    username: 'Jessie',
-  },
+const entry = { user_id: 2, username: 'Jessie' };
+const subsection = {
+  attempted: true,
+  percent: 0.5,
+  score_earned: 5,
+  score_possible: 10,
+  subsection_name: 'the things we do',
+  module_id: 'in-potions',
 };
-const gradeFormat = 'percent';
-const setModalState = jest.fn();
-const subsectionGrade = () => 'test-subsection-grade';
-selectors.assignmentTypes.useAreGradesFrozen.mockReturnValue(false);
-selectors.grades.useGradeData.mockReturnValue({ gradeFormat });
-thunkActions.app.useSetModalStateFromTable.mockReturnValue(setModalState);
-transforms.grades.subsectionGrade.mockReturnValue(subsectionGrade);
 
-let out;
+const setup = ({ areGradesFrozen = false } = {}) => {
+  const setModalStateFromTable = jest.fn();
+  useCourseIdWithGate.mockReturnValue({ courseId: 'test-course', enabled: true });
+  useAssignmentTypes.mockReturnValue({ data: { areGradesFrozen } });
+  useGradeData.mockReturnValue({ gradeFormat: 'percent' });
+  useGradebookUi.mockReturnValue({ setModalStateFromTable });
+  renderWithAllProviders(<GradeButton entry={entry} subsection={subsection} />);
+  return { setModalStateFromTable };
+};
+
 describe('GradeButton', () => {
   beforeEach(() => {
     jest.clearAllMocks();
   });
-  describe('useGradeButton hook', () => {
-    beforeEach(() => {
-      out = useGradeButtonData(props);
-    });
-    describe('behavior', () => {
-      it('initializes redux hooks', () => {
-        expect(selectors.assignmentTypes.useAreGradesFrozen).toHaveBeenCalled();
-        expect(selectors.grades.useGradeData).toHaveBeenCalled();
-        expect(transforms.grades.subsectionGrade).toHaveBeenCalledWith({
-          gradeFormat,
-          subsection: props.subsection,
-        });
-        expect(thunkActions.app.useSetModalStateFromTable).toHaveBeenCalled();
-      });
-    });
-    describe('output', () => {
-      test('forwards areGradesFrozen from redux hook', () => {
-        expect(out.areGradesFrozen).toEqual(false);
-      });
-      test('label passed from subsection grade redux hook', () => {
-        expect(out.label).toEqual(subsectionGrade());
-      });
-      test('onClick sets modal state with user entry and subsection', () => {
-        out.onClick();
-        expect(setModalState).toHaveBeenCalledWith({
-          userEntry: props.entry,
-          subsection: props.subsection,
-        });
-      });
-    });
+
+  it('renders only the label when grades are frozen', () => {
+    setup({ areGradesFrozen: true });
+    expect(screen.queryByRole('button')).not.toBeInTheDocument();
+    // The `percent` formatter yields `round(percent * 100)` → 50.
+    expect(screen.getByText('50')).toBeInTheDocument();
   });
-  describe('component', () => {
-    let hookSpy;
-    const moduleKeys = keyStore(module);
-    const hookProps = {
-      areGradesFrozen: false,
-      label: 'test-label',
-      onClick: jest.fn().mockName('hooks.onClick'),
-    };
-    beforeEach(() => {
-      hookSpy = jest.spyOn(module, moduleKeys.useGradeButtonData);
-    });
-    describe('frozen grades', () => {
-      beforeEach(() => {
-        hookSpy.mockReturnValue({ ...hookProps, areGradesFrozen: true });
-        render(<GradeButton {...props} />);
-      });
-      it('renders only labels', () => {
-        const label = screen.getByText(hookProps.label);
-        expect(label).toBeInTheDocument();
-      });
-    });
-    describe('not frozen grades', () => {
-      beforeEach(() => {
-        hookSpy.mockReturnValue(hookProps);
-        render(<GradeButton {...props} />);
-      });
-      it('renders button', async () => {
-        const user = userEvent.setup();
-        const button = screen.getByRole('button', { name: hookProps.label });
-        expect(button).toBeInTheDocument();
-        await user.click(button);
-        expect(hookProps.onClick).toHaveBeenCalled();
-      });
+
+  it('renders a clickable grade button when grades are not frozen', () => {
+    setup();
+    const button = screen.getByRole('button');
+    expect(button).toBeInTheDocument();
+    expect(button).toHaveTextContent('50');
+  });
+
+  it('opens the edit modal with the user entry and subsection on click', async () => {
+    const { setModalStateFromTable } = setup();
+    await userEvent.click(screen.getByRole('button'));
+    expect(setModalStateFromTable).toHaveBeenCalledWith({
+      userEntry: entry,
+      subsection,
     });
   });
 });

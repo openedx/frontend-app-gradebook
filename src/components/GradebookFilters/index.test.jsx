@@ -1,5 +1,6 @@
 import React from 'react';
-import { render, screen, initializeMocks } from 'testUtilsExtra';
+import { renderWithAllProviders, initializeMocks } from '@src/testUtils';
+import { screen } from '@testing-library/react';
 
 import GradebookFilters from '.';
 
@@ -10,7 +11,7 @@ initializeMocks();
 describe('GradebookFilters', () => {
   beforeEach(() => {
     jest.clearAllMocks();
-    render(<GradebookFilters updateQueryParams={updateQueryParams} />);
+    renderWithAllProviders(<GradebookFilters updateQueryParams={updateQueryParams} />);
   });
   describe('All filters render together', () => {
     test('Assignment filters', () => {

@@ -1,70 +1,49 @@
-import { useIntl } from '@openedx/frontend-base';
-
-import { formatMessage } from 'testUtils';
-import { views } from 'data/constants/app';
-import { actions, selectors } from 'data/redux/hooks';
+import { useGradebookUi } from '@src/data/gradebookUiContext';
+import { views } from '@src/data/constants/app';
 
 import useImportSuccessToastData from './hooks';
 import messages from './messages';
 
-jest.mock('data/redux/hooks', () => ({
-  actions: {
-    app: {
-      useSetView: jest.fn(),
-      useSetShowImportSuccessToast: jest.fn(),
-    },
-  },
-  selectors: {
-    app: { useShowImportSuccessToast: jest.fn() },
-  },
+jest.mock('@src/data/gradebookUiContext', () => ({
+  ...jest.requireActual('@src/data/gradebookUiContext'),
+  useGradebookUi: jest.fn(),
+}));
+jest.mock('@openedx/frontend-base', () => ({
+  ...jest.requireActual('@openedx/frontend-base'),
+  useIntl: () => ({ formatMessage: (msg) => msg.defaultMessage }),
 }));
 
-jest.mock('react', () => ({
-  ...jest.requireActual('react'),
-  useContext: jest.fn(context => context),
-}));
+describe('useImportSuccessToastData', () => {
+  const setActiveView = jest.fn();
+  const setShowImportSuccessToast = jest.fn();
 
-jest.mock('@edx/frontend-platform/i18n', () => ({
-  ...jest.requireActual('@edx/frontend-platform/i18n'),
-  useIntl: jest.fn(() => ({
-    formatMessage: (message) => message.defaultMessage,
-  })),
-}));
-
-const setView = jest.fn().mockName('hooks.setView');
-const setShowToast = jest.fn().mockName('hooks.setShowImportSuccessToast');
-actions.app.useSetView.mockReturnValue(setView);
-actions.app.useSetShowImportSuccessToast.mockReturnValue(setShowToast);
-const showImportSuccessToast = 'test-show-import-success-toast';
-selectors.app.useShowImportSuccessToast.mockReturnValue(showImportSuccessToast);
-
-let out;
-describe('ImportSuccessToast component', () => {
-  beforeAll(() => {
-    out = useImportSuccessToastData();
-  });
-  describe('behavior', () => {
-    it('initializes intl hook', () => {
-      expect(useIntl).toHaveBeenCalledWith();
-    });
-    it('initializes redux hooks', () => {
-      expect(selectors.app.useShowImportSuccessToast).toHaveBeenCalled();
-      expect(actions.app.useSetView).toHaveBeenCalled();
-      expect(actions.app.useSetShowImportSuccessToast).toHaveBeenCalled();
+  beforeEach(() => {
+    jest.clearAllMocks();
+    useGradebookUi.mockReturnValue({
+      showImportSuccessToast: true,
+      setActiveView,
+      setShowImportSuccessToast,
     });
   });
-  describe('output', () => {
-    test('action label', () => {
-      expect(out.action.label).toEqual(formatMessage(messages.showHistoryViewBtn));
-    });
-    test('action click event', () => {
-      out.action.onClick();
-      expect(setView).toHaveBeenCalledWith(views.bulkManagementHistory);
-      expect(setShowToast).toHaveBeenCalledWith(false);
-    });
-    test('onClose', () => {
-      out.onClose();
-      expect(setShowToast).toHaveBeenCalledWith(false);
-    });
+
+  it('forwards `showImportSuccessToast` as `show`', () => {
+    expect(useImportSuccessToastData().show).toBe(true);
+  });
+
+  it('formats the action label and description from messages', () => {
+    const out = useImportSuccessToastData();
+    expect(out.action.label).toBe(messages.showHistoryViewBtn.defaultMessage);
+    expect(out.description).toBe(messages.description.defaultMessage);
+  });
+
+  it('action.onClick switches to the bulk-management-history view and hides the toast', () => {
+    useImportSuccessToastData().action.onClick();
+    expect(setActiveView).toHaveBeenCalledWith(views.bulkManagementHistory);
+    expect(setShowImportSuccessToast).toHaveBeenCalledWith(false);
+  });
+
+  it('onClose hides the toast', () => {
+    useImportSuccessToastData().onClose();
+    expect(setShowImportSuccessToast).toHaveBeenCalledWith(false);
   });
 });

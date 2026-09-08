@@ -2,7 +2,7 @@ import { screen } from '@testing-library/react';
 
 import useGradebookTableData from './hooks';
 import GradebookTable from '.';
-import { renderWithIntl } from '../../../testUtilsExtra';
+import { renderWithAllProviders } from '@src/testUtils';
 
 jest.mock('./hooks', () => jest.fn());
 
@@ -17,7 +17,7 @@ const hookProps = {
 describe('GradebookTable', () => {
   it('renders Datatable correctly', () => {
     useGradebookTableData.mockReturnValue(hookProps);
-    renderWithIntl(<GradebookTable />);
+    renderWithAllProviders(<GradebookTable />);
     expect(useGradebookTableData).toHaveBeenCalled();
     const headers = screen.getAllByRole('columnheader');
     expect(headers).toHaveLength(3);
@@ -36,7 +36,7 @@ describe('GradebookTable', () => {
       data: [],
       grades: [],
     });
-    renderWithIntl(<GradebookTable />);
+    renderWithAllProviders(<GradebookTable />);
     expect(screen.getByText(hookProps.emptyContent)).toBeInTheDocument();
   });
 });

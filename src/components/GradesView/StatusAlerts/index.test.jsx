@@ -1,46 +1,53 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { screen } from '@testing-library/react';
 
-import useStatusAlertsData from './hooks';
+import { renderWithAllProviders } from '@src/testUtils';
+import { useCourseGradeFilterValidity } from '@src/components/GradebookFilters/data/hooks';
+import { useGradebookUi } from '@src/data/gradebookUiContext';
 import StatusAlerts from '.';
 
-jest.mock('./hooks', () => jest.fn());
+jest.mock('@src/components/GradebookFilters/data/hooks', () => ({
+  ...jest.requireActual('@src/components/GradebookFilters/data/hooks'),
+  useCourseGradeFilterValidity: jest.fn(),
+}));
+jest.mock('@src/data/gradebookUiContext', () => ({
+  ...jest.requireActual('@src/data/gradebookUiContext'),
+  useGradebookUi: jest.fn(),
+}));
 
-const hookProps = {
-  successBanner: {
-    onClose: jest.fn().mockName('hooks.successBanner.onClose'),
-    show: true,
-    text: 'hooks.success-banner-text',
-  },
-  gradeFilter: {
-    show: true,
-    text: 'hooks.grade-filter-text',
-  },
-};
-useStatusAlertsData.mockReturnValue(hookProps);
+describe('StatusAlerts', () => {
+  const setShowSuccess = jest.fn();
 
-describe('StatusAlerts component', () => {
+  const setup = ({ isMinValid = true, isMaxValid = true, showSuccess = false } = {}) => {
+    useCourseGradeFilterValidity.mockReturnValue({ isMinValid, isMaxValid });
+    useGradebookUi.mockReturnValue({ showSuccess, setShowSuccess });
+    return renderWithAllProviders(<StatusAlerts />);
+  };
+
   beforeEach(() => {
     jest.clearAllMocks();
-    render(<StatusAlerts />);
   });
-  describe('behavior', () => {
-    it('initializes component hooks', () => {
-      expect(useStatusAlertsData).toHaveBeenCalled();
-    });
+
+  it('shows the success banner when showSuccess is true', () => {
+    setup({ showSuccess: true });
+    const alerts = screen.getAllByRole('alert');
+    expect(alerts[0]).toHaveClass('alert-success');
   });
-  describe('render', () => {
-    it('success banner', () => {
-      const alerts = screen.getAllByRole('alert');
-      const successAlert = alerts[0];
-      expect(successAlert).toHaveTextContent(hookProps.successBanner.text);
-      expect(successAlert).toHaveClass('alert-success');
-    });
-    it('grade filter banner', () => {
-      const alerts = screen.getAllByRole('alert');
-      const gradeFilter = alerts[1];
-      expect(gradeFilter).toHaveTextContent(hookProps.gradeFilter.text);
-      expect(gradeFilter).toHaveClass('alert-danger');
-    });
+
+  it('hides the success banner when showSuccess is false', () => {
+    setup({ showSuccess: false });
+    expect(screen.queryByText(/edit success/i)).not.toBeInTheDocument();
+  });
+
+  it('shows the grade filter error alert when the min is invalid', () => {
+    setup({ isMinValid: false });
+    const alerts = screen.getAllByRole('alert');
+    expect(alerts[alerts.length - 1]).toHaveClass('alert-danger');
+  });
+
+  it('shows the grade filter error alert when the max is invalid', () => {
+    setup({ isMaxValid: false });
+    const alerts = screen.getAllByRole('alert');
+    expect(alerts[alerts.length - 1]).toHaveClass('alert-danger');
   });
 });

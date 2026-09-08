@@ -1,141 +1,147 @@
-import { selectors, actions, thunkActions } from 'data/redux/hooks';
+import { renderHook, act } from '@testing-library/react';
 
-import useAssignmentFilterData from './hooks';
+import { useCourseIdWithGate } from '@src/data/apiHook';
+import { useFilters } from '@src/data/filtersContext';
+import { useRefetchGrades } from '@src/components/GradesView/data/hooks';
+import { useCohorts, useTracks } from '../data/apiHook';
+import { useSelectedCohortEntry, useSelectedTrackEntry } from '../data/hooks';
+import useStudentGroupsFilterData from './hooks';
 
-jest.mock('data/redux/hooks', () => ({
-  selectors: {
-    root: {
-      useSelectedCohortEntry: jest.fn(),
-      useSelectedTrackEntry: jest.fn(),
-    },
-    cohorts: { useAllCohorts: jest.fn() },
-    tracks: { useAllTracks: jest.fn() },
-  },
-  actions: {
-    filters: {
-      useUpdateCohort: jest.fn(),
-      useUpdateTrack: jest.fn(),
-    },
-  },
-  thunkActions: {
-    grades: { useFetchGrades: jest.fn() },
-  },
+jest.mock('@src/data/apiHook', () => ({
+  ...jest.requireActual('@src/data/apiHook'),
+  useCourseIdWithGate: jest.fn(),
+}));
+jest.mock('@src/data/filtersContext', () => ({
+  ...jest.requireActual('@src/data/filtersContext'),
+  useFilters: jest.fn(),
+}));
+jest.mock('@src/components/GradesView/data/hooks', () => ({
+  ...jest.requireActual('@src/components/GradesView/data/hooks'),
+  useRefetchGrades: jest.fn(),
+}));
+jest.mock('../data/apiHook', () => ({
+  ...jest.requireActual('../data/apiHook'),
+  useCohorts: jest.fn(),
+  useTracks: jest.fn(),
+}));
+jest.mock('../data/hooks', () => ({
+  ...jest.requireActual('../data/hooks'),
+  useSelectedCohortEntry: jest.fn(),
+  useSelectedTrackEntry: jest.fn(),
 }));
 
-let out;
+const cohortA = { id: 11, name: 'cohort A' };
+const cohortB = { id: 22, name: 'cohort B' };
+const trackA = { slug: 'aud', name: 'Audit' };
+const trackB = { slug: 'ver', name: 'Verified' };
 
-const testCohort = { name: 'cohort-name', id: 999 };
-selectors.root.useSelectedCohortEntry.mockReturnValue(testCohort);
-const testTrack = { name: 'track-name', slug: 8080 };
-selectors.root.useSelectedTrackEntry.mockReturnValue(testTrack);
-const allCohorts = [
-  testCohort,
-  { name: 'cohort1', id: 11 },
-  { name: 'cohort2', id: 22 },
-  { name: 'cohort3', id: 33 },
-];
-selectors.cohorts.useAllCohorts.mockReturnValue(allCohorts);
-const allTracks = [
-  testTrack,
-  { name: 'track1', slug: 111 },
-  { name: 'track2', slug: 222 },
-  { name: 'track3', slug: 333 },
-];
-selectors.tracks.useAllTracks.mockReturnValue(allTracks);
-
-const updateCohort = jest.fn();
-actions.filters.useUpdateCohort.mockReturnValue(updateCohort);
-const updateTrack = jest.fn();
-actions.filters.useUpdateTrack.mockReturnValue(updateTrack);
-const fetch = jest.fn();
-thunkActions.grades.useFetchGrades.mockReturnValue(fetch);
+const primeMocks = ({
+  cohorts = [cohortA, cohortB],
+  tracks = [trackA, trackB],
+  selectedCohort = cohortA,
+  selectedTrack = trackA,
+} = {}) => {
+  const setCohort = jest.fn();
+  const setTrack = jest.fn();
+  const fetchGrades = jest.fn();
+  useCourseIdWithGate.mockReturnValue({ courseId: 'test-course', enabled: true });
+  useCohorts.mockReturnValue({ data: cohorts });
+  useTracks.mockReturnValue({ data: tracks });
+  useSelectedCohortEntry.mockReturnValue(selectedCohort);
+  useSelectedTrackEntry.mockReturnValue(selectedTrack);
+  useFilters.mockReturnValue({ setCohort, setTrack });
+  useRefetchGrades.mockReturnValue(fetchGrades);
+  return { setCohort, setTrack, fetchGrades };
+};
 
 const updateQueryParams = jest.fn();
 
-describe('useAssignmentFilterData hook', () => {
+describe('useStudentGroupsFilterData', () => {
   beforeEach(() => {
     jest.clearAllMocks();
-    out = useAssignmentFilterData({ updateQueryParams });
   });
-  describe('behavior', () => {
-    it('initializes redux hooks', () => {
-      expect(selectors.root.useSelectedCohortEntry).toHaveBeenCalledWith();
-      expect(selectors.root.useSelectedTrackEntry).toHaveBeenCalledWith();
-      expect(selectors.cohorts.useAllCohorts).toHaveBeenCalledWith();
-      expect(selectors.tracks.useAllTracks).toHaveBeenCalledWith();
-      expect(actions.filters.useUpdateCohort).toHaveBeenCalledWith();
-      expect(actions.filters.useUpdateTrack).toHaveBeenCalledWith();
-      expect(thunkActions.grades.useFetchGrades).toHaveBeenCalledWith();
+
+  describe('cohorts', () => {
+    it('exposes the selected cohort id and disables when there are no cohorts', () => {
+      primeMocks({ cohorts: [] });
+      const { result } = renderHook(() => useStudentGroupsFilterData({ updateQueryParams }));
+      expect(result.current.cohorts.value).toBe(cohortA.id);
+      expect(result.current.cohorts.isDisabled).toBe(true);
+    });
+
+    it('maps cohort entries to { value, name }', () => {
+      primeMocks();
+      const { result } = renderHook(() => useStudentGroupsFilterData({ updateQueryParams }));
+      expect(result.current.cohorts.entries).toEqual([
+        { value: cohortA.id, name: cohortA.name },
+        { value: cohortB.id, name: cohortB.name },
+      ]);
+    });
+
+    it('defaults the selected value to empty when no cohort is picked', () => {
+      primeMocks({ selectedCohort: null });
+      const { result } = renderHook(() => useStudentGroupsFilterData({ updateQueryParams }));
+      expect(result.current.cohorts.value).toBe('');
+    });
+
+    it('updates cohort, query params, and fetches on change', () => {
+      const { setCohort, fetchGrades } = primeMocks();
+      const { result } = renderHook(() => useStudentGroupsFilterData({ updateQueryParams }));
+      act(() => {
+        result.current.cohorts.handleChange({ target: { value: String(cohortB.id) } });
+      });
+      expect(setCohort).toHaveBeenCalledWith(String(cohortB.id));
+      expect(updateQueryParams).toHaveBeenCalledWith({ cohort: String(cohortB.id) });
+      expect(fetchGrades).toHaveBeenCalled();
+    });
+
+    it('passes null when the selected cohort does not match any known cohort', () => {
+      const { setCohort } = primeMocks();
+      const { result } = renderHook(() => useStudentGroupsFilterData({ updateQueryParams }));
+      act(() => {
+        result.current.cohorts.handleChange({ target: { value: '9999' } });
+      });
+      expect(setCohort).toHaveBeenCalledWith('');
+      expect(updateQueryParams).toHaveBeenCalledWith({ cohort: null });
     });
   });
-  describe('output', () => {
-    describe('cohorts', () => {
-      test('value from hook', () => {
-        expect(out.cohorts.value).toEqual(testCohort.id);
-      });
-      test('disabled iff no cohorts found', () => {
-        expect(out.cohorts.isDisabled).toEqual(false);
-        selectors.cohorts.useAllCohorts.mockReturnValueOnce([]);
-        out = useAssignmentFilterData({ updateQueryParams });
-        expect(out.cohorts.isDisabled).toEqual(true);
-      });
-      test('entries map id to value', () => {
-        const { entries } = out.cohorts;
-        expect(entries[0]).toEqual({ value: testCohort.id, name: testCohort.name });
-        expect(entries[1]).toEqual({ value: allCohorts[1].id, name: allCohorts[1].name });
-        expect(entries[2]).toEqual({ value: allCohorts[2].id, name: allCohorts[2].name });
-        expect(entries[3]).toEqual({ value: allCohorts[3].id, name: allCohorts[3].name });
-      });
-      test('value defaults to empty string', () => {
-        selectors.root.useSelectedCohortEntry.mockReturnValueOnce(null);
-        out = useAssignmentFilterData({ updateQueryParams });
-        expect(out.cohorts.value).toEqual('');
-      });
-      describe('handleEvent', () => {
-        it('updates filter and query params and fetches grades', () => {
-          out.cohorts.handleChange({ target: { value: testCohort.id } });
-          expect(updateCohort).toHaveBeenCalledWith(testCohort.id.toString());
-          expect(updateQueryParams).toHaveBeenCalledWith({ cohort: testCohort.id.toString() });
-          expect(fetch).toHaveBeenCalled();
-        });
-        it('passes null if no matching track is found', () => {
-          out.cohorts.handleChange({ target: { value: 'fake-name' } });
-          expect(updateCohort).toHaveBeenCalledWith(null);
-          expect(updateQueryParams).toHaveBeenCalledWith({ cohort: null });
-          expect(fetch).toHaveBeenCalled();
-        });
-      });
+
+  describe('tracks', () => {
+    it('exposes the selected track slug and maps entries', () => {
+      primeMocks();
+      const { result } = renderHook(() => useStudentGroupsFilterData({ updateQueryParams }));
+      expect(result.current.tracks.value).toBe(trackA.slug);
+      expect(result.current.tracks.entries).toEqual([
+        { value: trackA.slug, name: trackA.name },
+        { value: trackB.slug, name: trackB.name },
+      ]);
     });
-    describe('tracks', () => {
-      test('value from hook', () => {
-        expect(out.tracks.value).toEqual(testTrack.slug);
+
+    it('defaults the selected value to empty when no track is picked', () => {
+      primeMocks({ selectedTrack: null });
+      const { result } = renderHook(() => useStudentGroupsFilterData({ updateQueryParams }));
+      expect(result.current.tracks.value).toBe('');
+    });
+
+    it('updates track, query params, and fetches on change', () => {
+      const { setTrack, fetchGrades } = primeMocks();
+      const { result } = renderHook(() => useStudentGroupsFilterData({ updateQueryParams }));
+      act(() => {
+        result.current.tracks.handleChange({ target: { value: trackB.slug } });
       });
-      test('entries map slug to value', () => {
-        const { entries } = out.tracks;
-        expect(entries[0]).toEqual({ value: testTrack.slug, name: testTrack.name });
-        expect(entries[1]).toEqual({ value: allTracks[1].slug, name: allTracks[1].name });
-        expect(entries[2]).toEqual({ value: allTracks[2].slug, name: allTracks[2].name });
-        expect(entries[3]).toEqual({ value: allTracks[3].slug, name: allTracks[3].name });
+      expect(setTrack).toHaveBeenCalledWith(trackB.slug);
+      expect(updateQueryParams).toHaveBeenCalledWith({ track: trackB.slug });
+      expect(fetchGrades).toHaveBeenCalled();
+    });
+
+    it('passes null when the selected track slug does not match', () => {
+      const { setTrack } = primeMocks();
+      const { result } = renderHook(() => useStudentGroupsFilterData({ updateQueryParams }));
+      act(() => {
+        result.current.tracks.handleChange({ target: { value: 'other' } });
       });
-      test('value defaults to empty string', () => {
-        selectors.root.useSelectedTrackEntry.mockReturnValueOnce(null);
-        out = useAssignmentFilterData({ updateQueryParams });
-        expect(out.tracks.value).toEqual('');
-      });
-      describe('handleEvent', () => {
-        it('updates filter and query params and fetches grades', () => {
-          out.tracks.handleChange({ target: { value: testTrack.slug } });
-          expect(updateTrack).toHaveBeenCalledWith(testTrack.slug.toString());
-          expect(updateQueryParams).toHaveBeenCalledWith({ track: testTrack.slug.toString() });
-          expect(fetch).toHaveBeenCalled();
-        });
-        it('passes null if no matching track is found', () => {
-          out.tracks.handleChange({ target: { value: 'fake-name' } });
-          expect(updateTrack).toHaveBeenCalledWith(null);
-          expect(updateQueryParams).toHaveBeenCalledWith({ track: null });
-          expect(fetch).toHaveBeenCalled();
-        });
-      });
+      expect(setTrack).toHaveBeenCalledWith('');
+      expect(updateQueryParams).toHaveBeenCalledWith({ track: null });
     });
   });
 });

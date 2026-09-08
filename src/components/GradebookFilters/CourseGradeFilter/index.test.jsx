@@ -3,9 +3,9 @@ import { screen } from '@testing-library/react';
 
 import useCourseGradeFilterData from './hooks';
 import CourseFilter from '.';
-import { renderWithIntl } from '../../../testUtilsExtra';
+import { renderWithAllProviders } from '@src/testUtils';
 
-jest.mock('./hooks', () => ({ __esModule: true, default: jest.fn() }));
+jest.mock('./hooks', () => jest.fn());
 
 const hookData = {
   handleChange: jest.fn(),
@@ -34,7 +34,7 @@ describe('CourseFilter component', () => {
     });
     describe('with selected assignment', () => {
       beforeEach(() => {
-        renderWithIntl(<CourseFilter updateQueryParams={updateQueryParams} />);
+        renderWithAllProviders(<CourseFilter updateQueryParams={updateQueryParams} />);
       });
 
       it('renders a PercentGroup for both Max and Min filters', () => {
@@ -51,7 +51,7 @@ describe('CourseFilter component', () => {
       beforeEach(() => {
         jest.clearAllMocks();
         useCourseGradeFilterData.mockReturnValueOnce({ ...hookData, isDisabled: true });
-        renderWithIntl(<CourseFilter updateQueryParams={updateQueryParams} />);
+        renderWithAllProviders(<CourseFilter updateQueryParams={updateQueryParams} />);
       });
       it('disables submit', () => {
         expect(screen.getByRole('button', { name: 'Apply' })).toBeDisabled();

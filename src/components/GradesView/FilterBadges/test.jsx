@@ -8,7 +8,7 @@ import FilterBadges from '.';
 
 const order = ['filter1', 'filter2', 'filter3'];
 jest.mock('@src/data/constants/filters', () => ({
-  ...jest.requireActual('data/constants/filters'),
+  ...jest.requireActual('@src/data/constants/filters'),
   badgeOrder: order,
 }));
 

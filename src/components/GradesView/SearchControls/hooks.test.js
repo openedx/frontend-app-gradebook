@@ -1,83 +1,74 @@
-import { useIntl } from '@openedx/frontend-base';
+import React from 'react';
 
-import { formatMessage } from 'testUtils';
-import { actions, selectors, thunkActions } from 'data/redux/hooks';
-
+import { renderWithAllProviders } from '@src/testUtils';
+import { useFilters } from '@src/data/filtersContext';
+import { useRefetchGrades } from '../data/hooks';
 import useSearchControlsData from './hooks';
 import messages from './messages';
 
-jest.mock('data/redux/hooks', () => ({
-  actions: {
-    app: { useSetSearchValue: jest.fn() },
-  },
-  selectors: {
-    app: { useSearchValue: jest.fn() },
-  },
-  thunkActions: {
-    grades: { useFetchGrades: jest.fn() },
-  },
+jest.mock('@src/data/filtersContext', () => ({
+  ...jest.requireActual('@src/data/filtersContext'),
+  useFilters: jest.fn(),
+}));
+jest.mock('../data/hooks', () => ({
+  ...jest.requireActual('../data/hooks'),
+  useRefetchGrades: jest.fn(),
 }));
 
-jest.mock('react', () => ({
-  ...jest.requireActual('react'),
-  useContext: jest.fn(context => context),
-}));
+// `useSearchControlsData` uses `useIntl` from `@openedx/frontend-base`, which
+// requires the full provider tree exposed by `renderWithAllProviders`.
+const captureHook = () => {
+  let hookResult;
+  const Capture = () => {
+    hookResult = useSearchControlsData();
+    return null;
+  };
+  renderWithAllProviders(<Capture />);
+  return hookResult;
+};
 
-jest.mock('@edx/frontend-platform/i18n', () => ({
-  ...jest.requireActual('@edx/frontend-platform/i18n'),
-  useIntl: jest.fn(() => ({
-    formatMessage: (message) => message.defaultMessage,
-  })),
-}));
+const primeMocks = ({ searchValue = 'query' } = {}) => {
+  const setSearchValue = jest.fn();
+  const fetchGrades = jest.fn();
+  useFilters.mockReturnValue({ searchValue, setSearchValue });
+  useRefetchGrades.mockReturnValue(fetchGrades);
+  return { setSearchValue, fetchGrades };
+};
 
-const searchValue = 'test-search-value';
-selectors.app.useSearchValue.mockReturnValue(searchValue);
-const setSearchValue = jest.fn();
-actions.app.useSetSearchValue.mockReturnValue(setSearchValue);
-const fetchGrades = jest.fn();
-thunkActions.grades.useFetchGrades.mockReturnValue(fetchGrades);
-
-const testValue = 'test-value';
-let out;
 describe('useSearchControlsData', () => {
   beforeEach(() => {
     jest.clearAllMocks();
-    out = useSearchControlsData();
   });
-  describe('behavior', () => {
-    it('initializes intl hook', () => {
-      expect(useIntl).toHaveBeenCalled();
-    });
-    it('initializes redux hooks', () => {
-      expect(actions.app.useSetSearchValue).toHaveBeenCalled();
-      expect(selectors.app.useSearchValue).toHaveBeenCalled();
-      expect(thunkActions.grades.useFetchGrades).toHaveBeenCalled();
-    });
+
+  it('exposes the current search value and formatted labels', () => {
+    primeMocks({ searchValue: 'foo' });
+    const out = captureHook();
+    expect(out.searchValue).toBe('foo');
+    expect(out.inputLabel).toBe(messages.label.defaultMessage);
+    expect(out.hintText).toBe(messages.hint.defaultMessage);
   });
-  describe('output', () => {
-    test('onSubmit sets search value and fetches grades', () => {
-      out.onSubmit(testValue);
-      expect(setSearchValue).toHaveBeenCalledWith(testValue);
-      expect(fetchGrades).toHaveBeenCalled();
-    });
-    test('onBlur sets search value to event target', () => {
-      out.onBlur({ target: { value: testValue } });
-      expect(setSearchValue).toHaveBeenCalledWith(testValue);
-      expect(fetchGrades).not.toHaveBeenCalled();
-    });
-    test('onClear clears search value and fetches grades', () => {
-      out.onClear();
-      expect(setSearchValue).toHaveBeenCalledWith('');
-      expect(fetchGrades).toHaveBeenCalled();
-    });
-    it('forwards searchValue from redux', () => {
-      expect(out.searchValue).toEqual(searchValue);
-    });
-    test('input label message', () => {
-      expect(out.inputLabel).toEqual(formatMessage(messages.label));
-    });
-    test('hint text message', () => {
-      expect(out.hintText).toEqual(formatMessage(messages.hint));
-    });
+
+  it('onSubmit stores the new value and fetches grades', () => {
+    const { setSearchValue, fetchGrades } = primeMocks();
+    const out = captureHook();
+    out.onSubmit('new-value');
+    expect(setSearchValue).toHaveBeenCalledWith('new-value');
+    expect(fetchGrades).toHaveBeenCalled();
+  });
+
+  it('onBlur only updates the value, without fetching', () => {
+    const { setSearchValue, fetchGrades } = primeMocks();
+    const out = captureHook();
+    out.onBlur({ target: { value: 'blurred' } });
+    expect(setSearchValue).toHaveBeenCalledWith('blurred');
+    expect(fetchGrades).not.toHaveBeenCalled();
+  });
+
+  it('onClear resets to empty and fetches grades', () => {
+    const { setSearchValue, fetchGrades } = primeMocks();
+    const out = captureHook();
+    out.onClear();
+    expect(setSearchValue).toHaveBeenCalledWith('');
+    expect(fetchGrades).toHaveBeenCalled();
   });
 });

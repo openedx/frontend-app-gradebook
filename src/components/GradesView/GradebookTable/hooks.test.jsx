@@ -1,139 +1,104 @@
 import React from 'react';
-import { Headings } from 'data/constants/grades';
 
-import { initializeMocks, render } from '../../../testUtilsExtra';
-import * as hooks from './hooks';
+import { renderWithAllProviders } from '@src/testUtils';
+import { Headings } from '@src/data/constants/grades';
+import { useAllGrades, useGradesHeadings } from '../data/hooks';
+import useGradebookTableData from './hooks';
 import messages from './messages';
 
-let mockUseAllGrades;
-let mockUseGetHeadings;
-
-jest.mock('data/redux/hooks', () => ({
-  selectors: {
-    grades: { useAllGrades: () => mockUseAllGrades() },
-    root: { useGetHeadings: () => mockUseGetHeadings() },
-  },
+jest.mock('../data/hooks', () => ({
+  ...jest.requireActual('../data/hooks'),
+  useAllGrades: jest.fn(),
+  useGradesHeadings: jest.fn(),
 }));
-
-jest.mock('data/redux/transforms', () => ({
-  grades: { roundGrade: jest.fn((val) => val) },
+jest.mock('@src/i18n/utils', () => ({
+  ...jest.requireActual('@src/i18n/utils'),
+  getLocalizedPercentSign: () => '%',
 }));
-
-jest.mock('i18n/utils', () => ({ getLocalizedPercentSign: () => '%' }));
-jest.mock('./Fields', () => ({ Username: () => null, Text: () => null }));
-jest.mock('./GradeButton', () => ({ __esModule: true, default: () => null }));
+jest.mock('./Fields', () => ({
+  Username: () => null,
+  Text: () => null,
+}));
+jest.mock('./GradeButton', () => () => null);
 jest.mock('./LabelReplacements', () => ({
   TotalGradeLabelReplacement: () => null,
   UsernameLabelReplacement: () => null,
   MastersOnlyLabelReplacement: () => null,
 }));
 
-const subsectionLabels = [
-  'subsectionLabel1',
-  'subsectionLabel2',
-  'subsectionLabel3',
-];
-
-const allGrades = [
-  {
-    username: 'test-username-1',
-    external_user_key: 'EKey1',
-    email: 'email-1',
-    fullName: 'test-fullNAME',
-    percent: 0.9,
-    section_breakdown: [
-      { label: subsectionLabels[0] },
-      { label: subsectionLabels[1] },
-      { label: subsectionLabels[2] },
-    ],
-  },
-  {
-    username: 'test-username-2',
-    external_user_key: 'EKey2',
-    email: 'email-2',
-    percent: 0.8,
-    section_breakdown: [
-      { label: subsectionLabels[0] },
-      { label: subsectionLabels[1] },
-      { label: subsectionLabels[2] },
-    ],
-  },
-  {
-    username: 'test-username-3',
-    external_user_key: 'EKey3',
-    email: 'email-3',
-    percent: 0.6,
-    section_breakdown: [
-      { label: subsectionLabels[0] },
-      { label: subsectionLabels[1] },
-      { label: subsectionLabels[2] },
-    ],
-  },
-];
-
-const testHeading = 'test-heading-value';
-
-const headings = [
-  Headings.totalGrade,
-  Headings.username,
-  Headings.email,
-  Headings.fullName,
-  testHeading,
-];
-
-describe('useGradebookTableData hook', () => {
-  beforeAll(() => {
-    mockUseAllGrades = jest.fn();
-    mockUseGetHeadings = jest.fn();
-  });
-
-  beforeEach(() => {
-    mockUseAllGrades.mockReset();
-    mockUseGetHeadings.mockReset();
-  });
+// `useGradebookTableData` uses `useIntl` from `@openedx/frontend-base`, which
+// requires the full provider tree exposed by `renderWithAllProviders`.
+const captureHook = () => {
   let hookResult;
-
-  const TestComponent = () => {
-    hookResult = hooks.useGradebookTableData();
+  const Capture = () => {
+    hookResult = useGradebookTableData();
     return null;
   };
+  renderWithAllProviders(<Capture />);
+  return hookResult;
+};
 
+const subsectionLabels = ['subsection-1', 'subsection-2'];
+const grades = [
+  {
+    username: 'u1',
+    external_user_key: 'ek1',
+    email: 'e1',
+    percent: 0.9,
+    section_breakdown: [{ label: subsectionLabels[0] }, { label: subsectionLabels[1] }],
+  },
+  {
+    username: 'u2',
+    external_user_key: 'ek2',
+    email: 'e2',
+    percent: 0.5,
+    section_breakdown: [{ label: subsectionLabels[0] }, { label: subsectionLabels[1] }],
+  },
+];
+
+const headings = [Headings.totalGrade, Headings.username, Headings.email, 'custom-heading'];
+
+describe('useGradebookTableData', () => {
   beforeEach(() => {
-    initializeMocks();
-    hookResult = null;
-    mockUseAllGrades.mockReturnValue([]);
-    mockUseGetHeadings.mockReturnValue([]);
+    jest.clearAllMocks();
+    useAllGrades.mockReturnValue([]);
+    useGradesHeadings.mockReturnValue([]);
   });
 
-  it('returns expected structure with empty data', () => {
-    render(<TestComponent />);
-    expect(hookResult).toEqual({
+  it('returns empty columns/data when there are no grades or headings', () => {
+    const out = captureHook();
+    expect(out).toEqual({
       columns: [],
       data: [],
       grades: [],
       nullMethod: expect.any(Function),
-      emptyContent: expect.any(String),
+      emptyContent: messages.noResultsFound.defaultMessage,
     });
   });
 
   it('nullMethod returns null', () => {
-    render(<TestComponent />);
-    expect(hookResult.nullMethod()).toBeNull();
+    const out = captureHook();
+    expect(out.nullMethod()).toBeNull();
   });
 
-  it('returns expected structure with grades and headings data', () => {
-    mockUseAllGrades.mockReturnValue(allGrades);
-    mockUseGetHeadings.mockReturnValue(headings);
-    render(<TestComponent />);
-    expect(hookResult.columns.length).toBe(headings.length);
-    expect(hookResult.columns[0].accessor).toEqual(headings[0]);
-    expect(hookResult.data.length).toBe(allGrades.length);
-    expect(hookResult.data[0]).toHaveProperty(Headings.username);
-    expect(hookResult.grades).toEqual(allGrades);
-    expect(hookResult.nullMethod()).toBeNull();
-    expect(hookResult.emptyContent).toBe(messages.noResultsFound.defaultMessage);
+  it('maps each heading into a column with the correct accessor', () => {
+    useAllGrades.mockReturnValue(grades);
+    useGradesHeadings.mockReturnValue(headings);
+    const out = captureHook();
+    expect(out.columns).toHaveLength(headings.length);
+    out.columns.forEach((column, i) => {
+      expect(column.accessor).toBe(headings[i]);
+    });
+  });
 
-    expect(mockUseAllGrades).toHaveBeenCalled();
-    expect(mockUseGetHeadings).toHaveBeenCalled();
+  it('maps each grade row and includes the total-grade + subsection cells', () => {
+    useAllGrades.mockReturnValue(grades);
+    useGradesHeadings.mockReturnValue(headings);
+    const out = captureHook();
+    expect(out.data).toHaveLength(grades.length);
+    const firstRow = out.data[0];
+    expect(firstRow[Headings.totalGrade]).toBe('90%');
+    expect(firstRow[subsectionLabels[0]]).toBeDefined();
+    expect(firstRow[subsectionLabels[1]]).toBeDefined();
   });
 });
