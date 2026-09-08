@@ -24,6 +24,7 @@ describe('action hooks', () => {
     testActionHook(hookKeys.useSetLocalFilter, actions.app.setLocalFilter);
     testActionHook(hookKeys.useSetSearchValue, actions.app.setSearchValue);
     testActionHook(hookKeys.useSetShowImportSuccessToast, actions.app.setShowImportSuccessToast);
+    testActionHook(hookKeys.useSetShowImportErrorToast, actions.app.setShowImportErrorToast);
     testActionHook(hookKeys.useSetView, actions.app.setView);
     testActionHook(hookKeys.useCloseModal, actions.app.closeModal);
     testActionHook(hookKeys.useSetModalState, actions.app.setModalState);

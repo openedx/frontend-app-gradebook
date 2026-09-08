@@ -164,5 +164,6 @@ describe('app selectors', () => {
     testSimpleSelector('filters');
     testSimpleSelector('searchValue');
     testSimpleSelector('showImportSuccessToast');
+    testSimpleSelector('showImportErrorToast');
   });
 });
