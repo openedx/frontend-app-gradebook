@@ -191,9 +191,21 @@ export const allGrades = ({ grades: { results } }) => results;
  * @return {string} - bulk import error messages joined into a display form
  *   (or empty string if there are none)
  */
-export const bulkImportError = ({ grades: { bulkManagement } }) => (
+export const bulkImportError = (state) => {
+  const messages = module.bulkImportErrorMessages(state);
+  return messages ? `Errors while processing: ${messages}` : '';
+};
+
+/**
+ * bulkImportErrorMessages(state)
+ * returns the import error messages on their own, with no wrapper text, for the import
+ * error toast. '' when the last upload raised none.
+ * @param {object} state - redux state
+ * @return {string} - the messages, or ''
+ */
+export const bulkImportErrorMessages = ({ grades: { bulkManagement } }) => (
   (!!bulkManagement && bulkManagement.errorMessages)
-    ? `Errors while processing: ${bulkManagement.errorMessages.join('; ')};`
+    ? bulkManagement.errorMessages.join('; ')
     : ''
 );
 
@@ -288,6 +300,7 @@ const gradeData = ({ grades }) => ({
 
 export default StrictDict({
   bulkImportError,
+  bulkImportErrorMessages,
   formatGradeOverrideForDisplay,
   formatMinAssignmentGrade,
   formatMaxAssignmentGrade,
