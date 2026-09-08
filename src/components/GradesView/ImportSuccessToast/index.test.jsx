@@ -1,24 +1,8 @@
-import React from 'react';
-
 import { renderWithAllProviders, initializeMocks } from '@src/testUtils';
 import { screen } from '@testing-library/react';
 
 import ImportSuccessToast from '.';
 import useImportSuccessToastData from './hooks';
-
-jest.mock('@src/data/redux/hooks', () => ({
-  actions: {
-    app: {
-      useSetView: jest.fn(),
-      useSetShowImportSuccessToast: jest.fn(),
-    },
-  },
-  selectors: {
-    app: {
-      useShowImportSuccessToast: jest.fn(),
-    },
-  },
-}));
 
 jest.mock('./hooks', () => jest.fn());
 
