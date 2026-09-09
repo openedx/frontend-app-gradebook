@@ -1,5 +1,10 @@
 import { render, screen } from '@testing-library/react';
-import { HistoryTable, mapHistoryRows } from './HistoryTable';
+import HistoryTableContainer, { HistoryTable, mapHistoryRows } from './HistoryTable';
+import { useBulkManagementHistoryEntries } from './data/apiHook';
+
+jest.mock('./data/apiHook', () => ({
+  useBulkManagementHistoryEntries: jest.fn(),
+}));
 
 jest.mock('@openedx/paragon', () => ({
   ...jest.requireActual('@openedx/paragon'),
@@ -65,6 +70,15 @@ describe('HistoryTable', () => {
       const table = screen.getByTestId('data-table');
       expect(table).toHaveAttribute('data-item-count', String(mockHistory.length));
       expect(screen.getAllByTestId('row')).toHaveLength(mockHistory.length);
+    });
+  });
+
+  describe('HistoryTableContainer', () => {
+    it('renders the history entries pulled from useBulkManagementHistoryEntries', () => {
+      useBulkManagementHistoryEntries.mockReturnValue(mockHistory);
+      render(<HistoryTableContainer />);
+      const table = screen.getByTestId('data-table');
+      expect(table).toHaveAttribute('data-item-count', String(mockHistory.length));
     });
   });
 });
