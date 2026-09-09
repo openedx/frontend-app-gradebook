@@ -1,5 +1,4 @@
-/* eslint-disable react/button-has-type, import/no-named-as-default */
-import React, { useRef } from 'react';
+import { useRef } from 'react';
 
 import { useIntl } from '@openedx/frontend-base';
 
@@ -20,16 +19,19 @@ export const ImportGradesButton = () => {
   const { formatMessage } = useIntl();
   const gradeExportUrl = useGradeExportUrl();
   const submitImportGradesButtonData = useSubmitImportGradesButtonData();
-  const fileInputRef = useRef();
+  const fileInputRef = useRef(null);
 
   const handleClickImportGrades = () => fileInputRef.current?.click();
   const handleFileInputChange = () => {
-    if (fileInputRef.current?.files[0]) {
+    const file = fileInputRef.current?.files?.[0];
+    if (file) {
       const clearInput = () => {
-        fileInputRef.current.value = null;
+        if (fileInputRef.current) {
+          fileInputRef.current.value = null;
+        }
       };
       const formData = new FormData();
-      formData.append('csv', fileInputRef.current.files[0]);
+      formData.append('csv', file);
       submitImportGradesButtonData(formData).then(clearInput);
     }
   };
