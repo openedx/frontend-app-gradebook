@@ -183,7 +183,9 @@ export const useUpdateGrades = () => {
       trackGradeOverrideFailed(error);
     },
   });
-  return () => { mutation.mutate(); };
+  return () => {
+    mutation.mutate();
+  };
 };
 
 /**

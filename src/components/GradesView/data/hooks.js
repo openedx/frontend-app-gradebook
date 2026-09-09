@@ -276,5 +276,7 @@ export const useFetchGradesIfAssignmentGradeFiltersSet = () => {
  */
 export const useFetchPrevNextGrades = () => {
   const { setGradesPageEndpoint } = useGradebookUi();
-  return (endpoint) => { setGradesPageEndpoint(endpoint); };
+  return (endpoint) => {
+    setGradesPageEndpoint(endpoint);
+  };
 };

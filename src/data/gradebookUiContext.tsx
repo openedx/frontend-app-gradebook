@@ -128,12 +128,16 @@ export const GradebookUiProvider = ({ children }: GradebookUiProviderProps) => {
   const [filterMenuOpen, setFilterMenuOpen] = useState<boolean>(false);
   const [filterMenuTransitioning, setFilterMenuTransitioning] = useState<boolean>(false);
   const filterMenuOpenRef = useRef<boolean>(filterMenuOpen);
-  useEffect(() => { filterMenuOpenRef.current = filterMenuOpen; }, [filterMenuOpen]);
+  useEffect(() => {
+    filterMenuOpenRef.current = filterMenuOpen;
+  }, [filterMenuOpen]);
 
   const toggleFilterMenu = useCallback(() => {
     setFilterMenuTransitioning(true);
     window.requestAnimationFrame(() => {
-      window.setTimeout(() => { setFilterMenuOpen((open) => !open); });
+      window.setTimeout(() => {
+        setFilterMenuOpen((open) => !open);
+      });
     });
   }, []);
 

@@ -123,7 +123,7 @@ export interface AssignmentSummary {
  */
 export const headingMapper = (
   category: string,
-  label: string = 'All',
+  label = 'All',
 ) => {
   const filters = {
     all: (section: SectionBreakdownEntry) => !!section.label,

@@ -42,7 +42,9 @@ export const useAssignmentTypes = (
  */
 export const useCanViewGradebook = (): boolean => {
   const { data, isError } = useCanUserViewGradebook();
-  if (isError) { return false; }
+  if (isError) {
+    return false;
+  }
   return data === undefined ? true : !!data;
 };
 

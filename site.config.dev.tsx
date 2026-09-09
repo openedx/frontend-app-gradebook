@@ -24,7 +24,6 @@ const siteConfig: SiteConfig = {
     gradebookApp,
   ],
 
-
   accessTokenCookieName: 'edx-jwt-cookie-header-payload',
 };
 

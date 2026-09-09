@@ -1,4 +1,3 @@
-
 import { CurrentAppProvider, PageWrap, getSiteConfig, useIntl } from '@openedx/frontend-base';
 import { Helmet } from 'react-helmet';
 import { appId } from './constants';
@@ -26,7 +25,7 @@ const Main = () => {
           </PageWrap>
         </GradebookUiProvider>
       </FiltersProvider>
-  </CurrentAppProvider>
+    </CurrentAppProvider>
   );
 };
 

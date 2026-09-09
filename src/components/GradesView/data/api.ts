@@ -39,7 +39,7 @@ export const getGradesPage = async (endpoint: string) => {
 
 /** Grade-override history for one learner on one subsection (display-shaped). */
 export interface GradeOverrideHistory {
-  overrideHistory: Array<{ date: string; grader: string; reason: string; adjustedGrade: unknown }>;
+  overrideHistory: { date: string; grader: string; reason: string; adjustedGrade: unknown }[];
   currentEarnedAllOverride: number | null;
   currentPossibleAllOverride: number | null;
   currentEarnedGradedOverride: number | null;

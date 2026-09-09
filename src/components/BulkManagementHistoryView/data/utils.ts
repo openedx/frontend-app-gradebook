@@ -30,8 +30,12 @@ export const getRowsProcessed = ({
   const failed = processed - saved;
   const skipped = total - processed;
   const summaryEntries = [`${total} Students: ${saved} processed`];
-  if (skipped > 0) { summaryEntries.push(`${skipped} skipped`); }
-  if (failed > 0) { summaryEntries.push(`${failed} failed`); }
+  if (skipped > 0) {
+    summaryEntries.push(`${skipped} skipped`);
+  }
+  if (failed > 0) {
+    summaryEntries.push(`${failed} failed`);
+  }
   return summaryEntries.join(', ');
 };
 
@@ -44,8 +48,6 @@ export const transformHistoryEntry = ({
   modified,
   original_filename: originalFilename,
   data,
-  // Discarded but destructured to strip from `rest`, matching the legacy shape.
-  unique_id: _courseId,
   id,
   ...rest
 }: RawBulkHistoryEntry) => ({

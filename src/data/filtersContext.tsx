@@ -130,34 +130,44 @@ export const FiltersProvider = ({ children }: FiltersProviderProps) => {
   // Wrapped setters: update the synchronous snapshot first (so the grades queryFn
   // reads the latest value at invalidate time), then the React state.
   const setAssignmentType = useCallback((v: string) => {
-    filtersSnapshot.assignmentType = v; setAssignmentTypeState(v);
+    filtersSnapshot.assignmentType = v;
+    setAssignmentTypeState(v);
   }, []);
   const setAssignment = useCallback((v: string) => {
-    filtersSnapshot.assignment = v; setAssignmentState(v);
+    filtersSnapshot.assignment = v;
+    setAssignmentState(v);
   }, []);
   const setIncludeCourseRoleMembers = useCallback((v: boolean) => {
-    filtersSnapshot.includeCourseRoleMembers = v; setIncludeCourseRoleMembersState(v);
+    filtersSnapshot.includeCourseRoleMembers = v;
+    setIncludeCourseRoleMembersState(v);
   }, []);
   const setCohort = useCallback((v: string) => {
-    filtersSnapshot.cohort = v; setCohortState(v);
+    filtersSnapshot.cohort = v;
+    setCohortState(v);
   }, []);
   const setTrack = useCallback((v: string) => {
-    filtersSnapshot.track = v; setTrackState(v);
+    filtersSnapshot.track = v;
+    setTrackState(v);
   }, []);
   const setAssignmentGradeMin = useCallback((v: string) => {
-    filtersSnapshot.assignmentGradeMin = v; setAssignmentGradeMinState(v);
+    filtersSnapshot.assignmentGradeMin = v;
+    setAssignmentGradeMinState(v);
   }, []);
   const setAssignmentGradeMax = useCallback((v: string) => {
-    filtersSnapshot.assignmentGradeMax = v; setAssignmentGradeMaxState(v);
+    filtersSnapshot.assignmentGradeMax = v;
+    setAssignmentGradeMaxState(v);
   }, []);
   const setCourseGradeMin = useCallback((v: string) => {
-    filtersSnapshot.courseGradeMin = v; setCourseGradeMinState(v);
+    filtersSnapshot.courseGradeMin = v;
+    setCourseGradeMinState(v);
   }, []);
   const setCourseGradeMax = useCallback((v: string) => {
-    filtersSnapshot.courseGradeMax = v; setCourseGradeMaxState(v);
+    filtersSnapshot.courseGradeMax = v;
+    setCourseGradeMaxState(v);
   }, []);
   const setSearchValue = useCallback((v: string) => {
-    filtersSnapshot.searchValue = v; setSearchValueState(v);
+    filtersSnapshot.searchValue = v;
+    setSearchValueState(v);
   }, []);
 
   const applyAssignmentGradeLimits = useCallback(
@@ -185,24 +195,37 @@ export const FiltersProvider = ({ children }: FiltersProviderProps) => {
   const resetFilters = useCallback((filterNames: string[]) => {
     filterNames.forEach((name) => {
       switch (name) {
-        case 'assignmentType': setAssignmentType(initialFilters.assignmentType); break;
-        case 'assignment': setAssignment(initialFilters.assignment); break;
-        case 'cohort': setCohort(initialFilters.cohort); break;
-        case 'track': setTrack(initialFilters.track); break;
+        case 'assignmentType':
+          setAssignmentType(initialFilters.assignmentType);
+          break;
+        case 'assignment':
+          setAssignment(initialFilters.assignment);
+          break;
+        case 'cohort':
+          setCohort(initialFilters.cohort);
+          break;
+        case 'track':
+          setTrack(initialFilters.track);
+          break;
         case 'includeCourseRoleMembers':
-          setIncludeCourseRoleMembers(initialFilters.includeCourseRoleMembers); break;
+          setIncludeCourseRoleMembers(initialFilters.includeCourseRoleMembers);
+          break;
         case 'assignmentGradeMin':
           setAssignmentGradeMin(initialFilters.assignmentGradeMin);
-          setAppliedAssignmentGradeMin(initialFilters.assignmentGradeMin); break;
+          setAppliedAssignmentGradeMin(initialFilters.assignmentGradeMin);
+          break;
         case 'assignmentGradeMax':
           setAssignmentGradeMax(initialFilters.assignmentGradeMax);
-          setAppliedAssignmentGradeMax(initialFilters.assignmentGradeMax); break;
+          setAppliedAssignmentGradeMax(initialFilters.assignmentGradeMax);
+          break;
         case 'courseGradeMin':
           setCourseGradeMin(initialFilters.courseGradeMin);
-          setAppliedCourseGradeMin(initialFilters.courseGradeMin); break;
+          setAppliedCourseGradeMin(initialFilters.courseGradeMin);
+          break;
         case 'courseGradeMax':
           setCourseGradeMax(initialFilters.courseGradeMax);
-          setAppliedCourseGradeMax(initialFilters.courseGradeMax); break;
+          setAppliedCourseGradeMax(initialFilters.courseGradeMax);
+          break;
         default: break;
       }
     });
