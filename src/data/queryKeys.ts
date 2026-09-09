@@ -7,7 +7,7 @@
 // caches independently per course and mutations can invalidate a whole course
 // subtree via a broad prefix. The array shapes match the legacy
 // `gradebookQueryKeys` so cache identity / invalidation is preserved.
-const BASE_KEY = ['gradebook'] as const;
+export const BASE_KEY = ['gradebook'] as const;
 
 /** Roles-based "can view the gradebook" permission gate (the fetch-cascade root). */
 export const rolesQueryKeys = {

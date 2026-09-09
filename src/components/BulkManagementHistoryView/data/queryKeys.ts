@@ -1,4 +1,4 @@
-const BASE_KEY = ['gradebook'] as const;
+import { BASE_KEY } from '@src/data/queryKeys';
 
 /** Bulk grade-override upload history for the course. */
 export const bulkOperationHistoryQueryKeys = {

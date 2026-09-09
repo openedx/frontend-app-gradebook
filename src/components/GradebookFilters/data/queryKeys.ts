@@ -1,4 +1,4 @@
-const BASE_KEY = ['gradebook'] as const;
+import { BASE_KEY } from '@src/data/queryKeys';
 
 /** Cohorts available for the course (cohort filter dropdown). */
 export const cohortsQueryKeys = {

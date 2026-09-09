@@ -1,4 +1,4 @@
-const BASE_KEY = ['gradebook'] as const;
+import { BASE_KEY } from '@src/data/queryKeys';
 
 /**
  * The main gradebook rows. The base key is a prefix of each paged key (see
