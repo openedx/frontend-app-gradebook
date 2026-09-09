@@ -21,10 +21,6 @@ const isClientError = (error: unknown): boolean => {
 /**
  * Application-wide React Query client.
  *
- * `@edx/frontend-platform`'s `AppProvider` does not supply a
- * `QueryClientProvider` (unlike the `@openedx/frontend-base` shell used by the
- * reference apps), so the gradebook owns and mounts this client itself.
- *
  * Defaults are promoted here (rather than repeated per hook) to keep individual
  * query hooks lean: cache server data for 5 minutes and skip retries on 4xx.
  */
