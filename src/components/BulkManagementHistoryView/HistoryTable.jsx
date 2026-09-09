@@ -51,11 +51,6 @@ HistoryTable.propTypes = {
   })),
 };
 
-// export const mapStateToProps = (state) => ({
-//   bulkManagementHistory: selectors.grades.bulkManagementHistoryEntries(state),
-// });
-// export default connect(mapStateToProps)(HistoryTable);
-
 /**
  * <HistoryTableContainer />
  * Supplies the bulk-management history (now from React Query) to the
