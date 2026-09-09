@@ -4,6 +4,7 @@ import {
   OverlayTrigger,
   Tooltip,
 } from '@openedx/paragon';
+import { InfoOutline } from '@openedx/paragon/icons';
 
 import { StrictDict } from '@src/utils';
 
@@ -34,7 +35,7 @@ const TotalGradeLabelReplacement = () => {
           {formatMessage(messages.totalGradeHeading)}
           <div id="courseGradeTooltipIcon">
             <Icon
-              className="fa fa-info-circle"
+              src={InfoOutline}
               screenReaderText={formatMessage(messages.totalGradePercentage)}
             />
           </div>

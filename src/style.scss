@@ -7,12 +7,6 @@
 // this single declaration covers all of them.
 @use "@openedx/paragon/styles/css/core/custom-media-breakpoints.css";
 
-// Tech debt: kept for the handful of `<Icon className="fa fa-…" />` sites
-// (GradebookFilters, SpinnerIcon, LabelReplacements). Migrate those to
-// `@fortawesome/react-fontawesome` and remove this line + the `font-awesome`
-// dependency.
-@use "font-awesome/scss/font-awesome";
-
 @use "./components/GradesView/GradesView";
 @use "./components/BulkManagementHistoryView/BulkManagementHistoryView";
 @use "./components/WithSidebar/WithSidebar";

@@ -1,4 +1,4 @@
-import { Icon } from '@openedx/paragon';
+import { Spinner } from '@openedx/paragon';
 
 import { useShouldShowSpinner } from './data/hooks';
 
@@ -11,7 +11,7 @@ export const SpinnerIcon = () => {
   const show = useShouldShowSpinner();
   return show && (
     <div className="spinner-overlay">
-      <Icon className="fa fa-spinner fa-spin fa-5x color-black" />
+      <Spinner animation="border" variant="dark" screenReaderText="loading" />
     </div>
   );
 };
