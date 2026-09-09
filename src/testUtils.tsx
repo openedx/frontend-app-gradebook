@@ -27,9 +27,7 @@ import { GradebookUiProvider } from '@src/data/gradebookUiContext';
  * `jest.mock('@openedx/frontend-base', ...)`; lazy so the per-file mock (hoisted
  * above imports) is in effect by the time this is called.
  */
-export const mockHttpClient = (): jest.Mock => (
-  jest.requireMock('@openedx/frontend-base').getAuthenticatedHttpClient
-);
+export const mockHttpClient = (): jest.Mock => jest.requireMock('@openedx/frontend-base').getAuthenticatedHttpClient;
 
 /** The standard authenticated user used across tests. */
 export const authenticatedUser = {

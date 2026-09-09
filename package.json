@@ -83,6 +83,7 @@
   "@testing-library/jest-dom": "^6.6.4",
   "@testing-library/react": "^16.3.0",
   "@testing-library/user-event": "^14.6.1",
+  "@types/jest": "^29.5.14",
   "es-check": "^2.3.0",
   "fetch-mock": "^12.2.0",
   "identity-obj-proxy": "^3.0.0",
