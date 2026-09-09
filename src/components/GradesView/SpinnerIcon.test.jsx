@@ -1,4 +1,4 @@
-import { render } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 
 import { useShouldShowSpinner } from './data/hooks';
 import SpinnerIcon from './SpinnerIcon';
@@ -15,12 +15,13 @@ describe('SpinnerIcon', () => {
   it('does not render if show: false', () => {
     useShouldShowSpinner.mockReturnValueOnce(false);
     const { container } = render(<SpinnerIcon />);
-    expect(container.querySelector('.fa.fa-spinner')).not.toBeInTheDocument();
+    expect(container.querySelector('.spinner-overlay')).not.toBeInTheDocument();
   });
 
   it('displays spinner overlay with spinner icon', () => {
     useShouldShowSpinner.mockReturnValueOnce(true);
     const { container } = render(<SpinnerIcon />);
-    expect(container.querySelector('.fa.fa-spinner')).toBeInTheDocument();
+    expect(container.querySelector('.spinner-overlay')).toBeInTheDocument();
+    expect(screen.getByText('loading')).toBeInTheDocument();
   });
 });
