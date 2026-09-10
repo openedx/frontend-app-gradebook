@@ -62,6 +62,13 @@ const setModalState = createAction('setModalState', (modalState) => ({
 const setShowImportSuccessToast = createAction('setShowImportSuccessToast');
 
 /**
+ * setShowImportErrorToast(shouldShow)
+ * Set whether or not to show the Import Grades error toast
+ * @param {bool} shouldShow - should show the toast?
+ */
+const setShowImportErrorToast = createAction('setShowImportErrorToast');
+
+/**
  * setView(viewId)
  * sets the UI to display the tab indcated by the passed view id
  * @param {string} viewId - view id as set in app constants
@@ -76,6 +83,7 @@ export default StrictDict({
   setModalState,
   setModalStateFromTable,
   setSearchValue,
+  setShowImportErrorToast,
   setShowImportSuccessToast,
   setView,
 });

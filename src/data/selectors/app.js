@@ -111,6 +111,7 @@ const simpleSelectors = simpleSelectorFactory(
     'courseId',
     'filters',
     'searchValue',
+    'showImportErrorToast',
     'showImportSuccessToast',
   ],
 );
