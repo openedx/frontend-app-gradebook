@@ -65,16 +65,16 @@ jest.mock('./apiHook', () => ({
   useGradeOverrideHistory: jest.fn(),
 }));
 
-const useIsMutatingMock = useIsMutating as unknown as jest.Mock;
-const useQueryClientMock = useQueryClient as unknown as jest.Mock;
+const useIsMutatingMock = useIsMutating as jest.Mock;
+const useQueryClientMock = useQueryClient as jest.Mock;
 const useParamsMock = useParams as jest.Mock;
-const useFiltersMock = useFilters as unknown as jest.Mock;
-const useGradebookUiMock = useGradebookUi as unknown as jest.Mock;
-const useCanViewGradebookMock = useCanViewGradebook as unknown as jest.Mock;
-const useSelectedCohortEntryMock = useSelectedCohortEntry as unknown as jest.Mock;
-const useSelectedTrackEntryMock = useSelectedTrackEntry as unknown as jest.Mock;
-const useGradesDataMock = useGradesData as unknown as jest.Mock;
-const useGradeOverrideHistoryMock = useGradeOverrideHistory as unknown as jest.Mock;
+const useFiltersMock = useFilters as jest.Mock;
+const useGradebookUiMock = useGradebookUi as jest.Mock;
+const useCanViewGradebookMock = useCanViewGradebook as jest.Mock;
+const useSelectedCohortEntryMock = useSelectedCohortEntry as jest.Mock;
+const useSelectedTrackEntryMock = useSelectedTrackEntry as jest.Mock;
+const useGradesDataMock = useGradesData as jest.Mock;
+const useGradeOverrideHistoryMock = useGradeOverrideHistory as jest.Mock;
 
 const results = [{
   section_breakdown: [

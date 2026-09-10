@@ -6,8 +6,8 @@ jest.mock('@src/data/services/lms', () => ({
   api: { fetch: { cohorts: jest.fn(), tracks: jest.fn() } },
 }));
 
-const cohortsMock = lms.api.fetch.cohorts as jest.Mock;
-const tracksMock = lms.api.fetch.tracks as jest.Mock;
+const cohortsMock = jest.mocked(lms.api.fetch.cohorts);
+const tracksMock = jest.mocked(lms.api.fetch.tracks);
 
 describe('GradebookFilters/data api', () => {
   beforeEach(() => jest.clearAllMocks());

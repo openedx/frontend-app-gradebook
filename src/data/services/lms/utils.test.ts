@@ -9,7 +9,7 @@ jest.mock('@openedx/frontend-base', () => ({
   getAuthenticatedHttpClient: jest.fn(),
 }));
 
-const httpMock = getAuthenticatedHttpClient as jest.Mock;
+const httpMock = jest.mocked(getAuthenticatedHttpClient);
 
 describe('lms/utils', () => {
   beforeEach(() => jest.clearAllMocks());

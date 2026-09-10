@@ -20,9 +20,9 @@ jest.mock('./api', () => ({
   getAssignmentTypes: jest.fn(),
 }));
 
-const useParamsMock = useParams as jest.Mock;
-const canViewMock = getCanUserViewGradebook as jest.Mock;
-const assignmentTypesMock = getAssignmentTypes as jest.Mock;
+const useParamsMock = jest.mocked(useParams);
+const canViewMock = jest.mocked(getCanUserViewGradebook);
+const assignmentTypesMock = jest.mocked(getAssignmentTypes);
 
 const setCourse = (courseId: string | undefined) => {
   useParamsMock.mockReturnValue({ courseId });

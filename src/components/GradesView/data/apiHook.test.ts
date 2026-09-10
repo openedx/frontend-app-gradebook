@@ -49,14 +49,14 @@ jest.mock('./api', () => ({
   getGradeOverrideHistory: jest.fn(),
 }));
 
-const useParamsMock = useParams as jest.Mock;
-const useGradebookUiMock = useGradebookUi as jest.Mock;
-const useCourseIdWithGateMock = useCourseIdWithGate as jest.Mock;
-const getGradesMock = getGrades as jest.Mock;
-const getGradesPageMock = getGradesPage as jest.Mock;
-const getGradeOverrideHistoryMock = getGradeOverrideHistory as jest.Mock;
-const updateGradebookDataMock = lms.api.updateGradebookData as jest.Mock;
-const uploadGradeCsvMock = lms.api.uploadGradeCsv as jest.Mock;
+const useParamsMock = jest.mocked(useParams);
+const useGradebookUiMock = jest.mocked(useGradebookUi);
+const useCourseIdWithGateMock = jest.mocked(useCourseIdWithGate);
+const getGradesMock = jest.mocked(getGrades);
+const getGradesPageMock = jest.mocked(getGradesPage);
+const getGradeOverrideHistoryMock = jest.mocked(getGradeOverrideHistory);
+const updateGradebookDataMock = jest.mocked(lms.api.updateGradebookData);
+const uploadGradeCsvMock = jest.mocked(lms.api.uploadGradeCsv);
 
 const renderQueryHook = <T,>(hook: () => T) => renderHook(hook, {
   wrapper: createQueryClientWrapper(),

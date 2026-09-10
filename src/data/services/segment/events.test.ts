@@ -16,7 +16,7 @@ jest.mock('@openedx/frontend-base', () => ({
   sendTrackEvent: jest.fn(),
 }));
 
-const sendTrackEventMock = sendTrackEvent as jest.Mock;
+const sendTrackEventMock = jest.mocked(sendTrackEvent);
 
 describe('segment tracking events', () => {
   beforeEach(() => {

@@ -10,8 +10,8 @@ jest.mock('@src/data/services/lms', () => ({
   },
 }));
 
-const rolesMock = lms.api.fetch.roles as jest.Mock;
-const assignmentTypesMock = lms.api.fetch.assignmentTypes as jest.Mock;
+const rolesMock = jest.mocked(lms.api.fetch.roles);
+const assignmentTypesMock = jest.mocked(lms.api.fetch.assignmentTypes);
 
 describe('gradebook data api', () => {
   beforeEach(() => {

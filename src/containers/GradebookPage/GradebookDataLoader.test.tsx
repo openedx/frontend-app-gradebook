@@ -18,9 +18,9 @@ jest.mock('@src/data/gradebookUiContext', () => ({
   useGradebookUi: jest.fn(),
 }));
 
-const useGradesMock = useGrades as jest.Mock;
-const useCourseIdWithGateMock = useCourseIdWithGate as unknown as jest.Mock;
-const useGradebookUiMock = useGradebookUi as unknown as jest.Mock;
+const useGradesMock = jest.mocked(useGrades);
+const useCourseIdWithGateMock = jest.mocked(useCourseIdWithGate);
+const useGradebookUiMock = jest.mocked(useGradebookUi);
 
 describe('GradebookDataLoader', () => {
   beforeEach(() => {

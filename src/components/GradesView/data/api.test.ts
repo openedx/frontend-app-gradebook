@@ -21,9 +21,9 @@ jest.mock('./utils', () => ({
   formatGradeOverrideForDisplay: (rows: unknown[]) => rows.map((_, i) => ({ i })),
 }));
 
-const gradebookDataMock = lms.api.fetch.gradebookData as jest.Mock;
-const gradeOverrideHistoryMock = lms.api.fetch.gradeOverrideHistory as jest.Mock;
-const httpMock = getAuthenticatedHttpClient as jest.Mock;
+const gradebookDataMock = jest.mocked(lms.api.fetch.gradebookData);
+const gradeOverrideHistoryMock = jest.mocked(lms.api.fetch.gradeOverrideHistory);
+const httpMock = jest.mocked(getAuthenticatedHttpClient);
 
 describe('GradesView/data api', () => {
   beforeEach(() => {

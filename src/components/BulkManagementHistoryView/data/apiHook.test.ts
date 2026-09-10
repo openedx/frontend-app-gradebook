@@ -15,10 +15,10 @@ jest.mock('@src/data/apiHook', () => ({
 jest.mock('./api', () => ({ getBulkOperationHistory: jest.fn() }));
 jest.mock('./utils', () => ({ transformHistoryEntry: jest.fn((e) => ({ shaped: e.id })) }));
 
-const useAssignmentTypesMock = useAssignmentTypes as unknown as jest.Mock;
-const useCourseIdWithGateMock = useCourseIdWithGate as unknown as jest.Mock;
+const useAssignmentTypesMock = useAssignmentTypes as jest.Mock;
+const useCourseIdWithGateMock = useCourseIdWithGate as jest.Mock;
 const getBulkOperationHistoryMock = getBulkOperationHistory as jest.Mock;
-const transformHistoryEntryMock = transformHistoryEntry as unknown as jest.Mock;
+const transformHistoryEntryMock = transformHistoryEntry as jest.Mock;
 
 const render = <T,>(hook: () => T) => renderHook(hook, {
   wrapper: createQueryClientWrapper(),

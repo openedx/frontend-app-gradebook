@@ -6,7 +6,7 @@ jest.mock('@src/data/services/lms', () => ({
   api: { fetch: { gradeBulkOperationHistory: jest.fn() } },
 }));
 
-const gradeBulkOperationHistoryMock = lms.api.fetch.gradeBulkOperationHistory as jest.Mock;
+const gradeBulkOperationHistoryMock = jest.mocked(lms.api.fetch.gradeBulkOperationHistory);
 
 describe('BulkManagementHistoryView/data api', () => {
   beforeEach(() => jest.clearAllMocks());
