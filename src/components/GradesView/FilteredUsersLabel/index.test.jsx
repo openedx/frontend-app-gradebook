@@ -1,47 +1,29 @@
 import { screen } from '@testing-library/react';
 
-import { selectors } from 'data/redux/hooks';
-
+import { renderWithAllProviders } from '@src/testUtils';
+import { useUserCounts } from '../data/hooks';
 import FilteredUsersLabel from '.';
-import { renderWithIntl } from '../../../testUtilsExtra';
 
-jest.mock('data/redux/hooks', () => ({
-  selectors: {
-    grades: {
-      useUserCounts: jest.fn(),
-    },
-  },
+jest.mock('../data/hooks', () => ({
+  ...jest.requireActual('../data/hooks'),
+  useUserCounts: jest.fn(),
 }));
 
-const userCounts = {
-  filteredUsersCount: 100,
-  totalUsersCount: 123,
-};
-selectors.grades.useUserCounts.mockReturnValue(userCounts);
-
-describe('FilteredUsersLabel component', () => {
+describe('FilteredUsersLabel', () => {
   beforeEach(() => {
     jest.clearAllMocks();
   });
-  describe('behavior', () => {
-    it('initializes redux hooks', () => {
-      renderWithIntl(<FilteredUsersLabel />);
-      expect(selectors.grades.useUserCounts).toHaveBeenCalled();
-    });
+
+  it('renders null when totalUsersCount is 0', () => {
+    useUserCounts.mockReturnValue({ filteredUsersCount: 0, totalUsersCount: 0 });
+    const { container } = renderWithAllProviders(<FilteredUsersLabel />);
+    expect(container.firstChild).toBeNull();
   });
-  describe('render', () => {
-    it('null render if totalUsersCount is 0', () => {
-      selectors.grades.useUserCounts.mockReturnValueOnce({
-        ...userCounts,
-        totalUsersCount: 0,
-      });
-      const { container } = renderWithIntl(<FilteredUsersLabel />);
-      expect(container.firstChild).toBeNull();
-    });
-    it('renders users count correctly', () => {
-      renderWithIntl(<FilteredUsersLabel />);
-      expect(screen.getByText((text) => text.includes(userCounts.filteredUsersCount))).toBeInTheDocument();
-      expect(screen.getByText((text) => text.includes(userCounts.totalUsersCount))).toBeInTheDocument();
-    });
+
+  it('renders both filtered and total counts', () => {
+    useUserCounts.mockReturnValue({ filteredUsersCount: 100, totalUsersCount: 123 });
+    renderWithAllProviders(<FilteredUsersLabel />);
+    expect(screen.getByText((text) => text.includes('100'))).toBeInTheDocument();
+    expect(screen.getByText((text) => text.includes('123'))).toBeInTheDocument();
   });
 });

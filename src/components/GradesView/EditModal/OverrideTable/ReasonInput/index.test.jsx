@@ -1,31 +1,43 @@
-import { render, screen } from '@testing-library/react';
+import { screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 
-import useReasonInputData from './hooks';
-import ReasonInput from '.';
+import { renderWithAllProviders } from '@src/testUtils';
+import { useGradebookUi } from '@src/data/gradebookUiContext';
+import ReasonInput, { controlTestId } from '.';
 
-jest.mock('./hooks', () => jest.fn());
+jest.mock('@src/data/gradebookUiContext', () => ({
+  ...jest.requireActual('@src/data/gradebookUiContext'),
+  useGradebookUi: jest.fn(),
+}));
 
-const hookProps = {
-  ref: jest.fn().mockName('hook.ref'),
-  onChange: jest.fn().mockName('hook.onChange'),
-  value: 'test-value',
-};
-useReasonInputData.mockReturnValue(hookProps);
+describe('ReasonInput', () => {
+  const setModalState = jest.fn();
 
-describe('ReasonInput component', () => {
+  const setup = ({ reasonForChange = '' } = {}) => {
+    useGradebookUi.mockReturnValue({
+      modalState: { reasonForChange },
+      setModalState,
+    });
+    return renderWithAllProviders(<ReasonInput />);
+  };
+
   beforeEach(() => {
     jest.clearAllMocks();
-    render(<ReasonInput />);
   });
-  describe('behavior', () => {
-    it('initializes hook data', () => {
-      expect(useReasonInputData).toHaveBeenCalled();
-    });
+
+  it('renders the input with the current reason value', () => {
+    setup({ reasonForChange: 'Late submission' });
+    expect(screen.getByTestId(controlTestId)).toHaveValue('Late submission');
   });
-  describe('renders', () => {
-    it('input correctly', () => {
-      expect(screen.getByRole('textbox')).toBeInTheDocument();
-      expect(screen.getByRole('textbox')).toHaveValue(hookProps.value);
-    });
+
+  it('focuses the input on mount', () => {
+    setup();
+    expect(screen.getByTestId(controlTestId)).toHaveFocus();
+  });
+
+  it('updates modal state when the input changes', async () => {
+    setup({ reasonForChange: 'Late' });
+    await userEvent.type(screen.getByTestId(controlTestId), '!');
+    expect(setModalState).toHaveBeenCalledWith({ reasonForChange: 'Late!' });
   });
 });

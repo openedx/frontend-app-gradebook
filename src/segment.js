@@ -1,6 +1,6 @@
 // The code in this file is from Segment's website:
 // https://segment.com/docs/sources/website/analytics.js/quickstart/
-import { getConfig } from '@edx/frontend-platform';
+import { getSiteConfig } from '@openedx/frontend-base';
 
 (function () {
   // Create a queue, but don't obliterate an existing one!
@@ -55,8 +55,7 @@ import { getConfig } from '@edx/frontend-platform';
   };
 
   // For each of our methods, generate a queueing stub.
-  for (let i = 0; i < analytics.methods.length; i++) {
-    const key = analytics.methods[i];
+  for (const key of analytics.methods) {
     analytics[key] = analytics.factory(key);
   }
 
@@ -81,5 +80,5 @@ import { getConfig } from '@edx/frontend-platform';
 
   // Load Analytics.js with your key, which will automatically
   // load the tools you've enabled for your account. Boosh!
-  analytics.load(getConfig().SEGMENT_KEY);
+  analytics.load(getSiteConfig().segmentKey);
 }());

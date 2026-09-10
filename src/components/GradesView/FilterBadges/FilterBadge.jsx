@@ -1,10 +1,9 @@
-import React from 'react';
 import PropTypes from 'prop-types';
 
 import { Button } from '@openedx/paragon';
-import { useIntl } from '@edx/frontend-platform/i18n';
+import { useIntl } from '@openedx/frontend-base';
 
-import { selectors } from 'data/redux/hooks';
+import { useFilterBadgeConfig } from '../data/hooks';
 
 /**
  * FilterBadge
@@ -12,7 +11,7 @@ import { selectors } from 'data/redux/hooks';
  * If showValue is true, it will also display the included value.
  * @param {func} handleClose - close/dismiss filter event, taking a list of filternames
  *   to reset when the filter badge closes.
- * @param {string} filterName - api filter name (for redux connector)
+ * @param {string} filterName - api filter name
  */
 export const FilterBadge = ({
   filterName,
@@ -25,7 +24,7 @@ export const FilterBadge = ({
     hideValue,
     value,
     connectedFilters,
-  } = selectors.root.useFilterBadgeConfig(filterName);
+  } = useFilterBadgeConfig(filterName);
   if (isDefault) {
     return null;
   }

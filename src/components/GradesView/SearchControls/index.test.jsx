@@ -1,5 +1,5 @@
-import React from 'react';
-import { initializeMocks, render, screen } from 'testUtilsExtra';
+import { initializeMocks, renderWithAllProviders } from '@src/testUtils';
+import { screen } from '@testing-library/react';
 
 import useSearchControlsData from './hooks';
 import SearchControls from '.';
@@ -18,7 +18,7 @@ useSearchControlsData.mockReturnValue(hookProps);
 describe('SearchControls component', () => {
   beforeEach(() => {
     initializeMocks();
-    render(<SearchControls />);
+    renderWithAllProviders(<SearchControls />);
     jest.clearAllMocks();
   });
   describe('render', () => {

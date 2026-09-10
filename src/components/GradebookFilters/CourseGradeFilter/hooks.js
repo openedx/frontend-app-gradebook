@@ -1,29 +1,42 @@
-import { actions, selectors, thunkActions } from 'data/redux/hooks';
+import { useFilters } from '@src/data/filtersContext';
+import { trackFilterApplied } from '@src/data/services/segment/events';
+import { useRefetchGrades } from '@src/components/GradesView/data/hooks';
+
+import { useAreCourseGradeFiltersValid } from '../data/hooks';
 
 export const useCourseGradeFilterData = ({
   updateQueryParams,
 }) => {
-  const isDisabled = !selectors.app.useAreCourseGradeFiltersValid();
-  const localCourseLimits = selectors.app.useCourseGradeLimits();
-  const fetchGrades = thunkActions.grades.useFetchGrades();
-  const setLocalFilter = actions.app.useSetLocalFilter();
-  const updateFilter = actions.filters.useUpdateCourseGradeLimits();
+  const isDisabled = !useAreCourseGradeFiltersValid();
+  const {
+    courseGradeMin,
+    courseGradeMax,
+    setCourseGradeMin,
+    setCourseGradeMax,
+    applyCourseGradeLimits,
+  } = useFilters();
+  const fetchGrades = useRefetchGrades();
 
   const handleApplyClick = () => {
-    updateFilter(localCourseLimits);
+    const localCourseLimits = { courseGradeMin, courseGradeMax };
+    applyCourseGradeLimits(localCourseLimits);
+    trackFilterApplied(localCourseLimits);
     fetchGrades();
     updateQueryParams(localCourseLimits);
   };
 
-  const { courseGradeMin, courseGradeMax } = localCourseLimits;
   return {
     max: {
       value: courseGradeMax,
-      onChange: (e) => setLocalFilter({ courseGradeMax: e.target.value }),
+      onChange: (e) => {
+        setCourseGradeMax(e.target.value);
+      },
     },
     min: {
       value: courseGradeMin,
-      onChange: (e) => setLocalFilter({ courseGradeMin: e.target.value }),
+      onChange: (e) => {
+        setCourseGradeMin(e.target.value);
+      },
     },
     handleApplyClick,
     isDisabled,

@@ -1,160 +1,58 @@
-import React from 'react';
-import { render, screen, initializeMocks } from 'testUtilsExtra';
+import { screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 
-import NetworkButton from 'components/NetworkButton';
-import ImportGradesButton from '../ImportGradesButton';
+import { renderWithAllProviders } from '@src/testUtils';
+import { useShowBulkManagement } from '@src/data/apiHook';
+import { useGradeExportUrl } from '../data/hooks';
+import { trackGradesReportDownloaded } from '@src/data/services/segment/events';
+import { BulkManagementControls } from '.';
 
-import { BulkManagementControls } from './index';
-import useBulkManagementControlsData from './hooks';
-import messages from './messages';
-
-jest.mock('components/NetworkButton', () => jest.fn(() => <div data-testid="network-button">NetworkButton</div>));
-jest.mock('../ImportGradesButton', () => jest.fn(() => (
-  <div data-testid="import-grades-button">ImportGradesButton</div>
-)));
-jest.mock('./hooks', () => jest.fn());
-
-initializeMocks();
+jest.mock('@src/data/apiHook', () => ({
+  ...jest.requireActual('@src/data/apiHook'),
+  useShowBulkManagement: jest.fn(),
+}));
+jest.mock('../data/hooks', () => ({
+  ...jest.requireActual('../data/hooks'),
+  useGradeExportUrl: jest.fn(),
+}));
+jest.mock('@src/data/services/segment/events', () => ({
+  ...jest.requireActual('@src/data/services/segment/events'),
+  trackGradesReportDownloaded: jest.fn(),
+}));
+jest.mock('@src/components/NetworkButton', () => ({ onClick }) => (
+    <button type="button" onClick={onClick} data-testid="network-button">click</button>
+  ));
+jest.mock('../ImportGradesButton', () => () => <div data-testid="import-grades-button" />);
 
 describe('BulkManagementControls', () => {
-  const mockHandleClickExportGrades = jest.fn();
-
   beforeEach(() => {
     jest.clearAllMocks();
+    useGradeExportUrl.mockReturnValue('https://example.com/grades.csv');
   });
 
-  describe('when show is false', () => {
-    beforeEach(() => {
-      useBulkManagementControlsData.mockReturnValue({
-        show: false,
-        handleClickExportGrades: mockHandleClickExportGrades,
-      });
-    });
-
-    it('renders nothing when show is false', () => {
-      render(<BulkManagementControls />);
-      expect(screen.queryByTestId('network-button')).not.toBeInTheDocument();
-      expect(
-        screen.queryByTestId('import-grades-button'),
-      ).not.toBeInTheDocument();
-    });
-
-    it('does not render NetworkButton when show is false', () => {
-      render(<BulkManagementControls />);
-      expect(NetworkButton).not.toHaveBeenCalled();
-    });
-
-    it('does not render ImportGradesButton when show is false', () => {
-      render(<BulkManagementControls />);
-      expect(ImportGradesButton).not.toHaveBeenCalled();
-    });
+  it('renders nothing when bulk management is off', () => {
+    useShowBulkManagement.mockReturnValue(false);
+    const { container } = renderWithAllProviders(<BulkManagementControls />);
+    expect(container).toBeEmptyDOMElement();
   });
 
-  describe('when show is true', () => {
-    beforeEach(() => {
-      useBulkManagementControlsData.mockReturnValue({
-        show: true,
-        handleClickExportGrades: mockHandleClickExportGrades,
-      });
-    });
-
-    it('renders the container div with correct class when show is true', () => {
-      render(<BulkManagementControls />);
-      const containerDiv = screen.getByTestId('network-button').parentElement;
-      expect(containerDiv).toHaveClass('d-flex');
-    });
-
-    it('renders NetworkButton with correct props', () => {
-      render(<BulkManagementControls />);
-
-      expect(NetworkButton).toHaveBeenCalledWith(
-        {
-          label: messages.downloadGradesBtn,
-          onClick: mockHandleClickExportGrades,
-        },
-        {},
-      );
-      expect(screen.getByTestId('network-button')).toBeInTheDocument();
-    });
-
-    it('renders ImportGradesButton', () => {
-      render(<BulkManagementControls />);
-
-      expect(ImportGradesButton).toHaveBeenCalledWith({}, {});
-      expect(screen.getByTestId('import-grades-button')).toBeInTheDocument();
-    });
-
-    it('calls handleClickExportGrades when NetworkButton is clicked', () => {
-      render(<BulkManagementControls />);
-
-      const networkButtonCall = NetworkButton.mock.calls[0][0];
-      const { onClick } = networkButtonCall;
-
-      onClick();
-      expect(mockHandleClickExportGrades).toHaveBeenCalledTimes(1);
-    });
-
-    it('passes correct label to NetworkButton', () => {
-      render(<BulkManagementControls />);
-
-      const networkButtonCall = NetworkButton.mock.calls[0][0];
-      expect(networkButtonCall.label).toBe(messages.downloadGradesBtn);
-    });
-
-    it('renders both buttons in the correct order', () => {
-      render(<BulkManagementControls />);
-
-      expect(NetworkButton).toHaveBeenCalled();
-      expect(ImportGradesButton).toHaveBeenCalled();
-
-      const networkButton = screen.getByTestId('network-button');
-      const importButton = screen.getByTestId('import-grades-button');
-
-      expect(networkButton).toBeInTheDocument();
-      expect(importButton).toBeInTheDocument();
-    });
+  it('renders the download + import buttons when bulk management is on', () => {
+    useShowBulkManagement.mockReturnValue(true);
+    renderWithAllProviders(<BulkManagementControls />);
+    expect(screen.getByTestId('network-button')).toBeInTheDocument();
+    expect(screen.getByTestId('import-grades-button')).toBeInTheDocument();
   });
 
-  describe('hook integration', () => {
-    it('calls useBulkManagementControlsData hook', () => {
-      useBulkManagementControlsData.mockReturnValue({
-        show: true,
-        handleClickExportGrades: mockHandleClickExportGrades,
-      });
+  it('tracks the download and navigates to the export URL on click', async () => {
+    useShowBulkManagement.mockReturnValue(true);
+    const assign = jest.fn();
+    // eslint-disable-next-line no-restricted-globals
+    Object.defineProperty(window, 'location', { value: { assign }, writable: true });
 
-      render(<BulkManagementControls />);
-      expect(useBulkManagementControlsData).toHaveBeenCalledTimes(1);
-    });
+    renderWithAllProviders(<BulkManagementControls />);
+    await userEvent.click(screen.getByTestId('network-button'));
 
-    it('uses the show value from hook to determine rendering', () => {
-      useBulkManagementControlsData.mockReturnValue({
-        show: false,
-        handleClickExportGrades: mockHandleClickExportGrades,
-      });
-
-      render(<BulkManagementControls />);
-      expect(screen.queryByTestId('network-button')).not.toBeInTheDocument();
-
-      useBulkManagementControlsData.mockReturnValue({
-        show: true,
-        handleClickExportGrades: mockHandleClickExportGrades,
-      });
-
-      render(<BulkManagementControls />);
-      expect(screen.getByTestId('network-button')).toBeInTheDocument();
-    });
-
-    it('passes handleClickExportGrades from hook to NetworkButton', () => {
-      const customHandler = jest.fn();
-      useBulkManagementControlsData.mockReturnValue({
-        show: true,
-        handleClickExportGrades: customHandler,
-      });
-
-      render(<BulkManagementControls />);
-
-      const networkButtonCall = NetworkButton.mock.calls[0][0];
-      expect(networkButtonCall.onClick).toBe(customHandler);
-    });
+    expect(trackGradesReportDownloaded).toHaveBeenCalled();
+    expect(assign).toHaveBeenCalledWith('https://example.com/grades.csv');
   });
 });

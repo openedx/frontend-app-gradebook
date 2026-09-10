@@ -1,14 +1,11 @@
-/* eslint-disable import/no-extraneous-dependencies */
-/* eslint-disable import/no-named-as-default */
-import React from 'react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 import FilterBadges from '.';
 
 const order = ['filter1', 'filter2', 'filter3'];
-jest.mock('data/constants/filters', () => ({
-  ...jest.requireActual('data/constants/filters'),
+jest.mock('@src/data/constants/filters', () => ({
+  ...jest.requireActual('@src/data/constants/filters'),
   badgeOrder: order,
 }));
 

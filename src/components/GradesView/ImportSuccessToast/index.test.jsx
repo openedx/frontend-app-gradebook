@@ -1,23 +1,8 @@
-import React from 'react';
-
-import { render, initializeMocks, screen } from 'testUtilsExtra';
+import { renderWithAllProviders, initializeMocks } from '@src/testUtils';
+import { screen } from '@testing-library/react';
 
 import ImportSuccessToast from '.';
 import useImportSuccessToastData from './hooks';
-
-jest.mock('data/redux/hooks', () => ({
-  actions: {
-    app: {
-      useSetView: jest.fn(),
-      useSetShowImportSuccessToast: jest.fn(),
-    },
-  },
-  selectors: {
-    app: {
-      useShowImportSuccessToast: jest.fn(),
-    },
-  },
-}));
 
 jest.mock('./hooks', () => jest.fn());
 
@@ -39,7 +24,7 @@ describe('ImportSuccessToast', () => {
       description: 'Import Successful! Grades will be updated momentarily.',
     });
 
-    render(<ImportSuccessToast />);
+    renderWithAllProviders(<ImportSuccessToast />);
 
     const toastRoot = document.getElementById('toast-root');
     expect(toastRoot).toBeInTheDocument();
@@ -61,7 +46,7 @@ describe('ImportSuccessToast', () => {
       description: 'Import Successful! Grades will be updated momentarily.',
     });
 
-    render(<ImportSuccessToast />);
+    renderWithAllProviders(<ImportSuccessToast />);
     const toastMessage = screen.getByText('Import Successful! Grades will be updated momentarily.');
     expect(toastMessage).toBeInTheDocument();
     expect(useImportSuccessToastData).toHaveBeenCalled();
@@ -81,7 +66,7 @@ describe('ImportSuccessToast', () => {
       description: 'Import Successful! Grades will be updated momentarily.',
     });
 
-    const { container } = render(<ImportSuccessToast />);
+    const { container } = renderWithAllProviders(<ImportSuccessToast />);
     expect(container).toBeInTheDocument();
     expect(useImportSuccessToastData).toHaveBeenCalled();
   });

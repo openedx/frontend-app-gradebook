@@ -1,4 +1,4 @@
-import { getLocale, isRtl } from '@edx/frontend-platform/i18n';
+import { getLocale, isRtl } from '@openedx/frontend-base';
 
 export const getLocalizedSlash = () => {
   // For fractional grades

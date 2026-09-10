@@ -1,51 +1,39 @@
-import React from 'react';
+import { screen } from '@testing-library/react';
 
-import selectors from 'data/selectors';
+import { renderWithAllProviders } from '@src/testUtils';
+import { useGradebookUi } from '@src/data/gradebookUiContext';
+import { BulkManagementAlerts } from './BulkManagementAlerts';
 
-import { BulkManagementAlerts, mapStateToProps } from './BulkManagementAlerts';
-import { renderWithIntl, screen } from '../../testUtilsExtra';
-
-jest.mock('data/selectors', () => ({
-  __esModule: true,
-  default: {
-    grades: {
-      bulkImportError: (state) => ({ bulkImportError: state }),
-      uploadSuccess: (state) => ({ uploadSuccess: state }),
-    },
-  },
+jest.mock('@src/data/gradebookUiContext', () => ({
+  ...jest.requireActual('@src/data/gradebookUiContext'),
+  useGradebookUi: jest.fn(),
 }));
 
-const errorMessage = 'Oh noooooo';
+const setup = ({ csvUploadSuccess = false, csvUploadErrorMessages = [] } = {}) => {
+  useGradebookUi.mockReturnValue({ csvUploadSuccess, csvUploadErrorMessages });
+  return renderWithAllProviders(<BulkManagementAlerts />);
+};
 
 describe('BulkManagementAlerts', () => {
-  describe('component', () => {
-    describe('states of the warnings', () => {
-      test('no alert shown', () => {
-        renderWithIntl(<BulkManagementAlerts bulkImportError="" uploadSuccess={false} />);
-        expect(document.querySelectorAll('.alert').length).toEqual(0);
-      });
-      test('Just success alert shown', () => {
-        renderWithIntl(<BulkManagementAlerts bulkImportError="" uploadSuccess />);
-        expect(document.querySelectorAll('.alert-success').length).toEqual(1);
-      });
-      test('Just error alert shown', () => {
-        renderWithIntl(<BulkManagementAlerts bulkImportError={errorMessage} uploadSuccess={false} />);
-        expect(document.querySelectorAll('.alert-danger').length).toEqual(1);
-        expect(screen.getByText(errorMessage)).toBeInTheDocument();
-      });
-    });
+  beforeEach(() => {
+    jest.clearAllMocks();
   });
-  describe('mapStateToProps', () => {
-    let mapped;
-    const testState = { a: 'puppy', named: 'Ember' };
-    beforeEach(() => {
-      mapped = mapStateToProps(testState);
-    });
-    test('bulkImportError from grades.bulkImportError', () => {
-      expect(mapped.bulkImportError).toEqual(selectors.grades.bulkImportError(testState));
-    });
-    test('uploadSuccess from grades.uploadSuccess', () => {
-      expect(mapped.uploadSuccess).toEqual(selectors.grades.uploadSuccess(testState));
-    });
+
+  it('renders no visible alerts by default', () => {
+    setup();
+    expect(document.querySelectorAll('.alert.show').length).toBe(0);
+  });
+
+  it('shows the success alert when csvUploadSuccess is true', () => {
+    setup({ csvUploadSuccess: true });
+    expect(document.querySelectorAll('.alert-success.show').length).toBe(1);
+  });
+
+  it('shows the error alert with joined error messages', () => {
+    setup({ csvUploadErrorMessages: ['bad file', 'other error'] });
+    expect(document.querySelectorAll('.alert-danger.show').length).toBe(1);
+    expect(
+      screen.getByText(/Errors while processing: bad file; other error;/),
+    ).toBeInTheDocument();
   });
 });

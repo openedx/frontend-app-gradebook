@@ -1,4 +1,5 @@
-import { render, initializeMocks, screen } from 'testUtilsExtra';
+import { renderWithAllProviders, initializeMocks } from '@src/testUtils';
+import { screen } from '@testing-library/react';
 
 import { BulkManagementHistoryView } from '.';
 import messages from './messages';
@@ -11,7 +12,7 @@ initializeMocks();
 describe('BulkManagementHistoryView', () => {
   describe('component', () => {
     beforeEach(() => {
-      render(<BulkManagementHistoryView />);
+      renderWithAllProviders(<BulkManagementHistoryView />);
     });
     describe('render alerts and heading', () => {
       it('heading - h4 loaded from messages', () => {

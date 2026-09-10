@@ -1,7 +1,6 @@
-import React from 'react';
 import PropTypes from 'prop-types';
 
-import { StrictDict } from 'utils';
+import { StrictDict } from '@src/utils';
 
 /**
  * Fields.Username

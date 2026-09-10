@@ -1,29 +1,24 @@
 import simpleSelectorFactory from './utils';
 
-describe('Redux utilities - creators', () => {
-  describe('simpleSelectors', () => {
-    const data = { a: 1, b: 2, c: 3 };
-    const state = {
-      testGroup: data,
-      other: 'stuff',
-    };
-    const transformer = ({ testGroup }) => testGroup;
+describe('simpleSelectorFactory', () => {
+  const transformer = (state) => state.slice;
+  const state = { slice: { a: 1, b: 2, c: 3 } };
 
-    test('given a list of strings, returns a dict w/ a simple selector per string', () => {
-      const keys = ['a', 'b'];
-      const selectors = simpleSelectorFactory(transformer, keys);
-      expect(Object.keys(selectors)).toEqual(['root', ...keys]);
-      expect(selectors.root(state)).toEqual(data);
-      expect(selectors.a(state)).toEqual(data.a);
-      expect(selectors.b(state)).toEqual(data.b);
-    });
-    test('given an object for keys, returns a dict w/ simple selector per key', () => {
-      const selectors = simpleSelectorFactory(transformer, data);
-      expect(Object.keys(selectors)).toEqual(['root', ...Object.keys(data)]);
-      expect(selectors.root(state)).toEqual(data);
-      expect(selectors.a(state)).toEqual(data.a);
-      expect(selectors.b(state)).toEqual(data.b);
-      expect(selectors.c(state)).toEqual(data.c);
-    });
+  it('creates one selector per key from an array', () => {
+    const selectors = simpleSelectorFactory(transformer, ['a', 'b']);
+    expect(selectors.a(state)).toBe(1);
+    expect(selectors.b(state)).toBe(2);
+  });
+
+  it('creates selectors from Object.keys when passed an object', () => {
+    const selectors = simpleSelectorFactory(transformer, { a: null, c: null });
+    expect(selectors.a(state)).toBe(1);
+    expect(selectors.c(state)).toBe(3);
+    expect(selectors.b).toBeUndefined();
+  });
+
+  it('exposes a `root` selector that returns the full transformed slice', () => {
+    const selectors = simpleSelectorFactory(transformer, ['a']);
+    expect(selectors.root(state)).toEqual({ a: 1, b: 2, c: 3 });
   });
 });

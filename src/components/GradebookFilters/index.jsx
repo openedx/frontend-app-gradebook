@@ -1,14 +1,16 @@
-import React from 'react';
 import PropTypes from 'prop-types';
-
 import {
   Collapsible,
   Icon,
   IconButton,
   Form,
 } from '@openedx/paragon';
-import { Close } from '@openedx/paragon/icons';
-import { useIntl } from '@edx/frontend-platform/i18n';
+import { Close, FilterAlt } from '@openedx/paragon/icons';
+import { useIntl } from '@openedx/frontend-base';
+
+import { useGradebookUi } from '@src/data/gradebookUiContext';
+import { useFilters } from '@src/data/filtersContext';
+import { useRefetchGrades } from '@src/components/GradesView/data/hooks';
 
 import messages from './messages';
 import AssignmentTypeFilter from './AssignmentTypeFilter';
@@ -16,22 +18,27 @@ import AssignmentFilter from './AssignmentFilter';
 import AssignmentGradeFilter from './AssignmentGradeFilter';
 import CourseGradeFilter from './CourseGradeFilter';
 import StudentGroupsFilter from './StudentGroupsFilter';
-import useGradebookFiltersData from './hooks';
 
 export const GradebookFilters = ({ updateQueryParams }) => {
-  const {
-    closeMenu,
-    includeCourseTeamMembers,
-  } = useGradebookFiltersData({ updateQueryParams });
   const { formatMessage } = useIntl();
+  const { includeCourseRoleMembers, setIncludeCourseRoleMembers } = useFilters();
+  const { closeFilterMenu } = useGradebookUi();
+  const fetchGrades = useRefetchGrades();
+
+  const handleIncludeTeamMembersChange = ({ target: { checked } }) => {
+    setIncludeCourseRoleMembers(checked);
+    fetchGrades();
+    updateQueryParams({ includeCourseRoleMembers: checked });
+  };
+
   const collapsibleClassName = 'filter-group mb-3';
   return (
     <>
       <div className="filter-sidebar-header">
-        <h2><Icon className="fa fa-filter" /></h2>
+        <h2><Icon src={FilterAlt} /></h2>
         <IconButton
           className="p-1"
-          onClick={closeMenu}
+          onClick={closeFilterMenu}
           iconAs={Icon}
           src={Close}
           alt={formatMessage(messages.closeFilters)}
@@ -73,8 +80,8 @@ export const GradebookFilters = ({ updateQueryParams }) => {
         className={collapsibleClassName}
       >
         <Form.Checkbox
-          checked={includeCourseTeamMembers.value}
-          onChange={includeCourseTeamMembers.handleChange}
+          checked={includeCourseRoleMembers}
+          onChange={handleIncludeTeamMembersChange}
         >
           {formatMessage(messages.includeCourseTeamMembers)}
         </Form.Checkbox>

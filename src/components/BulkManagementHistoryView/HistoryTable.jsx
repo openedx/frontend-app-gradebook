@@ -1,12 +1,9 @@
-/* eslint-disable react/button-has-type, import/no-named-as-default */
-import React from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
 
 import { DataTable } from '@openedx/paragon';
 
-import { bulkManagementColumns } from 'data/constants/app';
-import selectors from 'data/selectors';
+import { bulkManagementColumns } from '@src/data/constants/app';
+import { useBulkManagementHistoryEntries } from './data/apiHook';
 
 import ResultsSummary from './ResultsSummary';
 
@@ -54,8 +51,14 @@ HistoryTable.propTypes = {
   })),
 };
 
-export const mapStateToProps = (state) => ({
-  bulkManagementHistory: selectors.grades.bulkManagementHistoryEntries(state),
-});
+/**
+ * <HistoryTableContainer />
+ * Supplies the bulk-management history (now from React Query) to the
+ * presentational <HistoryTable />.
+ */
+export const HistoryTableContainer = () => {
+  const bulkManagementHistory = useBulkManagementHistoryEntries();
+  return <HistoryTable bulkManagementHistory={bulkManagementHistory} />;
+};
 
-export default connect(mapStateToProps)(HistoryTable);
+export default HistoryTableContainer;

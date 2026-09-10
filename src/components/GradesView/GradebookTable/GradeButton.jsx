@@ -1,17 +1,19 @@
-import React from 'react';
 import PropTypes from 'prop-types';
 
 import { Button } from '@openedx/paragon';
 
-import { selectors, thunkActions } from 'data/redux/hooks';
-import transforms from 'data/redux/transforms';
+import { useAssignmentTypes, useCourseIdWithGate } from '@src/data/apiHook';
+import { useGradebookUi } from '@src/data/gradebookUiContext';
+import { subsectionGrade } from '../data/utils';
+import { useGradeData } from '../data/hooks';
 import * as module from './GradeButton';
 
 export const useGradeButtonData = ({ entry, subsection }) => {
-  const areGradesFrozen = selectors.assignmentTypes.useAreGradesFrozen();
-  const { gradeFormat } = selectors.grades.useGradeData();
-  const setModalState = thunkActions.app.useSetModalStateFromTable();
-  const label = transforms.grades.subsectionGrade({ gradeFormat, subsection })();
+  const { courseId, enabled } = useCourseIdWithGate();
+  const areGradesFrozen = useAssignmentTypes(courseId, { enabled }).data?.areGradesFrozen;
+  const { gradeFormat } = useGradeData();
+  const { setModalStateFromTable: setModalState } = useGradebookUi();
+  const label = subsectionGrade[gradeFormat](subsection);
 
   const onClick = () => {
     setModalState({

@@ -1,21 +1,27 @@
-/* eslint-disable react/sort-comp, react/button-has-type */
-import React from 'react';
 import PropTypes from 'prop-types';
 
-import { useIntl } from '@edx/frontend-platform/i18n';
+import { useIntl } from '@openedx/frontend-base';
+
+import { useFilters } from '@src/data/filtersContext';
+import { useAssignmentTypes, useCourseIdWithGate } from '@src/data/apiHook';
+import { useSelectableAssignmentLabels } from '@src/components/GradesView/data/hooks';
 
 import SelectGroup from '../SelectGroup';
 import messages from '../messages';
-import useAssignmentTypeFilterData from './hooks';
 
 export const AssignmentTypeFilter = ({ updateQueryParams }) => {
-  const {
-    assignmentTypes,
-    handleChange,
-    isDisabled,
-    selectedAssignmentType,
-  } = useAssignmentTypeFilterData({ updateQueryParams });
+  const { courseId, enabled } = useCourseIdWithGate();
+  const assignmentTypes = useAssignmentTypes(courseId, { enabled }).data?.assignmentTypes ?? [];
+  const assignmentFilterOptions = useSelectableAssignmentLabels();
+  const { assignmentType: selectedAssignmentType, setAssignmentType } = useFilters();
   const { formatMessage } = useIntl();
+
+  const handleChange = (event) => {
+    const assignmentType = event.target.value;
+    setAssignmentType(assignmentType);
+    updateQueryParams({ assignmentType });
+  };
+
   return (
     <div className="student-filters">
       <SelectGroup
@@ -23,7 +29,7 @@ export const AssignmentTypeFilter = ({ updateQueryParams }) => {
         label={formatMessage(messages.assignmentTypes)}
         value={selectedAssignmentType}
         onChange={handleChange}
-        disabled={isDisabled}
+        disabled={assignmentFilterOptions.length === 0}
         options={[
           <option key="0" value="">All</option>,
           ...assignmentTypes.map(entry => (

@@ -1,90 +1,77 @@
-import { views } from 'data/constants/app';
-import { actions, selectors } from 'data/redux/hooks';
+import {
+  useAssignmentTypes,
+  useCanViewGradebook,
+  useCourseIdWithGate,
+  useShowBulkManagement,
+} from '@src/data/apiHook';
+import { useGradebookUi } from '@src/data/gradebookUiContext';
+import { views } from '@src/data/constants/app';
 
 import messages from './messages';
 import useGradebookHeaderData from './hooks';
 
-jest.mock('data/redux/hooks', () => ({
-  actions: {
-    app: {
-      useSetView: jest.fn(),
-    },
-  },
-  selectors: {
-    app: {
-      useActiveView: jest.fn(),
-      useCourseId: jest.fn(),
-    },
-    assignmentTypes: {
-      useAreGradesFrozen: jest.fn(),
-    },
-    roles: {
-      useCanUserViewGradebook: jest.fn(),
-    },
-    root: {
-      useShowBulkManagement: jest.fn(),
-    },
-  },
+jest.mock('@src/data/apiHook', () => ({
+  ...jest.requireActual('@src/data/apiHook'),
+  useAssignmentTypes: jest.fn(),
+  useCanViewGradebook: jest.fn(),
+  useCourseIdWithGate: jest.fn(),
+  useShowBulkManagement: jest.fn(),
+}));
+jest.mock('@src/data/gradebookUiContext', () => ({
+  ...jest.requireActual('@src/data/gradebookUiContext'),
+  useGradebookUi: jest.fn(),
 }));
 
-const activeView = 'test-active-view';
-selectors.app.useActiveView.mockReturnValue(activeView);
-const courseId = 'test-course-id';
-selectors.app.useCourseId.mockReturnValue(courseId);
-const areGradesFrozen = 'test-are-grades-frozen';
-selectors.assignmentTypes.useAreGradesFrozen.mockReturnValue(areGradesFrozen);
-const canUserViewGradebook = 'test-can-user-view-gradebook';
-selectors.roles.useCanUserViewGradebook.mockReturnValue(canUserViewGradebook);
-const showBulkManagement = 'test-show-bulk-management';
-selectors.root.useShowBulkManagement.mockReturnValue(showBulkManagement);
+const primeMocks = ({
+  activeView = views.grades,
+  areGradesFrozen = false,
+  canView = true,
+  showBulkManagement = false,
+} = {}) => {
+  const setActiveView = jest.fn();
+  useGradebookUi.mockReturnValue({ activeView, setActiveView });
+  useCourseIdWithGate.mockReturnValue({ courseId: 'test-course', enabled: canView });
+  useAssignmentTypes.mockReturnValue({ data: { areGradesFrozen } });
+  useCanViewGradebook.mockReturnValue(canView);
+  useShowBulkManagement.mockReturnValue(showBulkManagement);
+  return { setActiveView };
+};
 
-const setView = jest.fn();
-actions.app.useSetView.mockReturnValue(setView);
-
-let out;
-describe('useGradebookHeaderData hooks', () => {
-  describe('initialization', () => {
-    it('initializes redux hooks', () => {
-      out = useGradebookHeaderData();
-      expect(selectors.app.useActiveView).toHaveBeenCalled();
-      expect(selectors.app.useCourseId).toHaveBeenCalled();
-      expect(selectors.assignmentTypes.useAreGradesFrozen).toHaveBeenCalled();
-      expect(selectors.roles.useCanUserViewGradebook).toHaveBeenCalled();
-      expect(selectors.root.useShowBulkManagement).toHaveBeenCalled();
-      expect(actions.app.useSetView).toHaveBeenCalled();
-    });
+describe('useGradebookHeaderData', () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
   });
-  describe('output', () => {
-    test('redux fields', () => {
-      out = useGradebookHeaderData();
-      expect(out.areGradesFrozen).toEqual(areGradesFrozen);
-      expect(out.canUserViewGradebook).toEqual(canUserViewGradebook);
-      expect(out.courseId).toEqual(courseId);
-      expect(out.showBulkManagement).toEqual(showBulkManagement);
-    });
-    describe('handleToggleViewClick', () => {
-      it('calls setView with bulkManagemnetHistory message if grades view is active', () => {
-        selectors.app.useActiveView.mockReturnValueOnce(views.grades);
-        out = useGradebookHeaderData();
-        out.handleToggleViewClick();
-        expect(setView).toHaveBeenCalledWith(views.bulkManagementHistory);
-      });
-      it('calls setView with grades view if grades view is not active', () => {
-        out = useGradebookHeaderData();
-        out.handleToggleViewClick();
-        expect(setView).toHaveBeenCalledWith(views.grades);
-      });
-    });
-    describe('toggleViewMessage', () => {
-      it('returns toActivityLog message if grades view is active', () => {
-        selectors.app.useActiveView.mockReturnValueOnce(views.grades);
-        out = useGradebookHeaderData();
-        expect(out.toggleViewMessage).toEqual(messages.toActivityLog);
-      });
-      it('returns toGradesView message if grades view is not active', () => {
-        out = useGradebookHeaderData();
-        expect(out.toggleViewMessage).toEqual(messages.toGradesView);
-      });
-    });
+
+  it('forwards courseId, areGradesFrozen, canView, and showBulkManagement', () => {
+    primeMocks({ areGradesFrozen: true, canView: true, showBulkManagement: true });
+    const out = useGradebookHeaderData();
+    expect(out.courseId).toBe('test-course');
+    expect(out.areGradesFrozen).toBe(true);
+    expect(out.canUserViewGradebook).toBe(true);
+    expect(out.showBulkManagement).toBe(true);
+  });
+
+  it('sets the toggle message to `toActivityLog` when the grades view is active', () => {
+    primeMocks({ activeView: views.grades });
+    const out = useGradebookHeaderData();
+    expect(out.toggleViewMessage).toBe(messages.toActivityLog);
+  });
+
+  it('sets the toggle message to `toGradesView` when the bulk-management view is active', () => {
+    primeMocks({ activeView: views.bulkManagementHistory });
+    const out = useGradebookHeaderData();
+    expect(out.toggleViewMessage).toBe(messages.toGradesView);
+  });
+
+  it('switches to bulk-management view from the grades view on toggle click', () => {
+    const { setActiveView } = primeMocks({ activeView: views.grades });
+    useGradebookHeaderData().handleToggleViewClick();
+    expect(setActiveView).toHaveBeenCalledWith(views.bulkManagementHistory);
+  });
+
+  it('switches back to the grades view from bulk-management on toggle click', () => {
+    const { setActiveView } = primeMocks({ activeView: views.bulkManagementHistory });
+    useGradebookHeaderData().handleToggleViewClick();
+    expect(setActiveView).toHaveBeenCalledWith(views.grades);
   });
 });

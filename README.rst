@@ -24,10 +24,10 @@ Should I use Gradebook in my course?
 What does this offer over the legacy gradebook?
 ================================================
 
-The micro-frontend offers a great deal more granularity when searching for problems, an easy interface for editing grades, an
+This frontend app offers a great deal more granularity when searching for problems, an easy interface for editing grades, an
 audit trail for seeing who edited what grade and what reason they gave (if any) for doing so.
 
-UsageProblems can be filtered by student as in the traditional gradebook, but can also be filtered by scores to see who
+Problems can be filtered by student as in the traditional gradebook, but can also be filtered by scores to see who
 scored within a certain range, and by assignment types (note: Not problem types, but categories like 'Exams' or
 'Homework').
 
@@ -60,7 +60,7 @@ To install gradebook into your project:
 
 .. code-block:: bash
 
-  npm i --save @edx/frontend-app-gradebook
+  npm i --save @openedx/frontend-app-gradebook
 
 Quickstart
 ==========
@@ -76,21 +76,21 @@ Cloning and Setup
 
 2. Use the version of Node specified in ``.nvmrc``
 
-3. Stop the Tutor devstack, if it's running:
+3. Stop Tutor, if it's running:
 
    .. code-block:: bash
 
      tutor dev stop
 
-4. Next, we need to tell Tutor that we're going to be running this repo in development mode, and it should be excluded from the mfe container that otherwise runs every MFE. Run this:
+4. Tell Tutor that we're going to be running this repo in development mode, so it should be excluded from the container that otherwise runs every frontend app. Run this:
 
    .. code-block:: bash
 
      tutor mounts add /path/to/frontend-app-gradebook
 
 5. Start Tutor in development mode. This command will start the LMS and Studio,
-   and other required MFEs like ``authn`` and ``account``, but will not start the
-   Gradebook MFE, which we're going to run on the host instead of in a container
+   and other required frontend apps like ``authn`` and ``account``, but will not start
+   Gradebook, which we're going to run on the host instead of in a container
    managed by Tutor. Run:
 
    .. code-block:: bash
@@ -115,22 +115,23 @@ Startup
 Running the UI Standalone
 ==========================
 
-To install the project please refer to the `MFE Development on Tutor <https://github.com/overhangio/tutor-mfe?tab=readme-ov-file#mfe-development>`_ instructions.
+To install the project please refer to the `Tutor MFE plugin <https://github.com/overhangio/tutor-mfe?tab=readme-ov-file#mfe-development>`_ instructions.
 
-When not mounted, gradebook will run in the shared MFE container at http://apps.local.openedx.io/gradebook/course-v1:edX+DemoX+Demo_Course.
+When not mounted, gradebook runs in the shared frontend app container at http://apps.local.openedx.io/gradebook/course-v1:edX+DemoX+Demo_Course.
 
-When mounted in the tutor ``gradebook`` container, or when running a local (host) webpack dev server, the web application runs on port **1994**, so when you go to http://apps.local.openedx.io:1994/gradebook/course-v1:edX+DemoX+Demo_Course you should see the UI (assuming you have such a Demo Course in your devstack).  Note that you always have to provide a course id to actually see a gradebook.
+When mounted in the tutor ``gradebook`` container, or when running a local (host) dev server, the app runs on port **1994**, so when you go to http://apps.local.openedx.io:1994/gradebook/course-v1:edX+DemoX+Demo_Course you should see the UI (assuming you have such a Demo Course in your Tutor instance). Note that you always have to provide a course id to actually see a gradebook.
 
-(Note: This may not work in Tutor; these instructions are for the deprecated Devstack) You can see the log messages for the docker container by executing ``make gradebook-logs`` in the ``devstack`` directory.
+Starting the dev server hot-reloads JavaScript and Sass changes, so you should (:crossed_fingers:) not need to do anything (other than wait) when making changes.
 
-Note that starting the container executes the ``npm run start`` script which will hot-reload JavaScript and Sass files changes, so you should (:crossed_fingers:) not need to do anything (other than wait) when making changes.
+Developing against a local frontend-base
+=========================================
+
+This frontend app supports `npm workspaces <https://docs.npmjs.com/cli/using-npm/workspaces>`_ so you can develop against a local ``frontend-base`` checkout and see changes reflected automatically. See the ``dev:packages`` script in ``package.json`` and the workspace-related targets in the ``Makefile``.
 
 Plugins
 *******
 
-This MFE can be customized using `Frontend Plugin Framework <https://github.com/openedx/frontend-plugin-framework>`_.
-
-The parts of this MFE that can be customized in that manner are documented `here </src/plugin-slots>`_.
+This frontend app is built on `frontend-base <https://github.com/openedx/frontend-base>`_ and can be customized through the shell's plugin slot mechanism (``<Slot />``). Any slots this app exposes for host sites to override live under ``src/slots``.
 
 Running tests
 *************
@@ -148,34 +149,51 @@ Run:
 Directory Structure
 *******************
 
-* ``config``
-
-  * Directory for `webpack <https://webpack.js.org/>`_ configurations
-
 * ``public``
 
-  * Entry point for the single-page application - ``gradebook`` has a single ``index.html`` file
+  * Static assets served at the site root when running the dev harness.
 
 * ``src``
 
+  * ``Main.tsx``
+
+    * Root component the routed entry lazy-loads; sets the document title with ``<Helmet>`` and mounts the app's providers around the page tree.
+
+  * ``App.ts``
+
+    * The ``App`` object consumed by ``site.config.*.tsx`` — wires ``appId``, ``routes``, and ``providers`` for frontend-base to register.
+
+  * ``routes.tsx``
+
+    * React Router route definitions for the app.
+
+  * ``providers.ts``
+
+    * App-scoped context providers registered with frontend-base.
+
+  * ``slots``
+
+    * Slots this app exposes for host sites to plug into.
+
   * ``components``
 
-    * Directory for presentational ``React`` components
+    * Presentational and container React components.
 
   * ``containers``
 
-    * Directory for container ``React`` components
+    * Route-level container components.
 
   * ``data``
 
-    * ``actions``
+    * API hooks, query keys, React Query client, and shared context (filters, gradebook UI).
 
-      * Directory for ``Redux`` action creators
+  * ``i18n``
 
-    * ``constants``
-    * ``reducers``
+    * i18n entry point and generated messages (managed via ``openedx translations:pull``).
 
-      * Directory for ``Redux`` reducers
+* ``site.config.dev.tsx``
+
+  * Dev harness configuration — registers the shell, header, footer, and this app for local development.
 
 Authentication with backend API services
 *****************************************
@@ -243,11 +261,11 @@ Please do not report security issues in public. Please email security@openedx.or
    :target: https://travis-ci.com/edx/frontend-app-gradebook
 .. |Codecov| image:: https://img.shields.io/codecov/c/gh/openedx/frontend-app-gradebook
    :target: https://app.codecov.io/gh/openedx/frontend-app-gradebook
-.. |npm_version| image:: https://img.shields.io/npm/v/@edx/frontend-app-gradebook.svg
-   :target: @edx/frontend-app-gradebook
-.. |npm_downloads| image:: https://img.shields.io/npm/dt/@edx/frontend-app-gradebook.svg
-   :target: @edx/frontend-app-gradebook
-.. |license| image:: https://img.shields.io/npm/l/@edx/frontend-app-gradebook.svg
-   :target: @edx/frontend-app-gradebook
+.. |npm_version| image:: https://img.shields.io/npm/v/@openedx/frontend-app-gradebook.svg
+   :target: @openedx/frontend-app-gradebook
+.. |npm_downloads| image:: https://img.shields.io/npm/dt/@openedx/frontend-app-gradebook.svg
+   :target: @openedx/frontend-app-gradebook
+.. |license| image:: https://img.shields.io/npm/l/@openedx/frontend-app-gradebook.svg
+   :target: @openedx/frontend-app-gradebook
 .. |semantic-release| image:: https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg
    :target: https://github.com/semantic-release/semantic-release

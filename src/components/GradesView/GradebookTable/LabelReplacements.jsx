@@ -1,13 +1,12 @@
-import React from 'react';
-
-import { useIntl, getLocale, isRtl } from '@edx/frontend-platform/i18n';
+import { useIntl, getLocale, isRtl } from '@openedx/frontend-base';
 import {
   Icon,
   OverlayTrigger,
   Tooltip,
 } from '@openedx/paragon';
+import { InfoOutline } from '@openedx/paragon/icons';
 
-import { StrictDict } from 'utils';
+import { StrictDict } from '@src/utils';
 
 import messages from './messages';
 
@@ -36,7 +35,7 @@ const TotalGradeLabelReplacement = () => {
           {formatMessage(messages.totalGradeHeading)}
           <div id="courseGradeTooltipIcon">
             <Icon
-              className="fa fa-info-circle"
+              src={InfoOutline}
               screenReaderText={formatMessage(messages.totalGradePercentage)}
             />
           </div>
