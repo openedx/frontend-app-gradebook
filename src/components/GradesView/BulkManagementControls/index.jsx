@@ -1,10 +1,9 @@
-/* eslint-disable react/sort-comp, react/button-has-type */
-import React from 'react';
+import NetworkButton from '@src/components/NetworkButton';
+import { useShowBulkManagement } from '@src/data/apiHook';
+import { trackGradesReportDownloaded } from '@src/data/services/segment/events';
 
-import NetworkButton from 'components/NetworkButton';
 import ImportGradesButton from '../ImportGradesButton';
-
-import useBulkManagementControlsData from './hooks';
+import { useGradeExportUrl } from '../data/hooks';
 import messages from './messages';
 
 /**
@@ -13,12 +12,15 @@ import messages from './messages';
  * showBulkManagement is set in redus.
  */
 export const BulkManagementControls = () => {
-  const {
-    show,
-    handleClickExportGrades,
-  } = useBulkManagementControlsData();
+  const gradeExportUrl = useGradeExportUrl();
+  const showBulkManagement = useShowBulkManagement();
 
-  if (!show) { return null; }
+  const handleClickExportGrades = () => {
+    trackGradesReportDownloaded();
+    window.location.assign(gradeExportUrl);
+  };
+
+  if (!showBulkManagement) { return null; }
   return (
     <div className="d-flex">
       <NetworkButton

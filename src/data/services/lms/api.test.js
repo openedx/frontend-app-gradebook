@@ -29,7 +29,9 @@ describe('lms service api', () => {
     const testSimpleFetch = (method, expectedUrl, description) => {
       mockGet(resolveFn);
       test(description, () => (
-        method().then(({ data }) => { expect(data).toEqual(expectedUrl); })
+        method().then(({ data }) => {
+          expect(data).toEqual(expectedUrl);
+        })
       ));
     };
     describe('fetch.assignmentTypes', () => {
@@ -210,7 +212,9 @@ describe('lms service api', () => {
         };
         const formData = { some: 'form Data' };
         beforeEach(() => {
-          mockPost(() => (resolve) => { resolve(response); });
+          mockPost(() => (resolve) => {
+            resolve(response);
+          });
         });
         it('posts formData to gradeCsvUrl and returns the data from response', () => (
           api.uploadGradeCsv(formData).then(result => {
@@ -221,7 +225,9 @@ describe('lms service api', () => {
       describe('non-200 status', () => {
         const formData = { some: 'form Data' };
         beforeEach(() => {
-          mockPost((url, data) => (resolve) => { resolve({ url, data }); });
+          mockPost((url, data) => (resolve) => {
+            resolve({ url, data });
+          });
         });
         it('posts formData to gradeCsvUrl and returns the data from response', () => (
           api.uploadGradeCsv(formData).catch(result => {

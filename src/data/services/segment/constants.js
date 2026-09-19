@@ -1,5 +1,4 @@
-import { StrictDict } from 'utils';
-import actions from 'data/actions';
+import { StrictDict } from '@src/utils';
 
 export const courseId = window.location.pathname.slice(1);
 
@@ -24,18 +23,6 @@ export const eventNames = StrictDict({
   [events.filterApplied]: 'edx.gradebook.grades.filter_applied',
   [events.gradesReportDownloaded]: 'edx.gradebook.reports.grade_export.downloaded',
   [events.interventionReportDownloaded]: 'edx.gradebook.reports.intervention.downloaded',
-});
-
-export const triggers = StrictDict({
-  [events.receivedRoles]: actions.roles.fetching.received.toString(),
-  [events.receivedGrades]: actions.grades.fetching.received.toString(),
-  [events.updateSucceeded]: actions.grades.update.success.toString(),
-  [events.updateFailed]: actions.grades.update.failure.toString(),
-  [events.uploadOverrideSucceeded]: actions.grades.uploadOverride.success.toString(),
-  [events.uploadOverrideFailed]: actions.grades.uploadOverride.failure.toString(),
-  [events.filterApplied]: actions.filters.update.courseGradeLimits.toString(),
-  [events.gradesReportDownloaded]: actions.grades.downloadReport.bulkGrades.toString(),
-  [events.interventionReportDownloaded]: actions.grades.downloadReport.intervention.toString(),
 });
 
 export const trackingCategory = 'gradebook';

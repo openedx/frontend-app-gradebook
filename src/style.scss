@@ -1,0 +1,13 @@
+// App-scoped runtime styles. Imported once from `Main.tsx`.
+//
+// The paragon custom-media breakpoints file below must be `@use`d at the top
+// of every SCSS entry that uses `@media (--pgn-size-breakpoint-*)` — each
+// SCSS entry is its own PostCSS pass and does not inherit declarations from
+// siblings. Component partials pulled in via `@use` below share this pass, so
+// this single declaration covers all of them.
+@use "@openedx/paragon/styles/css/core/custom-media-breakpoints.css";
+
+@use "./components/GradesView/GradesView";
+@use "./components/BulkManagementHistoryView/BulkManagementHistoryView";
+@use "./components/WithSidebar/WithSidebar";
+@use "./components/GradebookFilters/GradebookFilters";

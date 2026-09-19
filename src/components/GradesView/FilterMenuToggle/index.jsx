@@ -1,10 +1,8 @@
-import React from 'react';
-
 import { Button, Icon } from '@openedx/paragon';
-import { useIntl } from '@edx/frontend-platform/i18n';
+import { useIntl } from '@openedx/frontend-base';
 import { FilterAlt } from '@openedx/paragon/icons';
 
-import { thunkActions } from 'data/redux/hooks';
+import { useGradebookUi } from '@src/data/gradebookUiContext';
 
 import messages from './messages';
 
@@ -13,7 +11,7 @@ import messages from './messages';
  * as well as the search box for searching by username/email.
  */
 export const FilterMenuToggle = () => {
-  const toggleFilterMenu = thunkActions.app.filterMenu.useToggleMenu();
+  const { toggleFilterMenu } = useGradebookUi();
   const { formatMessage } = useIntl();
   return (
     <Button

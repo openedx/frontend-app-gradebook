@@ -1,20 +1,34 @@
-/* eslint-disable react/sort-comp, react/button-has-type */
-import React from 'react';
 import PropTypes from 'prop-types';
 
-import { useIntl } from '@edx/frontend-platform/i18n';
+import { useIntl } from '@openedx/frontend-base';
+
+import { useFilters } from '@src/data/filtersContext';
+import {
+  useFetchGradesIfAssignmentGradeFiltersSet,
+  useSelectableAssignmentLabels,
+  useSelectedAssignmentLabel,
+} from '@src/components/GradesView/data/hooks';
 
 import messages from '../messages';
 import SelectGroup from '../SelectGroup';
-import useAssignmentFilterData from './hooks';
 
 const AssignmentFilter = ({ updateQueryParams }) => {
-  const {
-    handleChange,
-    selectedAssignmentLabel,
-    assignmentFilterOptions,
-  } = useAssignmentFilterData({ updateQueryParams });
   const { formatMessage } = useIntl();
+  const assignmentFilterOptions = useSelectableAssignmentLabels();
+  const selectedAssignmentLabel = useSelectedAssignmentLabel() || '';
+  const { setAssignment } = useFilters();
+  const conditionalFetch = useFetchGradesIfAssignmentGradeFiltersSet();
+
+  const handleChange = ({ target: { value: assignment } }) => {
+    const selectedFilterOption = assignmentFilterOptions.find(
+      ({ label }) => label === assignment,
+    );
+    const { id } = selectedFilterOption || {};
+    setAssignment(id ?? '');
+    updateQueryParams({ assignment: id });
+    conditionalFetch();
+  };
+
   const filterOptions = assignmentFilterOptions.map(({ label, subsectionLabel }) => (
     <option key={label} value={label}>
       {label}: {subsectionLabel}

@@ -1,61 +1,57 @@
-import React from 'react';
 import { screen } from '@testing-library/react';
 
-import useOverrideTableData from './hooks';
+import { renderWithAllProviders } from '@src/testUtils';
+import { useGradeOverrideData } from '@src/components/GradesView/data/hooks';
 import OverrideTable from '.';
-import { renderWithIntl } from '../../../../testUtilsExtra';
+import messages from './messages';
 
-jest.mock('utils', () => ({
-  ...jest.requireActual('utils'),
-  formatDateForDisplay: (date) => ({ formatted: date }),
+jest.mock('@src/components/GradesView/data/hooks', () => ({
+  ...jest.requireActual('@src/components/GradesView/data/hooks'),
+  useGradeOverrideData: jest.fn(),
 }));
-jest.mock('./hooks', () => jest.fn());
+jest.mock('./AdjustedGradeInput', () => () => <div data-testid="adjusted-grade-input" />);
+jest.mock('./ReasonInput', () => () => <div data-testid="reason-input" />);
 
-const hookProps = {
-  hide: false,
-  data: [
-    { filename: 'data' },
-    { resultsSummary: 'test-data' },
-  ],
-  columns: [{
-    Header: 'Gradebook',
-    accessor: 'filename',
-  },
-  {
-    Header: 'Download Summary',
-    accessor: 'resultsSummary',
-  }],
-};
+const overrideHistory = [
+  { date: '2025-01-01', grader: 'grader-1', reason: 'reason-1', adjustedGrade: '80' },
+  { date: '2025-01-02', grader: 'grader-2', reason: 'reason-2', adjustedGrade: '90' },
+];
 
-describe('OverrideTable component', () => {
+describe('OverrideTable', () => {
   beforeEach(() => {
-    jest
-      .clearAllMocks()
-      .useFakeTimers('modern')
-      .setSystemTime(new Date('2000-01-01').getTime());
+    jest.clearAllMocks();
   });
-  describe('hooks', () => {
-    it('initializes hook data', () => {
-      useOverrideTableData.mockReturnValue(hookProps);
-      renderWithIntl(<OverrideTable />);
-      expect(useOverrideTableData).toHaveBeenCalled();
+
+  it('renders nothing when hasOverrideErrors is truthy', () => {
+    useGradeOverrideData.mockReturnValue({
+      gradeOverrideHistoryResults: overrideHistory,
+      hasOverrideErrors: true,
     });
+    const { container } = renderWithAllProviders(<OverrideTable />);
+    expect(container).toBeEmptyDOMElement();
   });
-  describe('behavior', () => {
-    it('null render if hide', () => {
-      useOverrideTableData.mockReturnValue({ ...hookProps, hide: true });
-      renderWithIntl(<OverrideTable />);
-      expect(screen.queryByRole('table')).toBeNull();
+
+  it('renders the column headers and the edit-row inputs', () => {
+    useGradeOverrideData.mockReturnValue({
+      gradeOverrideHistoryResults: [],
+      hasOverrideErrors: false,
     });
-    it('renders table with correct data', () => {
-      useOverrideTableData.mockReturnValue(hookProps);
-      renderWithIntl(<OverrideTable />);
-      const table = screen.getByRole('table');
-      expect(table).toBeInTheDocument();
-      expect(screen.getByText(hookProps.columns[0].Header)).toBeInTheDocument();
-      expect(screen.getByText(hookProps.columns[1].Header)).toBeInTheDocument();
-      expect(screen.getByText(hookProps.data[0].filename)).toBeInTheDocument();
-      expect(screen.getByText(hookProps.data[1].resultsSummary)).toBeInTheDocument();
+    renderWithAllProviders(<OverrideTable />);
+    expect(screen.getByText(messages.dateHeader.defaultMessage)).toBeInTheDocument();
+    expect(screen.getByText(messages.graderHeader.defaultMessage)).toBeInTheDocument();
+    expect(screen.getByText(messages.reasonHeader.defaultMessage)).toBeInTheDocument();
+    expect(screen.getByText(messages.adjustedGradeHeader.defaultMessage)).toBeInTheDocument();
+    expect(screen.getByTestId('adjusted-grade-input')).toBeInTheDocument();
+    expect(screen.getByTestId('reason-input')).toBeInTheDocument();
+  });
+
+  it('renders one row per override entry (plus the edit row)', () => {
+    useGradeOverrideData.mockReturnValue({
+      gradeOverrideHistoryResults: overrideHistory,
+      hasOverrideErrors: false,
     });
+    renderWithAllProviders(<OverrideTable />);
+    expect(screen.getByText('grader-1')).toBeInTheDocument();
+    expect(screen.getByText('grader-2')).toBeInTheDocument();
   });
 });

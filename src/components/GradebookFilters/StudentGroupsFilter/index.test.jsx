@@ -1,5 +1,5 @@
-import React from 'react';
-import { render, screen, initializeMocks } from 'testUtilsExtra';
+import { renderWithAllProviders, initializeMocks } from '@src/testUtils';
+import { screen } from '@testing-library/react';
 
 import SelectGroup from '../SelectGroup';
 import { StudentGroupsFilter } from './index';
@@ -41,7 +41,7 @@ describe('StudentGroupsFilter', () => {
   });
 
   it('calls useStudentGroupsFilterData hook with updateQueryParams', () => {
-    render(<StudentGroupsFilter updateQueryParams={mockUpdateQueryParams} />);
+    renderWithAllProviders(<StudentGroupsFilter updateQueryParams={mockUpdateQueryParams} />);
 
     expect(useStudentGroupsFilterData).toHaveBeenCalledWith({
       updateQueryParams: mockUpdateQueryParams,
@@ -49,7 +49,7 @@ describe('StudentGroupsFilter', () => {
   });
 
   it('renders two SelectGroup components', () => {
-    render(<StudentGroupsFilter updateQueryParams={mockUpdateQueryParams} />);
+    renderWithAllProviders(<StudentGroupsFilter updateQueryParams={mockUpdateQueryParams} />);
 
     expect(SelectGroup).toHaveBeenCalledTimes(2);
     expect(screen.getAllByTestId('select-group')).toHaveLength(2);
@@ -57,7 +57,7 @@ describe('StudentGroupsFilter', () => {
 
   describe('tracks SelectGroup', () => {
     it('renders tracks SelectGroup with correct props', () => {
-      render(<StudentGroupsFilter updateQueryParams={mockUpdateQueryParams} />);
+      renderWithAllProviders(<StudentGroupsFilter updateQueryParams={mockUpdateQueryParams} />);
 
       const tracksCall = SelectGroup.mock.calls[0][0];
       expect(tracksCall.id).toBe('Tracks');
@@ -66,7 +66,7 @@ describe('StudentGroupsFilter', () => {
     });
 
     it('includes trackAll option in tracks SelectGroup', () => {
-      render(<StudentGroupsFilter updateQueryParams={mockUpdateQueryParams} />);
+      renderWithAllProviders(<StudentGroupsFilter updateQueryParams={mockUpdateQueryParams} />);
 
       const tracksCall = SelectGroup.mock.calls[0][0];
       const { options } = tracksCall;
@@ -77,7 +77,7 @@ describe('StudentGroupsFilter', () => {
     });
 
     it('includes track entries in tracks SelectGroup options', () => {
-      render(<StudentGroupsFilter updateQueryParams={mockUpdateQueryParams} />);
+      renderWithAllProviders(<StudentGroupsFilter updateQueryParams={mockUpdateQueryParams} />);
 
       const tracksCall = SelectGroup.mock.calls[0][0];
       const { options } = tracksCall;
@@ -91,7 +91,7 @@ describe('StudentGroupsFilter', () => {
 
   describe('cohorts SelectGroup', () => {
     it('renders cohorts SelectGroup with correct props', () => {
-      render(<StudentGroupsFilter updateQueryParams={mockUpdateQueryParams} />);
+      renderWithAllProviders(<StudentGroupsFilter updateQueryParams={mockUpdateQueryParams} />);
 
       const cohortsCall = SelectGroup.mock.calls[1][0];
       expect(cohortsCall.id).toBe('Cohorts');
@@ -101,7 +101,7 @@ describe('StudentGroupsFilter', () => {
     });
 
     it('includes cohortAll option in cohorts SelectGroup', () => {
-      render(<StudentGroupsFilter updateQueryParams={mockUpdateQueryParams} />);
+      renderWithAllProviders(<StudentGroupsFilter updateQueryParams={mockUpdateQueryParams} />);
 
       const cohortsCall = SelectGroup.mock.calls[1][0];
       const { options } = cohortsCall;
@@ -112,7 +112,7 @@ describe('StudentGroupsFilter', () => {
     });
 
     it('includes cohort entries in cohorts SelectGroup options', () => {
-      render(<StudentGroupsFilter updateQueryParams={mockUpdateQueryParams} />);
+      renderWithAllProviders(<StudentGroupsFilter updateQueryParams={mockUpdateQueryParams} />);
 
       const cohortsCall = SelectGroup.mock.calls[1][0];
       const { options } = cohortsCall;
@@ -129,7 +129,7 @@ describe('StudentGroupsFilter', () => {
         cohorts: { ...mockCohortsData, isDisabled: true },
       });
 
-      render(<StudentGroupsFilter updateQueryParams={mockUpdateQueryParams} />);
+      renderWithAllProviders(<StudentGroupsFilter updateQueryParams={mockUpdateQueryParams} />);
 
       const cohortsCall = SelectGroup.mock.calls[1][0];
       expect(cohortsCall.disabled).toBe(true);
@@ -143,7 +143,7 @@ describe('StudentGroupsFilter', () => {
         cohorts: mockCohortsData,
       });
 
-      render(<StudentGroupsFilter updateQueryParams={mockUpdateQueryParams} />);
+      renderWithAllProviders(<StudentGroupsFilter updateQueryParams={mockUpdateQueryParams} />);
 
       const tracksCall = SelectGroup.mock.calls[0][0];
       expect(tracksCall.options).toHaveLength(1);
@@ -155,7 +155,7 @@ describe('StudentGroupsFilter', () => {
         cohorts: { ...mockCohortsData, entries: [] },
       });
 
-      render(<StudentGroupsFilter updateQueryParams={mockUpdateQueryParams} />);
+      renderWithAllProviders(<StudentGroupsFilter updateQueryParams={mockUpdateQueryParams} />);
 
       const cohortsCall = SelectGroup.mock.calls[1][0];
       expect(cohortsCall.options).toHaveLength(1);

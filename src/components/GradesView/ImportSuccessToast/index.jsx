@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { Toast } from '@openedx/paragon';
 
 import useImportSuccessToastData from './hooks';

@@ -1,10 +1,10 @@
-import React from 'react';
 
-import lms from 'data/services/lms';
-import { renderWithIntl, screen } from '../../testUtilsExtra';
+import lms from '@src/data/services/lms';
+import { renderWithAllProviders } from '@src/testUtils';
+import { screen } from '@testing-library/react';
 import ResultsSummary from './ResultsSummary';
 
-jest.mock('data/services/lms', () => ({
+jest.mock('@src/data/services/lms', () => ({
   urls: {
     bulkGradesUrlByRow: jest.fn((rowId) => (`www.edx.org/${rowId}`)),
   },
@@ -17,7 +17,7 @@ describe('ResultsSummary component', () => {
   };
   let link;
   beforeEach(() => {
-    renderWithIntl(<ResultsSummary {...props} />);
+    renderWithAllProviders(<ResultsSummary {...props} />);
     link = screen.getByRole('link', { name: props.text });
   });
   test('Hyperlink has target="_blank" and rel="noopener noreferrer"', () => {

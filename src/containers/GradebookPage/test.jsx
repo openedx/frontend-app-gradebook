@@ -1,214 +1,82 @@
-import React from 'react';
+import { screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import { useNavigate, useLocation } from 'react-router-dom';
 
-import { render, screen, initializeMocks } from 'testUtilsExtra';
+import { renderWithAllProviders } from '@src/testUtils';
+import { useGradebookUi } from '@src/data/gradebookUiContext';
+import { views } from '@src/data/constants/app';
+import GradebookPage from '.';
 
-import { GradebookPage, mapStateToProps, mapDispatchToProps } from '.';
-
-jest.mock(
-  'components/WithSidebar',
-  // eslint-disable-next-line react/prop-types
-  () => function WithSidebar({ children }) {
-    return (
-      <div data-testid="with-sidebar">
-        <p>WithSidebar</p>
-        {children}
-      </div>
-    );
-  },
-);
-
-jest.mock(
-  'components/GradebookHeader',
-  () => function GradebookHeader() {
-    return <div data-testid="gradebook-header">GradebookHeader</div>;
-  },
-);
-jest.mock(
-  'components/GradesView',
-  () => function GradesView() {
-    return <div data-testid="grades-view">GradesView</div>;
-  },
-);
-jest.mock(
-  'components/GradebookFilters',
-  () => function GradebookFilters() {
-    return <div data-testid="gradebook-filters">GradebookFilters</div>;
-  },
-);
-jest.mock(
-  'components/BulkManagementHistoryView',
-  () => function BulkManagementHistoryView() {
-    return (
-      <div data-testid="bulk-management-history">
-        BulkManagementHistoryView
-      </div>
-    );
-  },
-);
-
-jest.mock('data/selectors', () => ({
-  app: {
-    activeView: jest.fn(),
-  },
+jest.mock('react-router-dom', () => ({
+  ...jest.requireActual('react-router-dom'),
+  useNavigate: jest.fn(),
+  useLocation: jest.fn(),
 }));
-
-jest.mock('data/thunkActions', () => ({
-  app: {
-    initialize: jest.fn(),
-  },
+jest.mock('@src/data/gradebookUiContext', () => ({
+  ...jest.requireActual('@src/data/gradebookUiContext'),
+  useGradebookUi: jest.fn(),
 }));
+jest.mock('./GradebookDataLoader', () => () => <div data-testid="gradebook-data-loader" />);
+jest.mock('@src/components/WithSidebar', () => ({ children, sidebar }) => (
+  <div data-testid="with-sidebar">
+    <div data-testid="sidebar">{sidebar}</div>
+    <div data-testid="content">{children}</div>
+  </div>
+));
+jest.mock('@src/components/GradebookHeader', () => () => <div data-testid="gradebook-header" />);
+jest.mock('@src/components/GradesView', () => () => <div data-testid="grades-view" />);
+jest.mock('@src/components/GradebookFilters', () => ({ updateQueryParams }) => (
+  <button
+    type="button"
+    data-testid="gradebook-filters"
+    // Two calls: one sets a param, the other removes an existing param.
+    onClick={() => {
+      updateQueryParams({ cohort: 'c1', existing: false });
+    }}
+  />
+));
+jest.mock('@src/components/BulkManagementHistoryView', () => () => <div data-testid="bulk-management-history-view" />);
 
-jest.mock('query-string', () => ({
-  parse: jest.fn(),
-  stringify: jest.fn(),
-}));
-
-const queryString = require('query-string');
-const selectors = require('data/selectors');
-const thunkActions = require('data/thunkActions');
-
-initializeMocks();
+const navigate = jest.fn();
 
 describe('GradebookPage', () => {
-  const defaultProps = {
-    navigate: jest.fn(),
-    location: { pathname: '/gradebook', search: '?course_id=test-course' },
-    courseId: 'test-course-id',
-    activeView: 'grades',
-    initializeApp: jest.fn(),
-  };
-
   beforeEach(() => {
     jest.clearAllMocks();
-    queryString.parse.mockReturnValue({});
-    queryString.stringify.mockReturnValue('course_id=test-course');
+    useNavigate.mockReturnValue(navigate);
+    useLocation.mockReturnValue({ pathname: '/course', search: '?existing=1' });
   });
 
-  it('renders without errors', () => {
-    render(<GradebookPage {...defaultProps} />);
-    expect(screen.getByText('WithSidebar')).toBeInTheDocument();
+  it('mounts the data loader, header, sidebar, and filters', () => {
+    useGradebookUi.mockReturnValue({ activeView: views.grades });
+    renderWithAllProviders(<GradebookPage />);
+    expect(screen.getByTestId('gradebook-data-loader')).toBeInTheDocument();
+    expect(screen.getByTestId('with-sidebar')).toBeInTheDocument();
+    expect(screen.getByTestId('gradebook-header')).toBeInTheDocument();
+    expect(screen.getByTestId('gradebook-filters')).toBeInTheDocument();
   });
 
-  it('calls initializeApp on mount with courseId and parsed query', () => {
-    const mockQuery = { assignment: 'test-assignment' };
-    queryString.parse.mockReturnValue(mockQuery);
-
-    render(<GradebookPage {...defaultProps} />);
-
-    expect(defaultProps.initializeApp).toHaveBeenCalledWith(
-      defaultProps.courseId,
-      mockQuery,
-    );
-    expect(queryString.parse).toHaveBeenCalledWith(
-      defaultProps.location.search,
-    );
+  it('renders GradesView when the active view is grades', () => {
+    useGradebookUi.mockReturnValue({ activeView: views.grades });
+    renderWithAllProviders(<GradebookPage />);
+    expect(screen.getByTestId('grades-view')).toBeInTheDocument();
+    expect(screen.queryByTestId('bulk-management-history-view')).not.toBeInTheDocument();
   });
 
-  it('renders GradebookHeader in content area', () => {
-    render(<GradebookPage {...defaultProps} />);
-
-    expect(screen.getByText('GradebookHeader')).toBeInTheDocument();
+  it('renders BulkManagementHistoryView when the active view is bulk-management-history', () => {
+    useGradebookUi.mockReturnValue({ activeView: views.bulkManagementHistory });
+    renderWithAllProviders(<GradebookPage />);
+    expect(screen.getByTestId('bulk-management-history-view')).toBeInTheDocument();
+    expect(screen.queryByTestId('grades-view')).not.toBeInTheDocument();
   });
 
-  it('renders GradesView when activeView is grades', () => {
-    render(<GradebookPage {...defaultProps} activeView="grades" />);
-
-    expect(screen.getByText('GradesView')).toBeInTheDocument();
-  });
-
-  it('renders BulkManagementHistoryView when activeView is bulkManagementHistory', () => {
-    render(
-      <GradebookPage {...defaultProps} activeView="bulkManagementHistory" />,
-    );
-
-    expect(screen.getByText('BulkManagementHistoryView')).toBeInTheDocument();
-  });
-
-  describe('updateQueryParams', () => {
-    it('updates query parameters and navigates', () => {
-      const component = new GradebookPage(defaultProps);
-      const queryParams = {
-        assignment: 'new-assignment',
-        student: 'student-1',
-      };
-
-      queryString.parse.mockReturnValue({ course_id: 'test-course' });
-      queryString.stringify.mockReturnValue(
-        'course_id=test-course&assignment=new-assignment&student=student-1',
-      );
-
-      component.updateQueryParams(queryParams);
-
-      expect(queryString.parse).toHaveBeenCalledWith(
-        defaultProps.location.search,
-      );
-      expect(queryString.stringify).toHaveBeenCalledWith({
-        course_id: 'test-course',
-        assignment: 'new-assignment',
-        student: 'student-1',
-      });
-      expect(defaultProps.navigate).toHaveBeenCalledWith({
-        pathname: defaultProps.location.pathname,
-        search:
-          '?course_id=test-course&assignment=new-assignment&student=student-1',
-      });
-    });
-
-    it('removes query parameters when value is falsy', () => {
-      const component = new GradebookPage(defaultProps);
-      const queryParams = { assignment: null, student: '' };
-
-      queryString.parse.mockReturnValue({
-        course_id: 'test-course',
-        assignment: 'old-assignment',
-        student: 'old-student',
-      });
-      queryString.stringify.mockReturnValue('course_id=test-course');
-
-      component.updateQueryParams(queryParams);
-
-      expect(queryString.stringify).toHaveBeenCalledWith({
-        course_id: 'test-course',
-      });
-    });
-  });
-
-  describe('mapStateToProps', () => {
-    it('maps activeView from state', () => {
-      const mockState = { app: { activeView: 'bulkManagementHistory' } };
-      selectors.app.activeView.mockReturnValue('bulkManagementHistory');
-
-      const result = mapStateToProps(mockState);
-
-      expect(selectors.app.activeView).toHaveBeenCalledWith(mockState);
-      expect(result).toEqual({
-        activeView: 'bulkManagementHistory',
-      });
-    });
-  });
-
-  describe('mapDispatchToProps', () => {
-    it('maps initializeApp action', () => {
-      expect(mapDispatchToProps.initializeApp).toBe(
-        thunkActions.app.initialize,
-      );
-    });
-  });
-
-  describe('default props', () => {
-    it('has correct default location', () => {
-      expect(GradebookPage.defaultProps.location).toEqual({
-        pathname: '/',
-        search: '',
-      });
-    });
-  });
-
-  describe('component lifecycle', () => {
-    it('binds updateQueryParams in constructor', () => {
-      const component = new GradebookPage(defaultProps);
-
-      expect(typeof component.updateQueryParams).toBe('function');
+  it('updateQueryParams sets truthy keys and removes falsy ones before navigating', async () => {
+    useGradebookUi.mockReturnValue({ activeView: views.grades });
+    const user = userEvent.setup();
+    renderWithAllProviders(<GradebookPage />);
+    await user.click(screen.getByTestId('gradebook-filters'));
+    expect(navigate).toHaveBeenCalledWith({
+      pathname: '/course',
+      search: '?cohort=c1',
     });
   });
 });

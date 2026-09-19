@@ -1,81 +1,90 @@
-import { selectors, actions, thunkActions } from 'data/redux/hooks';
+import { renderHook, act } from '@testing-library/react';
 
+import { useFilters } from '@src/data/filtersContext';
+import {
+  useRefetchGrades,
+  useSelectedAssignmentLabel,
+} from '@src/components/GradesView/data/hooks';
 import useAssignmentGradeFilterData from './hooks';
 
-jest.mock('data/redux/hooks', () => ({
-  selectors: {
-    app: { useAssignmentGradeLimits: jest.fn() },
-    filters: { useSelectedAssignmentLabel: jest.fn() },
-  },
-  actions: {
-    app: { useSetLocalFilter: jest.fn() },
-    filters: { useUpdateAssignmentLimits: jest.fn() },
-  },
-  thunkActions: {
-    grades: { useFetchGrades: jest.fn() },
-  },
+jest.mock('@src/data/filtersContext', () => ({
+  ...jest.requireActual('@src/data/filtersContext'),
+  useFilters: jest.fn(),
+}));
+jest.mock('@src/components/GradesView/data/hooks', () => ({
+  ...jest.requireActual('@src/components/GradesView/data/hooks'),
+  useRefetchGrades: jest.fn(),
+  useSelectedAssignmentLabel: jest.fn(),
 }));
 
-let out;
-
-const assignmentGradeLimits = { assignmentGradeMax: 200, assignmentGradeMin: 3 };
-const selectedAssignmentLabel = 'test-assignment-label';
-selectors.app.useAssignmentGradeLimits.mockReturnValue(assignmentGradeLimits);
-selectors.filters.useSelectedAssignmentLabel.mockReturnValue(selectedAssignmentLabel);
-
-const setLocalFilter = jest.fn();
-const updateAssignmentLimits = jest.fn();
-const fetch = jest.fn();
-actions.app.useSetLocalFilter.mockReturnValue(setLocalFilter);
-actions.filters.useUpdateAssignmentLimits.mockReturnValue(updateAssignmentLimits);
-thunkActions.grades.useFetchGrades.mockReturnValue(fetch);
-
-const testValue = 42;
+const primeMocks = ({
+  assignmentGradeMin = '10',
+  assignmentGradeMax = '90',
+  selectedAssignment = 'test-label',
+} = {}) => {
+  const setAssignmentGradeMin = jest.fn();
+  const setAssignmentGradeMax = jest.fn();
+  const applyAssignmentGradeLimits = jest.fn();
+  const fetchGrades = jest.fn();
+  useFilters.mockReturnValue({
+    assignmentGradeMin,
+    assignmentGradeMax,
+    setAssignmentGradeMin,
+    setAssignmentGradeMax,
+    applyAssignmentGradeLimits,
+  });
+  useRefetchGrades.mockReturnValue(fetchGrades);
+  useSelectedAssignmentLabel.mockReturnValue(selectedAssignment);
+  return {
+    setAssignmentGradeMin, setAssignmentGradeMax, applyAssignmentGradeLimits, fetchGrades,
+  };
+};
 
 const updateQueryParams = jest.fn();
 
-describe('useAssignmentFilterData hook', () => {
+describe('useAssignmentGradeFilterData', () => {
   beforeEach(() => {
-    out = useAssignmentGradeFilterData({ updateQueryParams });
+    jest.clearAllMocks();
   });
-  describe('behavior', () => {
-    it('initializes redux hooks', () => {
-      expect(selectors.app.useAssignmentGradeLimits).toHaveBeenCalledWith();
-      expect(selectors.filters.useSelectedAssignmentLabel).toHaveBeenCalledWith();
-      expect(actions.app.useSetLocalFilter).toHaveBeenCalledWith();
-      expect(actions.filters.useUpdateAssignmentLimits).toHaveBeenCalledWith();
-      expect(thunkActions.grades.useFetchGrades).toHaveBeenCalledWith();
-    });
+
+  it('exposes the current min/max limits and the selected assignment label', () => {
+    primeMocks({ assignmentGradeMin: '20', assignmentGradeMax: '80', selectedAssignment: 'the label' });
+    const { result } = renderHook(() => useAssignmentGradeFilterData({ updateQueryParams }));
+    expect(result.current.assignmentGradeMin).toBe('20');
+    expect(result.current.assignmentGradeMax).toBe('80');
+    expect(result.current.selectedAssignment).toBe('the label');
   });
-  describe('output', () => {
-    describe('handleSubmit', () => {
-      beforeEach(() => {
-        out.handleSubmit();
-      });
-      it('updates assignment limits filter', () => {
-        expect(updateAssignmentLimits).toHaveBeenCalledWith(assignmentGradeLimits);
-      });
-      it('updates queryParams', () => {
-        expect(updateQueryParams).toHaveBeenCalledWith(assignmentGradeLimits);
-      });
-      it('calls conditional fetch', () => {
-        expect(fetch).toHaveBeenCalled();
-      });
+
+  it('updates min through the filters context on change', () => {
+    const { setAssignmentGradeMin } = primeMocks();
+    const { result } = renderHook(() => useAssignmentGradeFilterData({ updateQueryParams }));
+    act(() => {
+      result.current.handleSetMin({ target: { value: '42' } });
     });
-    test('handleSetMax sets assignmentGradeMax', () => {
-      out.handleSetMax({ target: { value: testValue } });
-      expect(setLocalFilter).toHaveBeenCalledWith({ assignmentGradeMax: testValue });
+    expect(setAssignmentGradeMin).toHaveBeenCalledWith('42');
+  });
+
+  it('updates max through the filters context on change', () => {
+    const { setAssignmentGradeMax } = primeMocks();
+    const { result } = renderHook(() => useAssignmentGradeFilterData({ updateQueryParams }));
+    act(() => {
+      result.current.handleSetMax({ target: { value: '77' } });
     });
-    test('handleSetMin sets assignmentGradeMin', () => {
-      out.handleSetMin({ target: { value: testValue } });
-      expect(setLocalFilter).toHaveBeenCalledWith({ assignmentGradeMin: testValue });
+    expect(setAssignmentGradeMax).toHaveBeenCalledWith('77');
+  });
+
+  it('applies limits, fetches grades, and updates query on submit', () => {
+    const { applyAssignmentGradeLimits, fetchGrades } = primeMocks({
+      assignmentGradeMin: '25',
+      assignmentGradeMax: '95',
     });
-    it('passes selectedAssignment from hook', () => {
-      expect(out.selectedAssignment).toEqual(selectedAssignmentLabel);
+    const { result } = renderHook(() => useAssignmentGradeFilterData({ updateQueryParams }));
+    act(() => {
+      result.current.handleSubmit();
     });
-    it('passes assignmentGradeMin and assignmentGradeMax from hook', () => {
-      expect(out.assignmentGradeMax).toEqual(assignmentGradeLimits.assignmentGradeMax);
-      expect(out.assignmentGradeMin).toEqual(assignmentGradeLimits.assignmentGradeMin);
-    });
+    const expected = { assignmentGradeMin: '25', assignmentGradeMax: '95' };
+    expect(applyAssignmentGradeLimits).toHaveBeenCalledWith(expected);
+    expect(fetchGrades).toHaveBeenCalled();
+    expect(updateQueryParams).toHaveBeenCalledWith(expected);
   });
 });

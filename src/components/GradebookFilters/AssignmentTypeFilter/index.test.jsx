@@ -1,33 +1,100 @@
-import React from 'react';
 import { screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 
-import useAssignmentFilterTypeData from './hooks';
-import AssignmentFilterType from '.';
-import { renderWithIntl } from '../../../testUtilsExtra';
+import { renderWithAllProviders } from '@src/testUtils';
+import { useAssignmentTypes, useCourseIdWithGate } from '@src/data/apiHook';
+import {
+  useSelectableAssignmentLabels,
+  useSelectedAssignmentData,
+} from '@src/components/GradesView/data/hooks';
+import { useFilters } from '@src/data/filtersContext';
+import AssignmentTypeFilter from '.';
 
-jest.mock('./hooks', () => ({ __esModule: true, default: jest.fn() }));
+jest.mock('@src/data/apiHook', () => ({
+  ...jest.requireActual('@src/data/apiHook'),
+  useCourseIdWithGate: jest.fn(),
+  useAssignmentTypes: jest.fn(),
+}));
+jest.mock('@src/components/GradesView/data/hooks', () => ({
+  ...jest.requireActual('@src/components/GradesView/data/hooks'),
+  useSelectableAssignmentLabels: jest.fn(),
+  useSelectedAssignmentData: jest.fn(),
+}));
+jest.mock('@src/data/filtersContext', () => ({
+  ...jest.requireActual('@src/data/filtersContext'),
+  useFilters: jest.fn(),
+}));
 
-const handleChange = jest.fn();
-const testType = 'test-type';
-const assignmentTypes = [testType, 'type1', 'type2', 'type3'];
-useAssignmentFilterTypeData.mockReturnValue({
-  handleChange,
-  selectedAssignmentType: testType,
-  assignmentTypes,
-  isDisabled: true,
-});
-
+const assignmentTypes = ['type1', 'type2', 'type3'];
 const updateQueryParams = jest.fn();
+const setAssignmentType = jest.fn();
+const setAssignment = jest.fn();
 
-describe('AssignmentFilterType component', () => {
-  beforeAll(() => {
-    renderWithIntl(<AssignmentFilterType updateQueryParams={updateQueryParams} />);
+const setup = ({
+  selectedAssignmentType = '',
+  selectedAssignment = undefined,
+  filterOptions = [{ label: 'x' }],
+} = {}) => {
+  useCourseIdWithGate.mockReturnValue({ courseId: 'test-course', enabled: true });
+  useAssignmentTypes.mockReturnValue({ data: { assignmentTypes } });
+  useSelectableAssignmentLabels.mockReturnValue(filterOptions);
+  useSelectedAssignmentData.mockReturnValue(selectedAssignment);
+  useFilters.mockReturnValue({
+    assignmentType: selectedAssignmentType, setAssignmentType, setAssignment,
   });
-  describe('render', () => {
-    test('filter options', () => {
-      const options = screen.getAllByRole('option');
-      expect(options.length).toEqual(5); // 4 types + "All Types"
-      expect(options[1]).toHaveTextContent(testType);
+  return renderWithAllProviders(<AssignmentTypeFilter updateQueryParams={updateQueryParams} />);
+};
+
+describe('AssignmentTypeFilter', () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
+  it('renders one option per assignment type plus the "All" default', () => {
+    setup();
+    // Base "All" (value='') + 3 types.
+    expect(screen.getAllByRole('option')).toHaveLength(assignmentTypes.length + 1);
+  });
+
+  it('shows the selected assignment type in the select', () => {
+    setup({ selectedAssignmentType: 'type2' });
+    expect(screen.getByRole('combobox')).toHaveValue('type2');
+  });
+
+  it('disables the control when there are no selectable options', () => {
+    setup({ filterOptions: [] });
+    expect(screen.getByRole('combobox')).toBeDisabled();
+  });
+
+  it('updates the filter and query params when the selection changes', async () => {
+    setup();
+    await userEvent.selectOptions(screen.getByRole('combobox'), 'type2');
+    expect(setAssignmentType).toHaveBeenCalledWith('type2');
+    expect(updateQueryParams).toHaveBeenCalledWith({ assignmentType: 'type2' });
+  });
+
+  it('clears a selected assignment of a different type when the type changes', async () => {
+    setup({ selectedAssignment: { id: 'a1', label: 'HW 01', type: 'type1' } });
+    await userEvent.selectOptions(screen.getByRole('combobox'), 'type2');
+    expect(setAssignmentType).toHaveBeenCalledWith('type2');
+    expect(setAssignment).toHaveBeenCalledWith('');
+    expect(updateQueryParams).toHaveBeenCalledWith({ assignmentType: 'type2', assignment: false });
+  });
+
+  it('keeps a selected assignment of the same type when the type changes', async () => {
+    setup({ selectedAssignment: { id: 'a1', label: 'HW 01', type: 'type2' } });
+    await userEvent.selectOptions(screen.getByRole('combobox'), 'type2');
+    expect(setAssignment).not.toHaveBeenCalled();
+    expect(updateQueryParams).toHaveBeenCalledWith({ assignmentType: 'type2' });
+  });
+
+  it('keeps the selected assignment when the type resets to All', async () => {
+    setup({
+      selectedAssignmentType: 'type1',
+      selectedAssignment: { id: 'a1', label: 'HW 01', type: 'type1' },
     });
+    await userEvent.selectOptions(screen.getByRole('combobox'), '');
+    expect(setAssignment).not.toHaveBeenCalled();
+    expect(updateQueryParams).toHaveBeenCalledWith({ assignmentType: '' });
   });
 });

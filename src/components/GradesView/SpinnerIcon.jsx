@@ -1,19 +1,17 @@
-import React from 'react';
+import { Spinner } from '@openedx/paragon';
 
-import { Icon } from '@openedx/paragon';
-
-import { selectors } from 'data/redux/hooks';
+import { useShouldShowSpinner } from './data/hooks';
 
 /**
  * <SpinnerIcon />
- * Simmple redux-connected icon component that shows a spinner overlay only if
- * redux state says it should.
+ * Simple icon component that shows a spinner overlay only while the app is busy
+ * (grades fetching or a mutation in flight).
  */
 export const SpinnerIcon = () => {
-  const show = selectors.root.useShouldShowSpinner();
+  const show = useShouldShowSpinner();
   return show && (
     <div className="spinner-overlay">
-      <Icon className="fa fa-spinner fa-spin fa-5x color-black" />
+      <Spinner animation="border" variant="dark" screenReaderText="loading" />
     </div>
   );
 };

@@ -1,29 +1,60 @@
-import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 
-import useAdjustedGradeInputData from './hooks';
+import { renderWithAllProviders } from '@src/testUtils';
+import { useGradebookUi } from '@src/data/gradebookUiContext';
+import { useEditModalPossibleGrade } from '@src/components/GradesView/data/hooks';
+import { getLocalizedSlash } from '@src/i18n/utils';
 import AdjustedGradeInput from '.';
 
-jest.mock('./hooks', () => jest.fn());
+jest.mock('@src/data/gradebookUiContext', () => ({
+  ...jest.requireActual('@src/data/gradebookUiContext'),
+  useGradebookUi: jest.fn(),
+}));
+jest.mock('@src/components/GradesView/data/hooks', () => ({
+  ...jest.requireActual('@src/components/GradesView/data/hooks'),
+  useEditModalPossibleGrade: jest.fn(),
+}));
+jest.mock('@src/i18n/utils', () => ({
+  ...jest.requireActual('@src/i18n/utils'),
+  getLocalizedSlash: jest.fn(),
+}));
 
-const hookProps = {
-  hintText: 'some-hint-text',
-  onChange: jest.fn().mockName('hook.onChange'),
-  value: 'test-value',
-};
-useAdjustedGradeInputData.mockReturnValue(hookProps);
+describe('AdjustedGradeInput', () => {
+  const setModalState = jest.fn();
 
-describe('AdjustedGradeInput component', () => {
+  const setup = ({ adjustedGradeValue = '75', possibleGrade = 100 } = {}) => {
+    useGradebookUi.mockReturnValue({
+      modalState: { adjustedGradeValue },
+      setModalState,
+    });
+    useEditModalPossibleGrade.mockReturnValue(possibleGrade);
+    getLocalizedSlash.mockReturnValue('/');
+    return renderWithAllProviders(<AdjustedGradeInput />);
+  };
+
   beforeEach(() => {
     jest.clearAllMocks();
-    render(<AdjustedGradeInput />);
   });
-  describe('render', () => {
-    test('renders input with correct props', () => {
-      const input = screen.getByRole('textbox');
-      expect(input).toBeInTheDocument();
-      expect(input).toHaveValue(hookProps.value);
-      expect(screen.getByText(hookProps.hintText)).toBeInTheDocument();
-    });
+
+  it('renders the input with the current adjusted grade value', () => {
+    setup({ adjustedGradeValue: '82' });
+    expect(screen.getByRole('textbox')).toHaveValue('82');
+  });
+
+  it('renders the possible-grade hint when a possible grade is provided', () => {
+    setup({ possibleGrade: 100 });
+    expect(screen.getByText(/\/ 100/)).toBeInTheDocument();
+  });
+
+  it('omits the hint text when there is no possible grade', () => {
+    setup({ possibleGrade: null });
+    expect(screen.queryByText(/\/ /)).not.toBeInTheDocument();
+  });
+
+  it('updates modal state when the input changes', async () => {
+    setup();
+    await userEvent.type(screen.getByRole('textbox'), '9');
+    expect(setModalState).toHaveBeenCalledWith({ adjustedGradeValue: '759' });
   });
 });

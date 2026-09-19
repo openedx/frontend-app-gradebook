@@ -1,8 +1,7 @@
-import React from 'react';
-
+import { useEffect, useRef } from 'react';
 import { Form } from '@openedx/paragon';
 
-import useReasonInputData from './hooks';
+import { useGradebookUi } from '@src/data/gradebookUiContext';
 
 export const controlTestId = 'reason-input-control';
 
@@ -11,7 +10,18 @@ export const controlTestId = 'reason-input-control';
  * Input control for the "reason for change" field in the Edit modal.
  */
 export const ReasonInput = () => {
-  const { ref, value, onChange } = useReasonInputData();
+  const ref = useRef(null);
+  const { modalState, setModalState } = useGradebookUi();
+  const value = modalState.reasonForChange;
+
+  useEffect(() => {
+    ref.current?.focus();
+  }, []);
+
+  const onChange = (event) => {
+    setModalState({ reasonForChange: event.target.value });
+  };
+
   return (
     <Form.Control
       type="text"

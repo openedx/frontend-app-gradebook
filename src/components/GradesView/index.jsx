@@ -1,6 +1,8 @@
-/* eslint-disable react/sort-comp, react/button-has-type, import/no-named-as-default */
-import React from 'react';
 import PropTypes from 'prop-types';
+
+import { useIntl } from '@openedx/frontend-base';
+
+import { useFilters } from '@src/data/filtersContext';
 
 import BulkManagementControls from './BulkManagementControls';
 import EditModal from './EditModal';
@@ -16,14 +18,22 @@ import SearchControls from './SearchControls';
 import SpinnerIcon from './SpinnerIcon';
 import StatusAlerts from './StatusAlerts';
 
-import useGradesViewData from './hooks';
+import { useRefetchGrades } from './data/hooks';
+import messages from './messages';
 
 export const GradesView = ({ updateQueryParams }) => {
-  const {
-    stepHeadings,
-    handleFilterBadgeClose,
-    mastersHint,
-  } = useGradesViewData({ updateQueryParams });
+  const { formatMessage } = useIntl();
+  const { resetFilters: resetContextFilters } = useFilters();
+  const fetchGrades = useRefetchGrades();
+
+  const handleFilterBadgeClose = (filterNames) => () => {
+    resetContextFilters(filterNames);
+    updateQueryParams(filterNames.reduce(
+      (obj, filterName) => ({ ...obj, [filterName]: false }),
+      {},
+    ));
+    fetchGrades();
+  };
 
   return (
     <>
@@ -31,7 +41,7 @@ export const GradesView = ({ updateQueryParams }) => {
 
       <InterventionsReport />
       <h3 className="step-message-1">
-        {stepHeadings.filter}
+        {formatMessage(messages.filterStepHeading)}
       </h3>
 
       <div className="d-flex justify-content-between flex-wrap">
@@ -42,7 +52,7 @@ export const GradesView = ({ updateQueryParams }) => {
       <FilterBadges handleClose={handleFilterBadgeClose} />
       <StatusAlerts />
 
-      <h3>{stepHeadings.gradebook}</h3>
+      <h3>{formatMessage(messages.gradebookStepHeading)}</h3>
 
       <div className="d-flex justify-content-between align-items-center mb-2">
         <ScoreViewInput />
@@ -54,7 +64,7 @@ export const GradesView = ({ updateQueryParams }) => {
       <GradebookTable />
 
       <PageButtons />
-      <p>* {mastersHint}</p>
+      <p>* {formatMessage(messages.mastersHint)}</p>
       <EditModal />
 
       <ImportSuccessToast />

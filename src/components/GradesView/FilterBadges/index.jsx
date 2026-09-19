@@ -1,8 +1,6 @@
-/* eslint-disable import/no-named-as-default */
-import React from 'react';
 import PropTypes from 'prop-types';
 
-import { badgeOrder } from 'data/constants/filters';
+import { badgeOrder } from '@src/data/constants/filters';
 
 import FilterBadge from './FilterBadge';
 

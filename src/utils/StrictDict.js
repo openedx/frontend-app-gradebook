@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 const strictGet = (target, name) => {
   if (name === Symbol.toStringTag) {
     return target;
