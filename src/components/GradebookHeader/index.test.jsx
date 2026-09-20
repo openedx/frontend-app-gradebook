@@ -2,12 +2,17 @@ import { renderWithAllProviders, initializeMocks } from '@src/testUtils';
 import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
+import { getUrlByRouteRole } from '@openedx/frontend-base';
 import { instructorDashboardUrl } from '@src/data/services/lms/urls';
 
 import { GradebookHeader } from './index';
 import useGradebookHeaderData from './hooks';
 import messages from './messages';
 
+jest.mock('@openedx/frontend-base', () => ({
+  ...jest.requireActual('@openedx/frontend-base'),
+  getUrlByRouteRole: jest.fn(),
+}));
 jest.mock('@src/data/services/lms/urls', () => ({
   instructorDashboardUrl: jest.fn(),
 }));
@@ -20,6 +25,7 @@ describe('GradebookHeader', () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
+    getUrlByRouteRole.mockReturnValue(null);
     instructorDashboardUrl.mockReturnValue('https://example.com/dashboard');
   });
 
@@ -81,6 +87,28 @@ describe('GradebookHeader', () => {
     it('calls instructorDashboardUrl to get dashboard URL', () => {
       renderWithAllProviders(<GradebookHeader />);
       expect(instructorDashboardUrl).toHaveBeenCalled();
+    });
+
+    it('renders an SPA link when the site provides an instructor dashboard route', () => {
+      getUrlByRouteRole.mockReturnValue('/instructor-dashboard/:courseId');
+      renderWithAllProviders(<GradebookHeader />);
+      const dashboardLink = screen.getByRole('link');
+      expect(dashboardLink).toHaveAttribute(
+        'href',
+        '/instructor-dashboard/course-v1:TestU+CS101+2024',
+      );
+      expect(instructorDashboardUrl).not.toHaveBeenCalled();
+    });
+
+    it('renders a plain anchor when the instructor dashboard route is external', () => {
+      getUrlByRouteRole.mockReturnValue('https://other.example.com/dashboard');
+      renderWithAllProviders(<GradebookHeader />);
+      const dashboardLink = screen.getByRole('link');
+      expect(dashboardLink).toHaveAttribute(
+        'href',
+        'https://other.example.com/dashboard',
+      );
+      expect(instructorDashboardUrl).not.toHaveBeenCalled();
     });
 
     it('calls useGradebookHeaderData hook', () => {
