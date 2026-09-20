@@ -1,6 +1,8 @@
 import queryString from 'query-string';
 import { useNavigate, useLocation } from 'react-router-dom';
 
+import { Container } from '@openedx/paragon';
+
 import { useGradebookUi } from '@src/data/gradebookUiContext';
 import { views } from '@src/data/constants/app';
 
@@ -37,12 +39,12 @@ export const GradebookPage = () => {
   };
 
   return (
-    <>
+    <Container size="xl" fluid>
       <GradebookDataLoader />
       <WithSidebar
         sidebar={<GradebookFilters updateQueryParams={updateQueryParams} />}
       >
-        <div className="px-3 gradebook-content">
+        <div className="gradebook-content">
           <GradebookHeader />
           {(activeView === views.bulkManagementHistory
             ? <BulkManagementHistoryView />
@@ -50,7 +52,7 @@ export const GradebookPage = () => {
           )}
         </div>
       </WithSidebar>
-    </>
+    </Container>
   );
 };
 
