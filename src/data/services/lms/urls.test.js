@@ -1,8 +1,11 @@
+import { getSiteConfig } from '@openedx/frontend-base';
+
 import { historyRecordLimit } from './constants';
 import * as utils from './utils';
 import urls, {
   bulkGradesUrlByRow,
   gradeCsvUrl,
+  instructorDashboardUrl,
   interventionExportCsvUrl,
   sectionOverrideHistoryUrl,
 } from './urls';
@@ -44,6 +47,15 @@ describe('lms api url methods', () => {
     it('defaults options to empty object', () => {
       expect(interventionExportCsvUrl()).toEqual(
         utils.stringifyUrl(urls.getInterventionUrl(), utils.filterQuery({})),
+      );
+    });
+  });
+  describe('instructorDashboardUrl', () => {
+    it('returns the LMS dashboard url for the course in the current location', () => {
+      const courseId = 'course-v1:TestU+CS101+2024';
+      window.history.pushState({}, '', `/gradebook/${courseId}`);
+      expect(instructorDashboardUrl()).toEqual(
+        `${getSiteConfig().lmsBaseUrl}/courses/${courseId}/instructor`,
       );
     });
   });
