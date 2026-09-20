@@ -14,7 +14,6 @@ const siteConfig: SiteConfig = {
   loginUrl: 'http://local.openedx.io:8000/login',
   logoutUrl: 'http://local.openedx.io:8000/logout',
   environment: EnvironmentTypes.DEVELOPMENT,
-  basename: '/gradebook',
   segmentKey: 'your-segment-key',
   headerLogoImageUrl: '',
   apps: [

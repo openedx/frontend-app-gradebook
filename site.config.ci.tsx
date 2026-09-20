@@ -13,7 +13,6 @@ const siteConfig: SiteConfig = {
   logoutUrl: 'http://localhost:8000/logout',
 
   environment: EnvironmentTypes.PRODUCTION,
-  basename: '/gradebook',
   apps: [
     shellApp,
     headerApp,

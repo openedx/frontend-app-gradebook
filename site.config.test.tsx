@@ -12,7 +12,6 @@ const siteConfig: SiteConfig = {
   // Use 'test' instead of EnvironmentTypes.TEST to break a circular dependency
   // when mocking `@openedx/frontend-base` itself.
   environment: 'test' as SiteConfig['environment'],
-  basename: '/gradebook',
   apps: [{
     appId,
     config: {},

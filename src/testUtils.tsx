@@ -87,7 +87,7 @@ export const testCourseId = 'course-v1:edX+DemoX+Demo';
  * `FiltersProvider` and `GradebookUiProvider`. This is the wrapper the vast
  * majority of gradebook component tests need.
  *
- * Mounts under a `/:courseId` route (like production `src/routes.tsx`), so
+ * Mounts under a `/gradebook/:courseId` route (like production `src/routes.tsx`), so
  * `useParams().courseId` resolves without mocking; pass `courseId` to override
  * the routed id (append `?key=value` for URL-seeded filters).
  */
@@ -103,12 +103,12 @@ export const renderWithAllProviders = (
   });
   const Wrapper = ({ children }: WrapperProps) => (
     <QueryClientProvider client={queryClient}>
-      <MemoryRouter initialEntries={[`/${courseId}`]}>
+      <MemoryRouter initialEntries={[`/gradebook/${courseId}`]}>
         <SiteContext.Provider value={mockAppContext}>
           <IntlProvider locale="en">
             <Routes>
               <Route
-                path="/:courseId"
+                path="/gradebook/:courseId"
                 element={(
                   <FiltersProvider>
                     <GradebookUiProvider>
