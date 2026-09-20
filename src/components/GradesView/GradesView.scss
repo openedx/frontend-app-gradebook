@@ -18,9 +18,6 @@
 }
 
 .gradebook-content {
-    // note that this width isn't well-abstracted from Drawer code.
-    // if we need to change it we may need to dig into those styles as well
-    width: 100vw;
     .search-help-text {
         margin-left: 20px;
     }
