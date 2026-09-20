@@ -1,7 +1,7 @@
 frontend-app-gradebook
 #######################
 
-|Build Status| |Codecov| |npm_version| |npm_downloads| |license| |semantic-release|
+|Codecov| |npm_version| |npm_downloads| |license| |semantic-release|
 
 Purpose
 *******
@@ -17,6 +17,21 @@ For existing documentation see:
 
 - Basic Usage: `Review Learner Grades (read-the-docs) <https://docs.openedx.org/en/latest/educators/how-tos/data/view_learner_grades.html>`_
 - Bulk Grade Management: `Override Learner Subsection Scores in Bulk (read-the-docs) <https://docs.openedx.org/en/latest/educators/how-tos/data/manage_learner_grades.html#override-learner-subsection-scores-in-bulk>`_
+
+Branches and releases
+*********************
+
+This repository follows `OEP-10 ADR 0002
+<https://docs.openedx.org/projects/openedx-proposals/en/latest/processes/oep-0010/decisions/0002-frontend-stable-branches.html>`_:
+
+- ``master`` is the unstable development branch; every conventional commit
+  publishes a prerelease of ``@openedx/frontend-app-gradebook`` to npm.
+- ``stable`` carries the current stable major, published on the ``latest``
+  dist-tag. Older stable lines live on ``n.x`` / ``n.m.x`` branches as needed.
+- The repository no longer participates in Open edX releases by branch: the
+  legacy micro-frontend and any further ``release/RELEASENAME`` branches for it
+  live on the `legacy-mfe
+  <https://github.com/openedx/frontend-app-gradebook/tree/legacy-mfe>`_ branch.
 
 Should I use Gradebook in my course?
 *************************************
@@ -167,7 +182,7 @@ Directory Structure
 
     * React Router route definitions for the app.
 
-  * ``providers.ts``
+  * ``providers.tsx``
 
     * App-scoped context providers registered with frontend-base.
 
@@ -194,11 +209,6 @@ Directory Structure
 * ``site.config.dev.tsx``
 
   * Dev harness configuration — registers the shell, header, footer, and this app for local development.
-
-Authentication with backend API services
-*****************************************
-
-See the `@edx/frontend-auth <https://github.com/edx-unsupported/frontend-auth>`_ repo for information about securing routes in your application that require user authentication.
 
 License
 *******
@@ -257,8 +267,6 @@ Reporting Security Issues
 
 Please do not report security issues in public. Please email security@openedx.org.
 
-.. |Build Status| image:: https://api.travis-ci.com/edx/frontend-app-gradebook.svg?branch=master
-   :target: https://travis-ci.com/edx/frontend-app-gradebook
 .. |Codecov| image:: https://img.shields.io/codecov/c/gh/openedx/frontend-app-gradebook
    :target: https://app.codecov.io/gh/openedx/frontend-app-gradebook
 .. |npm_version| image:: https://img.shields.io/npm/v/@openedx/frontend-app-gradebook.svg
