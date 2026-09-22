@@ -2,7 +2,7 @@ import { renderWithAllProviders, initializeMocks } from '@src/testUtils';
 import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
-import { getUrlByRouteRole } from '@openedx/frontend-base';
+import { resolveRouteByRole } from '@openedx/frontend-base';
 import { instructorDashboardUrl } from '@src/data/services/lms/urls';
 
 import { GradebookHeader } from './index';
@@ -11,7 +11,7 @@ import messages from './messages';
 
 jest.mock('@openedx/frontend-base', () => ({
   ...jest.requireActual('@openedx/frontend-base'),
-  getUrlByRouteRole: jest.fn(),
+  resolveRouteByRole: jest.fn(),
 }));
 jest.mock('@src/data/services/lms/urls', () => ({
   instructorDashboardUrl: jest.fn(),
@@ -25,7 +25,7 @@ describe('GradebookHeader', () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
-    getUrlByRouteRole.mockReturnValue(null);
+    resolveRouteByRole.mockReturnValue(null);
     instructorDashboardUrl.mockReturnValue('https://example.com/dashboard');
   });
 
@@ -90,8 +90,15 @@ describe('GradebookHeader', () => {
     });
 
     it('renders an SPA link when the site provides an instructor dashboard route', () => {
-      getUrlByRouteRole.mockReturnValue('/instructor-dashboard/:courseId');
+      resolveRouteByRole.mockReturnValue({
+        url: '/instructor-dashboard/course-v1:TestU+CS101+2024',
+        isInternal: true,
+      });
       renderWithAllProviders(<GradebookHeader />);
+      expect(resolveRouteByRole).toHaveBeenCalledWith(
+        'org.openedx.frontend.role.instructorDashboard',
+        { courseId: 'course-v1:TestU+CS101+2024' },
+      );
       const dashboardLink = screen.getByRole('link');
       expect(dashboardLink).toHaveAttribute(
         'href',
@@ -101,7 +108,10 @@ describe('GradebookHeader', () => {
     });
 
     it('renders a plain anchor when the instructor dashboard route is external', () => {
-      getUrlByRouteRole.mockReturnValue('https://other.example.com/dashboard');
+      resolveRouteByRole.mockReturnValue({
+        url: 'https://other.example.com/dashboard',
+        isInternal: false,
+      });
       renderWithAllProviders(<GradebookHeader />);
       const dashboardLink = screen.getByRole('link');
       expect(dashboardLink).toHaveAttribute(
