@@ -28,8 +28,7 @@ export const GradebookHeader = () => {
   // "Missing :courseId param" otherwise.
   const dashboardRoute = (!onBack && courseId)
     ? resolveRouteByRole(instructorDashboardRole, { courseId })
-    : undefined;
-  const isInternalRoute = !!dashboardRoute && !/^[a-z][a-z0-9+.-]*:/i.test(dashboardRoute);
+    : null;
   const backLinkContent = (
     <>
       <span aria-hidden="true">{'<< '}</span>
@@ -45,10 +44,10 @@ export const GradebookHeader = () => {
         </Button>
       );
     }
-    if (isInternalRoute) {
-      return <Link to={dashboardRoute} className="mb-3">{backLinkContent}</Link>;
+    if (dashboardRoute?.isInternal) {
+      return <Link to={dashboardRoute.url} className="mb-3">{backLinkContent}</Link>;
     }
-    return <a href={dashboardRoute ?? instructorDashboardUrl()} className="mb-3">{backLinkContent}</a>;
+    return <a href={dashboardRoute?.url ?? instructorDashboardUrl()} className="mb-3">{backLinkContent}</a>;
   };
   return (
     <div className="gradebook-header">
