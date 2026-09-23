@@ -2,9 +2,9 @@ import { createElement, ReactNode } from 'react';
 import { renderHook, waitFor } from '@testing-library/react';
 
 import { createQueryClientWrapper } from '@src/testUtils';
+import { CourseIdContext } from './courseIdContext';
 import { getAssignmentTypes, getCanUserViewGradebook } from './api';
 import {
-  CourseIdContext,
   useAssignmentTypes,
   useCanUserViewGradebook,
   useCanViewGradebook,

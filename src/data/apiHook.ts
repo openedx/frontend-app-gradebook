@@ -1,13 +1,8 @@
-import { createContext, useContext } from 'react';
 import { useQuery } from '@tanstack/react-query';
 
 import { getAssignmentTypes, getCanUserViewGradebook } from './api';
+import { useCourseId } from './courseIdContext';
 import { assignmentTypesQueryKeys, rolesQueryKeys } from './queryKeys';
-
-// Widget contract: hosts (route or dashboard slot) supply courseId here so the
-// hooks below don't depend on the enclosing router's `:courseId` param.
-export const CourseIdContext = createContext<string>('');
-export const useCourseId = (): string => useContext(CourseIdContext);
 
 /**
  * useCanUserViewGradebook()

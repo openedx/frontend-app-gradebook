@@ -1,6 +1,6 @@
 import { CurrentAppProvider } from '@openedx/frontend-base';
 import { appId } from './constants';
-import { CourseIdContext } from '@src/data/apiHook';
+import { CourseIdContext } from '@src/data/courseIdContext';
 import { FiltersProvider } from '@src/data/filtersContext';
 import { GradebookUiProvider } from '@src/data/gradebookUiContext';
 import GradebookPage from '@src/containers/GradebookPage';

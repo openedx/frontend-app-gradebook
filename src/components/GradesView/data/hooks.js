@@ -5,7 +5,8 @@ import lms from '@src/data/services/lms';
 import initialFilters, { filterConfig, filters as filterNames } from '@src/data/constants/filters';
 import { useFilters } from '@src/data/filtersContext';
 import { useGradebookUi } from '@src/data/gradebookUiContext';
-import { useCanViewGradebook, useCourseId } from '@src/data/apiHook';
+import { useCanViewGradebook } from '@src/data/apiHook';
+import { useCourseId } from '@src/data/courseIdContext';
 import {
   useSelectedCohortEntry,
   useSelectedTrackEntry,

@@ -5,7 +5,8 @@ import { createQueryClientWrapper } from '@src/testUtils';
 import lms from '@src/data/services/lms';
 import { filtersSnapshot } from '@src/data/filtersSnapshot';
 import { useGradebookUi } from '@src/data/gradebookUiContext';
-import { useCourseId, useCourseIdWithGate } from '@src/data/apiHook';
+import { useCourseIdWithGate } from '@src/data/apiHook';
+import { useCourseId } from '@src/data/courseIdContext';
 import {
   trackGradesDisplayed,
   trackGradeOverrideSucceeded,
@@ -32,8 +33,11 @@ jest.mock('@src/data/gradebookUiContext', () => ({
 }));
 jest.mock('@src/data/apiHook', () => ({
   ...jest.requireActual('@src/data/apiHook'),
-  useCourseId: jest.fn(),
   useCourseIdWithGate: jest.fn(),
+}));
+jest.mock('@src/data/courseIdContext', () => ({
+  ...jest.requireActual('@src/data/courseIdContext'),
+  useCourseId: jest.fn(),
 }));
 jest.mock('@src/data/services/segment/events', () => ({
   trackGradesDisplayed: jest.fn(),

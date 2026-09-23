@@ -23,7 +23,7 @@ import { render } from '@testing-library/react';
 
 import { FiltersProvider } from '@src/data/filtersContext';
 import { GradebookUiProvider } from '@src/data/gradebookUiContext';
-import { CourseIdContext } from '@src/data/apiHook';
+import { CourseIdContext } from '@src/data/courseIdContext';
 
 /**
  * Returns the mocked `getAuthenticatedHttpClient`. Only meaningful in suites that

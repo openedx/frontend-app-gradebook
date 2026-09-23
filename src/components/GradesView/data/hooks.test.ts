@@ -4,7 +4,8 @@ import { useIsMutating, useQueryClient } from '@tanstack/react-query';
 import lms from '@src/data/services/lms';
 import { useFilters } from '@src/data/filtersContext';
 import { useGradebookUi } from '@src/data/gradebookUiContext';
-import { useCanViewGradebook, useCourseId } from '@src/data/apiHook';
+import { useCanViewGradebook } from '@src/data/apiHook';
+import { useCourseId } from '@src/data/courseIdContext';
 import {
   useSelectedCohortEntry, useSelectedTrackEntry,
 } from '@src/components/GradebookFilters/data/hooks';
@@ -49,6 +50,9 @@ jest.mock('@src/data/gradebookUiContext', () => ({
 jest.mock('@src/data/apiHook', () => ({
   ...jest.requireActual('@src/data/apiHook'),
   useCanViewGradebook: jest.fn(),
+}));
+jest.mock('@src/data/courseIdContext', () => ({
+  ...jest.requireActual('@src/data/courseIdContext'),
   useCourseId: jest.fn(),
 }));
 jest.mock('@src/components/GradebookFilters/data/hooks', () => ({

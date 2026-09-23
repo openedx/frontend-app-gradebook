@@ -5,7 +5,8 @@ import lms from '@src/data/services/lms';
 import { sortAlphaAsc } from '@src/data/formatUtils';
 import { filtersSnapshot } from '@src/data/filtersSnapshot';
 import { useGradebookUi } from '@src/data/gradebookUiContext';
-import { useCourseId, useCourseIdWithGate } from '@src/data/apiHook';
+import { useCourseIdWithGate } from '@src/data/apiHook';
+import { useCourseId } from '@src/data/courseIdContext';
 import {
   trackGradesDisplayed,
   trackGradeOverrideSucceeded,
