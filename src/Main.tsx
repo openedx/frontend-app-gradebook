@@ -1,16 +1,12 @@
-import { CurrentAppProvider, PageWrap, getSiteConfig, useIntl } from '@openedx/frontend-base';
+import { PageWrap, getSiteConfig, useIntl } from '@openedx/frontend-base';
 import { Helmet } from 'react-helmet';
-import { appId } from './constants';
-import { FiltersProvider } from '@src/data/filtersContext';
-import { GradebookUiProvider } from '@src/data/gradebookUiContext';
-import GradebookPage from '@src/containers/GradebookPage';
+import Gradebook from './Gradebook';
 import messages from './messages';
-import './style.scss';
 
 const Main = () => {
   const { formatMessage } = useIntl();
   return (
-    <CurrentAppProvider appId={appId}>
+    <>
       <Helmet>
         <title>
           {formatMessage(messages['gradebook.page.title'], {
@@ -18,14 +14,10 @@ const Main = () => {
           })}
         </title>
       </Helmet>
-      <FiltersProvider>
-        <GradebookUiProvider>
-          <PageWrap>
-            <GradebookPage />
-          </PageWrap>
-        </GradebookUiProvider>
-      </FiltersProvider>
-    </CurrentAppProvider>
+      <PageWrap>
+        <Gradebook />
+      </PageWrap>
+    </>
   );
 };
 
