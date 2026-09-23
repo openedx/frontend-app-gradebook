@@ -7,10 +7,15 @@ const Gradebook = lazy(() => import('./Gradebook'));
 // Slot id renders gradebook MFE inside student grades tab on ccx coach dashboard
 const studentGradesSlotId = 'org.openedx.frontend.slot.ccxCoach.studentGrades.v1';
 
+interface GradebookWidgetProps {
+  courseId: string;
+  onBack?: () => void;
+}
+
 // Own Suspense boundary: the host slot doesn't provide one.
-const GradebookWidget = ({ courseId }: { courseId: string }) => (
+const GradebookWidget = ({ courseId, onBack }: GradebookWidgetProps) => (
   <Suspense fallback={null}>
-    <Gradebook courseId={courseId} />
+    <Gradebook courseId={courseId} onBack={onBack} />
   </Suspense>
 );
 

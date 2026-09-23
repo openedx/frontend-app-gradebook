@@ -3,17 +3,25 @@ import { appId } from './constants';
 import { CourseIdContext } from '@src/data/courseIdContext';
 import { FiltersProvider } from '@src/data/filtersContext';
 import { GradebookUiProvider } from '@src/data/gradebookUiContext';
+import { GradebookNavigationContext } from '@src/data/gradebookNavigationContext';
 import GradebookPage from '@src/containers/GradebookPage';
 import './style.scss';
 
-const Gradebook = ({ courseId }: { courseId: string }) => (
+interface GradebookProps {
+  courseId: string,
+  onBack?: () => void,
+}
+
+const Gradebook = ({ courseId, onBack }: GradebookProps) => (
   <CurrentAppProvider appId={appId}>
     <CourseIdContext.Provider value={courseId}>
-      <FiltersProvider>
-        <GradebookUiProvider>
-          <GradebookPage />
-        </GradebookUiProvider>
-      </FiltersProvider>
+      <GradebookNavigationContext.Provider value={{ onBack }}>
+        <FiltersProvider>
+          <GradebookUiProvider>
+            <GradebookPage />
+          </GradebookUiProvider>
+        </FiltersProvider>
+      </GradebookNavigationContext.Provider>
     </CourseIdContext.Provider>
   </CurrentAppProvider>
 );
