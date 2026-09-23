@@ -23,8 +23,13 @@ export const GradebookHeader = () => {
   const { onBack } = useGradebookNavigation();
   // Prefer the instructor dashboard route if the running site provides one,
   // so navigation stays within the SPA; otherwise fall back to a full page
-  // load of the legacy LMS dashboard.
-  const dashboardRoute = resolveRouteByRole(instructorDashboardRole, { courseId });
+  // load of the legacy LMS dashboard. Skip resolving when the host provides
+  // its own onBack or the courseId isn't ready — resolveRouteByRole throws
+  // "Missing :courseId param" otherwise.
+  const dashboardRoute = (!onBack && courseId)
+    ? resolveRouteByRole(instructorDashboardRole, { courseId })
+    : undefined;
+  const isInternalRoute = !!dashboardRoute && !/^[a-z][a-z0-9+.-]*:/i.test(dashboardRoute);
   const backLinkContent = (
     <>
       <span aria-hidden="true">{'<< '}</span>
