@@ -15,7 +15,7 @@ and documented here.
 ### `org.openedx.frontend.widget.gradebook.studentGrades.v1`
 
 - **Target slot:** `org.openedx.frontend.slot.ccxCoach.studentGrades.v1` — the
-  Student Grades tab in the CCX Coach dashboard.
+  tab content of Student Grades tab in the CCX Coach dashboard.
 - **Operation:** `WidgetOperationTypes.APPEND` (`widgetAppend`).
 - **Component:** a lazy-loaded `Gradebook` behind its own `<Suspense>`
   boundary, so hosts that never render the slot do not pay for the bundle.
