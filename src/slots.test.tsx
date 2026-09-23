@@ -8,6 +8,10 @@ jest.mock('./Gradebook', () => ({
   ),
 }));
 
+// SlotOperation is a discriminated union across renderer variants (component /
+// element / iframe); narrow to the widget-component shape once for both tests.
+const widgetOp = slots[0] as { component: React.ComponentType<{ courseId: string }> };
+
 describe('slots', () => {
   it('appends a lazy Gradebook widget to the CCX Coach student grades slot', () => {
     expect(slots).toHaveLength(1);
@@ -17,11 +21,11 @@ describe('slots', () => {
         op: 'widgetAppend',
       }),
     );
-    expect(typeof slots[0].component).toBe('function');
+    expect(typeof widgetOp.component).toBe('function');
   });
 
   it('renders Gradebook through its own Suspense boundary and forwards courseId', async () => {
-    const Widget = slots[0].component! as React.ComponentType<{ courseId: string }>;
+    const Widget = widgetOp.component;
     render(<Widget courseId="course-v1:X" />);
     expect(await screen.findByTestId('gradebook')).toHaveTextContent('course-v1:X');
   });
