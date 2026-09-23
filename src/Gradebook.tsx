@@ -1,17 +1,20 @@
 import { CurrentAppProvider } from '@openedx/frontend-base';
 import { appId } from './constants';
+import { CourseIdContext } from '@src/data/apiHook';
 import { FiltersProvider } from '@src/data/filtersContext';
 import { GradebookUiProvider } from '@src/data/gradebookUiContext';
 import GradebookPage from '@src/containers/GradebookPage';
 import './style.scss';
 
-const Gradebook = () => (
+const Gradebook = ({ courseId }: { courseId: string }) => (
   <CurrentAppProvider appId={appId}>
-    <FiltersProvider>
-      <GradebookUiProvider>
-        <GradebookPage />
-      </GradebookUiProvider>
-    </FiltersProvider>
+    <CourseIdContext.Provider value={courseId}>
+      <FiltersProvider>
+        <GradebookUiProvider>
+          <GradebookPage />
+        </GradebookUiProvider>
+      </FiltersProvider>
+    </CourseIdContext.Provider>
   </CurrentAppProvider>
 );
 

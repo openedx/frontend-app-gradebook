@@ -1,12 +1,11 @@
 import { useMemo } from 'react';
 import { useIsMutating, useQueryClient } from '@tanstack/react-query';
-import { useParams } from 'react-router-dom';
 
 import lms from '@src/data/services/lms';
 import initialFilters, { filterConfig, filters as filterNames } from '@src/data/constants/filters';
 import { useFilters } from '@src/data/filtersContext';
 import { useGradebookUi } from '@src/data/gradebookUiContext';
-import { useCanViewGradebook } from '@src/data/apiHook';
+import { useCanViewGradebook, useCourseId } from '@src/data/apiHook';
 import {
   useSelectedCohortEntry,
   useSelectedTrackEntry,
@@ -237,7 +236,7 @@ export const useEditModalPossibleGrade = () => {
 // refetch with the current filters.
 const useInvalidateGrades = () => {
   const queryClient = useQueryClient();
-  const { courseId = '' } = useParams();
+  const courseId = useCourseId();
   return () => queryClient.invalidateQueries({ queryKey: gradesQueryKeys.byCourse(courseId) });
 };
 

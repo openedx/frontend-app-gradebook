@@ -1,12 +1,11 @@
 import { useMemo } from 'react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { useParams } from 'react-router-dom';
 
 import lms from '@src/data/services/lms';
 import { sortAlphaAsc } from '@src/data/formatUtils';
 import { filtersSnapshot } from '@src/data/filtersSnapshot';
 import { useGradebookUi } from '@src/data/gradebookUiContext';
-import { useCourseIdWithGate } from '@src/data/apiHook';
+import { useCourseId, useCourseIdWithGate } from '@src/data/apiHook';
 import {
   trackGradesDisplayed,
   trackGradeOverrideSucceeded,
@@ -184,7 +183,7 @@ interface GradeOverrideUpdate {
  */
 export const useUpdateGrades = () => {
   const queryClient = useQueryClient();
-  const { courseId = '' } = useParams();
+  const courseId = useCourseId();
   const { setShowSuccess, setGradesPageEndpoint, modalState } = useGradebookUi();
   const mutation = useMutation({
     mutationFn: (updateData: GradeOverrideUpdate[]) => lms.api.updateGradebookData(updateData),
@@ -230,7 +229,7 @@ export const useUpdateGrades = () => {
  */
 export const useSubmitImportGradesButtonData = () => {
   const queryClient = useQueryClient();
-  const { courseId = '' } = useParams();
+  const courseId = useCourseId();
   const {
     setShowImportSuccessToast,
     resetCsvUpload,

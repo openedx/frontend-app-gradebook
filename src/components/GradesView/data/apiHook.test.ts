@@ -1,12 +1,11 @@
 import { renderHook, waitFor } from '@testing-library/react';
 import { QueryClient } from '@tanstack/react-query';
-import { useParams } from 'react-router-dom';
 
 import { createQueryClientWrapper } from '@src/testUtils';
 import lms from '@src/data/services/lms';
 import { filtersSnapshot } from '@src/data/filtersSnapshot';
 import { useGradebookUi } from '@src/data/gradebookUiContext';
-import { useCourseIdWithGate } from '@src/data/apiHook';
+import { useCourseId, useCourseIdWithGate } from '@src/data/apiHook';
 import {
   trackGradesDisplayed,
   trackGradeOverrideSucceeded,
@@ -21,10 +20,6 @@ import {
   useGrades, useGradesData, useGradeOverrideHistory, useUpdateGrades, useSubmitImportGradesButtonData,
 } from './apiHook';
 
-jest.mock('react-router-dom', () => ({
-  ...jest.requireActual('react-router-dom'),
-  useParams: jest.fn(),
-}));
 jest.mock('@src/data/services/lms', () => ({
   api: {
     updateGradebookData: jest.fn(),
@@ -37,6 +32,7 @@ jest.mock('@src/data/gradebookUiContext', () => ({
 }));
 jest.mock('@src/data/apiHook', () => ({
   ...jest.requireActual('@src/data/apiHook'),
+  useCourseId: jest.fn(),
   useCourseIdWithGate: jest.fn(),
 }));
 jest.mock('@src/data/services/segment/events', () => ({
@@ -52,7 +48,7 @@ jest.mock('./api', () => ({
   getGradeOverrideHistory: jest.fn(),
 }));
 
-const useParamsMock = jest.mocked(useParams);
+const useCourseIdMock = jest.mocked(useCourseId);
 // Loosely-typed mocks: the suites feed partial context/read-model shapes on purpose.
 const useGradebookUiMock = useGradebookUi as jest.Mock;
 const useCourseIdWithGateMock = jest.mocked(useCourseIdWithGate);
@@ -87,7 +83,7 @@ describe('GradesView/data apiHook', () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
-    useParamsMock.mockReturnValue({ courseId: 'course-v1:X' });
+    useCourseIdMock.mockReturnValue('course-v1:X');
     uiContext = baseUiContext();
     useGradebookUiMock.mockReturnValue(uiContext);
     useCourseIdWithGateMock.mockReturnValue({ courseId: 'course-v1:X', enabled: true });

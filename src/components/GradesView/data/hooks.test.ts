@@ -1,11 +1,10 @@
 import { renderHook } from '@testing-library/react';
 import { useIsMutating, useQueryClient } from '@tanstack/react-query';
-import { useParams } from 'react-router-dom';
 
 import lms from '@src/data/services/lms';
 import { useFilters } from '@src/data/filtersContext';
 import { useGradebookUi } from '@src/data/gradebookUiContext';
-import { useCanViewGradebook } from '@src/data/apiHook';
+import { useCanViewGradebook, useCourseId } from '@src/data/apiHook';
 import {
   useSelectedCohortEntry, useSelectedTrackEntry,
 } from '@src/components/GradebookFilters/data/hooks';
@@ -33,10 +32,6 @@ jest.mock('@tanstack/react-query', () => ({
   useIsMutating: jest.fn(),
   useQueryClient: jest.fn(),
 }));
-jest.mock('react-router-dom', () => ({
-  ...jest.requireActual('react-router-dom'),
-  useParams: jest.fn(),
-}));
 jest.mock('@src/data/services/lms', () => ({
   urls: {
     gradeCsvUrl: jest.fn((args) => ({ csv: args })),
@@ -54,6 +49,7 @@ jest.mock('@src/data/gradebookUiContext', () => ({
 jest.mock('@src/data/apiHook', () => ({
   ...jest.requireActual('@src/data/apiHook'),
   useCanViewGradebook: jest.fn(),
+  useCourseId: jest.fn(),
 }));
 jest.mock('@src/components/GradebookFilters/data/hooks', () => ({
   ...jest.requireActual('@src/components/GradebookFilters/data/hooks'),
@@ -67,7 +63,7 @@ jest.mock('./apiHook', () => ({
 
 const useIsMutatingMock = useIsMutating as jest.Mock;
 const useQueryClientMock = useQueryClient as jest.Mock;
-const useParamsMock = useParams as jest.Mock;
+const useCourseIdMock = useCourseId as jest.Mock;
 const useFiltersMock = useFilters as jest.Mock;
 const useGradebookUiMock = useGradebookUi as jest.Mock;
 const useCanViewGradebookMock = useCanViewGradebook as jest.Mock;
@@ -133,7 +129,7 @@ describe('GradesView/data hooks', () => {
     jest.clearAllMocks();
     invalidateQueries = jest.fn();
     useQueryClientMock.mockReturnValue({ invalidateQueries });
-    useParamsMock.mockReturnValue({ courseId: 'course-v1:X' });
+    useCourseIdMock.mockReturnValue('course-v1:X');
     useIsMutatingMock.mockReturnValue(0);
     useCanViewGradebookMock.mockReturnValue(true);
     useSelectedCohortEntryMock.mockReturnValue(undefined);

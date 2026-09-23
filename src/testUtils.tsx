@@ -23,6 +23,7 @@ import { render } from '@testing-library/react';
 
 import { FiltersProvider } from '@src/data/filtersContext';
 import { GradebookUiProvider } from '@src/data/gradebookUiContext';
+import { CourseIdContext } from '@src/data/apiHook';
 
 /**
  * Returns the mocked `getAuthenticatedHttpClient`. Only meaningful in suites that
@@ -110,11 +111,13 @@ export const renderWithAllProviders = (
               <Route
                 path="/gradebook/:courseId"
                 element={(
-                  <FiltersProvider>
-                    <GradebookUiProvider>
-                      {children}
-                    </GradebookUiProvider>
-                  </FiltersProvider>
+                  <CourseIdContext.Provider value={courseId}>
+                    <FiltersProvider>
+                      <GradebookUiProvider>
+                        {children}
+                      </GradebookUiProvider>
+                    </FiltersProvider>
+                  </CourseIdContext.Provider>
                 )}
               />
             </Routes>

@@ -8,9 +8,9 @@ const Gradebook = lazy(() => import('./Gradebook'));
 const studentGradesSlotId = 'org.openedx.frontend.slot.ccxCoach.studentGrades.v1';
 
 // Own Suspense boundary: the host slot doesn't provide one.
-const GradebookWidget = () => (
+const GradebookWidget = ({ courseId }: { courseId: string }) => (
   <Suspense fallback={null}>
-    <Gradebook />
+    <Gradebook courseId={courseId} />
   </Suspense>
 );
 

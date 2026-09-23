@@ -1,8 +1,13 @@
+import { createContext, useContext } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { useParams } from 'react-router-dom';
 
 import { getAssignmentTypes, getCanUserViewGradebook } from './api';
 import { assignmentTypesQueryKeys, rolesQueryKeys } from './queryKeys';
+
+// Widget contract: hosts (route or dashboard slot) supply courseId here so the
+// hooks below don't depend on the enclosing router's `:courseId` param.
+export const CourseIdContext = createContext<string>('');
+export const useCourseId = (): string => useContext(CourseIdContext);
 
 /**
  * useCanUserViewGradebook()
@@ -11,7 +16,7 @@ import { assignmentTypesQueryKeys, rolesQueryKeys } from './queryKeys';
  * mirroring the legacy `fetchRoles` -> fan-out behavior.
  */
 export const useCanUserViewGradebook = () => {
-  const { courseId = '' } = useParams();
+  const courseId = useCourseId();
   return useQuery({
     queryKey: rolesQueryKeys.byCourse(courseId),
     queryFn: () => getCanUserViewGradebook(courseId),
@@ -56,7 +61,7 @@ export const useCanViewGradebook = (): boolean => {
  * gate rule lives in one place.
  */
 export const useCourseIdWithGate = (): { courseId: string; enabled: boolean } => {
-  const { courseId = '' } = useParams();
+  const courseId = useCourseId();
   const { data: canViewGradebook } = useCanUserViewGradebook();
   return { courseId, enabled: !!canViewGradebook };
 };

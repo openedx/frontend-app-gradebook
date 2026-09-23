@@ -1,9 +1,10 @@
+import { createElement, ReactNode } from 'react';
 import { renderHook, waitFor } from '@testing-library/react';
-import { useParams } from 'react-router-dom';
 
 import { createQueryClientWrapper } from '@src/testUtils';
 import { getAssignmentTypes, getCanUserViewGradebook } from './api';
 import {
+  CourseIdContext,
   useAssignmentTypes,
   useCanUserViewGradebook,
   useCanViewGradebook,
@@ -11,26 +12,28 @@ import {
   useShowBulkManagement,
 } from './apiHook';
 
-jest.mock('react-router-dom', () => ({
-  ...jest.requireActual('react-router-dom'),
-  useParams: jest.fn(),
-}));
 jest.mock('./api', () => ({
   getCanUserViewGradebook: jest.fn(),
   getAssignmentTypes: jest.fn(),
 }));
 
-const useParamsMock = jest.mocked(useParams);
 const canViewMock = jest.mocked(getCanUserViewGradebook);
 const assignmentTypesMock = jest.mocked(getAssignmentTypes);
 
+let currentCourseId = '';
 const setCourse = (courseId: string | undefined) => {
-  useParamsMock.mockReturnValue({ courseId });
+  currentCourseId = courseId ?? '';
 };
 
-const renderQueryHook = <T,>(hook: () => T) => renderHook(hook, {
-  wrapper: createQueryClientWrapper(),
-});
+const renderQueryHook = <T,>(hook: () => T) => {
+  const QueryClientWrapper = createQueryClientWrapper();
+  const wrapper = ({ children }: { children: ReactNode }) => createElement(
+    QueryClientWrapper,
+    null,
+    createElement(CourseIdContext.Provider, { value: currentCourseId }, children),
+  );
+  return renderHook(hook, { wrapper });
+};
 
 describe('root apiHook', () => {
   beforeEach(() => {
