@@ -151,8 +151,14 @@ const useLmsApiServiceArgs = () => {
   };
 };
 
-export const useGradeExportUrl = () => lms.urls.gradeCsvUrl(useLmsApiServiceArgs());
-export const useInterventionExportUrl = () => lms.urls.interventionExportCsvUrl(useLmsApiServiceArgs());
+export const useGradeExportUrl = () => {
+  const courseId = useCourseId();
+  return lms.urls.gradeCsvUrl(courseId, useLmsApiServiceArgs());
+};
+export const useInterventionExportUrl = () => {
+  const courseId = useCourseId();
+  return lms.urls.interventionExportCsvUrl(courseId, useLmsApiServiceArgs());
+};
 
 /**
  * useFilterBadgeConfig(filterName)

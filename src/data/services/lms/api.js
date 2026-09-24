@@ -14,22 +14,23 @@ const { get, post, stringifyUrl } = utils;
 /*********************************************************************************
  * GET Actions
  *********************************************************************************/
-const assignmentTypes = () => get(urls.getAssignmentTypesUrl());
-const cohorts = () => get(urls.getCohortsUrl());
-const roles = () => get(urls.getRolesUrl());
-const tracks = () => get(urls.getTracksUrl());
+const assignmentTypes = (courseId) => get(urls.getAssignmentTypesUrl(courseId));
+const cohorts = (courseId) => get(urls.getCohortsUrl(courseId));
+const roles = (courseId) => get(urls.getRolesUrl(courseId));
+const tracks = (courseId) => get(urls.getTracksUrl(courseId));
 
 /**
- * fetch.gradebookData(searchText, cohort, track, options)
+ * fetch.gradebookData(courseId, searchText, cohort, track, options)
  * fetches updated gradebook data based on current filter selections.
  * Raises an error if assignment grade limits are set, but not assignment.
+ * @param {string} courseId - course identifier
  * @param {string} searchText - search text filter
  * @param {nunber} cohort - selected cohort filter
  * @param {string} track - selected track filter
  * @param {object} options - additional optional filter values
  * @return {Promise} - get response
  */
-const gradebookData = (searchText, cohort, track, options = {}) => {
+const gradebookData = (courseId, searchText, cohort, track, options = {}) => {
   if ((options.assignmentGradeMax || options.assignmentGradeMin) && !options.assignment) {
     throw new Error(messages.errors.missingAssignment);
   }
@@ -45,15 +46,16 @@ const gradebookData = (searchText, cohort, track, options = {}) => {
     [paramKeys.assignmentGradeMax]: options.assignmentGradeMax,
     [paramKeys.assignmentGradeMin]: options.assignmentGradeMin,
   };
-  return get(stringifyUrl(urls.getGradebookUrl(), queryParams));
+  return get(stringifyUrl(urls.getGradebookUrl(courseId), queryParams));
 };
 
 /**
- * fetch.gradeBulkOperationHistory()
+ * fetch.gradeBulkOperationHistory(courseId)
  * fetches bulk operation history and raises an error if the operation fails
+ * @param {string} courseId - course identifier
  * @return {Promise} - get response
  */
-const gradeBulkOperationHistory = () => get(urls.getBulkHistoryUrl())
+const gradeBulkOperationHistory = (courseId) => get(urls.getBulkHistoryUrl(courseId))
   .then(response => response.data)
   .catch(() => Promise.reject(Error(messages.errors.unhandledResponse)));
 
@@ -72,8 +74,9 @@ const gradeOverrideHistory = (subsectionId, userId) => (
  * POST Actions
  *********************************************************************************/
 /**
- * updateGradebookData(updateData)
+ * updateGradebookData(courseId, updateData)
  * sends an update message with new grades overrides
+ * @param {string} courseId - course identifier
  * @param {object[]} updateData
  *  {
  *    user_id: <int>,
@@ -87,17 +90,18 @@ const gradeOverrideHistory = (subsectionId, userId) => (
  *  }
  * @return {Promise} - post response
  */
-const updateGradebookData = (updateData) => post(urls.getBulkUpdateUrl(), updateData);
+const updateGradebookData = (courseId, updateData) => post(urls.getBulkUpdateUrl(courseId), updateData);
 
 /**
- * uploadGradeCsv(formData)
+ * uploadGradeCsv(courseId, formData)
  * Posts form data to grade csv url.  On success, forwards response data.
  * Reject promise with result on failure.
+ * @param {string} courseId - course identifier
  * @param {object} formData - new grade data
  * @return {Promise} - post response
  */
-const uploadGradeCsv = (formData) => (
-  post(gradeCsvUrl(), formData).then((result) => {
+const uploadGradeCsv = (courseId, formData) => (
+  post(gradeCsvUrl(courseId), formData).then((result) => {
     if (result.status === 200 && !result.data.error_messages.length) {
       return result.data;
     }

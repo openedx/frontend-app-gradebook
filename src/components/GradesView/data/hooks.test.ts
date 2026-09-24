@@ -35,8 +35,8 @@ jest.mock('@tanstack/react-query', () => ({
 }));
 jest.mock('@src/data/services/lms', () => ({
   urls: {
-    gradeCsvUrl: jest.fn((args) => ({ csv: args })),
-    interventionExportCsvUrl: jest.fn((args) => ({ intervention: args })),
+    gradeCsvUrl: jest.fn((courseId, args) => ({ csv: args, courseId })),
+    interventionExportCsvUrl: jest.fn((courseId, args) => ({ intervention: args, courseId })),
   },
 }));
 jest.mock('@src/data/filtersContext', () => ({
@@ -252,27 +252,28 @@ describe('GradesView/data hooks', () => {
         assignmentType: 'Homework',
       });
       const { result } = renderHook(useGradeExportUrl);
-      expect(lms.urls.gradeCsvUrl).toHaveBeenCalledWith(expect.objectContaining({
+      expect(lms.urls.gradeCsvUrl).toHaveBeenCalledWith('course-v1:X', expect.objectContaining({
         cohort: 'Cohort A',
         track: 'verified',
         assignment: 'a1',
         assignmentType: 'Homework',
         excludedCourseRoles: 'all',
       }));
-      expect(result.current).toEqual({ csv: expect.any(Object) });
+      expect(result.current).toEqual({ csv: expect.any(Object), courseId: 'course-v1:X' });
     });
 
     it('excludedCourseRoles is empty when includeCourseRoleMembers is true', () => {
       useFiltersMock.mockReturnValue({ ...baseFilters(), includeCourseRoleMembers: true });
       renderHook(useGradeExportUrl);
       expect(lms.urls.gradeCsvUrl).toHaveBeenCalledWith(
+        'course-v1:X',
         expect.objectContaining({ excludedCourseRoles: '' }),
       );
     });
 
     it('useInterventionExportUrl delegates to lms.urls.interventionExportCsvUrl', () => {
       renderHook(useInterventionExportUrl);
-      expect(lms.urls.interventionExportCsvUrl).toHaveBeenCalled();
+      expect(lms.urls.interventionExportCsvUrl).toHaveBeenCalledWith('course-v1:X', expect.any(Object));
     });
   });
 

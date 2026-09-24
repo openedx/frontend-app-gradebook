@@ -201,7 +201,7 @@ describe('GradesView/data apiHook', () => {
       const { result } = renderQueryHook(useUpdateGrades);
       result.current();
       await waitFor(() => expect(trackGradeOverrideSucceeded).toHaveBeenCalledWith({ ok: true }));
-      expect(updateGradebookDataMock).toHaveBeenCalledWith([{
+      expect(updateGradebookDataMock).toHaveBeenCalledWith('course-v1:X', [{
         grade: { comment: 'r', earned_graded_override: '10' },
         usage_id: 'mod-1',
         user_id: 3,
@@ -235,7 +235,7 @@ describe('GradesView/data apiHook', () => {
       rerender();
       resolveUpdate!({ data: { ok: true } });
       await waitFor(() => expect(trackGradeOverrideSucceeded).toHaveBeenCalled());
-      expect(updateGradebookDataMock).toHaveBeenCalledWith([{
+      expect(updateGradebookDataMock).toHaveBeenCalledWith('course-v1:X', [{
         grade: { comment: 'r', earned_graded_override: '10' },
         usage_id: 'mod-1',
         user_id: 3,

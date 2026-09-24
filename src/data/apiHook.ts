@@ -30,7 +30,7 @@ export const useAssignmentTypes = (
   { enabled = true }: { enabled?: boolean } = {},
 ) => useQuery({
   queryKey: assignmentTypesQueryKeys.byCourse(courseId),
-  queryFn: getAssignmentTypes,
+  queryFn: () => getAssignmentTypes(courseId),
   enabled: !!courseId && enabled,
 });
 

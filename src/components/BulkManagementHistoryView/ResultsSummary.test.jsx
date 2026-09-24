@@ -6,7 +6,7 @@ import ResultsSummary from './ResultsSummary';
 
 jest.mock('@src/data/services/lms', () => ({
   urls: {
-    bulkGradesUrlByRow: jest.fn((rowId) => (`www.edx.org/${rowId}`)),
+    bulkGradesUrlByRow: jest.fn((courseId, rowId) => (`www.edx.org/${courseId}/${rowId}`)),
   },
 }));
 
@@ -15,6 +15,9 @@ describe('ResultsSummary component', () => {
     rowId: 42,
     text: 'texty',
   };
+  // renderWithAllProviders mounts under /gradebook/testCourseId; testCourseId
+  // is `course-v1:edX+DemoX+Demo` (see src/testUtils.tsx).
+  const routedCourseId = 'course-v1:edX+DemoX+Demo';
   let link;
   beforeEach(() => {
     renderWithAllProviders(<ResultsSummary {...props} />);
@@ -24,8 +27,8 @@ describe('ResultsSummary component', () => {
     expect(link).toHaveAttribute('target', '_blank');
     expect(link).toHaveAttribute('rel', 'noopener noreferrer');
   });
-  test('Hyperlink has href to bulkGradesUrl', () => {
-    expect(link).toHaveAttribute('href', lms.urls.bulkGradesUrlByRow(props.rowId));
+  test('Hyperlink has href to bulkGradesUrl with the routed courseId and rowId', () => {
+    expect(link).toHaveAttribute('href', lms.urls.bulkGradesUrlByRow(routedCourseId, props.rowId));
   });
   test('displays Download Icon and text', () => {
     expect(link).toHaveTextContent(props.text);

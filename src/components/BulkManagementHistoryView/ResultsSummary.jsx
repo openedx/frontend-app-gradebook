@@ -4,27 +4,30 @@ import { Hyperlink, Icon } from '@openedx/paragon';
 import { Download } from '@openedx/paragon/icons';
 
 import lms from '@src/data/services/lms';
+import { useCourseId } from '@src/data/courseIdContext';
 
 /**
- * <ResultsSummary {...{ courseId, rowId, text }} />
+ * <ResultsSummary {...{ rowId, text }} />
  * displays a result summary cell for a single bulk management upgrade history entry.
- * @param {string} courseId - course identifier
  * @param {number} rowId - row/error identifier
  * @param {string} text - summary string
  */
 const ResultsSummary = ({
   rowId,
   text,
-}) => (
-  <Hyperlink
-    destination={lms.urls.bulkGradesUrlByRow(rowId)}
-    target="_blank"
-    showLaunchIcon={false}
-  >
-    <Icon src={Download} className="d-inline-block" />
-    {text}
-  </Hyperlink>
-);
+}) => {
+  const courseId = useCourseId();
+  return (
+    <Hyperlink
+      destination={lms.urls.bulkGradesUrlByRow(courseId, rowId)}
+      target="_blank"
+      showLaunchIcon={false}
+    >
+      <Icon src={Download} className="d-inline-block" />
+      {text}
+    </Hyperlink>
+  );
+};
 
 ResultsSummary.propTypes = {
   rowId: PropTypes.number.isRequired,

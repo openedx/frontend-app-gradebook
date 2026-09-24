@@ -50,7 +50,7 @@ export const useGrades = (
   queryFn: async () => {
     const data = gradesPageEndpoint
       ? await getGradesPage(gradesPageEndpoint)
-      : await getGrades(buildGradebookDataParams());
+      : await getGrades({ courseId, ...buildGradebookDataParams() });
     // Mirrors the legacy `receivedGrades` redux-beacon trigger: one event per
     // actual fetch, with the filters it ran under and the resulting cursors.
     trackGradesDisplayed({
@@ -187,7 +187,7 @@ export const useUpdateGrades = () => {
   const courseId = useCourseId();
   const { setShowSuccess, setGradesPageEndpoint, modalState } = useGradebookUi();
   const mutation = useMutation({
-    mutationFn: (updateData: GradeOverrideUpdate[]) => lms.api.updateGradebookData(updateData),
+    mutationFn: (updateData: GradeOverrideUpdate[]) => lms.api.updateGradebookData(courseId, updateData),
     onSuccess: ({ data }, updateData) => {
       trackGradeOverrideSucceeded(data);
       setShowSuccess(true);
@@ -238,7 +238,7 @@ export const useSubmitImportGradesButtonData = () => {
     setCsvUploadErrors,
   } = useGradebookUi();
   const mutation = useMutation<unknown, CsvUploadError, FormData>({
-    mutationFn: (formData) => lms.api.uploadGradeCsv(formData),
+    mutationFn: (formData) => lms.api.uploadGradeCsv(courseId, formData),
     onMutate: () => {
       resetCsvUpload();
     },

@@ -47,7 +47,7 @@ export const GradebookHeader = () => {
     if (dashboardRoute?.isInternal) {
       return <Link to={dashboardRoute.url} className="mb-3">{backLinkContent}</Link>;
     }
-    return <a href={dashboardRoute?.url ?? instructorDashboardUrl()} className="mb-3">{backLinkContent}</a>;
+    return <a href={dashboardRoute?.url ?? instructorDashboardUrl(courseId)} className="mb-3">{backLinkContent}</a>;
   };
   return (
     <div className="gradebook-header">

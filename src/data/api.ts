@@ -21,7 +21,7 @@ export interface AssignmentTypesData {
  * gradebook for this course (staff, or holding an allowed role in the course).
  */
 export const getCanUserViewGradebook = async (courseId: string): Promise<boolean> => {
-  const { data } = await lms.api.fetch.roles();
+  const { data } = await lms.api.fetch.roles(courseId);
   const isAllowedRole = (role: CourseRole) => (
     role.course_id === courseId && allowedRoles.includes(role.role)
   );
@@ -29,12 +29,12 @@ export const getCanUserViewGradebook = async (courseId: string): Promise<boolean
 };
 
 /**
- * getAssignmentTypes()
+ * getAssignmentTypes(courseId)
  * Fetches grading info and derives the assignment-type list plus the
  * grades-frozen and bulk-management flags that ride along with it.
  */
-export const getAssignmentTypes = async (): Promise<AssignmentTypesData> => {
-  const { data } = await lms.api.fetch.assignmentTypes();
+export const getAssignmentTypes = async (courseId: string): Promise<AssignmentTypesData> => {
+  const { data } = await lms.api.fetch.assignmentTypes(courseId);
   return {
     assignmentTypes: Object.keys(data.assignment_types || {}),
     areGradesFrozen: Boolean(data.grades_frozen),
