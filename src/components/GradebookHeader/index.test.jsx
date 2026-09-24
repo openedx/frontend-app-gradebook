@@ -4,6 +4,7 @@ import userEvent from '@testing-library/user-event';
 
 import { resolveRouteByRole } from '@openedx/frontend-base';
 import { instructorDashboardUrl } from '@src/data/services/lms/urls';
+import { useGradebookNavigation } from '@src/data/gradebookNavigationContext';
 
 import { GradebookHeader } from './index';
 import useGradebookHeaderData from './hooks';
@@ -16,6 +17,10 @@ jest.mock('@openedx/frontend-base', () => ({
 jest.mock('@src/data/services/lms/urls', () => ({
   instructorDashboardUrl: jest.fn(),
 }));
+jest.mock('@src/data/gradebookNavigationContext', () => ({
+  ...jest.requireActual('@src/data/gradebookNavigationContext'),
+  useGradebookNavigation: jest.fn(),
+}));
 jest.mock('./hooks', () => jest.fn());
 
 initializeMocks();
@@ -27,6 +32,7 @@ describe('GradebookHeader', () => {
     jest.clearAllMocks();
     resolveRouteByRole.mockReturnValue(null);
     instructorDashboardUrl.mockReturnValue('https://example.com/dashboard');
+    useGradebookNavigation.mockReturnValue({ onBack: undefined });
   });
 
   describe('basic rendering', () => {
@@ -124,6 +130,18 @@ describe('GradebookHeader', () => {
     it('calls useGradebookHeaderData hook', () => {
       renderWithAllProviders(<GradebookHeader />);
       expect(useGradebookHeaderData).toHaveBeenCalled();
+    });
+
+    it('renders a button that invokes onBack (no link) when the navigation context supplies onBack', async () => {
+      const onBack = jest.fn();
+      useGradebookNavigation.mockReturnValue({ onBack });
+      renderWithAllProviders(<GradebookHeader />);
+      expect(screen.queryByRole('link')).not.toBeInTheDocument();
+      const backButton = screen.getByRole('button', { name: /back to dashboard/i });
+      expect(resolveRouteByRole).not.toHaveBeenCalled();
+      expect(instructorDashboardUrl).not.toHaveBeenCalled();
+      await userEvent.click(backButton);
+      expect(onBack).toHaveBeenCalledTimes(1);
     });
   });
 

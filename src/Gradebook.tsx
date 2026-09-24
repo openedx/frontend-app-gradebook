@@ -8,8 +8,8 @@ import GradebookPage from '@src/containers/GradebookPage';
 import './style.scss';
 
 interface GradebookProps {
-  courseId: string,
-  onBack?: () => void,
+  courseId: string;
+  onBack?: () => void;
 }
 
 const Gradebook = ({ courseId, onBack }: GradebookProps) => (
