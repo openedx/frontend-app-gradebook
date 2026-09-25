@@ -1,7 +1,5 @@
 import { StrictDict } from '@src/utils';
 
-export const courseId = window.location.pathname.slice(1);
-
 export const events = StrictDict({
   receivedRoles: 'receivedRoles',
   receivedGrades: 'receivedGrades',
@@ -26,5 +24,3 @@ export const eventNames = StrictDict({
 });
 
 export const trackingCategory = 'gradebook';
-
-export const pageViewEvent = { category: trackingCategory, page: courseId };

@@ -1,6 +1,7 @@
 import { renderHook, act } from '@testing-library/react';
 
 import { useFilters } from '@src/data/filtersContext';
+import { useCourseId } from '@src/data/courseIdContext';
 import { useRefetchGrades } from '@src/components/GradesView/data/hooks';
 import { trackFilterApplied } from '@src/data/services/segment/events';
 import { useAreCourseGradeFiltersValid } from '../data/hooks';
@@ -9,6 +10,10 @@ import useCourseGradeFilterData from './hooks';
 jest.mock('@src/data/filtersContext', () => ({
   ...jest.requireActual('@src/data/filtersContext'),
   useFilters: jest.fn(),
+}));
+jest.mock('@src/data/courseIdContext', () => ({
+  ...jest.requireActual('@src/data/courseIdContext'),
+  useCourseId: jest.fn(),
 }));
 jest.mock('@src/components/GradesView/data/hooks', () => ({
   ...jest.requireActual('@src/components/GradesView/data/hooks'),
@@ -41,6 +46,7 @@ const primeMocks = ({
   });
   useRefetchGrades.mockReturnValue(fetchGrades);
   useAreCourseGradeFiltersValid.mockReturnValue(areValid);
+  useCourseId.mockReturnValue('course-v1:X');
   return {
     setCourseGradeMin, setCourseGradeMax, applyCourseGradeLimits, fetchGrades,
   };
@@ -101,7 +107,7 @@ describe('useCourseGradeFilterData', () => {
     });
     const expected = { courseGradeMin: '20', courseGradeMax: '80' };
     expect(applyCourseGradeLimits).toHaveBeenCalledWith(expected);
-    expect(trackFilterApplied).toHaveBeenCalledWith();
+    expect(trackFilterApplied).toHaveBeenCalledWith('course-v1:X');
     expect(fetchGrades).toHaveBeenCalled();
     expect(updateQueryParams).toHaveBeenCalledWith(expected);
   });

@@ -53,7 +53,7 @@ export const useGrades = (
       : await getGrades({ courseId, ...buildGradebookDataParams() });
     // Mirrors the legacy `receivedGrades` redux-beacon trigger: one event per
     // actual fetch, with the filters it ran under and the resulting cursors.
-    trackGradesDisplayed({
+    trackGradesDisplayed(courseId, {
       assignmentType: filtersSnapshot.assignmentType,
       cohort: filtersSnapshot.cohort,
       track: filtersSnapshot.track,
@@ -189,7 +189,7 @@ export const useUpdateGrades = () => {
   const mutation = useMutation({
     mutationFn: (updateData: GradeOverrideUpdate[]) => lms.api.updateGradebookData(courseId, updateData),
     onSuccess: ({ data }, updateData) => {
-      trackGradeOverrideSucceeded(data);
+      trackGradeOverrideSucceeded(courseId, data);
       setShowSuccess(true);
       setGradesPageEndpoint(null);
       queryClient.invalidateQueries({
@@ -202,7 +202,7 @@ export const useUpdateGrades = () => {
       });
     },
     onError: (error) => {
-      trackGradeOverrideFailed(error);
+      trackGradeOverrideFailed(courseId, error);
     },
   });
   return () => {
@@ -245,13 +245,13 @@ export const useSubmitImportGradesButtonData = () => {
     onSuccess: () => {
       markCsvUploadSuccess();
       setShowImportSuccessToast(true);
-      trackUploadOverrideSucceeded();
+      trackUploadOverrideSucceeded(courseId);
       queryClient.invalidateQueries({
         queryKey: bulkOperationHistoryQueryKeys.byCourse(courseId),
       });
     },
     onError: (error) => {
-      trackUploadOverrideFailed(error);
+      trackUploadOverrideFailed(courseId, error);
       if (error?.status === 200 && error?.data?.error_messages?.length) {
         const { error_messages: errorMessages } = error.data;
         setCsvUploadErrors(errorMessages);

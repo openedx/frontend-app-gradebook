@@ -20,6 +20,8 @@ jest.mock('@openedx/frontend-base', () => ({
 const sendTrackEventMock = jest.mocked(sendTrackEvent);
 
 describe('segment tracking events', () => {
+  const courseId = 'course-v1:X';
+
   beforeEach(() => {
     jest.clearAllMocks();
   });
@@ -27,11 +29,11 @@ describe('segment tracking events', () => {
   const expectBase = (call: unknown[]) => {
     const props = call[1] as { category: string; label: string };
     expect(props.category).toBe(trackingCategory);
-    expect(typeof props.label).toBe('string');
+    expect(props.label).toBe(courseId);
   };
 
   it('trackGradesDisplayed includes the fetch filters and page cursors', () => {
-    trackGradesDisplayed({
+    trackGradesDisplayed(courseId, {
       assignmentType: 'Homework', cohort: '2', track: 'audit', prev: 'p', next: 'n',
     });
     expect(sendTrackEventMock).toHaveBeenCalledWith(
@@ -44,7 +46,7 @@ describe('segment tracking events', () => {
   });
 
   it('trackGradeOverrideSucceeded includes the updated grades payload', () => {
-    trackGradeOverrideSucceeded({ id: 1 });
+    trackGradeOverrideSucceeded(courseId, { id: 1 });
     expect(sendTrackEventMock).toHaveBeenCalledWith(
       eventNames[events.updateSucceeded],
       expect.objectContaining({ updatedGrades: { id: 1 } }),
@@ -54,26 +56,26 @@ describe('segment tracking events', () => {
 
   it('trackGradeOverrideFailed includes the error payload', () => {
     const error = new Error('boom');
-    trackGradeOverrideFailed(error);
+    trackGradeOverrideFailed(courseId, error);
     expect(sendTrackEventMock).toHaveBeenCalledWith(
       eventNames[events.updateFailed],
-      expect.objectContaining({ error }),
+      expect.objectContaining({ error, label: courseId }),
     );
   });
 
   it('trackUploadOverrideSucceeded fires without extra props', () => {
-    trackUploadOverrideSucceeded();
+    trackUploadOverrideSucceeded(courseId);
     expect(sendTrackEventMock).toHaveBeenCalledWith(
       eventNames[events.uploadOverrideSucceeded],
-      expect.objectContaining({ category: trackingCategory }),
+      expect.objectContaining({ category: trackingCategory, label: courseId }),
     );
   });
 
   it('trackUploadOverrideFailed includes the error payload', () => {
-    trackUploadOverrideFailed({ status: 500 });
+    trackUploadOverrideFailed(courseId, { status: 500 });
     expect(sendTrackEventMock).toHaveBeenCalledWith(
       eventNames[events.uploadOverrideFailed],
-      expect.objectContaining({ error: { status: 500 } }),
+      expect.objectContaining({ error: { status: 500 }, label: courseId }),
     );
   });
 
@@ -81,11 +83,11 @@ describe('segment tracking events', () => {
     ['trackFilterApplied', trackFilterApplied, events.filterApplied],
     ['trackGradesReportDownloaded', trackGradesReportDownloaded, events.gradesReportDownloaded],
     ['trackInterventionReportDownloaded', trackInterventionReportDownloaded, events.interventionReportDownloaded],
-  ])('%s emits the mapped Segment event with base properties', (_name, fn, key) => {
-    (fn as () => void)();
+  ])('%s emits the mapped Segment event with the courseId label', (_name, fn, key) => {
+    (fn as (courseId: string) => void)(courseId);
     expect(sendTrackEventMock).toHaveBeenCalledWith(
       eventNames[key],
-      expect.objectContaining({ category: trackingCategory }),
+      expect.objectContaining({ category: trackingCategory, label: courseId }),
     );
   });
 });

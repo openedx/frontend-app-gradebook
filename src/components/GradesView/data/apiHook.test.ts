@@ -125,7 +125,7 @@ describe('GradesView/data apiHook', () => {
       getGradesMock.mockResolvedValue({ results: [], previous: 'prev-url', next: 'next-url' });
       const { result } = renderQueryHook(() => useGrades('course-v1:X', null));
       await waitFor(() => expect(result.current.isSuccess).toBe(true));
-      expect(trackGradesDisplayed).toHaveBeenCalledWith({
+      expect(trackGradesDisplayed).toHaveBeenCalledWith('course-v1:X', {
         assignmentType: 'Homework',
         cohort: '2',
         track: 'audit',
@@ -200,7 +200,7 @@ describe('GradesView/data apiHook', () => {
       updateGradebookDataMock.mockResolvedValue({ data: { ok: true } });
       const { result } = renderQueryHook(useUpdateGrades);
       result.current();
-      await waitFor(() => expect(trackGradeOverrideSucceeded).toHaveBeenCalledWith({ ok: true }));
+      await waitFor(() => expect(trackGradeOverrideSucceeded).toHaveBeenCalledWith('course-v1:X', { ok: true }));
       expect(updateGradebookDataMock).toHaveBeenCalledWith('course-v1:X', [{
         grade: { comment: 'r', earned_graded_override: '10' },
         usage_id: 'mod-1',
@@ -215,7 +215,7 @@ describe('GradesView/data apiHook', () => {
       updateGradebookDataMock.mockRejectedValue(err);
       const { result } = renderQueryHook(useUpdateGrades);
       result.current();
-      await waitFor(() => expect(trackGradeOverrideFailed).toHaveBeenCalledWith(err));
+      await waitFor(() => expect(trackGradeOverrideFailed).toHaveBeenCalledWith('course-v1:X', err));
     });
 
     it('sends the payload captured at trigger time, even if the modal resets before the save resolves', async () => {
@@ -278,7 +278,7 @@ describe('GradesView/data apiHook', () => {
       uploadGradeCsvMock.mockRejectedValue(err);
       const { result } = renderQueryHook(useSubmitImportGradesButtonData);
       await result.current(formData);
-      expect(trackUploadOverrideFailed).toHaveBeenCalledWith(err);
+      expect(trackUploadOverrideFailed).toHaveBeenCalledWith('course-v1:X', err);
       expect(uiContext.setCsvUploadErrors).toHaveBeenCalledWith(['bad row 1', 'bad row 2']);
     });
 
