@@ -1,5 +1,6 @@
 import NetworkButton from '@src/components/NetworkButton';
 import { useShowBulkManagement } from '@src/data/apiHook';
+import { useCourseId } from '@src/data/courseIdContext';
 import { trackGradesReportDownloaded } from '@src/data/services/segment/events';
 
 import ImportGradesButton from '../ImportGradesButton';
@@ -14,9 +15,10 @@ import messages from './messages';
 export const BulkManagementControls = () => {
   const gradeExportUrl = useGradeExportUrl();
   const showBulkManagement = useShowBulkManagement();
+  const courseId = useCourseId();
 
   const handleClickExportGrades = () => {
-    trackGradesReportDownloaded();
+    trackGradesReportDownloaded(courseId);
     window.location.assign(gradeExportUrl);
   };
 

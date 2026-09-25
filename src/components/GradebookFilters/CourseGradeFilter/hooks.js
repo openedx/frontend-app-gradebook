@@ -1,4 +1,5 @@
 import { useFilters } from '@src/data/filtersContext';
+import { useCourseId } from '@src/data/courseIdContext';
 import { trackFilterApplied } from '@src/data/services/segment/events';
 import { useRefetchGrades } from '@src/components/GradesView/data/hooks';
 
@@ -8,6 +9,7 @@ export const useCourseGradeFilterData = ({
   updateQueryParams,
 }) => {
   const isDisabled = !useAreCourseGradeFiltersValid();
+  const courseId = useCourseId();
   const {
     courseGradeMin,
     courseGradeMax,
@@ -20,7 +22,7 @@ export const useCourseGradeFilterData = ({
   const handleApplyClick = () => {
     const localCourseLimits = { courseGradeMin, courseGradeMax };
     applyCourseGradeLimits(localCourseLimits);
-    trackFilterApplied();
+    trackFilterApplied(courseId);
     fetchGrades();
     updateQueryParams(localCourseLimits);
   };

@@ -1,7 +1,7 @@
 import { sendTrackEvent } from '@openedx/frontend-base';
 
 import {
-  courseId, events, eventNames, trackingCategory,
+  events, eventNames, trackingCategory,
 } from './constants';
 
 /**
@@ -10,62 +10,62 @@ import {
  * Redux actions to Segment events. Event names + base properties (category + the
  * `courseId` label) mirror the old `redux-beacon` mapping exactly.
  */
-const baseProperties = () => ({ category: trackingCategory, label: courseId });
+const baseProperties = (courseId) => ({ category: trackingCategory, label: courseId });
 
 /**
  * Grades were fetched and displayed. Mirrors the legacy `receivedGrades` trigger,
  * which fired per fetch with the filters it ran under and the page cursors.
  */
-export const trackGradesDisplayed = ({
+export const trackGradesDisplayed = (courseId, {
   assignmentType, cohort, track, prev, next,
 }) => sendTrackEvent(
   eventNames[events.receivedGrades],
   {
-    ...baseProperties(), assignmentType, cohort, track, prev, next,
+    ...baseProperties(courseId), assignmentType, cohort, track, prev, next,
   },
 );
 
 /** Grade override saved from the edit modal succeeded. */
-export const trackGradeOverrideSucceeded = (updatedGrades) => sendTrackEvent(
+export const trackGradeOverrideSucceeded = (courseId, updatedGrades) => sendTrackEvent(
   eventNames[events.updateSucceeded],
-  { ...baseProperties(), updatedGrades },
+  { ...baseProperties(courseId), updatedGrades },
 );
 
 /** Grade override save failed. */
-export const trackGradeOverrideFailed = (error) => sendTrackEvent(
+export const trackGradeOverrideFailed = (courseId, error) => sendTrackEvent(
   eventNames[events.updateFailed],
-  { ...baseProperties(), error },
+  { ...baseProperties(courseId), error },
 );
 
 /** Bulk grade CSV override upload succeeded. */
-export const trackUploadOverrideSucceeded = () => sendTrackEvent(
+export const trackUploadOverrideSucceeded = (courseId) => sendTrackEvent(
   eventNames[events.uploadOverrideSucceeded],
-  baseProperties(),
+  baseProperties(courseId),
 );
 
 /** Bulk grade CSV override upload failed. */
-export const trackUploadOverrideFailed = (error) => sendTrackEvent(
+export const trackUploadOverrideFailed = (courseId, error) => sendTrackEvent(
   eventNames[events.uploadOverrideFailed],
-  { ...baseProperties(), error },
+  { ...baseProperties(courseId), error },
 );
 
 /**
  * A filter was applied. Mirrors the legacy mapping, which fired this only from the
  * course-grade-limit apply action.
  */
-export const trackFilterApplied = () => sendTrackEvent(
+export const trackFilterApplied = (courseId) => sendTrackEvent(
   eventNames[events.filterApplied],
-  baseProperties(),
+  baseProperties(courseId),
 );
 
 /** Grades CSV export was downloaded. */
-export const trackGradesReportDownloaded = () => sendTrackEvent(
+export const trackGradesReportDownloaded = (courseId) => sendTrackEvent(
   eventNames[events.gradesReportDownloaded],
-  baseProperties(),
+  baseProperties(courseId),
 );
 
 /** Intervention report was downloaded. */
-export const trackInterventionReportDownloaded = () => sendTrackEvent(
+export const trackInterventionReportDownloaded = (courseId) => sendTrackEvent(
   eventNames[events.interventionReportDownloaded],
-  baseProperties(),
+  baseProperties(courseId),
 );

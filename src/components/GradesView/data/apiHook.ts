@@ -1,12 +1,12 @@
 import { useMemo } from 'react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { useParams } from 'react-router-dom';
 
 import lms from '@src/data/services/lms';
 import { sortAlphaAsc } from '@src/data/formatUtils';
 import { filtersSnapshot } from '@src/data/filtersSnapshot';
 import { useGradebookUi } from '@src/data/gradebookUiContext';
 import { useCourseIdWithGate } from '@src/data/apiHook';
+import { useCourseId } from '@src/data/courseIdContext';
 import {
   trackGradesDisplayed,
   trackGradeOverrideSucceeded,
@@ -50,10 +50,10 @@ export const useGrades = (
   queryFn: async () => {
     const data = gradesPageEndpoint
       ? await getGradesPage(gradesPageEndpoint)
-      : await getGrades(buildGradebookDataParams());
+      : await getGrades({ courseId, ...buildGradebookDataParams() });
     // Mirrors the legacy `receivedGrades` redux-beacon trigger: one event per
     // actual fetch, with the filters it ran under and the resulting cursors.
-    trackGradesDisplayed({
+    trackGradesDisplayed(courseId, {
       assignmentType: filtersSnapshot.assignmentType,
       cohort: filtersSnapshot.cohort,
       track: filtersSnapshot.track,
@@ -184,12 +184,12 @@ interface GradeOverrideUpdate {
  */
 export const useUpdateGrades = () => {
   const queryClient = useQueryClient();
-  const { courseId = '' } = useParams();
+  const courseId = useCourseId();
   const { setShowSuccess, setGradesPageEndpoint, modalState } = useGradebookUi();
   const mutation = useMutation({
-    mutationFn: (updateData: GradeOverrideUpdate[]) => lms.api.updateGradebookData(updateData),
+    mutationFn: (updateData: GradeOverrideUpdate[]) => lms.api.updateGradebookData(courseId, updateData),
     onSuccess: ({ data }, updateData) => {
-      trackGradeOverrideSucceeded(data);
+      trackGradeOverrideSucceeded(courseId, data);
       setShowSuccess(true);
       setGradesPageEndpoint(null);
       queryClient.invalidateQueries({
@@ -202,7 +202,7 @@ export const useUpdateGrades = () => {
       });
     },
     onError: (error) => {
-      trackGradeOverrideFailed(error);
+      trackGradeOverrideFailed(courseId, error);
     },
   });
   return () => {
@@ -230,7 +230,7 @@ export const useUpdateGrades = () => {
  */
 export const useSubmitImportGradesButtonData = () => {
   const queryClient = useQueryClient();
-  const { courseId = '' } = useParams();
+  const courseId = useCourseId();
   const {
     setShowImportSuccessToast,
     resetCsvUpload,
@@ -238,20 +238,20 @@ export const useSubmitImportGradesButtonData = () => {
     setCsvUploadErrors,
   } = useGradebookUi();
   const mutation = useMutation<unknown, CsvUploadError, FormData>({
-    mutationFn: (formData) => lms.api.uploadGradeCsv(formData),
+    mutationFn: (formData) => lms.api.uploadGradeCsv(courseId, formData),
     onMutate: () => {
       resetCsvUpload();
     },
     onSuccess: () => {
       markCsvUploadSuccess();
       setShowImportSuccessToast(true);
-      trackUploadOverrideSucceeded();
+      trackUploadOverrideSucceeded(courseId);
       queryClient.invalidateQueries({
         queryKey: bulkOperationHistoryQueryKeys.byCourse(courseId),
       });
     },
     onError: (error) => {
-      trackUploadOverrideFailed(error);
+      trackUploadOverrideFailed(courseId, error);
       if (error?.status === 200 && error?.data?.error_messages?.length) {
         const { error_messages: errorMessages } = error.data;
         setCsvUploadErrors(errorMessages);

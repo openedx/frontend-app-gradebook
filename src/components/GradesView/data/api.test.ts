@@ -34,13 +34,14 @@ describe('GradesView/data api', () => {
     it('delegates to lms.api.fetch.gradebookData and returns the response body', async () => {
       gradebookDataMock.mockResolvedValue({ data: { results: [{ id: 1 }] } });
       const params = {
+        courseId: 'course-v1:X',
         searchText: 'abc',
         cohort: 'c1',
         track: 't1',
         options: { assignment: 'a1' },
       };
       const data = await getGrades(params);
-      expect(gradebookDataMock).toHaveBeenCalledWith('abc', 'c1', 't1', { assignment: 'a1' });
+      expect(gradebookDataMock).toHaveBeenCalledWith('course-v1:X', 'abc', 'c1', 't1', { assignment: 'a1' });
       expect(data).toEqual({ results: [{ id: 1 }] });
     });
   });

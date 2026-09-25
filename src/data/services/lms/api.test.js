@@ -18,6 +18,8 @@ jest.mock('./utils', () => ({
 }));
 
 describe('lms service api', () => {
+  const courseId = 'course-v1:TestU+CS101+2024';
+
   describe('get actions', () => {
     const mockGet = promiseFn => {
       jest.spyOn(utils, 'get').mockImplementation(
@@ -29,7 +31,7 @@ describe('lms service api', () => {
     const testSimpleFetch = (method, expectedUrl, description) => {
       mockGet(resolveFn);
       test(description, () => (
-        method().then(({ data }) => {
+        method(courseId).then(({ data }) => {
           expect(data).toEqual(expectedUrl);
         })
       ));
@@ -37,28 +39,28 @@ describe('lms service api', () => {
     describe('fetch.assignmentTypes', () => {
       testSimpleFetch(
         api.fetch.assignmentTypes,
-        urls.getAssignmentTypesUrl(),
+        urls.getAssignmentTypesUrl(courseId),
         'fetches from urls.assignmentTypes',
       );
     });
     describe('fetch.cohorts', () => {
       testSimpleFetch(
         api.fetch.cohorts,
-        urls.getCohortsUrl(),
+        urls.getCohortsUrl(courseId),
         'fetches from urls.cohorts',
       );
     });
     describe('fetch.roles', () => {
       testSimpleFetch(
         api.fetch.roles,
-        urls.getRolesUrl(),
+        urls.getRolesUrl(courseId),
         'fetches from urls.roles',
       );
     });
     describe('fetch.tracks', () => {
       testSimpleFetch(
         api.fetch.tracks,
-        urls.getTracksUrl(),
+        urls.getTracksUrl(courseId),
         'fetches from urls.tracks',
       );
     });
@@ -79,6 +81,7 @@ describe('lms service api', () => {
         mockGet(resolveFn);
         expect(() => {
           api.fetch.gradebookData(
+            courseId,
             searchText,
             cohort,
             track,
@@ -87,6 +90,7 @@ describe('lms service api', () => {
         }).toThrow(Error(messages.errors.missingAssignment));
         expect(() => {
           api.fetch.gradebookData(
+            courseId,
             searchText,
             cohort,
             track,
@@ -99,8 +103,8 @@ describe('lms service api', () => {
           mockGet(resolveFn);
         });
         test('loads only passed values if options is empty', () => (
-          api.fetch.gradebookData(searchText, cohort, track).then(({ data }) => {
-            expect(data).toEqual(utils.stringifyUrl(urls.getGradebookUrl(), {
+          api.fetch.gradebookData(courseId, searchText, cohort, track).then(({ data }) => {
+            expect(data).toEqual(utils.stringifyUrl(urls.getGradebookUrl(courseId), {
               [paramKeys.pageSize]: pageSize,
               [paramKeys.userContains]: searchText,
               [paramKeys.cohortId]: cohort,
@@ -115,8 +119,8 @@ describe('lms service api', () => {
           })
         ));
         test('loads ["all"] for excludedCorseRoles if not includeCourseRoles', () => (
-          api.fetch.gradebookData(searchText, cohort, track, options).then(({ data }) => {
-            expect(data).toEqual(utils.stringifyUrl(urls.getGradebookUrl(), {
+          api.fetch.gradebookData(courseId, searchText, cohort, track, options).then(({ data }) => {
+            expect(data).toEqual(utils.stringifyUrl(urls.getGradebookUrl(courseId), {
               [paramKeys.pageSize]: pageSize,
               [paramKeys.userContains]: searchText,
               [paramKeys.cohortId]: cohort,
@@ -131,8 +135,8 @@ describe('lms service api', () => {
           })
         ));
         test('loads null for excludedCorseRoles if includeCourseRoles', () => (
-          api.fetch.gradebookData(searchText, cohort, track, options).then(({ data }) => {
-            expect(data).toEqual(utils.stringifyUrl(urls.getGradebookUrl(), {
+          api.fetch.gradebookData(courseId, searchText, cohort, track, options).then(({ data }) => {
+            expect(data).toEqual(utils.stringifyUrl(urls.getGradebookUrl(courseId), {
               [paramKeys.pageSize]: pageSize,
               [paramKeys.userContains]: searchText,
               [paramKeys.cohortId]: cohort,
@@ -154,8 +158,8 @@ describe('lms service api', () => {
           mockGet(resolveFn);
         });
         it('fetches from urls.bulkHistory and returns the data', () => (
-          api.fetch.gradeBulkOperationHistory().then(url => {
-            expect(url).toEqual(urls.getBulkHistoryUrl());
+          api.fetch.gradeBulkOperationHistory(courseId).then(url => {
+            expect(url).toEqual(urls.getBulkHistoryUrl(courseId));
           })
         ));
       });
@@ -164,7 +168,7 @@ describe('lms service api', () => {
           mockGet(rejectFn);
         });
         it('rejects with unhandledResponse Error', () => (
-          api.fetch.gradeBulkOperationHistory().catch(error => {
+          api.fetch.gradeBulkOperationHistory(courseId).catch(error => {
             expect(error).toEqual(Error(messages.errors.unhandledResponse));
           })
         ));
@@ -196,8 +200,8 @@ describe('lms service api', () => {
         mockPost(resolveFn);
       });
       test('posts to urls.bulkUpdate with passed data', () => (
-        api.updateGradebookData(updateData).then(({ data }) => {
-          expect(data).toEqual({ url: urls.getBulkUpdateUrl(), data: updateData });
+        api.updateGradebookData(courseId, updateData).then(({ data }) => {
+          expect(data).toEqual({ url: urls.getBulkUpdateUrl(courseId), data: updateData });
         })
       ));
     });
@@ -217,7 +221,7 @@ describe('lms service api', () => {
           });
         });
         it('posts formData to gradeCsvUrl and returns the data from response', () => (
-          api.uploadGradeCsv(formData).then(result => {
+          api.uploadGradeCsv(courseId, formData).then(result => {
             expect(result).toEqual(response.data);
           })
         ));
@@ -230,8 +234,8 @@ describe('lms service api', () => {
           });
         });
         it('posts formData to gradeCsvUrl and returns the data from response', () => (
-          api.uploadGradeCsv(formData).catch(result => {
-            expect(result).toEqual({ url: gradeCsvUrl(), data: formData });
+          api.uploadGradeCsv(courseId, formData).catch(result => {
+            expect(result).toEqual({ url: gradeCsvUrl(courseId), data: formData });
           })
         ));
       });

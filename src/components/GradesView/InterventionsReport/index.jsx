@@ -2,6 +2,7 @@ import { useIntl } from '@openedx/frontend-base';
 
 import NetworkButton from '@src/components/NetworkButton';
 import { useShowBulkManagement } from '@src/data/apiHook';
+import { useCourseId } from '@src/data/courseIdContext';
 import { trackInterventionReportDownloaded } from '@src/data/services/segment/events';
 
 import { useInterventionExportUrl } from '../data/hooks';
@@ -15,10 +16,11 @@ import messages from './messages';
 export const InterventionsReport = () => {
   const interventionExportUrl = useInterventionExportUrl();
   const showBulkManagement = useShowBulkManagement();
+  const courseId = useCourseId();
   const { formatMessage } = useIntl();
 
   const handleClick = () => {
-    trackInterventionReportDownloaded();
+    trackInterventionReportDownloaded(courseId);
     window.location.assign(interventionExportUrl);
   };
 

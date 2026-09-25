@@ -14,11 +14,13 @@ describe('GradebookFilters/data api', () => {
 
   it('getCohorts returns the response body (a list of cohorts)', async () => {
     cohortsMock.mockResolvedValue({ data: [{ id: 1 }] });
-    await expect(getCohorts()).resolves.toEqual([{ id: 1 }]);
+    await expect(getCohorts('course-v1:X')).resolves.toEqual([{ id: 1 }]);
+    expect(cohortsMock).toHaveBeenCalledWith('course-v1:X');
   });
 
   it('getTracks unwraps course_modes from the response body', async () => {
     tracksMock.mockResolvedValue({ data: { course_modes: [{ slug: 'verified' }] } });
-    await expect(getTracks()).resolves.toEqual([{ slug: 'verified' }]);
+    await expect(getTracks('course-v1:X')).resolves.toEqual([{ slug: 'verified' }]);
+    expect(tracksMock).toHaveBeenCalledWith('course-v1:X');
   });
 });
