@@ -1,9 +1,7 @@
 import PropTypes from 'prop-types';
-
 import { useIntl } from '@openedx/frontend-base';
-
+import { Bubble } from '@openedx/paragon';
 import { useFilters } from '@src/data/filtersContext';
-
 import BulkManagementControls from './BulkManagementControls';
 import EditModal from './EditModal';
 import FilterBadges from './FilterBadges';
@@ -17,8 +15,6 @@ import ScoreViewInput from './ScoreViewInput';
 import SearchControls from './SearchControls';
 import SpinnerIcon from './SpinnerIcon';
 import StatusAlerts from './StatusAlerts';
-import { Bubble, Container } from '@openedx/paragon';
-
 import { useRefetchGrades } from './data/hooks';
 import messages from './messages';
 
@@ -42,13 +38,13 @@ export const GradesView = ({ updateQueryParams }) => {
 
       <InterventionsReport />
 
-      <Container className="mb-3">
-        <h4 className="d-flex align-items-center text-primary-700">
+      <div className="mb-3">
+        <h3 className="h4 d-flex align-items-center text-primary-700">
           <Bubble className="mr-2">
           1
           </Bubble>
           {formatMessage(messages.filterStepHeading)}
-        </h4>
+        </h3>
         <div className="d-flex justify-content-between flex-wrap ml-3">
           <FilterMenuToggle />
           <SearchControls />
@@ -57,19 +53,18 @@ export const GradesView = ({ updateQueryParams }) => {
         <FilterBadges handleClose={handleFilterBadgeClose} />
         <StatusAlerts />
 
-        <h4 className="d-flex align-items-center text-primary-700">
+        <h3 className="h4 d-flex align-items-center text-primary-700">
           <Bubble className="mr-2">
           2
           </Bubble>
           {formatMessage(messages.gradebookStepHeading)}
-        </h4>
+        </h3>
 
         <div className="d-flex justify-content-between align-items-center mb-2 ml-3">
           <ScoreViewInput />
           <BulkManagementControls />
         </div>
-      </Container>
-      
+      </div>
 
       <GradebookTable />
 
