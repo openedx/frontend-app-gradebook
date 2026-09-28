@@ -77,7 +77,8 @@ describe('root apiHook', () => {
     });
 
     it('returns false when the roles query errors out', async () => {
-      canViewMock.mockRejectedValue(new Error('boom'));
+      // 4xx-shaped so the shared retry rule (`query.ts`) doesn't retry it.
+      canViewMock.mockRejectedValue({ response: { status: 403 } });
       const { result } = renderQueryHook(useCanViewGradebook);
       await waitFor(() => expect(result.current).toBe(false));
     });

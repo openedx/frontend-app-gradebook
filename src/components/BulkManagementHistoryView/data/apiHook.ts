@@ -1,6 +1,5 @@
-import { useQuery } from '@tanstack/react-query';
-
 import { useAssignmentTypes, useCourseIdWithGate } from '@src/data/apiHook';
+import { useGradebookQuery } from '@src/data/query';
 
 import { getBulkOperationHistory } from './api';
 import { bulkOperationHistoryQueryKeys } from './queryKeys';
@@ -18,7 +17,7 @@ const EMPTY_ARRAY: never[] = [];
 export const useBulkOperationHistory = (
   courseId: string,
   { enabled = true }: { enabled?: boolean } = {},
-) => useQuery({
+) => useGradebookQuery({
   queryKey: bulkOperationHistoryQueryKeys.byCourse(courseId),
   queryFn: () => getBulkOperationHistory(courseId),
   enabled: !!courseId && enabled,

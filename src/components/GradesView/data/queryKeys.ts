@@ -9,6 +9,11 @@ export const gradesQueryKeys = {
   byCourse: (courseId: string) => [...BASE_KEY, courseId, 'grades'] as const,
 };
 
+export const gradeMutationKeys = {
+  updateGrades: [...BASE_KEY, 'updateGrades'] as const,
+  uploadGradeCsv: [...BASE_KEY, 'uploadGradeCsv'] as const,
+};
+
 /** Grade-override history for one learner on one subsection (edit modal). */
 export const gradeOverrideHistoryQueryKeys = {
   all: [...BASE_KEY, 'gradeOverrideHistory'] as const,

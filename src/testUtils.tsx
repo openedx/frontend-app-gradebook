@@ -67,6 +67,11 @@ interface WrapperProps {
 /**
  * Builds a `renderHook` wrapper that provides a React Query client. Pass an
  * existing client when the test needs to inspect it (e.g. spy on invalidation).
+ *
+ * `retry: false` here loses to the per-query retry in `src/data/query.ts`, and
+ * the app's hooks take `enabled` and nothing else, so a test that rejects with
+ * a 5xx or a bare `Error` runs the real backoff and times out. Reject with a
+ * 4xx-shaped error instead.
  */
 export function createQueryClientWrapper(
   client?: QueryClient,
@@ -96,6 +101,7 @@ export const renderWithAllProviders = (
   ui: ReactElement,
   { courseId = testCourseId, ...options }: { courseId?: string } = {},
 ) => {
+  // Same `retry: false` caveat as `createQueryClientWrapper`.
   const queryClient = new QueryClient({
     defaultOptions: {
       queries: { retry: false, gcTime: 0 },

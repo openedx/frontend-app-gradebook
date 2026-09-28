@@ -7,6 +7,9 @@
 // caches independently per course and mutations can invalidate a whole course
 // subtree via a broad prefix. The array shapes match the legacy
 // `gradebookQueryKeys` so cache identity / invalidation is preserved.
+//
+// Mutations are keyed under `BASE_KEY` too: the client is shared site-wide, so
+// `useShouldShowSpinner` counts by this prefix and a keyless mutation is missed.
 export const BASE_KEY = ['gradebook'] as const;
 
 /** Roles-based "can view the gradebook" permission gate (the fetch-cascade root). */
