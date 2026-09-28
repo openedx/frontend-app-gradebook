@@ -1,7 +1,6 @@
-import { useQuery } from '@tanstack/react-query';
-
 import { getAssignmentTypes, getCanUserViewGradebook } from './api';
 import { useCourseId } from './courseIdContext';
+import { useGradebookQuery } from './query';
 import { assignmentTypesQueryKeys, rolesQueryKeys } from './queryKeys';
 
 /**
@@ -12,7 +11,7 @@ import { assignmentTypesQueryKeys, rolesQueryKeys } from './queryKeys';
  */
 export const useCanUserViewGradebook = () => {
   const courseId = useCourseId();
-  return useQuery({
+  return useGradebookQuery({
     queryKey: rolesQueryKeys.byCourse(courseId),
     queryFn: () => getCanUserViewGradebook(courseId),
     enabled: !!courseId,
@@ -28,7 +27,7 @@ export const useCanUserViewGradebook = () => {
 export const useAssignmentTypes = (
   courseId: string,
   { enabled = true }: { enabled?: boolean } = {},
-) => useQuery({
+) => useGradebookQuery({
   queryKey: assignmentTypesQueryKeys.byCourse(courseId),
   queryFn: () => getAssignmentTypes(courseId),
   enabled: !!courseId && enabled,

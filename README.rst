@@ -176,15 +176,11 @@ Directory Structure
 
   * ``app.ts``
 
-    * The ``App`` object consumed by ``site.config.*.tsx`` — wires ``appId``, ``routes``, and ``providers`` for frontend-base to register.
+    * The ``App`` object consumed by ``site.config.*.tsx`` - wires ``appId``, ``routes``, and ``slots`` for frontend-base to register.
 
   * ``routes.tsx``
 
     * React Router route definitions for the app.
-
-  * ``providers.tsx``
-
-    * App-scoped context providers registered with frontend-base.
 
   * ``slots``
 

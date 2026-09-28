@@ -7,6 +7,7 @@ import { useFilters } from '@src/data/filtersContext';
 import { useGradebookUi } from '@src/data/gradebookUiContext';
 import { useCanViewGradebook } from '@src/data/apiHook';
 import { useCourseId } from '@src/data/courseIdContext';
+import { BASE_KEY } from '@src/data/queryKeys';
 import {
   useSelectedCohortEntry,
   useSelectedTrackEntry,
@@ -87,12 +88,13 @@ export const useSelectedAssignmentLabel = () => useSelectedAssignmentData()?.lab
 /**
  * useShouldShowSpinner()
  * The busy indicator: the roles gate combined with the grades query fetching or
- * any in-flight mutation (grade override save / CSV upload).
+ * one of the gradebook's own mutations in flight (grade override save / CSV
+ * upload).
  */
 export const useShouldShowSpinner = () => {
   const canViewGradebook = useCanViewGradebook();
   const { isFetching } = useGradesData();
-  const mutatingCount = useIsMutating();
+  const mutatingCount = useIsMutating({ mutationKey: BASE_KEY });
   return canViewGradebook && (isFetching || mutatingCount > 0);
 };
 

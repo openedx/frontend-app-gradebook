@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/react-query';
+import { useGradebookQuery } from '@src/data/query';
 
 import { getCohorts, getTracks } from './api';
 import { cohortsQueryKeys, tracksQueryKeys } from './queryKeys';
@@ -11,7 +11,7 @@ import { cohortsQueryKeys, tracksQueryKeys } from './queryKeys';
 export const useCohorts = (
   courseId: string,
   { enabled = true }: { enabled?: boolean } = {},
-) => useQuery({
+) => useGradebookQuery({
   queryKey: cohortsQueryKeys.byCourse(courseId),
   queryFn: () => getCohorts(courseId),
   enabled: !!courseId && enabled,
@@ -25,7 +25,7 @@ export const useCohorts = (
 export const useTracks = (
   courseId: string,
   { enabled = true }: { enabled?: boolean } = {},
-) => useQuery({
+) => useGradebookQuery({
   queryKey: tracksQueryKeys.byCourse(courseId),
   queryFn: () => getTracks(courseId),
   enabled: !!courseId && enabled,

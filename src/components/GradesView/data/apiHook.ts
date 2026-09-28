@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import lms from '@src/data/services/lms';
 import { sortAlphaAsc } from '@src/data/formatUtils';
@@ -7,6 +7,7 @@ import { filtersSnapshot } from '@src/data/filtersSnapshot';
 import { useGradebookUi } from '@src/data/gradebookUiContext';
 import { useCourseIdWithGate } from '@src/data/apiHook';
 import { useCourseId } from '@src/data/courseIdContext';
+import { useGradebookQuery } from '@src/data/query';
 import {
   trackGradesDisplayed,
   trackGradeOverrideSucceeded,
@@ -19,7 +20,7 @@ import {
 import { bulkOperationHistoryQueryKeys } from '@src/components/BulkManagementHistoryView/data/queryKeys';
 
 import { getGradeOverrideHistory, getGrades, getGradesPage } from './api';
-import { gradeOverrideHistoryQueryKeys, gradesQueryKeys } from './queryKeys';
+import { gradeMutationKeys, gradeOverrideHistoryQueryKeys, gradesQueryKeys } from './queryKeys';
 import { buildGradesFetchParams } from './utils';
 
 /**
@@ -45,7 +46,7 @@ export const useGrades = (
   courseId: string,
   gradesPageEndpoint: string | null,
   { enabled = true }: { enabled?: boolean } = {},
-) => useQuery({
+) => useGradebookQuery({
   queryKey: [...gradesQueryKeys.byCourse(courseId), gradesPageEndpoint ?? 'base'],
   queryFn: async () => {
     const data = gradesPageEndpoint
@@ -143,7 +144,7 @@ export const useGradesData = (): GradesData => {
  * is not worth retrying.
  */
 export const useGradeOverrideHistory = (subsectionId?: string, userId?: string | number) => (
-  useQuery({
+  useGradebookQuery({
     queryKey: gradeOverrideHistoryQueryKeys.byCell(subsectionId ?? null, userId ?? null),
     queryFn: () => getGradeOverrideHistory(subsectionId as string, userId as string | number),
     enabled: !!subsectionId && userId !== undefined && userId !== null,
@@ -187,6 +188,7 @@ export const useUpdateGrades = () => {
   const courseId = useCourseId();
   const { setShowSuccess, setGradesPageEndpoint, modalState } = useGradebookUi();
   const mutation = useMutation({
+    mutationKey: gradeMutationKeys.updateGrades,
     mutationFn: (updateData: GradeOverrideUpdate[]) => lms.api.updateGradebookData(courseId, updateData),
     onSuccess: ({ data }, updateData) => {
       trackGradeOverrideSucceeded(courseId, data);
@@ -238,6 +240,7 @@ export const useSubmitImportGradesButtonData = () => {
     setCsvUploadErrors,
   } = useGradebookUi();
   const mutation = useMutation<unknown, CsvUploadError, FormData>({
+    mutationKey: gradeMutationKeys.uploadGradeCsv,
     mutationFn: (formData) => lms.api.uploadGradeCsv(courseId, formData),
     onMutate: () => {
       resetCsvUpload();

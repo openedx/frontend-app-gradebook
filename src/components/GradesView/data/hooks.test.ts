@@ -6,6 +6,7 @@ import { useFilters } from '@src/data/filtersContext';
 import { useGradebookUi } from '@src/data/gradebookUiContext';
 import { useCanViewGradebook } from '@src/data/apiHook';
 import { useCourseId } from '@src/data/courseIdContext';
+import { BASE_KEY } from '@src/data/queryKeys';
 import {
   useSelectedCohortEntry, useSelectedTrackEntry,
 } from '@src/components/GradebookFilters/data/hooks';
@@ -216,6 +217,11 @@ describe('GradesView/data hooks', () => {
       useIsMutatingMock.mockReturnValue(1);
       const { result } = renderHook(useShouldShowSpinner);
       expect(result.current).toBe(true);
+    });
+
+    it('only counts the gradebook\'s own mutations', () => {
+      renderHook(useShouldShowSpinner);
+      expect(useIsMutatingMock).toHaveBeenCalledWith({ mutationKey: BASE_KEY });
     });
   });
 
