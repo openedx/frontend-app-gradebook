@@ -1,7 +1,8 @@
 import { Link } from 'react-router-dom';
 
 import { resolveRouteByRole, useIntl } from '@openedx/frontend-base';
-import { Button } from '@openedx/paragon';
+import { Button, Icon, Hyperlink } from '@openedx/paragon';
+import { ArrowBackIos } from '@openedx/paragon/icons';
 
 import { instructorDashboardUrl } from '@src/data/services/lms/urls';
 import { useGradebookNavigation } from '@src/data/gradebookNavigationContext';
@@ -45,16 +46,15 @@ export const GradebookHeader = () => {
       );
     }
     if (dashboardRoute?.isInternal) {
-      return <Link to={dashboardRoute.url} className="mb-3">{backLinkContent}</Link>;
+      return <Hyperlink as={Link} to={dashboardRoute.url} className="mb-3">{backLinkContent}</Hyperlink>;
     }
-    return <a href={dashboardRoute?.url ?? instructorDashboardUrl(courseId)} className="mb-3">{backLinkContent}</a>;
+    return <Hyperlink href={dashboardRoute?.url ?? instructorDashboardUrl(courseId)} className="mb-3">{backLinkContent}</Hyperlink>;
   };
   return (
-    <div className="gradebook-header">
+    <div className="gradebook-header mt-2">
       {renderBackLink()}
-      <h1>{formatMessage(messages.gradebook)}</h1>
+      <h2 className="text-primary-500">{formatMessage(messages.gradebook)}</h2>
       <div className="subtitle-row d-flex justify-content-between align-items-center">
-        <h2 className="text-break">{courseId}</h2>
         {showBulkManagement && (
           <Button variant="tertiary" onClick={handleToggleViewClick}>
             {formatMessage(toggleViewMessage)}
