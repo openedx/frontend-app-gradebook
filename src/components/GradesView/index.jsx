@@ -66,9 +66,9 @@ export const GradesView = ({ updateQueryParams }) => {
         </div>
       </div>
 
-      <GradebookTable />
-
       <FilteredUsersLabel />
+
+      <GradebookTable />
 
       <PageButtons />
       <p>* {formatMessage(messages.mastersHint)}</p>
