@@ -31,7 +31,7 @@ export const GradebookHeader = () => {
     : null;
   const backLinkContent = (
     <>
-      <span aria-hidden="true">{'<< '}</span>
+      <Icon src={ArrowBackIos} className="mr-1" size="sm" />
       {formatMessage(messages.backToDashboard)}
     </>
   );

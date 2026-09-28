@@ -18,8 +18,9 @@ export const FilterMenuToggle = () => {
       id="edit-filters-btn"
       className="btn-primary align-self-start"
       onClick={toggleFilterMenu}
+      size="sm"
     >
-      <Icon src={FilterAlt} className="mr-1" /> {formatMessage(messages.editFilters)}
+      <Icon src={FilterAlt} className="mr-1" size="sm" /> {formatMessage(messages.editFilters)}
     </Button>
   );
 };

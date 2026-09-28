@@ -15,12 +15,13 @@ export const ScoreViewInput = () => {
   const { setGradeFormat } = useGradebookUi();
   const toggleFormat = (e) => setGradeFormat(e.target.value);
   return (
-    <Form.Group controlId="ScoreView">
-      <Form.Label>{formatMessage(messages.scoreView)}:</Form.Label>
+    <Form.Group controlId="ScoreView" className="d-flex align-items-center">
+      <Form.Label className="mr-2 font-weight-normal">{formatMessage(messages.scoreView)}:</Form.Label>
       <Form.Control
         as="select"
         value={gradeFormat}
         onChange={toggleFormat}
+        size="sm"
       >
         <option value="percent">{formatMessage(messages.percent)}</option>
         <option value="absolute">{formatMessage(messages.absolute)}</option>

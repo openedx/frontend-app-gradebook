@@ -17,6 +17,7 @@ import ScoreViewInput from './ScoreViewInput';
 import SearchControls from './SearchControls';
 import SpinnerIcon from './SpinnerIcon';
 import StatusAlerts from './StatusAlerts';
+import { Bubble, Container } from '@openedx/paragon';
 
 import { useRefetchGrades } from './data/hooks';
 import messages from './messages';
@@ -40,28 +41,39 @@ export const GradesView = ({ updateQueryParams }) => {
       <SpinnerIcon />
 
       <InterventionsReport />
-      <h3 className="step-message-1">
-        {formatMessage(messages.filterStepHeading)}
-      </h3>
 
-      <div className="d-flex justify-content-between flex-wrap">
-        <FilterMenuToggle />
-        <SearchControls />
-      </div>
+      <Container className="mb-3">
+        <h4 className="d-flex align-items-center text-primary-700">
+          <Bubble className="mr-2">
+          1
+          </Bubble>
+          {formatMessage(messages.filterStepHeading)}
+        </h4>
+        <div className="d-flex justify-content-between flex-wrap ml-3">
+          <FilterMenuToggle />
+          <SearchControls />
+        </div>
 
-      <FilterBadges handleClose={handleFilterBadgeClose} />
-      <StatusAlerts />
+        <FilterBadges handleClose={handleFilterBadgeClose} />
+        <StatusAlerts />
 
-      <h3>{formatMessage(messages.gradebookStepHeading)}</h3>
+        <h4 className="d-flex align-items-center text-primary-700">
+          <Bubble className="mr-2">
+          2
+          </Bubble>
+          {formatMessage(messages.gradebookStepHeading)}
+        </h4>
 
-      <div className="d-flex justify-content-between align-items-center mb-2">
-        <ScoreViewInput />
-        <BulkManagementControls />
-      </div>
-
-      <FilteredUsersLabel />
+        <div className="d-flex justify-content-between align-items-center mb-2 ml-3">
+          <ScoreViewInput />
+          <BulkManagementControls />
+        </div>
+      </Container>
+      
 
       <GradebookTable />
+
+      <FilteredUsersLabel />
 
       <PageButtons />
       <p>* {formatMessage(messages.mastersHint)}</p>
