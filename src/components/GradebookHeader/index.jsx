@@ -4,6 +4,7 @@ import { resolveRouteByRole, useIntl } from '@openedx/frontend-base';
 import { Button } from '@openedx/paragon';
 
 import { instructorDashboardUrl } from '@src/data/services/lms/urls';
+import { useGradebookNavigation } from '@src/data/gradebookNavigationContext';
 import useGradebookHeaderData from './hooks';
 import messages from './messages';
 
@@ -19,23 +20,38 @@ export const GradebookHeader = () => {
     showBulkManagement,
     toggleViewMessage,
   } = useGradebookHeaderData();
+  const { onBack } = useGradebookNavigation();
   // Prefer the instructor dashboard route if the running site provides one,
   // so navigation stays within the SPA; otherwise fall back to a full page
-  // load of the legacy LMS dashboard.
-  const dashboardRoute = resolveRouteByRole(instructorDashboardRole, { courseId });
+  // load of the legacy LMS dashboard. Skip resolving when the host provides
+  // its own onBack or the courseId isn't ready — resolveRouteByRole throws
+  // "Missing :courseId param" otherwise.
+  const dashboardRoute = (!onBack && courseId)
+    ? resolveRouteByRole(instructorDashboardRole, { courseId })
+    : null;
   const backLinkContent = (
     <>
       <span aria-hidden="true">{'<< '}</span>
       {formatMessage(messages.backToDashboard)}
     </>
   );
+  const renderBackLink = () => {
+    // Host-provided handler wins over URL navigation (e.g. CCX Coach tab).
+    if (onBack) {
+      return (
+        <Button variant="link" className="mb-3 p-0" onClick={onBack}>
+          {backLinkContent}
+        </Button>
+      );
+    }
+    if (dashboardRoute?.isInternal) {
+      return <Link to={dashboardRoute.url} className="mb-3">{backLinkContent}</Link>;
+    }
+    return <a href={dashboardRoute?.url ?? instructorDashboardUrl(courseId)} className="mb-3">{backLinkContent}</a>;
+  };
   return (
     <div className="gradebook-header">
-      {dashboardRoute?.isInternal ? (
-        <Link to={dashboardRoute.url} className="mb-3">{backLinkContent}</Link>
-      ) : (
-        <a href={dashboardRoute?.url ?? instructorDashboardUrl()} className="mb-3">{backLinkContent}</a>
-      )}
+      {renderBackLink()}
       <h1>{formatMessage(messages.gradebook)}</h1>
       <div className="subtitle-row d-flex justify-content-between align-items-center">
         <h2 className="text-break">{courseId}</h2>

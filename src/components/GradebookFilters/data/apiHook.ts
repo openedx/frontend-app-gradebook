@@ -13,7 +13,7 @@ export const useCohorts = (
   { enabled = true }: { enabled?: boolean } = {},
 ) => useQuery({
   queryKey: cohortsQueryKeys.byCourse(courseId),
-  queryFn: getCohorts,
+  queryFn: () => getCohorts(courseId),
   enabled: !!courseId && enabled,
 });
 
@@ -27,6 +27,6 @@ export const useTracks = (
   { enabled = true }: { enabled?: boolean } = {},
 ) => useQuery({
   queryKey: tracksQueryKeys.byCourse(courseId),
-  queryFn: getTracks,
+  queryFn: () => getTracks(courseId),
   enabled: !!courseId && enabled,
 });

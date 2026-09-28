@@ -20,7 +20,7 @@ export const useBulkOperationHistory = (
   { enabled = true }: { enabled?: boolean } = {},
 ) => useQuery({
   queryKey: bulkOperationHistoryQueryKeys.byCourse(courseId),
-  queryFn: getBulkOperationHistory,
+  queryFn: () => getBulkOperationHistory(courseId),
   enabled: !!courseId && enabled,
 });
 

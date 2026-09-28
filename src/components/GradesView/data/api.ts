@@ -12,17 +12,19 @@ import { formatGradeOverrideForDisplay } from './utils';
  * consumer, matching the old `fetching.received` handling.
  */
 export const getGrades = async ({
+  courseId,
   searchText,
   cohort,
   track,
   options,
 }: {
+  courseId: string;
   searchText: string | null;
   cohort: unknown;
   track: unknown;
   options: Record<string, unknown>;
 }) => {
-  const { data } = await lms.api.fetch.gradebookData(searchText, cohort, track, options);
+  const { data } = await lms.api.fetch.gradebookData(courseId, searchText, cohort, track, options);
   return data;
 };
 

@@ -1,11 +1,11 @@
 import { renderHook } from '@testing-library/react';
 import { useIsMutating, useQueryClient } from '@tanstack/react-query';
-import { useParams } from 'react-router-dom';
 
 import lms from '@src/data/services/lms';
 import { useFilters } from '@src/data/filtersContext';
 import { useGradebookUi } from '@src/data/gradebookUiContext';
 import { useCanViewGradebook } from '@src/data/apiHook';
+import { useCourseId } from '@src/data/courseIdContext';
 import {
   useSelectedCohortEntry, useSelectedTrackEntry,
 } from '@src/components/GradebookFilters/data/hooks';
@@ -33,14 +33,10 @@ jest.mock('@tanstack/react-query', () => ({
   useIsMutating: jest.fn(),
   useQueryClient: jest.fn(),
 }));
-jest.mock('react-router-dom', () => ({
-  ...jest.requireActual('react-router-dom'),
-  useParams: jest.fn(),
-}));
 jest.mock('@src/data/services/lms', () => ({
   urls: {
-    gradeCsvUrl: jest.fn((args) => ({ csv: args })),
-    interventionExportCsvUrl: jest.fn((args) => ({ intervention: args })),
+    gradeCsvUrl: jest.fn((courseId, args) => ({ csv: args, courseId })),
+    interventionExportCsvUrl: jest.fn((courseId, args) => ({ intervention: args, courseId })),
   },
 }));
 jest.mock('@src/data/filtersContext', () => ({
@@ -55,6 +51,10 @@ jest.mock('@src/data/apiHook', () => ({
   ...jest.requireActual('@src/data/apiHook'),
   useCanViewGradebook: jest.fn(),
 }));
+jest.mock('@src/data/courseIdContext', () => ({
+  ...jest.requireActual('@src/data/courseIdContext'),
+  useCourseId: jest.fn(),
+}));
 jest.mock('@src/components/GradebookFilters/data/hooks', () => ({
   ...jest.requireActual('@src/components/GradebookFilters/data/hooks'),
   useSelectedCohortEntry: jest.fn(),
@@ -67,7 +67,7 @@ jest.mock('./apiHook', () => ({
 
 const useIsMutatingMock = useIsMutating as jest.Mock;
 const useQueryClientMock = useQueryClient as jest.Mock;
-const useParamsMock = useParams as jest.Mock;
+const useCourseIdMock = useCourseId as jest.Mock;
 const useFiltersMock = useFilters as jest.Mock;
 const useGradebookUiMock = useGradebookUi as jest.Mock;
 const useCanViewGradebookMock = useCanViewGradebook as jest.Mock;
@@ -133,7 +133,7 @@ describe('GradesView/data hooks', () => {
     jest.clearAllMocks();
     invalidateQueries = jest.fn();
     useQueryClientMock.mockReturnValue({ invalidateQueries });
-    useParamsMock.mockReturnValue({ courseId: 'course-v1:X' });
+    useCourseIdMock.mockReturnValue('course-v1:X');
     useIsMutatingMock.mockReturnValue(0);
     useCanViewGradebookMock.mockReturnValue(true);
     useSelectedCohortEntryMock.mockReturnValue(undefined);
@@ -252,27 +252,28 @@ describe('GradesView/data hooks', () => {
         assignmentType: 'Homework',
       });
       const { result } = renderHook(useGradeExportUrl);
-      expect(lms.urls.gradeCsvUrl).toHaveBeenCalledWith(expect.objectContaining({
+      expect(lms.urls.gradeCsvUrl).toHaveBeenCalledWith('course-v1:X', expect.objectContaining({
         cohort: 'Cohort A',
         track: 'verified',
         assignment: 'a1',
         assignmentType: 'Homework',
         excludedCourseRoles: 'all',
       }));
-      expect(result.current).toEqual({ csv: expect.any(Object) });
+      expect(result.current).toEqual({ csv: expect.any(Object), courseId: 'course-v1:X' });
     });
 
     it('excludedCourseRoles is empty when includeCourseRoleMembers is true', () => {
       useFiltersMock.mockReturnValue({ ...baseFilters(), includeCourseRoleMembers: true });
       renderHook(useGradeExportUrl);
       expect(lms.urls.gradeCsvUrl).toHaveBeenCalledWith(
+        'course-v1:X',
         expect.objectContaining({ excludedCourseRoles: '' }),
       );
     });
 
     it('useInterventionExportUrl delegates to lms.urls.interventionExportCsvUrl', () => {
       renderHook(useInterventionExportUrl);
-      expect(lms.urls.interventionExportCsvUrl).toHaveBeenCalled();
+      expect(lms.urls.interventionExportCsvUrl).toHaveBeenCalledWith('course-v1:X', expect.any(Object));
     });
   });
 

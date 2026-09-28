@@ -3,34 +3,31 @@ import { historyRecordLimit } from './constants';
 import { filterQuery, stringifyUrl } from './utils';
 import { getSiteConfig } from '@openedx/frontend-base';
 
-// Evaluated at call time: with client-side navigation, this module can be
-// imported before the URL reflects the gradebook route.
-const getCourseId = () => window.location.pathname.split('/').filter(Boolean).pop() || '';
-
 export const getUrlPrefix = () => `${getSiteConfig().lmsBaseUrl}/api/`;
-export const getBulkGradesUrl = () => `${getUrlPrefix()}bulk_grades/course/${getCourseId()}/`;
+export const getBulkGradesUrl = (courseId) => `${getUrlPrefix()}bulk_grades/course/${courseId}/`;
 export const getEnrollmentUrl = () => `${getUrlPrefix()}enrollment/v2/`;
 export const getGradesUrl = () => `${getUrlPrefix()}grades/v1/`;
-export const getGradebookUrl = () => `${getGradesUrl()}gradebook/${getCourseId()}/`;
-export const getBulkUpdateUrl = () => `${getGradebookUrl()}bulk-update`;
-export const getInterventionUrl = () => `${getBulkGradesUrl()}intervention/`;
-export const getCohortsUrl = () => `${getUrlPrefix()}cohorts/v1/courses/${getCourseId()}/cohorts/`;
-export const getTracksUrl = () => `${getEnrollmentUrl()}course/${getCourseId()}?include_expired=1`;
-export const getBulkHistoryUrl = () => `${getBulkUpdateUrl()}history/`;
-export const getAssignmentTypesUrl = () => stringifyUrl(`${getGradebookUrl()}grading-info`, { graded_only: true });
-export const getRolesUrl = () => stringifyUrl(`${getEnrollmentUrl()}roles/`, { courseId: getCourseId() });
+export const getGradebookUrl = (courseId) => `${getGradesUrl()}gradebook/${courseId}/`;
+export const getBulkUpdateUrl = (courseId) => `${getGradebookUrl(courseId)}bulk-update`;
+export const getInterventionUrl = (courseId) => `${getBulkGradesUrl(courseId)}intervention/`;
+export const getCohortsUrl = (courseId) => `${getUrlPrefix()}cohorts/v1/courses/${courseId}/cohorts/`;
+export const getTracksUrl = (courseId) => `${getEnrollmentUrl()}course/${courseId}?include_expired=1`;
+export const getBulkHistoryUrl = (courseId) => `${getBulkUpdateUrl(courseId)}history/`;
+export const getAssignmentTypesUrl = (courseId) => stringifyUrl(`${getGradebookUrl(courseId)}grading-info`, { graded_only: true });
+export const getRolesUrl = (courseId) => stringifyUrl(`${getEnrollmentUrl()}roles/`, { courseId });
 /**
- * bulkGradesUrlByCourseAndRow(courseId, rowId)
+ * bulkGradesUrlByRow(courseId, rowId)
  * returns the bulkGrades url with the given rowId.
+ * @param {string} courseId - course identifier
  * @param {string} rowId - row/error identifier
  * @return {string} - bulk grades fetch url
  */
-export const bulkGradesUrlByRow = (rowId) => stringifyUrl(getBulkGradesUrl(), { error_id: rowId });
+export const bulkGradesUrlByRow = (courseId, rowId) => stringifyUrl(getBulkGradesUrl(courseId), { error_id: rowId });
 
-export const gradeCsvUrl = (options = {}) => stringifyUrl(getBulkGradesUrl(), filterQuery(options));
+export const gradeCsvUrl = (courseId, options = {}) => stringifyUrl(getBulkGradesUrl(courseId), filterQuery(options));
 
-export const interventionExportCsvUrl = (options = {}) => (
-  stringifyUrl(getInterventionUrl(), filterQuery(options))
+export const interventionExportCsvUrl = (courseId, options = {}) => (
+  stringifyUrl(getInterventionUrl(courseId), filterQuery(options))
 );
 
 export const sectionOverrideHistoryUrl = (subsectionId, userId) => stringifyUrl(
@@ -38,8 +35,8 @@ export const sectionOverrideHistoryUrl = (subsectionId, userId) => stringifyUrl(
   { user_id: userId, history_record_limit: historyRecordLimit },
 );
 
-export const instructorDashboardUrl = () => (
-  `${getSiteConfig().lmsBaseUrl}/courses/${getCourseId()}/instructor`
+export const instructorDashboardUrl = (courseId) => (
+  `${getSiteConfig().lmsBaseUrl}/courses/${courseId}/instructor`
 );
 
 export default StrictDict({

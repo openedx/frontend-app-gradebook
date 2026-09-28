@@ -1,12 +1,12 @@
 import { renderHook, waitFor } from '@testing-library/react';
 import { QueryClient } from '@tanstack/react-query';
-import { useParams } from 'react-router-dom';
 
 import { createQueryClientWrapper } from '@src/testUtils';
 import lms from '@src/data/services/lms';
 import { filtersSnapshot } from '@src/data/filtersSnapshot';
 import { useGradebookUi } from '@src/data/gradebookUiContext';
 import { useCourseIdWithGate } from '@src/data/apiHook';
+import { useCourseId } from '@src/data/courseIdContext';
 import {
   trackGradesDisplayed,
   trackGradeOverrideSucceeded,
@@ -21,10 +21,6 @@ import {
   useGrades, useGradesData, useGradeOverrideHistory, useUpdateGrades, useSubmitImportGradesButtonData,
 } from './apiHook';
 
-jest.mock('react-router-dom', () => ({
-  ...jest.requireActual('react-router-dom'),
-  useParams: jest.fn(),
-}));
 jest.mock('@src/data/services/lms', () => ({
   api: {
     updateGradebookData: jest.fn(),
@@ -39,6 +35,10 @@ jest.mock('@src/data/apiHook', () => ({
   ...jest.requireActual('@src/data/apiHook'),
   useCourseIdWithGate: jest.fn(),
 }));
+jest.mock('@src/data/courseIdContext', () => ({
+  ...jest.requireActual('@src/data/courseIdContext'),
+  useCourseId: jest.fn(),
+}));
 jest.mock('@src/data/services/segment/events', () => ({
   trackGradesDisplayed: jest.fn(),
   trackGradeOverrideSucceeded: jest.fn(),
@@ -52,7 +52,7 @@ jest.mock('./api', () => ({
   getGradeOverrideHistory: jest.fn(),
 }));
 
-const useParamsMock = jest.mocked(useParams);
+const useCourseIdMock = jest.mocked(useCourseId);
 // Loosely-typed mocks: the suites feed partial context/read-model shapes on purpose.
 const useGradebookUiMock = useGradebookUi as jest.Mock;
 const useCourseIdWithGateMock = jest.mocked(useCourseIdWithGate);
@@ -87,7 +87,7 @@ describe('GradesView/data apiHook', () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
-    useParamsMock.mockReturnValue({ courseId: 'course-v1:X' });
+    useCourseIdMock.mockReturnValue('course-v1:X');
     uiContext = baseUiContext();
     useGradebookUiMock.mockReturnValue(uiContext);
     useCourseIdWithGateMock.mockReturnValue({ courseId: 'course-v1:X', enabled: true });
@@ -125,7 +125,7 @@ describe('GradesView/data apiHook', () => {
       getGradesMock.mockResolvedValue({ results: [], previous: 'prev-url', next: 'next-url' });
       const { result } = renderQueryHook(() => useGrades('course-v1:X', null));
       await waitFor(() => expect(result.current.isSuccess).toBe(true));
-      expect(trackGradesDisplayed).toHaveBeenCalledWith({
+      expect(trackGradesDisplayed).toHaveBeenCalledWith('course-v1:X', {
         assignmentType: 'Homework',
         cohort: '2',
         track: 'audit',
@@ -200,8 +200,8 @@ describe('GradesView/data apiHook', () => {
       updateGradebookDataMock.mockResolvedValue({ data: { ok: true } });
       const { result } = renderQueryHook(useUpdateGrades);
       result.current();
-      await waitFor(() => expect(trackGradeOverrideSucceeded).toHaveBeenCalledWith({ ok: true }));
-      expect(updateGradebookDataMock).toHaveBeenCalledWith([{
+      await waitFor(() => expect(trackGradeOverrideSucceeded).toHaveBeenCalledWith('course-v1:X', { ok: true }));
+      expect(updateGradebookDataMock).toHaveBeenCalledWith('course-v1:X', [{
         grade: { comment: 'r', earned_graded_override: '10' },
         usage_id: 'mod-1',
         user_id: 3,
@@ -215,7 +215,7 @@ describe('GradesView/data apiHook', () => {
       updateGradebookDataMock.mockRejectedValue(err);
       const { result } = renderQueryHook(useUpdateGrades);
       result.current();
-      await waitFor(() => expect(trackGradeOverrideFailed).toHaveBeenCalledWith(err));
+      await waitFor(() => expect(trackGradeOverrideFailed).toHaveBeenCalledWith('course-v1:X', err));
     });
 
     it('sends the payload captured at trigger time, even if the modal resets before the save resolves', async () => {
@@ -235,7 +235,7 @@ describe('GradesView/data apiHook', () => {
       rerender();
       resolveUpdate!({ data: { ok: true } });
       await waitFor(() => expect(trackGradeOverrideSucceeded).toHaveBeenCalled());
-      expect(updateGradebookDataMock).toHaveBeenCalledWith([{
+      expect(updateGradebookDataMock).toHaveBeenCalledWith('course-v1:X', [{
         grade: { comment: 'r', earned_graded_override: '10' },
         usage_id: 'mod-1',
         user_id: 3,
@@ -278,7 +278,7 @@ describe('GradesView/data apiHook', () => {
       uploadGradeCsvMock.mockRejectedValue(err);
       const { result } = renderQueryHook(useSubmitImportGradesButtonData);
       await result.current(formData);
-      expect(trackUploadOverrideFailed).toHaveBeenCalledWith(err);
+      expect(trackUploadOverrideFailed).toHaveBeenCalledWith('course-v1:X', err);
       expect(uiContext.setCsvUploadErrors).toHaveBeenCalledWith(['bad row 1', 'bad row 2']);
     });
 

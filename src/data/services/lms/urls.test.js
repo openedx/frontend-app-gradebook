@@ -16,45 +16,45 @@ jest.mock('./utils', () => ({
 }));
 
 describe('lms api url methods', () => {
+  const courseId = 'course-v1:TestU+CS101+2024';
+
   describe('bulkGradesUrlByRow', () => {
     it('returns bulkGrades url with error_id', () => {
       const id = 'heyo';
-      expect(bulkGradesUrlByRow(id)).toEqual(
-        utils.stringifyUrl(urls.getBulkGradesUrl(), { error_id: id }),
+      expect(bulkGradesUrlByRow(courseId, id)).toEqual(
+        utils.stringifyUrl(urls.getBulkGradesUrl(courseId), { error_id: id }),
       );
     });
   });
   describe('gradeCsvUrl', () => {
     it('returns bulkGrades with filterQuery-loaded options as query', () => {
       const options = { some: 'fun', query: 'options' };
-      expect(gradeCsvUrl(options)).toEqual(
-        utils.stringifyUrl(urls.getBulkGradesUrl(), utils.filterQuery(options)),
+      expect(gradeCsvUrl(courseId, options)).toEqual(
+        utils.stringifyUrl(urls.getBulkGradesUrl(courseId), utils.filterQuery(options)),
       );
     });
     it('defaults options to empty object', () => {
-      expect(gradeCsvUrl()).toEqual(
-        utils.stringifyUrl(urls.getBulkGradesUrl(), utils.filterQuery({})),
+      expect(gradeCsvUrl(courseId)).toEqual(
+        utils.stringifyUrl(urls.getBulkGradesUrl(courseId), utils.filterQuery({})),
       );
     });
   });
   describe('interventionExportCsvUrl', () => {
     it('returns intervention url with filterQuery-loaded options as query', () => {
       const options = { some: 'fun', query: 'options' };
-      expect(interventionExportCsvUrl(options)).toEqual(
-        utils.stringifyUrl(urls.getInterventionUrl(), utils.filterQuery(options)),
+      expect(interventionExportCsvUrl(courseId, options)).toEqual(
+        utils.stringifyUrl(urls.getInterventionUrl(courseId), utils.filterQuery(options)),
       );
     });
     it('defaults options to empty object', () => {
-      expect(interventionExportCsvUrl()).toEqual(
-        utils.stringifyUrl(urls.getInterventionUrl(), utils.filterQuery({})),
+      expect(interventionExportCsvUrl(courseId)).toEqual(
+        utils.stringifyUrl(urls.getInterventionUrl(courseId), utils.filterQuery({})),
       );
     });
   });
   describe('instructorDashboardUrl', () => {
-    it('returns the LMS dashboard url for the course in the current location', () => {
-      const courseId = 'course-v1:TestU+CS101+2024';
-      window.history.pushState({}, '', `/gradebook/${courseId}`);
-      expect(instructorDashboardUrl()).toEqual(
+    it('returns the LMS dashboard url for the given courseId', () => {
+      expect(instructorDashboardUrl(courseId)).toEqual(
         `${getSiteConfig().lmsBaseUrl}/courses/${courseId}/instructor`,
       );
     });

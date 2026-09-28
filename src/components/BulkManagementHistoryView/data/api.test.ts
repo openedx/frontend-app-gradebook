@@ -11,9 +11,9 @@ const gradeBulkOperationHistoryMock = jest.mocked(lms.api.fetch.gradeBulkOperati
 describe('BulkManagementHistoryView/data api', () => {
   beforeEach(() => jest.clearAllMocks());
 
-  it('getBulkOperationHistory delegates to lms.api.fetch.gradeBulkOperationHistory', async () => {
+  it('getBulkOperationHistory delegates to lms.api.fetch.gradeBulkOperationHistory with courseId', async () => {
     gradeBulkOperationHistoryMock.mockResolvedValue(['entry']);
-    await expect(getBulkOperationHistory()).resolves.toEqual(['entry']);
-    expect(gradeBulkOperationHistoryMock).toHaveBeenCalled();
+    await expect(getBulkOperationHistory('course-v1:X')).resolves.toEqual(['entry']);
+    expect(gradeBulkOperationHistoryMock).toHaveBeenCalledWith('course-v1:X');
   });
 });

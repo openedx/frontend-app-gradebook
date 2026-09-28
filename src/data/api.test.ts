@@ -73,7 +73,7 @@ describe('gradebook data api', () => {
           can_see_bulk_management: true,
         },
       });
-      await expect(getAssignmentTypes()).resolves.toEqual({
+      await expect(getAssignmentTypes('course-v1:X')).resolves.toEqual({
         assignmentTypes: ['Homework', 'Exam'],
         areGradesFrozen: true,
         bulkManagementAvailable: true,
@@ -82,7 +82,7 @@ describe('gradebook data api', () => {
 
     it('returns safe defaults for an empty payload', async () => {
       assignmentTypesMock.mockResolvedValue({ data: {} });
-      await expect(getAssignmentTypes()).resolves.toEqual({
+      await expect(getAssignmentTypes('course-v1:X')).resolves.toEqual({
         assignmentTypes: [],
         areGradesFrozen: false,
         bulkManagementAvailable: false,
