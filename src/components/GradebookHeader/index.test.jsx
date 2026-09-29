@@ -49,7 +49,7 @@ describe('GradebookHeader', () => {
 
     it('renders the main header container', () => {
       renderWithAllProviders(<GradebookHeader />);
-      const header = screen.getByText('Gradebook').closest('.gradebook-header');
+      const header = screen.getByRole('heading', { level: 2 }).closest('.gradebook-header');
       expect(header).toHaveClass('gradebook-header');
     });
 
