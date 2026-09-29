@@ -9,6 +9,10 @@ import messages from './messages';
 
 const instructorDashboardRole = 'org.openedx.frontend.role.instructorDashboard';
 
+const deriveCourseName = (courseId) => (
+  (courseId?.split(':')[1] ?? '').split('+').slice(0, 2).join(' ')
+);
+
 export const GradebookHeader = () => {
   const { formatMessage } = useIntl();
   const {
@@ -55,7 +59,7 @@ export const GradebookHeader = () => {
   return (
     <div className="gradebook-header mt-2">
       {renderBackLink()}
-      <h2 className="text-primary-500">{formatMessage(messages.gradebook)}</h2>
+      <h2 className="text-primary-500">{formatMessage(messages.gradebook)}: {deriveCourseName(courseId)}</h2>
       <div className="subtitle-row d-flex justify-content-between align-items-center">
         {showBulkManagement && (
           <Button variant="tertiary" onClick={handleToggleViewClick}>

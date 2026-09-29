@@ -39,13 +39,13 @@ export const GradesView = ({ updateQueryParams }) => {
       <InterventionsReport />
 
       <div className="mb-3">
-        <div className="d-flex align-items-center">
+        <div className="d-flex align-items-center mb-2">
           <Bubble className="mr-2">1</Bubble>
-          <h3 className="h4 text-primary-700 mb-0">
+          <h3 className="h4 text-primary-700 my-0">
             <span>{formatMessage(messages.filterStepHeading)}</span>
           </h3>
         </div>
-        <div className="ml-3">
+        <div>
           <div className="d-flex justify-content-between flex-wrap">
             <FilterMenuToggle />
             <SearchControls />
@@ -55,14 +55,14 @@ export const GradesView = ({ updateQueryParams }) => {
           <StatusAlerts />
         </div>
 
-        <div className="d-flex align-items-center">
+        <div className="d-flex align-items-center mb-2">
           <Bubble className="mr-2">2</Bubble>
-          <h3 className="h4 text-primary-700 mb-0">
+          <h3 className="h4 text-primary-700 my-0">
             <span>{formatMessage(messages.gradebookStepHeading)}</span>
           </h3>
         </div>
 
-        <div className="d-flex justify-content-between align-items-center mb-2 ml-3">
+        <div className="d-flex justify-content-between align-items-center mb-2">
           <ScoreViewInput />
           <BulkManagementControls />
         </div>
