@@ -1,7 +1,6 @@
-import { Link } from 'react-router-dom';
-
-import { resolveRouteByRole, useIntl } from '@openedx/frontend-base';
-import { Button } from '@openedx/paragon';
+import { getLinkProps, resolveRouteByRole, useIntl } from '@openedx/frontend-base';
+import { Button, Icon, Hyperlink } from '@openedx/paragon';
+import { ArrowBackIos } from '@openedx/paragon/icons';
 
 import { instructorDashboardUrl } from '@src/data/services/lms/urls';
 import { useGradebookNavigation } from '@src/data/gradebookNavigationContext';
@@ -9,6 +8,10 @@ import useGradebookHeaderData from './hooks';
 import messages from './messages';
 
 const instructorDashboardRole = 'org.openedx.frontend.role.instructorDashboard';
+
+const deriveCourseName = (courseId) => (
+  (courseId?.split(':')[1] ?? '').split('+').slice(0, 2).join(' ')
+);
 
 export const GradebookHeader = () => {
   const { formatMessage } = useIntl();
@@ -31,7 +34,7 @@ export const GradebookHeader = () => {
     : null;
   const backLinkContent = (
     <>
-      <span aria-hidden="true">{'<< '}</span>
+      <Icon src={ArrowBackIos} className="mr-1" size="sm" />
       {formatMessage(messages.backToDashboard)}
     </>
   );
@@ -44,17 +47,20 @@ export const GradebookHeader = () => {
         </Button>
       );
     }
-    if (dashboardRoute?.isInternal) {
-      return <Link to={dashboardRoute.url} className="mb-3">{backLinkContent}</Link>;
-    }
-    return <a href={dashboardRoute?.url ?? instructorDashboardUrl(courseId)} className="mb-3">{backLinkContent}</a>;
+    return (
+      <Hyperlink
+        {...getLinkProps(dashboardRoute?.url ?? instructorDashboardUrl(courseId))}
+        className="mb-3"
+      >
+        {backLinkContent}
+      </Hyperlink>
+    );
   };
   return (
-    <div className="gradebook-header">
+    <div className="gradebook-header mt-2">
       {renderBackLink()}
-      <h1>{formatMessage(messages.gradebook)}</h1>
+      <h2 className="text-primary-500">{formatMessage(messages.gradebook)}: {deriveCourseName(courseId)}</h2>
       <div className="subtitle-row d-flex justify-content-between align-items-center">
-        <h2 className="text-break">{courseId}</h2>
         {showBulkManagement && (
           <Button variant="tertiary" onClick={handleToggleViewClick}>
             {formatMessage(toggleViewMessage)}

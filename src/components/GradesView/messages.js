@@ -2,14 +2,14 @@ import { defineMessages } from '@openedx/frontend-base';
 
 const messages = defineMessages({
   filterStepHeading: {
-    id: 'gradebook.GradesView.filterHeading',
-    defaultMessage: 'Step 1: Filter the Grade Report',
+    id: 'gradebook.GradesView.filterHeadingV2',
+    defaultMessage: 'Filter the Grade Report',
     description: 'Filter controls container heading string',
   },
   gradebookStepHeading: {
-    id: 'gradebook.GradesView.gradebookStepHeading',
-    defaultMessage: 'Step 2: View or Modify Individual Grades',
-    description: 'Alert text for invalid minimum course grade',
+    id: 'gradebook.GradesView.gradebookStepHeadingV2',
+    defaultMessage: 'View or Modify Individual Grades',
+    description: 'Gradebook table container heading string',
   },
   mastersHint: {
     id: 'gradebook.GradesView.mastersHint',

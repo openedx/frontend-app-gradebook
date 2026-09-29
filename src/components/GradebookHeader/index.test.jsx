@@ -49,7 +49,7 @@ describe('GradebookHeader', () => {
 
     it('renders the main header container', () => {
       renderWithAllProviders(<GradebookHeader />);
-      const header = screen.getByText('Gradebook').closest('.gradebook-header');
+      const header = screen.getByRole('heading', { level: 2 }).closest('.gradebook-header');
       expect(header).toHaveClass('gradebook-header');
     });
 
@@ -66,22 +66,13 @@ describe('GradebookHeader', () => {
 
     it('renders gradebook title', () => {
       renderWithAllProviders(<GradebookHeader />);
-      const title = screen.getByRole('heading', { level: 1 });
+      const title = screen.getByRole('heading', { level: 2 });
       expect(title).toHaveTextContent('Gradebook');
     });
 
-    it('renders course ID subtitle', () => {
-      renderWithAllProviders(<GradebookHeader />);
-      const subtitle = screen.getByRole('heading', { level: 2 });
-      expect(subtitle).toHaveTextContent('course-v1:TestU+CS101+2024');
-      expect(subtitle).toHaveClass('text-break');
-    });
-
     it('renders subtitle row with correct classes', () => {
-      renderWithAllProviders(<GradebookHeader />);
-      const subtitleRow = screen.getByRole('heading', {
-        level: 2,
-      }).parentElement;
+      const { container } = renderWithAllProviders(<GradebookHeader />);
+      const subtitleRow = container.querySelector('.subtitle-row');
       expect(subtitleRow).toHaveClass(
         'subtitle-row',
         'd-flex',
@@ -347,7 +338,6 @@ describe('GradebookHeader', () => {
       renderWithAllProviders(<GradebookHeader />);
 
       expect(screen.getByRole('link')).toBeInTheDocument();
-      expect(screen.getByRole('heading', { level: 1 })).toBeInTheDocument();
       expect(screen.getByRole('heading', { level: 2 })).toBeInTheDocument();
       expect(screen.getByRole('button')).toBeInTheDocument();
       expect(screen.queryByRole('alert')).not.toBeInTheDocument();
