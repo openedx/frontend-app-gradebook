@@ -1,6 +1,4 @@
-import { Link } from 'react-router-dom';
-
-import { resolveRouteByRole, useIntl } from '@openedx/frontend-base';
+import { getLinkProps, resolveRouteByRole, useIntl } from '@openedx/frontend-base';
 import { Button, Icon, Hyperlink } from '@openedx/paragon';
 import { ArrowBackIos } from '@openedx/paragon/icons';
 
@@ -45,10 +43,14 @@ export const GradebookHeader = () => {
         </Button>
       );
     }
-    if (dashboardRoute?.isInternal) {
-      return <Hyperlink as={Link} to={dashboardRoute.url} className="mb-3">{backLinkContent}</Hyperlink>;
-    }
-    return <Hyperlink href={dashboardRoute?.url ?? instructorDashboardUrl(courseId)} className="mb-3">{backLinkContent}</Hyperlink>;
+    return (
+      <Hyperlink
+        {...getLinkProps(dashboardRoute?.url ?? instructorDashboardUrl(courseId))}
+        className="mb-3"
+      >
+        {backLinkContent}
+      </Hyperlink>
+    );
   };
   return (
     <div className="gradebook-header mt-2">

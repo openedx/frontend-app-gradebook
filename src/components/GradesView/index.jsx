@@ -39,26 +39,28 @@ export const GradesView = ({ updateQueryParams }) => {
       <InterventionsReport />
 
       <div className="mb-3">
-        <h3 className="h4 d-flex align-items-center text-primary-700">
-          <Bubble className="mr-2">
-          1
-          </Bubble>
-          {formatMessage(messages.filterStepHeading)}
-        </h3>
-        <div className="d-flex justify-content-between flex-wrap ml-3">
-          <FilterMenuToggle />
-          <SearchControls />
+        <div className="d-flex align-items-center">
+          <Bubble className="mr-2">1</Bubble>
+          <h3 className="h4 text-primary-700 mb-0">
+            <span>{formatMessage(messages.filterStepHeading)}</span>
+          </h3>
+        </div>
+        <div className="ml-3">
+          <div className="d-flex justify-content-between flex-wrap">
+            <FilterMenuToggle />
+            <SearchControls />
+          </div>
+
+          <FilterBadges handleClose={handleFilterBadgeClose} />
+          <StatusAlerts />
         </div>
 
-        <FilterBadges handleClose={handleFilterBadgeClose} />
-        <StatusAlerts />
-
-        <h3 className="h4 d-flex align-items-center text-primary-700">
-          <Bubble className="mr-2">
-          2
-          </Bubble>
-          {formatMessage(messages.gradebookStepHeading)}
-        </h3>
+        <div className="d-flex align-items-center">
+          <Bubble className="mr-2">2</Bubble>
+          <h3 className="h4 text-primary-700 mb-0">
+            <span>{formatMessage(messages.gradebookStepHeading)}</span>
+          </h3>
+        </div>
 
         <div className="d-flex justify-content-between align-items-center mb-2 ml-3">
           <ScoreViewInput />
