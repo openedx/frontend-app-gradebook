@@ -1,7 +1,9 @@
 import PropTypes from 'prop-types';
 import { useIntl } from '@openedx/frontend-base';
 import { Bubble } from '@openedx/paragon';
+
 import { useFilters } from '@src/data/filtersContext';
+
 import BulkManagementControls from './BulkManagementControls';
 import EditModal from './EditModal';
 import FilterBadges from './FilterBadges';
@@ -42,23 +44,21 @@ export const GradesView = ({ updateQueryParams }) => {
         <div className="d-flex align-items-center mb-2">
           <Bubble className="mr-2">1</Bubble>
           <h3 className="h4 text-primary-700 my-0">
-            <span>{formatMessage(messages.filterStepHeading)}</span>
+            {formatMessage(messages.filterStepHeading)}
           </h3>
         </div>
-        <div>
-          <div className="d-flex justify-content-between flex-wrap">
-            <FilterMenuToggle />
-            <SearchControls />
-          </div>
-
-          <FilterBadges handleClose={handleFilterBadgeClose} />
-          <StatusAlerts />
+        <div className="d-flex justify-content-between flex-wrap">
+          <FilterMenuToggle />
+          <SearchControls />
         </div>
+
+        <FilterBadges handleClose={handleFilterBadgeClose} />
+        <StatusAlerts />
 
         <div className="d-flex align-items-center mb-2">
           <Bubble className="mr-2">2</Bubble>
           <h3 className="h4 text-primary-700 my-0">
-            <span>{formatMessage(messages.gradebookStepHeading)}</span>
+            {formatMessage(messages.gradebookStepHeading)}
           </h3>
         </div>
 

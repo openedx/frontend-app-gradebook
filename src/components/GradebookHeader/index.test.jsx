@@ -68,6 +68,9 @@ describe('GradebookHeader', () => {
       renderWithAllProviders(<GradebookHeader />);
       const title = screen.getByRole('heading', { level: 2 });
       expect(title).toHaveTextContent('Gradebook');
+      const courseId = screen.getByText('course-v1:TestU+CS101+2024');
+      expect(courseId.tagName).toBe('P');
+      expect(courseId).toHaveClass('small', 'text-break');
     });
 
     it('renders subtitle row with correct classes', () => {
