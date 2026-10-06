@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
-
 import { useIntl } from '@openedx/frontend-base';
+import { Bubble } from '@openedx/paragon';
 
 import { useFilters } from '@src/data/filtersContext';
 
@@ -17,7 +17,6 @@ import ScoreViewInput from './ScoreViewInput';
 import SearchControls from './SearchControls';
 import SpinnerIcon from './SpinnerIcon';
 import StatusAlerts from './StatusAlerts';
-
 import { useRefetchGrades } from './data/hooks';
 import messages from './messages';
 
@@ -40,23 +39,33 @@ export const GradesView = ({ updateQueryParams }) => {
       <SpinnerIcon />
 
       <InterventionsReport />
-      <h3 className="step-message-1">
-        {formatMessage(messages.filterStepHeading)}
-      </h3>
 
-      <div className="d-flex justify-content-between flex-wrap">
-        <FilterMenuToggle />
-        <SearchControls />
-      </div>
+      <div className="mb-3">
+        <div className="d-flex align-items-center mb-2">
+          <Bubble className="mr-2">1</Bubble>
+          <h3 className="h4 text-primary-700 my-0">
+            {formatMessage(messages.filterStepHeading)}
+          </h3>
+        </div>
+        <div className="d-flex justify-content-between flex-wrap">
+          <FilterMenuToggle />
+          <SearchControls />
+        </div>
 
-      <FilterBadges handleClose={handleFilterBadgeClose} />
-      <StatusAlerts />
+        <FilterBadges handleClose={handleFilterBadgeClose} />
+        <StatusAlerts />
 
-      <h3>{formatMessage(messages.gradebookStepHeading)}</h3>
+        <div className="d-flex align-items-center mb-2">
+          <Bubble className="mr-2">2</Bubble>
+          <h3 className="h4 text-primary-700 my-0">
+            {formatMessage(messages.gradebookStepHeading)}
+          </h3>
+        </div>
 
-      <div className="d-flex justify-content-between align-items-center mb-2">
-        <ScoreViewInput />
-        <BulkManagementControls />
+        <div className="d-flex justify-content-between align-items-center mb-2">
+          <ScoreViewInput />
+          <BulkManagementControls />
+        </div>
       </div>
 
       <FilteredUsersLabel />
