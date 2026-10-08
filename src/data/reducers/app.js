@@ -29,6 +29,7 @@ const initialState = {
     open: false,
     transitioning: false,
   },
+  showImportErrorToast: false,
   showImportSuccessToast: false,
   searchValue: '',
 };
@@ -84,10 +85,19 @@ const app = (state = initialState, { type, payload } = {}) => {
     }
     case actions.setSearchValue.toString():
       return { ...state, searchValue: payload };
+    case actions.setShowImportErrorToast.toString():
+      return { ...state, showImportErrorToast: payload };
     case actions.setShowImportSuccessToast.toString():
       return { ...state, showImportSuccessToast: payload };
+    // A failure waits to be dismissed, so leaving the tab has to retire it. Otherwise it
+    // re-announces itself every time the user comes back to the Grades view.
     case actions.setView.toString():
-      return { ...state, activeView: payload };
+      return {
+        ...state,
+        activeView: payload,
+        showImportSuccessToast: false,
+        showImportErrorToast: false,
+      };
     // initialize the filter fields that are locally stored
     case filterActions.initialize.toString():
       return {
@@ -111,8 +121,13 @@ const app = (state = initialState, { type, payload } = {}) => {
         },
       }), { ...state });
     }
+    // A new upload supersedes whatever the last one reported.
+    case gradesActions.csvUpload.started.toString():
+      return { ...state, showImportSuccessToast: false, showImportErrorToast: false };
     case gradesActions.csvUpload.finished.toString():
-      return { ...state, showImportSuccessToast: true };
+      return { ...state, showImportSuccessToast: true, showImportErrorToast: false };
+    case gradesActions.csvUpload.error.toString():
+      return { ...state, showImportErrorToast: true, showImportSuccessToast: false };
     default:
       return state;
   }

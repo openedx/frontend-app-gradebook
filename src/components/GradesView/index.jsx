@@ -8,7 +8,7 @@ import FilterBadges from './FilterBadges';
 import FilteredUsersLabel from './FilteredUsersLabel';
 import FilterMenuToggle from './FilterMenuToggle';
 import GradebookTable from './GradebookTable';
-import ImportSuccessToast from './ImportSuccessToast';
+import ImportResultToast from './ImportResultToast';
 import InterventionsReport from './InterventionsReport';
 import PageButtons from './PageButtons';
 import ScoreViewInput from './ScoreViewInput';
@@ -57,7 +57,7 @@ export const GradesView = ({ updateQueryParams }) => {
       <p>* {mastersHint}</p>
       <EditModal />
 
-      <ImportSuccessToast />
+      <ImportResultToast />
     </>
   );
 };

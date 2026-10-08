@@ -5,6 +5,7 @@ import { actionHook } from './utils';
 const app = StrictDict({
   useSetLocalFilter: actionHook(actions.app.setLocalFilter),
   useSetSearchValue: actionHook(actions.app.setSearchValue),
+  useSetShowImportErrorToast: actionHook(actions.app.setShowImportErrorToast),
   useSetShowImportSuccessToast: actionHook(actions.app.setShowImportSuccessToast),
   useSetView: actionHook(actions.app.setView),
   useCloseModal: actionHook(actions.app.closeModal),

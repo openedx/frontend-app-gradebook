@@ -64,6 +64,7 @@ describe('selector hooks', () => {
     testHook(hookKeys.useModalData, selKeys.modalData);
     testHook(hookKeys.useSearchValue, selKeys.searchValue);
     testHook(hookKeys.useShowImportSuccessToast, selKeys.showImportSuccessToast);
+    testHook(hookKeys.useShowImportErrorToast, selKeys.showImportErrorToast);
   });
   describe('assignmentTypes', () => {
     loadSelectorGroup(selectorHooks.assignmentTypes, selectors.assignmentTypes);

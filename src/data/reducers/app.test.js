@@ -185,11 +185,31 @@ describe('app reducer', () => {
         ).toEqual({ ...testingState, showImportSuccessToast: testValue });
       });
     });
+    describe('appActions.setShowImportErrorToast', () => {
+      it('loads showImportErrorToast from payload', () => {
+        expect(
+          app(testingState, appActions.setShowImportErrorToast(testValue)),
+        ).toEqual({ ...testingState, showImportErrorToast: testValue });
+      });
+    });
     describe('appActions.setView', () => {
       it('loads activeView from payload', () => {
         expect(
           app(testingState, appActions.setView(testValue)),
         ).toEqual({ ...testingState, activeView: testValue });
+      });
+      it('retires both toasts, since a failure waits to be dismissed', () => {
+        expect(
+          app(
+            { ...testingState, showImportSuccessToast: true, showImportErrorToast: true },
+            appActions.setView(testValue),
+          ),
+        ).toEqual({
+          ...testingState,
+          activeView: testValue,
+          showImportSuccessToast: false,
+          showImportErrorToast: false,
+        });
       });
     });
     describe('filterActions.initialize', () => {
@@ -232,10 +252,41 @@ describe('app reducer', () => {
       });
     });
     describe('grade actions csvUpload.finished', () => {
-      it('sets showImportSuccessToast to true', () => {
+      it('sets showImportSuccessToast to true and clears the error toast', () => {
         expect(
           app(testingState, gradesActions.csvUpload.finished()),
-        ).toEqual({ ...testingState, showImportSuccessToast: true });
+        ).toEqual({
+          ...testingState,
+          showImportSuccessToast: true,
+          showImportErrorToast: false,
+        });
+      });
+    });
+
+    describe('grade actions csvUpload.error', () => {
+      it('sets showImportErrorToast to true and clears the success toast', () => {
+        expect(
+          app(testingState, gradesActions.csvUpload.error({ errorMessages: ['nope'] })),
+        ).toEqual({
+          ...testingState,
+          showImportErrorToast: true,
+          showImportSuccessToast: false,
+        });
+      });
+    });
+
+    describe('grade actions csvUpload.started', () => {
+      it('clears both toasts, so one upload is never described by the last', () => {
+        expect(
+          app(
+            { ...testingState, showImportSuccessToast: true, showImportErrorToast: true },
+            gradesActions.csvUpload.started(),
+          ),
+        ).toEqual({
+          ...testingState,
+          showImportSuccessToast: false,
+          showImportErrorToast: false,
+        });
       });
     });
   });
