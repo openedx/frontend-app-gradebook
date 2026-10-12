@@ -235,6 +235,7 @@ export const useSubmitImportGradesButtonData = () => {
   const courseId = useCourseId();
   const {
     setShowImportSuccessToast,
+    setShowImportErrorToast,
     resetCsvUpload,
     markCsvUploadSuccess,
     setCsvUploadErrors,
@@ -261,6 +262,7 @@ export const useSubmitImportGradesButtonData = () => {
       } else {
         setCsvUploadErrors(['Unknown error.']);
       }
+      setShowImportErrorToast(true);
     },
   });
   return (formData: FormData) => mutation.mutateAsync(formData).catch(() => {});

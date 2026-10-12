@@ -62,6 +62,9 @@ export interface GradebookUiContextValue {
   /** Toast shown after a successful bulk grade CSV import. */
   showImportSuccessToast: boolean;
   setShowImportSuccessToast: (value: boolean) => void;
+  /** Toast shown after a bulk grade CSV import that failed or applied nothing. */
+  showImportErrorToast: boolean;
+  setShowImportErrorToast: (value: boolean) => void;
   /** Active top-level tab: views.grades | views.bulkManagementHistory. */
   activeView: string;
   setActiveView: (value: string) => void;
@@ -117,6 +120,7 @@ export const GradebookUiProvider = ({ children }: GradebookUiProviderProps) => {
   const [gradeFormat, setGradeFormat] = useState<string>('percent');
   const [showSuccess, setShowSuccess] = useState<boolean>(false);
   const [showImportSuccessToast, setShowImportSuccessToast] = useState<boolean>(false);
+  const [showImportErrorToast, setShowImportErrorToast] = useState<boolean>(false);
   const [activeView, setActiveView] = useState<string>(views.grades);
 
   // Filter sidebar animation state. This mirrors the old Redux `filterMenu` thunks:
@@ -195,6 +199,8 @@ export const GradebookUiProvider = ({ children }: GradebookUiProviderProps) => {
   const resetCsvUpload = useCallback(() => {
     setCsvUploadSuccess(false);
     setCsvUploadErrorMessages([]);
+    setShowImportSuccessToast(false);
+    setShowImportErrorToast(false);
   }, []);
   const markCsvUploadSuccess = useCallback(() => {
     setCsvUploadSuccess(true);
@@ -213,6 +219,8 @@ export const GradebookUiProvider = ({ children }: GradebookUiProviderProps) => {
       setShowSuccess,
       showImportSuccessToast,
       setShowImportSuccessToast,
+      showImportErrorToast,
+      setShowImportErrorToast,
       activeView,
       setActiveView,
       filterMenuOpen,
@@ -233,7 +241,7 @@ export const GradebookUiProvider = ({ children }: GradebookUiProviderProps) => {
       setCsvUploadErrors,
     }),
     [
-      gradeFormat, showSuccess, showImportSuccessToast, activeView,
+      gradeFormat, showSuccess, showImportSuccessToast, showImportErrorToast, activeView,
       filterMenuOpen, filterMenuTransitioning,
       toggleFilterMenu, closeFilterMenu, handleFilterMenuTransitionEnd,
       modalState, setModalState, setModalStateFromTable, closeModal,

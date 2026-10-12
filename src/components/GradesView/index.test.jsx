@@ -29,7 +29,7 @@ jest.mock('./FilterBadges', () => ({ handleClose }) => (
 jest.mock('./FilteredUsersLabel', () => () => <div data-testid="filtered-users-label" />);
 jest.mock('./FilterMenuToggle', () => () => <div data-testid="filter-menu-toggle" />);
 jest.mock('./GradebookTable', () => () => <div data-testid="gradebook-table" />);
-jest.mock('./ImportSuccessToast', () => () => <div data-testid="import-success-toast" />);
+jest.mock('./ImportResultToast', () => () => <div data-testid="import-result-toast" />);
 jest.mock('./InterventionsReport', () => () => <div data-testid="interventions-report" />);
 jest.mock('./PageButtons', () => () => <div data-testid="page-buttons" />);
 jest.mock('./ScoreViewInput', () => () => <div data-testid="score-view-input" />);

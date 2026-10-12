@@ -33,7 +33,7 @@ describe('BulkManagementAlerts', () => {
     setup({ csvUploadErrorMessages: ['bad file', 'other error'] });
     expect(document.querySelectorAll('.alert-danger.show').length).toBe(1);
     expect(
-      screen.getByText(/Errors while processing: bad file; other error;/),
+      screen.getByText(/Errors while processing: bad file; other error$/),
     ).toBeInTheDocument();
   });
 });

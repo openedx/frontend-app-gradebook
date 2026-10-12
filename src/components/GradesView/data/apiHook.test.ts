@@ -77,6 +77,7 @@ const baseUiContext = () => ({
   setShowSuccess: jest.fn(),
   setGradesPageEndpoint: jest.fn(),
   setShowImportSuccessToast: jest.fn(),
+  setShowImportErrorToast: jest.fn(),
   resetCsvUpload: jest.fn(),
   markCsvUploadSuccess: jest.fn(),
   setCsvUploadErrors: jest.fn(),
@@ -280,6 +281,7 @@ describe('GradesView/data apiHook', () => {
       await result.current(formData);
       expect(trackUploadOverrideFailed).toHaveBeenCalledWith('course-v1:X', err);
       expect(uiContext.setCsvUploadErrors).toHaveBeenCalledWith(['bad row 1', 'bad row 2']);
+      expect(uiContext.setShowImportErrorToast).toHaveBeenCalledWith(true);
     });
 
     it('sets a generic error when the failure has no error_messages payload', async () => {
@@ -287,6 +289,7 @@ describe('GradesView/data apiHook', () => {
       const { result } = renderQueryHook(useSubmitImportGradesButtonData);
       await result.current(formData);
       expect(uiContext.setCsvUploadErrors).toHaveBeenCalledWith(['Unknown error.']);
+      expect(uiContext.setShowImportErrorToast).toHaveBeenCalledWith(true);
     });
   });
 });

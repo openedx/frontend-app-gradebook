@@ -11,9 +11,8 @@ import messages from './messages';
  */
 export const BulkManagementAlerts = () => {
   const { csvUploadSuccess, csvUploadErrorMessages } = useGradebookUi();
-  // Mirrors the old `selectors.grades.bulkImportError` string formatting.
   const bulkImportError = csvUploadErrorMessages.length
-    ? `Errors while processing: ${csvUploadErrorMessages.join('; ')};`
+    ? `Errors while processing: ${csvUploadErrorMessages.join('; ')}`
     : '';
 
   return (
