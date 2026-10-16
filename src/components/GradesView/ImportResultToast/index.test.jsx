@@ -15,7 +15,7 @@ const mockData = (overrides = {}) => useImportResultToastData.mockReturnValue({
   action: { label: 'View Activity Log', onClick: jest.fn() },
   onClose: jest.fn(),
   show: true,
-  autohide: true,
+  toastProps: {},
   description: SUCCESS,
   ...overrides,
 });
@@ -43,7 +43,7 @@ describe('ImportResultToast', () => {
   });
 
   it('shows the failure message', () => {
-    mockData({ description: FAILURE, autohide: false });
+    mockData({ description: FAILURE, toastProps: { autohide: false } });
     renderWithAllProviders(<ImportResultToast />);
     expect(screen.getByText(FAILURE)).toBeInTheDocument();
   });
@@ -52,5 +52,24 @@ describe('ImportResultToast', () => {
     mockData();
     renderWithAllProviders(<ImportResultToast />);
     expect(screen.getByText('View Activity Log')).toBeInTheDocument();
+  });
+
+  it('retires the toast when the view unmounts', () => {
+    const onClose = jest.fn();
+    mockData({ description: FAILURE, toastProps: { autohide: false }, onClose });
+    const { unmount } = renderWithAllProviders(<ImportResultToast />);
+
+    expect(onClose).not.toHaveBeenCalled();
+    unmount();
+    expect(onClose).toHaveBeenCalledTimes(1);
+  });
+
+  it('does not retire it again on a re-render', () => {
+    const onClose = jest.fn();
+    mockData({ description: FAILURE, toastProps: { autohide: false }, onClose });
+    const { rerender } = renderWithAllProviders(<ImportResultToast />);
+
+    rerender(<ImportResultToast />);
+    expect(onClose).not.toHaveBeenCalled();
   });
 });

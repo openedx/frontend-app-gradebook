@@ -15,7 +15,7 @@ export const ImportResultToast = () => {
     action,
     onClose,
     show,
-    autohide,
+    toastProps,
     description,
   } = useImportResultToastData();
 
@@ -31,7 +31,7 @@ export const ImportResultToast = () => {
       action={action}
       onClose={onClose}
       show={show}
-      autohide={autohide}
+      {...toastProps}
     >
       {description}
     </Toast>

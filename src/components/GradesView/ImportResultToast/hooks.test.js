@@ -48,7 +48,8 @@ describe('useImportResultToastData', () => {
       const out = useImportResultToastData();
       expect(out.show).toBe(true);
       expect(out.description).toBe(SUCCESS);
-      expect(out.autohide).toBe(true);
+      // Nothing is pinned, so Paragon's own pause-on-hover behaviour stays in effect.
+      expect(out.toastProps).toEqual({});
     });
   });
 
@@ -59,7 +60,7 @@ describe('useImportResultToastData', () => {
       expect(out.show).toBe(true);
       expect(out.description).toBe(FAILURE);
       // A failure must not disappear on its own; the reader has to act on it.
-      expect(out.autohide).toBe(false);
+      expect(out.toastProps).toEqual({ autohide: false });
     });
 
     it('joins several messages', () => {
