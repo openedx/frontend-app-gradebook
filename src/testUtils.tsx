@@ -80,7 +80,9 @@ export function createQueryClientWrapper(
     defaultOptions: { queries: { retry: false } },
   });
   const QueryClientWrapper = ({ children }: WrapperProps) => (
-    <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+    <QueryClientProvider client={queryClient}>
+      <IntlProvider locale="en">{children}</IntlProvider>
+    </QueryClientProvider>
   );
   return QueryClientWrapper;
 }
