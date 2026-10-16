@@ -33,7 +33,7 @@ const mockData = (overrides = {}) => useImportResultToastData.mockReturnValue({
   action: { label: 'View Activity Log', onClick: jest.fn() },
   onClose: jest.fn(),
   show: true,
-  autohide: true,
+  toastProps: {},
   description: SUCCESS,
   ...overrides,
 });
@@ -60,7 +60,7 @@ describe('ImportResultToast', () => {
   });
 
   it('shows the failure message', () => {
-    mockData({ description: FAILURE, autohide: false });
+    mockData({ description: FAILURE, toastProps: { autohide: false } });
     render(<ImportResultToast />);
     expect(screen.getByText(FAILURE)).toBeInTheDocument();
   });

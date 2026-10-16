@@ -51,10 +51,11 @@ export const useImportResultToastData = () => {
     },
     onClose: hide,
     show: isError || isSuccess,
-    // Paragon defaults its Toast to auto-dismissing, and spreads extra props after that,
-    // so this reaches react-bootstrap. A failure waits to be dismissed; a success asks
-    // nothing of the reader and can time out as usual.
-    autohide: !isError,
+    // Paragon holds `autohide` in state so that hovering or focusing the toast pauses the
+    // timer, and spreads extra props over it -- so passing the prop at all pins the value
+    // and defeats that pause. Only a failure needs pinning, to wait for the reader to act;
+    // a success is left to Paragon, which lets the reader hold it open.
+    toastProps: isError ? { autohide: false } : {},
     description,
   };
 };

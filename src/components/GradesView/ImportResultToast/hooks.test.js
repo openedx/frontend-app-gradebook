@@ -76,7 +76,7 @@ describe('ImportResultToast hooks', () => {
       const out = useImportResultToastData();
       expect(out.show).toBe(true);
       expect(out.description).toEqual(messages.successDescription.defaultMessage);
-      expect(out.autohide).toBe(true);
+      expect(out.toastProps).toEqual({});
     });
   });
 
@@ -87,7 +87,7 @@ describe('ImportResultToast hooks', () => {
       expect(out.show).toBe(true);
       expect(out.description).toEqual(`Import failed. ${DETAILS}`);
       // A failure must not disappear on its own; the reader has to act on it.
-      expect(out.autohide).toBe(false);
+      expect(out.toastProps).toEqual({ autohide: false });
     });
 
     it('takes precedence if a success is somehow flagged too', () => {
