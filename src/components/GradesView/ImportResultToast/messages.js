@@ -9,7 +9,7 @@ const messages = defineMessages({
     description: 'A message congratulating a successful Import of grades',
   },
   errorDescription: {
-    id: 'gradebook.GradesView.ImportErrorToast.description',
+    id: 'gradebook.GradesView.ImportResultToast.errorDescription',
     defaultMessage: 'Import failed. {details}',
     description: 'Message shown when a grade import could not be applied',
   },
