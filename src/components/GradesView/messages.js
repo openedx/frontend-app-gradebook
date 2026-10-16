@@ -11,6 +11,11 @@ const messages = defineMessages({
     defaultMessage: 'View or Modify Individual Grades',
     description: 'Gradebook table container heading string',
   },
+  unknownImportError: {
+    id: 'gradebook.GradesView.unknownImportError',
+    defaultMessage: 'Unknown error.',
+    description: 'Shown when a grade import fails without the server saying why',
+  },
   mastersHint: {
     id: 'gradebook.GradesView.mastersHint',
     defaultMessage: "available for learners in the Master's track only",

@@ -1,4 +1,5 @@
 import { useMemo } from 'react';
+import { useIntl } from '@openedx/frontend-base';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import lms from '@src/data/services/lms';
@@ -18,6 +19,8 @@ import {
 // Cross-feature invalidation: a successful CSV upload refreshes the bulk-operation
 // history owned by the BulkManagementHistoryView feature.
 import { bulkOperationHistoryQueryKeys } from '@src/components/BulkManagementHistoryView/data/queryKeys';
+
+import messages from '../messages';
 
 import { getGradeOverrideHistory, getGrades, getGradesPage } from './api';
 import { gradeMutationKeys, gradeOverrideHistoryQueryKeys, gradesQueryKeys } from './queryKeys';
@@ -231,6 +234,7 @@ export const useUpdateGrades = () => {
  * still runs on both success and failure.
  */
 export const useSubmitImportGradesButtonData = () => {
+  const { formatMessage } = useIntl();
   const queryClient = useQueryClient();
   const courseId = useCourseId();
   const {
@@ -260,7 +264,7 @@ export const useSubmitImportGradesButtonData = () => {
         const { error_messages: errorMessages } = error.data;
         setCsvUploadErrors(errorMessages);
       } else {
-        setCsvUploadErrors(['Unknown error.']);
+        setCsvUploadErrors([formatMessage(messages.unknownImportError)]);
       }
       setShowImportErrorToast(true);
     },
