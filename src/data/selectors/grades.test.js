@@ -324,8 +324,38 @@ describe('grades selectors', () => {
       expect(
         selectors.bulkImportError({ grades: { bulkManagement: { errorMessages } } }),
       ).toEqual(
-        `Errors while processing: ${errorMessages[0]}; ${errorMessages[1]};`,
+        `Errors while processing: ${errorMessages[0]}; ${errorMessages[1]}`,
       );
+    });
+
+    it('does not leave a trailing separator after a single message', () => {
+      expect(
+        selectors.bulkImportError({
+          grades: { bulkManagement: { errorMessages: ['No grades were changed.'] } },
+        }),
+      ).toEqual('Errors while processing: No grades were changed.');
+    });
+  });
+
+  describe('bulkImportErrorMessages', () => {
+    it('returns an empty string when there are no messages', () => {
+      expect(
+        selectors.bulkImportErrorMessages({ grades: { bulkManagement: { uploadSuccess: true } } }),
+      ).toEqual('');
+    });
+
+    it('returns an empty string when bulkManagement not run', () => {
+      expect(
+        selectors.bulkImportErrorMessages({ grades: { bulkManagement: null } }),
+      ).toEqual('');
+    });
+
+    it('returns the messages with no wrapper text, for the toast', () => {
+      expect(
+        selectors.bulkImportErrorMessages({
+          grades: { bulkManagement: { errorMessages: ['first', 'second'] } },
+        }),
+      ).toEqual('first; second');
     });
   });
 

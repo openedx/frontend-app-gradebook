@@ -12,6 +12,7 @@ describe('actions', () => {
       actions.setLocalFilter,
       actions.setModalStateFromTable,
       actions.setShowImportSuccessToast,
+      actions.setShowImportErrorToast,
       actions.setView,
     ].map(action => action.toString());
     testActionTypes(actionTypes, dataKey);
@@ -22,6 +23,9 @@ describe('actions', () => {
     test('setModalStateFromTable action', () => testAction(actions.setModalStateFromTable));
     test('setSearchValue action', () => testAction(actions.setSearchValue));
     test('setView action', () => testAction(actions.setView));
+    test('setShowImportErrorToast action', () => (
+      testAction(actions.setShowImportErrorToast)
+    ));
     test('setShowImportSuccessToast action', () => (
       testAction(actions.setShowImportSuccessToast)
     ));

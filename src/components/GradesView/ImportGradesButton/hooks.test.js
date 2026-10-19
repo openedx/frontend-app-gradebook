@@ -1,6 +1,8 @@
 import React from 'react';
 import { selectors, thunkActions } from 'data/redux/hooks';
 
+import messages from './messages';
+
 import useImportButtonData from './hooks';
 
 jest.mock('data/redux/hooks', () => ({
@@ -10,6 +12,11 @@ jest.mock('data/redux/hooks', () => ({
   thunkActions: {
     grades: { useSubmitImportGradesButtonData: jest.fn() },
   },
+}));
+
+jest.mock('@edx/frontend-platform/i18n', () => ({
+  ...jest.requireActual('@edx/frontend-platform/i18n'),
+  useIntl: () => ({ formatMessage: (message) => `translated ${message.defaultMessage}` }),
 }));
 
 jest.mock('react', () => ({
@@ -70,8 +77,9 @@ describe('useImportButtonData hook', () => {
       });
       it('submits formData, clearingInput on success', async () => {
         out.handleFileInputChange();
-        const [[callArg]] = submit.mock.calls;
+        const [[callArg, unknownErrorMessage]] = submit.mock.calls;
         expect([...callArg.entries()]).toEqual([...testFormData.entries()]);
+        expect(unknownErrorMessage).toEqual(`translated ${messages.unknownImportError.defaultMessage}`);
         await submitThen();
         expect(out.fileInputRef.current.value).toEqual(null);
       });
