@@ -11,6 +11,11 @@ const messages = defineMessages({
     defaultMessage: 'Import Grades',
     description: 'A labeled button to import grades in the BulkManagement Tab File Upload Form',
   },
+  unknownImportError: {
+    id: 'gradebook.GradesView.unknownImportError',
+    defaultMessage: 'Unknown error.',
+    description: 'Shown when a grade import fails without the server saying why',
+  },
 });
 
 export default messages;

@@ -518,10 +518,11 @@ describe('grades thunkActions', () => {
 
   describe('submitImportGradesButtonData', () => {
     const formData = { form: 'data' };
+    const unknownErrorMessage = 'translated unknown error';
     const testFetch = createTestFetcher(
       lms.api.uploadGradeCsv,
       thunkActions.submitImportGradesButtonData,
-      [formData],
+      [formData, unknownErrorMessage],
       () => expect(lms.api.uploadGradeCsv).toHaveBeenCalledWith(formData),
     );
     const { csvUpload, uploadOverride } = actions.grades;
@@ -544,7 +545,7 @@ describe('grades thunkActions', () => {
           return testFetch((resolve, reject) => reject(error), [
             csvUpload.started(),
             uploadOverride.failure({ courseId, error }),
-            csvUpload.error({ errorMessages: ['Unknown error.'] }),
+            csvUpload.error({ errorMessages: [unknownErrorMessage] }),
           ]);
         });
       });
@@ -554,7 +555,7 @@ describe('grades thunkActions', () => {
           return testFetch((resolve, reject) => reject(error), [
             csvUpload.started(),
             uploadOverride.failure({ courseId, error }),
-            csvUpload.error({ errorMessages: ['Unknown error.'] }),
+            csvUpload.error({ errorMessages: [unknownErrorMessage] }),
           ]);
         });
       });

@@ -1,7 +1,10 @@
 import { useRef } from 'react';
+import { useIntl } from '@edx/frontend-platform/i18n';
 import { selectors, thunkActions } from 'data/redux/hooks';
+import messages from './messages';
 
 export const useImportButtonData = () => {
+  const { formatMessage } = useIntl();
   const gradeExportUrl = selectors.root.useGradeExportUrl();
   const submitImportGradesButtonData = thunkActions.grades.useSubmitImportGradesButtonData();
 
@@ -15,7 +18,8 @@ export const useImportButtonData = () => {
       };
       const formData = new FormData();
       formData.append('csv', fileInputRef.current.files[0]);
-      submitImportGradesButtonData(formData).then(clearInput);
+      submitImportGradesButtonData(formData, formatMessage(messages.unknownImportError))
+        .then(clearInput);
     }
   };
 
