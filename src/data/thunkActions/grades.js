@@ -122,7 +122,8 @@ export const fetchPrevNextGrades = (endpoint) => (
   }
 );
 
-export const submitImportGradesButtonData = (formData) => (
+// `unknownErrorMessage` comes in already translated: a thunk has no intl of its own.
+export const submitImportGradesButtonData = (formData, unknownErrorMessage) => (
   (dispatch, getState) => {
     const courseId = selectors.app.courseId(getState());
     dispatch(grades.csvUpload.started());
@@ -135,7 +136,7 @@ export const submitImportGradesButtonData = (formData) => (
         const { error_messages: errorMessages, saved, total } = error.data;
         return dispatch(grades.csvUpload.error({ errorMessages, saved, total }));
       }
-      return dispatch(grades.csvUpload.error({ errorMessages: ['Unknown error.'] }));
+      return dispatch(grades.csvUpload.error({ errorMessages: [unknownErrorMessage] }));
     });
   }
 );

@@ -28,6 +28,7 @@ export const app = StrictDict({
   useCourseId: selectorHook(selectors.app.courseId),
   useModalData: selectorHook(selectors.app.modalData),
   useSearchValue: selectorHook(selectors.app.searchValue),
+  useShowImportErrorToast: selectorHook(selectors.app.showImportErrorToast),
   useShowImportSuccessToast: selectorHook(selectors.app.showImportSuccessToast),
 });
 
@@ -52,6 +53,7 @@ export const filters = StrictDict({
 
 export const grades = StrictDict({
   useAllGrades: selectorHook(selectors.grades.allGrades),
+  useBulkImportErrorMessages: selectorHook(selectors.grades.bulkImportErrorMessages),
   useUserCounts: () => ({
     filteredUsersCount: useSelector(selectors.grades.filteredUsersCount),
     totalUsersCount: useSelector(selectors.grades.totalUsersCount),
