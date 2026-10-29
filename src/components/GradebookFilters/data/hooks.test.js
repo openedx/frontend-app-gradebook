@@ -28,6 +28,9 @@ describe('GradebookFilters data hooks', () => {
       ['0', '-1', true, false, true],
       ['', '', false, false, true],
       ['80', '10', true, true, false],
+      ['-0.5', '100', false, true, true],
+      ['50.9', '50.1', true, true, false],
+      ['1e3', '100', true, true, false],
     ]],
     ['useCourseGradeFilterValidity (0 to 100, inclusive)', useCourseGradeFilterValidity, 'courseGradeMin', 'courseGradeMax', [
       ['0', '100', true, true, true],
@@ -37,6 +40,8 @@ describe('GradebookFilters data hooks', () => {
       ['100', '101', true, false, true],
       ['', '', false, false, true],
       ['80', '10', true, true, false],
+      ['100.5', '100', false, true, true],
+      ['0.5', '99.5', true, true, true],
     ]],
   ])('%s', (_, hook, minKey, maxKey, cases) => {
     it.each(cases)('for min %p and max %p returns isMinValid %p, isMaxValid %p, isRangeValid %p', (min, max, isMinValid, isMaxValid, isRangeValid) => {

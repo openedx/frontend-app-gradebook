@@ -15,8 +15,8 @@ const EMPTY_ARRAY = [];
  * The range (min <= max) is only checked once both limits are valid.
  */
 const gradeLimitsValidity = (min, max, upperLimit = Infinity) => {
-  const minValue = parseInt(min, 10);
-  const maxValue = parseInt(max, 10);
+  const minValue = parseFloat(min);
+  const maxValue = parseFloat(max);
   const isLimitValid = (value) => value >= minGrade && value <= upperLimit;
   const isMinValid = isLimitValid(minValue);
   const isMaxValid = isLimitValid(maxValue);
