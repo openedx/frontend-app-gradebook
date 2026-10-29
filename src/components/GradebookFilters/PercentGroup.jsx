@@ -7,6 +7,7 @@ const PercentGroup = ({
   label,
   value,
   disabled,
+  max,
   onChange,
 }) => (
   <div className="percent-group">
@@ -15,7 +16,7 @@ const PercentGroup = ({
       <Form.Control
         type="number"
         min={0}
-        max={100}
+        max={max}
         step={1}
         {...{ value, disabled, onChange }}
       />
@@ -25,6 +26,7 @@ const PercentGroup = ({
 );
 PercentGroup.defaultProps = {
   disabled: false,
+  max: 100,
 };
 PercentGroup.propTypes = {
   id: PropTypes.string.isRequired,
@@ -32,6 +34,7 @@ PercentGroup.propTypes = {
   value: PropTypes.string.isRequired,
   onChange: PropTypes.func.isRequired,
   disabled: PropTypes.bool,
+  max: PropTypes.number,
 };
 
 export default PercentGroup;

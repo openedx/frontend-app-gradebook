@@ -26,6 +26,14 @@ describe('PercentGroup', () => {
       expect(screen.getByText('Group Label')).toBeVisible();
       expect(screen.getByText('%')).toBeVisible();
     });
+    test('limits the value to 100 by default', () => {
+      renderWithAllProviders(<PercentGroup {...props} />);
+      expect(screen.getByRole('spinbutton', { name: 'Group Label' })).toHaveAttribute('max', '100');
+    });
+    test('has no upper limit when max is null', () => {
+      renderWithAllProviders(<PercentGroup {...props} max={null} />);
+      expect(screen.getByRole('spinbutton', { name: 'Group Label' })).not.toHaveAttribute('max');
+    });
     test('disabled', () => {
       renderWithAllProviders(<PercentGroup {...props} disabled />);
       expect(screen.getByRole('spinbutton', { name: 'Group Label' })).toBeDisabled();
