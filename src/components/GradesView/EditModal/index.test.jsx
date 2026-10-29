@@ -27,9 +27,9 @@ describe('EditModal', () => {
   const closeModal = jest.fn();
   const updateGrades = jest.fn();
 
-  const setup = ({ error = undefined, isOpen = true } = {}) => {
+  const setup = ({ error = undefined, isOpen = true, adjustedGradeValue = '5' } = {}) => {
     useGradebookUi.mockReturnValue({
-      modalState: { open: isOpen },
+      modalState: { open: isOpen, adjustedGradeValue },
       closeModal,
     });
     useGradeOverrideData.mockReturnValue({ gradeOverrideHistoryError: error });
@@ -73,5 +73,10 @@ describe('EditModal', () => {
     await userEvent.click(screen.getByRole('button', { name: messages.saveGrade.defaultMessage }));
     expect(updateGrades).toHaveBeenCalled();
     expect(closeModal).toHaveBeenCalled();
+  });
+
+  it.each(['', 'abc'])('disables save for adjusted grade %p', (adjustedGradeValue) => {
+    setup({ adjustedGradeValue });
+    expect(screen.getByRole('button', { name: messages.saveGrade.defaultMessage })).toBeDisabled();
   });
 });
