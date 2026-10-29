@@ -38,6 +38,7 @@ export const OverrideTable = () => {
 
   return (
     <DataTable
+      className="grade-override-table"
       columns={tableColumns}
       data={tableData}
       itemCount={tableData.length}
