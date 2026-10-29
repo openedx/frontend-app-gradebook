@@ -1,5 +1,6 @@
 import { useFilters } from '@src/data/filtersContext';
 import { useCourseIdWithGate } from '@src/data/apiHook';
+import { minGrade, maxGrade } from '@src/components/GradesView/data/utils';
 
 import { useCohorts, useTracks } from './apiHook';
 
@@ -7,12 +8,28 @@ import { useCohorts, useTracks } from './apiHook';
 // while their query is still loading.
 const EMPTY_ARRAY = [];
 
-// Grade limits are valid when between 0 and 100 (mirrors the legacy
-// `courseGradeFilterValidity` selector, which used minGrade='0'/maxGrade='100').
-const isGradeValid = (value) => {
-  const intValue = parseInt(value, 10);
-  return intValue >= 0 && intValue <= 100;
+/**
+ * gradeLimitsValidity(min, max, upperLimit)
+ * returns { isMaxValid, isMinValid, isRangeValid } for a pair of grade filter limits.
+ * Each limit must be a number not less than minGrade (0) and not more than upperLimit.
+ * The range (min <= max) is only checked once both limits are valid.
+ */
+const gradeLimitsValidity = (min, max, upperLimit = Infinity) => {
+  const minValue = parseFloat(min);
+  const maxValue = parseFloat(max);
+  const isLimitValid = (value) => value >= minGrade && value <= upperLimit;
+  const isMinValid = isLimitValid(minValue);
+  const isMaxValid = isLimitValid(maxValue);
+  return {
+    isMaxValid,
+    isMinValid,
+    isRangeValid: !(isMinValid && isMaxValid) || minValue <= maxValue,
+  };
 };
+
+const areLimitsValid = ({ isMaxValid, isMinValid, isRangeValid }) => (
+  isMaxValid && isMinValid && isRangeValid
+);
 
 /**
  * useSelectedCohortEntry()
@@ -39,19 +56,36 @@ export const useSelectedTrackEntry = () => {
 };
 
 /**
+ * useAssignmentGradeFilterValidity()
+ * Validity of the (live) assignment-grade min/max inputs.
+ * There is no upper bound: a grade override can exceed the possible points of an assignment.
+ */
+export const useAssignmentGradeFilterValidity = () => {
+  const { assignmentGradeMin, assignmentGradeMax } = useFilters();
+  return gradeLimitsValidity(assignmentGradeMin, assignmentGradeMax);
+};
+
+/**
+ * useAreAssignmentGradeFiltersValid()
+ * Whether both assignment-grade limits are valid and min <= max (gates the Apply button).
+ */
+export const useAreAssignmentGradeFiltersValid = () => (
+  areLimitsValid(useAssignmentGradeFilterValidity())
+);
+
+/**
  * useCourseGradeFilterValidity()
- * Per-field validity of the (live) course-grade min/max inputs.
+ * Validity of the (live) course-grade min/max inputs, each between 0 and 100.
  */
 export const useCourseGradeFilterValidity = () => {
   const { courseGradeMin, courseGradeMax } = useFilters();
-  return { isMaxValid: isGradeValid(courseGradeMax), isMinValid: isGradeValid(courseGradeMin) };
+  return gradeLimitsValidity(courseGradeMin, courseGradeMax, maxGrade);
 };
 
 /**
  * useAreCourseGradeFiltersValid()
- * Whether both course-grade limits are valid (gates the Apply button).
+ * Whether both course-grade limits are valid and min <= max (gates the Apply button).
  */
-export const useAreCourseGradeFiltersValid = () => {
-  const { courseGradeMin, courseGradeMax } = useFilters();
-  return isGradeValid(courseGradeMin) && isGradeValid(courseGradeMax);
-};
+export const useAreCourseGradeFiltersValid = () => (
+  areLimitsValid(useCourseGradeFilterValidity())
+);
