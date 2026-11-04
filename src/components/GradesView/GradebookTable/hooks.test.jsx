@@ -42,6 +42,7 @@ const grades = [
     username: 'u1',
     external_user_key: 'ek1',
     email: 'e1',
+    full_name: 'Full Name 1',
     percent: 0.9,
     section_breakdown: [{ label: subsectionLabels[0] }, { label: subsectionLabels[1] }],
   },
@@ -54,7 +55,13 @@ const grades = [
   },
 ];
 
-const headings = [Headings.totalGrade, Headings.username, Headings.email, 'custom-heading'];
+const headings = [
+  Headings.totalGrade,
+  Headings.username,
+  Headings.email,
+  Headings.fullName,
+  'custom-heading',
+];
 
 describe('useGradebookTableData', () => {
   beforeEach(() => {
@@ -98,5 +105,13 @@ describe('useGradebookTableData', () => {
     expect(firstRow[Headings.totalGrade]).toBe('90%');
     expect(firstRow[subsectionLabels[0]]).toBeDefined();
     expect(firstRow[subsectionLabels[1]]).toBeDefined();
+  });
+
+  it('maps full_name into the fullName cell, falling back to an empty string', () => {
+    useAllGrades.mockReturnValue(grades);
+    useGradesHeadings.mockReturnValue(headings);
+    const out = captureHook();
+    expect(out.data[0][Headings.fullName].props.value).toBe(grades[0].full_name);
+    expect(out.data[1][Headings.fullName].props.value).toBe('');
   });
 });
