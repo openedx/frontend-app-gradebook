@@ -57,6 +57,21 @@
 .grade-history-current-grade{
     padding-right: 25px;
 }
+
+.grade-override-table {
+    // the last row is the edit row: keep its inputs in line while the adjusted grade cell grows with the hint and validation messages
+    .pgn__data-table-row:last-child > .pgn__data-table-cell-wrap {
+        vertical-align: top;
+    }
+    .pgn__form-control-description {
+        line-height: var(--pgn-typography-line-height-sm);
+        align-items: flex-start;
+        // centers the 1em icon on the first line
+        .pgn__icon {
+            margin-top: calc((var(--pgn-typography-line-height-sm) - 1) * .5em);
+        }
+    }
+}
 .gradebook-container {
     width: 100%;
     overflow-x: auto;
