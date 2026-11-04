@@ -5,6 +5,7 @@ import {
   useRefetchGrades,
   useSelectedAssignmentLabel,
 } from '@src/components/GradesView/data/hooks';
+import { useAreAssignmentGradeFiltersValid } from '../data/hooks';
 import useAssignmentGradeFilterData from './hooks';
 
 jest.mock('@src/data/filtersContext', () => ({
@@ -16,11 +17,16 @@ jest.mock('@src/components/GradesView/data/hooks', () => ({
   useRefetchGrades: jest.fn(),
   useSelectedAssignmentLabel: jest.fn(),
 }));
+jest.mock('../data/hooks', () => ({
+  ...jest.requireActual('../data/hooks'),
+  useAreAssignmentGradeFiltersValid: jest.fn(),
+}));
 
 const primeMocks = ({
   assignmentGradeMin = '10',
   assignmentGradeMax = '90',
   selectedAssignment = 'test-label',
+  areLimitsValid = true,
 } = {}) => {
   const setAssignmentGradeMin = jest.fn();
   const setAssignmentGradeMax = jest.fn();
@@ -35,6 +41,7 @@ const primeMocks = ({
   });
   useRefetchGrades.mockReturnValue(fetchGrades);
   useSelectedAssignmentLabel.mockReturnValue(selectedAssignment);
+  useAreAssignmentGradeFiltersValid.mockReturnValue(areLimitsValid);
   return {
     setAssignmentGradeMin, setAssignmentGradeMax, applyAssignmentGradeLimits, fetchGrades,
   };
@@ -53,6 +60,16 @@ describe('useAssignmentGradeFilterData', () => {
     expect(result.current.assignmentGradeMin).toBe('20');
     expect(result.current.assignmentGradeMax).toBe('80');
     expect(result.current.selectedAssignment).toBe('the label');
+  });
+
+  it.each([
+    ['test-label', true, false],
+    ['test-label', false, true],
+    [null, true, true],
+  ])('with selected assignment %p and valid limits %p returns isApplyDisabled %p', (selectedAssignment, areLimitsValid, expected) => {
+    primeMocks({ selectedAssignment, areLimitsValid });
+    const { result } = renderHook(() => useAssignmentGradeFilterData({ updateQueryParams }));
+    expect(result.current.isApplyDisabled).toBe(expected);
   });
 
   it('updates min through the filters context on change', () => {

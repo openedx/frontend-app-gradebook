@@ -13,6 +13,7 @@ const hookData = {
   handleSetMax: jest.fn(),
   handleSetMin: jest.fn(),
   selectedAssignment: 'test-assignment',
+  isApplyDisabled: false,
   assignmentGradeMax: 300,
   assignmentGradeMin: 23,
 };
@@ -41,6 +42,8 @@ describe('AssignmentFilter component', () => {
         expect(maxGradeInput).toBeInTheDocument();
         expect(minGradeInput).toBeEnabled();
         expect(maxGradeInput).toBeEnabled();
+        expect(minGradeInput).not.toHaveAttribute('max');
+        expect(maxGradeInput).not.toHaveAttribute('max');
         await user.type(minGradeInput, '25');
         expect(hookData.handleSetMin).toHaveBeenCalled();
         await user.type(maxGradeInput, '50');
@@ -55,11 +58,21 @@ describe('AssignmentFilter component', () => {
         expect(hookData.handleSubmit).toHaveBeenCalled();
       });
     });
+    describe('with invalid limits', () => {
+      it('disables the submit button only', () => {
+        useAssignmentGradeFilterData.mockReturnValueOnce({ ...hookData, isApplyDisabled: true });
+        renderWithAllProviders(<AssignmentFilter updateQueryParams={updateQueryParams} />);
+        expect(screen.getByRole('button', { name: /Apply/ })).toBeDisabled();
+        expect(screen.getByRole('spinbutton', { name: /Min Grade/ })).toBeEnabled();
+        expect(screen.getByRole('spinbutton', { name: /Max Grade/ })).toBeEnabled();
+      });
+    });
     describe('without selected assignment', () => {
       beforeEach(() => {
         useAssignmentGradeFilterData.mockReturnValueOnce({
           ...hookData,
           selectedAssignment: null,
+          isApplyDisabled: true,
         });
         renderWithAllProviders(<AssignmentFilter updateQueryParams={updateQueryParams} />);
       });

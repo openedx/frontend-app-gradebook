@@ -2,16 +2,31 @@ import { Alert } from '@openedx/paragon';
 import { useIntl } from '@openedx/frontend-base';
 
 import { useGradebookUi } from '@src/data/gradebookUiContext';
-import { useCourseGradeFilterValidity } from '@src/components/GradebookFilters/data/hooks';
+import {
+  useAssignmentGradeFilterValidity,
+  useCourseGradeFilterValidity,
+} from '@src/components/GradebookFilters/data/hooks';
+import { useSelectedAssignmentLabel } from '@src/components/GradesView/data/hooks';
 
 import messages from './messages';
 
 export const StatusAlerts = () => {
   const { formatMessage } = useIntl();
-  const { isMinValid, isMaxValid } = useCourseGradeFilterValidity();
+  const assignmentValidity = useAssignmentGradeFilterValidity();
+  const courseValidity = useCourseGradeFilterValidity();
+  const selectedAssignment = useSelectedAssignmentLabel();
   const { showSuccess, setShowSuccess } = useGradebookUi();
 
-  const gradeFilterText = `${isMinValid ? '' : formatMessage(messages.minGradeInvalid)}${isMaxValid ? '' : formatMessage(messages.maxGradeInvalid)}`;
+  const gradeFilterMessages = [
+    ...(selectedAssignment ? [
+      [assignmentValidity.isMinValid, messages.minAssignmentGradeInvalid],
+      [assignmentValidity.isMaxValid, messages.maxAssignmentGradeInvalid],
+      [assignmentValidity.isRangeValid, messages.assignmentGradeRangeInvalid],
+    ] : []),
+    [courseValidity.isMinValid, messages.minGradeInvalid],
+    [courseValidity.isMaxValid, messages.maxGradeInvalid],
+    [courseValidity.isRangeValid, messages.courseGradeRangeInvalid],
+  ].filter(([isValid]) => !isValid).map(([, message]) => formatMessage(message));
 
   return (
     <>
@@ -25,9 +40,9 @@ export const StatusAlerts = () => {
       <Alert
         variant="danger"
         dismissible={false}
-        show={!isMinValid || !isMaxValid}
+        show={gradeFilterMessages.length > 0}
       >
-        {gradeFilterText}
+        {gradeFilterMessages.map((message) => <div key={message}>{message}</div>)}
       </Alert>
     </>
   );

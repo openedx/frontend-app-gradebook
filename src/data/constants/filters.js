@@ -32,7 +32,7 @@ const initialFilters = {
 export const filterConfig = StrictDict({
   [filters.assignment]: {
     displayName: messages[filters.assignment],
-    connectedFilters: ['assignment', 'assignmentGradeMax', 'assignmentGradeMax'],
+    connectedFilters: ['assignment', 'assignmentGradeMax', 'assignmentGradeMin'],
   },
   [filters.assignmentType]: {
     displayName: messages[filters.assignmentType],
