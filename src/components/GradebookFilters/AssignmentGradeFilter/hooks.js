@@ -1,6 +1,8 @@
 import { useFilters } from '@src/data/filtersContext';
 import { useRefetchGrades, useSelectedAssignmentLabel } from '@src/components/GradesView/data/hooks';
 
+import { useAreAssignmentGradeFiltersValid } from '../data/hooks';
+
 const useAssignmentGradeFilterData = ({ updateQueryParams }) => {
   const {
     assignmentGradeMin,
@@ -10,6 +12,7 @@ const useAssignmentGradeFilterData = ({ updateQueryParams }) => {
     applyAssignmentGradeLimits,
   } = useFilters();
   const selectedAssignment = useSelectedAssignmentLabel();
+  const areLimitsValid = useAreAssignmentGradeFiltersValid();
   const fetchGrades = useRefetchGrades();
 
   const handleSubmit = () => {
@@ -33,6 +36,7 @@ const useAssignmentGradeFilterData = ({ updateQueryParams }) => {
     assignmentGradeMin,
     assignmentGradeMax,
     selectedAssignment,
+    isApplyDisabled: !selectedAssignment || !areLimitsValid,
     handleSetMax,
     handleSetMin,
     handleSubmit,
