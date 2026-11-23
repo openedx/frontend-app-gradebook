@@ -10,6 +10,7 @@ import { useGradebookUi } from '@src/data/gradebookUiContext';
 import { useGradeOverrideData } from '@src/components/GradesView/data/hooks';
 import { useUpdateGrades } from '@src/components/GradesView/data/apiHook';
 
+import { adjustedGradeStatuses, getAdjustedGradeStatus } from './adjustedGrade';
 import OverrideTable from './OverrideTable';
 import ModalHeaders from './ModalHeaders';
 import messages from './messages';
@@ -28,6 +29,10 @@ export const EditModal = () => {
   const error = useGradeOverrideData().gradeOverrideHistoryError;
   const { modalState, closeModal } = useGradebookUi();
   const isOpen = modalState.open;
+  const isSaveDisabled = [
+    adjustedGradeStatuses.empty,
+    adjustedGradeStatuses.invalid,
+  ].includes(getAdjustedGradeStatus(modalState.adjustedGradeValue));
   const updateGrades = useUpdateGrades();
 
   const onClose = () => {
@@ -65,7 +70,11 @@ export const EditModal = () => {
           <ModalDialog.CloseButton variant="tertiary">
             {formatMessage(messages.closeText)}
           </ModalDialog.CloseButton>
-          <Button variant="primary" onClick={handleAdjustedGradeClick}>
+          <Button
+            variant="primary"
+            onClick={handleAdjustedGradeClick}
+            disabled={isSaveDisabled}
+          >
             {formatMessage(messages.saveGrade)}
           </Button>
         </ActionRow>
