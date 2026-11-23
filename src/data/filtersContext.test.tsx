@@ -1,6 +1,7 @@
 import { act, renderHook } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 
+import { filterConfig } from '@src/data/constants/filters';
 import { filtersSnapshot } from '@src/data/filtersSnapshot';
 import { FiltersProvider, useFilters } from './filtersContext';
 
@@ -125,6 +126,29 @@ describe('FiltersProvider / useFilters', () => {
         track: '',
         includeCourseRoleMembers: false,
       });
+    });
+
+    it('resets both assignment grade limits when the assignment filter badge closes', () => {
+      const { result } = setup();
+      act(() => {
+        result.current.setAssignment('a1');
+        result.current.setAssignmentGradeMin('110');
+        result.current.setAssignmentGradeMax('200');
+        result.current.applyAssignmentGradeLimits({
+          assignmentGradeMin: '110', assignmentGradeMax: '200',
+        });
+      });
+      act(() => {
+        result.current.resetFilters(filterConfig.assignment.connectedFilters);
+      });
+      expect(result.current).toMatchObject({
+        assignment: '',
+        assignmentGradeMin: '0',
+        assignmentGradeMax: '100',
+        appliedAssignmentGradeMin: '0',
+        appliedAssignmentGradeMax: '100',
+      });
+      expect(filtersSnapshot).toMatchObject({ assignmentGradeMin: '0', assignmentGradeMax: '100' });
     });
 
     it('resets both live and applied grade-limit values', () => {
