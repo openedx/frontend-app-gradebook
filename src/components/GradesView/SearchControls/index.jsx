@@ -19,7 +19,8 @@ export const SearchControls = () => {
     <div className="search-container">
       <SearchField
         onSubmit={onSubmit}
-        label={inputLabel}
+        placeholder={inputLabel}
+        inputProps={{ 'aria-label': inputLabel }}
         onBlur={onBlur}
         onClear={onClear}
         value={searchValue}
