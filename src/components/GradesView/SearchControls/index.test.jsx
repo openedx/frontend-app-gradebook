@@ -24,6 +24,7 @@ describe('SearchControls component', () => {
   describe('render', () => {
     test('search field', () => {
       expect(screen.getByLabelText(hookProps.inputLabel)).toBeInTheDocument();
+      expect(screen.getByPlaceholderText(hookProps.inputLabel)).toBeInTheDocument();
       expect(screen.getByRole('searchbox')).toHaveValue(hookProps.searchValue);
     });
     test('hint text', () => {
